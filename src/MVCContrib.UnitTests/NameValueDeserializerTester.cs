@@ -220,21 +220,21 @@ namespace MVCContrib.UnitTests
 
 		private class Employee
 		{
-		    private readonly Phone _phone = new Phone();
-		    private readonly List<Phone> _otherPhones = new List<Phone>();
+			private readonly Phone _phone = new Phone();
+			private readonly List<Phone> _otherPhones = new List<Phone>();
 
-		    public int Id
+			public int Id
 			{
 				get;
 				set;
 			}
 
-		    public Phone Phone
+			public Phone Phone
 			{
 				get { return _phone; }
 			}
 
-		    public IList<Phone> OtherPhones
+			public IList<Phone> OtherPhones
 			{
 				get { return _otherPhones; }
 			}
@@ -242,15 +242,15 @@ namespace MVCContrib.UnitTests
 
 		public class Phone
 		{
-		    private readonly List<string> _areaCodes = new List<string>();
+			private readonly List<string> _areaCodes = new List<string>();
 
-		    public string Number
+			public string Number
 			{
 				get;
 				set;
 			}
 
-		    public IList<string> AreaCodes
+			public IList<string> AreaCodes
 			{
 				get { return _areaCodes; }
 			}
