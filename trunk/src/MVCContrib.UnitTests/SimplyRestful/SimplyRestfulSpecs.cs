@@ -10,7 +10,7 @@ namespace MVCContrib.UnitTests.SimplyRestful
 {
 	[TestFixture]
 	[Category("SimplyRestfulSpecs")]
-	public class When_The_Form_Is_Posted_With_A_Form_Field_Named_Method_And_A_Value_Of_PUT 
+	public class When_The_Form_Is_Posted_With_A_Form_Field_Named_Method_And_A_Value_Of_PUT
 		: BaseRouteHandlerTestFixture
 	{
 		[SetUp]
@@ -44,7 +44,7 @@ namespace MVCContrib.UnitTests.SimplyRestful
 
 	[TestFixture]
 	[Category("SimplyRestfulSpecs")]
-	public class When_The_Form_Is_Posted_With_A_Form_Field_Named_Method_And_A_Value_Of_DELETE 
+	public class When_The_Form_Is_Posted_With_A_Form_Field_Named_Method_And_A_Value_Of_DELETE
 		: BaseRouteHandlerTestFixture
 	{
 		[SetUp]
@@ -60,7 +60,7 @@ namespace MVCContrib.UnitTests.SimplyRestful
 			RestfulAction action = RestfulAction.None;
 			IRestfulActionResolver resolver = new RestfulActionResolver();
 
-			using (mocks.Record())
+			using(mocks.Record())
 			{
 				SetupResult.For(httpContext.Request).Return(httpRequest);
 				SetupResult.For(httpRequest.HttpMethod).Return("POST");
@@ -68,7 +68,7 @@ namespace MVCContrib.UnitTests.SimplyRestful
 				requestContext = new RequestContext(httpContext, routeData);
 			}
 
-			using (mocks.Playback())
+			using(mocks.Playback())
 			{
 				action = resolver.ResolveAction(requestContext);
 				Assert.That(action, Is.EqualTo(RestfulAction.Destroy));

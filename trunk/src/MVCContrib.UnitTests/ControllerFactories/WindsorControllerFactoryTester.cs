@@ -109,6 +109,7 @@ namespace MVCContrib.UnitTests.ControllerFactories
 			public class MockApplication : HttpApplication, IContainerAccessor
 			{
 				private readonly IWindsorContainer _container;
+
 				public MockApplication(IWindsorContainer container)
 				{
 					_container = container;

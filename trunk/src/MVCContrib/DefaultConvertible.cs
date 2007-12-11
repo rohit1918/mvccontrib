@@ -199,7 +199,7 @@ namespace MVCContrib
 
 		public object ToEnum(Type conversionType)
 		{
-			if( conversionType == null || !conversionType.IsEnum)
+			if(conversionType == null || !conversionType.IsEnum)
 			{
 				return null;
 			}
@@ -245,7 +245,7 @@ namespace MVCContrib
 			if(_value == null) return null;
 
 			TypeConverter typeConverter = TypeDescriptor.GetConverter(conversionType);
-			if (typeConverter == null || !typeConverter.CanConvertFrom(ConvertTypes[14]))
+			if(typeConverter == null || !typeConverter.CanConvertFrom(ConvertTypes[14]))
 			{
 				return null;
 			}

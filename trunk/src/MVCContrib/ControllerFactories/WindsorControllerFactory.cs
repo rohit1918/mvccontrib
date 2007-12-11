@@ -15,19 +15,20 @@ namespace MVCContrib.ControllerFactories
 
 		protected virtual IWindsorContainer ObtainContainer(RequestContext context)
 		{
-			if( context == null )
+			if(context == null)
 			{
 				throw new ArgumentNullException("context");
 			}
 
 			IContainerAccessor containerAccessor = context.HttpContext.ApplicationInstance as IContainerAccessor;
-			if (containerAccessor == null)
+			if(containerAccessor == null)
 			{
-				throw new InvalidOperationException("You must extend the HttpApplication in your web project and implement the IContainerAccessor to properly expose your container instance");
+				throw new InvalidOperationException(
+					"You must extend the HttpApplication in your web project and implement the IContainerAccessor to properly expose your container instance");
 			}
-			
+
 			IWindsorContainer container = containerAccessor.Container;
-			if (container == null)
+			if(container == null)
 			{
 				throw new InvalidOperationException("The container seems to be unavailable in your HttpApplication subclass");
 			}
@@ -37,11 +38,11 @@ namespace MVCContrib.ControllerFactories
 
 		protected virtual T GetController<T>(IWindsorContainer container, Type controllerType) where T : IController
 		{
-			if( container == null )
+			if(container == null)
 			{
 				throw new ArgumentNullException("container");
 			}
-			if( controllerType == null )
+			if(controllerType == null)
 			{
 				throw new ArgumentNullException("controllerType");
 			}
