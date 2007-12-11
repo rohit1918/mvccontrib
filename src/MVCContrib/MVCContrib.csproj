@@ -65,7 +65,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DeserializeAttribute.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactory.cs" />
+    <Compile Include="DefaultConvertible.cs" />
+    <Compile Include="NameValueDeserializer.cs" />
     <Compile Include="ControllerFactories\WindsorControllerFactory.cs">
       <SubType>Code</SubType>
     </Compile>
