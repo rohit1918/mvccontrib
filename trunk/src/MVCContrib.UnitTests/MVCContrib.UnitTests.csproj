@@ -80,6 +80,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
+    <Compile Include="DefaultConvertibleTester.cs" />
+    <Compile Include="NameValueDeserializerTester.cs" />
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs">
       <SubType>Code</SubType>
     </Compile>
