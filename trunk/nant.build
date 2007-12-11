@@ -113,11 +113,23 @@
 -->
   </target>
 	<target name="package">
-		<zip zipfile="${build.base}/MVCContrib.zip" includeemptydirs="false" >
-			<fileset basedir="${bin.dir}">
-				<exclude name="**/*.cs"/>
-				<exclude name="**/*.csproj*"/>
-				<exclude name="**/obj/**"/>
+    <zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
+      <fileset basedir="${build.dir}">
+        <exclude name="**/*.unittest*"/>
+        <include name="**/mvccontrib.*"/>
+      </fileset>
+    </zip>
+
+    <zip zipfile="${build.base}/MVCContrib.source.zip" includeemptydirs="false" >
+       
+			<fileset basedir="${trunk.dir}" >
+        <exclude name="**/build/**"/>
+        <exclude name="src/**/bin/**"/>
+        <exclude name="**/obj/**"/>
+        <exclude name="**/*.resharper*"/>
+        <exclude name="**/*.suo"/>
+        <exclude name="**/*.cache"/>
+        <exclude name="**/_ReSharper.MVCContrib/**"/>
 				<include name="**/*.*"/>
 			</fileset>
 		</zip>
