@@ -9,21 +9,21 @@ namespace MVCContrib
 		private static readonly Type[] ConvertTypes = new Type[]
 			{
 				typeof(bool),
-				typeof(char),
+				typeof(char),				// 1
 				typeof(sbyte),
-				typeof(byte),
+				typeof(byte),				// 3
 				typeof(short),
-				typeof(ushort),
+				typeof(ushort),			// 5
 				typeof(int),
-				typeof(uint),
-				typeof(long),
-				typeof(ulong),
+				typeof(uint),				// 7
+				typeof(long),	
+				typeof(ulong),			// 9
 				typeof(float),
-				typeof(double),
+				typeof(double),			// 11
 				typeof(decimal),
-				typeof(DateTime),
+				typeof(DateTime),		// 13
 				typeof(string),
-				typeof(Enum),
+				typeof(Enum),				// 15 
 				typeof(Guid)
 			};
 
@@ -315,11 +315,11 @@ namespace MVCContrib
 			{
 				return ToString(provider);
 			}
-			if(conversionType == ConvertTypes[16])
+			if(conversionType == ConvertTypes[15])
 			{
 				return ToEnum(conversionType);
 			}
-			if(conversionType == ConvertTypes[17])
+			if(conversionType == ConvertTypes[16])
 			{
 				return ToGuid();
 			}
