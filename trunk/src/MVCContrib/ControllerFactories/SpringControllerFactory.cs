@@ -28,7 +28,7 @@ namespace MVCContrib.ControllerFactories
 				catch(Exception e)
 				{
 					throw new ArgumentException("Failed creating instance of: " +
-					                            controllerType.Name + " using spring.net object factory", e);
+												controllerType.Name + " using spring.net object factory", e);
 				}
 			}
 			else
