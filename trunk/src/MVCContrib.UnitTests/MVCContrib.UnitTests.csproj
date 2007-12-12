@@ -90,6 +90,8 @@
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
+    <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
   </ItemGroup>
