@@ -11,217 +11,305 @@ namespace MVCContrib.UnitTests.SimplyRestful
 	[TestFixture]
 	public class SimplyRestfulRouteMatchTester
 	{
-		private MockRepository mocks;
-		private IHttpContext httpContext;
-		private IHttpRequest httpRequest;
-		private RouteCollection routeCollection;
-
-		[SetUp]
-		public void Setup()
+		[TestFixture]
+		public class WhenThereAreNoAreas : BaseSimplyRestfulRouteMatchFixture
 		{
-			mocks = new MockRepository();
-			httpContext = mocks.DynamicMock<IHttpContext>();
-			httpRequest = mocks.DynamicMock<IHttpRequest>();
-			routeCollection = new RouteCollection();
-			SimplyRestfulRouteHandler.InitializeRoutes(routeCollection);
-		}
-
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingAGetRequest_SetsTheShowAction()
-		{
-			using(mocks.Record())
+			protected override string ControllerPath
 			{
-				SetupContext("~/controller/123", "GET", null);
-			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("show").IgnoreCase);
+				get { return "[controller]"; }
 			}
 		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdAndEditActionUsingAGetRequest_SetsTheEditAction()
+		[TestFixture]
+		public class WhenThereIsAnAdminArea : BaseSimplyRestfulRouteMatchFixture
 		{
-			using(mocks.Record())
+			protected override string ControllerPath
 			{
-				SetupContext("~/controller/123/edit", "GET", null);
+				get { return "admin/[controller]"; }
 			}
-			using(mocks.Playback())
+
+			protected override string UrlFormat
 			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("edit").IgnoreCase);
+				get { return "admin/{0}"; }
 			}
 		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdAndNewActionUsingAGetRequest_SetsTheNewAction()
+		[TestFixture]
+		public class WhenThereIsAnAreaAndSpecificController : BaseSimplyRestfulRouteMatchFixture
 		{
-			using(mocks.Record())
+			protected override string UrlFormat
 			{
-				SetupContext("~/controller/new", "GET", null);
+				get { return "admin/products/specials/today"; }
 			}
-			using(mocks.Playback())
+
+			protected override string ControllerPath
 			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("new").IgnoreCase);
+				get { return "admin/products/specials/today"; }
+			}
+
+			protected override string ControllerName
+			{
+				get { return "ProductSpecials"; }
 			}
 		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdAndDeleteActionUsingAGetRequest_SetsTheDeleteAction()
+		public abstract class BaseSimplyRestfulRouteMatchFixture
 		{
-			using(mocks.Record())
-			{
-				SetupContext("~/controller/123/delete", "GET", null);
-			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("delete").IgnoreCase);
-			}
-		}
+			protected IHttpContext httpContext;
+			protected IHttpRequest httpRequest;
+			protected MockRepository mocks;
+			protected RouteCollection routeCollection;
 
-		[Test]
-		public void GetRouteData_WithAControllerUsingAGetRequest_SetsTheIndexAction()
-		{
-			using(mocks.Record())
+			protected virtual string ControllerPath
 			{
-				SetupContext("~/controller", "GET", null);
+				get { return "[controller]"; }
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("index").IgnoreCase);
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerUsingAPostRequest_SetsTheCreateAction()
-		{
-			using(mocks.Record())
+			protected virtual string ControllerName
 			{
-				SetupContext("~/controller", "POST", null);
+				get { return null; }
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("create").IgnoreCase);
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingHttpPut_SetsTheUpdateAction()
-		{
-			using(mocks.Record())
+			protected virtual string UrlFormat
 			{
-				SetupContext("~/controller/123", "PUT", null);
+				get { return "{0}"; }
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("update").IgnoreCase);
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingHttpMethodDelete_SetsTheDestroyAction()
-		{
-			using(mocks.Record())
+			[SetUp]
+			public virtual void Setup()
 			{
-				SetupContext("~/controller/123", "DELETE", null);
+				mocks = new MockRepository();
+				httpContext = mocks.DynamicMock<IHttpContext>();
+				httpRequest = mocks.DynamicMock<IHttpRequest>();
+				routeCollection = new RouteCollection();
+				BuildRoutes(routeCollection);
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Values["action"], Is.EqualTo("destroy").IgnoreCase);
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingFormMethodPut_UsesSimplyRestfulHandler()
-		{
-			using(mocks.Record())
+			protected virtual void BuildRoutes(RouteCollection routes)
 			{
-				SetupContext("~/controller/123", "POST", "PUT");
+				SimplyRestfulRouteHandler.BuildRoutes(routes, ControllerPath, SimplyRestfulRouteHandler.MatchPositiveInteger, ControllerName);
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingFormMethodDelete_UsesSimplyRestfulHandler()
-		{
-			using(mocks.Record())
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingAGetRequest_SetsTheShowAction()
 			{
-				SetupContext("~/controller/123", "POST", "DELETE");
+				using(mocks.Record())
+				{
+					SetupContext("/123", "GET", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("show").IgnoreCase);
+					AssertController(routeData);
+				}
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingHttpGetWithAnyIdValidator_SetsTheShowAction()
-		{
-			routeCollection = new RouteCollection();
-			SimplyRestfulRouteHandler.InitializeRoutes(routeCollection, null);
-			using(mocks.Record())
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdAndEditActionUsingAGetRequest_SetsTheEditAction()
 			{
-				SetupContext("~/controller/123", "POST", "DELETE");
+				using(mocks.Record())
+				{
+					SetupContext("/123/edit", "GET", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("edit").IgnoreCase);
+					AssertController(routeData);
+				}
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingHttpGetWithAStringId_DoesNotMatch()
-		{
-			using(mocks.Record())
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdAndNewActionUsingAGetRequest_SetsTheNewAction()
 			{
-				SetupContext("~/controller/Goose-Me", "POST", "DELETE");
+				using(mocks.Record())
+				{
+					SetupContext("/new", "GET", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("new").IgnoreCase);
+					AssertController(routeData);
+				}
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData, Is.Null);
-			}
-		}
 
-		[Test]
-		public void GetRouteData_WithAControllerAndIdUsingHttpGetWithStringIdValidatorAndANumericId_DoesNotMatch()
-		{
-			routeCollection = new RouteCollection();
-			SimplyRestfulRouteHandler.InitializeRoutes(routeCollection, "[a-zA-Z]+");
-			using(mocks.Record())
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdAndDeleteActionUsingAGetRequest_SetsTheDeleteAction()
 			{
-				SetupContext("~/controller/123", "POST", "DELETE");
+				using(mocks.Record())
+				{
+					SetupContext("/123/delete", "GET", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("delete").IgnoreCase);
+					AssertController(routeData);
+				}
 			}
-			using(mocks.Playback())
-			{
-				RouteData routeData = routeCollection.GetRouteData(httpContext);
-				Assert.That(routeData, Is.Null);
-			}
-		}
 
-		private void SetupContext(string url, string httpMethod, string formMethod)
-		{
-			SetupResult.For(httpContext.Request).Return(httpRequest);
-			SetupResult.For(httpRequest.AppRelativeCurrentExecutionFilePath).Return(url);
-			SetupResult.For(httpRequest.HttpMethod).Return(httpMethod);
-			if(!string.IsNullOrEmpty(formMethod))
+			[Test]
+			public virtual void GetRouteData_WithAControllerUsingAGetRequest_SetsTheIndexAction()
 			{
-				NameValueCollection form = new NameValueCollection();
-				form.Add("_method", formMethod);
-				SetupResult.For(httpRequest.Form).Return(form);
+				using(mocks.Record())
+				{
+					SetupContext("", "GET", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("index").IgnoreCase);
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerUsingAPostRequest_SetsTheCreateAction()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("", "POST", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("create").IgnoreCase);
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingHttpPut_SetsTheUpdateAction()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("/123", "PUT", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("update").IgnoreCase);
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingHttpMethodDelete_SetsTheDestroyAction()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("/123", "DELETE", null);
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Values["action"], Is.EqualTo("destroy").IgnoreCase);
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingFormMethodPut_UsesSimplyRestfulHandler()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("/123", "POST", "PUT");
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingFormMethodDelete_UsesSimplyRestfulHandler()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("/123", "POST", "DELETE");
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingHttpGetWithAnyIdValidator_SetsTheShowAction()
+			{
+				routeCollection = new RouteCollection();
+				SimplyRestfulRouteHandler.BuildRoutes(routeCollection, ControllerPath, SimplyRestfulRouteHandler.MatchAny, ControllerName);
+
+				using(mocks.Record())
+				{
+					SetupContext("/123", "POST", "DELETE");
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					AssertController(routeData);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingHttpGetWithAStringId_DoesNotMatch()
+			{
+				using(mocks.Record())
+				{
+					SetupContext("/Goose-Me", "POST", "DELETE");
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData, Is.Null);
+				}
+			}
+
+			[Test]
+			public virtual void GetRouteData_WithAControllerAndIdUsingHttpGetWithStringIdValidatorAndANumericId_DoesNotMatch()
+			{
+				routeCollection = new RouteCollection();
+				SimplyRestfulRouteHandler.BuildRoutes(routeCollection, ControllerPath, "[a-zA-Z]+", ControllerName);
+
+				using(mocks.Record())
+				{
+					SetupContext("/123", "POST", "DELETE");
+				}
+				using(mocks.Playback())
+				{
+					RouteData routeData = routeCollection.GetRouteData(httpContext);
+					Assert.That(routeData, Is.Null);
+				}
+			}
+
+			protected virtual void AssertController(RouteData data)
+			{
+				if(!string.IsNullOrEmpty(ControllerName))
+					Assert.That(data.Values["controller"], Is.EqualTo(ControllerName));
+			}
+
+			protected virtual void SetupContext(string url, string httpMethod, string formMethod)
+			{
+				SetupResult.For(httpContext.Request).Return(httpRequest);
+				
+				SetupResult.For(httpRequest.AppRelativeCurrentExecutionFilePath)
+					.Return("~/" + string.Format(UrlFormat, ControllerName ?? "products") + url);
+
+				SetupResult.For(httpRequest.HttpMethod).Return(httpMethod);
+				
+				if(!string.IsNullOrEmpty(formMethod))
+				{
+					NameValueCollection form = new NameValueCollection();
+					form.Add("_method", formMethod);
+					SetupResult.For(httpRequest.Form).Return(form);
+				}
 			}
 		}
 	}

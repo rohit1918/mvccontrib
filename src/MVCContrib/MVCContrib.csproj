@@ -80,6 +80,8 @@
     <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
     <Compile Include="SimplyRestful\RestfulAction.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolver.cs" />
+    <Compile Include="SimplyRestful\RestfulGetAction.cs" />
+    <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
   </ItemGroup>
   <ItemGroup>

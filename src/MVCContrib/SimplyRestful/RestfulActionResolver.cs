@@ -7,9 +7,9 @@ namespace MVCContrib.SimplyRestful
 	{
 		public RestfulAction ResolveAction(RequestContext context)
 		{
-			if(context == null || context.HttpContext == null || context.HttpContext.Request == null)
+			if(context.HttpContext.Request == null)
 			{
-				throw new NullReferenceException("Request in current HttpContext cannot be null.");
+				throw new NullReferenceException("Request in RequestContext.HttpContext cannot be null.");
 			}
 
 			if(string.IsNullOrEmpty(context.HttpContext.Request.HttpMethod))
