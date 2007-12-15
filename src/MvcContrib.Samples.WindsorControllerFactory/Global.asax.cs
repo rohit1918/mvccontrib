@@ -12,9 +12,14 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 	{
 		private static WindsorContainer _container;
 		
-		public IWindsorContainer Container
+		public static IWindsorContainer Container
 		{
 			get { return _container; }
+		}
+
+		IWindsorContainer IContainerAccessor.Container
+		{
+			get { return Container; }
 		}
 
 		protected void Application_Start(object sender, EventArgs e)
@@ -39,7 +44,7 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 					if(typeof(IController).IsAssignableFrom(type) )
 					{
 						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory(type, typeof(MVCContrib.ControllerFactories.WindsorControllerFactory));
+						ControllerBuilder.Current.SetControllerFactory(type, typeof(MvcContrib.Castle.WindsorControllerFactory));
 					}
 				}
 			}
