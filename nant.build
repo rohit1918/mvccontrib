@@ -24,6 +24,7 @@
 
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
 	<target name="cruise" depends="build, package"/>
+  <target name="commiter" depends="build, analyze"/>
 
 
 
@@ -111,6 +112,38 @@
 			</test>
 		</nunit2>
 -->
+  </target>
+  <target name="analyze" >
+    <loadtasks path="bin\ncover\Build Task Plugins"/>
+    <ncover  program="bin\ncover\ncover.console.exe"
+             commandLineExe="bin\nunit\nunit-console.exe"
+             commandLineArgs="mvccontrib.unittests.dll"
+             coverageFile="${results.dir}\mvccontrib.coverage.xml"
+             workingDirectory="${build.dir}"
+             >
+
+      <assemblies basedir="${build.dir}">
+        <include name="mvccontrib.dll" />
+      </assemblies>
+    </ncover>
+
+    <!--reportType="ModuleClassSummary"  ModuleClassFunctionSummary -->
+    <ncoverexplorer program="bin\ncover\ncoverexplorer.console.exe"
+                        projectName="Mvc Contrib"
+                        outputDir="${results.dir}"
+                        failCombinedMinimum="true"
+                        satisfactoryCoverage="98"
+                        minimumCoverage="89"                        
+                        reportType="ModuleClassFunctionSummary"
+                        htmlReportName="CoverageSummary.html"
+                        xmlReportName="CoverageSummary.xml" >
+      <fileset basedir="${results.dir}">
+        <include name="*.coverage.xml" />
+      </fileset>
+    </ncoverexplorer>
+    <loadtasks path="bin\ndepend\nant" />
+    <NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
+             ProjectFilePath="[PathWhereNDependProjectFileIsStored]\[NDependProjectFileName].xml"/>
   </target>
 	<target name="package">
     <zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
