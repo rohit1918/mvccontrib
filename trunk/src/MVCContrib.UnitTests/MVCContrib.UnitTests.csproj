@@ -83,19 +83,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Castle\WindsorControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
     <Compile Include="DefaultConvertibleTester.cs" />
     <Compile Include="NameValueDeserializerTester.cs" />
-    <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
+      <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
+      <Name>MvcContrib.Castle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
       <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
       <Name>MVCContrib</Name>
