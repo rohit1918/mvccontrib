@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<TypeReferencement>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester" InAssembly="MVCContrib.UnitTests">
+    <Use>
+      <Name>NUnit.Framework.TestFixtureAttribute</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+      <Name>System.Object</Name>
+    </Use>
+  </Type>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed" InAssembly="MVCContrib.UnitTests">
+    <Use>
+      <Name>NUnit.Framework.TestFixtureAttribute</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+IDependency</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency</Name>
+      <Name>NUnit.Framework.SetUpAttribute</Name>
+      <Name>System.Void</Name>
+      <Name>NUnit.Framework.TestAttribute</Name>
+      <Name>System.Object</Name>
+      <Name>StructureMap.StructureMapConfiguration</Name>
+      <Name>StructureMap.Configuration.DSL.CreatePluginFamilyExpression</Name>
+      <Name>System.Type</Name>
+      <Name>NUnit.Framework.SyntaxHelpers.Is</Name>
+      <Name>NUnit.Framework.Constraints.ConstraintBuilder</Name>
+      <Name>NUnit.Framework.Assert</Name>
+    </Use>
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController" InAssembly="MVCContrib.UnitTests">
+    <Use>
+      <Name>System.Void</Name>
+      <Name>System.Object</Name>
+      <Name>System.NotImplementedException</Name>
+    </Use>
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController" InAssembly="MVCContrib.UnitTests">
+    <Use>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+IDependency</Name>
+      <Name>System.Void</Name>
+      <Name>System.Object</Name>
+      <Name>System.NotImplementedException</Name>
+    </Use>
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+IDependency" InAssembly="MVCContrib.UnitTests">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency" InAssembly="MVCContrib.UnitTests">
+    <Use>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+IDependency</Name>
+      <Name>System.Object</Name>
+    </Use>
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="System.Object" InAssembly="mscorlib">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="System.NotImplementedException" InAssembly="mscorlib">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="System.Type" InAssembly="mscorlib">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="System.Void" InAssembly="mscorlib">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.Constraints.ConstraintBuilder" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.SyntaxHelpers.Is" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.Assert" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.SetUpAttribute" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.TestAttribute" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="NUnit.Framework.TestFixtureAttribute" InAssembly="nunit.framework">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester</Name>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="StructureMap.Configuration.DSL.CreatePluginFamilyExpression" InAssembly="StructureMap">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+  <Type Name="StructureMap.StructureMapConfiguration" InAssembly="StructureMap">
+    <UsedBy>
+      <Name>MVCContrib.UnitTests.ControllerFactories.StructureMapControllerFactoryTester+WhenAValidControllerTypeIsPassed</Name>
+    </UsedBy>
+  </Type>
+</TypeReferencement>

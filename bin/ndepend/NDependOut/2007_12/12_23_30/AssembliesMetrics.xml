@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<AssembliesMetrics>
+  <Assembly Assembly="MVCContrib.UnitTests v1.0.0.0" NTypes="6" NAbstractTypes="1" NILInstructionInAsm="101" NbLinesOfCodeInAsm="20" NbLinesOfCommentInAsm="7" PercentageCommentInAsm="25%" AfferentCoupling="0" EfferentCoupling="12" RelationalCohesion="1.33" Instability="1" Abstractness="0.17" DistFrMainSeq="0.12" NormDistFrMainSeq="0.17" />
+</AssembliesMetrics>

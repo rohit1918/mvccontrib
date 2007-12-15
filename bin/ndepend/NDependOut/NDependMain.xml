@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<NDepend>
+  <ReportInfo AppName="MvcContrib" NDependDate="12/15/2007 00:47:10" BuiltDuration="00:10" NDependVersion="2.6.1.1619 (Trial /Open Src / Academic Edition)" />
+<AssemblyDependencies />
+<TypeReferencement />
+<AssemblySortForCompilOrObfusk />
+<AssembliesMetrics />
+<TypesMetrics />
+<ApplicationMetrics NAsm="0" NbLinesOfCode="0" NbLinesOfComment="0" PercentageComment="0" NType="0" NClass="0" NAbstractClass="0" NInterface="0" NValueType="0" NExceptionType="0" NAttributeType="0" NDelegateType="0" NEnumType="0" NGenericMethodsDefinition="0" NGenericTypesDefinition="0" NILInstruction="0" PercentPublicType="0" PercentPublicMethod="0" PercentClassWithAtLeastOnePublicField="0">
+  <PropertyOnInterface Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <MethodOnInterface Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <ArgOnMethodOnInterface Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <PublicPropertyOnClass Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <PublicMethodOnClass Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <ArgOnPublicMethodOnClass Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <ILInstructionInNonAbstractMethods Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <TypeWithTheMostILInstruction Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <MethodCC Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+  <ResponseForType Occ="0" Avg="0" StdDev="0" MaxVal="-1" MaxName="" />
+</ApplicationMetrics>
+<InfoWarnings>
+  <Info>12/15/2007 00:46:59 Begin analysis with NDepend v2.6.1.1619</Info>
+  <Info>12/15/2007 00:47:00 Retrieve dependencies of your application.</Info>
+  <Warning>Cant' load the assembly {MVCContrib}:
+Several .NET assemblies have the name {MVCContrib} but they are different.
+C:\code\mvccontrib\src\MVCContrib.UnitTests\bin\Debug\MVCContrib.dll   v1.0.0.0  4608 bytes
+C:\code\mvccontrib\src\MVCContrib\bin\Debug\MVCContrib.dll   v1.0.0.0  4608 bytes
+C:\code\mvccontrib\src\MvcContrib.Samples.WindsorControllerFactory\bin\MVCContrib.dll   v0.0.0.0  19968 bytes
+C:\code\mvccontrib\build\net-3.5.win32-MVCContrib-release\MVCContrib.dll   v0.0.0.0  19968 bytes
+</Warning>
+  <Warning>No assemblies found in directory {C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727}</Warning>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\src\MVCContrib.UnitTests\bin\Debug}</Warning>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\src\MVCContrib\bin\Debug}</Warning>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\src\MvcContrib.Samples.WindsorControllerFactory\bin}</Warning>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\build\net-3.5.win32-MVCContrib-release}</Warning>
+  <Info>0 CQL constraint has been extracted from code.</Info>
+  <Info>12/15/2007 00:47:01 Analyse dependencies of your application.</Info>
+  <Info>No dependency cycle detected in assemblies referencement graph.</Info>
+  <Info>12/15/2007 00:47:10 End NDepend analyse.</Info>
+  <Info>12/15/2007 00:47:10 Duration: 00:00:10</Info>
+  <Info>12/15/2007 00:47:10 Building the report (standard).</Info>
+</InfoWarnings></NDepend>
