@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<InfoWarnings>
+  <Info>12/12/2007 23:29:51 Begin analysis with NDepend v2.6.1.1619</Info>
+  <Info>12/12/2007 23:29:52 Retrieve dependencies of your application.</Info>
+  <Warning>Cant' load the assembly {MVCContrib}:
+Several .NET assemblies have the name {MVCContrib} but they are different.
+C:\code\mvccontrib\src\MVCContrib.UnitTests\bin\Debug\MVCContrib.dll   v1.0.0.0  4608 bytes
+C:\code\mvccontrib\src\MVCContrib\bin\Debug\MVCContrib.dll   v1.0.0.0  4608 bytes
+C:\code\mvccontrib\src\MvcContrib.Samples.WindsorControllerFactory\bin\MVCContrib.dll   v0.0.0.0  20992 bytes
+</Warning>
+  <Warning>Cant' load the assembly {System.Web.Extensions}:
+Can't find the .NET assembly {System.Web.Extensions} in specified dirs</Warning>
+  <Info>Assemblies loaded from {C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727} 
+   mscorlib.dll   v2.0.0.0</Info>
+  <Info>Assemblies loaded from {C:\code\mvccontrib\src\MVCContrib.UnitTests\bin\Debug} 
+   MVCContrib.UnitTests.dll   v1.0.0.0
+   nunit.framework.dll   v2.4.3.0
+   StructureMap.dll   v1.0.0.0</Info>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\src\MVCContrib\bin\Debug}</Warning>
+  <Warning>No assemblies found in directory {C:\code\mvccontrib\src\MvcContrib.Samples.WindsorControllerFactory\bin}</Warning>
+  <Warning>Assembly {System.Web.Extensions} is referenced by {MVCContrib.UnitTests} but is not found.</Warning>
+  <Warning>Assembly {MVCContrib} is referenced by {MVCContrib.UnitTests} but is not found.</Warning>
+  <Info>0 CQL constraint has been extracted from code.</Info>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\ControllerFactories\StructureMapControllerFactoryTester.cs} (last modified 12/12/2007 11:18:25 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\ControllerFactories\SpringControllerFactoryTester.cs} (last modified 12/12/2007 11:18:25 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\DefaultConvertibleTester.cs} (last modified 12/12/2007 11:18:25 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\NameValueDeserializerTester.cs} (last modified 12/12/2007 11:18:25 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\ControllerFactories\WindsorControllerFactoryTester.cs} (last modified 12/12/2007 11:18:25 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\SimplyRestful\RestfulActionResolverTester.cs} (last modified 12/12/2007 11:18:24 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\SimplyRestful\SimplyRestfulRouteHandlerTester.cs} (last modified 12/12/2007 11:18:24 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\SimplyRestful\SimplyRestfulRouteMatchTester.cs} (last modified 12/12/2007 11:18:24 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Warning>The source file {C:\code\mvccontrib\src\MVCContrib.UnitTests\SimplyRestful\SimplyRestfulSpecs.cs} (last modified 12/12/2007 11:18:24 PM) and the PDB file of the assembly {MVCContrib.UnitTests} (last modified 12/9/2007 10:22:41 PM) are not in-sync.</Warning>
+  <Info>12/12/2007 23:29:55 Analyse dependencies of your application.</Info>
+  <Info>No dependency cycle detected in assemblies referencement graph.</Info>
+  <Info>12/12/2007 23:30:03 End NDepend analyse.</Info>
+  <Info>12/12/2007 23:30:03 Duration: 00:00:12</Info>
+  <Info>12/12/2007 23:30:04 Building the report (standard).</Info>
+</InfoWarnings>
