@@ -47,6 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\nunit\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\castle\NVelocity.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.3.0.906, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\rhinomocks\Rhino.Mocks.dll</HintPath>
@@ -92,6 +96,8 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
+    <Compile Include="ViewFactories\NVelocityViewTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
@@ -106,6 +112,12 @@
       <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
       <Name>MVCContrib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ViewFactories\view.vm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ViewFactories\master.vm" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
