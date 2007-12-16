@@ -315,7 +315,7 @@ namespace MVCContrib
 			{
 				return ToString(provider);
 			}
-			if(conversionType == ConvertTypes[15])
+			if(ConvertTypes[15].IsAssignableFrom(conversionType))
 			{
 				return ToEnum(conversionType);
 			}
