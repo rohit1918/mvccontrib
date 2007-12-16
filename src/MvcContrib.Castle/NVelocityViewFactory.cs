@@ -3,11 +3,12 @@ using System.Collections;
 using System.IO;
 using System.Web.Mvc;
 using Commons.Collections;
+using MvcContrib.Castle;
 using NVelocity;
 using NVelocity.App;
 using NVelocity.Runtime;
 
-namespace MvcContrib.ViewFactories
+namespace MvcContrib.Castle
 {
 	public class NVelocityViewFactory : IViewFactory
 	{

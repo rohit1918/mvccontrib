@@ -86,7 +86,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Properties\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>

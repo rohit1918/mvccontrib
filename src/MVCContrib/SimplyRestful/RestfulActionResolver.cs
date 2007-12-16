@@ -1,7 +1,7 @@
 using System;
 using System.Web.Mvc;
 
-namespace MVCContrib.SimplyRestful
+namespace MvcContrib.SimplyRestful
 {
 	public class RestfulActionResolver : IRestfulActionResolver
 	{

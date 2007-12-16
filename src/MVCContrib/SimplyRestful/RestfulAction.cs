@@ -1,4 +1,4 @@
-namespace MVCContrib.SimplyRestful
+namespace MvcContrib.SimplyRestful
 {
 	public enum RestfulAction
 	{

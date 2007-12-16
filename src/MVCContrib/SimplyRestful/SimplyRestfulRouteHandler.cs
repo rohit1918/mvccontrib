@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 
-namespace MVCContrib.SimplyRestful
+namespace MvcContrib.SimplyRestful
 {
 	/// <summary>A Rails inspired Restful Routing Handler</summary>
 	public class SimplyRestfulRouteHandler : MvcRouteHandler

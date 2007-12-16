@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using MVCContrib.Attributes;
+using MvcContrib.Attributes;
+using MvcContrib.Attributes;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests
+namespace MvcContrib.UnitTests
 {
 	[TestFixture]
 	public class NameValueDeserializerTester

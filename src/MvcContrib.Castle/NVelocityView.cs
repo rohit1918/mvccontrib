@@ -5,7 +5,7 @@ using System.IO;
 using System.Web.Mvc;
 using NVelocity;
 
-namespace MvcContrib.ViewFactories
+namespace MvcContrib.Castle
 {
 	public class NVelocityView : IView
 	{

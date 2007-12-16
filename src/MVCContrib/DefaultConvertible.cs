@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace MVCContrib
+namespace MvcContrib
 {
 	public class DefaultConvertible : IConvertible
 	{

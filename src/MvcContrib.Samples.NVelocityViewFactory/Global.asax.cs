@@ -5,9 +5,8 @@ using System.Web.Mvc;
 using Castle.Core;
 using Castle.Windsor;
 using MvcContrib.Castle;
-using MvcContrib.ViewFactories;
 
-namespace MvcApplication
+namespace MvcContrib.Samples.NVelocityViewFactory
 {
 	public class Global : HttpApplication, IContainerAccessor
 	{
@@ -41,7 +40,7 @@ namespace MvcApplication
 				_container = new WindsorContainer();
 
 				// Add our singleton NVelocityViewFactory
-				_container.AddComponent("ViewFactory", typeof(IViewFactory), typeof(NVelocityViewFactory));
+				_container.AddComponent("ViewFactory", typeof(IViewFactory), typeof(Castle.NVelocityViewFactory));
 
 				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 				

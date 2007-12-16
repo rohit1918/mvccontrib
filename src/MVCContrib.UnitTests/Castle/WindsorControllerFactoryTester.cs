@@ -7,7 +7,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.Castle
+namespace MvcContrib.UnitTests.Castle
 {
 	[TestFixture]
 	public class WindsorControllerFactoryTester

@@ -24,7 +24,7 @@
 
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
 	<target name="cruise" depends="build, analyze, package"/>
-  <target name="commiter" depends="build, analyze"/>
+	<target name="commiter" depends="build, analyze"/>
 
 
 
