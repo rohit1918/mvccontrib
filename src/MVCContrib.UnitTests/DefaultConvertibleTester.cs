@@ -14,6 +14,9 @@ namespace MVCContrib.UnitTests
 			bool value = convertible.ToBoolean(CultureInfo.InvariantCulture);
 
 			Assert.IsTrue(value);
+
+			object oValue = convertible.ToType(typeof(bool), CultureInfo.InvariantCulture);
+			Assert.AreEqual(true, oValue);
 		}
 
 		[Test]
@@ -23,6 +26,9 @@ namespace MVCContrib.UnitTests
 			char value = convertible.ToChar(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual('t', value);
+
+			object oValue = convertible.ToType(typeof(char), CultureInfo.InvariantCulture);
+			Assert.AreEqual('t', oValue);
 		}
 
 		[Test]
@@ -32,6 +38,9 @@ namespace MVCContrib.UnitTests
 			sbyte value = convertible.ToSByte(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(sbyte.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(sbyte), CultureInfo.InvariantCulture);
+			Assert.AreEqual(sbyte.MaxValue, oValue);
 		}
 
 		[Test]
@@ -41,6 +50,9 @@ namespace MVCContrib.UnitTests
 			byte value = convertible.ToByte(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(byte.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(byte), CultureInfo.InvariantCulture);
+			Assert.AreEqual(byte.MaxValue, oValue);
 		}
 
 		[Test]
@@ -50,6 +62,9 @@ namespace MVCContrib.UnitTests
 			short value = convertible.ToInt16(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(short.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(short), CultureInfo.InvariantCulture);
+			Assert.AreEqual(short.MaxValue, oValue);
 		}
 
 		[Test]
@@ -59,6 +74,9 @@ namespace MVCContrib.UnitTests
 			ushort value = convertible.ToUInt16(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(ushort.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(ushort), CultureInfo.InvariantCulture);
+			Assert.AreEqual(ushort.MaxValue, oValue);
 		}
 
 		[Test]
@@ -68,6 +86,9 @@ namespace MVCContrib.UnitTests
 			int value = convertible.ToInt32(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(int.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(int), CultureInfo.InvariantCulture);
+			Assert.AreEqual(int.MaxValue, oValue);
 		}
 
 		[Test]
@@ -77,6 +98,9 @@ namespace MVCContrib.UnitTests
 			uint value = convertible.ToUInt32(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(uint.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(uint), CultureInfo.InvariantCulture);
+			Assert.AreEqual(uint.MaxValue, oValue);
 		}
 
 		[Test]
@@ -86,6 +110,9 @@ namespace MVCContrib.UnitTests
 			long value = convertible.ToInt64(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(long.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(long), CultureInfo.InvariantCulture);
+			Assert.AreEqual(long.MaxValue, oValue);
 		}
 
 		[Test]
@@ -95,6 +122,9 @@ namespace MVCContrib.UnitTests
 			ulong value = convertible.ToUInt64(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(ulong.MaxValue, value);
+
+			object oValue = convertible.ToType(typeof(ulong), CultureInfo.InvariantCulture);
+			Assert.AreEqual(ulong.MaxValue, oValue);
 		}
 
 		[Test]
@@ -104,6 +134,9 @@ namespace MVCContrib.UnitTests
 			float value = convertible.ToSingle(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.1F, value);
+
+			object oValue = convertible.ToType(typeof(float), CultureInfo.InvariantCulture);
+			Assert.AreEqual(1.1F, oValue);
 		}
 
 		[Test]
@@ -113,6 +146,9 @@ namespace MVCContrib.UnitTests
 			double value = convertible.ToDouble(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.2, value);
+
+			object oValue = convertible.ToType(typeof(double), CultureInfo.InvariantCulture);
+			Assert.AreEqual(1.2, oValue);
 		}
 
 		[Test]
@@ -122,6 +158,9 @@ namespace MVCContrib.UnitTests
 			decimal value = convertible.ToDecimal(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.3M, value);
+
+			object oValue = convertible.ToType(typeof(decimal), CultureInfo.InvariantCulture);
+			Assert.AreEqual(1.3M, oValue);
 		}
 
 		[Test]
@@ -132,6 +171,9 @@ namespace MVCContrib.UnitTests
 			DateTime actual = new DateTime(1605, 11, 5);
 
 			Assert.AreEqual(actual, value);
+
+			object oValue = convertible.ToType(typeof(DateTime), CultureInfo.InvariantCulture);
+			Assert.AreEqual(actual, oValue);
 		}
 
 		[Test]
@@ -159,6 +201,9 @@ namespace MVCContrib.UnitTests
 			WeAre value = (WeAre)convertible.ToEnum(typeof(WeAre));
 
 			Assert.AreEqual(WeAre.Minute, value);
+
+			object oValue = convertible.ToType(typeof(WeAre), CultureInfo.InvariantCulture);
+			Assert.AreEqual(WeAre.Minute, oValue);
 		}
 
 		[Test]
@@ -187,6 +232,9 @@ namespace MVCContrib.UnitTests
 			Guid value = convertible.ToGuid();
 
 			Assert.AreEqual(actual, value);
+
+			object oValue = convertible.ToType(typeof(Guid), CultureInfo.InvariantCulture);
+			Assert.AreEqual(actual, oValue);
 		}
 
 		[Test]
@@ -194,6 +242,12 @@ namespace MVCContrib.UnitTests
 		{
 			DefaultConvertible convertible = new DefaultConvertible("GetSome");
 			Guid value = convertible.ToGuid();
+
+			Assert.AreEqual(Guid.Empty, value);
+
+			convertible =
+				new DefaultConvertible("{0x100000000, 0xED42, 0x11CE, {0xBA, 0xCD, 0x00, 0xAA, 0x00, 0x57, 0xB2, 0x23}}");
+			value = convertible.ToGuid();
 
 			Assert.AreEqual(Guid.Empty, value);
 		}
@@ -239,6 +293,10 @@ namespace MVCContrib.UnitTests
 			convertible.ToUInt16(CultureInfo.InvariantCulture);
 			convertible.ToUInt32(CultureInfo.InvariantCulture);
 			convertible.ToUInt64(CultureInfo.InvariantCulture);
+			convertible.WithTypeConverter(typeof(string));
+
+			convertible = new DefaultConvertible("FileStyleUriParser");
+			convertible.WithTypeConverter(typeof(FileStyleUriParser));
 		}
 	}
 }
