@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using MvcContrib.Attributes;
-using MvcContrib.Attributes;
 using NUnit.Framework;
 
 namespace MvcContrib.UnitTests
@@ -307,11 +306,11 @@ namespace MvcContrib.UnitTests
 				set;
 			}
 
-			private IList<int> _readonlyIds;
-			public IList<int> ReadonlyIds
-			{
-				get { return _readonlyIds; }
-			}
+            private IList<int> _readonlyIds=null;
+            public IList<int> ReadonlyIds
+            {
+                get { return _readonlyIds; }
+            }
 		}
 
 		private class Employee
@@ -330,7 +329,7 @@ namespace MvcContrib.UnitTests
 				get { return _phone; }
 			}
 
-			private Phone _batPhone;
+			private Phone _batPhone=null;
 			public Phone BatPhone
 			{
 				get { return _batPhone; }

@@ -24,7 +24,7 @@
 
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
 	<target name="cruise" depends="build, analyze, package"/>
-	<target name="commiter" depends="build, analyze"/>
+	<target name="commiter" depends="build, analyze, package"/>
 
 
 
@@ -33,8 +33,7 @@
 		<tstamp>
 			<formatter property="datetime.buildtime" pattern="yyyy-MM-dd, HH:mm:ss" />
 		</tstamp>
-
-		
+		<delete dir="${build.base}"/>
 		<mkdir dir="${build.dir}" />
 		<echo message="Current Directory: ${project::get-base-directory()}"/>
 	</target>
@@ -83,6 +82,7 @@
 	</target>
 
 	<target name="move-for-test">
+		<delete dir="${build.dir}"/>
 		<copy todir="${build.dir}" flatten="true">
 			<fileset basedir="${solution.dir}">
 				<include name="/**/bin/${project.config}/**" />
@@ -101,17 +101,6 @@
       <formatter type="Plain" />
       <test assemblyname="${build.dir}/MVCContrib.UnitTests.dll" appconfig="${nant::get-base-directory()}nant.tests.config"/>
     </nunit2>
-
-    <!--		<nunit2 failonerror="true" verbose="true">
-			<formatter type="Xml" outputdir="${results.dir}" usefile="true" extension=".xml"/>
-			<formatter type="Plain" />
-			<test assemblyname="${build.dir}/MVCContrib.IntegrationTests.dll" appconfig="${build.dir}/MVCContrib.IntegrationTests.dll.config">
-				<categories>
-					<exclude name="DataLoader"/>
-				</categories>
-			</test>
-		</nunit2>
--->
   </target>
   <target name="analyze" >
     <loadtasks path="bin\ncover\Build Task Plugins"/>
@@ -119,11 +108,12 @@
              commandLineExe="bin\nunit\nunit-console.exe"
              commandLineArgs="mvccontrib.unittests.dll"
              coverageFile="${results.dir}\mvccontrib.coverage.xml"
-             workingDirectory="${build.dir}"
+             workingDirectory="${build.dir}"			 
              >
 
       <assemblies basedir="${build.dir}">
-        <include name="mvccontrib.dll" />
+		<exclude name="**/*.unittest*"/>
+        <include name="mvccontrib*.dll" />		  
       </assemblies>
     </ncover>
 
@@ -132,31 +122,72 @@
                         projectName="Mvc Contrib"
                         outputDir="${results.dir}"
                         failCombinedMinimum="true"
-                        satisfactoryCoverage="98"
-                        minimumCoverage="89"                        
+                        satisfactoryCoverage="95"						
+                        minimumCoverage="95"     
                         reportType="ModuleClassFunctionSummary"
                         htmlReportName="CoverageSummary.html"
                         xmlReportName="CoverageSummary.xml" >
       <fileset basedir="${results.dir}">
         <include name="*.coverage.xml" />
       </fileset>
-    </ncoverexplorer>
+		<moduleThresholds>
+			<moduleThreshold moduleName="MVCContrib.DLL"		satisfactoryCoverage="95" />
+			<moduleThreshold moduleName="MvcContrib.Castle.DLL" satisfactoryCoverage="95" />
+			<moduleThreshold moduleName="MvcContrib.Spring.DLL" satisfactoryCoverage="95" />
+		</moduleThresholds>
+
+	</ncoverexplorer>
     <loadtasks path="bin\ndepend\nant" />
     <NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
              ProjectFilePath="[PathWhereNDependProjectFileIsStored]\[NDependProjectFileName].xml"/>
   </target>
 	<target name="package">
-    <zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
-      <fileset basedir="${build.dir}">
-        <exclude name="**/*.unittest*"/>
-        <include name="**/mvccontrib.*"/>
+		<!-- 		
+			make a new dir for release.
+			include subfolders
+				bin
+					referenceDLLs
+				samples
+		-->
+	<mkdir dir="${build.base}/release/" />
+	
+	<mkdir dir="${build.base}/release/Bin" />
+	<copy todir="${build.base}/release/Bin" flatten="true">
+		<fileset basedir="${solution.dir}">
+			<include name="/**/bin/${project.config}/mvccontrib**" />				
+		</fileset>
+	</copy>
+	
+	<mkdir dir="${build.base}/release/Samples" />
+		<copy todir="${build.base}/release/Samples" >
+			<fileset basedir="${solution.dir}">
+				<exclude name="**/bin/**"/>
+				<exclude name="**/obj/**"/>
+				<include name="/**samples**/**" />
+			</fileset>
+		</copy>
+
+
+	<mkdir dir="${build.base}/release/Helpers/" />
+	<copy todir="${build.base}/release/Helpers" >
+		<fileset basedir="extras">
+			<include name="/**/**" />
+		</fileset>
+	</copy>
+
+
+		<zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
+      <fileset basedir="${build.base}/release/">
+        <include name="**/*.*"/>
       </fileset>
     </zip>
 
     <zip zipfile="${build.base}/MVCContrib.source.zip" includeemptydirs="false" >
        
-			<fileset basedir="${trunk.dir}" >
-        <exclude name="**/build/**"/>
+		<fileset basedir="${trunk.dir}" >
+		<exclude name="bin/ncover/**"/>
+		<exclude name="bin/ndepend/**"/>
+		<exclude name="**/build/**"/>
         <exclude name="src/**/bin/**"/>
         <exclude name="**/obj/**"/>
         <exclude name="**/*.resharper*"/>
@@ -167,5 +198,4 @@
 			</fileset>
 		</zip>
 	</target>
-
 </project>
