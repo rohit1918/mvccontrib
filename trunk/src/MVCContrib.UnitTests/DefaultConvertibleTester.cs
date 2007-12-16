@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests
+namespace MvcContrib.UnitTests
 {
 	[TestFixture]
 	public class DefaultConvertibleTester

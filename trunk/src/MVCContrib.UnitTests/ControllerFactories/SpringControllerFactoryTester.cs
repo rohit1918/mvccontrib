@@ -1,20 +1,19 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
-using MVCContrib.ControllerFactories;
+using MvcContrib.Spring;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Spring.Context;
+using Spring.Context.Support;
 using Spring.Core.IO;
 using Spring.Objects.Factory;
 using Spring.Objects.Factory.Xml;
-using System.Reflection;
-using Spring.Context;
-using Spring.Context.Support;
 
-namespace MVCContrib.UnitTests.ControllerFactories
+namespace MvcContrib.UnitTests.ControllerFactories
 {
-	[TestFixture]
 	public class SpringControllerFactoryTester
 	{
 		[TestFixture]
@@ -32,7 +31,6 @@ namespace MVCContrib.UnitTests.ControllerFactories
 
 				IControllerFactory factory = new SpringControllerFactory();
 				factoryField.SetValue(factory, null);
-
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
@@ -41,7 +39,8 @@ namespace MVCContrib.UnitTests.ControllerFactories
 				IControllerFactory factory = new SpringControllerFactory();
 
 				IController controller = factory.CreateController(null,
-					Type.GetType("MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
+				                                                  Type.GetType(
+				                                                  	"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 			}
 		}
 
@@ -54,16 +53,16 @@ namespace MVCContrib.UnitTests.ControllerFactories
 				//still investigating configuring objects without using xml for unit test
 
 				string objectXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?> " +
-								   "  <objects xmlns=\"http://www.springframework.net\" " +
-								   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-								   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
-								   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
-								   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
-								   "      <constructor-arg> " +
-								   "        <object type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
-								   "      </constructor-arg> " +
-								   "    </object> " +
-								   "  </objects>";
+				                   "  <objects xmlns=\"http://www.springframework.net\" " +
+				                   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+				                   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
+				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
+				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
+				                   "      <constructor-arg> " +
+				                   "        <object type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
+				                   "      </constructor-arg> " +
+				                   "    </object> " +
+				                   "  </objects>";
 				Stream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(objectXml));
 				IResource resource = new InputStreamResource(stream, "In memory xml");
 				IObjectFactory factory = new XmlObjectFactory(resource);
@@ -99,7 +98,6 @@ namespace MVCContrib.UnitTests.ControllerFactories
 			{
 				IControllerFactory factory = new SpringControllerFactory();
 				IController controller = factory.CreateController(null, typeof(NonValidController));
-
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
@@ -107,7 +105,6 @@ namespace MVCContrib.UnitTests.ControllerFactories
 			{
 				IControllerFactory factory = new SpringControllerFactory();
 				IController controller = factory.CreateController(null, null);
-
 			}
 
 			public class SimpleController : IController
@@ -135,12 +132,10 @@ namespace MVCContrib.UnitTests.ControllerFactories
 
 			public class NonValidController : IController
 			{
-
 				public void Execute(ControllerContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
-
 			}
 
 			public interface IDependency
@@ -159,16 +154,16 @@ namespace MVCContrib.UnitTests.ControllerFactories
 			public void ShouldConfigureFactory()
 			{
 				string objectXml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?> " +
-								   "  <objects xmlns=\"http://www.springframework.net\" " +
-								   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-								   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
-								   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
-								   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
-								   "      <constructor-arg> " +
-								   "        <object type=\"MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
-								   "      </constructor-arg> " +
-								   "    </object> " +
-								   "  </objects>";
+				                   "  <objects xmlns=\"http://www.springframework.net\" " +
+				                   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+				                   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
+				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
+				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
+				                   "      <constructor-arg> " +
+				                   "        <object type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
+				                   "      </constructor-arg> " +
+				                   "    </object> " +
+				                   "  </objects>";
 				Stream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(objectXml));
 				IResource resource = new InputStreamResource(stream, "In memory xml");
 				GenericApplicationContext ctx = new GenericApplicationContext();
@@ -178,11 +173,14 @@ namespace MVCContrib.UnitTests.ControllerFactories
 				SpringControllerFactory.Configure(ctx as IApplicationContext);
 				IControllerFactory factory = new SpringControllerFactory();
 				IController controller = factory.CreateController(null,
-					Type.GetType("MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
+				                                                  Type.GetType(
+				                                                  	"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller, Is.AssignableFrom(Type.GetType("MVCContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController")));
-
+				Assert.That(controller,
+				            Is.AssignableFrom(
+				            	Type.GetType(
+				            		"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController")));
 			}
 		}
 	}

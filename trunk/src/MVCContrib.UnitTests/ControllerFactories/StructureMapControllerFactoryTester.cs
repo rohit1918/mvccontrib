@@ -1,11 +1,12 @@
 using System;
 using System.Web.Mvc;
-using MVCContrib.ControllerFactories;
+using MvcContrib.ControllerFactories;
+using MvcContrib.ControllerFactories;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using StructureMap;
 
-namespace MVCContrib.UnitTests.ControllerFactories
+namespace MvcContrib.UnitTests.ControllerFactories
 {
 	[TestFixture]
 	public class StructureMapControllerFactoryTester

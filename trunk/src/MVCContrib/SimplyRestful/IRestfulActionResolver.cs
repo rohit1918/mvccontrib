@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-namespace MVCContrib.SimplyRestful
+namespace MvcContrib.SimplyRestful
 {
 	public interface IRestfulActionResolver
 	{

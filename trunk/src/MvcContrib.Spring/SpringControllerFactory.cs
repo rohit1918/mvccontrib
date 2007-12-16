@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using Spring.Context;
 using Spring.Objects.Factory;
 
-namespace MVCContrib.ControllerFactories
+namespace MvcContrib.Spring
 {
 	/// <summary>
 	/// Controller Factory implementation for Spring.net
@@ -28,7 +28,7 @@ namespace MVCContrib.ControllerFactories
 				catch(Exception e)
 				{
 					throw new ArgumentException("Failed creating instance of: " +
-												controllerType.Name + " using spring.net object factory", e);
+					                            controllerType.Name + " using spring.net object factory", e);
 				}
 			}
 			else

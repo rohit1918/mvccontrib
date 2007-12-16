@@ -2,7 +2,7 @@ using System;
 using System.Web.Mvc;
 using StructureMap;
 
-namespace MVCContrib.ControllerFactories
+namespace MvcContrib.ControllerFactories
 {
 	public class StructureMapControllerFactory : IControllerFactory
 	{

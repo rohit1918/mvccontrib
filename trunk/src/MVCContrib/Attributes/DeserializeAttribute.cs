@@ -1,6 +1,6 @@
 using System;
 
-namespace MVCContrib.Attributes
+namespace MvcContrib.Attributes
 {
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
 	public class DeserializeAttribute : Attribute

@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Web;
 using System.Web.Mvc;
-using MvcContrib.ViewFactories;
+using MvcContrib.Castle;
 using NUnit.Framework;
 using NVelocity.Runtime;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture]
 	public class NVelocityViewFactoryTester
