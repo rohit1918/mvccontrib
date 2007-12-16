@@ -98,6 +98,10 @@
       <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
       <Name>MvcContrib.Castle</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
+      <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
+      <Name>MvcContrib.Spring</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
       <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
       <Name>MVCContrib</Name>
