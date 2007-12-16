@@ -2,7 +2,6 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.SimplyRestful;
-using MvcContrib.SimplyRestful;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
