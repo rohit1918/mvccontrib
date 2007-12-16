@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Castle", "MvcCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Spring", "MvcContrib.Spring\MvcContrib.Spring.csproj", "{5CE100F1-E229-43A2-9564-90C4B90558C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.NVelocityViewFactory", "MvcContrib.Samples.NVelocityViewFactory\MvcContrib.Samples.NVelocityViewFactory.csproj", "{852ABBD2-9B55-4B95-974F-1559A16DB599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,11 +48,16 @@ Global
 		{5CE100F1-E229-43A2-9564-90C4B90558C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE100F1-E229-43A2-9564-90C4B90558C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE100F1-E229-43A2-9564-90C4B90558C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3FAF92A0-A1E6-43C4-B9C6-F7AA7F1CB356} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
+		{852ABBD2-9B55-4B95-974F-1559A16DB599} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 	EndGlobalSection
 EndGlobal
