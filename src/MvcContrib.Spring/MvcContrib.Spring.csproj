@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
+    <ProjectGuid>{5CE100F1-E229-43A2-9564-90C4B90558C6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVCContrib</RootNamespace>
-    <AssemblyName>MVCContrib</AssemblyName>
+    <RootNamespace>MvcContrib.Spring</RootNamespace>
+    <AssemblyName>MvcContrib.Spring</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,42 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MVCToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Spring.Core, Version=1.1.0.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\mvctoolkit\MVCToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\structuremap\StructureMap.dll</HintPath>
+      <HintPath>..\..\bin\spring.net\Spring.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DeserializeAttribute.cs" />
-    <Compile Include="ControllerFactories\StructureMapControllerFactory.cs" />
-    <Compile Include="DefaultConvertible.cs" />
-    <Compile Include="NameValueDeserializer.cs" />
-    <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
-    <Compile Include="SimplyRestful\RestfulAction.cs" />
-    <Compile Include="SimplyRestful\RestfulActionResolver.cs" />
-    <Compile Include="SimplyRestful\RestfulGetAction.cs" />
-    <Compile Include="SimplyRestful\RestfulPostAction.cs" />
-    <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="SpringControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
