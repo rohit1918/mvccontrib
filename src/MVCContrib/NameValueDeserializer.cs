@@ -24,7 +24,7 @@ namespace MVCContrib
 		{
 			if(collection == null || collection.Count == 0) return null;
 
-			if(string.IsNullOrEmpty("prefix")) throw new ArgumentException("prefix is requried");
+			if(string.IsNullOrEmpty(prefix)) throw new ArgumentException("prefix is requried");
 
 			if(targetType == null) throw new ArgumentNullException("targetType");
 
@@ -151,11 +151,6 @@ namespace MVCContrib
 
 			Type[] genericArgs = instanceType.GetGenericArguments();
 
-			if(genericArgs.Length == 0)
-			{
-				return false;
-			}
-
 			Type listType = typeof(IList<>).MakeGenericType(genericArgs[0]);
 
 			return listType.IsAssignableFrom(instanceType);
@@ -257,14 +252,10 @@ namespace MVCContrib
 				object convertedValue = oValue.ToType(property.PropertyType, CultureInfo.CurrentCulture);
 				return SetValue(instance, property, convertedValue);
 			}
-			catch(InvalidCastException)
+			catch
 			{
+				return false;
 			}
-			catch(FormatException)
-			{
-			}
-
-			return false;
 		}
 
 		protected virtual object CreateInstance(Type targetType)

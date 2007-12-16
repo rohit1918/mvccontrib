@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using MVCContrib.Attributes;
 using NUnit.Framework;
 
 namespace MVCContrib.UnitTests
@@ -7,6 +9,85 @@ namespace MVCContrib.UnitTests
 	[TestFixture]
 	public class NameValueDeserializerTester
 	{
+		[Test]
+		[ExpectedException(typeof(ArgumentException))]
+		public void NullPrefixThrows()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["junk"] = "stuff";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			object notGonnaDoIt = nvd.Deserialize(collection, null, typeof(Customer));
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException))]
+		public void EmptyPrefixThrows()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["junk"] = "stuff";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			object notGonnaDoIt = nvd.Deserialize(collection, string.Empty, typeof(Customer));
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NullTargetTypeThrows()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["junk"] = "stuff";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			object notGonnaDoIt = nvd.Deserialize(collection, "junk", null);
+		}
+
+		[Test]
+		public void ListPropertyIsSkippedIfNotInitializedAndReadOnly()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["list.ReadonlyIds[0]"] = "10";
+			collection["list.ReadonlyIds[1]"] = "20";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			GenericListClass list = nvd.Deserialize<GenericListClass>(collection, "list");
+
+			Assert.IsNotNull(list);
+			Assert.IsNull(list.ReadonlyIds);
+		}
+
+		[Test]
+		public void ErrorsSettingPropertiesAreIgnored()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["emp.Age"] = "-1";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+
+			Assert.IsNotNull(emp);
+			Assert.AreEqual(0, emp.Age);
+		}
+
+		[Test]
+		public void ComplexPropertyIsSkippedIfNotInitializedAndReadOnly()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["emp.BatPhone.Number"] = "800-DRK-KNGT";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+
+			Assert.IsNotNull(emp);
+			Assert.IsNull(emp.BatPhone);
+		}
+
 		[Test]
 		public void DeserializeSimpleObject()
 		{
@@ -179,6 +260,14 @@ namespace MVCContrib.UnitTests
 			Assert.IsNull(cust);
 		}
 
+		[Test]
+		public void ForCompleteness()
+		{
+			DeserializeAttribute attribute = new DeserializeAttribute("test");
+
+			Assert.AreEqual("test", attribute.Prefix);
+		}
+
 		private class Customer
 		{
 			public int Id
@@ -216,6 +305,12 @@ namespace MVCContrib.UnitTests
 				get;
 				set;
 			}
+
+			private IList<int> _readonlyIds;
+			public IList<int> ReadonlyIds
+			{
+				get { return _readonlyIds; }
+			}
 		}
 
 		private class Employee
@@ -234,9 +329,26 @@ namespace MVCContrib.UnitTests
 				get { return _phone; }
 			}
 
+			private Phone _batPhone;
+			public Phone BatPhone
+			{
+				get { return _batPhone; }
+			}
+
 			public IList<Phone> OtherPhones
 			{
 				get { return _otherPhones; }
+			}
+
+			private int _age;
+			public int Age
+			{
+				get { return _age; }
+				set
+				{
+					if (value < 0 ) throw new ArgumentException("Age must be greater than 0");
+					_age = value;
+				}
 			}
 		}
 
