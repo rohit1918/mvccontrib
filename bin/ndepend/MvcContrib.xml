@@ -15,7 +15,7 @@
     <Name>Spring.Core</Name>
   </FrameworkAssemblies>
   <Dirs>
-    <Dir>C:\code\mvccontrib\build/net-3.5.win32-MVCContrib-release/</Dir>
+    <Dir>C:\build-integrations\MVCContrib\WorkingDirectory\build/net-3.5.win32-MVCContrib-release/</Dir>
   </Dirs>
   <Report XslPath="">
     <Section Enabled="True">Application Metrics</Section>
