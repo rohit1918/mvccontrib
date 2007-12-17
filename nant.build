@@ -21,13 +21,9 @@
 	<!-- debug|release -->
 	<property name="build.dir" value="${build.base}/${nant.settings.currentframework}.${platform::get-name()}-${project::get-name()}-${project.config}/"/>
 
-
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
 	<target name="cruise" depends="build, analyze, package"/>
 	<target name="commiter" depends="build, analyze, package"/>
-
-
-
 
 	<target name="init" description="Initializes build properties">
 		<tstamp>
@@ -102,6 +98,7 @@
       <test assemblyname="${build.dir}/MVCContrib.UnitTests.dll" appconfig="${nant::get-base-directory()}nant.tests.config"/>
     </nunit2>
   </target>
+
   <target name="analyze" >
     <loadtasks path="bin\ncover\Build Task Plugins"/>
     <ncover  program="bin\ncover\ncover.console.exe"
@@ -112,7 +109,7 @@
              >
 
       <assemblies basedir="${build.dir}">
-		<exclude name="**/*.unittest*"/>
+		 <exclude name="**/*.unittest*"/>
         <include name="mvccontrib*.dll" />		  
       </assemblies>
     </ncover>
@@ -137,9 +134,16 @@
 		</moduleThresholds>
 
 	</ncoverexplorer>
+    <property name="ndepend.input" value="${directory::get-current-directory()}\bin\ndepend\mvccontrib.xml"/>
+    <xmlpoke file="${ndepend.input}" xpath="/NDepend/Dirs/Dir" value="${directory::get-current-directory()}\${build.dir}" />
+    <exec program="bin\ndepend\NDepend.Console.exe">
+      <arg value="${ndepend.input}" />
+    </exec>
+<!--
     <loadtasks path="bin\ndepend\nant" />
     <NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
-             ProjectFilePath="[PathWhereNDependProjectFileIsStored]\[NDependProjectFileName].xml"/>
+             ProjectFilePath="bin\ndepend\MvcContrib.xml"/>
+-->
   </target>
 	<target name="package">
 		<!-- 		
