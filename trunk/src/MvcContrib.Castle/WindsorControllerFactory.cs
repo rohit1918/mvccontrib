@@ -2,7 +2,7 @@ using System;
 using System.Web.Mvc;
 using Castle.Windsor;
 
-namespace MvcContrib.Castle
+namespace MvcContrib.ControllerFactories
 {
 	public class WindsorControllerFactory : IControllerFactory
 	{

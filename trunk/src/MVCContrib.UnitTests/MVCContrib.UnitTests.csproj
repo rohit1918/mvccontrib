@@ -88,9 +88,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Castle\WindsorControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
+    <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
     <Compile Include="DefaultConvertibleTester.cs" />
     <Compile Include="NameValueDeserializerTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />

@@ -2,7 +2,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using Castle.Windsor;
-using MvcContrib.Castle;
+using MvcContrib.ControllerFactories;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;

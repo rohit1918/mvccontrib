@@ -43,7 +43,7 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 					if(typeof(IController).IsAssignableFrom(type) )
 					{
 						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory(type, typeof(MvcContrib.Castle.WindsorControllerFactory));
+						ControllerBuilder.Current.SetControllerFactory(type, typeof(ControllerFactories.WindsorControllerFactory));
 					}
 				}
 			}
