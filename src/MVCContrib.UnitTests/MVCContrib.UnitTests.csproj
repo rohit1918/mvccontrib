@@ -109,6 +109,10 @@
       <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
       <Name>MvcContrib.Spring</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.StructureMap\MvcContrib.StructureMap.csproj">
+      <Project>{6DE6FAEF-F974-4641-990E-FFE8728E5E16}</Project>
+      <Name>MvcContrib.StuctureMap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
       <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
       <Name>MVCContrib</Name>

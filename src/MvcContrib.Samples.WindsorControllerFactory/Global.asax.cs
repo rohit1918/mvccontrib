@@ -3,7 +3,6 @@ using System.Web;
 using System.Web.Mvc;
 using Castle.Core;
 using Castle.Windsor;
-using MvcContrib.ControllerFactories;
 using MvcContrib.Samples.WindsorControllerFactory.Controllers;
 
 namespace MvcContrib.Samples.WindsorControllerFactory
