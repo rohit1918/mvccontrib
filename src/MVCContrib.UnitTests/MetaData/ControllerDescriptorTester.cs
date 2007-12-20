@@ -1,0 +1,141 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.Mvc;
+using MvcContrib;
+using MvcContrib.Attributes;
+using MvcContrib.MetaData;
+using NUnit.Framework;
+
+namespace MVCContrib.UnitTests.MetaData
+{
+	[TestFixture]
+	public class ControllerDescriptorTester
+	{
+		[Test]
+		public void CanCreateMetaData()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			TestController controller = new TestController();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
+
+			Assert.IsNotNull(metaData);
+			Assert.AreEqual(typeof(TestController), metaData.ControllerType);
+			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
+			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
+		}
+
+		[Test]
+		public void OutAndRefParametersAreInvalid()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			TestController controller = new TestController();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
+
+			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
+			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[1].IsValid);
+		}
+
+
+		[Test]
+		public void ForCoverage()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			TestController controller = new TestController();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
+
+			ActionParameterMetaData parameter = metaData.Actions[1].Parameters[0];
+
+			Assert.IsNotNull(parameter.ParameterInfo);
+			Assert.IsNull(parameter.ParameterBinder);
+			Assert.IsNull(parameter.Bind(null));
+			Assert.IsTrue(parameter.IsValid);	
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NullControllerThrows()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(null);
+		}
+
+		[Test]
+		public void CachedDescriptorReturnsCachedCopy()
+		{
+			CountControllerDescriptor inner = new CountControllerDescriptor();
+			CachedControllerDescriptor descriptor = new CachedControllerDescriptor(inner);
+			ControllerMetaData metaData = descriptor.GetMetaData(new TestController());
+			ControllerMetaData metaDataAgain = descriptor.GetMetaData(new TestController());
+
+			Assert.AreEqual(1, inner.Calls);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void CachedDescriptorRequiresInnerDescriptor()
+		{
+			CachedControllerDescriptor descriptor = new CachedControllerDescriptor(null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void CachedDescriptorThrowsOnNullController()
+		{
+			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
+			descriptor.GetMetaData(null);
+		}
+	}
+
+	class CountControllerDescriptor : IControllerDescriptor
+	{
+		public int Calls = 0;
+
+		public ControllerMetaData GetMetaData(IController controller)
+		{
+			Calls++;
+			return new ControllerMetaData(typeof(TestController));
+		}
+	}
+
+	class TestController : ConventionController
+	{
+		public void BasicAction()
+		{	
+		}
+
+		public void SimpleAction(string param1)
+		{	
+		}
+
+		public void SimpleAction(string param1, int param2)
+		{
+		}
+
+		public void ComplexAction([Deserialize("complex")] object complex)
+		{
+		}
+
+		public void InvalidAction(out string test, ref string test2)
+		{
+			test = "test";
+		}
+
+		public bool DoInvokeAction(string action)
+		{
+			return InvokeAction(action);
+		}
+
+		public void DoInvokeActionMethod(ActionMetaData action)
+		{
+			InvokeActionMethod(action);
+		}
+	}
+}

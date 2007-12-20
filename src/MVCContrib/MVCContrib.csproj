@@ -8,8 +8,8 @@
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVCContrib</RootNamespace>
-    <AssemblyName>MVCContrib</AssemblyName>
+    <RootNamespace>MvcContrib</RootNamespace>
+    <AssemblyName>MvcContrib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -54,9 +54,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
-    <Compile Include="DefaultConvertible.cs" />
-    <Compile Include="NameValueDeserializer.cs" />
+    <Compile Include="ConventionController.cs" />
+    <Compile Include="MetaData\ActionMetaData.cs" />
+    <Compile Include="MetaData\ActionParameterMetaData.cs" />
+    <Compile Include="MetaData\ControllerDescriptor.cs" />
+    <Compile Include="MetaData\IControllerDescriptor.cs" />
+    <Compile Include="MetaData\SimpleParameterBinder.cs" />
+    <Compile Include="MetaData\DefaultConvertible.cs" />
+    <Compile Include="MetaData\ControllerMetaData.cs" />
+    <Compile Include="MetaData\IParameterBinder.cs" />
+    <Compile Include="MetaData\NameValueDeserializer.cs" />
     <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
     <Compile Include="SimplyRestful\RestfulAction.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolver.cs" />
