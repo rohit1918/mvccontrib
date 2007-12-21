@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.NVelocit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.StructureMap", "MvcContrib.StructureMap\MvcContrib.StructureMap.csproj", "{6DE6FAEF-F974-4641-990E-FFE8728E5E16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.ConventionController", "MvcContrib.Samples.ConventionController\MvcContrib.Samples.ConventionController.csproj", "{D1BC844F-C00F-491D-8D5E-6712698AC82B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{6DE6FAEF-F974-4641-990E-FFE8728E5E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DE6FAEF-F974-4641-990E-FFE8728E5E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DE6FAEF-F974-4641-990E-FFE8728E5E16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +71,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3FAF92A0-A1E6-43C4-B9C6-F7AA7F1CB356} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{852ABBD2-9B55-4B95-974F-1559A16DB599} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
+		{D1BC844F-C00F-491D-8D5E-6712698AC82B} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 	EndGlobalSection
 EndGlobal
