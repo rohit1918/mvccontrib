@@ -67,9 +67,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Shared\Site.Master" />
     <Content Include="Views\Shipment\New.aspx" />
     <Content Include="Views\Shipment\Track.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Rescues\Error.aspx" />
+    <Content Include="Views\Shared\Site.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

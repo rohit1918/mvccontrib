@@ -24,6 +24,17 @@ namespace MvcContrib.MetaData
 			get { return _actions; }
 		}
 
+		public ActionMetaData GetAction(string name)
+		{
+			IList<ActionMetaData> actions = GetActions(name);
+			if( actions.Count > 0 )
+			{
+				return actions[0];
+			}
+
+			return null;
+		}
+
 		public IList<ActionMetaData> GetActions(string name)
 		{
 			return

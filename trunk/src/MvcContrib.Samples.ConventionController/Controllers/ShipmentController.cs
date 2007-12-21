@@ -33,6 +33,12 @@ namespace MvcContrib.Samples.Controllers
 			RenderView("track", validTrackingNumbers);
 		}
 
+		[Rescue("Error")]
+		public void ToTheRescue()
+		{
+			throw new InvalidOperationException();
+		}
+
 		protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
 		{
 			return false;

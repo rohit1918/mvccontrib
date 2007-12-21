@@ -29,4 +29,7 @@
 		<%= Html.SubmitButton("New", "New") %>
 		</div>
 	<% } %>
+	
+	<br />
+	<a href="/shipment/toTheRescue">To the Rescue!</a>
 </asp:Content>

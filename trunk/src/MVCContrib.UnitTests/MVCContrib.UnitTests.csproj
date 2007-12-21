@@ -96,7 +96,9 @@
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
+    <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
+    <Compile Include="RescueConventionTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />

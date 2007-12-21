@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
+using MvcContrib.Attributes;
 
 namespace MvcContrib.MetaData
 {
@@ -16,6 +17,8 @@ namespace MvcContrib.MetaData
 
 			ControllerMetaData metaData = new ControllerMetaData(controller.GetType());
 
+			RescueAttribute[] controllerRescues = GetRescues(metaData.ControllerType, true);
+
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach( MethodInfo actionMethod in actionMethods )
 			{
@@ -25,6 +28,18 @@ namespace MvcContrib.MetaData
 				}
 
 				ActionMetaData actionMetaData = new ActionMetaData(actionMethod);
+
+				RescueAttribute[] actionRescues = GetRescues(actionMethod, false);
+				
+				foreach (RescueAttribute rescue in actionRescues)
+				{
+					actionMetaData.Rescues.Add(rescue);
+				}
+
+				foreach(RescueAttribute rescue in controllerRescues )
+				{
+					actionMetaData.Rescues.Add(rescue);
+				}
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
 				foreach( ParameterInfo actionMethodParameter in actionMethodParameters )
@@ -38,6 +53,11 @@ namespace MvcContrib.MetaData
 			}
 
 			return metaData;
+		}
+
+		protected virtual RescueAttribute[] GetRescues(ICustomAttributeProvider attributeProvider, bool inherit)
+		{
+			return (RescueAttribute[])attributeProvider.GetCustomAttributes(typeof(RescueAttribute), inherit);
 		}
 
 		protected virtual IParameterBinder GetParameterBinder(ICustomAttributeProvider attributeProvider)
