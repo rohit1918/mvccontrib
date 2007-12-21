@@ -5,7 +5,7 @@
 			<% string id = "trackingNumbers[" + i + "]"; %>
 			<label for="<%= id %>">Tracking Number</label><%= Html.TextBox(id) %><br />
 		<% } %>
-		<%= Html.SubmitButton("Track", "Track") %>
+		<%= Html.SubmitButton("Track", "Track") %> <a href="/shipment/track?trackingNumbers[0]=1234&trackingNumbers[1]=ABCD">Track by Link</a>
 	<% } %>
 	
 	<br />
