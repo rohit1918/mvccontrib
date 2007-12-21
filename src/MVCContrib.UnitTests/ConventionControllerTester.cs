@@ -91,9 +91,9 @@ namespace MVCContrib.UnitTests
 				throw new AbandonedMutexException();
 			}
 
-			protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
+			protected override bool OnError(ActionMetaData action, Exception exception)
 			{
-				if( actionName.Equals("BadAction", StringComparison.OrdinalIgnoreCase) )
+				if( action.Name.Equals("BadAction", StringComparison.OrdinalIgnoreCase) )
 				{
 					return false;
 				}

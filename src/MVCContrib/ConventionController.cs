@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 
 namespace MvcContrib
@@ -16,6 +17,8 @@ namespace MvcContrib
 
 			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
 
+			ActionMetaData selectedAction;
+
 			if(actions == null || actions.Count == 0)
 			{
 				return false;
@@ -24,24 +27,60 @@ namespace MvcContrib
 			{
 				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
 			}
+			else
+			{
+				selectedAction = actions[0];
+			}
 
 			try
 			{
-				InvokeActionMethod(actions[0]);
+				InvokeActionMethod(selectedAction);
 			}
 			catch(Exception exc)
 			{
-				if(!OnError(actionName, actions[0].MethodInfo, exc))
+				if (!OnError(selectedAction, exc))
 				{
 					throw;
 				}
 			}
 			finally
 			{
-				OnPostAction(actionName, actions[0].MethodInfo);
+				OnPostAction(actionName, selectedAction.MethodInfo);
 			}
 
 			return true;
+		}
+
+		protected virtual bool OnError(ActionMetaData action, Exception exception)
+		{
+			Type innerExceptionType = exception.InnerException.GetType();
+
+			foreach(RescueAttribute rescue in action.Rescues )
+			{
+				foreach( Type exceptionType in rescue.ExceptionTypes )
+				{
+					if (exceptionType.IsAssignableFrom(innerExceptionType))
+					{
+						OnPreRescue(exception);
+
+						if(!string.IsNullOrEmpty(rescue.View))
+						{
+							string rescueView = string.Concat("Rescues/", rescue.View);
+
+							RenderView(rescueView, exception);
+
+							return true;
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		protected virtual void OnPreRescue(Exception thrownException)
+		{
+			
 		}
 
 		protected virtual void InvokeActionMethod(ActionMetaData action)

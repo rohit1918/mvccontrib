@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
@@ -29,6 +26,19 @@ namespace MVCContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void DoesParseControllerAndActionRescues()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			TestController controller = new TestController();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
+
+			Assert.AreEqual(1, metaData.GetAction("BasicAction").Rescues.Count);
+			Assert.AreEqual(2, metaData.GetAction("ComplexAction").Rescues.Count);
+		}
+
+		[Test]
 		public void OutAndRefParametersAreInvalid()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
@@ -53,10 +63,13 @@ namespace MVCContrib.UnitTests.MetaData
 
 			ActionParameterMetaData parameter = metaData.Actions[1].Parameters[0];
 
+			ActionMetaData unknownAction = metaData.GetAction("Doesn't Exist");
+
+			Assert.IsNull(unknownAction);
 			Assert.IsNotNull(parameter.ParameterInfo);
 			Assert.IsNull(parameter.ParameterBinder);
 			Assert.IsNull(parameter.Bind(null));
-			Assert.IsTrue(parameter.IsValid);	
+			Assert.IsTrue(parameter.IsValid);
 		}
 
 		[Test]
@@ -94,7 +107,7 @@ namespace MVCContrib.UnitTests.MetaData
 		}
 	}
 
-	class CountControllerDescriptor : IControllerDescriptor
+	internal class CountControllerDescriptor : IControllerDescriptor
 	{
 		public int Calls = 0;
 
@@ -105,20 +118,22 @@ namespace MVCContrib.UnitTests.MetaData
 		}
 	}
 
-	class TestController : ConventionController
+	[Rescue("Test")]
+	internal class TestController : ConventionController
 	{
 		public void BasicAction()
-		{	
+		{
 		}
 
 		public void SimpleAction(string param1)
-		{	
+		{
 		}
 
 		public void SimpleAction(string param1, int param2)
 		{
 		}
 
+		[Rescue("Test")]
 		public void ComplexAction([Deserialize("complex")] object complex)
 		{
 		}

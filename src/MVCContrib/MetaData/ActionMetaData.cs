@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
+using MvcContrib.Attributes;
 
 namespace MvcContrib.MetaData
 {
@@ -26,6 +27,12 @@ namespace MvcContrib.MetaData
 		public IList<ActionParameterMetaData> Parameters
 		{
 			get { return _parameters; }
+		}
+
+		private readonly List<RescueAttribute> _rescues = new List<RescueAttribute>();
+		public IList<RescueAttribute> Rescues
+		{
+			get { return _rescues;  }
 		}
 
 		public object InvokeMethod(IController controller, object[] parameters)
