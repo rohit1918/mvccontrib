@@ -136,7 +136,8 @@
 			<moduleThreshold moduleName="MvcContrib.Castle.DLL" satisfactoryCoverage="95" />
 			<moduleThreshold moduleName="MvcContrib.Spring.DLL" satisfactoryCoverage="95" />
 			<moduleThreshold moduleName="MvcContrib.StructureMap.DLL" satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="47.3" />
+			<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
+			<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="40" />
 		</moduleThresholds>
 
 	</ncoverexplorer>

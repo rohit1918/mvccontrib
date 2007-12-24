@@ -9,17 +9,29 @@ using MvcContrib.ViewFactories;
 using MvcContrib.XsltViewEngine;
 using MvcContrib.XsltViewEngine.Messages;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace MVCContrib.UnitTests.XsltViewEngine
 {
-	[TestFixture]
+	[TestFixture, Category("XsltViewEngine")]
 	public class XsltViewTest : ViewTestBase
 	{
 		private const string controller = "MyController";
 		private const string view = "MyView";
-		private static readonly string basePath = Path.Combine(Environment.CurrentDirectory, "../../XsltViewEngine/Data");
+		private static readonly string VIEW_ROOT_DIRECTORY = Path.Combine(Environment.CurrentDirectory, "../../XsltViewEngine/Data/Views");
+		private IViewSourceLoader _viewSourceLoader;
 
-		[Test, Category("Integration")]
+		[SetUp]
+		public void SetUp()
+		{
+			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
+			mockRepository.BackToRecord(_viewSourceLoader);
+			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
+			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
+			mockRepository.Replay(_viewSourceLoader);
+		}
+
+		[Test]
 		public void RenderViewTest()
 		{
 			XsltViewData vData = new XsltViewData();
@@ -56,7 +68,7 @@ namespace MVCContrib.UnitTests.XsltViewEngine
 
 			ControllerContext controllerContext = new ControllerContext(HttpContext, routeData, new Controller());
 
-			IViewFactory viewFactory = new XsltViewFactory(basePath);
+			IViewFactory viewFactory = new XsltViewFactory(_viewSourceLoader);
 
 			IView viewObj = viewFactory.CreateView(controllerContext, view, string.Empty, vData);
 
