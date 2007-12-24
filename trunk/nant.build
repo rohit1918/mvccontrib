@@ -107,7 +107,7 @@
     <loadtasks path="bin\ncover\Build Task Plugins"/>
     <ncover  program="bin\ncover\ncover.console.exe"
              commandLineExe="bin\nunit\nunit-console.exe"
-             commandLineArgs="mvccontrib.unittests.dll"
+             commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
              coverageFile="${results.dir}\mvccontrib.coverage.xml"
              workingDirectory="${build.dir}"			 
              >
