@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.StructureMap", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.ConventionController", "MvcContrib.Samples.ConventionController\MvcContrib.Samples.ConventionController.csproj", "{D1BC844F-C00F-491D-8D5E-6712698AC82B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.XsltViewEngine", "MvcContrib.XsltViewEngine\MvcContrib.XsltViewEngine.csproj", "{00D236D4-4834-4215-B3ED-812590FCBE25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1BC844F-C00F-491D-8D5E-6712698AC82B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D236D4-4834-4215-B3ED-812590FCBE25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D236D4-4834-4215-B3ED-812590FCBE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D236D4-4834-4215-B3ED-812590FCBE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D236D4-4834-4215-B3ED-812590FCBE25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
