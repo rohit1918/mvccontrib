@@ -26,6 +26,19 @@ namespace MVCContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void CanCreateMetaDataByType()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			Assert.IsNotNull(metaData);
+			Assert.AreEqual(typeof(TestController), metaData.ControllerType);
+			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
+			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
+		}
+
+		[Test]
 		public void DoesParseControllerAndActionRescues()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
@@ -77,7 +90,15 @@ namespace MVCContrib.UnitTests.MetaData
 		public void NullControllerThrows()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(null);
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData((IController)null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void NullTypeThrows()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			controllerDescriptor.GetMetaData((Type)null);
 		}
 
 		[Test]
@@ -103,7 +124,15 @@ namespace MVCContrib.UnitTests.MetaData
 		public void CachedDescriptorThrowsOnNullController()
 		{
 			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
-			descriptor.GetMetaData(null);
+			descriptor.GetMetaData((IController)null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void CachedDescriptorThrowsOnNullType()
+		{
+			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
+			descriptor.GetMetaData((Type)null);
 		}
 	}
 
@@ -113,8 +142,13 @@ namespace MVCContrib.UnitTests.MetaData
 
 		public ControllerMetaData GetMetaData(IController controller)
 		{
+			return GetMetaData(typeof(TestController));
+		}
+
+		public ControllerMetaData GetMetaData(Type controllerType)
+		{
 			Calls++;
-			return new ControllerMetaData(typeof(TestController));
+			return new ControllerMetaData(controllerType);
 		}
 	}
 
