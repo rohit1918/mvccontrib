@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Mindscape.NHaml, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\nhaml\Mindscape.NHaml.dll</HintPath>
+    </Reference>
     <Reference Include="MVCToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\mvctoolkit\MVCToolkit.dll</HintPath>
@@ -69,6 +73,7 @@
       <HintPath>..\..\bin\structuremap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -105,11 +110,17 @@
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlControllerFactoryTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlViewTester.cs" />
     <Compile Include="RescueConventionTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="ViewFactories\FileSystemViewSourceLoaderTester.cs" />
+    <Compile Include="ViewFactories\FileViewSourceTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewTester.cs" />
     <Compile Include="XsltViewEngine\Helpers\ControllerTestBase.cs" />
@@ -125,6 +136,10 @@
     <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
       <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
       <Name>MvcContrib.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj">
+      <Project>{9B885FC4-45C0-4526-9253-A799238EDD66}</Project>
+      <Name>MvcContrib.NHamlViewEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
       <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
@@ -157,7 +172,16 @@
     <EmbeddedResource Include="XsltViewEngine\Data\ResponseBuilderMessageWithStringXmlDataSource.xml" />
     <EmbeddedResource Include="XsltViewEngine\Data\ResponseBuilderPostMessage.xml" />
     <EmbeddedResource Include="XsltViewEngine\Data\ViewTest.xml" />
-    <Content Include="XsltViewEngine\Data\Views\MyController\MyView.xslt" />
+    <EmbeddedResource Include="XsltViewEngine\Data\Views\MyController\MyView.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="NHamlViewEngine\Views\NHamlApplication\index.haml" />
+    <None Include="NHamlViewEngine\Views\NHamlController\custom.haml" />
+    <None Include="NHamlViewEngine\Views\Shared\application.haml" />
+    <None Include="NHamlViewEngine\Views\Shared\NHamlController.haml" />
+    <None Include="NHamlViewEngine\Views\Shared\specificMaster.haml" />
+    <None Include="NHamlViewEngine\Views\NHamlController\index.haml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

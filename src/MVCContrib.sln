@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.Conventi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.XsltViewEngine", "MvcContrib.XsltViewEngine\MvcContrib.XsltViewEngine.csproj", "{00D236D4-4834-4215-B3ED-812590FCBE25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj", "{9B885FC4-45C0-4526-9253-A799238EDD66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.NHamlViewEngine", "MvcContrib.Samples.NHamlViewEngine\MvcContrib.Samples.NHamlViewEngine.csproj", "{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,14 @@ Global
 		{00D236D4-4834-4215-B3ED-812590FCBE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00D236D4-4834-4215-B3ED-812590FCBE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00D236D4-4834-4215-B3ED-812590FCBE25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B885FC4-45C0-4526-9253-A799238EDD66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B885FC4-45C0-4526-9253-A799238EDD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B885FC4-45C0-4526-9253-A799238EDD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B885FC4-45C0-4526-9253-A799238EDD66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,5 +90,6 @@ Global
 		{3FAF92A0-A1E6-43C4-B9C6-F7AA7F1CB356} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{852ABBD2-9B55-4B95-974F-1559A16DB599} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{D1BC844F-C00F-491D-8D5E-6712698AC82B} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
+		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 	EndGlobalSection
 EndGlobal

@@ -6,15 +6,18 @@ namespace MvcContrib.ViewFactories
 {
 	public class XsltViewFactory : IViewFactory
 	{
-		private readonly string appPath;
+		private readonly IViewSourceLoader _viewSourceLoader;
 
 		public XsltViewFactory()
+			: this(new FileSystemViewSourceLoader())
 		{
 		}
 
-		public XsltViewFactory(string appPath) : this()
+		public XsltViewFactory(IViewSourceLoader viewSourceLoader)
 		{
-			this.appPath = appPath;
+			if (viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
+
+			_viewSourceLoader = viewSourceLoader;
 		}
 
 		#region IViewFactory Members
@@ -28,11 +31,7 @@ namespace MvcContrib.ViewFactories
 
 			string controllerName = (string)controllerContext.RouteData.Values["controller"];
 
-			XsltTemplate viewTemplate;
-			if(!string.IsNullOrEmpty(appPath))
-				viewTemplate = new XsltTemplate(appPath, controllerName, viewName);
-			else
-				viewTemplate = new XsltTemplate(controllerContext, viewName);
+			XsltTemplate viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewName);
 
 			return new XsltView(viewTemplate, viewData as XsltViewData, string.Empty, controllerContext.HttpContext);
 		}

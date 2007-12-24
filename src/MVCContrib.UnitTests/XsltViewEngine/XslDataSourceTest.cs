@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace MVCContrib.UnitTests.XsltViewEngine
 {
-	[TestFixture]
+	[TestFixture, Category("XsltViewEngine")]
 	public class XslDataSourceTest
 	{
 		[Test]

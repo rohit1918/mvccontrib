@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using MvcContrib.ViewFactories;
 using Rhino.Mocks;
 using System.Web;
 using System.Security.Principal;
@@ -14,6 +15,7 @@ namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
 {
     public abstract class ViewTestBase
     {
+			
 			protected XmlDocument LoadXmlDocument(string path)
 			{
 				string assemblyPath = "MVCContrib.UnitTests.XsltViewEngine.Data." + path;
@@ -29,7 +31,7 @@ namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
 				return xmlDoc;
 			}
         
-        private readonly MockRepository mockRepository = new MockRepository();
+        protected readonly MockRepository mockRepository = new MockRepository();
         
         public ViewTestBase()
         {
@@ -979,4 +981,24 @@ namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
             #endregion
         }
     }
+
+		public class XsltViewSource : IViewSource
+		{
+			public Stream OpenViewStream()
+			{
+				string xsltViewPath = "MVCContrib.UnitTests.XsltViewEngine.Data.Views.MyController.MyView.xslt";
+
+				return Assembly.GetExecutingAssembly().GetManifestResourceStream(xsltViewPath);
+			}
+
+			public string FullName
+			{
+				get { throw new NotImplementedException(); }
+			}
+
+			public long LastModified
+			{
+				get { throw new NotImplementedException(); }
+			}
+		}
 }
