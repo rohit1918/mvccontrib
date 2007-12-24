@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="NVelocityView.cs" />
     <Compile Include="NVelocityViewFactory.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
