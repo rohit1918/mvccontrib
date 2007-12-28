@@ -32,22 +32,24 @@ namespace MvcContrib
 				selectedAction = actions[0];
 			}
 
-			try
+			if (OnPreAction(actionName, selectedAction.MethodInfo))
 			{
-				InvokeActionMethod(selectedAction);
-			}
-			catch(Exception exc)
-			{
-				if (!OnError(selectedAction, exc))
+				try
 				{
-					throw;
+					InvokeActionMethod(selectedAction);
+				}
+				catch(Exception exc)
+				{
+					if(!OnError(selectedAction, exc))
+					{
+						throw;
+					}
+				}
+				finally
+				{
+					OnPostAction(actionName, selectedAction.MethodInfo);
 				}
 			}
-			finally
-			{
-				OnPostAction(actionName, selectedAction.MethodInfo);
-			}
-
 			return true;
 		}
 

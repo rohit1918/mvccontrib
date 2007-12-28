@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.Threading;
+using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 using NUnit.Framework;
+using Rhino.Mocks;
+using System.Web;
 
 namespace MVCContrib.UnitTests
 {
@@ -12,12 +16,35 @@ namespace MVCContrib.UnitTests
 	public class ConventionControllerTester
 	{
 		private TestController _controller;
+		private MockRepository _mocks;
 
 		[SetUp]
 		public void SetUp()
 		{
+			_mocks = new MockRepository();
 			_controller = new TestController();
 			_controller.ControllerDescriptor = new ControllerDescriptor();
+			SetupHttpContext();
+		}
+
+		private void SetupHttpContext()
+		{
+			RouteData fakeRouteData = new RouteData();
+			fakeRouteData.Values.Add("Action", "Index");
+			fakeRouteData.Values.Add("Controller", "Home");
+
+			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
+			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+
+			SetupResult.For(context.Request).Return(request);
+			SetupResult.For(request.QueryString).Return(new NameValueCollection());
+			SetupResult.For(request.Form).Return(new NameValueCollection());
+
+			_mocks.Replay(context);
+			_mocks.Replay(request);
+
+			ControllerContext controllerContext = new ControllerContext(context, fakeRouteData, _controller);
+			_controller.ControllerContext = controllerContext;
 		}
 
 		[Test]
@@ -58,6 +85,15 @@ namespace MVCContrib.UnitTests
 		public void ValidActionReturnsTrue()
 		{
 			Assert.IsTrue(_controller.DoInvokeAction("ComplexAction"));
+			Assert.IsTrue(_controller.ActionWasCalled);
+		}
+
+		[Test]
+		public void ValidActionReturnsFalseWhenOnPreActionReturnsFalse()
+		{
+			_controller.OnPreActionReturnValue = false;
+			_controller.DoInvokeAction("ComplexAction");
+			Assert.IsFalse(_controller.ActionWasCalled);
 		}
 
 		[Test]
@@ -70,6 +106,9 @@ namespace MVCContrib.UnitTests
 
 		class TestController : ConventionController
 		{
+			public bool OnPreActionReturnValue = true;
+			public bool ActionWasCalled = false;
+
 			public void BasicAction(int id)
 			{
 			}
@@ -84,6 +123,7 @@ namespace MVCContrib.UnitTests
 
 			public void ComplexAction([Deserialize("ids")] int[] ids)
 			{
+				ActionWasCalled = true;
 			}
 
 			public void BadAction()
@@ -91,14 +131,9 @@ namespace MVCContrib.UnitTests
 				throw new AbandonedMutexException();
 			}
 
-			protected override bool OnError(ActionMetaData action, Exception exception)
+			protected override bool OnPreAction(string actionName, MethodInfo methodInfo)
 			{
-				if( action.Name.Equals("BadAction", StringComparison.OrdinalIgnoreCase) )
-				{
-					return false;
-				}
-
-				return true;
+				return OnPreActionReturnValue;
 			}
 
 			public bool DoInvokeAction(string action)
