@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.NHamlViewEngine
+namespace MvcContrib.UnitTests.NHamlViewEngine
 {
-	[TestFixture, Category("Integration")]
+	[TestFixture]
 	public class NHamlViewFactoryTester
 	{
 		private MockRepository _mocks;
@@ -17,7 +16,7 @@ namespace MVCContrib.UnitTests.NHamlViewEngine
 		private Dictionary<string, object> _viewData;
 		private IHttpRequest _httpRequest;
 
-		private static readonly string VIEW_ROOT_DIRECTORY = Path.Combine(Environment.CurrentDirectory, @"..\..\NHamlViewEngine\Views");
+		private static readonly string VIEW_ROOT_DIRECTORY = @"NHamlViewEngine\Views";
 
 		[SetUp]
 		public void SetUp()
@@ -44,7 +43,7 @@ namespace MVCContrib.UnitTests.NHamlViewEngine
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void NHamlViewFactory_DependsOn_ViewSourceLoader()
 		{
-			NHamlViewFactory viewFactory = new NHamlViewFactory(null);
+			new NHamlViewFactory(null);
 		}
 
 		[Test]

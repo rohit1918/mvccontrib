@@ -7,9 +7,9 @@ using System.IO;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
-using Mindscape.NHaml;
 using MvcContrib.NHamlViewEngine;
 using MvcContrib.NHamlViewEngine.Configuration;
+using MvcContrib.NHamlViewEngine.Utilities;
 
 namespace MvcContrib.ViewFactories
 {
@@ -48,7 +48,7 @@ namespace MvcContrib.ViewFactories
 
 		public NHamlViewFactory(IViewSourceLoader viewSourceLoader)
 		{
-			if (viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
+			if(viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
 
 			_viewSourceLoader = viewSourceLoader;
 		}
@@ -78,16 +78,21 @@ namespace MvcContrib.ViewFactories
 					if(!_viewCache.TryGetValue(viewKey, out compiledView))
 					{
 						string viewPath = viewKey;
-						if (!Path.HasExtension(viewPath))
+
+						if(!Path.HasExtension(viewPath))
 						{
 							viewPath = string.Concat(viewPath, ".haml");
 						}
 
 						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
 
+						Invariant.IsNotNull(viewSource);
+
 						IViewSource layoutSource = FindLayout("Shared", masterName, controller);
+
 						string layoutPath = null;
-						if( layoutSource != null )
+
+						if(layoutSource != null)
 						{
 							layoutPath = layoutSource.FullName;
 						}
@@ -133,14 +138,14 @@ namespace MvcContrib.ViewFactories
 
 			masterPath = mastersFolder + "\\" + controller + ".haml";
 
-			if (_viewSourceLoader.HasView(masterPath))
+			if(_viewSourceLoader.HasView(masterPath))
 			{
 				return _viewSourceLoader.GetViewSource(masterPath);
 			}
 
 			masterPath = mastersFolder + "\\application.haml";
 
-			if (_viewSourceLoader.HasView(masterPath))
+			if(_viewSourceLoader.HasView(masterPath))
 			{
 				return _viewSourceLoader.GetViewSource(masterPath);
 			}

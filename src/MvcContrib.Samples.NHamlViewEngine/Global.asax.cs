@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
 
-namespace MvcContrib.Samples
+namespace MvcContrib.Samples.NHamlViewEngine
 {
 	public class Global : System.Web.HttpApplication
 	{
