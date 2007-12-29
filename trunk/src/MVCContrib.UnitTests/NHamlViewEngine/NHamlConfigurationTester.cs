@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.NHamlViewEngine
 {
-	[TestFixture, Category("Integration")]
+	[TestFixture]
 	public class ConfigurationTester
 	{
 		[Test]

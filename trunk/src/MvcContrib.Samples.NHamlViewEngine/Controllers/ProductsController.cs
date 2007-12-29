@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Configuration;
 using System.Web.Mvc;
-using MvcContrib;
-using Mindscape.NHaml.Tests.TestApp.Models;
-using MvcContrib.Attributes;
-using MvcContrib.Samples.Models;
+using System.Web.Mvc.BindingHelpers;
+using MvcContrib.Samples.NHamlViewEngine.Models;
 
-namespace MvcContrib.Samples.Controllers
+namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 {
-	public class ProductsController : ConventionController
+	public class ProductsController : Controller
 	{
-		NorthwindDataContext northwind = new NorthwindDataContext();
+		NorthwindDataContext northwind = new NorthwindDataContext(
+			ConfigurationManager.ConnectionStrings["NorthwindConnectionString"].ConnectionString);
 
 		//
 		// Products/Category/1
@@ -40,8 +40,14 @@ namespace MvcContrib.Samples.Controllers
 		// Products/Create
 
 		[ControllerAction]
-		public void Create([Deserialize("product")] Product product)
+		public void Create()
 		{
+			Product product = new Product();
+			product.UpdateFrom(Request.Form);
+
+			northwind.AddProduct(product);
+			northwind.SubmitChanges();
+
 			RedirectToAction(new { Action = "Category", ID = product.CategoryID });
 		}
 
@@ -64,8 +70,13 @@ namespace MvcContrib.Samples.Controllers
 		// Products/Update/5
 
 		[ControllerAction]
-		public void Update([Deserialize("product")] Product product)
+		public void Update(int id)
 		{
+			Product product = northwind.GetProductById(id);
+			product.UpdateFrom(Request.Form);
+
+			northwind.SubmitChanges();
+
 			RedirectToAction(new { Action = "Category", ID = product.CategoryID });
 		}
 	}

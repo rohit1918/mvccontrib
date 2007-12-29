@@ -1,9 +1,8 @@
-﻿using MvcContrib;
 using MvcContrib.ControllerFactories;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.NHamlViewEngine
+namespace MvcContrib.UnitTests.NHamlViewEngine
 {
 	[TestFixture, Category("NHamlViewEngine")]
 	public class NHamlControllerFactoryTester

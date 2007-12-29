@@ -83,76 +83,105 @@
 			<fileset basedir="${solution.dir}">
 				<include name="/**/bin/${project.config}/**" />
 				<include name="*.config"/>
+				<exclude name="**/*.xhtml"/>
+				<exclude name="**/*.haml"/>
 			</fileset>
 		</copy>
-
+		
+		<!-- copy files required by view engine tests -->
+		
+		<copy todir="${build.dir}/NHamlViewEngine/Templates" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Templates/*.haml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Results" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Results/*.xhtml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Views/NHamlApplication" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Views/NHamlApplication/*.haml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Views/NHamlController" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Views/NHamlController/*.haml"/>
+			</fileset>
+		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Views/Shared" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Views/Shared/*.haml"/>
+			</fileset>
+		</copy>
+		
 	</target>
 
-  <target name="test" depends="init">
-    <delete dir="${results.dir}" if="${directory::exists('${results.dir}')}" />
-    <mkdir dir="${results.dir}"/>
+	<target name="test" depends="init">
+		<delete dir="${results.dir}" if="${directory::exists('${results.dir}')}" />
+		<mkdir dir="${results.dir}"/>
 
-    <nunit2 failonerror="true" verbose="true">
-      <formatter type="Xml" outputdir="${results.dir}" usefile="true" extension=".xml"/>
-      <formatter type="Plain" />
-      <test assemblyname="${build.dir}/MVCContrib.UnitTests.dll" appconfig="${nant::get-base-directory()}nant.tests.config">
-	    <categories>
-		  <exclude name="Integration" />
-        </categories>
-	  </test>
-    </nunit2>
-  </target>
+		<nunit2 failonerror="true" verbose="true">
+			<formatter type="Xml" outputdir="${results.dir}" usefile="true" extension=".xml"/>
+			<formatter type="Plain" />
+			<test assemblyname="${build.dir}/MVCContrib.UnitTests.dll">
+				<categories>
+					<exclude name="Integration" />
+				</categories>
+			</test>
+		</nunit2>
+	</target>
 
-  <target name="analyze" >
-    <loadtasks path="bin\ncover\Build Task Plugins"/>
-    <ncover  program="bin\ncover\ncover.console.exe"
-             commandLineExe="bin\nunit\nunit-console.exe"
-             commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
-             coverageFile="${results.dir}\mvccontrib.coverage.xml"
-             workingDirectory="${build.dir}"			 
-             >
+	<target name="analyze" >
+		<loadtasks path="bin\ncover\Build Task Plugins"/>
+		<ncover program="bin\ncover\ncover.console.exe"
+						commandLineExe="bin\nunit\nunit-console.exe"
+						commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
+						coverageFile="${results.dir}\mvccontrib.coverage.xml"
+						workingDirectory="${build.dir}">
 
-      <assemblies basedir="${build.dir}">
-		 <exclude name="**/*.unittest*"/>
-        <include name="mvccontrib*.dll" />		  
-      </assemblies>
-    </ncover>
+			<assemblies basedir="${build.dir}">
+				<exclude name="**/*.unittest*"/>
+				<include name="mvccontrib*.dll" />
+			</assemblies>
+		</ncover>
 
-    <!--reportType="ModuleClassSummary"  ModuleClassFunctionSummary -->
-    <ncoverexplorer program="bin\ncover\ncoverexplorer.console.exe"
-                        projectName="Mvc Contrib"
-                        outputDir="${results.dir}"
-                        failCombinedMinimum="false"
-                        satisfactoryCoverage="95"						
-                        minimumCoverage="95"     
-                        reportType="ModuleClassFunctionSummary"
-                        htmlReportName="CoverageSummary.html"
-                        xmlReportName="CoverageSummary.xml" >
-      <fileset basedir="${results.dir}">
-        <include name="*.coverage.xml" />
-      </fileset>
-		<moduleThresholds>
-			<moduleThreshold moduleName="MVCContrib.DLL"		satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.Castle.DLL" satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.Spring.DLL" satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.StructureMap.DLL" satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
-			<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="40" />
-		</moduleThresholds>
+		<!--reportType="ModuleClassSummary"  ModuleClassFunctionSummary -->
+		<ncoverexplorer program="bin\ncover\ncoverexplorer.console.exe"
+										projectName="Mvc Contrib"
+										outputDir="${results.dir}"
+										failCombinedMinimum="false"
+										satisfactoryCoverage="95"
+										minimumCoverage="95"
+										reportType="ModuleClassFunctionSummary"
+										htmlReportName="CoverageSummary.html"
+										xmlReportName="CoverageSummary.xml" >
+			<fileset basedir="${results.dir}">
+				<include name="*.coverage.xml" />
+			</fileset>
+			<moduleThresholds>
+				<moduleThreshold moduleName="MVCContrib.DLL"		satisfactoryCoverage="95" />
+				<moduleThreshold moduleName="MvcContrib.Castle.DLL" satisfactoryCoverage="95" />
+				<moduleThreshold moduleName="MvcContrib.Spring.DLL" satisfactoryCoverage="95" />
+				<moduleThreshold moduleName="MvcContrib.StructureMap.DLL" satisfactoryCoverage="95" />
+				<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
+				<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="80" />
+			</moduleThresholds>
 
-	</ncoverexplorer>
-    <property name="ndepend.input" value="${directory::get-current-directory()}\bin\ndepend\mvccontrib.xml"/>
-    <xmlpoke file="${ndepend.input}" xpath="/NDepend/Dirs/Dir" value="${directory::get-current-directory()}\${build.dir}" />
-    <xmlpoke file="${ndepend.input}" xpath="/NDepend/OutputDir" value="${directory::get-current-directory()}\${results.dir}" />
-    <exec program="bin\ndepend\NDepend.Console.exe">
-      <arg value="${ndepend.input}" />
-    </exec>
-<!--
-    <loadtasks path="bin\ndepend\nant" />
-    <NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
-             ProjectFilePath="bin\ndepend\MvcContrib.xml"/>
--->
-  </target>
+		</ncoverexplorer>
+		<property name="ndepend.input" value="${directory::get-current-directory()}\bin\ndepend\mvccontrib.xml"/>
+		<xmlpoke file="${ndepend.input}" xpath="/NDepend/Dirs/Dir" value="${directory::get-current-directory()}\${build.dir}" />
+		<xmlpoke file="${ndepend.input}" xpath="/NDepend/OutputDir" value="${directory::get-current-directory()}\${results.dir}" />
+		<exec program="bin\ndepend\NDepend.Console.exe">
+			<arg value="${ndepend.input}" />
+		</exec>
+		<!--
+		<loadtasks path="bin\ndepend\nant" />
+		<NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
+							ProjectFilePath="bin\ndepend\MvcContrib.xml"/>
+		-->
+	</target>
 	<target name="package">
 		<!-- 		
 			make a new dir for release.
@@ -161,16 +190,16 @@
 					referenceDLLs
 				samples
 		-->
-	<mkdir dir="${build.base}/release/" />
-	
-	<mkdir dir="${build.base}/release/Bin" />
-	<copy todir="${build.base}/release/Bin" flatten="true">
-		<fileset basedir="${solution.dir}">
-			<include name="/**/bin/${project.config}/mvccontrib**" />				
-		</fileset>
-	</copy>
-	
-	<mkdir dir="${build.base}/release/Samples" />
+		<mkdir dir="${build.base}/release/" />
+
+		<mkdir dir="${build.base}/release/Bin" />
+		<copy todir="${build.base}/release/Bin" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="/**/bin/${project.config}/mvccontrib**" />
+			</fileset>
+		</copy>
+
+		<mkdir dir="${build.base}/release/Samples" />
 		<copy todir="${build.base}/release/Samples" >
 			<fileset basedir="${solution.dir}">
 				<exclude name="**/bin/**"/>
@@ -179,33 +208,36 @@
 			</fileset>
 		</copy>
 
-
-	<mkdir dir="${build.base}/release/Helpers/" />
-	<copy todir="${build.base}/release/Helpers" >
-		<fileset basedir="extras">
-			<include name="/**/**" />
-		</fileset>
-	</copy>
-
+		<mkdir dir="${build.base}/release/Helpers/" />
+		<copy todir="${build.base}/release/Helpers" >
+			<fileset basedir="extras">
+				<include name="/**/**" />
+			</fileset>
+		</copy>
 
 		<zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
-      <fileset basedir="${build.base}/release/">
-        <include name="**/*.*"/>
-      </fileset>
-    </zip>
+			<fileset basedir="${build.base}/release/">
+				<include name="**/*.*"/>
+				<exclude name="**/*.CodeAnalysisLog.xml"/>
+				<exclude name="**/*.lastcodeanalysissucceeded"/>
+			</fileset>
+		</zip>
 
-    <zip zipfile="${build.base}/MVCContrib.source.zip" includeemptydirs="false" >
-       
-		<fileset basedir="${trunk.dir}" >
-		<exclude name="bin/ncover/**"/>
-		<exclude name="bin/ndepend/**"/>
-		<exclude name="**/build/**"/>
-        <exclude name="src/**/bin/**"/>
-        <exclude name="**/obj/**"/>
-        <exclude name="**/*.resharper*"/>
-        <exclude name="**/*.suo"/>
-        <exclude name="**/*.cache"/>
-        <exclude name="**/_ReSharper.MVCContrib/**"/>
+		<zip zipfile="${build.base}/MVCContrib.source.zip" includeemptydirs="false" >
+
+			<fileset basedir="${trunk.dir}" >
+				<exclude name="bin/ncover/**"/>
+				<exclude name="bin/ndepend/**"/>
+				<exclude name="**/build/**"/>
+				<exclude name="src/**/bin/**"/>
+				<exclude name="**/obj/**"/>
+				<exclude name="**/*.resharper*"/>
+				<exclude name="**/*.suo"/>
+				<exclude name="**/*.cache"/>
+				<exclude name="**/*.user"/>
+				<exclude name="**/_ReSharper.MVCContrib/**"/>
+				<exclude name="**/*.CodeAnalysisLog.xml"/>
+				<exclude name="**/*.lastcodeanalysissucceeded"/>
 				<include name="**/*.*"/>
 			</fileset>
 		</zip>

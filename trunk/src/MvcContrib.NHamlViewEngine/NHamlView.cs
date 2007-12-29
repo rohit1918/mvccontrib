@@ -1,7 +1,6 @@
 ﻿using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
-using Mindscape.NHaml;
 
 namespace MvcContrib.NHamlViewEngine
 {

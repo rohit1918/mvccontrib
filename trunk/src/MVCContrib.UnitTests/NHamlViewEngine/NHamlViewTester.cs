@@ -2,12 +2,11 @@
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using Mindscape.NHaml;
 using MvcContrib.NHamlViewEngine;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.NHamlViewEngine
+namespace MvcContrib.UnitTests.NHamlViewEngine
 {
 	[TestFixture, Category("NHamlViewEngine")]
 	public class NHamlViewTester
@@ -33,8 +32,9 @@ namespace MVCContrib.UnitTests.NHamlViewEngine
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 
 			_mocks.ReplayAll();
-			
-			_viewContext = new ViewContext(controllerContext, new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+
+			_viewContext =
+				new ViewContext(controllerContext, new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 		}
 
 		[Test]
