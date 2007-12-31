@@ -55,13 +55,13 @@ namespace MvcContrib
 
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{
-			Type innerExceptionType = exception.InnerException.GetType();
+			Type baseExceptionType = exception.GetBaseException().GetType();
 
 			foreach(RescueAttribute rescue in action.Rescues )
 			{
 				foreach( Type exceptionType in rescue.ExceptionTypes )
 				{
-					if (exceptionType.IsAssignableFrom(innerExceptionType))
+					if (exceptionType.IsAssignableFrom(baseExceptionType))
 					{
 						OnPreRescue(exception);
 

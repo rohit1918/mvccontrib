@@ -11,7 +11,8 @@ namespace MvcContrib.MetaData
 		{
 			string sValue = context.HttpContext.Request[paramName];
 
-			if( context.RouteData.Values.ContainsKey(paramName) )
+			if( context.RouteData.Values.ContainsKey(paramName) 
+				&& context.RouteData.Values[paramName] != null )
 			{
 				sValue = context.RouteData.Values[paramName].ToString();
 			}
