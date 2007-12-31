@@ -11,6 +11,7 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 	public class NHamlViewEngineSection : ConfigurationSection
 	{
 		private const string ProductionAttribute = "production";
+		private const string ViewsSection = "views";
 
 		public static NHamlViewEngineSection Read()
 		{
@@ -21,6 +22,12 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 		public bool Production
 		{
 			get { return Convert.ToBoolean(this[ProductionAttribute], CultureInfo.CurrentCulture); }
+		}
+
+		[ConfigurationProperty(ViewsSection)]
+		public ViewsConfiguration Views
+		{
+			get { return (ViewsConfiguration)this[ViewsSection]; }
 		}
 	}
 }

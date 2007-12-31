@@ -60,6 +60,7 @@
     <Compile Include="CompilationContext.cs" />
     <Compile Include="CompiledView.cs" />
     <Compile Include="Configuration\NHamlViewEngineSection.cs" />
+    <Compile Include="Configuration\ViewsConfiguration.cs" />
     <Compile Include="Exceptions\SyntaxException.cs" />
     <Compile Include="Exceptions\ViewCompilationException.cs" />
     <Compile Include="IAttributeEvaluator.cs" />
