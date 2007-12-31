@@ -104,10 +104,19 @@ namespace MVCContrib.UnitTests
 			Assert.AreEqual(typeof(CachedControllerDescriptor), controller.ControllerDescriptor.GetType());
 		}
 
+		[Test]
+		public void OnErrorShouldNotThrowIfInnerExceptionIsNull()
+		{
+			TestController controller = new TestController();
+			controller.InvokeOnErrorWithoutInnerException();
+			Assert.IsTrue(controller.OnErrorWasCalled);
+		}
+
 		class TestController : ConventionController
 		{
 			public bool OnPreActionReturnValue = true;
 			public bool ActionWasCalled = false;
+			public bool OnErrorWasCalled = false;
 
 			public void BasicAction(int id)
 			{
@@ -144,6 +153,19 @@ namespace MVCContrib.UnitTests
 			public void DoInvokeActionMethod(ActionMetaData action)
 			{
 				InvokeActionMethod(action);
+			}
+
+			public void InvokeOnErrorWithoutInnerException()
+			{
+				Exception e = new Exception("Blah");
+				OnError(MetaData.GetAction("BasicAction"), e);
+			}
+
+			protected override bool OnError(ActionMetaData action, Exception exception)
+			{
+				bool result = base.OnError(action, exception);
+				OnErrorWasCalled = true;
+				return result;
 			}
 		}
 	}

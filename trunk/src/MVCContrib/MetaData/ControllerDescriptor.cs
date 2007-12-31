@@ -54,8 +54,8 @@ namespace MvcContrib.MetaData
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
 				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
 				{
-					ActionParameterMetaData parameterMetaData = new ActionParameterMetaData(actionMethodParameter);
-					parameterMetaData.ParameterBinder = GetParameterBinder(actionMethodParameter);
+					ActionParameterMetaData parameterMetaData = CreateParameterMetaData(metaData, actionMetaData, actionMethodParameter);
+					parameterMetaData.ParameterBinder = GetParameterBinder(parameterMetaData);
 					actionMetaData.Parameters.Add(parameterMetaData);
 				}
 
@@ -75,18 +75,27 @@ namespace MvcContrib.MetaData
 			return new ActionMetaData(actionMethod);
 		}
 
+		protected virtual ActionParameterMetaData CreateParameterMetaData(ControllerMetaData controllerMetaData, ActionMetaData actionMetaData, ParameterInfo parameter)
+		{
+			return new ActionParameterMetaData(parameter);
+		}
+
 		protected virtual RescueAttribute[] GetRescues(ICustomAttributeProvider attributeProvider, bool inherit)
 		{
 			return (RescueAttribute[])attributeProvider.GetCustomAttributes(typeof(RescueAttribute), inherit);
 		}
 
-		protected virtual IParameterBinder GetParameterBinder(ICustomAttributeProvider attributeProvider)
+		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
 		{
-			object[] attributes = attributeProvider.GetCustomAttributes(typeof(IParameterBinder), false);
+			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);
 
 			if( attributes != null && attributes.Length > 0 )
 			{
 				return attributes[0] as IParameterBinder;
+			}
+			else if(parameterMetaData.IsValid)
+			{
+				return new SimpleParameterBinder();
 			}
 
 			return null;

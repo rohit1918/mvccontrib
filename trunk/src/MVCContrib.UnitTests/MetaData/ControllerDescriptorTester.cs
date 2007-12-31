@@ -62,27 +62,39 @@ namespace MVCContrib.UnitTests.MetaData
 
 			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
 			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[1].IsValid);
+			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[0].ParameterBinder);
+			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[1].ParameterBinder);
 		}
 
-
 		[Test]
-		public void ForCoverage()
+		public void BinderShouldDefaultToSimpleParameterBinder()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			TestController controller = new TestController();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
 
+			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
+
+			Assert.IsInstanceOfType(typeof(SimpleParameterBinder), parameter.ParameterBinder);
+		}
+
+		[Test]
+		public void BindShouldReturnNullIfBinderIsNull()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[0].Bind(null));
+		}
+
+		[Test]
+		public void NonExistentActionShouldReturnNull()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			TestController controller = new TestController();
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
-			ActionParameterMetaData parameter = metaData.Actions[1].Parameters[0];
-
-			ActionMetaData unknownAction = metaData.GetAction("Doesn't Exist");
-
-			Assert.IsNull(unknownAction);
-			Assert.IsNotNull(parameter.ParameterInfo);
-			Assert.IsNull(parameter.ParameterBinder);
-			Assert.IsNull(parameter.Bind(null));
-			Assert.IsTrue(parameter.IsValid);
+			Assert.IsNull(metaData.GetAction("Doesn't Exist"));
 		}
 
 		[Test]

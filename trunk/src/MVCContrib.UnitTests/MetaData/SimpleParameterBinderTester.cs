@@ -18,7 +18,8 @@ namespace MVCContrib.UnitTests.MetaData
 			_mocks = new MockRepository();
 
 			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
-			SetupResult.For(request[null]).IgnoreArguments().Return("testValue");
+			SetupResult.For(request["test"]).Return("testValue");
+			SetupResult.For(request["keyWithNullValue"]).Return(null);
 
 			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
 			SetupResult.For(context.Request).Return(request);
@@ -50,6 +51,17 @@ namespace MVCContrib.UnitTests.MetaData
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual("value", value);
+		}
+
+		[Test]
+		public void ShouldNotThrowIfRouteDataValueIsNull()
+		{
+			_controllerContext.RouteData.Values.Add("keyWithNullValue", null);
+
+			SimpleParameterBinder attr = new SimpleParameterBinder();
+			string value = attr.Bind(typeof(string), "keyWithNullValue", _controllerContext) as string;
+
+			Assert.IsNull(value);
 		}
 	}
 }
