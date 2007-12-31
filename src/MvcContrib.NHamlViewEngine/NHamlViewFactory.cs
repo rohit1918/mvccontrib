@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Reflection;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
@@ -60,6 +61,16 @@ namespace MvcContrib.ViewFactories
 			if(section != null)
 			{
 				_production = section.Production;
+
+				foreach(AssemblyConfigurationElement cfgAsm in section.Views.Assemblies)
+				{
+					_templateCompiler.AddReference(Assembly.Load(cfgAsm.Name).Location);
+				}
+
+				foreach(NamespaceConfigurationElement cfgNs in section.Views.Namespaces)
+				{
+					_templateCompiler.AddUsing(cfgNs.Name);
+				}
 			}
 		}
 
