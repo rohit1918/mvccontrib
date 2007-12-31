@@ -40,9 +40,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="MVCToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\mvctoolkit\MVCToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
@@ -56,6 +63,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ExtensionDuck.cs" />
+    <Compile Include="DescriptableDictionary.cs" />
+    <Compile Include="HtmlExtensionDuck.cs" />
+    <Compile Include="NVelocityHtmlHelper.cs" />
     <Compile Include="NVelocityView.cs" />
     <Compile Include="NVelocityViewFactory.cs" />
     <Compile Include="WindsorControllerFactory.cs" />

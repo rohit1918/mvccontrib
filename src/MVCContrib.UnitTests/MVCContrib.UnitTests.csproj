@@ -128,8 +128,12 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="ViewFactories\DescriptableDictionaryTester.cs" />
+    <Compile Include="ViewFactories\ExtensionDuckTester.cs" />
+    <Compile Include="ViewFactories\HtmlExtensionDuckTester.cs" />
     <Compile Include="ViewFactories\FileSystemViewSourceLoaderTester.cs" />
     <Compile Include="ViewFactories\FileViewSourceTester.cs" />
+    <Compile Include="ViewFactories\NVelocityHtmlHelperTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewTester.cs" />
     <Compile Include="XsltViewEngine\Helpers\ControllerTestBase.cs" />

@@ -78,7 +78,7 @@ namespace MvcContrib.Castle
 
 		private static void CreateAndAddHelpers(Hashtable entries, ViewContext context)
 		{
-			entries["html"] = entries["htmlhelper"] = new HtmlHelper(context);
+			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(context);
 			entries["url"] = entries["urlhelper"] = new UrlHelper(context);
 		}
 	}
