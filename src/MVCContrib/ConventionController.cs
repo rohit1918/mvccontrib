@@ -8,6 +8,13 @@ namespace MvcContrib
 {
 	public class ConventionController : Controller
 	{
+		private string _selectedAction;
+
+		public string SelectedAction
+		{
+			get { return _selectedAction; }
+		}
+		
 		protected override bool InvokeAction(string actionName)
 		{
 			if(string.IsNullOrEmpty(actionName))
@@ -15,13 +22,23 @@ namespace MvcContrib
 				throw new ArgumentException("actionName is required", "actionName");
 			}
 
+			_selectedAction = actionName;
+
 			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
 
 			ActionMetaData selectedAction;
 
 			if(actions == null || actions.Count == 0)
 			{
-				return false;
+				//No matching action found - see if there is a "catch all" action.
+				if(MetaData.DefaultAction != null)
+				{
+					selectedAction = MetaData.DefaultAction;
+				}
+				else
+				{
+					return false;
+				}
 			}
 			else if(actions.Count > 1)
 			{

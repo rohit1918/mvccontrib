@@ -39,6 +39,18 @@ namespace MvcContrib.Samples.Controllers
 			throw new InvalidOperationException();
 		}
 
+		[HiddenAction]
+		public void Hidden()
+		{
+			Response.Write("This action cannot be called.");
+		}
+
+		[DefaultAction]
+		public void DefaultAction()
+		{
+			Response.Write(string.Format("You tried to access action '{0}' but it does not exit.", SelectedAction));
+		}
+
 		protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
 		{
 			return false;

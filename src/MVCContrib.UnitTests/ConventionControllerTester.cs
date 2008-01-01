@@ -24,10 +24,10 @@ namespace MVCContrib.UnitTests
 			_mocks = new MockRepository();
 			_controller = new TestController();
 			_controller.ControllerDescriptor = new ControllerDescriptor();
-			SetupHttpContext();
+			SetupHttpContext(_controller);
 		}
 
-		private void SetupHttpContext()
+		private void SetupHttpContext(Controller controller)
 		{
 			RouteData fakeRouteData = new RouteData();
 			fakeRouteData.Values.Add("Action", "Index");
@@ -44,7 +44,7 @@ namespace MVCContrib.UnitTests
 			_mocks.Replay(request);
 
 			ControllerContext controllerContext = new ControllerContext(context, fakeRouteData, _controller);
-			_controller.ControllerContext = controllerContext;
+			controller.ControllerContext = controllerContext;
 		}
 
 		[Test]
@@ -82,10 +82,28 @@ namespace MVCContrib.UnitTests
 		}
 
 		[Test]
+		public void UnknownActionCallsDefaultAction()
+		{
+			DefaultActionController controller = new DefaultActionController();
+			SetupHttpContext(controller);
+			controller.ControllerDescriptor = new ControllerDescriptor();
+
+			Assert.IsTrue(controller.DoInvokeAction("Unknown"));
+			Assert.IsTrue(controller.DefaultActionCalled);
+			Assert.AreEqual("Unknown", controller.SelectedAction);
+		}
+
+		[Test]
 		public void ValidActionReturnsTrue()
 		{
 			Assert.IsTrue(_controller.DoInvokeAction("ComplexAction"));
 			Assert.IsTrue(_controller.ActionWasCalled);
+		}
+
+		[Test]
+		public void HiddenActionReturnsFalse()
+		{
+			Assert.IsFalse(_controller.DoInvokeAction("HiddenAction"));
 		}
 
 		[Test]
@@ -140,6 +158,11 @@ namespace MVCContrib.UnitTests
 				throw new AbandonedMutexException();
 			}
 
+			[HiddenAction]
+			public void HiddenAction()
+			{
+			}
+
 			protected override bool OnPreAction(string actionName, MethodInfo methodInfo)
 			{
 				return OnPreActionReturnValue;
@@ -166,6 +189,22 @@ namespace MVCContrib.UnitTests
 				bool result = base.OnError(action, exception);
 				OnErrorWasCalled = true;
 				return result;
+			}
+		}
+
+		class DefaultActionController : ConventionController
+		{
+			public bool DefaultActionCalled = false;
+
+			[DefaultAction]
+			public void DefaultAction()
+			{
+				DefaultActionCalled = true;	
+			}
+
+			public bool DoInvokeAction(string action)
+			{
+				return InvokeAction(action);
 			}
 		}
 	}

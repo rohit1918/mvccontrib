@@ -32,7 +32,7 @@ namespace MvcContrib.MetaData
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
 			{
-				if (actionMethod.DeclaringType == typeof(object))
+				if (actionMethod.DeclaringType == typeof(object) || ! IsValidAction(actionMethod))
 				{
 					continue;
 				}
@@ -59,10 +59,46 @@ namespace MvcContrib.MetaData
 					actionMetaData.Parameters.Add(parameterMetaData);
 				}
 
+				if (IsDefaultAction(actionMetaData))
+				{
+					if(metaData.DefaultAction == null)
+					{
+						metaData.DefaultAction = actionMetaData;
+					}
+					else
+					{
+						throw new InvalidOperationException(
+							string.Format("Multiple DefaultAction attributes were found on controller '{0}'. A controller can only have 1 DefaultAction specified.", controllerType.Name));
+					}
+				}
+
 				metaData.Actions.Add(actionMetaData);
 			}
 
 			return metaData;
+		}
+
+		protected virtual bool IsDefaultAction(ActionMetaData actionMetaData)
+		{
+			object[] attributes = actionMetaData.MethodInfo.GetCustomAttributes(typeof(DefaultActionAttribute), false);
+
+			if(attributes.Length > 0)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		protected virtual bool IsValidAction(MethodInfo actionMethod)
+		{
+			object[] attributes = actionMethod.GetCustomAttributes(typeof(HiddenActionAttribute), false);
+
+			if(attributes.Length > 0)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		protected virtual ControllerMetaData CreateControllerMetaData(Type controllerType)

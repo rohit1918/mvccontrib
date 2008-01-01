@@ -114,6 +114,31 @@ namespace MVCContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void HiddenActionShouldReturnNull()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			Assert.IsNull(metaData.GetAction("HiddenAction"));
+		}
+
+		[Test]
+		public void ShouldFindDefaultAction()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			Assert.AreEqual("CatchAllAction", metaData.DefaultAction.Name);
+		}
+
+		[Test, ExpectedException(typeof(InvalidOperationException))]
+		public void MultipleDefaultActionsThrow()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			controllerDescriptor.GetMetaData(typeof(TestControllerWithMultipleDefaultActions));
+		}
+
+		[Test]
 		public void CachedDescriptorReturnsCachedCopy()
 		{
 			CountControllerDescriptor inner = new CountControllerDescriptor();
@@ -179,6 +204,16 @@ namespace MVCContrib.UnitTests.MetaData
 		{
 		}
 
+		[HiddenAction]
+		public void HiddenAction()
+		{
+		}
+
+		[DefaultAction]
+		public void CatchAllAction()
+		{
+		}
+
 		[Rescue("Test")]
 		public void ComplexAction([Deserialize("complex")] object complex)
 		{
@@ -197,6 +232,19 @@ namespace MVCContrib.UnitTests.MetaData
 		public void DoInvokeActionMethod(ActionMetaData action)
 		{
 			InvokeActionMethod(action);
+		}
+	}
+
+	internal class TestControllerWithMultipleDefaultActions : ConventionController
+	{
+		[DefaultAction]
+		public void Action1()
+		{
+		}
+
+		[DefaultAction]
+		public void Action2()
+		{
 		}
 	}
 }
