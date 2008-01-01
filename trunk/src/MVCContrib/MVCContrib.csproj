@@ -58,7 +58,9 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
+    <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
+    <Compile Include="Attributes\HiddenActionAttribute.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionController.cs" />
     <Compile Include="MetaData\ActionMetaData.cs" />
