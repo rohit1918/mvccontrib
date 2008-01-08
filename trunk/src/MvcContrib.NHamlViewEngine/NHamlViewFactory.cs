@@ -49,7 +49,7 @@ namespace MvcContrib.ViewFactories
 
 		public NHamlViewFactory(IViewSourceLoader viewSourceLoader)
 		{
-			if(viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
+			Invariant.ArgumentNotNull(viewSourceLoader, "viewSourceLoader");
 
 			_viewSourceLoader = viewSourceLoader;
 		}

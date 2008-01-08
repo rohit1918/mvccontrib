@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MvcContrib.NHamlViewEngine.Configuration
 {
@@ -26,25 +24,28 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 		}
 	}
 
+	[SuppressMessage("Microsoft.Design", "CA1010")]
 	public class AssembliesConfigurationCollection : BaseConfigurationCollection<AssemblyConfigurationElement>
 	{
 	}
 
+	[SuppressMessage("Microsoft.Design", "CA1010")]
 	public class NamespacesConfigurationCollection : BaseConfigurationCollection<NamespaceConfigurationElement>
 	{
 	}
 
+	[SuppressMessage("Microsoft.Design", "CA1010")]
 	public class AssemblyConfigurationElement : ViewsCollectionElement
 	{
 		private const string AssemblyElement = "assembly";
 
 		public AssemblyConfigurationElement()
-		{ 
+		{
 		}
 
 		public AssemblyConfigurationElement(string name)
 		{
-			this.Name = name;
+			Name = name;
 		}
 
 		public override string Key
@@ -65,12 +66,12 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 		private const string NamespaceElement = "namespace";
 
 		public NamespaceConfigurationElement()
-		{ 
+		{
 		}
 
 		public NamespaceConfigurationElement(string name)
 		{
-			this.Name = name;
+			Name = name;
 		}
 
 		public override string Key
@@ -86,6 +87,7 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 		}
 	}
 
+	[SuppressMessage("Microsoft.Design", "CA1010")]
 	public class BaseConfigurationCollection<T> : ConfigurationElementCollection
 		where T : ViewsCollectionElement, new()
 	{
@@ -106,13 +108,10 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 
 		public T this[int index]
 		{
-			get
-			{
-				return (T)BaseGet(index);
-			}
+			get { return (T)BaseGet(index); }
 			set
 			{
-				if (BaseGet(index) != null)
+				if(BaseGet(index) != null)
 					BaseRemoveAt(index);
 				BaseAdd(index, value);
 			}
@@ -132,6 +131,7 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 		{
 			BaseAdd(element);
 		}
+
 		protected override void BaseAdd(ConfigurationElement element)
 		{
 			BaseAdd(element, false);
@@ -139,7 +139,7 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 
 		public void Remove(T element)
 		{
-			if (BaseIndexOf(element) >= 0)
+			if(BaseIndexOf(element) >= 0)
 				BaseRemove(element.Key);
 		}
 
@@ -161,9 +161,6 @@ namespace MvcContrib.NHamlViewEngine.Configuration
 
 	public abstract class ViewsCollectionElement : ConfigurationElement
 	{
-		public abstract string Key
-		{
-			get;
-		}
+		public abstract string Key { get; }
 	}
 }
