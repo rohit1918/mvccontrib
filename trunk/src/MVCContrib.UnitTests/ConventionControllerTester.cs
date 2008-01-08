@@ -90,7 +90,7 @@ namespace MVCContrib.UnitTests
 
 			Assert.IsTrue(controller.DoInvokeAction("Unknown"));
 			Assert.IsTrue(controller.DefaultActionCalled);
-			Assert.AreEqual("Unknown", controller.SelectedAction);
+			Assert.AreEqual("DefaultAction", controller.SelectedAction);
 		}
 
 		[Test]

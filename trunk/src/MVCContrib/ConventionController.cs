@@ -22,8 +22,6 @@ namespace MvcContrib
 				throw new ArgumentException("actionName is required", "actionName");
 			}
 
-			_selectedAction = actionName;
-
 			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
 
 			ActionMetaData selectedAction;
@@ -49,7 +47,9 @@ namespace MvcContrib
 				selectedAction = actions[0];
 			}
 
-			if (OnPreAction(actionName, selectedAction.MethodInfo))
+			_selectedAction = selectedAction.Name;
+
+			if (OnPreAction(selectedAction.Name, selectedAction.MethodInfo))
 			{
 				try
 				{
@@ -64,7 +64,7 @@ namespace MvcContrib
 				}
 				finally
 				{
-					OnPostAction(actionName, selectedAction.MethodInfo);
+					OnPostAction(selectedAction.Name, selectedAction.MethodInfo);
 				}
 			}
 			return true;
