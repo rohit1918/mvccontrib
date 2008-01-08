@@ -49,6 +49,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\objectbuilder\Microsoft.Practices.ObjectBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="MVCToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\mvctoolkit\MVCToolkit.dll</HintPath>
@@ -118,6 +122,7 @@
     <Compile Include="BrailViewEngine\ReturnValueVisitorTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="BrailViewEngine\XmlExtenstionTester.cs" />
+    <Compile Include="ControllerFactories\ObjectBuilderControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
@@ -144,6 +149,14 @@
     <Compile Include="NHamlViewEngine\TestFixtureBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\ConstructorReflectionStrategyFixture.cs" />
+    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\CreationStrategyFixture.cs" />
+    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\MethodReflectionStrategyFixture.cs" />
+    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\Mocks\MockBuilderContext.cs" />
+    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\PropertyReflectionStrategyFixture.cs" />
+    <Compile Include="ObjectBuilder\CompositeWeb\WCSFBuilderBaseFixture.cs" />
+    <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
+    <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
     <Compile Include="RescueConventionTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
@@ -179,13 +192,17 @@
       <Project>{9B885FC4-45C0-4526-9253-A799238EDD66}</Project>
       <Name>MvcContrib.NHamlViewEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.ObjectBuilder\MvcContrib.ObjectBuilder.csproj">
+      <Project>{25482A84-38C4-470B-A8B8-5412226FDEEF}</Project>
+      <Name>MvcContrib.ObjectBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
       <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
       <Name>MvcContrib.Spring</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.StructureMap\MvcContrib.StructureMap.csproj">
       <Project>{6DE6FAEF-F974-4641-990E-FFE8728E5E16}</Project>
-      <Name>MvcContrib.StuctureMap</Name>
+      <Name>MvcContrib.StructureMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.XsltViewEngine\MvcContrib.XsltViewEngine.csproj">
       <Project>{00D236D4-4834-4215-B3ED-812590FCBE25}</Project>
