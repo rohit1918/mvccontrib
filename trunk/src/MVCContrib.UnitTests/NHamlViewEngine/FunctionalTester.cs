@@ -129,5 +129,11 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		{
 			AssertRender("Comments");
 		}
+
+		[Test]
+		public void AltControllerPartial()
+		{
+			AssertRender("AltControllerPartial");
+		}
 	}
 }

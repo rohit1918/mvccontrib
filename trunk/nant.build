@@ -95,6 +95,11 @@
 				<include name="**/Templates/*.haml"/>
 			</fileset>
 		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Templates/Alt" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Templates/Alt/*.haml"/>
+			</fileset>
+		</copy>		
 		<copy todir="${build.dir}/NHamlViewEngine/Results" flatten="true">
 			<fileset basedir="${solution.dir}">
 				<include name="**/Results/*.xhtml"/>

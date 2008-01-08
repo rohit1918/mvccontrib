@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -6,7 +7,7 @@ namespace MvcContrib.NHamlViewEngine.Rules
 	public class PartialMarkupRule : MarkupRule
 	{
 		private static readonly Regex _partialRegex
-			= new Regex(@"^\s*([\w-]+)$", RegexOptions.Compiled | RegexOptions.Singleline);
+			= new Regex(@"^\s*([\w-\\]+)$", RegexOptions.Compiled | RegexOptions.Singleline);
 
 		public override char Signifier
 		{
@@ -27,8 +28,11 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				string templateDirectory
 					= Path.GetDirectoryName(compilationContext.TemplatePath);
 
+				string partialName = match.Groups[1].Value;
+				partialName = partialName.Insert(partialName.LastIndexOf(@"\", StringComparison.OrdinalIgnoreCase) + 1, "_");
+
 				string partialTemplatePath
-					= Path.Combine(templateDirectory, '_' + match.Groups[1].Value + ".haml");
+					= Path.Combine(templateDirectory, partialName + ".haml");
 
 				compilationContext.MergeTemplate(partialTemplatePath);
 			}
