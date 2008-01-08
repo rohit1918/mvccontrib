@@ -121,6 +121,12 @@
 			</fileset>
 		</copy>
 		
+		<copy todir="${build.dir}/BrailViewEngine">
+			<fileset basedir="${solution.dir}/MvcContrib.UnitTests/BrailViewEngine">
+				<include name="**/*.brail" />
+			</fileset>
+		</copy>
+		
 	</target>
 
 	<target name="test" depends="init">
@@ -172,6 +178,7 @@
 				<moduleThreshold moduleName="MvcContrib.StructureMap.DLL" satisfactoryCoverage="95" />
 				<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
 				<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="80" />
+				<moduleThreshold moduleName="MvcContrib.BrailViewEngine.DLL" satisfactoryCoverage="75" />
 			</moduleThresholds>
 
 		</ncoverexplorer>

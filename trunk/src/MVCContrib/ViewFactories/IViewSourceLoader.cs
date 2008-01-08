@@ -11,6 +11,10 @@ namespace MvcContrib.ViewFactories
 		IViewSource GetViewSource(string viewPath);
 
 		string ViewRootDirectory { get; set; }
+
+		string[] ListViews(string directoryName);
+
+		event FileSystemEventHandler ViewRootDirectoryChanged;
 	}
 
 	public interface IViewSource
