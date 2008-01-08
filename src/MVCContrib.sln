@@ -32,6 +32,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.NHamlViewEngine"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.NHamlViewEngine", "MvcContrib.Samples.NHamlViewEngine\MvcContrib.Samples.NHamlViewEngine.csproj", "{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.BrailViewEngine", "MvcContrib.BrailViewEngine\MvcContrib.BrailViewEngine.csproj", "{8207E568-855D-494A-B19F-436BA10EF365}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.BrailViewEngine", "MvcContrib.Samples.BrailViewEngine\MvcContrib.Samples.BrailViewEngine.csproj", "{500B55E6-FD6D-4B8D-9528-00467280DB63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +86,14 @@ Global
 		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8207E568-855D-494A-B19F-436BA10EF365}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8207E568-855D-494A-B19F-436BA10EF365}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8207E568-855D-494A-B19F-436BA10EF365}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8207E568-855D-494A-B19F-436BA10EF365}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500B55E6-FD6D-4B8D-9528-00467280DB63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500B55E6-FD6D-4B8D-9528-00467280DB63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500B55E6-FD6D-4B8D-9528-00467280DB63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500B55E6-FD6D-4B8D-9528-00467280DB63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +103,6 @@ Global
 		{852ABBD2-9B55-4B95-974F-1559A16DB599} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{D1BC844F-C00F-491D-8D5E-6712698AC82B} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{9FDCA2CD-11B3-4314-9A89-8BDBC9C609B7} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
+		{500B55E6-FD6D-4B8D-9528-00467280DB63} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 	EndGlobalSection
 EndGlobal
