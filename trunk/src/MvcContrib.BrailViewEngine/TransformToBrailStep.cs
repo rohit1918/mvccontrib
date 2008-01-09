@@ -43,9 +43,6 @@ namespace MvcContrib.BrailViewEngine
 		{
 			foreach(Module module in CompileUnit.Modules)
 			{
-				module.Imports.Add(new Import(module.LexicalInfo, "MvcContrib.BrailViewEngine"));
-				module.Imports.Add(new Import(module.LexicalInfo, "System.Web.Mvc"));
-
 				foreach(string name in options.NamespacesToImport)
 				{
 					module.Imports.Add(new Import(module.LexicalInfo, name));

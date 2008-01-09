@@ -35,6 +35,9 @@ namespace MvcContrib.BrailViewEngine
 			AssembliesToReference.Add(typeof(BooViewEngineOptions).Assembly); //Brail's assembly
 			AssembliesToReference.Add(typeof(Controller).Assembly); //MVC Framework's assembly
 			AssembliesToReference.Add(typeof(AssertMacro).Assembly); //Boo.Lang.Extensions assembly
+
+			NamespacesToImport.Add("MvcContrib.BrailViewEngine");
+			NamespacesToImport.Add("System.Web.Mvc");
 		}
 
 		public bool Debug
