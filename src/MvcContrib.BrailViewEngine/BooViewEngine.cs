@@ -27,6 +27,8 @@ namespace MvcContrib.BrailViewEngine
 	using System.Threading;
 	using System.Web;
 	using System.Web.Mvc;
+	using System.Runtime.CompilerServices;
+	using Boo.Lang.Runtime;
 	using MvcContrib.ViewFactories;
 	using Boo.Lang.Compiler;
 	using Boo.Lang.Compiler.IO;
@@ -133,6 +135,24 @@ namespace MvcContrib.BrailViewEngine
 			}
 
 			CompileCommonScripts();
+
+			// Register extension methods
+			foreach( Assembly assembly in options.AssembliesToReference )
+			{
+				if( assembly.GetCustomAttributes(typeof(ExtensionAttribute), true).Length > 0 )
+				{
+					foreach( Type type in assembly.GetTypes() )
+					{
+						foreach(string nmespace in options.NamespacesToImport)
+						{
+							if( type != null && type.Namespace != null && type.Namespace.Equals(nmespace))
+							{
+								RuntimeServices.RegisterExtensions(type);
+							}	
+						}
+					}
+				}
+			}
 
 //			ViewSourceLoader.ViewChanged += OnViewChanged;
 		}
@@ -571,8 +591,8 @@ namespace MvcContrib.BrailViewEngine
 			compiler.Parameters.Pipeline.Insert(2, new TransformToBrailStep(options));
 			compiler.Parameters.Pipeline.Replace(typeof(ProcessMethodBodiesWithDuckTyping),
 			                                     new ReplaceUknownWithParameters());
-			compiler.Parameters.Pipeline.Replace(typeof(ExpandDuckTypedExpressions),
-			                                     new ExpandDuckTypedExpressions_WorkaroundForDuplicateVirtualMethods());
+			//compiler.Parameters.Pipeline.Replace(typeof(ExpandDuckTypedExpressions),
+			//                                     new ExpandDuckTypedExpressions_WorkaroundForDuplicateVirtualMethods());
 			compiler.Parameters.Pipeline.Replace(typeof(InitializeTypeSystemServices),
 			                                     new InitializeCustomTypeSystem());
 			compiler.Parameters.Pipeline.InsertBefore(typeof(ReplaceUknownWithParameters),
