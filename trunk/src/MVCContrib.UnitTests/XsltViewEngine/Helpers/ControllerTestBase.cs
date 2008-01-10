@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
+namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 {
 	public class ControllerTestBase
 	{

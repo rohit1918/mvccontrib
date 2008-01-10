@@ -23,6 +23,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				StructureMapConfiguration.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<StubDependency>();
 				StructureMapConfiguration.BuildInstancesOf<DependencyController>().TheDefaultIsConcreteType
 					<DependencyController>();
+                ObjectFactory.Reset();
 			}
 
 			[Test]
@@ -49,15 +50,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
 
-			public class SimpleController : IController
-			{
-				public void Execute(ControllerContext controllerContext)
-				{
-					throw new NotImplementedException();
-				}
-			}
-
-			public class DependencyController : IController
+		    public class DependencyController : IController
 			{
 				public IDependency _dependency;
 
@@ -80,5 +73,13 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			{
 			}
 		}
+
+	    public class SimpleController : IController
+	    {
+	        public void Execute(ControllerContext controllerContext)
+	        {
+	            throw new NotImplementedException();
+	        }
+	    }
 	}
 }

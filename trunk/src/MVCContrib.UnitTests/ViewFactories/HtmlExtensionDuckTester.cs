@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Web;
 using System.Web.Mvc;
@@ -8,7 +8,7 @@ using NVelocity.Runtime;
 using NVelocity.Util.Introspection;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("NVelocityViewEngine")]
 	public class HtmlExtensionDuckTester

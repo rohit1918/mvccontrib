@@ -1,13 +1,13 @@
 using System;
 using System.IO;
 using System.Web.Mvc;
-using MVCContrib.UnitTests.XsltViewEngine.Helpers;
+using MvcContrib.UnitTests.XsltViewEngine.Helpers;
 using MvcContrib.ViewFactories;
 using MvcContrib.XsltViewEngine;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.XsltViewEngine
+namespace MvcContrib.UnitTests.XsltViewEngine
 {
 	[TestFixture, Category("XsltViewEngine")]
 	public class XsltViewFactoryTest : ViewTestBase

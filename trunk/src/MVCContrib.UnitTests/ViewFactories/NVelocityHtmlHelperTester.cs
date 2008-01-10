@@ -1,11 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("NVelocityViewEngine")]
 	public class NVelocityHtmlHelperTester

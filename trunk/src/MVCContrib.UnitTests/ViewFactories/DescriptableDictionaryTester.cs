@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using MvcContrib.Castle;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, NUnit.Framework.Category("NVelocityViewEngine")]
 	public class DescriptableDictionaryTester
