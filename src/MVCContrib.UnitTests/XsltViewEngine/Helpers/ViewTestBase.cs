@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Web;
 using System.Security.Principal;
 using System.Collections.Specialized;
 
-namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
+namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 {
     public abstract class ViewTestBase
     {

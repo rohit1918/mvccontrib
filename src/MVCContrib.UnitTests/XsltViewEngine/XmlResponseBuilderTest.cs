@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using MVCContrib.UnitTests.XsltViewEngine.Helpers;
+using MvcContrib.UnitTests.XsltViewEngine.Helpers;
 using MvcContrib.XsltViewEngine;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.XsltViewEngine
+namespace MvcContrib.UnitTests.XsltViewEngine
 {
 	[TestFixture, Category("XsltViewEngine")]
 	public class XmlResponseBuilderTest : ViewTestBase

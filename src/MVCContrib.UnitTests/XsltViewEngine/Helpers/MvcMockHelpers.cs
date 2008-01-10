@@ -3,7 +3,7 @@ using Rhino.Mocks;
 using IHttpSessionState = System.Web.IHttpSessionState;
 using System.Security.Principal;
 
-namespace MVCContrib.UnitTests.XsltViewEngine.Helpers
+namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 {
     public static class MvcMockHelpers
     {

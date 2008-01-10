@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Reflection;
 using MvcContrib;
 using MvcContrib.Attributes;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests
+namespace MvcContrib.UnitTests
 {
 	[TestFixture]
 	[Category("RescueConventionTester")]

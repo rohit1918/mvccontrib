@@ -1,10 +1,10 @@
-﻿using System.Web;
+using System.Web;
 using System.Web.Mvc;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.MetaData
+namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
 	public class SimpleParameterBinderTester

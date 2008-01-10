@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using MvcContrib.Attributes;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.MetaData
+namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
 	public class RescueAttributeTester

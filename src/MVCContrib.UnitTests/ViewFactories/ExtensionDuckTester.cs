@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using MvcContrib.Castle;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("NVelocityViewEngine")]
 	public class ExtensionDuckTester

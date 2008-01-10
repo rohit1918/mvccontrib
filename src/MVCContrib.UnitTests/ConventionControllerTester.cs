@@ -10,7 +10,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web;
 
-namespace MVCContrib.UnitTests
+namespace MvcContrib.UnitTests
 {
 	[TestFixture]
 	public class ConventionControllerTester

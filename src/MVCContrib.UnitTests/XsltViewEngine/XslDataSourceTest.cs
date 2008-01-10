@@ -2,7 +2,7 @@ using System.Xml;
 using MvcContrib.XsltViewEngine;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.XsltViewEngine
+namespace MvcContrib.UnitTests.XsltViewEngine
 {
 	[TestFixture, Category("XsltViewEngine")]
 	public class XslDataSourceTest

@@ -3,7 +3,7 @@ using System.Web.UI.WebControls;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.ViewFactories
+namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("ViewFactories")]
 	public class FileSystemViewSourceLoaderTester

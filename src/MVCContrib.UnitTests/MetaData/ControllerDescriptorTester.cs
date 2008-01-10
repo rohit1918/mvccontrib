@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.MetaData
+namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
 	public class ControllerDescriptorTester
