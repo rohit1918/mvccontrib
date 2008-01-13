@@ -62,9 +62,16 @@
     <Compile Include="DependencyContainer\IDependencyContainerAccessor.cs" />
     <Compile Include="DependencyContainer\IDependencyContainer.cs" />
     <Compile Include="ObjectBuilderControllerFactory.cs" />
+    <Compile Include="ObjectFactoryDependencyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DependencyContainer\Configuration\ContainerXmlConfigElement.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
+      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
+      <Name>MVCContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
