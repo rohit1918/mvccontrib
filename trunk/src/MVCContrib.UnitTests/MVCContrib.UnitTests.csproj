@@ -109,6 +109,16 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="IoC\DependencyResolverTester.cs" />
+    <Compile Include="IoC\IDependency.cs" />
+    <Compile Include="IoC\INestedDependency.cs" />
+    <Compile Include="IoC\NestedDependency.cs" />
+    <Compile Include="IoC\ObjectFactoryDependencyTesterResolver.cs" />
+    <Compile Include="IoC\SimpleDependency.cs" />
+    <Compile Include="IoC\SpringDependencyResolverTester.cs" />
+    <Compile Include="IoC\StructureMapDependencyResolverTester.cs" />
+    <Compile Include="ControllerFactories\IoCControllerFactoryTester.cs" />
+    <Compile Include="ControllerFactories\SpecBase.cs" />
     <Compile Include="BrailViewEngine\BooViewEngineOptionsTester.cs" />
     <Compile Include="BrailViewEngine\BooViewEngineTester.cs" />
     <Compile Include="BrailViewEngine\BrailViewFactoryTester.cs" />
@@ -126,6 +136,7 @@
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
+    <Compile Include="IoC\WindsorDependencyResolverTester.cs" />
     <Compile Include="ConventionControllerTester.cs" />
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />

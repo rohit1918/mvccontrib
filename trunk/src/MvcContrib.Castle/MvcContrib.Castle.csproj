@@ -70,6 +70,13 @@
     <Compile Include="NVelocityView.cs" />
     <Compile Include="NVelocityViewFactory.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
+    <Compile Include="WindsorDependencyResolver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
+      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
+      <Name>MVCContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

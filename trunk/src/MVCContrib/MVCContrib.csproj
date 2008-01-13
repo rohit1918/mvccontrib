@@ -63,6 +63,8 @@
     <Compile Include="Attributes\HiddenActionAttribute.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionController.cs" />
+    <Compile Include="Interfaces\IDependencyResolver.cs" />
+    <Compile Include="IoCControllerFactory.cs" />
     <Compile Include="MetaData\ActionMetaData.cs" />
     <Compile Include="MetaData\ActionParameterMetaData.cs" />
     <Compile Include="MetaData\ControllerDescriptor.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="MetaData\ControllerMetaData.cs" />
     <Compile Include="MetaData\IParameterBinder.cs" />
     <Compile Include="MetaData\NameValueDeserializer.cs" />
+    <Compile Include="Services\DependencyResolver.cs" />
     <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
     <Compile Include="SimplyRestful\RestfulAction.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolver.cs" />
