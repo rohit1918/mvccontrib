@@ -275,6 +275,9 @@
     <None Include="NHamlViewEngine\Results\Conditionals.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="NHamlViewEngine\Results\Javascript.xhtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NHamlViewEngine\Results\CustomBaseClass.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -345,6 +348,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\Conditionals.haml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NHamlViewEngine\Templates\Javascript.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\CustomBaseClass.haml">

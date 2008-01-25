@@ -15,7 +15,7 @@ namespace MvcContrib.NHamlViewEngine
 			= new Regex(@"[-\\/\.:\s]", RegexOptions.Compiled | RegexOptions.Singleline);
 
 		private static readonly string[] DefaultAutoClosingTags
-			= new string[] {"META", "IMG", "LINK", "SCRIPT", "BR", "HR", "INPUT"};
+			= new string[] {"META", "IMG", "LINK", "BR", "HR", "INPUT"};
 
 		private readonly StringSet _autoClosingTags
 			= new StringSet(DefaultAutoClosingTags);

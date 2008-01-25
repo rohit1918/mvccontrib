@@ -67,5 +67,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			Assert.AreEqual(3, inputFiles.Count);
 		}
+    
+		[Test]
+		public void script_tag_not_auto_closing()
+		{
+			TemplateCompiler templateCompiler = new TemplateCompiler();
+			Assert.IsFalse(templateCompiler.IsAutoClosing("script"),"Script was auto-closed");
+		}
 	}
 }
