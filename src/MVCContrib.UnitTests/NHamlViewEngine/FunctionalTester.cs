@@ -26,6 +26,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Welcome()
 		{
 			AssertRender("Welcome");
+		}		
+    
+		[Test]
+		public void Javascript()
+		{
+			AssertRender("Javascript");
 		}
 
 		[Test]
