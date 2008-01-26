@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.ObjectBu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.IoC", "MvcContrib.Samples.IoC\MvcContrib.Samples.IoC.csproj", "{28E85A60-97A2-4F11-B18A-2FD593AFD7B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.IoC.Spring", "MvcContrib.Samples.IoC.Spring\MvcContrib.Samples.IoC.Spring.csproj", "{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +114,10 @@ Global
 		{28E85A60-97A2-4F11-B18A-2FD593AFD7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28E85A60-97A2-4F11-B18A-2FD593AFD7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28E85A60-97A2-4F11-B18A-2FD593AFD7B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,5 +130,6 @@ Global
 		{500B55E6-FD6D-4B8D-9528-00467280DB63} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{B7371AA9-51A6-4BA3-9CA4-1CE83BA2495D} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 		{28E85A60-97A2-4F11-B18A-2FD593AFD7B1} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
+		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB} = {60735B50-F73C-4DA8-B0E0-AB1369E65965}
 	EndGlobalSection
 EndGlobal
