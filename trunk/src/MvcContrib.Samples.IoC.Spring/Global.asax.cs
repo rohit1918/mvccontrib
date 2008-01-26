@@ -3,10 +3,11 @@ using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
-using MvcContrib.Samples.IoC.Controllers;
 using MvcContrib.Services;
-using MvcContrib.UnitTests.ControllerFactories;
-using StructureMap;
+using MVCContrib.UnitTests.IoC;
+using Spring.Core.IO;
+using Spring.Objects.Factory;
+using Spring.Objects.Factory.Xml;
 
 namespace MvcContrib.Samples.IoC
 {
@@ -22,9 +23,10 @@ namespace MvcContrib.Samples.IoC
 
         private void ConfigureIoC()
         {
-            StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;
-            StructureMapConfiguration.BuildInstancesOf<HomeController>().TheDefaultIsConcreteType<HomeController>();
-            DependencyResolver.InitializeWith(new StructureMapDependencyResolver());
+            IResource input = new FileSystemResource(Server.MapPath("objects.xml"));
+            IObjectFactory factory = new XmlObjectFactory(input);
+            DependencyResolver.InitializeWith(new SpringDependencyResolver(factory));
+
             ControllerBuilder.Current.SetDefaultControllerFactory(typeof(IoCControllerFactory));
         }
 
