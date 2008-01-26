@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Spring.Core, Version=1.1.0.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\spring.net\Spring.Core.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\structuremap\StructureMap.dll</HintPath>
@@ -83,9 +87,14 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Content\Site.css" />
+    <Content Include="objects.xml" />
     <Content Include="Views\Shared\Site.Master" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
+      <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
+      <Name>MvcContrib.Spring</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MvcContrib.StructureMap\MvcContrib.StructureMap.csproj">
       <Project>{6DE6FAEF-F974-4641-990E-FFE8728E5E16}</Project>
       <Name>MvcContrib.StructureMap</Name>
@@ -114,7 +123,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1695</DevelopmentServerPort>
+          <DevelopmentServerPort>4681</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
