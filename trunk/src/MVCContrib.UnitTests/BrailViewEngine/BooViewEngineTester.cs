@@ -50,7 +50,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 			_httpContext.Request.ApplicationPath = "/ApplictionPath";
 
-			string expected = "Current apppath is /ApplictionPath";
+			string expected = "Current apppath is /ApplictionPath/";
 			string actual = GetViewOutput("apppath");
 
 			Assert.AreEqual(expected, actual);
@@ -68,7 +68,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 				originalSource = reader.ReadToEnd();
 			}
 
-			string expected = "Current apppath is /ApplictionPath";
+			string expected = "Current apppath is /ApplictionPath/";
 			string actual = GetViewOutput("apppath");
 			Assert.AreEqual(expected, actual);
 
