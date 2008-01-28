@@ -4,6 +4,7 @@ using System.Reflection;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.Samples.Models;
+using MvcContrib.Filters;
 
 namespace MvcContrib.Samples.Controllers
 {
@@ -19,6 +20,7 @@ namespace MvcContrib.Samples.Controllers
 			RenderView("new", newShipment);
 		}
 
+		[PostOnly]
 		public void Track([Deserialize("trackingNumbers")] string[] trackingNumbers)
 		{
 			List<string> validTrackingNumbers = new List<string>();
@@ -48,7 +50,8 @@ namespace MvcContrib.Samples.Controllers
 		[DefaultAction]
 		public void DefaultAction()
 		{
-			Response.Write(string.Format("You tried to access action '{0}' but it does not exit.", SelectedAction));
+			string originalAction = RouteData.Values["action"].ToString();
+			Response.Write(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
 		}
 
 		protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
+using MvcContrib.Filters;
 
 namespace MvcContrib.MetaData
 {
@@ -28,6 +29,7 @@ namespace MvcContrib.MetaData
 			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
 
 			RescueAttribute[] controllerRescues = GetRescues(metaData.ControllerType, true);
+			FilterAttribute[] controllerFilters = GetFilters(metaData.ControllerType);
 
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
@@ -49,6 +51,15 @@ namespace MvcContrib.MetaData
 				foreach (RescueAttribute rescue in controllerRescues)
 				{
 					actionMetaData.Rescues.Add(rescue);
+				}
+
+				List<FilterAttribute> filters = new List<FilterAttribute>(controllerFilters);
+				filters.AddRange(GetFilters(actionMethod));
+				SortFilters(filters);
+
+				foreach(FilterAttribute filter in filters)
+				{
+					actionMetaData.Filters.Add(filter);
 				}
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
@@ -76,6 +87,14 @@ namespace MvcContrib.MetaData
 			}
 
 			return metaData;
+		}
+
+		private static void SortFilters(List<FilterAttribute> filters)
+		{
+			filters.Sort(delegate (FilterAttribute first, FilterAttribute second)
+			             	{
+			             		return first.ExecutionOrder - second.ExecutionOrder;
+			             	});
 		}
 
 		protected virtual bool IsDefaultAction(ActionMetaData actionMetaData)
@@ -119,6 +138,11 @@ namespace MvcContrib.MetaData
 		protected virtual RescueAttribute[] GetRescues(ICustomAttributeProvider attributeProvider, bool inherit)
 		{
 			return (RescueAttribute[])attributeProvider.GetCustomAttributes(typeof(RescueAttribute), inherit);
+		}
+
+		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
+		{
+			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
 		}
 
 		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)

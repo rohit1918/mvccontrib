@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
+using MvcContrib.Filters;
 using MvcContrib.MetaData;
+using MvcContrib.Services;
 
 namespace MvcContrib
 {
@@ -53,6 +55,11 @@ namespace MvcContrib
 			{
 				try
 				{
+					if(!ExecutePreActionFilters(selectedAction))
+					{
+						return false;
+					}
+
 					InvokeActionMethod(selectedAction);
 				}
 				catch(Exception exc)
@@ -67,6 +74,24 @@ namespace MvcContrib
 					OnPostAction(selectedAction.Name, selectedAction.MethodInfo);
 				}
 			}
+			return true;
+		}
+
+		protected virtual bool ExecutePreActionFilters(ActionMetaData action)
+		{
+			foreach(FilterAttribute attr in action.Filters)
+			{
+				if(!typeof(IFilter).IsAssignableFrom(attr.FilterType))
+					throw new InvalidOperationException("Filters must implement the IFilter interface.");
+
+				IFilter filter = attr.CreateFilter();
+
+				if(!filter.Execute(ControllerContext, action))
+				{
+					return false;
+				}
+			}
+
 			return true;
 		}
 
