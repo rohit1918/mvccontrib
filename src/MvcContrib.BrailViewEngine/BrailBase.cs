@@ -409,6 +409,9 @@ namespace MvcContrib.BrailViewEngine
 				properties.Add("session", myContext.Session);
 			}
 
+			properties["html"] = new HtmlHelper(viewContext);
+			properties["url"] = new UrlHelper(viewContext);
+
 //			if (controllerContext.Resources != null)
 //			{
 //				foreach(string key in controllerContext.Resources.Keys)
@@ -456,9 +459,6 @@ namespace MvcContrib.BrailViewEngine
 				properties["viewData"] = viewContext.ViewData;
 			}
 
-			properties["html"] = new HtmlHelper(viewContext);
-			properties["url"] = new UrlHelper(viewContext);
-
 //			if (controllerContext.Helpers != null)
 //			{
 //				foreach(DictionaryEntry entry in controllerContext.Helpers)
@@ -469,7 +469,11 @@ namespace MvcContrib.BrailViewEngine
 
 			if (myContext != null)
 			{
-				properties["siteRoot"] = myContext.Request.ApplicationPath;
+				string siteRoot = myContext.Request.ApplicationPath;
+				if (siteRoot != null && !siteRoot.EndsWith("/"))
+					siteRoot += "/";
+
+				properties["siteRoot"] = siteRoot;
 			}
 		}
 
