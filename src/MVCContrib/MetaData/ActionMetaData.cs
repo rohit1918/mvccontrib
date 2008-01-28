@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
+using MvcContrib.Filters;
 
 namespace MvcContrib.MetaData
 {
@@ -33,6 +34,12 @@ namespace MvcContrib.MetaData
 		public IList<RescueAttribute> Rescues
 		{
 			get { return _rescues;  }
+		}
+
+		private readonly List<FilterAttribute> _filters = new List<FilterAttribute>();
+		public IList<FilterAttribute> Filters
+		{
+			get { return _filters; }
 		}
 
 		public object InvokeMethod(IController controller, object[] parameters)

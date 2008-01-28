@@ -141,6 +141,7 @@
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
+    <Compile Include="MetaData\FilterTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />

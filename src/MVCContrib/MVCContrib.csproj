@@ -65,6 +65,10 @@
     <Compile Include="ConventionController.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="IoCControllerFactory.cs" />
+    <Compile Include="Filters\FilterAttribute.cs" />
+    <Compile Include="Filters\IFilter.cs" />
+    <Compile Include="Filters\IFilterAttributeAware.cs" />
+    <Compile Include="Filters\PostOnlyAttribute.cs" />
     <Compile Include="MetaData\ActionMetaData.cs" />
     <Compile Include="MetaData\ActionParameterMetaData.cs" />
     <Compile Include="MetaData\ControllerDescriptor.cs" />
