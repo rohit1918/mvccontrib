@@ -4,12 +4,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}</ProjectGuid>
+    <ProjectGuid>{9989D603-ACE5-4999-8B9A-9670A50C7B71}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvcContrib.Samples.IoC</RootNamespace>
-    <AssemblyName>MvcContrib.Samples.IoC</AssemblyName>
+    <RootNamespace>MvcContrib.Samples.HtmlHelperExtentions</RootNamespace>
+    <AssemblyName>MvcContrib.Samples.HtmlHelperExtentions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,14 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Spring.Core, Version=1.1.0.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\spring.net\Spring.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\structuremap\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -85,16 +77,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\forwardbutton.gif" />
     <Content Include="Default.aspx" />
     <Content Include="Content\Site.css" />
-    <Content Include="objects.xml" />
     <Content Include="Views\Shared\Site.Master" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
-      <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
-      <Name>MvcContrib.Spring</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
       <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
       <Name>MVCContrib</Name>
@@ -119,7 +107,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1654</DevelopmentServerPort>
+          <DevelopmentServerPort>64701</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
