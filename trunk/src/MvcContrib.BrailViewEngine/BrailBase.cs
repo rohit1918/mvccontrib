@@ -395,7 +395,6 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		private void InitProperties(ViewContext viewContext)
 		{
-			properties = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 			//properties.Add("dsl", new DslWrapper(this));
 			properties.Add("Controller", viewContext.Controller);
 
