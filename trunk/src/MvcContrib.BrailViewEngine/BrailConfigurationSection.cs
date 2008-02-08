@@ -38,6 +38,8 @@ namespace MvcContrib.BrailViewEngine
 				options.SaveDirectory = section.Attributes["saveDirectory"].Value;
 			if (section.Attributes["commonScriptsDirectory"] != null)
 				options.CommonScriptsDirectory = section.Attributes["commonScriptsDirectory"].Value;
+			if (section.Attributes["baseType"] != null)
+				options.BaseType = section.Attributes["baseType"].Value;
 			foreach(XmlNode refence in section.SelectNodes("reference"))
 			{
 				XmlAttribute attribute = refence.Attributes["assembly"];
