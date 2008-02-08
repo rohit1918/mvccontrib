@@ -243,6 +243,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="BrailViewEngine\Views\sub_CustomViewData.brail">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BrailViewEngine\Views\view_CustomViewData.brail">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NHamlViewEngine\Results\AltControllerPartial.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

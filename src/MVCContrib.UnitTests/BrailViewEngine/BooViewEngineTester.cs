@@ -95,6 +95,15 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			}
 		}
 
+		[Test]
+		public void Can_Render_SubView_with_custom_ViewData()
+		{
+			string expected = "View Test";
+			string actual = GetViewOutput("view_CustomViewData");
+
+			Assert.AreEqual(expected, actual);
+		}
+
 		private string GetViewOutput(string viewName)
 		{
 			return GetViewOutput(viewName, null);
