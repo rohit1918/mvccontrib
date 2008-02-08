@@ -104,6 +104,24 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			Assert.AreEqual(expected, actual);
 		}
 
+		[Test]
+		public void Layout_And_View_Should_Have_ViewContext()
+		{
+			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", "/Master");
+			view.RenderView(_viewContext);
+			Assert.IsNotNull(view.ViewContext);
+			Assert.AreEqual(view.ViewContext, view.Layout.ViewContext);
+		}
+
+		[Test]
+		public void Should_Use_Custom_Base_Class()
+		{
+			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
+			_viewEngine.Options.BaseType = "MVCContrib.UnitTests.BrailViewEngine.TestBrailBase";
+			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
+			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
+		}
+
 		private string GetViewOutput(string viewName)
 		{
 			return GetViewOutput(viewName, null);
@@ -114,6 +132,13 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
 			view.RenderView(_viewContext);
 			return _httpContext.Response.Output.ToString();
+		}
+	}
+
+	public abstract class TestBrailBase : BrailBase
+	{
+		protected TestBrailBase(BooViewEngine viewEngine, TextWriter output) : base(viewEngine, output)
+		{
 		}
 	}
 }

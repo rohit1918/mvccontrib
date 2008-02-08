@@ -29,6 +29,7 @@ namespace MvcContrib.BrailViewEngine
 		private bool debug;
 		private string saveDirectory = "Brail_Generated_Code";
 		private bool saveToDisk;
+		private string baseType = "MvcContrib.BrailViewEngine.BrailBase";
 
 		public BooViewEngineOptions()
 		{
@@ -78,6 +79,12 @@ namespace MvcContrib.BrailViewEngine
 		public IList NamespacesToImport
 		{
 			get { return namespacesToImport; }
+		}
+
+		public string BaseType
+		{
+			get { return baseType; }
+			set { baseType = value; }
 		}
 	}
 }

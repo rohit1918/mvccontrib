@@ -93,6 +93,12 @@ namespace MvcContrib.BrailViewEngine
 			get { return viewEngine.ViewRootDir; }
 		}
 
+		public ViewContext ViewContext
+		{
+			get { return __viewContext; }
+			set { __viewContext = value; }
+		}
+
 		/// <summary>
 		/// Gets the view engine.
 		/// </summary>
@@ -546,6 +552,7 @@ namespace MvcContrib.BrailViewEngine
 			if (Layout != null)
 			{
 				Layout.SetParent(this);
+				Layout.ViewContext = viewContext;
 				try
 				{
 					Layout.Run();
