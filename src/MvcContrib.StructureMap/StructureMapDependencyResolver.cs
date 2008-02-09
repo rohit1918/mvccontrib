@@ -1,18 +1,31 @@
-using System;
-using MvcContrib.Interfaces;
-
 namespace MvcContrib.UnitTests.ControllerFactories
 {
-    public class StructureMapDependencyResolver : IDependencyResolver
-    {
-        public TType GetImplementationOf<TType>()
-        {
-            return StructureMap.ObjectFactory.GetInstance<TType>();            
-        }
+	using System;
+	using MvcContrib.Interfaces;
+	using StructureMap;
 
-        public Interface GetImplementationOf<Interface>(Type type)
-        {
-            return (Interface)StructureMap.ObjectFactory.GetInstance(type);
-        }
-    }
+	public class StructureMapDependencyResolver : IDependencyResolver
+	{
+		public TType GetImplementationOf<TType>()
+		{
+			return (TType)GetImplementationOf(typeof(TType));
+		}
+
+		public Interface GetImplementationOf<Interface>(Type type)
+		{
+			return (Interface)GetImplementationOf(type);
+		}
+
+		public object GetImplementationOf(Type type)
+		{
+			try
+			{
+				return ObjectFactory.GetInstance(type);
+			}
+			catch(StructureMapException)
+			{
+				return null;
+			}
+		}
+	}
 }
