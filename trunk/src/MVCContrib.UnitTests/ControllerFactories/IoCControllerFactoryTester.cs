@@ -22,7 +22,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
             {
                 using (Record())
                 {
-                    Expect.Call(_dependencyResolver.GetImplementationOf<IController>(typeof(TestController))).Return(
+                    Expect.Call(_dependencyResolver.GetImplementationOf(typeof(TestController))).Return(
                         new TestController() as IController);
                 }
 
