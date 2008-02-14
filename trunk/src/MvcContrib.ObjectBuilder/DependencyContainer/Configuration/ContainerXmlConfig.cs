@@ -35,13 +35,6 @@ namespace MvcContrib.ObjectBuilder
 			config = ParseXmlConfiguration(xml);
 		}
 
-		// Properties
-
-		public bool IncludeReflectionStrategies
-		{
-			get { return true; }
-		}
-
 		// Methods
 
 		public void ApplyConfiguration(IBuilder<BuilderStage> builder)
@@ -184,7 +177,7 @@ namespace MvcContrib.ObjectBuilder
 
 			foreach(PropertyElement prop in buildRule.Property)
 				policy.Properties.Add(prop.Name,
-				                      new PropertySetterInfo(prop.Name, GetParameterFromConfigParam(prop.Item)));
+									  new PropertySetterInfo(prop.Name, GetParameterFromConfigParam(prop.Item)));
 
 			builder.Policies.Set<IPropertySetterPolicy>(policy, buildType, null);
 		}

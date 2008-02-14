@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using Microsoft.Practices.CompositeWeb.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using System.Reflection;
 
 namespace MvcContrib.ObjectBuilder
 {
 	public class DependencyContainer : IDisposable, IDependencyContainer
 	{
-		private IBuilder<BuilderStage> builder;
-		private LifetimeContainer lifetime;
-		private Locator locator;
+		protected IBuilder<BuilderStage> builder;
+		protected LifetimeContainer lifetime;
+		protected Locator locator;
 
 		// Lifetime
 
@@ -57,7 +58,7 @@ namespace MvcContrib.ObjectBuilder
 		/// Performs application-defined tasks associated with freeing, releasing,
 		/// or resetting unmanaged resources.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			if(lifetime != null)
 			{
@@ -76,7 +77,7 @@ namespace MvcContrib.ObjectBuilder
 
 		// Methods
 
-		public object Inject(object @object)
+		virtual public object Inject(object @object)
 		{
 			if(@object != null)
 			{
@@ -88,7 +89,7 @@ namespace MvcContrib.ObjectBuilder
 			}
 		}
 
-		public object Inject<TToBuild>(object @object)
+		virtual public object Inject<TToBuild>(object @object)
 		{
 			if(@object != null)
 			{
@@ -100,7 +101,7 @@ namespace MvcContrib.ObjectBuilder
 			}
 		}
 
-		public object Inject(object @object, Type itemType)
+		virtual public object Inject(object @object, Type itemType)
 		{
 			if(@object != null)
 			{
@@ -121,7 +122,7 @@ namespace MvcContrib.ObjectBuilder
 		/// Finds all the singletons in the container that implement the given type.
 		/// </summary>
 		/// <returns>An enumeration of the matching items</returns>
-		public IEnumerable<T> FindSingletons<T>()
+		virtual public IEnumerable<T> FindSingletons<T>()
 		{
 			foreach(object obj in lifetime)
 				if(obj is T)
@@ -132,7 +133,7 @@ namespace MvcContrib.ObjectBuilder
 		/// Gets an object of the given type from the container.
 		/// </summary>
 		/// <returns>The object</returns>
-		public TBuild Get<TBuild>()
+		virtual public TBuild Get<TBuild>()
 		{
 			return builder.BuildUp<TBuild>(locator, null, null);
 		}
@@ -141,7 +142,7 @@ namespace MvcContrib.ObjectBuilder
 		/// Gets an object of the given type from the container.
 		/// </summary>
 		/// <returns>The object</returns>
-		public object Get(Type tBuild)
+		virtual public object Get(Type tBuild)
 		{
 			return builder.BuildUp(locator, tBuild, null, null);
 		}
@@ -151,7 +152,7 @@ namespace MvcContrib.ObjectBuilder
 		/// </summary>
 		/// <typeparam name="TBuild">The type of the singleton</typeparam>
 		/// <param name="item">The item instance to be registered as the singleton</param>
-		public void RegisterInstance<TBuild>(TBuild item)
+		virtual public void RegisterInstance<TBuild>(TBuild item)
 		{
 			RegisterSingleton<TBuild>();
 			builder.BuildUp<TBuild>(locator, null, item);
@@ -162,17 +163,26 @@ namespace MvcContrib.ObjectBuilder
 		/// Registers the given type as a singleton in the container.
 		/// </summary>
 		/// <typeparam name="TBuild">The type to be made a singleton</typeparam>
-		public void RegisterSingleton<TBuild>()
+		virtual public void RegisterSingleton<TBuild>()
 		{
-			builder.Policies.Set<ISingletonPolicy>(new SingletonPolicy(true), typeof(TBuild), null);
+			RegisterSingleton(typeof(TBuild));
 		}
 
+		/// <summary>
+		/// Registers the given type as a singleton in the container.
+		/// </summary>
+		/// <typeparam name="TBuild">The type to be made a singleton</typeparam>
+		virtual public void RegisterSingleton(Type type)
+		{
+			builder.Policies.Set<ISingletonPolicy>(new SingletonPolicy(true), type, null);
+		}
+		
 		/// <summary>
 		/// Registers a type mapping in the container.
 		/// </summary>
 		/// <typeparam name="TRequested">The type that is requested by the user</typeparam>
 		/// <typeparam name="TToBuild">The type to be built instead</typeparam>
-		public void RegisterTypeMapping<TRequested, TToBuild>()
+		virtual public void RegisterTypeMapping<TRequested, TToBuild>()
 		{
 			RegisterTypeMapping(typeof(TRequested), typeof(TToBuild));
 		}
@@ -182,9 +192,126 @@ namespace MvcContrib.ObjectBuilder
 		/// </summary>
 		/// <typeparam name="TRequested">The type that is requested by the user</typeparam>
 		/// <typeparam name="TToBuild">The type to be built instead</typeparam>
-		public void RegisterTypeMapping(Type requestedType, Type typeToBuild)
+		virtual public void RegisterTypeMapping(Type requestedType, Type typeToBuild)
 		{
 			builder.Policies.Set<ITypeMappingPolicy>(new TypeMappingPolicy(typeToBuild, null), requestedType, null);
 		}
+
+		/// <summary>
+		/// Registers a property setter.
+		/// </summary>
+		/// <typeparam name="T">The type</typeparam>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <param name="value">The value.</param>
+		virtual public void RegisterPropertySetter<T>(string propertyName, object value)
+		{
+			RegisterPropertySetter(typeof(T), propertyName, value);
+		}
+
+		/// <summary>
+		/// Registers the property setter.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <param name="value">The value.</param>
+		virtual public void RegisterPropertySetter(Type type, string propertyName, object value)
+		{
+			if (type == null)
+			{
+				throw new ArgumentNullException("type");
+			}
+			if  (propertyName == null) 
+			{
+				throw new ArgumentNullException("propertyName");
+			}
+			PropertySetterPolicy policy = new PropertySetterPolicy();
+			PropertyInfo pi = type.GetProperty(propertyName);
+			if (pi == null)
+				throw new ApplicationException("Property not found: " + propertyName);
+
+			policy.Properties.Add(propertyName, new PropertySetterInfo(pi, new ValueParameter(pi.PropertyType, value)));
+
+			builder.Policies.Set<IPropertySetterPolicy>(policy, type, null);
+		}
+
+		/// <summary>
+		/// Registers a property setter.
+		/// </summary>
+		/// <typeparam name="TType">The type</typeparam>
+		/// <typeparam name="TValue">The type of the value. An instance of this type will be retreived from the container</typeparam>
+		/// <param name="propertyName">Name of the property.</param>
+		virtual public void RegisterPropertySetter<TType, TValue>(string propertyName)
+		{
+			RegisterPropertySetter(typeof(TType), propertyName, typeof(TValue));
+		}
+
+		/// <summary>
+		/// Registers the property setter.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <param name="propertyName">Name of the property.</param>
+		/// <param name="value">The type of the value. An instance of this type will be retreived from the container.</param>
+		virtual public void RegisterPropertySetter(Type type, string propertyName, Type value)
+		{
+			if (type == null)
+			{
+				throw new ArgumentNullException("type");
+			}
+			if (propertyName == null)
+			{
+				throw new ArgumentNullException("propertyName");
+			}
+			PropertySetterPolicy policy = new PropertySetterPolicy();
+
+			policy.Properties.Add(propertyName, new PropertySetterInfo(propertyName, new CreationParameter(value)));
+
+			builder.Policies.Set<IPropertySetterPolicy>(policy, type, null);
+		}
+
+		/// <summary>
+		/// Registers a method injection.
+		/// </summary>
+		/// <typeparam name="T">The type</typeparam>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="parameters">The parameters.</param>
+		virtual public void RegisterMethodInjection<T>(string methodName, params IParameter[] parameters)
+		{
+			RegisterMethodInjection(typeof(T), methodName, parameters);
+		}
+
+		/// <summary>
+		/// Registers a method injection.
+		/// </summary>
+		/// <param name="type">The type.</param>
+		/// <param name="methodName">Name of the method.</param>
+		/// <param name="parameters">The parameters.</param>
+		virtual public void RegisterMethodInjection(Type type, string methodName, params IParameter[] parameters)
+		{
+			if (methodName == null)
+			{
+				throw new ArgumentNullException("methodName");
+			}
+			if (type == null)
+			{
+				throw new ArgumentNullException("type");
+			}
+
+			MethodPolicy policy = GetMethodPolicy(type, null);
+			policy.Methods.Add(methodName, new MethodCallInfo(methodName, parameters));
+		}
+
+		private MethodPolicy GetMethodPolicy(Type typeToBuild, string idToBuild)
+		{
+			MethodPolicy policy = builder.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
+
+			if (policy == null)
+			{
+				policy = new MethodPolicy();
+				builder.Policies.Set<IMethodPolicy>(policy, typeToBuild, idToBuild);
+			}
+
+			return policy;
+		}
+
 	}
 }
