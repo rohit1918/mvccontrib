@@ -29,16 +29,16 @@
             </tr>
             <tr>
 				<td class="header-label" width="300px">
-					Module
-					<br/><img src="..\images\shim.gif" width="300px" height="1px" />
+					Module<br/>
+					<img src="..\images\shim.gif" width="300px" height="1px" />
 				</td>
  				<td class="header-label" width="100px">
-					Coverage %
-					<br/><img src="..\images\shim.gif" width="100px" height="1px" />
+					Coverage %<br/>
+					<img src="..\images\shim.gif" width="100px" height="1px" />
 				</td>
 				<td class="header-label" width="110px">
-					Acceptance %
-					<br/><img src="..\images\shim.gif" width="110px" height="1px" />
+					Acceptance %<br/>
+					<img src="..\images\shim.gif" width="110px" height="1px" />
 				</td>
 				<td class="header-label" width="100%">
 					Verdict
@@ -121,19 +121,19 @@
                 <xsl:attribute name="class">section-oddrow</xsl:attribute>
             </xsl:if>
 				<td>
-					<xsl:value-of select="@name"/>
+					<xsl:value-of select="@n"/>
 				</td>
  				<td>
-					<xsl:value-of select="format-number(@coverage, '0.0')"/>%
+					<xsl:value-of select="format-number(@c, '0.0')"/>%
 				</td>
 				<td>
-					<xsl:value-of select="@acceptable"/>%
+					<xsl:value-of select="@a"/>%
 				</td>
                 <td>
-                   <xsl:if test="@coverage &lt; @acceptable">
+                   <xsl:if test="@c &lt; @a">
 					  <span style="color:red">FAIL</span>
                    </xsl:if>
-                   <xsl:if test="@coverage &gt;= @acceptable">
+                   <xsl:if test="@c &gt;= @a">
 					  <span style="color:green">PASS</span>
                    </xsl:if>
                 </td>
