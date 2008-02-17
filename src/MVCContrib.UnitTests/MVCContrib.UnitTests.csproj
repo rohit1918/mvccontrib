@@ -174,6 +174,9 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="TestHelper\ControllerBuilderTests.cs" />
+    <Compile Include="TestHelper\SessionTests.cs" />
+    <Compile Include="TestHelper\TestController.cs" />
     <Compile Include="ViewFactories\DescriptableDictionaryTester.cs" />
     <Compile Include="ViewFactories\ExtensionDuckTester.cs" />
     <Compile Include="ViewFactories\HtmlExtensionDuckTester.cs" />
@@ -215,6 +218,10 @@
     <ProjectReference Include="..\MvcContrib.StructureMap\MvcContrib.StructureMap.csproj">
       <Project>{6DE6FAEF-F974-4641-990E-FFE8728E5E16}</Project>
       <Name>MvcContrib.StructureMap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.TestHelper\MvcContrib.TestHelper\MvcContrib.TestHelper.csproj">
+      <Project>{F2A3F400-A20E-4B83-959B-EBD14D6C143E}</Project>
+      <Name>MvcContrib.TestHelper</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.XsltViewEngine\MvcContrib.XsltViewEngine.csproj">
       <Project>{00D236D4-4834-4215-B3ED-812590FCBE25}</Project>

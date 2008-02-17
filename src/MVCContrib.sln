@@ -44,6 +44,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.IoC", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.IoC.Spring", "MvcContrib.Samples.IoC.Spring\MvcContrib.Samples.IoC.Spring.csproj", "{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestHelper", "TestHelper", "{C253C7E9-61CE-419F-8A99-ECEB4196919E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.TestHelper", "MvcContrib.TestHelper\MvcContrib.TestHelper\MvcContrib.TestHelper.csproj", "{F2A3F400-A20E-4B83-959B-EBD14D6C143E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +122,10 @@ Global
 		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F20387B0-5594-4C07-8FAC-3ACF61BAC1CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
