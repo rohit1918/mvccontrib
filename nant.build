@@ -150,7 +150,8 @@
 						commandLineExe="bin\nunit\nunit-console.exe"
 						commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
 						coverageFile="${results.dir}\mvccontrib.coverage.xml"
-						workingDirectory="${build.dir}">
+						workingDirectory="${build.dir}"
+            failonerror="false"  >
 
 			<assemblies basedir="${build.dir}">
 				<exclude name="**/*.unittest*"/>
