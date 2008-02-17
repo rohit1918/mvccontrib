@@ -15,15 +15,16 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			}
 		}
 
-		public class ViewBaseGeneric<T>
+		public class ViewBaseGeneric<T> where T : new()
 		{
-			public T Foo
+			public int Foo
 			{
 				get
 				{
-					object o = 9;
+                    object o = new T();
+                    var list = (List<int>)(object)o;
 
-					return (T)o;
+					return list.Count + 9;
 				}
 			}
 		}
@@ -43,7 +44,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			TemplateCompiler templateCompiler = new TemplateCompiler();
 			templateCompiler.ViewBaseType = typeof(ViewBaseGeneric<>);
 
-			AssertRender("CustomBaseClass", templateCompiler, "int");
+			AssertRender("CustomBaseClass", templateCompiler, typeof(List<int>));
 		}
 
 		[Test]
