@@ -3,7 +3,7 @@ using System.Web.UI;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.UI
+namespace MvcContrib.UnitTests.UI
 {
 
 	[TestFixture]

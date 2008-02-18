@@ -86,7 +86,7 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
-    <Compile Include="UI\Attributes.cs" />
+    <Compile Include="UI\HtmlAttributes.cs" />
     <Compile Include="UI\DomQuery.cs" />
     <Compile Include="UI\DomQueryBuilder.cs" />
     <Compile Include="UI\Element.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="UI\Html\FormHelperExtensions.cs" />
     <Compile Include="UI\Html\IDataBinder.cs" />
     <Compile Include="UI\Html\IFormHelper.cs" />
-    <Compile Include="UI\IAttributes.cs" />
+    <Compile Include="UI\IHtmlAttributes.cs" />
     <Compile Include="UI\IElement.cs" />
     <Compile Include="UI\IScriptableElement.cs" />
     <Compile Include="UI\ScriptableElement.cs" />

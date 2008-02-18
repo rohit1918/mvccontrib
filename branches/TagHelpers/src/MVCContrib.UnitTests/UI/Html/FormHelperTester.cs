@@ -7,7 +7,7 @@ using MvcContrib;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections;
 using System.Collections.Generic;
-namespace MVCContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html
 {
 	[TestFixture]
 	public class FormHelperTester

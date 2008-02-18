@@ -179,7 +179,7 @@
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestController.cs" />
-    <Compile Include="UI\AttributeTester.cs" />
+    <Compile Include="UI\HtmlAttributesTester.cs" />
     <Compile Include="UI\DomQueryBuilderTester.cs" />
     <Compile Include="UI\DomQueryTester.cs" />
     <Compile Include="UI\ElementTester.cs" />

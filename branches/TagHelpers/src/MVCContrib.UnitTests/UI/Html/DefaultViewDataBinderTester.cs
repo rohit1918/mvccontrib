@@ -3,7 +3,7 @@ using MvcContrib.UI.Html;
 using MvcContrib.UnitTests;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html
 {
 	using System;
 	using NUnit.Framework;

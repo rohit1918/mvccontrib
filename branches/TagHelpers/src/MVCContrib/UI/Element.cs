@@ -17,7 +17,7 @@ namespace MvcContrib.UI
         private string _tag;
 		private DomQuery _selector;
         private bool _escapeInnerText = false;
-        protected MvcContrib.UI.IAttributes _attributes;
+        protected MvcContrib.UI.IHtmlAttributes _attributes;
 
         public Element()
             : this("div", Hash.Empty)
@@ -32,7 +32,7 @@ namespace MvcContrib.UI
         public Element(string tag, IDictionary attributes)
         {
             _tag = tag.ToLower();
-            _attributes = new Attributes(attributes);
+            _attributes = new HtmlAttributes(attributes);
         }
 
         public virtual bool UseFullCloseTag
@@ -111,7 +111,7 @@ namespace MvcContrib.UI
             _attributes[key] = value;
         }
 
-        public IAttributes Attributes
+        public IHtmlAttributes Attributes
         {
             get { return _attributes; }
         }

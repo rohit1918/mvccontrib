@@ -4,7 +4,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using System.Linq;
 
-namespace MVCContrib.UnitTests.UI
+namespace MvcContrib.UnitTests.UI
 {
 	[TestFixture]
 	public class DomQueryTester
