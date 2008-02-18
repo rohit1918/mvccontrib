@@ -63,10 +63,6 @@
     <Compile Include="Attributes\HiddenActionAttribute.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionController.cs" />
-    <Compile Include="Extentions\FormHelpers\FormUIHelper.cs" />
-    <Compile Include="Extentions\TagHelper\ImageHelper.cs" />
-    <Compile Include="Extentions\TagHelper\LinkHelper.cs" />
-    <Compile Include="Extentions\TagHelper\TagHelper.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="IoCControllerFactory.cs" />
     <Compile Include="Filters\FilterAttribute.cs" />
