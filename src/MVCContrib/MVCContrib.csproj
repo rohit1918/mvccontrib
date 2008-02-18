@@ -89,6 +89,7 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="UiHelpers\TextInput.cs" />
     <Compile Include="ViewFactories\FileSystemViewSourceLoader.cs" />
     <Compile Include="ViewFactories\FileViewSource.cs" />
     <Compile Include="ViewFactories\IViewSourceLoader.cs" />

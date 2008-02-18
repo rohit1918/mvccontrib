@@ -95,9 +95,21 @@ namespace MvcContrib
 			return true;
 		}
 
+		private bool _isRedirected = false;
+		protected override void RedirectToAction(object values)
+		{
+			_isRedirected = true;
+			base.RedirectToAction(values);
+		}
+
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{
 			Type baseExceptionType = exception.GetBaseException().GetType();
+
+			if (baseExceptionType == typeof(System.Threading.ThreadAbortException) && _isRedirected)
+			{
+				return true;
+			}
 
 			foreach(RescueAttribute rescue in action.Rescues )
 			{

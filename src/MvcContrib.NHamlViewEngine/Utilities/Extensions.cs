@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Collections.Generic;
 
 namespace MvcContrib.NHamlViewEngine.Utilities
 {

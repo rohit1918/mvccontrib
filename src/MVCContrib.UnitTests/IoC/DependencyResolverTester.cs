@@ -1,61 +1,88 @@
+using System;
 using MvcContrib.Interfaces;
+using MvcContrib.Services;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace MVCContrib.UnitTests.IoC
 {
-    public abstract class WhenAValidTypeIsPassedBase
-    {
-        protected IDependencyResolver _dependencyResolver;
+	public abstract class WhenAValidTypeIsPassedBase
+	{
+		protected IDependencyResolver _dependencyResolver;
 
-        [SetUp]
-        public abstract void Setup();
+		[SetUp]
+		public abstract void Setup();
 
-        [TearDown]
-        public abstract void TearDown();
+		[TearDown]
+		public abstract void TearDown();
 
-        [Test]
-        public void ShouldReturnTheSimpleDependencyAndCastToAnInterface()
-        {
-            IDependency depedency  = _dependencyResolver.GetImplementationOf<IDependency>(typeof(SimpleDependency));
+		[Test]
+		public void Static_Dependency_Resolver_Wraps_Specific_Resolver()
+		{
+			DependencyResolver.InitializeWith(_dependencyResolver);
+			Assert.AreEqual(_dependencyResolver, DependencyResolver.Resolver);
 
-            Assert.That(depedency, Is.Not.Null);
-            Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
-        }
+			IDependency depedency = DependencyResolver.GetImplementationOf<SimpleDependency>();
 
-        [Test]
-        public void ShouldReturnNestedDependencyAndCastToAnInterface()
-        {
-            IDependency dependency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(NestedDependency));
+			Assert.That(depedency, Is.Not.Null);
+			Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
+		}
 
-            Assert.That(dependency, Is.Not.Null);
-            Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
+		[Test, ExpectedException(typeof(InvalidOperationException))]
+		public void Static_Dependency_Resolver_Throws_When_Not_Found_In_Resolver_And_Cannot_CreateInstance()
+		{
+			DependencyResolver.GetImplementationOf<Array>();
+		}
 
-            INestedDependency nestedDependency = (INestedDependency)dependency;
-            Assert.That(nestedDependency.Dependency, Is.Not.Null);
-            Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
-        }
+		[Test]
+		public void ShouldReturnTheSimpleDependencyAndCastToAnInterface()
+		{
+			IDependency depedency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(SimpleDependency));
 
-        [Test]
-        public void ShouldReturnTheSimpleDependency()
-        {
-            IDependency depedency = _dependencyResolver.GetImplementationOf<SimpleDependency>();
+			Assert.That(depedency, Is.Not.Null);
+			Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
+		}
 
-            Assert.That(depedency, Is.Not.Null);
-            Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
-        }
+		[Test]
+		public void ShouldReturnNestedDependencyAndCastToAnInterface()
+		{
+			IDependency dependency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(NestedDependency));
 
-        [Test]
-        public void ShouldReturnNestedDependency()
-        {
-            IDependency dependency = _dependencyResolver.GetImplementationOf<NestedDependency>();
+			Assert.That(dependency, Is.Not.Null);
+			Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
 
-            Assert.That(dependency, Is.Not.Null);
-            Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
+			INestedDependency nestedDependency = (INestedDependency)dependency;
+			Assert.That(nestedDependency.Dependency, Is.Not.Null);
+			Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
+		}
 
-            INestedDependency nestedDependency = (INestedDependency)dependency;
-            Assert.That(nestedDependency.Dependency, Is.Not.Null);
-            Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
-        }
-    }
+		[Test]
+		public void ShouldReturnTheSimpleDependency()
+		{
+			IDependency depedency = _dependencyResolver.GetImplementationOf<SimpleDependency>();
+
+			Assert.That(depedency, Is.Not.Null);
+			Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
+		}
+
+		[Test]
+		public void ShouldReturnNestedDependency()
+		{
+			IDependency dependency = _dependencyResolver.GetImplementationOf<NestedDependency>();
+
+			Assert.That(dependency, Is.Not.Null);
+			Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
+
+			INestedDependency nestedDependency = (INestedDependency)dependency;
+			Assert.That(nestedDependency.Dependency, Is.Not.Null);
+			Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
+		}
+
+		[Test]
+		public void Should_Return_Null_If_Not_Found_In_Container()
+		{
+			IAppDomainSetup dependency = _dependencyResolver.GetImplementationOf<IAppDomainSetup>();
+			Assert.That(dependency, Is.Null);
+		}
+	}
 }

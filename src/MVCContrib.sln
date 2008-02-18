@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.IoC.Spri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.HtmlHelperExtentions", "MvcContrib.Samples.HtmlHelperExtentions\MvcContrib.Samples.HtmlHelperExtentions.csproj", "{9989D603-ACE5-4999-8B9A-9670A50C7B71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.TestHelper", "MvcContrib.TestHelper\MvcContrib.TestHelper\MvcContrib.TestHelper.csproj", "{F2A3F400-A20E-4B83-959B-EBD14D6C143E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{9989D603-ACE5-4999-8B9A-9670A50C7B71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9989D603-ACE5-4999-8B9A-9670A50C7B71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9989D603-ACE5-4999-8B9A-9670A50C7B71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A3F400-A20E-4B83-959B-EBD14D6C143E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

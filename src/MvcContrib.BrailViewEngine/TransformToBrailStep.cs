@@ -50,7 +50,7 @@ namespace MvcContrib.BrailViewEngine
 
 				ClassDefinition macro = new ClassDefinition();
 				macro.Name = GetViewTypeName(module.FullName);
-				macro.BaseTypes.Add(new SimpleTypeReference("MvcContrib.BrailViewEngine.BrailBase"));
+				macro.BaseTypes.Add(new SimpleTypeReference(options.BaseType));
 
 				AddConstructor(macro);
 				ScriptDirectoryProperty(macro, module);

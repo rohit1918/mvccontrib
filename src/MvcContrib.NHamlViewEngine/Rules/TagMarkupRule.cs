@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using MvcContrib.NHamlViewEngine.Exceptions;
 using MvcContrib.NHamlViewEngine.Properties;
+using System.Text;
 
 namespace MvcContrib.NHamlViewEngine.Rules
 {
@@ -18,6 +19,10 @@ namespace MvcContrib.NHamlViewEngine.Rules
 		private static readonly Regex _idClassesRegex = new Regex(
 			@"(?:(?:\#([-\w]+))|(?:\.([-\w]+)))+",
 			RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private static readonly Regex _attributeNameReplacer = new Regex(
+            @"(?<Name>\@?\w+)\s?\=",
+            RegexOptions.Compiled | RegexOptions.Singleline);
 
 		protected virtual string PreprocessLine(InputLine inputLine)
 		{
@@ -128,6 +133,11 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			{
 				compilationContext.ViewBuilder.AppendOutput(" ");
 
+                attributesHash =_attributeNameReplacer.Replace(
+                                    attributesHash,
+                                    m => CheckAttributeName(m.Groups["Name"].Value) + " = "
+                                    );
+
 				string attributes = TryPrecompileAttributes(compilationContext.TemplateCompiler, attributesHash);
 
 				if(!string.IsNullOrEmpty(attributes))
@@ -157,6 +167,16 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 			return attributes;
 		}
+
+        private static readonly List<string> keywords = new List<string>{ "class", "new", "void", "public", "for" }; //.. etc
+        private static string CheckAttributeName(string name)
+        {
+            if (keywords.Contains(name))
+            {
+                return "@" + name;
+            }
+            return name;
+        }
 
 		private static string PrependAttribute(string attributesHash, string name, string value)
 		{
