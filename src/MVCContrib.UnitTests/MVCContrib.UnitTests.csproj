@@ -174,7 +174,6 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
-    <Compile Include="UIHelpers\TextInputTests.cs" />
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestController.cs" />
@@ -452,6 +451,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="UIHelpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
