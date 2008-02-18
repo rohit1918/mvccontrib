@@ -109,6 +109,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BaseViewTester.cs" />
+    <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
     <Compile Include="IoC\INestedDependency.cs" />
@@ -177,6 +179,16 @@
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestController.cs" />
+    <Compile Include="UI\AttributeTester.cs" />
+    <Compile Include="UI\DomQueryBuilderTester.cs" />
+    <Compile Include="UI\DomQueryTester.cs" />
+    <Compile Include="UI\ElementTester.cs" />
+    <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
+    <Compile Include="UI\Html\FormHelperTester.cs" />
+    <Compile Include="UI\Html\InputElementListTester.cs" />
+    <Compile Include="UI\Html\ScriptElementTester.cs" />
+    <Compile Include="UI\Html\TagTester.cs" />
+    <Compile Include="UI\ScriptableElementTester.cs" />
     <Compile Include="ViewFactories\DescriptableDictionaryTester.cs" />
     <Compile Include="ViewFactories\ExtensionDuckTester.cs" />
     <Compile Include="ViewFactories\HtmlExtensionDuckTester.cs" />
@@ -451,7 +463,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
