@@ -4,7 +4,7 @@ namespace MvcContrib.UI
 {
 	public interface IElement:IEnumerable
 	{
-		IAttributes Attributes { get; }
+		IHtmlAttributes Attributes { get; }
 		string Class { get; set; }
 		bool EscapeInnerText { get; set; }
 		string Id { get; set; }

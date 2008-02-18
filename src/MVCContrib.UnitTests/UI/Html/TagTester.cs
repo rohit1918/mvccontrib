@@ -4,7 +4,7 @@ using MvcContrib.UI.Tags;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.UI.ClientScript
+namespace MvcContrib.UnitTests.UI.ClientScript
 {
 	/*
 	 * Tags are really just property bags. as such there will be three sets of tests per tag that will reach 100% coverage

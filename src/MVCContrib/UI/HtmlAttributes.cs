@@ -6,7 +6,7 @@ using System.Web;
 
 namespace MvcContrib.UI
 {
-	public class Attributes : MvcContrib.UI.IAttributes
+	public class HtmlAttributes : MvcContrib.UI.IHtmlAttributes
 	{
 		private static char[] _invalidKeyCharacters = new char[]
 			{
@@ -21,7 +21,7 @@ namespace MvcContrib.UI
 
 		private int _extraLength = 3; //Extra lenght that is added per attribute.
 
-		public Attributes(IDictionary attribs)
+		public HtmlAttributes(IDictionary attribs)
 		{
 			foreach (DictionaryEntry de in attribs)
 			{
@@ -29,7 +29,7 @@ namespace MvcContrib.UI
 			}
 		}
 
-		public Attributes()
+		public HtmlAttributes()
 		{
 		}
 

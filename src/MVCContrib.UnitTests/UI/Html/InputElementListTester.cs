@@ -5,7 +5,7 @@ using NUnit.Framework.SyntaxHelpers;
 using System.Linq;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html
 {
 	[TestFixture]
 	public class InputElementListTester

@@ -47,7 +47,7 @@ namespace MvcContrib.UI
 				(closeTag ? string.Format(closeTagformat, el.Tag) : ""));
 		}
 
-		protected string RenderAttributes(IAttributes attribs)
+		protected string RenderAttributes(IHtmlAttributes attribs)
 		{
 			if (attribs.Count > 4)
 			{

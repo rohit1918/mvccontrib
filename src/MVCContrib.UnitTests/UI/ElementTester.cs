@@ -4,7 +4,7 @@ using MvcContrib.UI;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.UI.ClientScript
+namespace MvcContrib.UnitTests.UI.ClientScript
 {
 	[TestFixture]
 	public class ElementTester
