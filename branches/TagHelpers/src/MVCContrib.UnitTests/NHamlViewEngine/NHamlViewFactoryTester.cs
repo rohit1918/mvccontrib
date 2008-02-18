@@ -112,5 +112,33 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.VerifyAll();
 		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void Cant_Compile_Missing_View()
+		{
+			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
+			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+
+			_mocks.ReplayAll();
+
+			viewFactory.CreateView(_controllerContext, "missingView", null, _viewData);
+
+			_mocks.VerifyAll();
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void Cant_Compile_View_With_Missing_Master()
+		{
+			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
+			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+
+			_mocks.ReplayAll();
+
+			viewFactory.CreateView(_controllerContext, "index", "missingMaster", _viewData);
+
+			_mocks.VerifyAll();
+		}
 	}
 }

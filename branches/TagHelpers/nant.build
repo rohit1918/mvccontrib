@@ -9,7 +9,8 @@
 	<property name="bin.dir" value="bin" />
 	<property name="build.base" value="build"/>
 	<property name="results.dir" value="${build.base}\results" />
-	<property name="version.major" value="0"/>
+  <property name="samples.dir" value="src\samples"/>
+  <property name="version.major" value="0"/>
 	<property name="version.minor" value="0"/>
 	<property name="version.build" value="1"/>
 	<property name="version.revision" value="0"/>
@@ -21,7 +22,7 @@
 	<!-- debug|release -->
 	<property name="build.dir" value="${build.base}/${nant.settings.currentframework}.${platform::get-name()}-${project::get-name()}-${project.config}/"/>
 
-	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
+	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
 	<target name="cruise" depends="build, analyze, package"/>
 	<target name="commiter" depends="build, analyze, package"/>
 
@@ -130,7 +131,7 @@
 	</target>
 
 	<target name="test" depends="init">
-		<delete dir="${results.dir}" if="${directory::exists('${results.dir}')}" />
+		<delete dir="${results.dir}" if="${directory::exists('${results.dir}')}" verbose="true" />
 		<mkdir dir="${results.dir}"/>
 
 		<nunit2 failonerror="true" verbose="true">
@@ -144,13 +145,32 @@
 		</nunit2>
 	</target>
 
-	<target name="analyze" >
+  <target name="move-for-samples">    
+    <copy todir="${samples.dir}\bin" flatten="true">
+      <fileset basedir="${build.dir}">
+        <include name="/**/*.dll" />
+      </fileset>
+    </copy>
+  </target>
+  
+    <target name="compile-samples" depends="init, move-for-samples">
+    <echo message="Build Directory is ${build.dir}" />
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
+				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Clean /p:Configuration=${project.config} /v:q" workingdir="." />
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
+				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
+  </target>
+
+
+
+  <target name="analyze" >
 		<loadtasks path="bin\ncover\Build Task Plugins"/>
 		<ncover program="bin\ncover\ncover.console.exe"
 						commandLineExe="bin\nunit\nunit-console.exe"
 						commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
 						coverageFile="${results.dir}\mvccontrib.coverage.xml"
-						workingDirectory="${build.dir}">
+						workingDirectory="${build.dir}"
+            failonerror="false"  >
 
 			<assemblies basedir="${build.dir}">
 				<exclude name="**/*.unittest*"/>
@@ -194,7 +214,10 @@
 							ProjectFilePath="bin\ndepend\MvcContrib.xml"/>
 		-->
 	</target>
-	<target name="package">
+
+  
+  
+  <target name="package">
 		<!-- 		
 			make a new dir for release.
 			include subfolders
@@ -213,14 +236,31 @@
 
 		<mkdir dir="${build.base}/release/Samples" />
 		<copy todir="${build.base}/release/Samples" >
-			<fileset basedir="${solution.dir}">
-				<exclude name="**/bin/**"/>
+			<fileset basedir="${solution.dir}/">
+        <exclude name="**/bin/**"/>
 				<exclude name="**/obj/**"/>
-				<include name="/**samples**/**" />
-			</fileset>
+        <exclude name="**/samples/**"/>
+        <include name="/**samples**/**" />
+      </fileset>
 		</copy>
 
-		<mkdir dir="${build.base}/release/Helpers/" />
+    <copy todir="${build.base}/release/Samples" >
+      <fileset basedir="${solution.dir}/Samples">
+        <exclude name="**/bin/**"/>
+        <exclude name="**/obj/**"/>
+        <exclude name="/**resharper**/**"/>
+        <include name="/**/**" />
+      </fileset>
+    </copy>
+
+    <copy todir="${build.base}/release/Samples/bin" >
+      <fileset basedir="${solution.dir}/Samples/bin">
+        <include name="*.*"/>
+      </fileset>
+    </copy>
+
+
+    <mkdir dir="${build.base}/release/Helpers/" />
 		<copy todir="${build.base}/release/Helpers" >
 			<fileset basedir="extras">
 				<include name="/**/**" />

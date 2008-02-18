@@ -35,8 +35,10 @@ namespace MvcContrib.UnitTests
 
 			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
 			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+			IHttpResponse response = _mocks.DynamicMock<IHttpResponse>();
 
 			SetupResult.For(context.Request).Return(request);
+			SetupResult.For(context.Response).Return(response);
 			SetupResult.For(request.QueryString).Return(new NameValueCollection());
 			SetupResult.For(request.Form).Return(new NameValueCollection());
 
@@ -130,11 +132,24 @@ namespace MvcContrib.UnitTests
 			Assert.IsTrue(controller.OnErrorWasCalled);
 		}
 
+		[Test]
+		public void ShouldNotBeRescuedWhenThreadAbortExceptionThrownDueToRedirect()
+		{
+			Expect.Call(delegate { _controller.Response.Redirect(null); });
+			_mocks.Replay(_controller.Response);
+			_controller.DoInvokeAction("WithRedirect");
+			_mocks.Verify(_controller.Response);
+
+			Assert.IsTrue(_controller.OnErrorWasCalled);
+			Assert.IsTrue(_controller.OnErrorResult.Value);
+		}
+
 		class TestController : ConventionController
 		{
 			public bool OnPreActionReturnValue = true;
 			public bool ActionWasCalled = false;
 			public bool OnErrorWasCalled = false;
+			public bool? OnErrorResult = null;
 
 			public void BasicAction(int id)
 			{
@@ -151,6 +166,15 @@ namespace MvcContrib.UnitTests
 			public void ComplexAction([Deserialize("ids")] int[] ids)
 			{
 				ActionWasCalled = true;
+			}
+
+			public void WithRedirect()
+			{
+				RedirectToAction("ComplexAction");
+				//Simulate RedirectToAction throwing a ThreadAbortException
+				ConstructorInfo ctor = typeof(ThreadAbortException).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+				ThreadAbortException exc = (ThreadAbortException)ctor.Invoke(Type.EmptyTypes);
+				throw exc;
 			}
 
 			public void BadAction()
@@ -188,6 +212,7 @@ namespace MvcContrib.UnitTests
 			{
 				bool result = base.OnError(action, exception);
 				OnErrorWasCalled = true;
+				OnErrorResult = result;
 				return result;
 			}
 		}

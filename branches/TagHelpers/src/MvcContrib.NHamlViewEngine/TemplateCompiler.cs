@@ -116,18 +116,18 @@ namespace MvcContrib.NHamlViewEngine
 			return _autoClosingTags.Contains(tag.ToUpperInvariant());
 		}
 
-		public Type Compile(string templatePath, params string[] genericArguments)
+		public Type Compile(string templatePath, params Type[] genericArguments)
 		{
 			return Compile(templatePath, null, genericArguments);
 		}
 
-		public Type Compile(string templatePath, string layoutPath, params string[] genericArguments)
+		public Type Compile(string templatePath, string layoutPath, params Type[] genericArguments)
 		{
 			return Compile(templatePath, layoutPath, null, genericArguments);
 		}
 
 		public Type Compile(string templatePath, string layoutPath,
-		                    ICollection<string> inputFiles, params string[] genericArguments)
+		                    ICollection<string> inputFiles, params Type[] genericArguments)
 		{
 			Invariant.ArgumentNotEmpty(templatePath, "templatePath");
 			Invariant.FileExists(templatePath);

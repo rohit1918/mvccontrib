@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Permissions;
 using System.Web;
 using MvcContrib.ViewFactories;
+using System.Web.Mvc;
 
 namespace MvcContrib.NHamlViewEngine
 {
@@ -56,14 +57,16 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void CompileView(object viewData)
 		{
-			string viewDataType = "System.Web.Mvc.ViewData";
+            var viewDataType = viewData.GetType();
 
-			if(!NHamlViewFactory.ViewDataIsDictionary(viewData))
-			{
-				_templateCompiler.AddReference(viewData.GetType().Assembly.Location);
-
-				viewDataType = viewData.GetType().FullName;
-			}
+            if (!NHamlViewFactory.ViewDataIsDictionary(viewData))
+            {
+                AddReferences(viewDataType);
+            }
+            else
+            {
+                viewDataType = typeof(ViewData);
+            }
 
 			List<string> inputFiles = new List<string>();
 
@@ -74,5 +77,18 @@ namespace MvcContrib.NHamlViewEngine
 				_fileTimestamps[inputFile] = File.GetLastWriteTime(inputFile);
 			}
 		}
+
+        private void AddReferences(Type type)
+        {
+            _templateCompiler.AddReference(type.Assembly.Location);
+
+            if (type.IsGenericType)
+            {
+                foreach (var t in type.GetGenericArguments())
+                {
+                    AddReferences(t);
+                }
+            }
+        }
 	}
 }

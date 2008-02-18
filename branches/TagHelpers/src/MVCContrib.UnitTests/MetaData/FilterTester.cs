@@ -137,8 +137,8 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.IsTrue(_controller.DependentFilterCalled);
 		}
 
-		[Test, ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "Could not create filter of type 'FilterReturnsTrue'. If you are using the Dependency Resolver, ensure that the filter is registered with the IoC container. Please review the inner exception for more details.")]
-		public void ShouldThrowIfNotRegisteredWithIoC()
+		[Test]
+		public void Should_Not_Throw_If_Not_Registered_With_IoC()
 		{
 			IWindsorContainer container = new WindsorContainer();
 			DependencyResolver.InitializeWith(new WindsorDependencyResolver(container));

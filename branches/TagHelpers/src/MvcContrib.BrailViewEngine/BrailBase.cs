@@ -93,6 +93,12 @@ namespace MvcContrib.BrailViewEngine
 			get { return viewEngine.ViewRootDir; }
 		}
 
+		public ViewContext ViewContext
+		{
+			get { return __viewContext; }
+			set { __viewContext = value; }
+		}
+
 		/// <summary>
 		/// Gets the view engine.
 		/// </summary>
@@ -395,7 +401,6 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		private void InitProperties(ViewContext viewContext)
 		{
-			properties = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 			//properties.Add("dsl", new DslWrapper(this));
 			properties.Add("Controller", viewContext.Controller);
 
@@ -547,6 +552,7 @@ namespace MvcContrib.BrailViewEngine
 			if (Layout != null)
 			{
 				Layout.SetParent(this);
+				Layout.ViewContext = viewContext;
 				try
 				{
 					Layout.Run();

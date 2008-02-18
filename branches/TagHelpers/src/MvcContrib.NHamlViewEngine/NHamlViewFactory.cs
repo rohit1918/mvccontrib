@@ -95,6 +95,11 @@ namespace MvcContrib.ViewFactories
 							viewPath = string.Concat(viewPath, ".haml");
 						}
 
+						if (!_viewSourceLoader.HasView(viewPath))
+						{
+							throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
+						}
+
 						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
 
 						Invariant.IsNotNull(viewSource);
@@ -140,25 +145,32 @@ namespace MvcContrib.ViewFactories
 
 		protected virtual IViewSource FindLayout(string mastersFolder, string masterName, string controller)
 		{
-			string masterPath = mastersFolder + "\\" + masterName + ".haml";
-
-			if(_viewSourceLoader.HasView(masterPath))
+			if (!string.IsNullOrEmpty(masterName))
 			{
-				return _viewSourceLoader.GetViewSource(masterPath);
+				string requestedPath = mastersFolder + "\\" + masterName + ".haml";
+
+				if (_viewSourceLoader.HasView(requestedPath))
+				{
+					return _viewSourceLoader.GetViewSource(requestedPath);
+				}
+				else
+				{
+					throw new InvalidOperationException(string.Format("Layout {0} was specified but couldn't be found.", masterName));
+				}
 			}
 
-			masterPath = mastersFolder + "\\" + controller + ".haml";
+			string controllerPath = mastersFolder + "\\" + controller + ".haml";
 
-			if(_viewSourceLoader.HasView(masterPath))
+			if (_viewSourceLoader.HasView(controllerPath))
 			{
-				return _viewSourceLoader.GetViewSource(masterPath);
+				return _viewSourceLoader.GetViewSource(controllerPath);
 			}
 
-			masterPath = mastersFolder + "\\application.haml";
+			string applicationPath = mastersFolder + "\\application.haml";
 
-			if(_viewSourceLoader.HasView(masterPath))
+			if (_viewSourceLoader.HasView(applicationPath))
 			{
-				return _viewSourceLoader.GetViewSource(masterPath);
+				return _viewSourceLoader.GetViewSource(applicationPath);
 			}
 
 			return null;

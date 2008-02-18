@@ -3,6 +3,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MvcContrib.NHamlViewEngine.Utilities;
 
+using System.Linq;
+using System.Collections.Generic;
+
 namespace MvcContrib.NHamlViewEngine
 {
 	public sealed class ViewBuilder
@@ -16,7 +19,7 @@ namespace MvcContrib.NHamlViewEngine
 
 		private int _depth;
 
-		public ViewBuilder(TemplateCompiler templateCompiler, string className, params string[] genericArguments)
+		public ViewBuilder(TemplateCompiler templateCompiler, string className, params Type[] genericArguments)
 		{
 			_className = className;
 
@@ -33,18 +36,28 @@ namespace MvcContrib.NHamlViewEngine
 			get { return _className; }
 		}
 
-		public static string MakeBaseTypeName(Type baseType, params string[] genericArguments)
+		public static string MakeBaseTypeName(Type baseType, params Type[] genericArguments)
 		{
-			string name = baseType.FullName.Replace('+', '.');
+            if (genericArguments != null && genericArguments.Length > 0)
+            {
+                baseType = baseType.MakeGenericType(genericArguments);
+            }
+            var tname = baseType.FullName.Replace('+', '.');
 
-			name = _typeNameCleaner.Replace(name, string.Empty);
+            if (baseType.IsGenericType)
+            {
+                tname = tname.Substring(0, tname.IndexOf('`'));
+                tname += "<";
 
-			if(genericArguments.Length > 0)
-			{
-				name += '<' + string.Join(",", genericArguments) + '>';
-			}
+                var parameters = from t in baseType.GetGenericArguments()
+                                 select MakeBaseTypeName(t, null);
 
-			return name;
+                tname += string.Join(",", parameters.ToArray());
+
+                tname += ">";
+            }
+
+            return tname;
 		}
 
 		public void AppendOutput(string value)

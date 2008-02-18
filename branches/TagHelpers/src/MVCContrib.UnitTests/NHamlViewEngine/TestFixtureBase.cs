@@ -40,7 +40,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		}
 
 		protected static void AssertRender(string template, TemplateCompiler templateCompiler,
-		                                   params string[] genericArguments)
+		                                   params Type[] genericArguments)
 		{
 			Type viewType = templateCompiler.Compile(
 				TemplatesFolder + template + ".haml", genericArguments);

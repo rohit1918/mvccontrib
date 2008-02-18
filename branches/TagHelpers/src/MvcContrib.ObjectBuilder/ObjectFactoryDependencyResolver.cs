@@ -4,23 +4,35 @@ using MvcContrib.ObjectBuilder;
 
 namespace MVCContrib.UnitTests.IoC
 {
-    public class ObjectFactoryDependencyResolver : IDependencyResolver
-    {
-        private readonly IDependencyContainer _container;
+	public class ObjectFactoryDependencyResolver : IDependencyResolver
+	{
+		private readonly IDependencyContainer _container;
 
-        public ObjectFactoryDependencyResolver(IDependencyContainer container)
-        {
-            _container = container;
-        }
+		public ObjectFactoryDependencyResolver(IDependencyContainer container)
+		{
+			_container = container;
+		}
 
-        public Interface GetImplementationOf<Interface>()
-        {
-            return (Interface)_container.Get(typeof(Interface));
-        }
+		public Interface GetImplementationOf<Interface>()
+		{
+			return (Interface)GetImplementationOf(typeof(Interface));
+		}
 
-        public Interface GetImplementationOf<Interface>(Type type)
-        {
-            return (Interface)_container.Get(type);
-        }
-    }
+		public Interface GetImplementationOf<Interface>(Type type)
+		{
+			return (Interface)GetImplementationOf(type);
+		}
+
+		public object GetImplementationOf(Type type)
+		{
+			try
+			{
+				return _container.Get(type);
+			}
+			catch(ArgumentException)
+			{
+				return null;
+			}
+		}
+	}
 }

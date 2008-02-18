@@ -29,7 +29,7 @@ namespace MvcContrib.ControllerFactories
                 }
                 else
                 {
-                    return DependencyResolver.Resolver.GetImplementationOf<IController>(controllerType);
+                    return DependencyResolver.GetImplementationOf<IController>(controllerType);
                 }                    
             }
             else
