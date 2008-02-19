@@ -30,7 +30,7 @@
 		<%= Html.Form().TextArea("person.Name", new Hash(rows => 10, cols => 40)) %>
 	</p>
 	<h1>Hidden fields</h1>
-	<p>Hidden fields can be created using a similar syntax:</p>
+	<p>Hidden fields can be created using a similar syntax (view source to see generated HTML):</p>
 	<%= Html.Form().HiddenField("person.Id") %>
 	<h1>Checkbox fields</h1>
 	<p>Note that for checkbox fields, a hidden field is also generated with the same name to allow for easier databinding.</p>
@@ -43,4 +43,15 @@
 		The options can also be strongly typed.
 		
 	</p>
+	
+	<h1>Checkbox Lists and Radio Lists</h1>
+	<p>Checkbox lists and radio lists can be generated in one of three ways. The standard method outputs a horizontal list:</p>
+	<%= Html.Form().CheckBoxList("accessLevel", ViewData["roles"], "Name", "Id") %>
+	<p>You can use the ToFormattedString method to create a vertical list:</p>
+	<%= Html.Form().CheckBoxList("accessLevel2", ViewData["roles"], "Name", "Id").ToFormattedString("{0}<br />") %>
+	<p>You can also iterate over the checkbox list to manually manipulate each checkbox/radio button</p>
+	<% foreach(var checkbox in Html.Form().CheckBoxList("accessLevel3", ViewData["roles"], "Name", "Id")) { %>
+		<% if(checkbox.Value.Equals("2")) { checkbox.Checked = true; }%>	
+		<%= checkbox %>
+	<% } %>	
 </asp:Content>
