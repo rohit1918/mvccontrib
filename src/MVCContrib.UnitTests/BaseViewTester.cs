@@ -25,6 +25,7 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
+			SetupResult.For(httpContext.Items).Return(new Hashtable());
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
 			IController controller = mocks.DynamicMock<IController>();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);

@@ -1,10 +1,12 @@
 using System.Collections;
 using MvcContrib.UI.Tags;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Html
 {
 	public interface IFormHelper
 	{
+		ViewContext ViewContext { get; set; }
 		string TextField(string name);
 		string TextField(TextBox attributes);
 		string TextField(string name, IDictionary attributes);
