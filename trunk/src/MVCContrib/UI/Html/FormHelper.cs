@@ -3,14 +3,30 @@ using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.UI.Tags;
 using System;
+using System.Web;
+using MvcContrib.Services;
 
 namespace MvcContrib.UI.Html
 {
 	public class FormHelper : BaseHelper, IFormHelper
 	{
-		public FormHelper(ViewContext viewContext)
+		public const string CACHE_KEY = "__MvcContribFormHelper__";
+
+		public static IFormHelper GetInstance(ViewContext context)
 		{
-			ViewContext = viewContext;
+			if(context.HttpContext.Items.Contains(CACHE_KEY))
+				return (IFormHelper)context.HttpContext.Items[CACHE_KEY];
+
+			IFormHelper helper;
+
+			if (DependencyResolver.Resolver != null)
+				helper = DependencyResolver.Resolver.GetImplementationOf<IFormHelper>();
+			else
+				helper = new FormHelper();
+
+			helper.ViewContext = context;
+			context.HttpContext.Items.Add(CACHE_KEY, helper);
+			return helper;
 		}
 
 		public string TextField(string name)

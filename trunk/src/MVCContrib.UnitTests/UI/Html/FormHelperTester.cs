@@ -7,6 +7,10 @@ using MvcContrib;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections;
 using System.Collections.Generic;
+using Rhino.Mocks;
+using System.Web;
+using MvcContrib.Interfaces;
+using MvcContrib.Services;
 namespace MvcContrib.UnitTests.UI.Html
 {
 	[TestFixture]
@@ -20,7 +24,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			protected override void Setup()
 			{
 				base.Setup();
-				_helper = new FormHelper(_viewContext);
+				_helper = new FormHelper();
+				_helper.ViewContext = _viewContext;
 			}
 
 			protected List<Person> BuildPeople()
@@ -50,6 +55,58 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[TestFixture]
+		public class When_GetInstance_Is_Invoked : BaseViewTester
+		{
+			[SetUp]
+			public void SetUp()
+			{
+				//Ensure there isn't a dependencyresolver hanging around from a previous test...
+				DependencyResolver.InitializeWith(null);
+				base.Setup();
+			}
+
+			[TearDown]
+			public void TearDown()
+			{
+				DependencyResolver.InitializeWith(null);
+			}
+
+			[Test]
+			public void The_FormHelper_in_HttpContext_Items_should_be_returned()
+			{
+				FormHelper helper = new FormHelper();
+				_viewContext.HttpContext.Items.Add(FormHelper.CACHE_KEY, helper);
+				Assert.That(FormHelper.GetInstance(_viewContext), Is.EqualTo(helper));
+			}
+
+			[Test]
+			public void A_new_FormHelper_should_be_created_and_cached_in_HttpContext_items_and_ViewContext_should_be_set()
+			{
+				IFormHelper helper = FormHelper.GetInstance(_viewContext);
+				Assert.That(helper, Is.Not.Null);
+				Assert.That(_viewContext.HttpContext.Items[FormHelper.CACHE_KEY], Is.EqualTo(helper));
+				Assert.That(helper.ViewContext, Is.EqualTo(_viewContext));
+			}
+			
+			[Test]
+			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
+			{
+				FormHelper helper = new FormHelper();
+				using(mocks.Record())
+				{
+					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
+					DependencyResolver.InitializeWith(resolver);
+					Expect.Call(resolver.GetImplementationOf<IFormHelper>()).Return(helper);
+				}
+				using(mocks.Playback())
+				{
+					IFormHelper instance = FormHelper.GetInstance(_viewContext);
+					Assert.That(instance, Is.EqualTo(helper));
+				}
+			}
+		}
+
+		[TestFixture]
 		public class When_Binder_Is_Null : BaseFormHelperTester
 		{
 			[Test]
@@ -70,6 +127,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			protected override void Setup()
 			{
 				base.Setup();
+				//Ensure there isn't a dependencyresolver hanging around from a previous test...
+				DependencyResolver.InitializeWith(null);
 			}
 
 			[Test]
