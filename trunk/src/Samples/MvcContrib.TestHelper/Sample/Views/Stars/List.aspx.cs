@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
-using MvcTestingFramework.Sample.Models;
-using MvcTestingFramework.Sample.Controllers;
+using MvcContrib.TestHelper.Sample.Models;
+using MvcContrib.TestHelper.Sample.Controllers;
 using System.Collections.Generic;
 
-namespace MvcTestingFramework.Sample.Views.Stars
+namespace MvcContrib.TestHelper.Sample.Views.Stars
 {
     public partial class List : ViewPage<List<Star>>
     {

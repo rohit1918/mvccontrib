@@ -2,10 +2,10 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Linq;
-using MvcTestingFramework.Sample.Models;
+using MvcContrib.TestHelper.Sample.Models;
 using System.Collections.Generic;
 
-namespace MvcTestingFramework.Sample.Controllers
+namespace MvcContrib.TestHelper.Sample.Controllers
 {
     public class StarsController : Controller
     {

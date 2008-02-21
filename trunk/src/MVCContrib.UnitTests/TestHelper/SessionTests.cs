@@ -5,9 +5,9 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using NUnit.Framework;
-using MvcTestingFramework;
+using MvcContrib.TestHelper;
 
-namespace MvcTestingFramework.Test
+namespace MvcContrib.TestHelper.Test
 {
     [TestFixture]
     public class SessionTests
