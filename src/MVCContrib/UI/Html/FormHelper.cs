@@ -29,19 +29,19 @@ namespace MvcContrib.UI.Html
 			return helper;
 		}
 
-		public string TextField(string name)
+		public virtual string TextField(string name)
 		{
 			return TextField(name, Hash.Empty);
 		}
 
-		public string TextField(string name, IDictionary attributes)
+		public virtual string TextField(string name, IDictionary attributes)
 		{
 			TextBox options = new TextBox(attributes);
 			options.Name = name;
 			return TextField(options);
 		}
 
-		public string TextField(TextBox options)
+		public virtual string TextField(TextBox options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -52,19 +52,19 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public string HiddenField(string name)
+		public virtual string HiddenField(string name)
 		{
 			return HiddenField(name, Hash.Empty);
 		}
 
-		public string HiddenField(string name, IDictionary attributes)
+		public virtual string HiddenField(string name, IDictionary attributes)
 		{
 			HiddenField options = new HiddenField(attributes);
 			options.Name = name;
 			return HiddenField(options);
 		}
 
-		public string HiddenField(HiddenField options)
+		public virtual string HiddenField(HiddenField options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -75,19 +75,19 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public string CheckBoxField(string name)
+		public virtual string CheckBoxField(string name)
 		{
 			return CheckBoxField(name, Hash.Empty);
 		}
 
-		public string CheckBoxField(string name, IDictionary attributes)
+		public virtual string CheckBoxField(string name, IDictionary attributes)
 		{
 			CheckBoxField options = new CheckBoxField(attributes);
 			options.Name = name;
 			return CheckBoxField(options);
 		}
 
-		public string CheckBoxField(CheckBoxField options)
+		public virtual string CheckBoxField(CheckBoxField options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -112,19 +112,19 @@ namespace MvcContrib.UI.Html
 			return options.ToString() + hidden.ToString();
 		}
 
-		public string TextArea(string name)
+		public virtual string TextArea(string name)
 		{
 			return TextArea(name, Hash.Empty);
 		}
 
-		public string TextArea(string name, IDictionary attributes)
+		public virtual string TextArea(string name, IDictionary attributes)
 		{
 			TextArea options = new TextArea(attributes);
 			options.Name = name;
 			return TextArea(options);
 		}
 
-		public string TextArea(TextArea options)
+		public virtual string TextArea(TextArea options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -137,19 +137,19 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public string Submit()
+		public virtual string Submit()
 		{
 			return Submit("Submit");
 		}
 
-		public string Submit(string value)
+		public virtual string Submit(string value)
 		{
 			SubmitButton button = new SubmitButton();
 			button.Value = value;
 			return Submit(button);
 		}
 
-		public string Submit(string value, IDictionary attributes)
+		public virtual string Submit(string value, IDictionary attributes)
 		{
 			SubmitButton button = new SubmitButton(attributes);
 
@@ -159,17 +159,17 @@ namespace MvcContrib.UI.Html
 			return Submit(button);
 		}
 
-		public string Submit(SubmitButton options)
+		public virtual string Submit(SubmitButton options)
 		{
 			return options.ToString();
 		}
 
-		public string Select(string name, object dataSource, string textField, string valueField)
+		public virtual string Select(string name, object dataSource, string textField, string valueField)
 		{
 			return Select(name, dataSource, textField, valueField, Hash.Empty);
 		}
 
-		public string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes)
+		public virtual string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
 			string firstOption = ObtainAndRemove(attributes, "firstOption");
 			string firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
@@ -183,7 +183,7 @@ namespace MvcContrib.UI.Html
 			return Select(dataSource, select);
 		}
 
-		public string Select(object dataSource, Select options)
+		public virtual string Select(object dataSource, Select options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -202,19 +202,19 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public string RadioField(string name)
+		public virtual string RadioField(string name)
 		{
 			return RadioField(name, Hash.Empty);
 		}
 
-		public string RadioField(string name, IDictionary attributes)
+		public virtual string RadioField(string name, IDictionary attributes)
 		{
 			RadioField options = new RadioField(attributes);
 			options.Name = name;
 			return RadioField(options);
 		}
 
-		public string RadioField(RadioField options)
+		public virtual string RadioField(RadioField options)
 		{
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
@@ -225,12 +225,12 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public CheckBoxList CheckBoxList(string name, object dataSource, string textField, string valueField)
+		public virtual CheckBoxList CheckBoxList(string name, object dataSource, string textField, string valueField)
 		{
 			return CheckBoxList(name, dataSource, textField, valueField, Hash.Empty);
 		}
 
-		public CheckBoxList CheckBoxList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
+		public virtual CheckBoxList CheckBoxList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
 			CheckBoxList list = new CheckBoxList(attributes);
 			list.Name = name;
@@ -239,7 +239,7 @@ namespace MvcContrib.UI.Html
 			return CheckBoxList(dataSource, list);
 		}
 
-		public CheckBoxList CheckBoxList(object dataSource, CheckBoxList options)
+		public virtual CheckBoxList CheckBoxList(object dataSource, CheckBoxList options)
 		{
 			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
 			{
@@ -255,12 +255,12 @@ namespace MvcContrib.UI.Html
 			return options;
 		}
 
-		public RadioList RadioList(string name, object dataSource, string textField, string valueField)
+		public virtual RadioList RadioList(string name, object dataSource, string textField, string valueField)
 		{
 			return RadioList(name, dataSource, textField, valueField, Hash.Empty);
 		}
 
-		public RadioList RadioList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
+		public virtual RadioList RadioList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
 			RadioList list = new RadioList(attributes);
 			list.Name = name;
@@ -269,7 +269,7 @@ namespace MvcContrib.UI.Html
 			return RadioList(dataSource, list);
 		}
 
-		public RadioList RadioList(object dataSource, RadioList options)
+		public virtual RadioList RadioList(object dataSource, RadioList options)
 		{
 			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value) 
 			{

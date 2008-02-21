@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Services;
-using MVCContrib.UnitTests.IoC;
+using MvcContrib.Spring;
 using Spring.Core.IO;
 using Spring.Objects.Factory;
 using Spring.Objects.Factory.Xml;

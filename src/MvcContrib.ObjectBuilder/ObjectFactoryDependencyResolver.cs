@@ -2,7 +2,7 @@ using System;
 using MvcContrib.Interfaces;
 using MvcContrib.ObjectBuilder;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.ObjectBuilder
 {
 	public class ObjectFactoryDependencyResolver : IDependencyResolver
 	{

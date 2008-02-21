@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Samples.IoC.Controllers;
 using MvcContrib.Services;
-using MvcContrib.UnitTests.ControllerFactories;
+using MvcContrib.StructureMap;
 using StructureMap;
 
 namespace MvcContrib.Samples.IoC
