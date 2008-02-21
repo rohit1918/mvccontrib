@@ -2,16 +2,23 @@
 using System.Web.Mvc;
 using Castle.Core.Interceptor;
 
-namespace MvcTestingFramework
+namespace MvcContrib.TestHelper
 {
     public partial class TestControllerBuilder //remember c++ "friend" classes?
     {
         #region Nested type: ControllerInterceptor
 
+        /// <summary>
+        /// Used internally for intercepting controller calls to RenderView and RedirectToAction
+        /// </summary>
         private class ControllerInterceptor : IInterceptor
         {
             private TestControllerBuilder _parentHandler;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ControllerInterceptor"/> class.
+            /// </summary>
+            /// <param name="parentHandler">The TestControllerBuilder creating this ControllerInterceptor.</param>
             public ControllerInterceptor(TestControllerBuilder parentHandler)
             {
                 _parentHandler = parentHandler;
@@ -19,6 +26,10 @@ namespace MvcTestingFramework
 
             #region IInterceptor Members
 
+            /// <summary>
+            /// Intercepts the specified invocation. Called by DynamicProxy when any virtual method on the proxied controller is called.
+            /// </summary>
+            /// <param name="invocation">The invocation.</param>
             public void Intercept(IInvocation invocation)
             {
                 if(invocation.Method.Name == "RenderView" && invocation.Arguments.Length == 3)
@@ -52,6 +63,11 @@ namespace MvcTestingFramework
 
             #endregion
 
+
+            /// <summary>
+            /// Handles the RedirectToAction call of a controller
+            /// </summary>
+            /// <param name="values">The RedirectData or RedirectDataWithController or Anon object with Action/Controller values</param>
             protected void HandleRedirectToAction(object values)
             {
                 //crazy reflection stuff because RedirectData and RedirectDataWithController are marked as internal. (Rage!)

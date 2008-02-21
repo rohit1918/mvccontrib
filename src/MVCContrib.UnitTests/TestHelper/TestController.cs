@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using NUnit.Framework;
-using MvcTestingFramework;
+using MvcContrib.TestHelper;
 
-namespace MvcTestingFramework.Test
+namespace MvcContrib.TestHelper
 {
     public class TestController : Controller
     {

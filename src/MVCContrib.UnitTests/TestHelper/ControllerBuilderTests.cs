@@ -5,10 +5,13 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using NUnit.Framework;
-using MvcTestingFramework;
+using MvcContrib.TestHelper;
 
 
-namespace MvcTestingFramework.Test
+//Note: these tests confirm that the TestControllerBuilder works properly
+//for examples on how to use the TestControllerBuilder and other TestHelper classes,
+//look in the \src\Samples\MvcContrib.TestHelper solution
+namespace MvcContrib.TestHelper.Test
 {
     [TestFixture]
     public class ControllerBuilderTests

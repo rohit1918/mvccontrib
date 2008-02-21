@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="MvcContrib.TestHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\MvcContrib.TestHelper.dll</HintPath>
+      <HintPath>..\..\..\MvcContrib.TestHelper\MvcContrib.TestHelper\bin\$(Configuration)\MvcContrib.TestHelper.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -55,7 +55,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Sample\MvcContrib.TestHelper.Sample.csproj">
       <Project>{62450899-13BA-4A62-8FCD-911B5428958F}</Project>
-      <Name>MvcTestingFramework.Sample</Name>
+      <Name>MvcContrib.TestHelper.Sample</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

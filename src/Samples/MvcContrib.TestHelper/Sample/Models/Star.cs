@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace MvcTestingFramework.Sample.Models
+namespace MvcContrib.TestHelper.Sample.Models
 {
     public class Star
     {

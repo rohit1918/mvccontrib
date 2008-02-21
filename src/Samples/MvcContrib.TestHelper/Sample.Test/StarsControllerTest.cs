@@ -5,15 +5,15 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using NUnit.Framework;
-using MvcTestingFramework.Sample.Controllers;
-using MvcTestingFramework.Sample.Models;
-using MvcTestingFramework;
+using MvcContrib.TestHelper.Sample.Controllers;
+using MvcContrib.TestHelper.Sample.Models;
+using MvcContrib.TestHelper;
 
 //This class is to demo the use of the framework
 //by testing the controller located in MvcTestingFramework.Sample.
 //The actual unit tests for the framework are located in MvcTestingFramework.Test
 
-namespace MvcTestingFramework.Sample.Test
+namespace MvcContrib.TestHelper.Sample
 {
     [TestFixture]
     public class StarsControllerTest
