@@ -2,7 +2,7 @@ using System;
 using MvcContrib.Interfaces;
 using Spring.Objects.Factory;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.Spring
 {
 	public class SpringDependencyResolver : IDependencyResolver
 	{

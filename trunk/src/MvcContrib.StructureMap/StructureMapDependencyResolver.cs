@@ -1,8 +1,9 @@
-namespace MvcContrib.UnitTests.ControllerFactories
+using StructureMap;
+
+namespace MvcContrib.StructureMap
 {
 	using System;
 	using MvcContrib.Interfaces;
-	using StructureMap;
 
 	public class StructureMapDependencyResolver : IDependencyResolver
 	{
