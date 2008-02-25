@@ -144,12 +144,20 @@ namespace MvcContrib.UnitTests
 			Assert.IsTrue(_controller.OnErrorResult.Value);
 		}
 
+		[Test]
+		public void ReturnBinderShouldBeInvoked()
+		{
+			_controller.DoInvokeAction("ReturnBinder");
+			Assert.IsTrue(_controller.ReturnBinderInvoked);
+		}
+
 		class TestController : ConventionController
 		{
 			public bool OnPreActionReturnValue = true;
 			public bool ActionWasCalled = false;
 			public bool OnErrorWasCalled = false;
 			public bool? OnErrorResult = null;
+			public bool ReturnBinderInvoked = false;
 
 			public void BasicAction(int id)
 			{
@@ -161,6 +169,12 @@ namespace MvcContrib.UnitTests
 
 			public void SimpleAction(string param1, int param2)
 			{
+			}
+
+			[return: FakeReturnBinder]
+			public string ReturnBinder()
+			{
+				return "Test";
 			}
 
 			public void ComplexAction([Deserialize("ids")] int[] ids)
@@ -230,6 +244,14 @@ namespace MvcContrib.UnitTests
 			public bool DoInvokeAction(string action)
 			{
 				return InvokeAction(action);
+			}
+		}
+
+		class FakeReturnBinder : AbstractReturnBinderAttribute, IReturnBinder
+		{
+			public override void Bind(IController controller, ControllerContext controllerContext, Type returnType, object returnValue)
+			{
+				((TestController)controller).ReturnBinderInvoked = true;
 			}
 		}
 	}
