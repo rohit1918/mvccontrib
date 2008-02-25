@@ -40,7 +40,9 @@ namespace MvcContrib.MetaData
 				}
 
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
-
+				IReturnBinder returnBinder = GetReturnBinder(actionMetaData);
+				if(returnBinder!=null)
+					actionMetaData.ReturnBinderDescriptor = new ReturnBinderDescriptor(actionMetaData.MethodInfo.ReturnType, returnBinder);
 				RescueAttribute[] actionRescues = GetRescues(actionMethod, false);
 
 				foreach (RescueAttribute rescue in actionRescues)
@@ -52,6 +54,7 @@ namespace MvcContrib.MetaData
 				{
 					actionMetaData.Rescues.Add(rescue);
 				}
+
 
 				List<FilterAttribute> filters = new List<FilterAttribute>(controllerFilters);
 				filters.AddRange(GetFilters(actionMethod));
@@ -145,6 +148,15 @@ namespace MvcContrib.MetaData
 			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
 		}
 
+		protected virtual IReturnBinder GetReturnBinder(ActionMetaData actionMetaData)
+		{
+			object[] attributes=actionMetaData.MethodInfo.ReturnTypeCustomAttributes.GetCustomAttributes(typeof(IReturnBinder),false);
+			if(attributes!=null&&attributes.Length>0)
+			{
+				return attributes[0] as IReturnBinder;
+			}
+			return null;
+		}
 		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
 		{
 			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);

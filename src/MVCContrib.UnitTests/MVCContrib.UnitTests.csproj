@@ -147,6 +147,7 @@
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
+    <Compile Include="MetaData\XmlReturnBinderTester.cs" />
     <Compile Include="NHamlViewEngine\FunctionalTester.cs">
       <SubType>Code</SubType>
     </Compile>

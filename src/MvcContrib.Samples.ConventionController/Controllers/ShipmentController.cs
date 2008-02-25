@@ -54,6 +54,17 @@ namespace MvcContrib.Samples.Controllers
 			Response.Write(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
 		}
 
+		[return: XMLReturnBinder]
+		public Dimension[] XmlAction()
+		{
+			Dimension[] dims = new Dimension[]
+			                   	{
+			                   		new Dimension{Height=2,Length=1,Units=UnitOfMeasure.English},
+									new Dimension{Height=6,Length=8,Units=UnitOfMeasure.Metric},
+		};
+			return dims;
+		}
+
 		protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
 		{
 			return false;

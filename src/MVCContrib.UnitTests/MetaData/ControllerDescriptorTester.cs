@@ -79,6 +79,31 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void ReturnBinderReturnNullIfNoAttributeIsUsed()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			ActionMetaData action = metaData.GetActions("ActionReturningValueWithOutBinder")[0];
+
+			Assert.AreEqual(action.ReturnBinderDescriptor,null);
+		}
+
+		[Test]
+		public void ReturnBinderReturnCorrectType()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+
+			ActionMetaData action = metaData.GetActions("ActionWithReturnBinder")[0];
+
+			Assert.IsInstanceOfType(typeof(XMLReturnBinder),action.ReturnBinderDescriptor.ReturnTypeBinder);
+			Assert.That(action.ReturnBinderDescriptor.ReturnType == typeof(int[]));
+		}
+
+		[Test]
 		public void BindShouldReturnNullIfBinderIsNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
@@ -212,6 +237,17 @@ namespace MvcContrib.UnitTests.MetaData
 		[DefaultAction]
 		public void CatchAllAction()
 		{
+		}
+
+		[return: XMLReturnBinder]
+		public int[] ActionWithReturnBinder()
+		{
+			return new int[] {2,1,4,5};
+		}
+
+		public int[] ActionReturningValueWithOutBinder()
+		{
+			return new int[]{2,3,1,5};
 		}
 
 		[Rescue("Test")]

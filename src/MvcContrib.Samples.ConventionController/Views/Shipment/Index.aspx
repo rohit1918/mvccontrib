@@ -31,6 +31,7 @@
 	<% } %>
 	
 	<br />
+	<a href="/shipment/XmlAction">To the Xml Outputing Action</a>
 	<a href="/shipment/toTheRescue">To the Rescue!</a>
 	<br /><a href="/shipment/Hidden">Try and access the Hidden Action.</a>
 </asp:Content>

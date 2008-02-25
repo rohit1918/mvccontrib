@@ -149,7 +149,14 @@ namespace MvcContrib
 				actionParameters[index++] = actionParameter.Bind(ControllerContext);
 			}
 
-			action.InvokeMethod(this, actionParameters);
+			object returnValue = action.InvokeMethod(this, actionParameters);
+			if(action.ReturnBinderDescriptor!=null)
+			{
+				IReturnBinder binder = action.ReturnBinderDescriptor.ReturnTypeBinder;
+
+				// Runs return binder and keep going
+				binder.Bind(this, ControllerContext, action.ReturnBinderDescriptor.ReturnType, returnValue);
+			}
 		}
 
 		private ControllerMetaData _metaData;
