@@ -264,7 +264,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void With_name_only_the_correct_html_is_generated()
 			{
 				string html = _helper.TextArea("foo");
-				string expected = "<textarea name=\"foo\" id=\"foo\"/>";
+				string expected = "<textarea name=\"foo\" id=\"foo\"></textarea>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
 
@@ -272,7 +272,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void With_dictionary_attributes_the_correct_html_is_generated()
 			{
 				string html = _helper.TextArea("foo", new Hash(@class => "bar"));
-				string expected = "<textarea class=\"bar\" name=\"foo\" id=\"foo\"/>";
+				string expected = "<textarea class=\"bar\" name=\"foo\" id=\"foo\"></textarea>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
 
@@ -280,7 +280,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void Id_should_not_be_overwritten_if_explicitly_specified()
 			{
 				string html = _helper.TextArea("foo", new Hash(id => "bar"));
-				string expected = "<textarea id=\"bar\" name=\"foo\"/>";
+				string expected = "<textarea id=\"bar\" name=\"foo\"></textarea>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
 
