@@ -152,7 +152,13 @@ namespace MvcContrib.UI.Tags
 				}
 			}
 		}
-
+		public override bool UseFullCloseTag
+		{
+			get
+			{
+				return true;
+			}
+		}
 		public override string ToString()
 		{
 			InnerText = System.Web.HttpUtility.HtmlEncode(InnerText);
