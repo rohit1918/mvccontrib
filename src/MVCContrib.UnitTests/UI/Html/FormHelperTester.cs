@@ -193,6 +193,59 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[TestFixture]
+		public class When_PasswordField_Is_Invoked : BaseFormHelperTester
+		{
+
+			[Test]
+			public void With_strongly_typed_options_the_correct_html_is_generated()
+			{
+				Password textField = new Password();
+				textField.Name = "foo";
+				textField.Class = "bar";
+				textField.Value = "A Value";
+
+				string html = _helper.PasswordField(textField);
+				string expected = "<input type=\"password\" name=\"foo\" class=\"bar\" value=\"A Value\" id=\"foo\"/>";
+
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_Name_only_the_correct_html_is_generated()
+			{
+				string html = _helper.PasswordField("foo");
+				string expected = "<input type=\"password\" name=\"foo\" id=\"foo\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_dictionary_attributes_the_correct_html_is_generated()
+			{
+				string html = _helper.PasswordField("foo", new Hash(@class => "bar"));
+				string expected = "<input class=\"bar\" type=\"password\" name=\"foo\" id=\"foo\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void Id_should_not_be_overwritten_if_explicitly_specified()
+			{
+				string html = _helper.PasswordField("foo", new Hash(id => "bar"));
+				string expected = "<input id=\"bar\" type=\"password\" name=\"foo\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
+			{
+				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				string html = _helper.PasswordField("foo");
+				string expected = "<input type=\"password\" name=\"foo\" id=\"foo\" value=\"Bar\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+		}
+
+
+		[TestFixture]
 		public class When_HiddenField_Is_Invoked : BaseFormHelperTester
 		{
 			[Test]
@@ -332,6 +385,41 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				string html = _helper.Submit("foo", new Hash(@class => "bar"));
 				string expected = "<input class=\"bar\" type=\"submit\" value=\"foo\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+		}
+
+		[TestFixture]
+		public class When_ImageButton_Is_Invoked : BaseFormHelperTester
+		{
+			[Test]
+			public void With_strongly_typed_options_then_correct_html_should_be_generated()
+			{
+				InputImage button = new InputImage();
+				button.Name = "foo";
+				button.Src = "foo.gif";
+				button.Class = "bar";
+				button.Alt = "A Value";
+
+				string html = _helper.ImageButton(button);
+				string expected = "<input type=\"image\" name=\"foo\" src=\"foo.gif\" class=\"bar\" alt=\"A Value\"/>";
+
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_value_only_the_correct_html_is_generated()
+			{
+				string html = _helper.ImageButton("foo.gif","A Value");
+				string expected = "<input type=\"image\" src=\"foo.gif\" alt=\"A Value\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_dictionary_attributes_the_correct_html_is_generated()
+			{
+				string html = _helper.ImageButton("foo.gif", "A Value", new Hash(@class => "bar"));
+				string expected = "<input class=\"bar\" type=\"image\" src=\"foo.gif\" alt=\"A Value\"/>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
 		}

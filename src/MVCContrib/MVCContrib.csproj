@@ -107,6 +107,7 @@
     <Compile Include="UI\ScriptableElement.cs" />
     <Compile Include="UI\Tags\CheckBoxField.cs" />
     <Compile Include="UI\Tags\CheckBoxList.cs" />
+    <Compile Include="UI\Tags\Password.cs" />
     <Compile Include="UI\Tags\Form.cs" />
     <Compile Include="UI\Tags\HiddenField.cs" />
     <Compile Include="UI\Tags\Image.cs" />
