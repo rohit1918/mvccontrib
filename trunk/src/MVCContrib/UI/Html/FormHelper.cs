@@ -52,6 +52,29 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
+		public virtual string PasswordField(string name)
+		{
+			return PasswordField(name, Hash.Empty);
+		}
+
+		public virtual string PasswordField(string name, IDictionary attributes)
+		{
+			Password options = new Password(attributes);
+			options.Name = name;
+			return PasswordField(options);
+		}
+
+		public virtual string PasswordField(Password options)
+		{
+			if (string.IsNullOrEmpty(options.Id))
+				options.Id = options.Name;
+
+			if (options.Value == null)
+				options.Value = ObtainFromViewData(options.Name);
+
+			return options.ToString();
+		}
+
 		public virtual string HiddenField(string name)
 		{
 			return HiddenField(name, Hash.Empty);
@@ -160,6 +183,25 @@ namespace MvcContrib.UI.Html
 		}
 
 		public virtual string Submit(SubmitButton options)
+		{
+			return options.ToString();
+		}
+
+		public virtual string ImageButton(string src, string alt)
+		{
+			InputImage options = new InputImage(src);
+			options.Alt = alt;
+			return options.ToString();
+		}
+
+		public virtual string ImageButton(string src, string alt, IDictionary attributes)
+		{
+			InputImage options = new InputImage(src, attributes);
+			options.Alt = alt;
+			return options.ToString();
+		}
+
+		public virtual string ImageButton(InputImage options)
 		{
 			return options.ToString();
 		}

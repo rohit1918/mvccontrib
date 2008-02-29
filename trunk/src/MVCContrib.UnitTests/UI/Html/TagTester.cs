@@ -299,6 +299,62 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
+
+		[TestFixture]
+		public class Password_With_All_Properties
+		{
+			[Test]
+			public void Tag_Is_Correct()
+			{
+				Password element = new Password();
+				Assert.That(element.Tag, Is.EqualTo("input"));
+				Assert.That(element.Type, Is.EqualTo("password"));
+			}
+
+			[Test]
+			public void Int_Properties_Work_Right()
+			{
+				Password element = new Password();
+				Assert.That(element.MaxLength == 0);
+				Assert.That(element.Size == 0);
+				Assert.That(element["maxlength"] == null);
+				Assert.That(element["size"] == null);
+
+				element["maxlength"] = "A bad value";
+				Assert.That(element.MaxLength == 0);
+				element["size"] = "A bad value";
+				Assert.That(element.Size == 0);
+
+				element.Size = 10;
+				element.MaxLength = 10;
+				Assert.That(element.Size == 10);
+				Assert.That(element.MaxLength == 10);
+				Assert.That(element["maxlength"] == "10");
+				Assert.That(element["size"] == "10");
+
+				element.MaxLength = -1;
+				element.Size = 0;
+				Assert.That(element.Size == 0);
+				Assert.That(element.MaxLength == 0);
+				Assert.That(element["maxlength"] == null);
+				Assert.That(element["size"] == null);
+			}
+
+
+			[Test]
+			public void When_Creating_element_With_Dictionary_Sticks()
+			{
+				Hash hash = new Hash();
+				hash.Add("Key1", "Val1");
+				hash.Add("Key2", "Val2");
+				hash.Add("Key3", "Val3");
+				Password element = new Password(hash);
+				Assert.That(element.Tag, Is.EqualTo("input"));
+				Assert.That(element.Type, Is.EqualTo("password"));
+				Assert.That(element.Attributes.Count == 4);
+				Assert.That(element["Key1"] == "Val1");
+			}
+		}
 		
 		[TestFixture]
 		public class TextArea_With_All_Properties

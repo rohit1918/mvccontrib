@@ -10,6 +10,9 @@ namespace MvcContrib.UI.Html
 		string TextField(string name);
 		string TextField(TextBox attributes);
 		string TextField(string name, IDictionary attributes);
+		string PasswordField(string name);
+		string PasswordField(Password attributes);
+		string PasswordField(string name, IDictionary attributes);
 		string HiddenField(string name);
 		string HiddenField(string name, IDictionary attributes);
 		string HiddenField(HiddenField options);
@@ -23,6 +26,9 @@ namespace MvcContrib.UI.Html
 		string Submit(string value);
 		string Submit(string value, IDictionary attributes);
 		string Submit(SubmitButton options);
+		string ImageButton(string src, string alt);
+		string ImageButton(string src, string alt, IDictionary attributes);
+		string ImageButton(InputImage options);
 		string Select(string name, object dataSource, string textField, string valueField);
 		string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes);
 		string Select(object dataSource, Select options);
