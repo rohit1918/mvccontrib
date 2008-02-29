@@ -90,6 +90,8 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="UI\BlockRenderer.cs" />
+    <Compile Include="UI\CapturingResponseFilter.cs" />
     <Compile Include="UI\HtmlAttributes.cs" />
     <Compile Include="UI\DomQuery.cs" />
     <Compile Include="UI\DomQueryBuilder.cs" />
