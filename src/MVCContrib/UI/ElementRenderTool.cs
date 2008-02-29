@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace MvcContrib.UI
@@ -9,42 +7,71 @@ namespace MvcContrib.UI
 	public class ElementRenderTool
 	{
 		private IElement _element;
+		private const string CLOSING_TAG = "</{0}>";
+		private const string OPENING_TAG = "<{0} {1}{2}>";
+
 		public ElementRenderTool(IElement el)
 		{
 			_element = el;
 		}
+
 		public override string ToString()
 		{
-			return RenderElement(_element);
+			return RenderOpenTag() + RenderInnerContents() + RenderCloseTag();
 		}
-		protected string RenderElement(IElement el)
+
+		protected bool ShouldCloseTag
 		{
-			string tagFormat = "<{0} {1}{2}>{3}{4}";
-			string innerTextformat = "{0}";
-			if (el.EscapeInnerText && (!string.IsNullOrEmpty(el.InnerText)))
+			get
 			{
-				innerTextformat = "/*<![CDATA[*/\r\n{0}\r\n//]]>";
+				if (!_element.UseFullCloseTag && !string.IsNullOrEmpty(_element.InnerText))
+				{
+					return true;
+				}
+
+				return _element.UseFullCloseTag;
 			}
-			string closeTagformat = "</{0}>";
-			bool closeTag = el.UseFullCloseTag;
-			if (string.IsNullOrEmpty(el.Tag))
+		}
+
+		public virtual string RenderOpenTag()
+		{
+			if (string.IsNullOrEmpty(_element.Tag))
 			{
 				throw new ArgumentException("tag must contain a value");
 			}
-			if (!closeTag)
+
+			return string.Format(OPENING_TAG,
+				_element.Tag,
+				RenderAttributes(_element.Attributes),
+				(!ShouldCloseTag ? "/" : "")
+			);
+		}
+
+		public virtual string RenderCloseTag()
+		{
+			if (!ShouldCloseTag)
 			{
-				if (!string.IsNullOrEmpty(el.InnerText))
-				{
-					closeTag = true;
-				}
+				return null;
 			}
 
-			return string.Format(tagFormat,
-				el.Tag,
-				RenderAttributes(el.Attributes),
-				(!closeTag ? "/" : ""),
-				string.Format(innerTextformat, el.InnerText),
-				(closeTag ? string.Format(closeTagformat, el.Tag) : ""));
+			return string.Format(CLOSING_TAG, _element.Tag);
+		}
+
+		public virtual string RenderInnerContents()
+		{
+			if (!ShouldCloseTag)
+			{
+				return null;
+			}
+
+			string innerTextformat = "{0}";
+
+			if (_element.EscapeInnerText && (!string.IsNullOrEmpty(_element.InnerText)))
+			{
+				innerTextformat = "/*<![CDATA[*/\r\n{0}\r\n//]]>";
+			}
+
+			return string.Format(innerTextformat, _element.InnerText);
 		}
 
 		protected string RenderAttributes(IHtmlAttributes attribs)
