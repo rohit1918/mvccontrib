@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using MvcContrib.UI.Tags;
 using System.Web.Mvc;
@@ -7,6 +8,7 @@ namespace MvcContrib.UI.Html
 	public interface IFormHelper
 	{
 		ViewContext ViewContext { get; set; }
+		IDataBinder Binder { get; set; }
 		string TextField(string name);
 		string TextField(TextBox attributes);
 		string TextField(string name, IDictionary attributes);
@@ -41,5 +43,7 @@ namespace MvcContrib.UI.Html
 		RadioList RadioList(string name, object dataSource, string textField, string valueField);
 		RadioList RadioList(string name, object dataSource, string textField, string valueField, IDictionary commonAttributes);
 		RadioList RadioList(object dataSource, RadioList options);
+		void For<T>(T dataItem, string url, Action<SmartForm<T>> block);
+		void For<T>(T dataItem, string url, IDictionary attributes, Action<SmartForm<T>> block);
 	}
 }

@@ -693,7 +693,33 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(list.ToString(), Is.EqualTo(expected));
 			}
 
-			
+			[TestFixture]
+			public class When_For_is_invoked : BaseFormHelperTester
+			{
+				[Test]
+				public void Form_tag_should_be_written_to_output_stream()
+				{
+					string expected = "<form method=\"post\" action=\"/home/index\"></form>";
+					_helper.For<object>(new object(), "/home/index", delegate { });
+					Assert.That(_output.ToString(), Is.EqualTo(expected));
+				}
+
+				[Test]
+				public void With_method_of_POST_in_the_attributes_the_correct_html_should_be_generated()
+				{
+					string expected = "<form method=\"post\" action=\"/home/index\"></form>";
+					_helper.For<object>(new object(), "/home/index", new Hash(method => "post"), delegate {});
+					Assert.That(_output.ToString(), Is.EqualTo(expected));
+				}
+
+				[Test]
+				public void With_method_of_GET_in_the_attributes_the_correct_html_should_be_generated()
+				{
+					string expected = "<form method=\"get\" action=\"/home/index\"></form>";
+					_helper.For<object>(new object(), "/home/index", new Hash(method => "get"), delegate { });
+					Assert.That(_output.ToString(), Is.EqualTo(expected));
+				}
+			}
 		}
 
 		#region Person test object
