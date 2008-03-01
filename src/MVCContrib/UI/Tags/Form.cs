@@ -91,5 +91,12 @@ namespace MvcContrib.UI.Tags
 			}
 		}
 
+		public override bool UseFullCloseTag
+		{
+			get
+			{
+				return true;
+			}
+		}
 	}
 }

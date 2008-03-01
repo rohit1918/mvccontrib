@@ -359,6 +359,18 @@ namespace MvcContrib.UI.Html
 
 		}
 
+		public void For<T>(T dataItem, string url, Action<SmartForm<T>> block)
+		{
+			For(dataItem, url, Hash.Empty, block);
+		}
+
+		public void For<T>(T dataItem, string url, IDictionary attributes, Action<SmartForm<T>> block)
+		{
+			SmartForm<T> form = new SmartForm<T>(url, block, this, dataItem, attributes);
+			ViewContext.HttpContext.Response.Output.Write(form.ToString());
+		}
+
+
 		protected virtual object ObtainFromViewData(string id)
 		{
 			if (Binder != null)

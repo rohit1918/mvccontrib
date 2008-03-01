@@ -8,6 +8,8 @@ namespace MvcContrib.UI.Html
 	//Disclaimer: Uses a modified version of MonoRail's FormHelper.ObtainValue.
 	public class DefaultDataBinder : IDataBinder
 	{
+		public object NestedRootInstance { get; set; }
+        
 		public object ExtractValue(string target, ViewContext context)
 		{
 			if (target == null)
@@ -17,16 +19,35 @@ namespace MvcContrib.UI.Html
 
 			object rootInstance = ObtainRootInstance(context, target, out pieces);
 
+			//strongly typed viewdata
 			if (rootInstance == context.ViewData && pieces.Length > 0)
+			{
 				return QueryPropertyRecursive(rootInstance, pieces, 0);
+			}
 			else if (rootInstance != null && pieces.Length > 1)
+			{
 				return QueryPropertyRecursive(rootInstance, pieces, 1);
-
+			}
+			//We're in a nested scope
+			else if (NestedRootInstance != null && NestedRootInstance.Equals(rootInstance))
+			{
+				return QueryPropertyRecursive(rootInstance, pieces, 0);
+			}
 			return rootInstance;
 		}
 
-		private static object ObtainRootInstance(ViewContext context, string target)
+		public IDisposable NestedBindingScope(object rootDataItem)
 		{
+			return new DefaultBindingScope(this, rootDataItem);
+		}
+
+		public object ObtainRootInstance(ViewContext context, string target)
+		{
+			if(NestedRootInstance != null)
+			{
+				return NestedRootInstance;
+			}
+
 			IDictionary viewData = context.ViewData as IDictionary;
 			if (viewData == null) return context.ViewData;
 
@@ -41,7 +62,7 @@ namespace MvcContrib.UI.Html
 			return rootInstance;
 		}
 
-		private static object ObtainRootInstance(ViewContext context, string target, out string[] pieces)
+		public object ObtainRootInstance(ViewContext context, string target, out string[] pieces)
 		{
 			pieces = target.Split('.');
 
@@ -75,7 +96,7 @@ namespace MvcContrib.UI.Html
 			return rootInstance;
 		}
 
-		private static object QueryPropertyRecursive(object rootInstance, string[] propertyPath, int piece)
+		public object QueryPropertyRecursive(object rootInstance, string[] propertyPath, int piece)
 		{
 			string property = propertyPath[piece]; int index;
 
@@ -222,6 +243,24 @@ namespace MvcContrib.UI.Html
 			}
 
 			return list[index];
+		}
+
+		public class DefaultBindingScope : IDisposable
+		{
+			private readonly DefaultDataBinder _binder;
+			private readonly object _originalRootInstance;
+
+			public DefaultBindingScope(DefaultDataBinder binder, object newRootInstance)
+			{
+				_binder = binder;
+				_originalRootInstance = binder.NestedRootInstance;
+				binder.NestedRootInstance = newRootInstance;
+			}
+
+			public void Dispose()
+			{
+				_binder.NestedRootInstance = _originalRootInstance;
+			}
 		}
 	}
 }

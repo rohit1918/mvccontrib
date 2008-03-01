@@ -250,49 +250,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				_binder.ExtractValue(null, _viewContext);
 			}
-
-			class Person
-			{
-				public string Country;
-				private string _name;
-				private string _nonReadable;
-				private List<string> _languages = new List<string>();
-
-				private Person _nestedPerson;
-
-
-				public Person NestedPerson
-				{
-					get { return _nestedPerson; }
-					set { _nestedPerson = value; }
-				}
-
-				public Person()
-				{
-				}
-
-				public Person(string name)
-				{
-					Name = name;
-				}
-
-				public List<string> Languages
-				{
-					get { return _languages; }
-				}
-
-				public string Name
-				{
-					get { return _name; }
-					set { _name = value; }
-				}
-
-				public string NonReadable
-				{
-					set { _nonReadable = value; }
-				}
-			}
-
+			
 			#region Custom List
 			class CustomList<T> : IList<T>
 			{
@@ -366,5 +324,93 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 			#endregion
 		}
+
+		[TestFixture]
+		public class When_a_nested_scope_is_used : DataBinderTesterBase
+		{
+			[Test]
+			public void Then_it_should_be_used_to_obtain_root_instance()
+			{
+				Person p = new Person("Jeremy");
+				object value;
+				using(_binder.NestedBindingScope(p))
+				{
+					value = _binder.ExtractValue("Name", _viewContext);
+				}
+				Assert.That(value, Is.EqualTo("Jeremy"));
+			}
+
+			[Test]
+			public void Then_rootInstance_should_return_to_null_when_scope_is_disposed()
+			{
+				Person p = new Person("Jeremy");
+				using (_binder.NestedBindingScope(p))
+				{
+					_binder.ExtractValue("Name", _viewContext);
+				}
+				Assert.That(_binder.NestedRootInstance, Is.Null);
+			}
+
+			[Test]
+			public void Then_RootInstance_should_return_to_previous_root_instance_when_scope_is_disposed()
+			{
+				Person first = new Person();
+				Person second = new Person();
+
+				using (_binder.NestedBindingScope(first))
+				{
+					Assert.That(_binder.NestedRootInstance, Is.SameAs(first));
+					using(_binder.NestedBindingScope(second))
+					{
+						Assert.That(_binder.NestedRootInstance, Is.SameAs(second));
+					}
+					Assert.That(_binder.NestedRootInstance, Is.SameAs(first));
+				}
+				Assert.That(_binder.NestedRootInstance, Is.Null);
+			}
+		}
+
+		class Person
+		{
+			public string Country;
+			private string _name;
+			private string _nonReadable;
+			private List<string> _languages = new List<string>();
+
+			private Person _nestedPerson;
+
+
+			public Person NestedPerson
+			{
+				get { return _nestedPerson; }
+				set { _nestedPerson = value; }
+			}
+
+			public Person()
+			{
+			}
+
+			public Person(string name)
+			{
+				Name = name;
+			}
+
+			public List<string> Languages
+			{
+				get { return _languages; }
+			}
+
+			public string Name
+			{
+				get { return _name; }
+				set { _name = value; }
+			}
+
+			public string NonReadable
+			{
+				set { _nonReadable = value; }
+			}
+		}
+
 	}
 }
