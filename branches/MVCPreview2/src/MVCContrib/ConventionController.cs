@@ -66,10 +66,7 @@ namespace MvcContrib
 				}
 				catch (Exception exc)
 				{
-					FilterExecutedContext executedContext = new FilterExecutedContext(filterContext, exc);
-					OnActionExecuted(executedContext);
-
-					if(!executedContext.ExceptionHandled)
+					if(!OnError(selectedAction, exc))
 					{
 						throw;
 					}
@@ -81,17 +78,6 @@ namespace MvcContrib
 			}
 
 			return true;
-		}
-
-		protected override void OnActionExecuted(FilterExecutedContext filterContext)
-		{
-			if(filterContext.Exception != null)
-			{
-				bool handled = OnError(SelectedAction, filterContext.Exception);
-				filterContext.ExceptionHandled = handled;
-			}
-
-			base.OnActionExecuted(filterContext);
 		}
 
 		protected virtual bool ExecutePreActionFilters(ActionMetaData action, FilterExecutingContext context)

@@ -37,7 +37,7 @@ namespace MvcContrib.MetaData
 		}
 
 		private readonly List<ActionFilterAttribute> _filters = new List<ActionFilterAttribute>();
-		public List<ActionFilterAttribute> Filters
+		public IList<ActionFilterAttribute> Filters
 		{
 			get { return _filters; }
 		}

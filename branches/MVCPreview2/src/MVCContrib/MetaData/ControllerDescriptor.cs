@@ -29,9 +29,7 @@ namespace MvcContrib.MetaData
 			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
 
 			RescueAttribute[] controllerRescues = GetRescues(metaData.ControllerType, true);
-			
-			List<ActionFilterAttribute> controllerFilters = new List<ActionFilterAttribute>(GetFilters(metaData.ControllerType));
-			SortFilters(controllerFilters);
+			ActionFilterAttribute[] controllerFilters = GetFilters(metaData.ControllerType);
 
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
@@ -57,11 +55,14 @@ namespace MvcContrib.MetaData
 					actionMetaData.Rescues.Add(rescue);
 				}
 
-				List<ActionFilterAttribute> actionFilters = new List<ActionFilterAttribute>(GetFilters(actionMethod));
-				SortFilters(actionFilters);
+				List<ActionFilterAttribute> filters = new List<ActionFilterAttribute>(controllerFilters);
+				filters.AddRange(GetFilters(actionMethod));
+				SortFilters(filters);
 
-				actionMetaData.Filters.AddRange(controllerFilters);
-				actionMetaData.Filters.AddRange(actionFilters);
+				foreach(ActionFilterAttribute filter in filters)
+				{
+					actionMetaData.Filters.Add(filter);
+				}
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
 				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
