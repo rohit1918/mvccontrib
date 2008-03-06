@@ -1,9 +1,13 @@
 using System;
 using System.Reflection;
+using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib;
 using MvcContrib.Attributes;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
+using System.Web;
 
 namespace MvcContrib.UnitTests
 {
@@ -30,7 +34,11 @@ namespace MvcContrib.UnitTests
 		[SetUp]
 		public void SetUpContext()
 		{
+			MockRepository mocks = new MockRepository();
+			HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+			mocks.Replay(context);
 			_rescueTestControllerDecorated = new RescueTestController();
+			_rescueTestControllerDecorated.ControllerContext = new ControllerContext(context, new RouteData(), _rescueTestControllerDecorated);
 			string publicActionName = "ThrowError";
 			_rescueTestControllerDecorated.InvokeActionPublic(publicActionName);
 		}
@@ -44,6 +52,7 @@ namespace MvcContrib.UnitTests
 		public void Then_controller_should_render_method_RescueAttribute_view()
 		{
 			RescueTestController rescueTestControllerDecorated = new RescueTestController();
+			SetControllerContext(rescueTestControllerDecorated);
 
 			string publicActionName = "ThrowMethodError";
 			rescueTestControllerDecorated.InvokeActionPublic(publicActionName);
@@ -51,6 +60,14 @@ namespace MvcContrib.UnitTests
 			string expectedRescueView = "Rescues/TestMethodRescue";
 
 			Assert.That(rescueTestControllerDecorated.ViewRendered, Is.EqualTo(expectedRescueView));
+		}
+
+		public void SetControllerContext(Controller controller)
+		{
+			MockRepository mocks = new MockRepository();
+			HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+			mocks.Replay(context);
+			controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
 		}
 	}
 
@@ -62,6 +79,7 @@ namespace MvcContrib.UnitTests
 		public void Then_controller_should_render_method_RescueAttribute_view_for_only_the_ExceptionType_specified()
 		{
 			RescueTestControllerWithExceptionTypes controller = new RescueTestControllerWithExceptionTypes();
+			SetControllerContext(controller);
 
 			string publicActionName = "ThrowError";
 			controller.InvokeActionPublic(publicActionName);
@@ -75,6 +93,7 @@ namespace MvcContrib.UnitTests
 		public void Then_controller_Should_not_rescue_the_action_if_the_incorrect_ExceptionType_is_thrown()
 		{
 			RescueTestControllerWithExceptionTypes controller = new RescueTestControllerWithExceptionTypes();
+			SetControllerContext(controller);
 
 			string publicActionName = "DontDoThis";
 
@@ -86,6 +105,14 @@ namespace MvcContrib.UnitTests
 			{
 				Assert.IsAssignableFrom(typeof(NotImplementedException), exc.InnerException);
 			}
+		}
+
+		public void SetControllerContext(Controller controller)
+		{
+			MockRepository mocks = new MockRepository();
+			HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+			mocks.Replay(context);
+			controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
 		}
 	}
 
