@@ -10,99 +10,110 @@ namespace MvcContrib
 {
 	public class ConventionController : Controller
 	{
-		private string _selectedAction="";
+		public ActionMetaData SelectedAction { get; protected set; }
 
-		public string SelectedAction
+		protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
 		{
-			get { return _selectedAction; }
-		}
-
-        protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
-		{
-            throw new NotImplementedException();
-            //if(string.IsNullOrEmpty(actionName))
-            //{
-            //    throw new ArgumentException("actionName is required", "actionName");
-            //}
-
-            //IList<ActionMetaData> actions = MetaData.GetActions(actionName);
-
-            //ActionMetaData selectedAction;
-
-            //if(actions == null || actions.Count == 0)
-            //{
-            //    //No matching action found - see if there is a "catch all" action.
-            //    if(MetaData.DefaultAction != null)
-            //    {
-            //        selectedAction = MetaData.DefaultAction;
-            //    }
-            //    else
-            //    {
-            //        return false;
-            //    }
-            //}
-            //else if(actions.Count > 1)
-            //{
-            //    throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
-            //}
-            //else
-            //{
-            //    selectedAction = actions[0];
-            //}
-
-            //_selectedAction = selectedAction.Name;
-            //base.OnActionExecuted(new FilterExecutedContext());
-            //if (OnPreAction(selectedAction.Name, selectedAction.MethodInfo))
-            //{
-            //    try
-            //    {
-            //        if(!ExecutePreActionFilters(selectedAction))
-            //        {
-            //            return false;
-            //        }
-
-            //        InvokeActionMethod(selectedAction);
-            //    }
-            //    catch(Exception exc)
-            //    {
-            //        if(!OnError(selectedAction, exc))
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    finally
-            //    {
-            //        OnPostAction(selectedAction.Name, selectedAction.MethodInfo);
-            //    }
-            //}
-            //return true;
-		}
-
-		protected virtual bool ExecutePreActionFilters(ActionMetaData action)
-		{
-			throw new NotImplementedException();
-			/*foreach(FilterAttribute attr in action.Filters)
+			if (string.IsNullOrEmpty(actionName))
 			{
-				if(!typeof(IFilter).IsAssignableFrom(attr.FilterType))
-					throw new InvalidOperationException("Filters must implement the IFilter interface.");
+				throw new ArgumentException("actionName is required", "actionName");
+			}
 
-				IFilter filter = attr.CreateFilter();
+			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
 
-				if(!filter.Execute(ControllerContext, action))
+			ActionMetaData selectedAction;
+
+			if (actions == null || actions.Count == 0)
+			{
+				//No matching action found - see if there is a "catch all" action.
+				if (MetaData.DefaultAction != null)
+				{
+					selectedAction = MetaData.DefaultAction;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (actions.Count > 1)
+			{
+				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
+			}
+			else
+			{
+				selectedAction = actions[0];
+			}
+
+			SelectedAction = selectedAction;
+
+			FilterContext filterContext = new FilterContext(ControllerContext, selectedAction.MethodInfo);
+			FilterExecutingContext executingContext = new FilterExecutingContext(filterContext);
+
+			OnActionExecuting(executingContext);
+
+			if (!executingContext.Cancel)
+			{
+				try
+				{
+					if (!ExecutePreActionFilters(selectedAction, executingContext))
+					{
+						return false;
+					}
+
+					InvokeActionMethod(selectedAction);
+
+					//TODO: ExecutePostActionFilters
+				}
+				catch (Exception exc)
+				{
+					FilterExecutedContext executedContext = new FilterExecutedContext(filterContext, exc);
+					OnActionExecuted(executedContext);
+
+					if(!executedContext.ExceptionHandled)
+					{
+						throw;
+					}
+				}
+				finally
+				{
+					OnActionExecuted(new FilterExecutedContext(filterContext, null));
+				}
+			}
+
+			return true;
+		}
+
+		protected override void OnActionExecuted(FilterExecutedContext filterContext)
+		{
+			if(filterContext.Exception != null)
+			{
+				bool handled = OnError(SelectedAction, filterContext.Exception);
+				filterContext.ExceptionHandled = handled;
+			}
+
+			base.OnActionExecuted(filterContext);
+		}
+
+		protected virtual bool ExecutePreActionFilters(ActionMetaData action, FilterExecutingContext context)
+		{
+			foreach(var filter in action.Filters)
+			{
+				filter.OnActionExecuting(context);
+				if(context.Cancel)
 				{
 					return false;
 				}
 			}
 
-			return true;*/
+			return true;
 		}
 
 		private bool _isRedirected = false;
-        protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
-        {
-            _isRedirected = true;
-            base.RedirectToAction(values);
-        }
+		protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
+		{
+			_isRedirected = true;
+			base.RedirectToAction(values);
+		}
 
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{
@@ -113,15 +124,15 @@ namespace MvcContrib
 				return true;
 			}
 
-			foreach(RescueAttribute rescue in action.Rescues )
+			foreach (RescueAttribute rescue in action.Rescues)
 			{
-				foreach( Type exceptionType in rescue.ExceptionTypes )
+				foreach (Type exceptionType in rescue.ExceptionTypes)
 				{
 					if (exceptionType.IsAssignableFrom(baseExceptionType))
 					{
 						OnPreRescue(exception);
 
-						if(!string.IsNullOrEmpty(rescue.View))
+						if (!string.IsNullOrEmpty(rescue.View))
 						{
 							string rescueView = string.Concat("Rescues/", rescue.View);
 
@@ -138,7 +149,7 @@ namespace MvcContrib
 
 		protected virtual void OnPreRescue(Exception thrownException)
 		{
-			
+
 		}
 
 		protected virtual void InvokeActionMethod(ActionMetaData action)
@@ -146,13 +157,13 @@ namespace MvcContrib
 			object[] actionParameters = new object[action.Parameters.Count];
 
 			int index = 0;
-			foreach(ActionParameterMetaData actionParameter in action.Parameters)
+			foreach (ActionParameterMetaData actionParameter in action.Parameters)
 			{
 				actionParameters[index++] = actionParameter.Bind(ControllerContext);
 			}
 
 			object returnValue = action.InvokeMethod(this, actionParameters);
-			if(action.ReturnBinderDescriptor!=null)
+			if (action.ReturnBinderDescriptor != null)
 			{
 				IReturnBinder binder = action.ReturnBinderDescriptor.ReturnTypeBinder;
 
@@ -167,7 +178,7 @@ namespace MvcContrib
 		{
 			get
 			{
-				if(_metaData == null)
+				if (_metaData == null)
 				{
 					_metaData = ControllerDescriptor.GetMetaData(this);
 				}
@@ -181,7 +192,7 @@ namespace MvcContrib
 		{
 			get
 			{
-				if(_controllerDescriptor == null)
+				if (_controllerDescriptor == null)
 				{
 					_controllerDescriptor = new CachedControllerDescriptor();
 				}

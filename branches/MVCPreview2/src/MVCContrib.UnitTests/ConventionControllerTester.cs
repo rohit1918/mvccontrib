@@ -93,7 +93,7 @@ namespace MvcContrib.UnitTests
 
 			Assert.IsTrue(controller.DoInvokeAction("Unknown"));
 			Assert.IsTrue(controller.DefaultActionCalled);
-			Assert.AreEqual("DefaultAction", controller.SelectedAction);
+			Assert.AreEqual("DefaultAction", controller.SelectedAction.Name);
 		}
 
 		[Test]
@@ -112,7 +112,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ValidActionReturnsFalseWhenOnPreActionReturnsFalse()
 		{
-			_controller.OnPreActionReturnValue = false;
+			_controller.CancelAction = true;
 			_controller.DoInvokeAction("ComplexAction");
 			Assert.IsFalse(_controller.ActionWasCalled);
 		}
@@ -154,7 +154,7 @@ namespace MvcContrib.UnitTests
 
 		class TestController : ConventionController
 		{
-			public bool OnPreActionReturnValue = true;
+			public bool CancelAction = false;
 			public bool ActionWasCalled = false;
 			public bool OnErrorWasCalled = false;
 			public bool? OnErrorResult = null;
@@ -197,9 +197,9 @@ namespace MvcContrib.UnitTests
 				throw new AbandonedMutexException();
 			}
 
-			protected  bool OnPreAction(string actionName, MethodInfo methodInfo)
+			protected override void OnActionExecuting(FilterExecutingContext filterContext)
 			{
-				return OnPreActionReturnValue;
+				filterContext.Cancel = CancelAction;
 			}
 
 			public bool DoInvokeAction(string action)
