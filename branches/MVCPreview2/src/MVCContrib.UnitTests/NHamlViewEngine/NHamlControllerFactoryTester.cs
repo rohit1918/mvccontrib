@@ -1,3 +1,4 @@
+using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
@@ -12,10 +13,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		{
 			NHamlControllerFactory controllerFactory = new NHamlControllerFactory();
 			ConventionController controller =
-				(ConventionController)controllerFactory.CreateController(null, typeof(ConventionController));
+				(ConventionController)((IControllerFactory)controllerFactory).CreateController(null, "Convention");
 
-			Assert.IsNotNull(controller.ViewFactory);
-			Assert.IsAssignableFrom(typeof(NHamlViewFactory), controller.ViewFactory);
+			Assert.IsNotNull(controller.ViewEngine);
+			Assert.IsAssignableFrom(typeof(NHamlViewFactory), controller.ViewEngine);
 		}
 	}
 }

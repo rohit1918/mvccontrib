@@ -197,11 +197,6 @@ namespace MvcContrib.UnitTests
 				throw new AbandonedMutexException();
 			}
 
-			[HiddenAction]
-			public void HiddenAction()
-			{
-			}
-
 			protected  bool OnPreAction(string actionName, MethodInfo methodInfo)
 			{
 				return OnPreActionReturnValue;

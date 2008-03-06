@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Web;
 using System.Web.Mvc;
@@ -177,21 +178,6 @@ namespace MvcContrib.UnitTests.MetaData
 			}
 		}
 
-		class AttributeAwareFilter : IFilter, IFilterAttributeAware
-		{
-			private FilterAttribute _attribute;
-
-			public bool Execute(ControllerContext context, ActionMetaData action)
-			{
-				return _attribute != null;
-			}
-
-			public FilterAttribute Attribute
-			{
-				set { _attribute = value; }
-			}
-		}
-
 		[Filter(typeof(FilterReturnsTrue))]
 		class FilteredController : ConventionController
 		{
@@ -237,17 +223,7 @@ namespace MvcContrib.UnitTests.MetaData
 			{
 				PostOnlyCalled = true;
 			}
-
-			[Filter(typeof(string))]
-			public void InvalidFilter()
-			{
-			}
-
-			[Filter(typeof(DependentFilter))]
-			public void DependentFilter()
-			{
-				DependentFilterCalled = true;
-			}
 		}
 	}
 }
+*/

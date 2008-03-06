@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using NVelocity.Runtime;
@@ -46,7 +47,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void LoadValidView()
 		{
-			NVelocityView view = _factory.CreateView(_controllerContext, "view", string.Empty, null) as NVelocityView;
+			ViewContext context = new ViewContext(_controllerContext, "view", string.Empty, null, null);
+			NVelocityView view = _factory.CreateView(context);
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 		}
@@ -55,13 +57,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidViewThrows()
 		{
-			_factory.CreateView(_controllerContext, "nonExistant", string.Empty, null);
+			ViewContext context = new ViewContext(_controllerContext, "nonExistant", string.Empty, null, null);
+			_factory.CreateView(context);
 		}
 
 		[Test]
 		public void LoadValidViewWithMaster()
 		{
-			NVelocityView view = _factory.CreateView(_controllerContext, "view", "master", null) as NVelocityView;
+			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
+			NVelocityView view = _factory.CreateView(context);
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 			Assert.IsNotNull(view.MasterTemplate);
@@ -71,7 +75,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidMasterThrows()
 		{
-			_factory.CreateView(_controllerContext, "view", "nonExistant", null);
+			ViewContext context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
+			_factory.CreateView(context);
 		}
 	}
 }

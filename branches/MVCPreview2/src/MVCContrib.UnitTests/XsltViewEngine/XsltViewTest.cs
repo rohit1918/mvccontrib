@@ -20,7 +20,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		private const string view = "MyView";
 		private static readonly string VIEW_ROOT_DIRECTORY = Path.Combine(Environment.CurrentDirectory, "../../XsltViewEngine/Data/Views");
 		private IViewSourceLoader _viewSourceLoader;
-
+        
 		[SetUp]
 		public void SetUp()
 		{
@@ -66,16 +66,16 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 			//Request.Files = Activator.CreateInstance(typeof(HttpFileCollection), true) as HttpFileCollection;
 
-			ControllerContext controllerContext = new ControllerContext(HttpContext, routeData, new Controller());
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, vData, new TempDataDictionary(HttpContext)); // new ControllerContext(HttpContext, routeData, new Controller());
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
-
+			viewFactory.RenderView(viewContext);
 			//IView viewObj = viewFactory.CreateView(controllerContext, view, string.Empty, vData);
 
 			//Assert.IsNotNull(viewObj);
 			//Assert.IsTrue(viewObj is XsltView);
 
-			viewObj.RenderView(new ViewContext(controllerContext, vData, new TempDataDictionary(HttpContext)));
+			//viewObj.RenderView(new ViewContext(controllerContext, vData, new TempDataDictionary(HttpContext)));
 
 			string actual = ResponseOutput.ToString().Replace("\r\n", "");
 

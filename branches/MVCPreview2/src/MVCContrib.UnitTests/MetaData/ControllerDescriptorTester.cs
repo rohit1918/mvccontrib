@@ -229,11 +229,6 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 		}
 
-		[HiddenAction]
-		public void HiddenAction()
-		{
-		}
-
 		[DefaultAction]
 		public void CatchAllAction()
 		{

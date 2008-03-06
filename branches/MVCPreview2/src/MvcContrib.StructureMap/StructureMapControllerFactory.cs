@@ -9,7 +9,7 @@ namespace MvcContrib.ControllerFactories
 	{
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
-			//controllerName = controllerName + "Controller";
+			controllerName = controllerName + "Controller";
 	    	return ObjectFactory.GetNamedInstance<IController>(controllerName);
 	    }
 

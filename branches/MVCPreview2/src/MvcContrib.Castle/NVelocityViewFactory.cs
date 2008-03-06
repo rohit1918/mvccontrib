@@ -86,7 +86,12 @@ namespace MvcContrib.Castle
 			return _engine.GetTemplate(targetView);
 		}
 
-	    public void RenderView(ViewContext viewContext)
+		public void RenderView(ViewContext viewContext)
+		{
+			CreateView(viewContext).RenderView();
+		}
+
+		public NVelocityView CreateView(ViewContext viewContext)
 	    {
 			string controllerName = (string)viewContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
@@ -95,7 +100,8 @@ namespace MvcContrib.Castle
 			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
 
 	    	NVelocityView view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
-			view.RenderView();
+
+			return view;
 	    }
 	}
 }

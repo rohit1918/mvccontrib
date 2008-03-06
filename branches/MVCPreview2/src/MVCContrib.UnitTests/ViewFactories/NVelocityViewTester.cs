@@ -50,13 +50,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			IView view = _factory.CreateView(_controllerContext, "view", null, new Hashtable());
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
+
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("View Template", _output.ToString());
 		}
@@ -64,13 +64,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			IView view = _factory.CreateView(_controllerContext, "view", "master", new Hashtable());
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
+
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("Master Template View Template", _output.ToString());
 		}
@@ -80,14 +80,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			Dictionary<string, object> viewData = new Dictionary<string, object>();
 			viewData["test"] = "test";
+			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
 
-			IView view = _factory.CreateView(_controllerContext, "view", null, viewData);
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("View Template test", _output.ToString());
 		}

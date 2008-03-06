@@ -224,10 +224,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             //    }
             //}
 
-            //public string HttpMethod
-            //{
-            //   get;set;
-            //}
+            public new string HttpMethod
+            {
+               get;set;
+            }
 
             //public System.IO.Stream InputStream
             //{
@@ -274,10 +274,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             //   get;set;
             //}
 
-            //public string PhysicalApplicationPath
-            //{
-            //   get;set;
-            //}
+            public new string PhysicalApplicationPath
+            {
+               get;set;
+            }
 
             //public string PhysicalPath
             //{
@@ -301,10 +301,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             //   get;set;
             //}
 
-            //public string RequestType
-            //{
-            //    get;set;
-            //}
+            public new string RequestType
+            {
+                get;set;
+            }
 
             //public virtual void SaveAs(string filename, bool includeHeaders)
             //{
@@ -348,10 +348,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             //   get;set;
             //}
 
-            //public string UserHostName
-            //{
-            //   get;set;
-            //}
+            public new string UserHostName
+            {
+               get;set;
+            }
 
             //public string[] UserLanguages
             //{
@@ -368,10 +368,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
         public class MockBrowserCapabilities : HttpBrowserCapabilitiesBase
         {
-            private ICollection<string> _keys;
-            private ICollection<string> _values;
-            private int _count;
-            private bool _isReadOnly;
+//            private ICollection<string> _keys;
+//            private ICollection<string> _values;
+//            private int _count;
+//            private bool _isReadOnly;
 
             //#region HttpBrowserCapabilitiesBase Members
 
@@ -506,10 +506,15 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             //    throw new NotImplementedException();
             //}
 
-            //public Version EcmaScriptVersion
-            //{
-            //   get;set;
-            //}
+            public new Version EcmaScriptVersion
+            {
+               get;set;
+            }
+
+			public new string Browser
+			{
+				get; set;
+			}
 
             //public bool Frames
             //{

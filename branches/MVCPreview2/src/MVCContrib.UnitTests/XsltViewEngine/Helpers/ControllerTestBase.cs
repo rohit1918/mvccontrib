@@ -26,7 +26,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
 		public void AssertRenderedViewNameIs(string expectedViewName)
 		{
-			Assert.AreEqual(expectedViewName, testViewFactory.viewName, "Unexpected view name");
+			Assert.AreEqual(expectedViewName, testViewFactory.viewContext.ViewName, "Unexpected view name");
 		}
 	}
 

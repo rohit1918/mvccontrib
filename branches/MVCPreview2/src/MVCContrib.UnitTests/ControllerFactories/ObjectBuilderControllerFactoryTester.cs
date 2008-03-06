@@ -38,7 +38,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "Simple"); //typeof(SimpleController));
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
@@ -55,7 +55,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(DependencyController));
+			IController controller = factory.CreateController(context, "Dependency"); //typeof(DependencyController));
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
@@ -77,7 +77,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "Simple");
 		}
 
 		[Test]
@@ -92,7 +92,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "Simple");
 		}
 
 		[Test]
@@ -101,7 +101,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(null, typeof(SimpleController));
+			IController controller = factory.CreateController(null, "Simple");
 		}
 
 		public class MockApplication : HttpApplication, IDependencyContainerAccessor

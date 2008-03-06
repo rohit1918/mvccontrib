@@ -34,7 +34,7 @@ namespace MvcContrib.ControllerFactories
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
 			//Hack...
-	    	//controllerName = controllerName + "Controller"; 
+	    	controllerName = controllerName + "Controller"; 
 
 	    	IWindsorContainer container = GetContainer(context);
 	    	return (IController)container.Resolve(controllerName);

@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
                 using (Playback())
                 {
                     IControllerFactory controllerFactory = new IoCControllerFactory();
-                    controller = controllerFactory.CreateController(null, typeof(TestController));
+                    controller = controllerFactory.CreateController(null, "Test");
                 }
 
                 Assert.That(controller.GetType().Equals(typeof(TestController)));
@@ -69,7 +69,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
                 using(Playback())
                 {
                     IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
-                    controller = controllerFactory.CreateController(null, typeof(TestController));
+                    controller = controllerFactory.CreateController(null, "Test");
                 }
 
                 Assert.That(controller.GetType().Equals(typeof(TestController)));

@@ -36,7 +36,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				SetupResult.For(response.ContentEncoding).Return(Encoding.UTF8);
 
 				_mocks.ReplayAll();
-				_context = new ViewContext(httpContext,new RouteData(), controller, new Hashtable(), new TempDataDictionary(httpContext));
+				_context = new ViewContext(httpContext,new RouteData(), controller, "", "", new Hashtable(), new TempDataDictionary(httpContext));
 				_helper = _mocks.DynamicMock<IFormHelper>();
 				SetupResult.For(_helper.ViewContext).Return(_context);
 				_mocks.Replay(_helper);

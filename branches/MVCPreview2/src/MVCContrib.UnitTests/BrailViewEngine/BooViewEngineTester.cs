@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.BrailViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace MVCContrib.UnitTests.BrailViewEngine
 {
@@ -16,19 +18,25 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 	{
 		private BooViewEngine _viewEngine;
 		private ViewContext _viewContext;
-		private TestHttpContext _httpContext;
+		private HttpContextBase _httpContext;
+		private MockRepository _mocks;
+		private StringWriter _output;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
 
 		[SetUp]
 		public void SetUp()
 		{
-			_httpContext = new TestHttpContext();
+			_output = new StringWriter();
+			_mocks = new MockRepository();
+			_httpContext = _mocks.DynamicMock<HttpContextBase>(); //new TestHttpContext();
+			SetupResult.For(_httpContext.Request).Return(_mocks.DynamicMock<HttpRequestBase>());
+			SetupResult.For(_httpContext.Response).Return(_mocks.DynamicMock<HttpResponseBase>());
+			SetupResult.For(_httpContext.Response.Output).Return(_output);
 			RequestContext requestContext = new RequestContext(_httpContext, new RouteData());
 			IController controller = new Controller();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
-			_viewContext =
-				new ViewContext(controllerContext, new Hashtable(StringComparer.InvariantCultureIgnoreCase),
+			_viewContext = new ViewContext(controllerContext, "", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
 				                new TempDataDictionary(controllerContext.HttpContext));
 
 			_viewEngine = new BooViewEngine();
@@ -49,7 +57,9 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Request_ApplicationPath_Is_Placed_In_ViewData_With_SiteRoot_Key()
 		{
-			_httpContext.Request.ApplicationPath = "/ApplictionPath";
+			SetupResult.For(_httpContext.Request.ApplicationPath).Return("/ApplicationPath");
+			_mocks.ReplayAll();
+			//_httpContext.Request.ApplicationPath = "/ApplictionPath";
 
 			string expected = "Current apppath is /ApplictionPath/";
 			string actual = GetViewOutput("apppath");
@@ -60,7 +70,8 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Changing_View_Causes_Recompile()
 		{
-			_httpContext.Request.ApplicationPath = "/ApplictionPath";
+			SetupResult.For(_httpContext.Request.ApplicationPath).Return("/ApplicationPath");
+			_mocks.ReplayAll();
 
 			IViewSource viewSource = _viewEngine.ViewSourceLoader.GetViewSource("apppath.brail");
 			string originalSource;
@@ -80,7 +91,8 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			}
 
 			Thread.Sleep(100);
-			_httpContext.Response.ClearOutput();
+			//TODO: Clear output
+			//_httpContext.Response.ClearOutput();
 			actual = GetViewOutput("apppath");
 
 			try
@@ -119,7 +131,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
 			_viewEngine.Options.BaseType = "MVCContrib.UnitTests.BrailViewEngine.TestBrailBase";
-			IView view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
+			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
 			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
 		}
 
@@ -130,7 +142,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 
 		private string GetViewOutput(string viewName, string masterName)
 		{
-			IView view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
+			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
 			view.RenderView(_viewContext);
 			return _httpContext.Response.Output.ToString();
 		}

@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
 			ViewContext viewContext =
-				new ViewContext(controllerContext, new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 
 			_htmlHelper = new NVelocityHtmlHelper(viewContext);
 		}
@@ -69,7 +69,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 			Assert.AreEqual(_htmlHelper.TextBox("htmlName", "value", new { attr = "value" }), _htmlHelper.TextBox("htmlName", "value", htmlAttributes));
 		}
 
-		[Test]
+		//MailTo is not present in preview 2.
+		/*[Test]
 		public void Mailto_Uses_Subject_Body_Cc_And_Bcc_Attributes()
 		{
 			Hashtable htmlAttributes = new Hashtable();
@@ -78,6 +79,6 @@ namespace MvcContrib.UnitTests.ViewFactories
 			htmlAttributes["cc"] = "cc";
 
 			Assert.AreEqual(_htmlHelper.MailTo("emailAddress", "linkText", "subject", string.Empty, "cc", "body"), _htmlHelper.MailTo("emailAddress", "linkText", htmlAttributes));
-		}
+		}*/
 	}
 }

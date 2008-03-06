@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using NUnit.Framework;
 using MvcContrib.TestHelper;
 
@@ -25,7 +26,7 @@ namespace MvcContrib.TestHelper
         
         public void RedirectWithObject()
         {
-            RedirectToAction(new { Action = "ActionName3", Controller = "ControllerName3" });
+            RedirectToAction(new RouteValueDictionary(new { Action = "ActionName3", Controller = "ControllerName3" }));
         }
 
         

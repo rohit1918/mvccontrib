@@ -221,7 +221,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}
@@ -236,7 +236,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}
@@ -254,7 +254,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.Route.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}

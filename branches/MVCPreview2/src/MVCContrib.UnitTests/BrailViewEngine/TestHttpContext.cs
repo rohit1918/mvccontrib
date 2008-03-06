@@ -15,7 +15,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 {
 	public class TestHttpContext : HttpContextBase
 	{
-		private readonly List<Exception> _allErrors = new List<Exception>();
+		/*private readonly List<Exception> _allErrors = new List<Exception>();
 		private HttpApplicationState _Application;
 		private HttpApplication _ApplicationInstance;
 		private Cache _Cache = new Cache();
@@ -36,7 +36,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		private bool _SkipAuthorization;
 		private DateTime _Timestamp = DateTime.Now;
 		private TraceContext _Trace = new TraceContext(null);
-		private IPrincipal _User;
+		private IPrincipal _User;*/
 
         //public void AddError(Exception errorInfo)
         //{
@@ -231,7 +231,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 
 	public class TestHttpRequest : HttpRequestBase
 	{
-		private readonly List<string> _acceptTypes = new List<string>();
+		/*private readonly List<string> _acceptTypes = new List<string>();
 		private readonly List<string> _userLanguages = new List<string>();
 		private string _ApplicationPath;
 		private string _AnonymousID;
@@ -266,7 +266,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		private string _UserHostAddress;
 		private string _UserHostName;
 		private NameValueCollection _Headers = new NameValueCollection();
-		private NameValueCollection _QueryString = new NameValueCollection();
+		private NameValueCollection _QueryString = new NameValueCollection();*/
 
         //public byte[] BinaryRead(int count)
         //{
@@ -529,7 +529,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 	}
 
 	public class TestHttpResponse : HttpResponseBase{
-		private bool _Buffer;
+		/*private bool _Buffer;
 		private bool _BufferOutput;
 		private HttpCachePolicyBase _Cache;
 		private string _CacheControl;
@@ -551,7 +551,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		private string _StatusDescription;
 		private int _SubStatusCode;
 		private bool _SuppressContent;
-		private bool _TrySkipIisCustomErrors;
+		private bool _TrySkipIisCustomErrors;*/
 
         //public void AddCacheItemDependency(string cacheKey)
         //{
@@ -1008,7 +1008,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 		}
 
-		private int _CodePage;
+		/*private int _CodePage;
 		private HttpSessionStateBase _Contents;
 		private HttpCookieMode _CookieMode;
 		private bool _IsCookieless;
@@ -1019,7 +1019,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		private HttpStaticObjectsCollection _StaticObjects;
 		private int _Timeout;
 		private object _SyncRoot;
-		private bool _IsSynchronized;
+		private bool _IsSynchronized;*/
 
         //public void Abandon()
         //{
