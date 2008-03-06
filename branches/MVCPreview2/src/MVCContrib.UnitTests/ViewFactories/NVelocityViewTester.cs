@@ -50,7 +50,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new Hashtable(), null);
 
 			var view = _factory.CreateView(viewContext);
 
@@ -64,7 +64,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new Hashtable(), null);
 
 			var view = _factory.CreateView(viewContext);
 
@@ -80,7 +80,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			Dictionary<string, object> viewData = new Dictionary<string, object>();
 			viewData["test"] = "test";
-			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
 
 			var view = _factory.CreateView(viewContext);
 

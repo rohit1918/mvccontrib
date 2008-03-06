@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			IController controller = _mocks.DynamicMock<IController>();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
-			ViewContext viewContext = new ViewContext(controllerContext, "","",new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(controllerContext, "index","",new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 
 			_htmlHelper = new HtmlHelper(viewContext);
 			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper);
@@ -58,7 +58,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void Invokes_Methods_On_HtmlHelper_Extension_Classes()
 		{
-		    string expected = "";//"_htmlHelper.TextBox("htmlName");
+		    string expected = _htmlHelper.TextBox("htmlName");
 			string actual = _htmlHelperDuck.Invoke("TextBox", new object[] {"htmlName"}) as string;
 
 			Assert.AreEqual(expected, actual); 

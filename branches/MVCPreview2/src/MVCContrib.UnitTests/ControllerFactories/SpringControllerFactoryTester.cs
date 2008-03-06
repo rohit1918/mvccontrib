@@ -39,8 +39,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldThrowExceptionForNoConfig()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-                throw new NotImplementedException();
-                //IController controller = factory.CreateController(new RequestContext(new HttpContextBase(),new RouteData()), 
+				IController controller = factory.CreateController(null, "Simple"); 
                 //                                                  Type.GetType(
                 //                                                    "MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 			}
@@ -75,7 +74,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnTheController()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null,"");
+				IController controller = factory.CreateController(null,"Simple");
 
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
@@ -85,7 +84,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnControllerWithDependencies()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null, "");
+				IController controller = factory.CreateController(null, "Dependency");
 
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
@@ -99,7 +98,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldThrowExceptionForInvalidController()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-			    IController controller = factory.CreateController(null, "");//typeof(NonValidController));
+			    IController controller = factory.CreateController(null, "NonValid");//typeof(NonValidController));
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
@@ -174,7 +173,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				ctx.Refresh();
 				SpringControllerFactory.Configure(ctx as IApplicationContext);
 				IControllerFactory factory = new SpringControllerFactory();
-			    IController controller = factory.CreateController(null, "");
+			    IController controller = factory.CreateController(null, "Simple");
 				                                                  //Type.GetType("MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 
 				Assert.That(controller, Is.Not.Null);
