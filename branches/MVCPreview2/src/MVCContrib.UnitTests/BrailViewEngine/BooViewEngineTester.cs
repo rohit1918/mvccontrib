@@ -30,13 +30,15 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			_output = new StringWriter();
 			_mocks = new MockRepository();
 			_httpContext = _mocks.DynamicMock<HttpContextBase>(); //new TestHttpContext();
+			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			SetupResult.For(response.Output).Return(_output);
 			SetupResult.For(_httpContext.Request).Return(_mocks.DynamicMock<HttpRequestBase>());
-			SetupResult.For(_httpContext.Response).Return(_mocks.DynamicMock<HttpResponseBase>());
-			SetupResult.For(_httpContext.Response.Output).Return(_output);
+			SetupResult.For(_httpContext.Response).Return(response);
+//			SetupResult.For(_httpContext.Session).Return(_mocks.DynamicMock<HttpSessionStateBase>());
 			RequestContext requestContext = new RequestContext(_httpContext, new RouteData());
 			IController controller = new Controller();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
-			_viewContext = new ViewContext(controllerContext, "", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
+			_viewContext = new ViewContext(controllerContext, "index", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
 				                new TempDataDictionary(controllerContext.HttpContext));
 
 			_viewEngine = new BooViewEngine();
@@ -48,6 +50,8 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Render_View_With_Master_And_SubView()
 		{
+			_mocks.ReplayAll();
+
 			string expected = "Master View SubView";
 			string actual = GetViewOutput("view", "/Master");
 

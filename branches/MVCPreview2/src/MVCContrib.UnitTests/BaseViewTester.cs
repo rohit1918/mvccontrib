@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests
 
 			mocks.ReplayAll();
 
-			_viewContext = new ViewContext(controllerContext,"","", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+			_viewContext = new ViewContext(controllerContext,"index","", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 			
 		}
 	}
