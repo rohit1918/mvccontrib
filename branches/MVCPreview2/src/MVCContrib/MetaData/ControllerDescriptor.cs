@@ -29,7 +29,9 @@ namespace MvcContrib.MetaData
 			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
 
 			RescueAttribute[] controllerRescues = GetRescues(metaData.ControllerType, true);
-			FilterAttribute[] controllerFilters = GetFilters(metaData.ControllerType);
+			
+			List<ActionFilterAttribute> controllerFilters = new List<ActionFilterAttribute>(GetFilters(metaData.ControllerType));
+			SortFilters(controllerFilters);
 
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
@@ -55,15 +57,11 @@ namespace MvcContrib.MetaData
 					actionMetaData.Rescues.Add(rescue);
 				}
 
+				List<ActionFilterAttribute> actionFilters = new List<ActionFilterAttribute>(GetFilters(actionMethod));
+				SortFilters(actionFilters);
 
-				List<FilterAttribute> filters = new List<FilterAttribute>(controllerFilters);
-				filters.AddRange(GetFilters(actionMethod));
-				SortFilters(filters);
-
-				foreach(FilterAttribute filter in filters)
-				{
-					actionMetaData.Filters.Add(filter);
-				}
+				actionMetaData.Filters.AddRange(controllerFilters);
+				actionMetaData.Filters.AddRange(actionFilters);
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
 				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
@@ -92,12 +90,9 @@ namespace MvcContrib.MetaData
 			return metaData;
 		}
 
-		private static void SortFilters(List<FilterAttribute> filters)
+		private static void SortFilters(List<ActionFilterAttribute> filters)
 		{
-			filters.Sort(delegate (FilterAttribute first, FilterAttribute second)
-			             	{
-			             		return first.ExecutionOrder - second.ExecutionOrder;
-			             	});
+			filters.Sort((first, second) => first.Order - second.Order);
 		}
 
 		protected virtual bool IsDefaultAction(ActionMetaData actionMetaData)
@@ -113,7 +108,7 @@ namespace MvcContrib.MetaData
 
 		protected virtual bool IsValidAction(MethodInfo actionMethod)
 		{
-			object[] attributes = actionMethod.GetCustomAttributes(typeof(HiddenActionAttribute), false);
+			object[] attributes = actionMethod.GetCustomAttributes(typeof(NonActionAttribute), false);
 
 			if(attributes.Length > 0)
 			{
@@ -143,9 +138,9 @@ namespace MvcContrib.MetaData
 			return (RescueAttribute[])attributeProvider.GetCustomAttributes(typeof(RescueAttribute), inherit);
 		}
 
-		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
+		protected virtual ActionFilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
 		{
-			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
+			return (ActionFilterAttribute[])attributeProvider.GetCustomAttributes(typeof(ActionFilterAttribute), true);
 		}
 
 		protected virtual IReturnBinder GetReturnBinder(ActionMetaData actionMetaData)

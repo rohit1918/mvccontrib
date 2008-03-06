@@ -8,18 +8,6 @@ namespace MvcContrib.ControllerFactories
 {
 	public class WindsorControllerFactory : IControllerFactory
 	{
-		public IController CreateController(RequestContext context, Type controllerType)
-		{
-			return CreateControllerInternal(context,controllerType);
-		}
-
-		protected virtual IController CreateControllerInternal(RequestContext context, Type controllerType)
-		{
-			IWindsorContainer container = GetContainer(context);
-
-			return (IController)container.Resolve(controllerType);
-		}
-
 		protected virtual IWindsorContainer GetContainer(RequestContext context)
 		{
 			if( context == null )
@@ -45,12 +33,16 @@ namespace MvcContrib.ControllerFactories
 
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
-	        throw new NotImplementedException();
+			//Hack...
+	    	//controllerName = controllerName + "Controller"; 
+
+	    	IWindsorContainer container = GetContainer(context);
+	    	return (IController)container.Resolve(controllerName);
 	    }
 
 	    public void DisposeController(IController controller)
 	    {
-	        throw new NotImplementedException();
+			//TODO: use container.Release
 	    }
 	}
 }

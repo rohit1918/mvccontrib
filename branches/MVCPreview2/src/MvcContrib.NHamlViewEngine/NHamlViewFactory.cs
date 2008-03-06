@@ -16,7 +16,7 @@ namespace MvcContrib.ViewFactories
 {
 	[AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	public class NHamlViewFactory : IViewFactory
+	public class NHamlViewFactory : IViewEngine
 	{
 		private static readonly Dictionary<string, CompiledView> _viewCache = new Dictionary<string, CompiledView>();
 
@@ -35,7 +35,6 @@ namespace MvcContrib.ViewFactories
 
 			_templateCompiler.ViewBaseType = typeof(NHamlView<>);
 
-			_templateCompiler.AddReference(typeof(IView).Assembly.Location);
 			_templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
 			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
 
@@ -72,69 +71,6 @@ namespace MvcContrib.ViewFactories
 					_templateCompiler.AddUsing(cfgNs.Name);
 				}
 			}
-		}
-
-		public IView CreateView(ControllerContext controllerContext, string viewName,
-		                        string masterName, object viewData)
-		{
-			string controller = (string)controllerContext.RouteData.Values["controller"];
-			string viewKey = controller + "/" + viewName;
-
-			CompiledView compiledView;
-
-			if(!_viewCache.TryGetValue(viewKey, out compiledView))
-			{
-				lock(_viewCache)
-				{
-					if(!_viewCache.TryGetValue(viewKey, out compiledView))
-					{
-						string viewPath = viewKey;
-
-						if(!Path.HasExtension(viewPath))
-						{
-							viewPath = string.Concat(viewPath, ".haml");
-						}
-
-						if (!_viewSourceLoader.HasView(viewPath))
-						{
-							throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
-						}
-
-						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
-
-						Invariant.IsNotNull(viewSource);
-
-						IViewSource layoutSource = FindLayout("Shared", masterName, controller);
-
-						string layoutPath = null;
-
-						if(layoutSource != null)
-						{
-							layoutPath = layoutSource.FullName;
-						}
-
-						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath, viewData);
-
-						_viewCache.Add(viewKey, compiledView);
-					}
-				}
-			}
-
-			if(!_production)
-			{
-				compiledView.RecompileIfNecessary(viewData);
-			}
-
-			INHamlView view = compiledView.CreateView();
-
-			if(ViewDataIsDictionary(viewData))
-			{
-				viewData = new ViewData(viewData);
-			}
-
-			view.SetViewData(viewData);
-
-			return view;
 		}
 
 		public static bool ViewDataIsDictionary(object viewData)
@@ -182,6 +118,67 @@ namespace MvcContrib.ViewFactories
 			{
 				_viewCache.Clear();
 			}
+		}
+
+		public void RenderView(ViewContext viewContext)
+		{
+			string controller = (string)viewContext.RouteData.Values["controller"];
+			string viewKey = controller + "/" + viewContext.ViewName;
+
+			CompiledView compiledView;
+
+			if (!_viewCache.TryGetValue(viewKey, out compiledView))
+			{
+				lock (_viewCache)
+				{
+					if (!_viewCache.TryGetValue(viewKey, out compiledView))
+					{
+						string viewPath = viewKey;
+
+						if (!Path.HasExtension(viewPath))
+						{
+							viewPath = string.Concat(viewPath, ".haml");
+						}
+
+						if (!_viewSourceLoader.HasView(viewPath))
+						{
+							throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
+						}
+
+						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
+
+						Invariant.IsNotNull(viewSource);
+
+						IViewSource layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
+
+						string layoutPath = null;
+
+						if (layoutSource != null)
+						{
+							layoutPath = layoutSource.FullName;
+						}
+
+						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath, viewContext.ViewData);
+
+						_viewCache.Add(viewKey, compiledView);
+					}
+				}
+			}
+
+			if (!_production)
+			{
+				compiledView.RecompileIfNecessary(viewContext.ViewData);
+			}
+
+			INHamlView view = compiledView.CreateView();
+
+//			if (ViewDataIsDictionary(viewContext.ViewData))
+//			{
+//				viewContext.ViewData = new ViewData(viewContext.ViewData);
+//			}
+
+			view.SetViewData(viewContext.ViewData);
+			view.RenderView(viewContext);
 		}
 	}
 }

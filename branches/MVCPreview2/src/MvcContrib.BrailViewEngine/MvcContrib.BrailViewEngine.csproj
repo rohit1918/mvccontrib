@@ -100,7 +100,6 @@
     <Compile Include="HtmlExtension.cs" />
     <Compile Include="IDslLanguageExtension.cs" />
     <Compile Include="IgnoreNull.cs" />
-    <Compile Include="IView.cs" />
     <Compile Include="Macros\CodeBuilderHelper.cs" />
     <Compile Include="Macros\DslMacro.cs" />
     <Compile Include="Macros\OutputMacro.cs" />

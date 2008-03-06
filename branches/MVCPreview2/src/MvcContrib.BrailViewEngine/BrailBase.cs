@@ -29,7 +29,7 @@ namespace MvcContrib.BrailViewEngine
 	/// support all the behind the scenes magic such as variable to PropertyBag trasnlation, 
 	/// resources usage, etc. 
 	/// </summary>
-	public abstract class BrailBase : IView
+	public abstract class BrailBase
 	{
 		protected IController __controller;
 		protected ViewContext __viewContext;

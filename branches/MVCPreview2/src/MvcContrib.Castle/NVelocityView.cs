@@ -7,20 +7,17 @@ using NVelocity;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityView : IView
+	public class NVelocityView
 	{
-		private readonly ControllerContext _controllerContext;
+		private readonly ViewContext _viewContext;
 		private readonly Template _masterTemplate;
-		private readonly object _viewData;
 		private readonly Template _viewTemplate;
 
-		public NVelocityView(Template viewTemplate, Template masterTemplate,
-		                     ControllerContext controllerContext, object viewData)
+		public NVelocityView(Template viewTemplate, Template masterTemplate, ViewContext viewContext)
 		{
 			_viewTemplate = viewTemplate;
 			_masterTemplate = masterTemplate;
-			_controllerContext = controllerContext;
-			_viewData = viewData;
+			_viewContext = viewContext;
 		}
 
 		public Template ViewTemplate
@@ -33,12 +30,12 @@ namespace MvcContrib.Castle
 			get { return _masterTemplate; }
 		}
 
-		public void RenderView(ViewContext viewContext)
+		public void RenderView()
 		{
 			bool hasLayout = _masterTemplate != null;
-			TextWriter writer = hasLayout ? new StringWriter() : viewContext.HttpContext.Response.Output;
+			TextWriter writer = hasLayout ? new StringWriter() : _viewContext.HttpContext.Response.Output;
 
-			VelocityContext context = CreateContext(viewContext);
+			VelocityContext context = CreateContext(_viewContext);
 
 			_viewTemplate.Merge(context, writer);
 
@@ -46,14 +43,14 @@ namespace MvcContrib.Castle
 			{
 				context.Put("childContent", (writer as StringWriter).GetStringBuilder().ToString());
 
-				_masterTemplate.Merge(context, viewContext.HttpContext.Response.Output);
+				_masterTemplate.Merge(context, _viewContext.HttpContext.Response.Output);
 			}
 		}
 
 		private VelocityContext CreateContext(ViewContext context)
 		{
 			Hashtable entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			IDictionary<string, object> viewDataEntries = _viewData as IDictionary<string, object>;
+			IDictionary<string, object> viewDataEntries = _viewContext.ViewData as IDictionary<string, object>;
 
 			if(viewDataEntries != null)
 			{
@@ -64,12 +61,12 @@ namespace MvcContrib.Castle
 			}
 			else
 			{
-				entries["viewdata"] = _viewData;
+				entries["viewdata"] = _viewContext.ViewData;
 			}
 
 			entries["routedata"] = context.RouteData;
-			entries["controller"] = _controllerContext.Controller;
-			entries["httpcontext"] = _controllerContext.HttpContext;
+			entries["controller"] = _viewContext.Controller;
+			entries["httpcontext"] = _viewContext.HttpContext;
 
 			CreateAndAddHelpers(entries, context);
 

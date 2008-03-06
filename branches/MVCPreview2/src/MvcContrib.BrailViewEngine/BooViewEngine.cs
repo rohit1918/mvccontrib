@@ -212,7 +212,7 @@ namespace MvcContrib.BrailViewEngine
 //			throw new NotImplementedException();
 //		}
 
-		public virtual IView ProcessPartial(TextWriter output, string viewName)
+		public virtual BrailBase ProcessPartial(TextWriter output, string viewName)
 //		(string partialName, TextWriter output, IEngineContext context, IController controller, IControllerContext controllerContext)
 		{
 			Log("Generating partial for {0}", viewName);
@@ -220,7 +220,7 @@ namespace MvcContrib.BrailViewEngine
 			try
 			{
 				string file = ResolveTemplateName(viewName, ViewFileExtension);
-				IView view = GetCompiledScriptInstance(file, output);
+				BrailBase view = GetCompiledScriptInstance(file, output);
 				return view;
 			}
 			catch(Exception ex)

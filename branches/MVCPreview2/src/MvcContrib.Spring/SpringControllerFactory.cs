@@ -63,7 +63,9 @@ namespace MvcContrib.Spring
 
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
-	        throw new NotImplementedException();
+	    	//controllerName = controllerName + "Controller";
+	    	Type controllerType = _objectFactory.GetType(controllerName);
+	    	return CreateController(context, controllerType);
 	    }
 
 	    public void DisposeController(IController controller)

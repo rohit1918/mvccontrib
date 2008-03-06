@@ -75,7 +75,6 @@
     <Compile Include="ExtensionDuck.cs" />
     <Compile Include="DescriptableDictionary.cs" />
     <Compile Include="HtmlExtensionDuck.cs" />
-    <Compile Include="IView.cs" />
     <Compile Include="NVelocityHtmlHelper.cs" />
     <Compile Include="NVelocityView.cs" />
     <Compile Include="NVelocityViewFactory.cs" />

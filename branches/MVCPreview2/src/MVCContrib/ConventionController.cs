@@ -80,7 +80,8 @@ namespace MvcContrib
 
 		protected virtual bool ExecutePreActionFilters(ActionMetaData action)
 		{
-			foreach(FilterAttribute attr in action.Filters)
+			throw new NotImplementedException();
+			/*foreach(FilterAttribute attr in action.Filters)
 			{
 				if(!typeof(IFilter).IsAssignableFrom(attr.FilterType))
 					throw new InvalidOperationException("Filters must implement the IFilter interface.");
@@ -93,7 +94,7 @@ namespace MvcContrib
 				}
 			}
 
-			return true;
+			return true;*/
 		}
 
 		private bool _isRedirected = false;

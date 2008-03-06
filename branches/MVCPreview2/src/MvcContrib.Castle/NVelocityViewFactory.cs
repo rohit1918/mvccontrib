@@ -44,17 +44,6 @@ namespace MvcContrib.Castle
 			_engine.Init(props);
 		}
 
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
-		{
-			string controllerName = (string)controllerContext.RouteData.Values["controller"];
-			string controllerFolder = controllerName;
-
-			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewName);
-			Template masterTemplate = ResolveMasterTemplate(masterName);
-
-			return new NVelocityView(viewTemplate, masterTemplate, controllerContext, viewData);
-		}
-
 		private Template ResolveMasterTemplate(string masterName)
 		{
 			Template masterTemplate = null;
@@ -99,7 +88,14 @@ namespace MvcContrib.Castle
 
 	    public void RenderView(ViewContext viewContext)
 	    {
-	        throw new NotImplementedException();
+			string controllerName = (string)viewContext.RouteData.Values["controller"];
+			string controllerFolder = controllerName;
+
+			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewContext.ViewName);
+			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
+
+	    	NVelocityView view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
+			view.RenderView();
 	    }
 	}
 }

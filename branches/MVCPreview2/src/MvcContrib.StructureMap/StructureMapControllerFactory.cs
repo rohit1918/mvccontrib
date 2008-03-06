@@ -7,19 +7,15 @@ namespace MvcContrib.ControllerFactories
 {
 	public class StructureMapControllerFactory : IControllerFactory
 	{
-		IController CreateController(RequestContext context, Type controllerType)
-		{
-			return (IController)ObjectFactory.GetInstance(controllerType);
-		}
-
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
-	        throw new NotImplementedException();
+			//controllerName = controllerName + "Controller";
+	    	return ObjectFactory.GetNamedInstance<IController>(controllerName);
 	    }
 
 	    public void DisposeController(IController controller)
 	    {
-	        throw new NotImplementedException();
+	        //throw new NotImplementedException();
 	    }
 	}
 }

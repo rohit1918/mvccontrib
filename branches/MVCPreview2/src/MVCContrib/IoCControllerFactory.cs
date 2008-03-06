@@ -6,7 +6,7 @@ using MvcContrib.Services;
 
 namespace MvcContrib.ControllerFactories
 {
-    public class IoCControllerFactory : IControllerFactory
+    public class IoCControllerFactory : DefaultControllerFactory
     {
         private IDependencyResolver resolver = null;
 
@@ -20,31 +20,29 @@ namespace MvcContrib.ControllerFactories
             
         }
 
-        public IController CreateController(RequestContext context, Type controllerType)
+        protected override IController CreateController(RequestContext context, string controllerName)
         {
-            if(controllerType != null)
-            {
-                if(resolver != null)
-                {
-                    return resolver.GetImplementationOf<IController>(controllerType);
-                }
-                else
-                {
-                    return DependencyResolver.GetImplementationOf<IController>(controllerType);
-                }                    
-            }
-            else
-                throw new ArgumentNullException("controllerType");
+			//TODO: Don't rely on DefaultControllerFactory's GetControllerType
+        	Type controllerType = base.GetControllerType(controllerName);
+
+			if (controllerType != null)
+			{
+				if (resolver != null)
+				{
+					return resolver.GetImplementationOf<IController>(controllerType);
+				}
+				else
+				{
+					return DependencyResolver.GetImplementationOf<IController>(controllerType);
+				}
+			}
+			else
+				throw new Exception(string.Format("Could not find a type for the controller name '{0}'", controllerName));
         }
 
-        public IController CreateController(RequestContext context, string controllerName)
+        protected override void DisposeController(IController controller)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DisposeController(IController controller)
-        {
-            throw new NotImplementedException();
+            //TODO: Release properly.
         }
     }
 }

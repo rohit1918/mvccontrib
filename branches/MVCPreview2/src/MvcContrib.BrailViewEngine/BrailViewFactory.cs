@@ -25,15 +25,6 @@ namespace MvcContrib.ViewFactories
 			get { return _viewEngine; }
 		}
 
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
-		{
-			string controller = controllerContext.RouteData.Values["controller"] as string;
-
-			viewName = string.Concat(controller, "/", viewName);
-
-			return _viewEngine.Process(controllerContext.HttpContext.Response.Output, viewName, masterName);
-		}
-
 		private static BooViewEngine _defaultViewEngine;
 		private static BooViewEngine DefaultViewEngine
 		{
@@ -51,7 +42,12 @@ namespace MvcContrib.ViewFactories
 
 	    public void RenderView(ViewContext viewContext)
 	    {
-	        throw new NotImplementedException();
+			string controller = viewContext.RouteData.Values["controller"] as string;
+
+			string viewName = string.Concat(controller, "/", viewContext.ViewName);
+
+	    	BrailBase view = _viewEngine.Process(viewContext.HttpContext.Response.Output, viewName, viewContext.MasterName);
+			view.RenderView(viewContext);
 	    }
 	}
 }
