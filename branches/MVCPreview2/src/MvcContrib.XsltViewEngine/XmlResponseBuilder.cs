@@ -11,7 +11,7 @@ namespace MvcContrib.XsltViewEngine
 
 		// current path
 		private readonly string appPath;
-		private readonly IHttpContext httpContext;
+		private readonly HttpContextBase httpContext;
 
 		// xml docs
 		private readonly XmlDocument xmlMessage;
@@ -24,7 +24,7 @@ namespace MvcContrib.XsltViewEngine
 		/// Context
 		/// </summary>
 		/// <param name="httpContext">The HTTP context.</param>
-		public XmlResponseBuilder(IHttpContext httpContext)
+		public XmlResponseBuilder(HttpContextBase httpContext)
 		{
 			this.httpContext = httpContext;
 			appPath = httpContext.Request.PhysicalApplicationPath;

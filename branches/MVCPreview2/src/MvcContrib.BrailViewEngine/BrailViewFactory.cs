@@ -4,7 +4,7 @@ using MvcContrib.BrailViewEngine;
 
 namespace MvcContrib.ViewFactories
 {
-	public class BrailViewFactory : IViewFactory
+	public class BrailViewFactory : IViewEngine
 	{
 		private readonly BooViewEngine _viewEngine;
 
@@ -48,5 +48,10 @@ namespace MvcContrib.ViewFactories
 				return _defaultViewEngine;
 			}
 		}
+
+	    public void RenderView(ViewContext viewContext)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

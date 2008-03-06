@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MvcContrib.SimplyRestful
 {
@@ -84,93 +85,97 @@ namespace MvcContrib.SimplyRestful
 		{
 			controllerPath = FixPath(controllerPath);
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/new",
-				Defaults = BuildDefaults(RestfulAction.New, controller),
-				RouteHandler = typeof(MvcRouteHandler)
-			});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/[id]/[action]",
-				Defaults = BuildDefaults(RestfulAction.None, controller),
-				Validation = new
-				{
-					Method = "GET",
-					Id = idValidationRegex ?? MatchAny,
-					Action = "[eE][dD][iI][tT]|[dD][eE][lL][eE][tT][eE]"
-				},
-				RouteHandler = typeof(MvcRouteHandler)
-			});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/[id]",
-				Defaults = BuildDefaults(RestfulAction.None, controller),
-				Validation = new
-				{
-					Method = "POST",
-					Id = idValidationRegex ?? MatchAny,
-				},
-				RouteHandler = typeof(SimplyRestfulRouteHandler)
-			});
+			throw new NotImplementedException();
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/[id]",
-				Defaults = BuildDefaults(RestfulAction.Show, controller),
-				Validation = new
-				{
-					Method = "GET",
-					Id = idValidationRegex ?? MatchAny,
-				},
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //routeCollection.Add(new Route(
+            //controllerPath + "/new",
+            //new RouteValueDictionary()
+            //{
+            //Defaults = BuildDefaults(RestfulAction.New, controller)
+            //},
+            //new MvcRouteHandler()));
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath + "/[id]/[action]",
+            //    Defaults = BuildDefaults(RestfulAction.None, controller),
+            //    Validation = new
+            //    {
+            //        Method = "GET",
+            //        Id = idValidationRegex ?? MatchAny,
+            //        Action = "[eE][dD][iI][tT]|[dD][eE][lL][eE][tT][eE]"
+            //    },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/[id]",
-				Defaults = BuildDefaults(RestfulAction.Update, controller),
-				Validation = new
-				{
-					Method = "PUT",
-					Id = idValidationRegex ?? MatchAny
-				},
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath + "/[id]",
+            //    Defaults = BuildDefaults(RestfulAction.None, controller),
+            //    Validation = new
+            //    {
+            //        Method = "POST",
+            //        Id = idValidationRegex ?? MatchAny,
+            //    },
+            //    RouteHandler = typeof(SimplyRestfulRouteHandler)
+            //});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath + "/[id]",
-				Defaults = BuildDefaults(RestfulAction.Destroy, controller),
-				Validation = new
-				{
-					Method = "DELETE",
-					Id = idValidationRegex ?? MatchAny
-				},
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath + "/[id]",
+            //    Defaults = BuildDefaults(RestfulAction.Show, controller),
+            //    Validation = new
+            //    {
+            //        Method = "GET",
+            //        Id = idValidationRegex ?? MatchAny,
+            //    },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath,
-				Defaults = BuildDefaults(RestfulAction.Index, controller),
-				Validation = new { Method = "GET" },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath + "/[id]",
+            //    Defaults = BuildDefaults(RestfulAction.Update, controller),
+            //    Validation = new
+            //    {
+            //        Method = "PUT",
+            //        Id = idValidationRegex ?? MatchAny
+            //    },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 
-			routeCollection.Add(new Route
-			{
-				Url = controllerPath,
-				Defaults = BuildDefaults(RestfulAction.Create, controller),
-				Validation = new { Method = "POST" },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath + "/[id]",
+            //    Defaults = BuildDefaults(RestfulAction.Destroy, controller),
+            //    Validation = new
+            //    {
+            //        Method = "DELETE",
+            //        Id = idValidationRegex ?? MatchAny
+            //    },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
+
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath,
+            //    Defaults = BuildDefaults(RestfulAction.Index, controller),
+            //    Validation = new { Method = "GET" },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
+
+            //routeCollection.Add(new Route
+            //{
+            //    Url = controllerPath,
+            //    Defaults = BuildDefaults(RestfulAction.Create, controller),
+            //    Validation = new { Method = "POST" },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 		}
 
 		/// <summary>Ensures that a <see cref="IRestfulActionResolver"/> exists.</summary>
-		/// <param name="serviceProvider">The <see cref="IHttpContext"/> as an <see cref="IServiceProvider"/> to try and use to resolve an instance of the <see cref="IRestfulActionResolver"/></param>
+		/// <param name="serviceProvider">The <see cref="HttpContextBase"/> as an <see cref="IServiceProvider"/> to try and use to resolve an instance of the <see cref="IRestfulActionResolver"/></param>
 		/// <remarks>If no <see cref="IRestfulActionResolver"/> can be resolved the default <see cref="RestfulActionResolver"/> is used.</remarks>
 		private void EnsureActionResolver(IServiceProvider serviceProvider)
 		{

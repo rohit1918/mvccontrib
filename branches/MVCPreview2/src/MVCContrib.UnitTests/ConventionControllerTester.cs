@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.MetaData;
@@ -33,9 +34,9 @@ namespace MvcContrib.UnitTests
 			fakeRouteData.Values.Add("Action", "Index");
 			fakeRouteData.Values.Add("Controller", "Home");
 
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
-			IHttpResponse response = _mocks.DynamicMock<IHttpResponse>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
 
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(context.Response).Return(response);
@@ -201,7 +202,7 @@ namespace MvcContrib.UnitTests
 			{
 			}
 
-			protected override bool OnPreAction(string actionName, MethodInfo methodInfo)
+			protected  bool OnPreAction(string actionName, MethodInfo methodInfo)
 			{
 				return OnPreActionReturnValue;
 			}

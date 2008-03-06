@@ -404,7 +404,7 @@ namespace MvcContrib.BrailViewEngine
 			//properties.Add("dsl", new DslWrapper(this));
 			properties.Add("Controller", viewContext.Controller);
 
-			IHttpContext myContext = viewContext.HttpContext;
+			HttpContextBase myContext = viewContext.HttpContext;
 
 			properties.Add("Context", myContext);
 			if (myContext != null)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.BrailViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
@@ -118,7 +119,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
 			_viewEngine.Options.BaseType = "MVCContrib.UnitTests.BrailViewEngine.TestBrailBase";
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
+			IView view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
 			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
 		}
 
@@ -129,7 +130,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 
 		private string GetViewOutput(string viewName, string masterName)
 		{
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
+			IView view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
 			view.RenderView(_viewContext);
 			return _httpContext.Response.Output.ToString();
 		}

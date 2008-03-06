@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.SimplyRestful;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -55,8 +56,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 
 		public abstract class BaseSimplyRestfulRouteMatchFixture
 		{
-			protected IHttpContext httpContext;
-			protected IHttpRequest httpRequest;
+			protected HttpContextBase httpContext;
+			protected HttpRequestBase httpRequest;
 			protected MockRepository mocks;
 			protected RouteCollection routeCollection;
 
@@ -79,8 +80,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 			public virtual void Setup()
 			{
 				mocks = new MockRepository();
-				httpContext = mocks.DynamicMock<IHttpContext>();
-				httpRequest = mocks.DynamicMock<IHttpRequest>();
+				httpContext = mocks.DynamicMock<HttpContextBase>();
+				httpRequest = mocks.DynamicMock<HttpRequestBase>();
 				routeCollection = new RouteCollection();
 				BuildRoutes(routeCollection);
 			}

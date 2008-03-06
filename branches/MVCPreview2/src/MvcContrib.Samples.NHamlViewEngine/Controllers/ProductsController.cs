@@ -14,7 +14,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/Category/1
 
-		[ControllerAction]
+		
 		public void Category(int id)
 		{
 			Category category = northwind.GetCategoryById(id);
@@ -25,7 +25,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/New
 
-		[ControllerAction]
+		
 		public void New()
 		{
 			ProductsNewViewData viewData = new ProductsNewViewData();
@@ -39,7 +39,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/Create
 
-		[ControllerAction]
+		
 		public void Create()
 		{
 			Product product = new Product();
@@ -54,7 +54,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/Edit/5
 
-		[ControllerAction]
+		
 		public void Edit(int id)
 		{
 			ProductsEditViewData viewData = new ProductsEditViewData();
@@ -69,7 +69,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/Update/5
 
-		[ControllerAction]
+		
 		public void Update(int id)
 		{
 			Product product = northwind.GetProductById(id);

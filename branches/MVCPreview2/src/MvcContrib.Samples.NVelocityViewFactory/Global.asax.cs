@@ -40,7 +40,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 				_container = new WindsorContainer();
 
 				// Add our singleton NVelocityViewFactory
-				_container.AddComponent("ViewFactory", typeof(IViewFactory), typeof(Castle.NVelocityViewFactory));
+				_container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(Castle.NVelocityViewFactory));
 
 				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 				
@@ -49,7 +49,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 					if (typeof(IController).IsAssignableFrom(type))
 					{
 						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory(type, typeof(WindsorControllerFactory));
+						ControllerBuilder.Current.SetControllerFactory( typeof(WindsorControllerFactory));
 					}
 				}
 			}
@@ -57,27 +57,28 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 
 		protected virtual void AddRoutes()
 		{
-			// Set routes
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "[controller].mvc/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            throw new NotImplementedException();
+            //// Set routes
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "[controller].mvc/[action]/[id]",
+            //    Defaults = new { action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "[controller]/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "[controller]/[action]/[id]",
+            //    Defaults = new { action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "Default.aspx",
-				Defaults = new { controller = "Home", action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "Default.aspx",
+            //    Defaults = new { controller = "Home", action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
 		}
 	}
 }

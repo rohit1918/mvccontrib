@@ -5,13 +5,13 @@ namespace MvcContrib.Samples
 {
 	public class HomeController : Controller
 	{
-		[ControllerAction]
+		
 		public void Index()
 		{
 			RenderView("Index", "Site");
 		}
 
-		[ControllerAction]
+		
 		public void Contact()
 		{
 			CompanyInfo companyInfo = new CompanyInfo();
@@ -26,7 +26,7 @@ namespace MvcContrib.Samples
 			RenderView("Contact", "Site", companyInfo);
 		}
 
-		[ControllerAction]
+		
 		public void About()
 		{
 			ViewData["now"] = DateTime.Now;

@@ -10,71 +10,72 @@ namespace MvcContrib
 {
 	public class ConventionController : Controller
 	{
-		private string _selectedAction;
+		private string _selectedAction="";
 
 		public string SelectedAction
 		{
 			get { return _selectedAction; }
 		}
-		
-		protected override bool InvokeAction(string actionName)
+
+        protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
 		{
-			if(string.IsNullOrEmpty(actionName))
-			{
-				throw new ArgumentException("actionName is required", "actionName");
-			}
+            throw new NotImplementedException();
+            //if(string.IsNullOrEmpty(actionName))
+            //{
+            //    throw new ArgumentException("actionName is required", "actionName");
+            //}
 
-			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
+            //IList<ActionMetaData> actions = MetaData.GetActions(actionName);
 
-			ActionMetaData selectedAction;
+            //ActionMetaData selectedAction;
 
-			if(actions == null || actions.Count == 0)
-			{
-				//No matching action found - see if there is a "catch all" action.
-				if(MetaData.DefaultAction != null)
-				{
-					selectedAction = MetaData.DefaultAction;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else if(actions.Count > 1)
-			{
-				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
-			}
-			else
-			{
-				selectedAction = actions[0];
-			}
+            //if(actions == null || actions.Count == 0)
+            //{
+            //    //No matching action found - see if there is a "catch all" action.
+            //    if(MetaData.DefaultAction != null)
+            //    {
+            //        selectedAction = MetaData.DefaultAction;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+            //else if(actions.Count > 1)
+            //{
+            //    throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
+            //}
+            //else
+            //{
+            //    selectedAction = actions[0];
+            //}
 
-			_selectedAction = selectedAction.Name;
+            //_selectedAction = selectedAction.Name;
+            //base.OnActionExecuted(new FilterExecutedContext());
+            //if (OnPreAction(selectedAction.Name, selectedAction.MethodInfo))
+            //{
+            //    try
+            //    {
+            //        if(!ExecutePreActionFilters(selectedAction))
+            //        {
+            //            return false;
+            //        }
 
-			if (OnPreAction(selectedAction.Name, selectedAction.MethodInfo))
-			{
-				try
-				{
-					if(!ExecutePreActionFilters(selectedAction))
-					{
-						return false;
-					}
-
-					InvokeActionMethod(selectedAction);
-				}
-				catch(Exception exc)
-				{
-					if(!OnError(selectedAction, exc))
-					{
-						throw;
-					}
-				}
-				finally
-				{
-					OnPostAction(selectedAction.Name, selectedAction.MethodInfo);
-				}
-			}
-			return true;
+            //        InvokeActionMethod(selectedAction);
+            //    }
+            //    catch(Exception exc)
+            //    {
+            //        if(!OnError(selectedAction, exc))
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    finally
+            //    {
+            //        OnPostAction(selectedAction.Name, selectedAction.MethodInfo);
+            //    }
+            //}
+            //return true;
 		}
 
 		protected virtual bool ExecutePreActionFilters(ActionMetaData action)
@@ -96,11 +97,11 @@ namespace MvcContrib
 		}
 
 		private bool _isRedirected = false;
-		protected override void RedirectToAction(object values)
-		{
-			_isRedirected = true;
-			base.RedirectToAction(values);
-		}
+        protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
+        {
+            _isRedirected = true;
+            base.RedirectToAction(values);
+        }
 
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{

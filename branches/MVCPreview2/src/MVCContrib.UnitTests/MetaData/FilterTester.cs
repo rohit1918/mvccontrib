@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 using MvcContrib.Castle;
 using MvcContrib.Filters;
@@ -31,8 +32,8 @@ namespace MvcContrib.UnitTests.MetaData
 			fakeRouteData.Values.Add("Action", "Index");
 			fakeRouteData.Values.Add("Controller", "Home");
 
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
 
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(request.RequestType).Return(requestType);

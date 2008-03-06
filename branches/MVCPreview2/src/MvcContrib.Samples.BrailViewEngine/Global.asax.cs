@@ -9,76 +9,82 @@ using MvcContrib.ViewFactories;
 
 namespace MvcContrib.Samples
 {
-	public class Global : HttpApplication, IContainerAccessor
-	{
-		private static WindsorContainer _container;
+    public class Global : HttpApplication, IContainerAccessor
+    {
+        private static WindsorContainer _container;
 
-		public static IWindsorContainer Container
-		{
-			get { return _container; }
-		}
+        public static IWindsorContainer Container
+        {
+            get { return _container; }
+        }
 
-		IWindsorContainer IContainerAccessor.Container
-		{
-			get { return Container; }
-		}
+        #region IContainerAccessor Members
 
-		protected void Application_Start(object sender, EventArgs e)
-		{
-			InitializeWindsor();
-			AddRoutes();
-		}
+        IWindsorContainer IContainerAccessor.Container
+        {
+            get { return Container; }
+        }
 
-		/// <summary>
-		/// Instantiate the container and add all Controllers that derive from 
-		/// WindsorController to the container.  Also associate the Controller 
-		/// with the WindsorContainer ControllerFactory.
-		/// </summary>
-		protected virtual void InitializeWindsor()
-		{
-			if (_container == null)
-			{
-				_container = new WindsorContainer();
+        #endregion
 
-				// Add our singleton NVelocityViewFactory
-				_container.AddComponent("ViewFactory", typeof(IViewFactory), typeof(BrailViewFactory));
+        protected void Application_Start(object sender, EventArgs e)
+        {
+            InitializeWindsor();
+            AddRoutes();
+        }
 
-				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
-				
-				foreach (Type type in assemblyTypes)
-				{
-					if (typeof(IController).IsAssignableFrom(type))
-					{
-						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory(type, typeof(WindsorControllerFactory));
-					}
-				}
-			}
-		}
+        /// <summary>
+        /// Instantiate the container and add all Controllers that derive from 
+        /// WindsorController to the container.  Also associate the Controller 
+        /// with the WindsorContainer ControllerFactory.
+        /// </summary>
+        protected virtual void InitializeWindsor()
+        {
+            if(_container == null)
+            {
+                _container = new WindsorContainer();
 
-		protected virtual void AddRoutes()
-		{
-			// Set routes
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "[controller].mvc/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+                // Add our singleton NVelocityViewFactory
+                _container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(BrailViewFactory));
 
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "[controller]/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
+                Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 
-			RouteTable.Routes.Add(new Route
-			{
-				Url = "Default.aspx",
-				Defaults = new { controller = "Home", action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
-			});
-		}
-	}
+                foreach(Type type in assemblyTypes)
+                {
+                    if(typeof(IController).IsAssignableFrom(type))
+                    {
+                        _container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
+                        ControllerBuilder.Current.SetControllerFactory(typeof(WindsorControllerFactory));
+                        //	ControllerBuilder .Current.SetControllerFactory(typeof(WindsorControllerFactory));
+                    }
+                }
+            }
+        }
+
+        protected virtual void AddRoutes()
+        {
+            throw new NotImplementedException();
+            //// Set routes
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "[controller].mvc/[action]/[id]",
+            //    Defaults = new { action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
+
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "[controller]/[action]/[id]",
+            //    Defaults = new { action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
+
+            //RouteTable.Routes.Add(new Route
+            //{
+            //    Url = "Default.aspx",
+            //    Defaults = new { controller = "Home", action = "Index", id = (string)null },
+            //    RouteHandler = typeof(MvcRouteHandler)
+            //});
+        }
+    }
 }

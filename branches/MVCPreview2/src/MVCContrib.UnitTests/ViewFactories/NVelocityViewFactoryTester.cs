@@ -28,7 +28,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			_factory = new NVelocityViewFactory(properties);
 
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.DynamicMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
 			IController controller = mocks.DynamicMock<IController>();
 			

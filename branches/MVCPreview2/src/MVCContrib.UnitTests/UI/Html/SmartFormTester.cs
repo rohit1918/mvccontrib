@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Web;
+using System.Web.Routing;
 using MvcContrib.UI.Html;
 using MvcContrib.UI.Tags;
 using NUnit.Framework;
@@ -24,9 +25,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			public virtual void Setup()
 			{
 				_mocks = new MockRepository();
-				IHttpContext httpContext = _mocks.DynamicMock<IHttpContext>();
-				IHttpResponse response = _mocks.DynamicMock<IHttpResponse>();
-				IHttpSessionState session = _mocks.DynamicMock<IHttpSessionState>();
+				HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+				HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+				HttpSessionStateBase session = _mocks.DynamicMock<HttpSessionStateBase>();
 				IController controller = _mocks.DynamicMock<IController>();
 
 				SetupResult.For(httpContext.Response).Return(response);
@@ -35,7 +36,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				SetupResult.For(response.ContentEncoding).Return(Encoding.UTF8);
 
 				_mocks.ReplayAll();
-				_context = new ViewContext(httpContext, new RouteData(), controller, new Hashtable(), new TempDataDictionary(httpContext));
+				_context = new ViewContext(httpContext,new RouteData(), controller, new Hashtable(), new TempDataDictionary(httpContext));
 				_helper = _mocks.DynamicMock<IFormHelper>();
 				SetupResult.For(_helper.ViewContext).Return(_context);
 				_mocks.Replay(_helper);

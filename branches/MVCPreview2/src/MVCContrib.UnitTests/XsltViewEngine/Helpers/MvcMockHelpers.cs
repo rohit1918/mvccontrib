@@ -1,43 +1,43 @@
 using System.Web;
 using Rhino.Mocks;
-using IHttpSessionState = System.Web.IHttpSessionState;
+using HttpSessionStateBase = System.Web.HttpSessionStateBase;
 using System.Security.Principal;
 
 namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 {
     public static class MvcMockHelpers
     {
-        public static IHttpContext DynamicIHttpContext(this MockRepository mocks)
+        public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks)
         {
-            return mocks.DynamicIHttpContext
-                (mocks.DynamicIHttpBrowserCapabilities(),
-                 mocks.DynamicIHttpRequest(),
-                 mocks.DynamicIHttpResponse(),
-                 mocks.DynamicIHttpSessionState(),
-                 mocks.DynamicIHttpServerUtility(),
+            return mocks.DynamicHttpContextBase
+                (mocks.DynamicHttpBrowserCapabilitiesBase(),
+                 mocks.DynamicHttpRequestBase(),
+                 mocks.DynamicHttpResponseBase(),
+                 mocks.DynamicHttpSessionStateBase(),
+                 mocks.DynamicHttpServerUtilityBase(),
                  mocks.DynamicIPrincipal());
         }
 
-        public static IHttpContext DynamicIHttpContext(this MockRepository mocks,IPrincipal principal,IHttpBrowserCapabilities browser)
+        public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks,IPrincipal principal,HttpBrowserCapabilitiesBase browser)
     {
-        return mocks.DynamicIHttpContext
+        return mocks.DynamicHttpContextBase
                (browser,
-                mocks.DynamicIHttpRequest(),
-                mocks.DynamicIHttpResponse(),
-                mocks.DynamicIHttpSessionState(),
-                mocks.DynamicIHttpServerUtility(),
+                mocks.DynamicHttpRequestBase(),
+                mocks.DynamicHttpResponseBase(),
+                mocks.DynamicHttpSessionStateBase(),
+                mocks.DynamicHttpServerUtilityBase(),
                 principal);
     }
 
-        public static IHttpContext DynamicIHttpContext(this MockRepository mocks,
-            IHttpBrowserCapabilities browser,
-            IHttpRequest request,
-            IHttpResponse response,
-            IHttpSessionState session,
-            IHttpServerUtility server,
+        public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks,
+            HttpBrowserCapabilitiesBase browser,
+            HttpRequestBase request,
+            HttpResponseBase response,
+            HttpSessionStateBase session,
+            HttpServerUtilityBase server,
             IPrincipal user)
         {
-            IHttpContext context = mocks.DynamicMock<IHttpContext>();
+            HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
             SetupResult.For(context.User).Return(user);
             SetupResult.For(request.Browser).Return(browser);
             SetupResult.For(context.Request).Return(request);
@@ -47,29 +47,29 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             mocks.Replay(context);
             return context;
         }
-        public static IHttpBrowserCapabilities DynamicIHttpBrowserCapabilities(this MockRepository mocks)
+        public static HttpBrowserCapabilitiesBase DynamicHttpBrowserCapabilitiesBase(this MockRepository mocks)
         {
-            IHttpBrowserCapabilities browser = mocks.DynamicMock<IHttpBrowserCapabilities>();
+            HttpBrowserCapabilitiesBase browser = mocks.DynamicMock<HttpBrowserCapabilitiesBase>();
             return browser;
         }
-        public static IHttpRequest DynamicIHttpRequest(this MockRepository mocks)
+        public static HttpRequestBase DynamicHttpRequestBase(this MockRepository mocks)
         {
-            IHttpRequest request = mocks.DynamicMock<IHttpRequest>();
+            HttpRequestBase request = mocks.DynamicMock<HttpRequestBase>();
             return request;
         }
-        public static IHttpResponse DynamicIHttpResponse(this MockRepository mocks)
+        public static HttpResponseBase DynamicHttpResponseBase(this MockRepository mocks)
         {
-            IHttpResponse response = mocks.DynamicMock<IHttpResponse>();
+            HttpResponseBase response = mocks.DynamicMock<HttpResponseBase>();
             return response;
         }
-        public static IHttpSessionState DynamicIHttpSessionState(this MockRepository mocks)
+        public static HttpSessionStateBase DynamicHttpSessionStateBase(this MockRepository mocks)
         {
-            IHttpSessionState session = mocks.DynamicMock<IHttpSessionState>();
+            HttpSessionStateBase session = mocks.DynamicMock<HttpSessionStateBase>();
             return session;
         }
-        public static IHttpServerUtility DynamicIHttpServerUtility(this MockRepository mocks)
+        public static HttpServerUtilityBase DynamicHttpServerUtilityBase(this MockRepository mocks)
         {
-            IHttpServerUtility server = mocks.DynamicMock<IHttpServerUtility>();
+            HttpServerUtilityBase server = mocks.DynamicMock<HttpServerUtilityBase>();
             return server;
         }
         public static IPrincipal DynamicIPrincipal(this MockRepository mocks)

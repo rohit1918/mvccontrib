@@ -65,7 +65,7 @@ namespace MvcContrib.Samples.Controllers
 			return dims;
 		}
 
-		protected override bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
+		protected  bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
 		{
 			return false;
 		}

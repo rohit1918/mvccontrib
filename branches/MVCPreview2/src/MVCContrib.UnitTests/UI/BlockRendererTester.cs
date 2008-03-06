@@ -20,7 +20,7 @@ namespace MvcContrib.UnitTests.UI
 			public void Then_Returns_EmptyString()
 			{
 				MockRepository mocks = new MockRepository();
-				IHttpContext context = mocks.DynamicMock<IHttpContext>();
+				HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
 				
 				using(mocks.Record())
 				{
@@ -42,8 +42,8 @@ namespace MvcContrib.UnitTests.UI
 			public void Then_Response_Flush_Is_Called_Before_And_After_The_Action()
 			{
 				MockRepository mocks = new MockRepository();
-				IHttpContext context = mocks.DynamicMock<IHttpContext>();
-				IHttpResponse response = mocks.DynamicMock<IHttpResponse>();
+				HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+				HttpResponseBase response = mocks.DynamicMock<HttpResponseBase>();
 				Action action = mocks.DynamicMock<Action>();
 				
 				using(mocks.Record())
@@ -71,8 +71,8 @@ namespace MvcContrib.UnitTests.UI
 			public void When_Capture_Then_Original_Filter_Is_Switched_And_PutBack()
 			{
 				MockRepository mocks = new MockRepository();
-				IHttpContext context = mocks.DynamicMock<IHttpContext>();
-				IHttpResponse response = mocks.DynamicMock<IHttpResponse>();
+				HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+				HttpResponseBase response = mocks.DynamicMock<HttpResponseBase>();
 				Stream origFilter = mocks.DynamicMock<Stream>();
 				
 				Action action = mocks.DynamicMock<Action>();
@@ -99,8 +99,8 @@ namespace MvcContrib.UnitTests.UI
 			public void When_Capture_With_Error_Then_Original_Filter_Is_PutBack()
 			{
 				MockRepository mocks = new MockRepository();
-				IHttpContext context = mocks.DynamicMock<IHttpContext>();
-				IHttpResponse response = mocks.DynamicMock<IHttpResponse>();
+				HttpContextBase context = mocks.DynamicMock<HttpContextBase>();
+				HttpResponseBase response = mocks.DynamicMock<HttpResponseBase>();
 				Stream origFilter = mocks.DynamicMock<Stream>();
 				Action action = delegate { throw new InvalidOperationException(); };
 

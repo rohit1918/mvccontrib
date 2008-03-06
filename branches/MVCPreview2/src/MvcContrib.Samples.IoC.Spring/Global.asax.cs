@@ -2,6 +2,7 @@
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Services;
 using MvcContrib.Spring;
@@ -27,39 +28,40 @@ namespace MvcContrib.Samples.IoC
             IObjectFactory factory = new XmlObjectFactory(input);
             DependencyResolver.InitializeWith(new SpringDependencyResolver(factory));
 
-            ControllerBuilder.Current.SetDefaultControllerFactory(typeof(IoCControllerFactory));
+            ControllerBuilder.Current.SetControllerFactory(typeof(IoCControllerFactory));
         }
 
         private void AddRoutes()
         {
-            RouteTable.Routes.Add(new Route
-            {
-                Url = "[controller]/[action]/[id]",
-                Defaults = new
-                {
-                    action = "Index",
-                    id = (string)null
-                }
-            ,
-                RouteHandler = typeof(MvcRouteHandler)
-            }
-        )
-            ;
+            throw new NotImplementedException();
+        //    RouteTable.Routes.Add(new Route
+        //    {
+        //        Url = "[controller]/[action]/[id]",
+        //        Defaults = new
+        //        {
+        //            action = "Index",
+        //            id = (string)null
+        //        }
+        //    ,
+        //        RouteHandler = typeof(MvcRouteHandler)
+        //    }
+        //)
+        //    ;
 
-            RouteTable.Routes.Add(new Route
-            {
-                Url = "Default.aspx",
-                Defaults = new
-                {
-                    controller = "Home",
-                    action = "Index",
-                    id = (string)null
-                }
-            ,
-                RouteHandler = typeof(MvcRouteHandler)
-            }
-        )
-            ;
+        //    RouteTable.Routes.Add(new Route
+        //    {
+        //        Url = "Default.aspx",
+        //        Defaults = new
+        //        {
+        //            controller = "Home",
+        //            action = "Index",
+        //            id = (string)null
+        //        }
+        //    ,
+        //        RouteHandler = typeof(MvcRouteHandler)
+        //    }
+        //)
+        //    ;
         }
     }
 }

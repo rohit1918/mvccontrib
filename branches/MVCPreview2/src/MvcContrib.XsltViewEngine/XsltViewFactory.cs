@@ -4,8 +4,7 @@ using MvcContrib.XsltViewEngine;
 
 namespace MvcContrib.ViewFactories
 {
-	public class XsltViewFactory : IViewFactory
-	{
+	public class XsltViewFactory : IViewEngine	{
 		private readonly IViewSourceLoader _viewSourceLoader;
 
 		public XsltViewFactory()
@@ -22,7 +21,7 @@ namespace MvcContrib.ViewFactories
 
 		#region IViewFactory Members
 
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
+        public XsltView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
 		{
 			//First check if the data is valid then start working.
 			if(!(viewData is XsltViewData))
@@ -37,5 +36,10 @@ namespace MvcContrib.ViewFactories
 		}
 
 		#endregion
+
+	    public void RenderView(ViewContext viewContext)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

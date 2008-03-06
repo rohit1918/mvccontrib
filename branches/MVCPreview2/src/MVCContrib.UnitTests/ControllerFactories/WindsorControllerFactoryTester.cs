@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 using MvcContrib.ControllerFactories;
 using NUnit.Framework;
@@ -29,7 +30,7 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			MockApplication application = new MockApplication(_container);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -46,7 +47,7 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			MockApplication application = new MockApplication(_container);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -68,7 +69,7 @@ namespace MvcContrib.UnitTests.Castle
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenContainerIsNull()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			MockApplication application = new MockApplication(null);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -83,7 +84,7 @@ namespace MvcContrib.UnitTests.Castle
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenApplicationDoesNotImplementIContainerAccessor()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			HttpApplication application = new HttpApplication();
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());

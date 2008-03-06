@@ -10,7 +10,7 @@ using NVelocity.Runtime;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityViewFactory : IViewFactory
+	public class NVelocityViewFactory : IViewEngine
 	{
 		private static readonly IDictionary DEFAULT_PROPERTIES = new Hashtable();
 		private readonly VelocityEngine _engine;
@@ -96,5 +96,10 @@ namespace MvcContrib.Castle
 
 			return _engine.GetTemplate(targetView);
 		}
+
+	    public void RenderView(ViewContext viewContext)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

@@ -1,4 +1,6 @@
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -16,10 +18,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
 		protected void PrepareController(Controller controller)
 		{
-			controller.ViewFactory = testViewFactory;
+			controller.ViewEngine = testViewFactory;
 
 			controller.ControllerContext =
-				new ControllerContext(mockRepository.DynamicIHttpContext(), new RouteData(), controller);
+				new ControllerContext((HttpContextBase)mockRepository.DynamicMock(typeof(HttpContextBase)), new RouteData(), controller);
 		}
 
 		public void AssertRenderedViewNameIs(string expectedViewName)
@@ -28,42 +30,49 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 		}
 	}
 
-	internal class TestViewFactory : IViewFactory
+	internal class TestViewFactory : IViewEngine
 	{
-		public string masterName;
-		public TestView testView;
-		public object viewData;
-		public string viewName;
+        //public string masterName;
+        //public TestView testView;
+        //public object viewData;
+        //public string viewName;
+	    public ViewContext viewContext;
 
-		public TestViewFactory()
+	    public TestViewFactory()
 		{
-			testView = new TestView();
+			//testView = new TestView();
 		}
 
 		#region IViewFactory Members
 
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
-		{
-			this.viewName = viewName;
-			this.masterName = masterName;
-			this.viewData = viewData;
-			return testView;
-		}
+        //public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
+        //{
+        //    this.viewName = viewName;
+        //    this.masterName = masterName;
+        //    this.viewData = viewData;
+        //    return testView;
+        //}
 
 		#endregion
+
+	    public void RenderView(ViewContext viewContext)
+	    {
+	        this.viewContext = viewContext;
+	        //throw new System.NotImplementedException();
+	    }
 	}
 
-	internal class TestView : IView
-	{
-		public ViewContext viewContext;
+    //internal class TestView : IView
+    //{
+    //    public ViewContext viewContext;
 
-		#region IView Members
+    //    #region IView Members
 
-		public void RenderView(ViewContext viewContext)
-		{
-			this.viewContext = viewContext;
-		}
+    //    public void RenderView(ViewContext viewContext)
+    //    {
+    //        this.viewContext = viewContext;
+    //    }
 
-		#endregion
-	}
+    //    #endregion
+    //}
 }

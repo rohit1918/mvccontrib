@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnTheController()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
-				IController controller = factory.CreateController(null, typeof(SimpleController));
+				IController controller = factory.CreateController(null, "SimpleController");
 
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
@@ -40,7 +40,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnControllerWithDependencies()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
-				IController controller = factory.CreateController(null, typeof(DependencyController));
+				IController controller = factory.CreateController(null, "");
 
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));

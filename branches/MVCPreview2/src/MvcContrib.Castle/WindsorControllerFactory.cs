@@ -1,14 +1,16 @@
 using System;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 
 namespace MvcContrib.ControllerFactories
 {
 	public class WindsorControllerFactory : IControllerFactory
 	{
-		IController IControllerFactory.CreateController(RequestContext context, Type controllerType)
+		public IController CreateController(RequestContext context, Type controllerType)
 		{
-			return CreateControllerInternal(context, controllerType);
+			return CreateControllerInternal(context,controllerType);
 		}
 
 		protected virtual IController CreateControllerInternal(RequestContext context, Type controllerType)
@@ -40,5 +42,15 @@ namespace MvcContrib.ControllerFactories
 
 			return container;
 		}
+
+	    public IController CreateController(RequestContext context, string controllerName)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void DisposeController(IController controller)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

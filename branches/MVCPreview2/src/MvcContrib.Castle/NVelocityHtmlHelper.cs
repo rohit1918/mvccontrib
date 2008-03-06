@@ -29,7 +29,7 @@ namespace MvcContrib.Castle
 
 		public string TextBox(string htmlName, object value, IDictionary htmlAttributes)
 		{
-			return this.TextBox(htmlName, value, (object)new DescriptableDictionary(htmlAttributes));
+			return this.TextBox(htmlName, value, (IDictionary)new DescriptableDictionary(htmlAttributes));
 		}
 
 		public string MailTo(string emailAddress, string linkText, IDictionary htmlAttributes)
@@ -39,7 +39,7 @@ namespace MvcContrib.Castle
 			string cc = RemoveKey(htmlAttributes, "cc", string.Empty);
 			string bcc = RemoveKey(htmlAttributes, "bcc", string.Empty);
 
-			return this.MailTo(emailAddress, linkText, subject, body, cc, bcc, (object)new DescriptableDictionary(htmlAttributes));
+			return this.MailTo(emailAddress, linkText,(IDictionary)new DescriptableDictionary(htmlAttributes));
 		}
 
 		private static T RemoveKey<T>(IDictionary hash, string key, T defaultValue)

@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Spring.Context;
 using Spring.Objects.Factory;
 
@@ -59,5 +60,15 @@ namespace MvcContrib.Spring
 		{
 			_objectFactory = ctx;
 		}
+
+	    public IController CreateController(RequestContext context, string controllerName)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public void DisposeController(IController controller)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

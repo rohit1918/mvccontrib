@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -14,7 +15,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		private MockRepository _mocks;
 		private ControllerContext _controllerContext;
 		private Dictionary<string, object> _viewData;
-		private IHttpRequest _httpRequest;
+		private HttpRequestBase _httpRequest;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"NHamlViewEngine\Views";
 
@@ -25,9 +26,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_viewData = new Dictionary<string, object>();
 
-			IHttpContext httpContext = _mocks.DynamicMock<IHttpContext>();
-			IHttpResponse httpResponse = _mocks.DynamicMock<IHttpResponse>();
-			_httpRequest = _mocks.DynamicMock<IHttpRequest>();
+			HttpContext httpContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponse httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			_httpRequest = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(httpContext.Request).Return(_httpRequest);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());

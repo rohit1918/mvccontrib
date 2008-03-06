@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.SimplyRestful;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -13,8 +14,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 	public class RestfulActionResolverTester
 	{
 		private MockRepository _mocks;
-		private IHttpContext _httpContext;
-		private IHttpRequest _httpRequest;
+		private HttpContextBase _httpContext;
+		private HttpRequestBase _httpRequest;
 		private RouteData _routeData;
 		private NameValueCollection _form;
 		private RequestContext _requestContext;
@@ -23,8 +24,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void Setup()
 		{
 			_mocks = new MockRepository();
-			_httpContext = _mocks.DynamicMock<IHttpContext>();
-			_httpRequest = _mocks.DynamicMock<IHttpRequest>();
+			_httpContext = _mocks.DynamicMock<HttpContextBase>();
+			_httpRequest = _mocks.DynamicMock<HttpRequestBase>();
 		}
 
 		[Test, ExpectedException(typeof(NullReferenceException))]
