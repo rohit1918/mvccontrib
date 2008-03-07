@@ -16,7 +16,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		{
 			RouteCollection routeCollection = new RouteCollection();
 			SimplyRestfulRouteHandler.BuildRoutes(routeCollection);
-			Assert.That(routeCollection.Count, Is.EqualTo(8));
+			Assert.That(routeCollection.Count, Is.EqualTo(7));
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 			SimplyRestfulRouteHandler.BuildRoutes(routeCollection, null);
 			foreach(Route route in routeCollection)
 			{
-				Assert.That(route.Url, Text.StartsWith("[controller]"));
+				Assert.That(route.Url, Text.StartsWith("{controller}"));
 			}
 		}
 

@@ -17,7 +17,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		{
 			protected override string ControllerPath
 			{
-				get { return "[controller]"; }
+				get { return "{controller}"; }
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		{
 			protected override string ControllerPath
 			{
-				get { return "admin/[controller]"; }
+				get { return "admin/{controller}"; }
 			}
 
 			protected override string UrlFormat
@@ -63,7 +63,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 
 			protected virtual string ControllerPath
 			{
-				get { return "[controller]"; }
+				get { return "{controller}"; }
 			}
 
 			protected virtual string ControllerName
@@ -221,7 +221,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.TypeOf(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}
@@ -236,7 +236,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.TypeOf(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}
@@ -254,7 +254,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				using(mocks.Playback())
 				{
 					RouteData routeData = routeCollection.GetRouteData(httpContext);
-					Assert.That(routeData.RouteHandler, Is.EqualTo(typeof(SimplyRestfulRouteHandler)));
+					Assert.That(routeData.RouteHandler, Is.TypeOf(typeof(SimplyRestfulRouteHandler)));
 					AssertController(routeData);
 				}
 			}
