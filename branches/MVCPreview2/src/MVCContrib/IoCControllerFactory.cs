@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Interfaces;
@@ -12,6 +13,8 @@ namespace MvcContrib.ControllerFactories
 
         public IoCControllerFactory(IDependencyResolver resolver)
         {
+            if(resolver==null)
+                throw new ArgumentNullException("resolver");
             this.resolver = resolver;
         }
 
@@ -20,10 +23,36 @@ namespace MvcContrib.ControllerFactories
             
         }
 
+        protected override Type GetControllerType(string controllerName)
+        {
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Type type = null;
+            foreach (Assembly assembly in assemblies)
+            {
+                try
+                {
+                    foreach(Type t in assembly.GetTypes())
+                    {
+                        if(t.Name.Equals(controllerName))
+                        {
+                            type = t;
+                            break;
+                        }
+                    }
+                }catch
+                {
+                    ;
+                }
+            }
+            return type;
+        }
+
         protected override IController CreateController(RequestContext context, string controllerName)
         {
 			//TODO: Don't rely on DefaultControllerFactory's GetControllerType
-        	Type controllerType = base.GetControllerType(controllerName);
+            controllerName += "Controller";
+
+        	Type controllerType = GetControllerType(controllerName);
 
 			if (controllerType != null)
 			{
@@ -33,6 +62,7 @@ namespace MvcContrib.ControllerFactories
 				}
 				else
 				{
+
 					return DependencyResolver.GetImplementationOf<IController>(controllerType);
 				}
 			}

@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using StructureMap;
@@ -9,8 +10,23 @@ namespace MvcContrib.ControllerFactories
 	{
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
+            
 			controllerName = controllerName + "Controller";
-	    	return ObjectFactory.GetNamedInstance<IController>(controllerName);
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+	        Type type = null;
+            foreach(Assembly assembly in assemblies)
+            {
+                foreach (Type t in assembly.GetTypes())
+                {
+                    if(t.Name.Equals(controllerName))
+                    {
+                        type = t;
+                        break;
+                    }
+                }
+            }
+	        return ObjectFactory.GetInstance(type) as IController;
+	    	//return ObjectFactory.GetNamedInstance<IController>(controllerName);
 	    }
 
 	    public void DisposeController(IController controller)

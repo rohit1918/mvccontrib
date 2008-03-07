@@ -22,19 +22,19 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
             {
                 using (Record())
                 {
-                    Expect.Call(_dependencyResolver.GetImplementationOf(typeof(TestController))).Return(
-                        new TestController() as IController);
+                    Expect.Call(_dependencyResolver.GetImplementationOf(typeof(IocTestController))).Return(
+                        new IocTestController() as IController);
                 }
 
-                IController controller;
+                IController controller; 
 
                 using (Playback())
                 {
                     IControllerFactory controllerFactory = new IoCControllerFactory();
-                    controller = controllerFactory.CreateController(null, "Test");
+                    controller = controllerFactory.CreateController(null, "IocTest");
                 }
 
-                Assert.That(controller.GetType().Equals(typeof(TestController)));
+                Assert.That(controller.GetType().Equals(typeof(IocTestController)));
             }
 
             protected override void BeforeEachSpec()
@@ -60,8 +60,8 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
             {
                 using(Record())
                 {
-                    Expect.Call(_dependencyResolver.GetImplementationOf<IController>(typeof(TestController))).Return(
-                        new TestController() as IController);
+                    Expect.Call(_dependencyResolver.GetImplementationOf<IController>(typeof(IocTestController))).Return(
+                        new IocTestController() as IController);
                 }
 
                 IController controller;
@@ -69,10 +69,10 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
                 using(Playback())
                 {
                     IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
-                    controller = controllerFactory.CreateController(null, "Test");
+                    controller = controllerFactory.CreateController(null, "IocTest");
                 }
 
-                Assert.That(controller.GetType().Equals(typeof(TestController)));
+                Assert.That(controller.GetType().Equals(typeof(IocTestController)));
             }
 
             [Test]
@@ -98,7 +98,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
         }
     }
 
-    internal class TestController : IController
+    internal class IocTestController : IController
     {
         #region IController Members
 

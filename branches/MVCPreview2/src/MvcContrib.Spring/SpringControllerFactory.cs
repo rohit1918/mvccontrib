@@ -63,8 +63,12 @@ namespace MvcContrib.Spring
 
 	    public IController CreateController(RequestContext context, string controllerName)
 	    {
+            if(_objectFactory==null)
+                throw new ArgumentException("ObjectFactory");
 	    	controllerName = controllerName + "Controller";
 	    	Type controllerType = _objectFactory.GetType(controllerName);
+            if(controllerType==null)
+                throw new ArgumentException("controllerName");
 	    	return CreateController(context, controllerType);
 	    }
 

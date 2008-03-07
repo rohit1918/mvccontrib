@@ -18,8 +18,9 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			{
 				StructureMapConfiguration.ResetAll();
 				StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;
-				StructureMapConfiguration.BuildInstancesOf<SimpleController>().TheDefaultIsConcreteType
-					<SimpleController>();
+			    StructureMapConfiguration.BuildInstancesOf<IController>();
+				StructureMapConfiguration.BuildInstancesOf<StructureMapSimpleController>().TheDefaultIsConcreteType
+					<StructureMapSimpleController>();
 				StructureMapConfiguration.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<StubDependency>();
 				StructureMapConfiguration.BuildInstancesOf<DependencyController>().TheDefaultIsConcreteType
 					<DependencyController>();
@@ -30,10 +31,10 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnTheController()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
-				IController controller = factory.CreateController(null, "Simple");
+				IController controller = factory.CreateController(null, "StructureMapSimple");
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
+				Assert.That(controller, Is.AssignableFrom(typeof(StructureMapSimpleController)));
 			}
 
 			[Test]
@@ -74,7 +75,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			}
 		}
 
-	    public class SimpleController : IController
+	    public class StructureMapSimpleController : IController
 	    {
 	        public void Execute(ControllerContext controllerContext)
 	        {

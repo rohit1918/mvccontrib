@@ -21,6 +21,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[TestFixture]
 		public class WhenConfigureNotCalled
 		{
+            IControllerFactory factory;
 			[SetUp]
 			public void Setup()
 			{
@@ -31,14 +32,15 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Type springFactoryType = typeof(SpringControllerFactory);
 				FieldInfo factoryField = springFactoryType.GetField("_objectFactory", BindingFlags.NonPublic | BindingFlags.Static);
 
-				IControllerFactory factory = new SpringControllerFactory();
-				factoryField.SetValue(factory, null);
+				
+			    factory = new SpringControllerFactory();
+			    factoryField.SetValue(factory, null);
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void ShouldThrowExceptionForNoConfig()
 			{
-				IControllerFactory factory = new SpringControllerFactory();
+				
 				IController controller = factory.CreateController(null, "Simple"); 
                 //                                                  Type.GetType(
                 //                                                    "MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
@@ -94,14 +96,14 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
 
-			[Test, ExpectedException(typeof(ArgumentException))]
+            [Test, ExpectedException(typeof(NullReferenceException))]
 			public void ShouldThrowExceptionForInvalidController()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
 			    IController controller = factory.CreateController(null, "NonValid");//typeof(NonValidController));
 			}
 
-			[Test, ExpectedException(typeof(ArgumentException))]
+            [Test, ExpectedException(typeof(NullReferenceException))]
 			public void ShouldThrowExceptionForNullControllerType()
 			{
 				IControllerFactory factory = new SpringControllerFactory();

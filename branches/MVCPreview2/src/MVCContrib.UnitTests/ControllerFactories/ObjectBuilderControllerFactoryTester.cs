@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpContextBase mockContext = _mocks.PartialMock<HttpContextBase>();
 			MockApplication application = new MockApplication(_container);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
