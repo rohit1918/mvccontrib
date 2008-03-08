@@ -39,12 +39,13 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			IController controller = new Controller();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_viewContext = new ViewContext(controllerContext, "index", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
-				                new TempDataDictionary(controllerContext.HttpContext));
+				                null);
 
 			_viewEngine = new BooViewEngine();
 			_viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			_viewEngine.Options = new BooViewEngineOptions();
 			_viewEngine.Initialize();
+			_mocks.Replay(_httpContext);
 		}
 
 		[Test]
@@ -63,9 +64,8 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 			SetupResult.For(_httpContext.Request.ApplicationPath).Return("/ApplicationPath");
 			_mocks.ReplayAll();
-			//_httpContext.Request.ApplicationPath = "/ApplictionPath";
 
-			string expected = "Current apppath is /ApplictionPath/";
+			string expected = "Current apppath is /ApplicationPath/";
 			string actual = GetViewOutput("apppath");
 
 			Assert.AreEqual(expected, actual);
@@ -84,7 +84,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 				originalSource = reader.ReadToEnd();
 			}
 
-			string expected = "Current apppath is /ApplictionPath/";
+			string expected = "Current apppath is /ApplicationPath/";
 			string actual = GetViewOutput("apppath");
 			Assert.AreEqual(expected, actual);
 
@@ -95,7 +95,9 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 			}
 
 			Thread.Sleep(100);
+			
 			//TODO: Clear output
+			_output.GetStringBuilder().Remove(0, _output.GetStringBuilder().Length);
 			//_httpContext.Response.ClearOutput();
 			actual = GetViewOutput("apppath");
 
@@ -115,6 +117,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Render_SubView_with_custom_ViewData()
 		{
+			_mocks.ReplayAll();
 			string expected = "View Test";
 			string actual = GetViewOutput("view_CustomViewData");
 
@@ -124,6 +127,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Layout_And_View_Should_Have_ViewContext()
 		{
+			_mocks.ReplayAll();
 			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", "/Master");
 			view.RenderView(_viewContext);
 			Assert.IsNotNull(view.ViewContext);
@@ -133,6 +137,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Should_Use_Custom_Base_Class()
 		{
+			_mocks.ReplayAll();
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
 			_viewEngine.Options.BaseType = "MVCContrib.UnitTests.BrailViewEngine.TestBrailBase";
 			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
