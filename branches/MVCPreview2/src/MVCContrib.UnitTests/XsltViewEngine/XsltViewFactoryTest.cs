@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -19,10 +20,10 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		private IViewSourceLoader _viewSourceLoader;
 
 		[SetUp]
-		public void SetUp()
+		public override void SetUp()
 		{
+			base.SetUp();
 			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
-			mockRepository.BackToRecord(_viewSourceLoader);
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
@@ -88,17 +89,9 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
 			RouteData routeData = new RouteData();
-			routeData.Values["controller"] = controller;
-			Request.PhysicalApplicationPath = "http://testing/mycontroller/test";
-			Identity.Name = "";
-			Version version = new Version(1, 1);
-			Browser.EcmaScriptVersion = version;
-			Browser.Browser = "Firefox 2.0.11";
-			Request.UserHostName = "::1";
-			Request.RequestType = Request.HttpMethod = "GET";
-			Request.QueryString["myQueryString"] = "myQueryStringValue";
-
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, new object(), new TempDataDictionary(HttpContext)); // new ControllerContext(HttpContext, routeData, new Controller());
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, new object(),
+			                                          new TempDataDictionary(HttpContext));
+				// new ControllerContext(HttpContext, routeData, new Controller());
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
 
