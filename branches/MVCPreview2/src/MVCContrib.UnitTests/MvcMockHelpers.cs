@@ -3,7 +3,7 @@ using Rhino.Mocks;
 using HttpSessionStateBase = System.Web.HttpSessionStateBase;
 using System.Security.Principal;
 
-namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
+namespace MvcContrib.UnitTests
 {
     public static class MvcMockHelpers
     {
@@ -77,11 +77,5 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
             IPrincipal principal = mocks.DynamicMock<IPrincipal>();
             return principal;
         }
-
-
     }
-
-   
-
-  
 }

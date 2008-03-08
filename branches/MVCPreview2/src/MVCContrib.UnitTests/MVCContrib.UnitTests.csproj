@@ -207,7 +207,7 @@
     <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewTester.cs" />
     <Compile Include="XsltViewEngine\Helpers\ControllerTestBase.cs" />
-    <Compile Include="XsltViewEngine\Helpers\MvcMockHelpers.cs" />
+    <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="XsltViewEngine\Helpers\ViewTestBase.cs" />
     <Compile Include="XsltViewEngine\XmlResponseBuilderTest.cs" />
     <Compile Include="XsltViewEngine\XslDataSourceTest.cs" />

@@ -15,7 +15,7 @@ namespace MvcContrib.ControllerFactories
 		{
 			IController controller = base.CreateController(requestContext, controllerName);
 			Controller c = controller as Controller;
-			c.ViewEngine = new NHamlViewFactory();
+			if(c != null) c.ViewEngine = new NHamlViewFactory();
 			return controller;
 		}
 	}

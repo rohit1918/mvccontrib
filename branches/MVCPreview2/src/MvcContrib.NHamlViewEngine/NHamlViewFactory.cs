@@ -172,13 +172,14 @@ namespace MvcContrib.ViewFactories
 
 			INHamlView view = compiledView.CreateView();
 
-//			if (ViewDataIsDictionary(viewContext.ViewData))
-//			{
-//				viewContext.ViewData = new ViewData(viewContext.ViewData);
-//			}
-
-			view.SetViewData(viewContext.ViewData);
-			view.RenderView(viewContext);
+			if (ViewDataIsDictionary(viewContext.ViewData))
+			{
+				view.SetViewData(new ViewData(viewContext.ViewData));
+			}
+			else
+			{
+				view.RenderView(viewContext);						
+			}
 		}
 	}
 }
