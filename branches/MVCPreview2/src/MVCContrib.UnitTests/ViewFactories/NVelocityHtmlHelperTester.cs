@@ -51,7 +51,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			Assert.AreEqual(_htmlHelper.SubmitButton("id", "test"), _htmlHelper.Submit("test", htmlAttributes));
 		}
 
-		[Test, Ignore("Crashes nunit - need to investigate")]
+		[Test]
 		public void TextBox_Passes_Through_Attributes()
 		{
 			Hashtable htmlAttributes = new Hashtable();
@@ -60,7 +60,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			Assert.AreEqual(_htmlHelper.TextBox("htmlName", string.Empty, new { attr = "value" }), _htmlHelper.TextBox("htmlName", htmlAttributes));
 		}
 
-		[Test, Ignore("Crashes nunit - need to investigate")]
+		[Test]
 		public void TextBox_Passes_Through_Attributes_With_Value()
 		{
 			Hashtable htmlAttributes = new Hashtable();
@@ -77,7 +77,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 			htmlAttributes["body"] = "body";
 			htmlAttributes["cc"] = "cc";
 
-			Assert.AreEqual(_htmlHelper.Mailto("emailAddress", "linkText", "subject", string.Empty, "cc", "body"), _htmlHelper.Mailto("emailAddress", "linkText", htmlAttributes));
+			string expected = _htmlHelper.Mailto("emailAddress", "linkText", "subject", "body", "cc", string.Empty, null);
+			string actual = _htmlHelper.Mailto("emailAddress", "linkText", htmlAttributes);
+
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

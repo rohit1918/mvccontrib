@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Mvc;
 
@@ -29,17 +30,17 @@ namespace MvcContrib.Castle
 
 		public string TextBox(string htmlName, object value, IDictionary htmlAttributes)
 		{
-			return this.TextBox(htmlName, value, (IDictionary)new DescriptableDictionary(htmlAttributes));
+			return this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
 		}
 
-		public string MailTo(string emailAddress, string linkText, IDictionary htmlAttributes)
+		public string Mailto(string emailAddress, string linkText, IDictionary htmlAttributes)
 		{
 			string subject = RemoveKey(htmlAttributes, "subject", string.Empty);
 			string body = RemoveKey(htmlAttributes, "body", string.Empty);
 			string cc = RemoveKey(htmlAttributes, "cc", string.Empty);
 			string bcc = RemoveKey(htmlAttributes, "bcc", string.Empty);
 
-			return this.MailTo(emailAddress, linkText,(IDictionary)new DescriptableDictionary(htmlAttributes));
+			return this.Mailto(emailAddress, linkText, subject, body, cc, bcc, MakeGeneric(htmlAttributes));
 		}
 
 		private static T RemoveKey<T>(IDictionary hash, string key, T defaultValue)
@@ -56,6 +57,17 @@ namespace MvcContrib.Castle
 			}
 
 			return defaultValue;
+		}
+
+		//TODO: Make MvcContrib.Hash do this.
+		private static IDictionary<string, object> MakeGeneric(IDictionary source)
+		{
+			Dictionary<string, object> toReturn = new Dictionary<string, object>();
+			foreach(DictionaryEntry entry in source)
+			{
+				toReturn.Add(entry.Key.ToString(), entry.Value);
+			}
+			return toReturn;
 		}
 	}
 }
