@@ -22,8 +22,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				StructureMapConfiguration.BuildInstancesOf<StructureMapSimpleController>().TheDefaultIsConcreteType
 					<StructureMapSimpleController>();
 				StructureMapConfiguration.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<StubDependency>();
-				StructureMapConfiguration.BuildInstancesOf<DependencyController>().TheDefaultIsConcreteType
-					<DependencyController>();
+				StructureMapConfiguration.BuildInstancesOf<StructureMapDependencyController>().TheDefaultIsConcreteType
+					<StructureMapDependencyController>();
                 ObjectFactory.Reset();
 			}
 
@@ -41,21 +41,21 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnControllerWithDependencies()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
-				IController controller = factory.CreateController(null, "Dependency");
+				IController controller = factory.CreateController(null, "StructureMapDependency");
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
+				Assert.That(controller, Is.AssignableFrom(typeof(StructureMapDependencyController)));
 
-				DependencyController dependencyController = (DependencyController)controller;
+				StructureMapDependencyController dependencyController = (StructureMapDependencyController)controller;
 				Assert.That(dependencyController._dependency, Is.Not.Null);
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
 
-		    public class DependencyController : IController
+		    public class StructureMapDependencyController : IController
 			{
 				public IDependency _dependency;
 
-				public DependencyController(IDependency dependency)
+				public StructureMapDependencyController(IDependency dependency)
 				{
 					_dependency = dependency;
 				}

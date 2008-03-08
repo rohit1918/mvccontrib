@@ -9,7 +9,7 @@ using MvcContrib.TestHelper;
 
 namespace MvcContrib.TestHelper
 {
-    public class TestController : Controller
+    public class TestHelperController : Controller
     {
         
         public void RedirectWithAction()

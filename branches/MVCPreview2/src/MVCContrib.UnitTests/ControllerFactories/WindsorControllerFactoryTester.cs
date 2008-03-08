@@ -22,9 +22,9 @@ namespace MvcContrib.UnitTests.Castle
 			_mocks = new MockRepository();
 
 			_container = new WindsorContainer();
-			_container.AddComponent("SimpleController", typeof(SimpleController));
+			_container.AddComponent("SimpleController", typeof(WindsorSimpleController));
 			_container.AddComponent("StubDependency", typeof(IDependency), typeof(StubDependency));
-			_container.AddComponent("DependencyController", typeof(DependencyController));
+			_container.AddComponent("DependencyController", typeof(WindsorDependencyController));
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace MvcContrib.UnitTests.Castle
 			IController controller = factory.CreateController(context, "Simple");
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(WindsorSimpleController)));
 		}
 
 		[Test]
@@ -58,9 +58,9 @@ namespace MvcContrib.UnitTests.Castle
 			IController controller = factory.CreateController(context, "Dependency");
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(WindsorDependencyController)));
 
-			DependencyController dependencyController = (DependencyController)controller;
+			WindsorDependencyController dependencyController = (WindsorDependencyController)controller;
 			Assert.That(dependencyController._dependency, Is.Not.Null);
 			Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 		}
@@ -119,7 +119,7 @@ namespace MvcContrib.UnitTests.Castle
 			}
 		}
 
-		public class SimpleController : IController
+		public class WindsorSimpleController : IController
 		{
 			public void Execute(ControllerContext controllerContext)
 			{
@@ -127,11 +127,11 @@ namespace MvcContrib.UnitTests.Castle
 			}
 		}
 
-		public class DependencyController : IController
+		public class WindsorDependencyController : IController
 		{
 			public IDependency _dependency;
 
-			public DependencyController(IDependency dependency)
+			public WindsorDependencyController(IDependency dependency)
 			{
 				_dependency = dependency;
 			}

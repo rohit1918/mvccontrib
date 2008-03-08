@@ -21,8 +21,8 @@ namespace MvcContrib.TestHelper.Test
         public void CanCreateSpecificController()
         {
             TestControllerBuilder builder = new TestControllerBuilder();
-            object c = builder.CreateController<TestController>();
-            Assert.IsInstanceOfType(typeof(TestController), c);
+            object c = builder.CreateController<TestHelperController>();
+            Assert.IsInstanceOfType(typeof(TestHelperController), c);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace MvcContrib.TestHelper.Test
         {
             TestControllerBuilder builder = new TestControllerBuilder();
             builder.Form["Variable"] = "Value";
-            Controller c = builder.CreateController<TestController>();
+            Controller c = builder.CreateController<TestHelperController>();
             Assert.AreEqual("Value", c.HttpContext.Request.Form["Variable"]);
         }
 
@@ -42,7 +42,7 @@ namespace MvcContrib.TestHelper.Test
             rd.Values["Variable"] = "Value";
             builder.RouteData = rd;
 
-            TestController testController = builder.CreateController<TestController>();
+            TestHelperController testController = builder.CreateController<TestHelperController>();
             Assert.AreEqual("Value", testController.RouteData.Values["Variable"]);
         }
 
@@ -51,7 +51,7 @@ namespace MvcContrib.TestHelper.Test
         {
             TestControllerBuilder handler = new TestControllerBuilder();
             handler.QueryString["Variable"] = "Value";
-            TestController testController = handler.CreateController<TestController>();
+            TestHelperController testController = handler.CreateController<TestHelperController>();
             Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
         }
 
@@ -59,7 +59,7 @@ namespace MvcContrib.TestHelper.Test
         public void RedirectRecordsData()
         {
             TestControllerBuilder builder = new TestControllerBuilder();
-            TestController testController = builder.CreateController<TestController>();
+            TestHelperController testController = builder.CreateController<TestHelperController>();
             testController.RedirectWithAction();
             Assert.AreEqual("ActionName1", builder.RedirectToActionData.ActionName);
             testController.RedirectWithActionAndController();
@@ -74,7 +74,7 @@ namespace MvcContrib.TestHelper.Test
         public void RenderViewRecordsData()
         {
             TestControllerBuilder builder = new TestControllerBuilder();
-            TestController testController = builder.CreateController<TestController>();
+            TestHelperController testController = builder.CreateController<TestHelperController>();
             testController.RenderViewWithViewName();
             Assert.AreEqual("View1", builder.RenderViewData.ViewName);
             testController.RenderViewWithViewNameAndData();
@@ -93,8 +93,8 @@ namespace MvcContrib.TestHelper.Test
         public void CanCreateMultipleControllers()
         {
             TestControllerBuilder builder = new TestControllerBuilder();
-            TestController testController = builder.CreateController<TestController>();
-            TestController testController2 = builder.CreateController<TestController>();
+            TestHelperController testController = builder.CreateController<TestHelperController>();
+            TestHelperController testController2 = builder.CreateController<TestHelperController>();
             Assert.AreNotEqual(testController, testController2);
         }
 
@@ -102,7 +102,7 @@ namespace MvcContrib.TestHelper.Test
         public void InterceptorShouldIgnoreNormalMethods()
         {
             TestControllerBuilder builder = new TestControllerBuilder();
-            TestController testController = builder.CreateController<TestController>();
+            TestHelperController testController = builder.CreateController<TestHelperController>();
             int x = testController.RandomOtherFunction();
             Assert.AreEqual(12345, x);
         }

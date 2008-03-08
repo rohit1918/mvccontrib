@@ -7,31 +7,17 @@ namespace MvcContrib.ControllerFactories
 {
 	public class ObjectBuilderControllerFactory : DefaultControllerFactory
 	{
-	    private RequestContext _context;
-
-	    protected override IController GetControllerInstance(Type controllerType)
-        {
-            IDependencyContainer container = GetContainer(_context);
-
-            return (IController)container.Get(controllerType);
-        }
-        
-        protected override Type GetControllerType(string controllerName)
-        {
-            
-            return base.GetControllerType(controllerName);
-        }
 		protected override IController CreateController(RequestContext context, string controllerName)
 		{
-		    _context = context;
-		    return base.CreateController(context, controllerName);
-            ////TODO: Don't rely on DefaultControllerFactory's implementation of GetControllerType
-			
-            //Type controllerType = base.GetControllerType(controllerName+"Controller");
+			Type type = base.GetControllerType(controllerName);
 
-            //IDependencyContainer container = GetContainer(context);
+			if(type == null)
+			{
+				throw new InvalidOperationException(string.Format("Could not find a controller with the name {0}", controllerName));
+			}
 
-            //return (IController)container.Get(controllerType);
+			IDependencyContainer container = GetContainer(context);
+			return (IController)container.Get(type);
 		}
 
 		protected virtual IDependencyContainer GetContainer(RequestContext context)

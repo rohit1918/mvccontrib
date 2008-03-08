@@ -22,9 +22,9 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks = new MockRepository();
 
 			_container = new DependencyContainer();
-			_container.RegisterTypeMapping<SimpleController, SimpleController>();
+			_container.RegisterTypeMapping<ObjectBuilderSimpleController, ObjectBuilderSimpleController>();
 			_container.RegisterTypeMapping<IDependency, StubDependency>();
-			_container.RegisterTypeMapping<DependencyController, DependencyController>();
+			_container.RegisterTypeMapping<ObjectBuilderDependencyController, ObjectBuilderDependencyController>();
 		}
 
 		[Test]
@@ -38,10 +38,10 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, "Simple"); //typeof(SimpleController));
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple"); //typeof(SimpleController));
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(ObjectBuilderSimpleController)));
 		}
 
 		[Test]
@@ -55,12 +55,12 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, "Dependency"); //typeof(DependencyController));
+			IController controller = factory.CreateController(context, "ObjectBuilderDependency"); //typeof(DependencyController));
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(ObjectBuilderDependencyController)));
 
-			DependencyController dependencyController = (DependencyController)controller;
+			ObjectBuilderDependencyController dependencyController = (ObjectBuilderDependencyController)controller;
 			Assert.That(dependencyController._dependency, Is.Not.Null);
 			Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 		}
@@ -77,7 +77,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, "Simple");
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
 
 		[Test]
@@ -92,7 +92,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, "Simple");
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
 
 		[Test]
@@ -101,7 +101,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(null, "Simple");
+			IController controller = factory.CreateController(null, "ObjectBuilderSimple");
 		}
 
 		public class MockApplication : HttpApplication, IDependencyContainerAccessor
@@ -119,7 +119,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			}
 		}
 
-		public class SimpleController : IController
+		public class ObjectBuilderSimpleController : IController
 		{
 			public void Execute(ControllerContext controllerContext)
 			{
@@ -127,11 +127,11 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			}
 		}
 
-		public class DependencyController : IController
+		public class ObjectBuilderDependencyController : IController
 		{
 			public IDependency _dependency;
 
-			public DependencyController(IDependency dependency)
+			public ObjectBuilderDependencyController(IDependency dependency)
 			{
 				_dependency = dependency;
 			}

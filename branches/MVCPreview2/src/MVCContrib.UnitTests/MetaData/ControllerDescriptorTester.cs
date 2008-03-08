@@ -15,12 +15,12 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			TestController controller = new TestController();
+			MetaDataTestController controller = new MetaDataTestController();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
 			Assert.IsNotNull(metaData);
-			Assert.AreEqual(typeof(TestController), metaData.ControllerType);
+			Assert.AreEqual(typeof(MetaDataTestController), metaData.ControllerType);
 			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
 			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
 		}
@@ -30,10 +30,10 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			Assert.IsNotNull(metaData);
-			Assert.AreEqual(typeof(TestController), metaData.ControllerType);
+			Assert.AreEqual(typeof(MetaDataTestController), metaData.ControllerType);
 			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
 			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
 		}
@@ -43,7 +43,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			TestController controller = new TestController();
+			MetaDataTestController controller = new MetaDataTestController();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
@@ -56,7 +56,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			TestController controller = new TestController();
+			MetaDataTestController controller = new MetaDataTestController();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
@@ -71,7 +71,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
 
@@ -83,7 +83,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			ActionMetaData action = metaData.GetActions("ActionReturningValueWithOutBinder")[0];
 
@@ -95,7 +95,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			ActionMetaData action = metaData.GetActions("ActionWithReturnBinder")[0];
 
@@ -107,7 +107,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void BindShouldReturnNullIfBinderIsNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[0].Bind(null));
 		}
@@ -116,7 +116,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void NonExistentActionShouldReturnNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			TestController controller = new TestController();
+			MetaDataTestController controller = new MetaDataTestController();
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
 			Assert.IsNull(metaData.GetAction("Doesn't Exist"));
@@ -142,7 +142,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void HiddenActionShouldReturnNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			Assert.IsNull(metaData.GetAction("HiddenAction"));
 		}
@@ -151,7 +151,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void ShouldFindDefaultAction()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(TestController));
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			Assert.AreEqual("CatchAllAction", metaData.DefaultAction.Name);
 		}
@@ -168,8 +168,8 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			CountControllerDescriptor inner = new CountControllerDescriptor();
 			CachedControllerDescriptor descriptor = new CachedControllerDescriptor(inner);
-			ControllerMetaData metaData = descriptor.GetMetaData(new TestController());
-			ControllerMetaData metaDataAgain = descriptor.GetMetaData(new TestController());
+			ControllerMetaData metaData = descriptor.GetMetaData(new MetaDataTestController());
+			ControllerMetaData metaDataAgain = descriptor.GetMetaData(new MetaDataTestController());
 
 			Assert.AreEqual(1, inner.Calls);
 		}
@@ -204,7 +204,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 		public ControllerMetaData GetMetaData(IController controller)
 		{
-			return GetMetaData(typeof(TestController));
+			return GetMetaData(typeof(MetaDataTestController));
 		}
 
 		public ControllerMetaData GetMetaData(Type controllerType)
@@ -215,7 +215,7 @@ namespace MvcContrib.UnitTests.MetaData
 	}
 
 	[Rescue("Test")]
-	internal class TestController : ConventionController
+	internal class MetaDataTestController : ConventionController
 	{
 		public void BasicAction()
 		{
