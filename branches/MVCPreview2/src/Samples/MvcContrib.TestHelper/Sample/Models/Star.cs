@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Routing;
+using MvcContrib.TestHelper.Sample.Controllers;
 
 namespace MvcContrib.TestHelper.Sample.Models
 {
@@ -27,12 +29,20 @@ namespace MvcContrib.TestHelper.Sample.Models
 
         public static List<Star> GetStarsAndLinks(RequestContext context)
         {
+            
             List<Star> stars = new List<Star>();
-            stars.Add(new Star { ID = 1, Name = "Beta Brahe", Distance = 44.2f, NearbyLink = RouteTable.Routes.GetUrl(context, new { Controller = "Stars", Action = "Nearby", ID = 1 }) });
-            stars.Add(new Star { ID = 2, Name = "Alpha Brahe", Distance = 34.9f, NearbyLink = RouteTable.Routes.GetUrl(context, new { Controller = "Stars", Action = "Nearby", ID = 2 }) });
-            stars.Add(new Star { ID = 3, Name = "Delta Brahe", Distance = 46.1f, NearbyLink = RouteTable.Routes.GetUrl(context, new { Controller = "Stars", Action = "Nearby", ID = 3 }) });
-            stars.Add(new Star { ID = 4, Name = "Zetha Brahe", Distance = 47.4f, NearbyLink = RouteTable.Routes.GetUrl(context, new { Controller = "Stars", Action = "Nearby", ID = 4 }) });
-            stars.Add(new Star { ID = 5, Name = "Theta Brahe", Distance = 48.6f, NearbyLink = RouteTable.Routes.GetUrl(context, new { Controller = "Stars", Action = "Nearby", ID = 5 }) });
+            stars.Add(new Star
+                          {
+                              ID = 1,
+                              Name = "Beta Brahe",
+                              Distance = 44.2f,
+                              NearbyLink = ""
+                          });
+
+            stars.Add(new Star { ID = 2, Name = "Alpha Brahe", Distance = 34.9f, NearbyLink = "" });
+            stars.Add(new Star { ID = 3, Name = "Delta Brahe", Distance = 46.1f, NearbyLink = "" });
+            stars.Add(new Star { ID = 4, Name = "Zetha Brahe", Distance = 47.4f, NearbyLink = "" });
+            stars.Add(new Star { ID = 5, Name = "Theta Brahe", Distance = 48.6f, NearbyLink = "" });
             return stars;
         }
 

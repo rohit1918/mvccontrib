@@ -9,21 +9,21 @@ namespace MvcContrib.TestHelper.Sample.Controllers
 {
     public class StarsController : Controller
     {
-        [ControllerAction]
+        
         public void List()
         {
             List<Star> stars = StarDatabase.GetStars();
             RenderView("List", stars);
         }
 
-        [ControllerAction]
+        
         public void ListWithLinks()
         {
             List<Star> stars = StarDatabase.GetStarsAndLinks(ControllerContext);
             RenderView("ListWithLinks", stars);
         }
 
-        [ControllerAction]
+        
         public void AddFormStar()
         {
             string name = Request.Form["NewStarName"];
@@ -31,7 +31,7 @@ namespace MvcContrib.TestHelper.Sample.Controllers
             RedirectToAction("List");
         }
 
-        [ControllerAction]
+        
         public void AddSessionStar()
         {
             string name = Request.Form["NewStarName"];
@@ -39,7 +39,7 @@ namespace MvcContrib.TestHelper.Sample.Controllers
             RedirectToAction("List");
         }
 
-        [ControllerAction]
+        
         public void Nearby()
         {
             //Placeholder link for demonstration of link checking
