@@ -4,12 +4,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{62450899-13BA-4A62-8FCD-911B5428958F}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{0A746474-0569-418F-83B0-BFDC27C04C03}</ProjectGuid>
+    <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MvcContrib.TestHelper.Sample</RootNamespace>
-    <AssemblyName>MvcContrib.TestHelper.Sample</AssemblyName>
+    <RootNamespace>Website</RootNamespace>
+    <AssemblyName>Website</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,7 +35,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\System.Web.Abstractions.dll</HintPath>
@@ -48,12 +50,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\System.Web.Routing.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\StarsController.cs" />
@@ -66,21 +73,27 @@
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Views\Stars\ListWithLinks.aspx.cs">
-      <DependentUpon>ListWithLinks.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="Views\Shared\Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
     </Compile>
     <Compile Include="Views\Stars\List.aspx.cs">
       <DependentUpon>List.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Views\Stars\ListWithLinks.aspx.cs">
+      <DependentUpon>ListWithLinks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Views\Stars\List.aspx" />
+    <Content Include="Views\Stars\ListWithLinks.aspx" />
+    <Content Include="Web.config" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Shared\Site.Master" />
-    <Content Include="Views\Stars\ListWithLinks.aspx" />
-    <Content Include="Views\Stars\List.aspx" />
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -100,7 +113,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>3839</DevelopmentServerPort>
+          <DevelopmentServerPort>1681</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" 
-    CodeBehind="List.aspx.cs" Inherits="MvcTestingFramework.Sample.Views.Stars.List" %>
+    CodeBehind="List.aspx.cs" Inherits="MvcContrib.TestHelper.Sample.Views.Stars.List" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
-<%@ Import Namespace="MvcTestingFramework.Sample.Controllers" %>
+<%@ Import Namespace="MvcContrib.TestHelper.Sample.Controllers" %>
 
 <h2>Stars</h2>
 

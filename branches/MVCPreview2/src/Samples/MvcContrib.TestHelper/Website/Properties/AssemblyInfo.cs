@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MvcTestingFramework.Sample")]
+[assembly: AssemblyTitle("Website")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("MSIT")]
-[assembly: AssemblyProduct("MvcTestingFramework.Sample")]
-[assembly: AssemblyCopyright("Copyright © MSIT 2007")]
+[assembly: AssemblyCompany("Callaway Golf")]
+[assembly: AssemblyProduct("Website")]
+[assembly: AssemblyCopyright("Copyright © Callaway Golf 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3d5900ae-111a-45be-96b3-d9e4606ca793")]
+[assembly: Guid("d544e8f8-33c6-4abe-85e8-44c6179fbc4f")]
 
 // Version information for an assembly consists of the following four values:
 //

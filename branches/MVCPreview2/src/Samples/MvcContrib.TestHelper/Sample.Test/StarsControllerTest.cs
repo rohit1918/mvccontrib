@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using NUnit.Framework;
 using MvcContrib.TestHelper.Sample.Controllers;
 using MvcContrib.TestHelper.Sample.Models;
@@ -54,17 +55,6 @@ namespace MvcContrib.TestHelper.Sample
             builder.Form["NewStarName"] = "alpha c";
             controller.AddSessionStar();
             Assert.AreEqual("alpha c", controller.HttpContext.Session["NewStarName"]);
-        }
-
-        [Test]
-        public void RouteTableShouldSelectProperRoute()
-        {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            MvcTestingFramework.Sample.Global.SetupRoutes(); //setup the routes the same as our app does
-            StarsController controller = builder.CreateController<StarsController>();
-            controller.ListWithLinks();
-            List<Star> stars = (List<Star>)builder.RenderViewData.ViewData;
-            Assert.AreEqual("/Stars/Nearby/1", stars[0].NearbyLink);
         }
 
         [Test]

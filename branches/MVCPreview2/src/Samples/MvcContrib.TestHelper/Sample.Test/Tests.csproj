@@ -62,9 +62,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sample\MvcContrib.TestHelper.Sample.csproj">
-      <Project>{62450899-13BA-4A62-8FCD-911B5428958F}</Project>
-      <Name>MvcContrib.TestHelper.Sample</Name>
+    <ProjectReference Include="..\Website\Website.csproj">
+      <Project>{0A746474-0569-418F-83B0-BFDC27C04C03}</Project>
+      <Name>Website</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
