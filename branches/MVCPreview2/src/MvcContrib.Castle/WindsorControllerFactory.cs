@@ -42,7 +42,12 @@ namespace MvcContrib.ControllerFactories
 
 	    public void DisposeController(IController controller)
 	    {
-			//TODO: use container.Release
+	    	IDisposable disposable = controller as IDisposable;
+
+			if(disposable != null)
+			{
+				disposable.Dispose();
+			}
 	    }
 	}
 }

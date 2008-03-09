@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -15,10 +16,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 	{
 		private NVelocityViewFactory _factory;
 		private ControllerContext _controllerContext;
+		private MockRepository _mocks;
+		private StringWriter _output;
 
 		[SetUp]
 		public void SetUp()
 		{
+			_mocks = new MockRepository();
+			_output = new StringWriter();
+
 			string viewPath = "MVCContrib.UnitTests.ViewFactories";
 
 			IDictionary properties = new Hashtable();
@@ -28,11 +34,16 @@ namespace MvcContrib.UnitTests.ViewFactories
 			properties["master.folder"] = viewPath;
 			_factory = new NVelocityViewFactory(properties);
 
-			MockRepository mocks = new MockRepository();
-			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
+			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			SetupResult.For(httpContext.Response).Return(response);
+			SetupResult.For(response.Output).Return(_output);
+
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = mocks.DynamicMock<IController>();
+			IController controller = _mocks.DynamicMock<IController>();
 			
+			_mocks.ReplayAll();
+
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values.Add("controller", viewPath);
 		}
@@ -77,6 +88,16 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			ViewContext context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
 			_factory.CreateView(context);
+		}
+
+		[Test]
+		public void ShouldRenderView()
+		{
+			string expected = "Master Template View Template";
+			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
+			_factory.RenderView(context);
+			string output = _output.ToString();
+			Assert.AreEqual(expected, output);
 		}
 	}
 }

@@ -104,6 +104,28 @@ namespace MvcContrib.UnitTests.Castle
 			IController controller = factory.CreateController(null, "Simple");
 		}
 
+		[Test]
+		public void ShouldDisposeOfController()
+		{
+			IControllerFactory factory = new WindsorControllerFactory();
+			WindsorDisposableController controller = new WindsorDisposableController();
+			factory.DisposeController(controller);
+			Assert.That(controller.IsDisposed);
+		}
+
+		public class WindsorDisposableController : IDisposable, IController
+		{
+			public bool IsDisposed = false;
+			public void Dispose()
+			{
+				IsDisposed = true;
+			}
+
+			public void Execute(ControllerContext controllerContext)
+			{
+			}
+		}
+
 		public class MockApplication : HttpApplication, IContainerAccessor
 		{
 			private readonly IWindsorContainer _container;
