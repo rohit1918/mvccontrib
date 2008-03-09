@@ -486,6 +486,14 @@ namespace MvcContrib.UnitTests.UI.Html
 				string expected = "<select name=\"person\" id=\"person\"><option value=\"1\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void With_SelectedValue_in_dictionary_then_correct_value_should_be_selected()
+			{
+				string html = _helper.Select("foo", BuildPeople(), "Name", "Id", new Hash(SelectedValue => "2"));
+				string expected = "<select name=\"foo\" id=\"foo\"><option value=\"1\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 			
 		}
 

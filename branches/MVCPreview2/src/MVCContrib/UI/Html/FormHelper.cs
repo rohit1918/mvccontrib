@@ -215,6 +215,7 @@ namespace MvcContrib.UI.Html
 		{
 			string firstOption = ObtainAndRemove(attributes, "firstOption");
 			string firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
+			string selectedValue = ObtainAndRemove(attributes, "selectedValue");
 
 			Select select = new Select(attributes);
 			select.Name = name;
@@ -222,6 +223,7 @@ namespace MvcContrib.UI.Html
 			select.ValueField = valueField;
 			select.FirstOption = firstOption;
 			select.FirstOptionValue = firstOptionValue;
+			select.SelectedValue = selectedValue;
 			return Select(dataSource, select);
 		}
 
