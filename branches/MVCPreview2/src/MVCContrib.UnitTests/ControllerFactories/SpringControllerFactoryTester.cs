@@ -182,5 +182,33 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Assert.That(controller, Is.AssignableFrom(typeof(WhenAValidControllerTypeIsPassed.SpringSimpleController)));
 			}
 		}
+
+		[TestFixture]
+		public class WhenDisposeControllerInvoked
+		{
+			[Test]
+			public void ControllerShouldBeDisposed()
+			{
+				SpringControllerFactory factory = new SpringControllerFactory();
+				SpringDisposableController controller = new SpringDisposableController();
+				factory.DisposeController(controller);
+				Assert.That(controller.IsDisposed);
+			
+			}
+
+			private class SpringDisposableController : IController, IDisposable
+			{
+				public bool IsDisposed = false;
+
+				public void Dispose()
+				{
+					IsDisposed = true;	
+				}
+
+				public void Execute(ControllerContext controllerContext)
+				{
+				}
+			}
+		}
 	}
 }
