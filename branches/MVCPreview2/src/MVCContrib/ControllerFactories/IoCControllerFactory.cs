@@ -24,6 +24,11 @@ namespace MvcContrib.ControllerFactories
 
 		protected override IController CreateController(RequestContext context, string controllerName)
 		{
+			if(controllerName == null)
+			{
+				throw new ArgumentNullException("controllerName");
+			}
+
 			Type controllerType = GetControllerType(controllerName);
 
 			if(controllerType != null)

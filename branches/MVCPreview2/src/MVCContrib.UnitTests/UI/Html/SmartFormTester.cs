@@ -68,6 +68,13 @@ namespace MvcContrib.UnitTests.UI.Html
 				SmartForm<object> form = new SmartForm<object>("test", delegate { }, _helper, new object(), Hash.Empty);
 				Assert.That(form.Action, Is.EqualTo("test"));
 			}
+
+			[Test]
+			public void Then_FormHelper_should_match_ctor_argument()
+			{
+				SmartForm<object> form = new SmartForm<object>("test", delegate  { }, _helper, new object(), Hash.Empty);
+				Assert.That(form.FormHelper, Is.SameAs(_helper));
+			}
 		}
 
 		[TestFixture]

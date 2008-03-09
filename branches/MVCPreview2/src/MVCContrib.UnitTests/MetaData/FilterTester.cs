@@ -45,6 +45,19 @@ namespace MvcContrib.UnitTests.MetaData
 			controller.ControllerContext = controllerContext;
 		}
 
+		[Test]
+		public void ControllerDescriptorShouldFindFilters()
+		{
+			ControllerDescriptor descriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = descriptor.GetMetaData(_controller);
+			ActionMetaData action = metaData.GetAction("MultipleFilters");
+
+			Assert.AreEqual(3, action.Filters.Count);
+			Assert.AreEqual(-1, action.Filters[0].Order);
+			Assert.AreEqual(1, action.Filters[1].Order);
+			Assert.AreEqual(100, action.Filters[2].Order);
+		}
+
 		[Test, ExpectedException(typeof(InvalidOperationException))]
 		public void PostOnlyShouldReturnFalseIfRequestTypeIsNotPost()
 		{
@@ -63,13 +76,86 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.IsTrue(_controller.PostOnlyCalled);
 		}
 
+		[Test]
+		public void ActionShouldNotBeInvokedIfOneFilterReturnsTrueAndAnotherReturnsFalse()
+		{
+			SetupHttpContext(_controller, "GET");
+
+			bool result = _controller.DoInvokeAction("MultipleFilters");
+
+			Assert.IsFalse(result);
+			Assert.IsFalse(_controller.MultipleFiltersCalled);
+		}
+
+		[Test]
+		public void ActionShouldBeInvokedIfFilterReturnsTrue()
+		{
+			SetupHttpContext(_controller, "GET");
+
+			bool result = _controller.DoInvokeAction("SuccessfulFilter");
+
+			Assert.IsTrue(result);
+			Assert.IsTrue(_controller.SuccessfulFilterCalled);
+		}
+
+		[Test]
+		public void ActionShouldNotBeInvokedIfFilterReturnsFalse()
+		{
+			SetupHttpContext(_controller, "GET");
+
+			bool result = _controller.DoInvokeAction("UnsuccessfulFilter");
+
+			Assert.IsFalse(result);
+			Assert.IsFalse(_controller.UnSuccessfulFilterCalled);
+		}
+
+		class FilterReturnsTrue : ActionFilterAttribute
+		{
+			public override void OnActionExecuting(FilterExecutingContext filterContext)
+			{
+				filterContext.Cancel = false;
+			}
+		}
+
+		class FilterReturnsFalse : ActionFilterAttribute
+		{
+			public override void OnActionExecuting(FilterExecutingContext filterContext)
+			{
+				filterContext.Cancel = true;
+			}
+		}
+
+		[FilterReturnsTrue]
 		class FilteredController : ConventionController
 		{
-			public bool PostOnlyCalled = false;	
+			public bool SuccessfulFilterCalled = false;
+			public bool UnSuccessfulFilterCalled = false;
+			public bool MultipleFiltersCalled = false;
+			public bool PostOnlyCalled = false;
+			public bool DependentFilterCalled = false;
 
-			public bool DoInvokeAction(string name)
+			public bool DoInvokeAction(string action)
 			{
-				return InvokeAction(name);
+				return InvokeAction(action);
+			}
+
+			[FilterReturnsTrue]
+			public void SuccessfulFilter()
+			{
+				SuccessfulFilterCalled = true;
+			}
+
+			[FilterReturnsFalse]
+			public void UnsuccessfulFilter()
+			{
+				UnSuccessfulFilterCalled = true;
+			}
+
+			[FilterReturnsTrue(Order = 1)]
+			[FilterReturnsFalse(Order = 100)]
+			public void MultipleFilters()
+			{
+				MultipleFiltersCalled = true;
 			}
 
 			[PostOnly]

@@ -175,6 +175,14 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void Action_with_NonActionAttribute_is_not_valid()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			var meta = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
+			Assert.IsNull(meta.GetAction("NonAction"));
+		}
+
+		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CachedDescriptorRequiresInnerDescriptor()
 		{
@@ -227,6 +235,12 @@ namespace MvcContrib.UnitTests.MetaData
 
 		public void SimpleAction(string param1, int param2)
 		{
+		}
+
+		[NonAction]
+		public void NonAction()
+		{
+			
 		}
 
 		[DefaultAction]

@@ -42,6 +42,11 @@ namespace MvcContrib.UI.Html
 			get { return _item; }
 		}
 
+		public IFormHelper FormHelper
+		{
+			get { return _helper; }
+		}
+
 		public override string ToString()
 		{
 			BlockRenderer renderer = new BlockRenderer(_helper.ViewContext.HttpContext);

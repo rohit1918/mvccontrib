@@ -77,11 +77,25 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 
             [Test]
             [ExpectedException(typeof(System.ArgumentNullException))]
-            public void Should_throw_an_argument_null_exception_when_the_controller_type_is_null()
+            public void Should_throw_an_argument_null_exception_when_the_resolver_is_null()
             {
                 IControllerFactory controllerFactory = new IoCControllerFactory(null);
-                controllerFactory.CreateController(null, null); 
             }
+
+        	[Test, ExpectedException(typeof(ArgumentNullException))]
+        	public void Should_throw_if_controllerName_is_null()
+        	{
+				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
+        		controllerFactory.CreateController(null, null);
+        	}
+
+
+			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Could not find a type for the controller name 'DoesNotExist'")]
+        	public void Should_throw_if_controller_type_cannot_be_resolved()
+        	{
+				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
+        		controllerFactory.CreateController(null, "DoesNotExist");
+        	}
 
             protected override void BeforeEachSpec()
 
