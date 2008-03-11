@@ -18,20 +18,16 @@ namespace MvcContrib.Samples.FormHelper
 
 		protected void Application_Start(object sender, EventArgs e)
 		{
-            throw new NotImplementedException();
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "[controller].mvc/[action]",
-            //    Defaults = new { action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+									{
+										Defaults = new RouteValueDictionary(new { action = "index", id = "" })
+									});
 
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "Default.aspx",
-            //    Defaults = new { controller = "Home", action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "index", id = "" })
+			});
+
 		}
 
 	}
