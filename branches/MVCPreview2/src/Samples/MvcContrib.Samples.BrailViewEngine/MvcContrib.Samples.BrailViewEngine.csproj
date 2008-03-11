@@ -30,17 +30,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Boo.Lang, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\boo\Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\boo\Boo.Lang.Compiler.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Extensions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\boo\Boo.Lang.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\boo\Boo.Lang.Parser.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\castle\Castle.Core.dll</HintPath>
+      <HintPath>..\..\..\bin\castle\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\castle\Castle.MicroKernel.dll</HintPath>
+      <HintPath>..\..\..\bin\castle\Castle.MicroKernel.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\..\bin\castle\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib.BrailViewEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib.Castle, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Castle.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -50,15 +78,15 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -77,20 +105,6 @@
     <Content Include="Default.aspx" />
     <Content Include="Content\Site.css" />
     <Content Include="Views\Common\Site.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MvcContrib.BrailViewEngine\MvcContrib.BrailViewEngine.csproj">
-      <Project>{8207E568-855D-494A-B19F-436BA10EF365}</Project>
-      <Name>MvcContrib.BrailViewEngine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
-      <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
-      <Name>MvcContrib.Castle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
-      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
-      <Name>MVCContrib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\Home\about.brail" />
