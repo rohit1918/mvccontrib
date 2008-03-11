@@ -34,7 +34,7 @@ namespace MvcContrib.MetaData
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
 			{
-				if (actionMethod.DeclaringType == typeof(object) || ! IsValidAction(actionMethod))
+				if (actionMethod.DeclaringType == typeof(object) || ! IsValidAction(actionMethod) || IsProperty(actionMethod))
 				{
 					continue;
 				}
@@ -89,6 +89,15 @@ namespace MvcContrib.MetaData
 			}
 
 			return metaData;
+		}
+
+		protected virtual bool IsProperty(MethodInfo method)
+		{
+			if((method.Name.StartsWith("get_") || method.Name.StartsWith("set_")) && method.IsSpecialName)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		private static void SortFilters(List<ActionFilterAttribute> filters)

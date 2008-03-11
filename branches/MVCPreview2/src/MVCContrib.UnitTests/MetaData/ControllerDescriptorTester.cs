@@ -183,6 +183,14 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void Properties_should_not_be_recognised_as_actions()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			var meta = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
+			Assert.IsNull(meta.GetAction("get_Property"));
+		}
+
+		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CachedDescriptorRequiresInnerDescriptor()
 		{
@@ -236,6 +244,8 @@ namespace MvcContrib.UnitTests.MetaData
 		public void SimpleAction(string param1, int param2)
 		{
 		}
+
+		public string Property { get; set; }
 
 		[NonAction]
 		public void NonAction()
