@@ -6,7 +6,12 @@
 	</head>
 	<body>
 			<div>
-				You are Home
+				Numbers generated from a service injected by windsor:
+				<ul>
+				<% foreach(int number in (IEnumerable) ViewData["numbers"]) { %>
+					<li><%= number %></li>
+				<% } %>
+				</ul>
 			</div>
 	</body>
 </html>

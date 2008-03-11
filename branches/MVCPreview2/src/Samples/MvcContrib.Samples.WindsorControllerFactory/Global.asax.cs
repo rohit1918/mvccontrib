@@ -5,6 +5,7 @@ using System.Web.Routing;
 using Castle.Core;
 using Castle.Windsor;
 using MvcContrib.Samples.WindsorControllerFactory.Controllers;
+using MvcContrib.Samples.WindsorControllerFactory.Models;
 
 namespace MvcContrib.Samples.WindsorControllerFactory
 {
@@ -37,14 +38,19 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 		{
 			if (_container == null)
 			{
+				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.WindsorControllerFactory));
+				
 				_container = new WindsorContainer();
-				Type[] assemblyTypes = typeof(WindsorController).Assembly.GetTypes();
+
+				_container.AddComponent<IService, Service>();
+
+				Type[] assemblyTypes = typeof(HomeController).Assembly.GetTypes();
+
 				foreach (Type type in assemblyTypes)
 				{
 					if(typeof(IController).IsAssignableFrom(type) )
 					{
 						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.WindsorControllerFactory));
 					}
 				}
 			}
@@ -52,20 +58,15 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 
 		protected virtual void AddRoutes()
 		{
-            throw new NotImplementedException();
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "[controller]/[action]/[id]",
-            //    Defaults = new { action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+			});
 
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "Default.aspx",
-            //    Defaults = new { controller = "Home", action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
+			});
 		}
 	}
 }
