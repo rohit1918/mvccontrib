@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Core;
 using Castle.Windsor;
 using MvcContrib.ControllerFactories;
@@ -57,28 +58,15 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 
 		protected virtual void AddRoutes()
 		{
-            throw new NotImplementedException();
-            //// Set routes
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "[controller].mvc/[action]/[id]",
-            //    Defaults = new { action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+			});
 
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "[controller]/[action]/[id]",
-            //    Defaults = new { action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
-
-            //RouteTable.Routes.Add(new Route
-            //{
-            //    Url = "Default.aspx",
-            //    Defaults = new { controller = "Home", action = "Index", id = (string)null },
-            //    RouteHandler = typeof(MvcRouteHandler)
-            //});
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
+			});
 		}
 	}
 }
