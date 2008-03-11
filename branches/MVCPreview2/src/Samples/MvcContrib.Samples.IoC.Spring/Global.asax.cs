@@ -16,8 +16,6 @@ namespace MvcContrib.Samples.IoC
     {
         protected void Application_Start(object sender, EventArgs e)
         {
-            // Note: Change Url= to Url="[controller].mvc/[action]/[id]" to enable 
-            //       automatic support on IIS6 
             ConfigureIoC();
             AddRoutes();
         }
@@ -33,35 +31,15 @@ namespace MvcContrib.Samples.IoC
 
         private void AddRoutes()
         {
-            throw new NotImplementedException();
-        //    RouteTable.Routes.Add(new Route
-        //    {
-        //        Url = "[controller]/[action]/[id]",
-        //        Defaults = new
-        //        {
-        //            action = "Index",
-        //            id = (string)null
-        //        }
-        //    ,
-        //        RouteHandler = typeof(MvcRouteHandler)
-        //    }
-        //)
-        //    ;
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+			});
 
-        //    RouteTable.Routes.Add(new Route
-        //    {
-        //        Url = "Default.aspx",
-        //        Defaults = new
-        //        {
-        //            controller = "Home",
-        //            action = "Index",
-        //            id = (string)null
-        //        }
-        //    ,
-        //        RouteHandler = typeof(MvcRouteHandler)
-        //    }
-        //)
-        //    ;
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
+			});
         }
     }
 }

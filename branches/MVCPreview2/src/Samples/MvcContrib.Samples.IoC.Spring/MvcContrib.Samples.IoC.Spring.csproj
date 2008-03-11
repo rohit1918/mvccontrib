@@ -30,13 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib.Spring, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.dll</HintPath>
+    </Reference>
     <Reference Include="Spring.Core, Version=1.1.0.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\spring.net\Spring.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\structuremap\StructureMap.dll</HintPath>
+      <HintPath>..\..\..\bin\spring.net\Spring.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -48,15 +52,15 @@
     </Reference>
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
+      <HintPath>..\..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -99,16 +103,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="objects.xml" />
     <Content Include="Views\Shared\Site.Master" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
-      <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
-      <Name>MvcContrib.Spring</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
-      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
-      <Name>MVCContrib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
