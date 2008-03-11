@@ -160,8 +160,8 @@ namespace MvcContrib.UnitTests.UI.Html
 					Expect.Call(_helper.Select("Role", fakeDataItem, "Name", "Id")).Return(null);
 					Expect.Call(_helper.Select("Role", fakeDataItem, "Name", "Id", hash)).Return(null);
 
-					Expect.Call(_helper.RadioField("Role")).Return(null);
-					Expect.Call(_helper.RadioField("Role", hash)).Return(null);
+					Expect.Call(_helper.RadioField("Role", null)).Return(null);
+					Expect.Call(_helper.RadioField("Role", null, hash)).Return(null);
 					Expect.Call(_helper.RadioField(radio)).Return(null);
 
 				}
@@ -196,9 +196,77 @@ namespace MvcContrib.UnitTests.UI.Html
 					_form.Select("Role", fakeDataItem, "Name", "Id");
 					_form.Select("Role", fakeDataItem, "Name", "Id", hash);
 
-					_form.RadioField("Role");
-					_form.RadioField("Role", hash);
+					_form.RadioField("Role", null);
+					_form.RadioField("Role", null, hash);
 					_form.RadioField(radio);
+				}
+			}
+
+			[Test]
+			public void With_viewdata_key_then_they_Should_be_delegated_to_the_underlying_formhelper()
+			{
+				_form = new SmartForm<object>("person", "test", delegate { }, _helper, new object(), Hash.Empty);
+				IDictionary hash = Hash.Empty;
+				object fakeDataItem = new object();
+
+				using (_mocks.Record())
+				{
+					IDataBinder binder = _mocks.DynamicMock<IDataBinder>();
+					SetupResult.For(binder.NestedBindingScope(null)).IgnoreArguments().Return(_mocks.DynamicMock<IDisposable>());
+					SetupResult.For(_helper.Binder).Return(binder);
+
+					Expect.Call(_helper.TextField("person.Name")).Return(null);
+					Expect.Call(_helper.TextField("person.Name", hash)).Return(null);
+
+					Expect.Call(_helper.PasswordField("person.Name", hash)).Return(null);
+					Expect.Call(_helper.PasswordField("person.Name")).Return(null);
+
+					Expect.Call(_helper.HiddenField("person.Name")).Return(null);
+					Expect.Call(_helper.HiddenField("person.Name", hash)).Return(null);
+
+					Expect.Call(_helper.CheckBoxField("person.IsDeveloper")).Return(null);
+					Expect.Call(_helper.CheckBoxField("person.IsDeveloper", hash)).Return(null);
+
+					Expect.Call(_helper.TextArea("person.Name")).Return(null);
+					Expect.Call(_helper.TextArea("person.Name", hash)).Return(null);
+
+					Expect.Call(_helper.Submit()).Return(null);
+					Expect.Call(_helper.Submit("Submit")).Return(null);
+					Expect.Call(_helper.Submit("Submit", hash)).Return(null);
+
+					Expect.Call(_helper.Select("person.Role", fakeDataItem, "Name", "Id")).Return(null);
+					Expect.Call(_helper.Select("person.Role", fakeDataItem, "Name", "Id", hash)).Return(null);
+
+					Expect.Call(_helper.RadioField("person.Role", null)).Return(null);
+					Expect.Call(_helper.RadioField("person.Role", null, hash)).Return(null);
+
+				}
+				using (_mocks.Playback())
+				{
+					_form.TextField("Name");
+					_form.TextField("Name", hash);
+
+					_form.PasswordField("Name", hash);
+					_form.PasswordField("Name");
+
+					_form.HiddenField("Name");
+					_form.HiddenField("Name", hash);
+
+					_form.CheckBoxField("IsDeveloper");
+					_form.CheckBoxField("IsDeveloper", hash);
+
+					_form.TextArea("Name");
+					_form.TextArea("Name", hash);
+
+					_form.Submit();
+					_form.Submit("Submit");
+					_form.Submit("Submit", hash);
+
+					_form.Select("Role", fakeDataItem, "Name", "Id");
+					_form.Select("Role", fakeDataItem, "Name", "Id", hash);
+
+					_form.RadioField("Role", null);
+					_form.RadioField("Role", null, hash);
 				}
 			}
 		}

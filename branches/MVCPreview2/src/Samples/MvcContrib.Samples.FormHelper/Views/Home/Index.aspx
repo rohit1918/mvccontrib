@@ -37,6 +37,14 @@
 	<h1>Checkbox fields</h1>
 	<p>Note that for checkbox fields, a hidden field is also generated with the same name to allow for easier databinding.</p>
 	<p>Is user a developer? <%= Html.Form().CheckBoxField("person.IsDeveloper") %></p>
+	<h1>Radio Buttons</h1>
+	<p>
+		Radio buttons can be created using a similar syntax to checkboxes. With radio buttons, the value must be specified as the second parameter:<br /><br />
+		<%= Html.Form().RadioField("person.IsDeveloper", true, new Hash(label => "User is a developer")) %><br />
+		<%= Html.Form().RadioField("person.IsDeveloper", false, new Hash(label => "User is not a developer")) %>
+		
+	</p>	
+	
 	<h1>Dropdown (select)</h1>
 	<p>
 		A dropdown takes an enumerable object as its DataSource parameter. The TextField and ValueField properties are used for databinding: <br />

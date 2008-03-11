@@ -252,6 +252,29 @@ namespace MvcContrib.UnitTests.UI
 				
 			}
 
+			[Test]
+			public void When_id_has_period_should_be_replaced_with_hyphen()
+			{
+				Element element = new Element();
+				element.Id = "foo.bar";
+				string actual = element.ToString();
+				string expected = "<div id=\"foo-bar\"/>";
+				Assert.That(actual, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void When_label_element_then_for_attribute_should_have_periods_replaced_with_hyphens()
+			{
+				Element element = new Element("label");
+				element["for"] = "foo.bar";
+				element.InnerText = "Test";
+				string actual = element.ToString();
+				string expected = "<label for=\"foo-bar\">Test</label>";
+				Assert.That(actual, Is.EqualTo(expected));
+				
+			}
+
+
 		}
 	}
 }
