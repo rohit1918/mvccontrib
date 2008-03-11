@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.Mvc;
-using System.Web.Mvc.BindingHelpers;
+using System.Web.Routing;
 using MvcContrib.Samples.NHamlViewEngine.Models;
 
 namespace MvcContrib.Samples.NHamlViewEngine.Controllers
@@ -43,12 +43,12 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		public void Create()
 		{
 			Product product = new Product();
-			product.UpdateFrom(Request.Form);
+			BindingHelperExtensions.UpdateFrom(product, Request.Form);
 
 			northwind.AddProduct(product);
 			northwind.SubmitChanges();
 
-			RedirectToAction(new { Action = "Category", ID = product.CategoryID });
+			RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
 		}
 
 		//
@@ -73,11 +73,11 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		public void Update(int id)
 		{
 			Product product = northwind.GetProductById(id);
-			product.UpdateFrom(Request.Form);
+			BindingHelperExtensions.UpdateFrom(product, Request.Form);
 
 			northwind.SubmitChanges();
 
-			RedirectToAction(new { Action = "Category", ID = product.CategoryID });
+			RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
 		}
 	}
 }

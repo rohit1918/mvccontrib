@@ -1,4 +1,4 @@
 %li
   = product.ProductName 
   %span.editlink
-    = Html.ActionLink("Edit", new { Action="Edit", ID=product.ProductID })
+    = Html.ActionLink("Edit", "Edit", new RouteValueDictionary(new { ID=product.ProductID }))

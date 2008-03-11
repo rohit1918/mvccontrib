@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.NHamlViewEngine;
 using MvcContrib.NHamlViewEngine.Configuration;
 using MvcContrib.NHamlViewEngine.Utilities;
@@ -31,10 +32,12 @@ namespace MvcContrib.ViewFactories
 		{
 			_templateCompiler.AddUsing("System.Web");
 			_templateCompiler.AddUsing("System.Web.Mvc");
+			_templateCompiler.AddUsing("System.Web.Routing");
 			_templateCompiler.AddUsing("MvcContrib.NHamlViewEngine");
 
 			_templateCompiler.ViewBaseType = typeof(NHamlView<>);
-
+			_templateCompiler.AddReference(typeof(System.Web.UI.UserControl).Assembly.Location);
+			_templateCompiler.AddReference(typeof(RouteValueDictionary).Assembly.Location);
 			_templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
 			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
 
@@ -178,8 +181,9 @@ namespace MvcContrib.ViewFactories
 			}
 			else
 			{
-				view.RenderView(viewContext);						
+				view.SetViewData(viewContext.ViewData);
 			}
+			view.RenderView(viewContext);						
 		}
 	}
 }

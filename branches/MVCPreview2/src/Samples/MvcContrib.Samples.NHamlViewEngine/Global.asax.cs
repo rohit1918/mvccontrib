@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 
 namespace MvcContrib.Samples.NHamlViewEngine
@@ -14,21 +15,17 @@ namespace MvcContrib.Samples.NHamlViewEngine
 			// Note: Change Url= to Url="[controller].mvc/[action]/[id]" to enable 
 			//       automatic support on IIS6 
 
-			RouteTable.Routes.Add(new Route
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
 			{
-				Url = "[controller]/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
+				Defaults = new RouteValueDictionary(new { action = "index", id = "" })
 			});
 
-			RouteTable.Routes.Add(new Route
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
 			{
-				Url = "Default.aspx",
-				Defaults = new { controller = "Home", action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "index", id = "" })
 			});
 
-			ControllerBuilder.Current.SetDefaultControllerFactory(typeof(NHamlControllerFactory));
+			ControllerBuilder.Current.SetControllerFactory(new NHamlControllerFactory());
 		}
 	}
 }
