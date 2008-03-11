@@ -2,6 +2,7 @@
 using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Samples.IoC.Controllers;
 using MvcContrib.Services;
@@ -25,39 +26,20 @@ namespace MvcContrib.Samples.IoC
             StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;
             StructureMapConfiguration.BuildInstancesOf<HomeController>().TheDefaultIsConcreteType<HomeController>();
             DependencyResolver.InitializeWith(new StructureMapDependencyResolver());
-            ControllerBuilder.Current.SetDefaultControllerFactory(typeof(IoCControllerFactory));
+            ControllerBuilder.Current.SetControllerFactory(typeof(IoCControllerFactory));
         }
 
         private void AddRoutes()
         {
-            RouteTable.Routes.Add(new Route
-            {
-                Url = "[controller]/[action]/[id]",
-                Defaults = new
-                {
-                    action = "Index",
-                    id = (string)null
-                }
-            ,
-                RouteHandler = typeof(MvcRouteHandler)
-            }
-        )
-            ;
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+			});
 
-            RouteTable.Routes.Add(new Route
-            {
-                Url = "Default.aspx",
-                Defaults = new
-                {
-                    controller = "Home",
-                    action = "Index",
-                    id = (string)null
-                }
-            ,
-                RouteHandler = typeof(MvcRouteHandler)
-            }
-        )
-            ;
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
+			{
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
+			});
         }
     }
 }
