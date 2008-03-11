@@ -169,7 +169,7 @@ namespace MvcContrib.UnitTests.UI
             {
                 Element el = new Element();
                 el.Id = "goose";
-                el["checked"] = "";
+                el["checked"] = null;
                 Assert.That(el.ToString(), Text.DoesNotContain("checked"));
             }
 
@@ -240,6 +240,16 @@ namespace MvcContrib.UnitTests.UI
 				element["onclick"] = "MyOnClick";
 				element["Gizmodo"] = "A cool Website";
 				Assert.That(element.ToString(), Is.EqualTo("<div id=\"MyID\" class=\"MyClass\" Style=\"MyStyle\" onclick=\"MyOnClick\" Gizmodo=\"A cool Website\">This is Text</div>"));
+			}
+
+			[Test]
+			public void When_value_is_empty_string_should_still_be_rendered()
+			{
+				Element element = new Element("input", new Hash(value => ""));
+				string actual = element.ToString();
+				string expected = "<input value=\"\"/>";
+				Assert.That(actual, Is.EqualTo(expected));
+				
 			}
 
 		}
