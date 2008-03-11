@@ -1,8 +1,10 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ObjectBuilder;
 using MvcContrib.Samples.ObjectBuilderControllerFactory.Controllers;
+using MvcContrib.Samples.ObjectBuilderControllerFactory.Models;
 
 namespace MvcContrib.Samples.ObjectBuilderControllerFactory
 {
@@ -36,13 +38,15 @@ namespace MvcContrib.Samples.ObjectBuilderControllerFactory
 			if (_container == null)
 			{
 				_container = new DependencyContainer();
-                Type[] assemblyTypes = typeof(ObjectBuilderController).Assembly.GetTypes();
+				_container.RegisterTypeMapping(typeof(IService), typeof(Service));
+				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.ObjectBuilderControllerFactory));
+
+                Type[] assemblyTypes = typeof(HomeController).Assembly.GetTypes();
 				foreach (Type type in assemblyTypes)
 				{
 					if(typeof(IController).IsAssignableFrom(type) )
 					{
 						_container.RegisterTypeMapping(type, type);
-                        ControllerBuilder.Current.SetControllerFactory(type, typeof(ControllerFactories.ObjectBuilderControllerFactory));
 					}
 				}
 			}
@@ -50,18 +54,14 @@ namespace MvcContrib.Samples.ObjectBuilderControllerFactory
 
 		protected virtual void AddRoutes()
 		{
-			RouteTable.Routes.Add(new Route
+			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
 			{
-				Url = "[controller]/[action]/[id]",
-				Defaults = new { action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
+				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
 			});
 
-			RouteTable.Routes.Add(new Route
+			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
 			{
-				Url = "Default.aspx",
-				Defaults = new { controller = "Home", action = "Index", id = (string)null },
-				RouteHandler = typeof(MvcRouteHandler)
+				Defaults = new RouteValueDictionary(new { controller = "Home", action = "Index", id = "" }),
 			});
 		}
 	}
