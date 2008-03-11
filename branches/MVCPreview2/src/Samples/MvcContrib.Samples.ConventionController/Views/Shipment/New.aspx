@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="MvcContrib.Samples.Views.ShipmentNew" %>
+﻿<%@ Page Language="C#" Inherits="MvcContrib.Samples.Views.ShipmentNew" MasterPageFile="~/Views/Shared/Site.Master" %>
 <asp:Content ContentPlaceHolderId="childContent" runat="server">
 	You created a new Shipment:<br />
 	<span style="font-weight: bolder;">Ship To</span>

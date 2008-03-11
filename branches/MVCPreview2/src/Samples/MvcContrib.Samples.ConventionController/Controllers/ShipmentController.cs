@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.Samples.Models;
@@ -41,7 +42,7 @@ namespace MvcContrib.Samples.Controllers
 			throw new InvalidOperationException();
 		}
 
-		[HiddenAction]
+		[NonAction]
 		public void Hidden()
 		{
 			Response.Write("This action cannot be called.");

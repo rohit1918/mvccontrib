@@ -1,6 +1,6 @@
-﻿<%@ Page Language="C#" Inherits="MvcContrib.Samples.Views.ShipmentIndex" %>
+﻿<%@ Page Language="C#" Inherits="MvcContrib.Samples.Views.ShipmentIndex" MasterPageFile="~/Views/Shared/Site.Master" %>
 <asp:Content ContentPlaceHolderId="childContent" runat="server">
-	<% using (Html.Form("Track", "Shipment")) { %>
+	<% using (Html.Form("Shipment", "Track")) { %>
 		<% for( int i=0; i<10; i++ ) { %>
 			<% string id = "trackingNumbers[" + i + "]"; %>
 			<label for="<%= id %>">Tracking Number</label><%= Html.TextBox(id) %><br />
@@ -9,7 +9,7 @@
 	<% } %>
 	
 	<br />
-	<% using (Html.Form("New", "Shipment")) { %>
+	<% using (Html.Form("Shipment", "New")) { %>
 		<span style="font-weight: bolder;">Ship To</span>
 		<div>
 			<label for="shipment.ShipTo.Name">Name</label><%= Html.TextBox("shipment.ShipTo.Name") %><br />
