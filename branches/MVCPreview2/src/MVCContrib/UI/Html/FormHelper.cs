@@ -266,6 +266,11 @@ namespace MvcContrib.UI.Html
 			if (options.Value == null)
 				options.Value = ObtainFromViewData(options.Name);
 
+			if(IsTrue(options.Value))
+			{
+				options.Checked = true;
+			}
+
 			return options.ToString();
 		}
 
@@ -383,6 +388,28 @@ namespace MvcContrib.UI.Html
 			{
 				return null;
 			}
+		}
+
+		private bool IsTrue(object value)
+		{
+			if (value != null)
+			{
+				if (value.Equals(true))
+				{
+					return true;
+				}
+				
+				bool converted;
+
+				if(bool.TryParse(value.ToString(), out converted))
+				{
+					if(converted)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
 		}
 
 		protected string ObtainAndRemove(IDictionary dictionary, string key)

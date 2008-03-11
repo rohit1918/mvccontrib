@@ -613,6 +613,24 @@ namespace MvcContrib.UnitTests.UI.Html
 				string expected = "<input type=\"radio\" name=\"foo\" id=\"foo\" value=\"Bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void And_the_value_is_true_then_checked_should_be_set()
+			{
+				((IDictionary)_viewContext.ViewData).Add("foo", true);
+				string html = _helper.RadioField("foo");
+				string expected = "<input type=\"radio\" name=\"foo\" id=\"foo\" value=\"True\" checked=\"checked\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void And_the_value_is_a_string_representation_of_true_then_checked_should_be_set()
+			{
+				((IDictionary)_viewContext.ViewData).Add("foo", "True");
+				string html = _helper.RadioField("foo");
+				string expected = "<input type=\"radio\" name=\"foo\" id=\"foo\" value=\"True\" checked=\"checked\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 		}
 
 		[TestFixture]
