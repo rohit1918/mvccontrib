@@ -80,6 +80,7 @@
     <Compile Include="NVelocityViewFactory.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
     <Compile Include="WindsorDependencyResolver.cs" />
+    <Compile Include="WindsorExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">

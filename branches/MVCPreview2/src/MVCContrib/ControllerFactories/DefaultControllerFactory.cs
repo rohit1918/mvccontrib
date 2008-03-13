@@ -12,10 +12,10 @@ namespace MvcContrib.ControllerFactories
 
 		public static bool IsController(Type type)
 		{
-		    return
-				type.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) 
+			return
+				type.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
 				&& type != typeof(IController)
-				&& type != typeof(Controller) 
+				&& type != typeof(Controller)
 				&& typeof(IController).IsAssignableFrom(type);
 		}
 
@@ -33,7 +33,7 @@ namespace MvcContrib.ControllerFactories
 				{
 					if (_typeCache == null)
 					{
-						Hashtable cache = new Hashtable();
+						Hashtable cache = new Hashtable(StringComparer.OrdinalIgnoreCase);
 
 						Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -43,7 +43,7 @@ namespace MvcContrib.ControllerFactories
 							{
 								if (IsController(type))
 								{
-									if(cache.ContainsKey(type.Name))
+									if (cache.ContainsKey(type.Name))
 									{
 										throw new Exception(string.Format("Multiple controllers found with the name '{0}'", type.Name));
 									}

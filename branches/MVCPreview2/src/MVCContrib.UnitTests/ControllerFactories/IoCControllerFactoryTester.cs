@@ -112,7 +112,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
         }
     }
 
-    internal class IocTestController : IController
+    public class IocTestController : IController
     {
         #region IController Members
 

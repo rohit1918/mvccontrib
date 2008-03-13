@@ -22,9 +22,9 @@ namespace MvcContrib.UnitTests.Castle
 			_mocks = new MockRepository();
 
 			_container = new WindsorContainer();
-			_container.AddComponent("SimpleController", typeof(WindsorSimpleController));
+			_container.AddComponent("simplecontroller", typeof(WindsorSimpleController));
 			_container.AddComponent("StubDependency", typeof(IDependency), typeof(StubDependency));
-			_container.AddComponent("DependencyController", typeof(WindsorDependencyController));
+			_container.AddComponent("dependencycontroller", typeof(WindsorDependencyController));
 		}
 
 		[Test]

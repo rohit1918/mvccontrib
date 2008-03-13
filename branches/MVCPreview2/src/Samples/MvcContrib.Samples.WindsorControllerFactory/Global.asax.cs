@@ -6,6 +6,7 @@ using Castle.Core;
 using Castle.Windsor;
 using MvcContrib.Samples.WindsorControllerFactory.Controllers;
 using MvcContrib.Samples.WindsorControllerFactory.Models;
+using MvcContrib.Castle;
 
 namespace MvcContrib.Samples.WindsorControllerFactory
 {
@@ -41,18 +42,9 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.WindsorControllerFactory));
 				
 				_container = new WindsorContainer();
-
-				_container.AddComponent<IService, Service>();
-
-				Type[] assemblyTypes = typeof(HomeController).Assembly.GetTypes();
-
-				foreach (Type type in assemblyTypes)
-				{
-					if(typeof(IController).IsAssignableFrom(type) )
-					{
-						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-					}
-				}
+				_container
+					.RegisterControllers(typeof(HomeController).Assembly)
+					.AddComponent<IService, Service>();
 			}
 		}
 
