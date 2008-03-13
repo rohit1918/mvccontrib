@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\castle\Castle.MicroKernel.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
@@ -52,10 +56,6 @@
     <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\objectbuilder\Microsoft.Practices.ObjectBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="MVCToolkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\mvctoolkit\MVCToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Mvp.Xml, Version=2.0.2158.1055, Culture=neutral, PublicKeyToken=dd92544dc05f5671, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,8 +93,17 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -110,6 +119,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BaseViewTester.cs" />
+    <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -140,6 +150,7 @@
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
     <Compile Include="IoC\WindsorDependencyResolverTester.cs" />
     <Compile Include="ConventionControllerTester.cs" />
+    <Compile Include="IoC\WindsorExtensionTester.cs" />
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
@@ -179,7 +190,7 @@
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
-    <Compile Include="TestHelper\TestController.cs" />
+    <Compile Include="TestHelper\TestHelperController.cs" />
     <Compile Include="UI\BlockRendererTester.cs" />
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
     <Compile Include="UI\HtmlAttributesTester.cs" />
@@ -202,7 +213,7 @@
     <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewTester.cs" />
     <Compile Include="XsltViewEngine\Helpers\ControllerTestBase.cs" />
-    <Compile Include="XsltViewEngine\Helpers\MvcMockHelpers.cs" />
+    <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="XsltViewEngine\Helpers\ViewTestBase.cs" />
     <Compile Include="XsltViewEngine\XmlResponseBuilderTest.cs" />
     <Compile Include="XsltViewEngine\XslDataSourceTest.cs" />

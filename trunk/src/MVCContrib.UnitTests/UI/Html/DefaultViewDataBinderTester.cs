@@ -46,12 +46,14 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void It_should_obtain_the_value_from_typed_ViewData()
 			{
 				ViewContext viewContext = new ViewContext(
-						_viewContext.HttpContext,
-						_viewContext.RouteData,
-						_viewContext.Controller,
-						new Person("Jeremy"),
-						_viewContext.TempData
-					);
+						_viewContext.HttpContext, 
+						_viewContext.RouteData, 
+						_viewContext.Controller, 
+						_viewContext.ViewName, 
+						_viewContext.MasterName, 
+						new Person("Jeremy"), 
+						_viewContext.TempData);
+
 
 				object instance = _binder.ExtractValue("Name", viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));
@@ -67,9 +69,10 @@ namespace MvcContrib.UnitTests.UI.Html
 						_viewContext.HttpContext,
 						_viewContext.RouteData,
 						_viewContext.Controller,
+						_viewContext.ViewName,
+						_viewContext.MasterName,
 						p,
-						_viewContext.TempData
-					);
+						_viewContext.TempData);
 
 				object instance = _binder.ExtractValue("NestedPerson.Name", viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));

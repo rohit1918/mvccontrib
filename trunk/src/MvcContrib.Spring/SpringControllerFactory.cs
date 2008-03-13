@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Spring.Context;
 using Spring.Objects.Factory;
 
@@ -11,31 +12,6 @@ namespace MvcContrib.Spring
 	public class SpringControllerFactory : IControllerFactory
 	{
 		private static IObjectFactory _objectFactory = null;
-
-		public IController CreateController(RequestContext context, Type controllerType)
-		{
-			if(controllerType == null)
-			{
-				throw new ArgumentException("controllerType parameter cannot be null.");
-			}
-
-			if(_objectFactory != null)
-			{
-				try
-				{
-					return (IController)_objectFactory.GetObject(controllerType.Name);
-				}
-				catch(Exception e)
-				{
-					throw new ArgumentException("Failed creating instance of: " +
-					                            controllerType.Name + " using spring.net object factory", e);
-				}
-			}
-			else
-			{
-				throw new ArgumentException("CreateController has been called before Configure.");
-			}
-		}
 
 		/// <summary>
 		/// Configures the controller factory to use the 
@@ -59,5 +35,38 @@ namespace MvcContrib.Spring
 		{
 			_objectFactory = ctx;
 		}
+
+	    public IController CreateController(RequestContext context, string controllerName)
+	    {
+			if(string.IsNullOrEmpty(controllerName))
+				throw new ArgumentNullException("controllerName");
+
+	    	controllerName = controllerName + "Controller";
+
+	    	if(_objectFactory == null)
+	    	{
+	    		throw new ArgumentException("CreateController has been called before Configure.");
+	    	}
+	    	
+			try
+	    	{
+	    		return (IController)_objectFactory.GetObject(controllerName);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		throw new InvalidOperationException("Failed creating instance of: " +
+	    		                            controllerName + " using spring.net object factory", e);
+	    	}
+	    }
+
+	    public void DisposeController(IController controller)
+	    {
+	    	IDisposable disposable = controller as IDisposable;
+
+			if(disposable != null)
+			{
+				disposable.Dispose();
+			}
+	    }
 	}
 }

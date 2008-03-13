@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,10 +18,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			IHttpContext httpContext = _mocks.DynamicMock<IHttpContext>();
-			IHttpResponse httpResponse = _mocks.DynamicMock<IHttpResponse>();
-			IHttpSessionState httpSessionState = _mocks.DynamicMock<IHttpSessionState>();
-			IHttpServerUtility httpServer = _mocks.DynamicMock<IHttpServerUtility>();
+			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
+			HttpServerUtilityBase httpServer = _mocks.DynamicMock<HttpServerUtilityBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpContext.Server).Return(httpServer);
@@ -30,7 +31,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
 			ViewContext viewContext =
-				new ViewContext(controllerContext, new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "index", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 
 			_htmlHelper = new NVelocityHtmlHelper(viewContext);
 		}
@@ -76,7 +77,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 			htmlAttributes["body"] = "body";
 			htmlAttributes["cc"] = "cc";
 
-			Assert.AreEqual(_htmlHelper.MailTo("emailAddress", "linkText", "subject", string.Empty, "cc", "body"), _htmlHelper.MailTo("emailAddress", "linkText", htmlAttributes));
+			string expected = _htmlHelper.Mailto("emailAddress", "linkText", "subject", "body", "cc", string.Empty, null);
+			string actual = _htmlHelper.Mailto("emailAddress", "linkText", htmlAttributes);
+
+			Assert.AreEqual(expected, actual);
 		}
 	}
 }

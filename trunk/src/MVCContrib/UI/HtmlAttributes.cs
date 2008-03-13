@@ -198,12 +198,12 @@ namespace MvcContrib.UI
 
 		protected void NullSet(string key, string value)
 		{
-			if (string.IsNullOrEmpty(value) && _attributes.ContainsKey(key))
+			if (value == null && _attributes.ContainsKey(key))
 			{
 				_estLength += (-1 * (key.Length + this[key].Length));
 				_attributes.Remove(key);
 			}
-			else if (!string.IsNullOrEmpty(value))
+			else if (value != null)
 			{
 				if (_attributes.ContainsKey(key))
 				{

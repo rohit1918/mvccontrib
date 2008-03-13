@@ -8,9 +8,12 @@ namespace MvcContrib.Castle
 		public static readonly Type[] HTML_EXTENSION_TYPES =
 			new Type[]
 				{
-					typeof(ButtonsAndLinkExtensions), typeof(CheckBoxExtension),
-					typeof(FormExtensions), typeof(ImageExtensions), typeof(LinkExtensions), typeof(RadioListExtension),
-					typeof(SelectExtension), typeof(TextInputExtensions), typeof(UserControlExtensions)
+					typeof(ButtonsAndLinkExtensions),
+                    //typeof(CheckBoxExtension),
+					typeof(FormExtensions), typeof(ImageExtensions), typeof(LinkExtensions), 
+                    //typeof(RadioListExtension),
+					//typeof(SelectExtension),
+                    typeof(TextInputExtensions), typeof(UserControlExtensions)
 				};
 
 		public HtmlExtensionDuck(ViewContext viewContext)

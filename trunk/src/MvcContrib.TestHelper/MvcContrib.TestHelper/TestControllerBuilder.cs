@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.DynamicProxy;
 using Rhino.Mocks;
 
@@ -55,7 +56,7 @@ namespace MvcContrib.TestHelper
         /// Gets the HttpContext that built controllers will have set internally when created with CreateController
         /// </summary>
         /// <value>The HTTPContext</value>
-        public IHttpContext HttpContext
+        public HttpContextBase HttpContext
         {
             get;
             protected set;
@@ -85,8 +86,8 @@ namespace MvcContrib.TestHelper
         /// Gets the Session that built controllers will have set internally when created with CreateController
         /// </summary>
         /// <value>The IHttpSessionState Session</value>
-        public IHttpSessionState Session
-        {
+        public HttpSessionStateBase Session
+        { 
             get;
             protected set;
         }
@@ -143,10 +144,10 @@ namespace MvcContrib.TestHelper
 
         protected void SetupHttpContext()
         {
-            HttpContext = _mocks.DynamicMock<IHttpContext>();
-            IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
-            IHttpResponse response = _mocks.DynamicMock<IHttpResponse>();
-            IHttpServerUtility server = _mocks.DynamicMock<IHttpServerUtility>();
+            HttpContext = _mocks.DynamicMock<HttpContextBase>();
+            HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+            HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+            HttpServerUtilityBase server = _mocks.DynamicMock<HttpServerUtilityBase>();
 
             SetupResult.For(HttpContext.Request).Return(request);
             SetupResult.For(HttpContext.Response).Return(response);

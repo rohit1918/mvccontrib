@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 using MvcContrib.ObjectBuilder;
 using NUnit.Framework;
@@ -21,15 +22,15 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks = new MockRepository();
 
 			_container = new DependencyContainer();
-			_container.RegisterTypeMapping<SimpleController, SimpleController>();
+			_container.RegisterTypeMapping<ObjectBuilderSimpleController, ObjectBuilderSimpleController>();
 			_container.RegisterTypeMapping<IDependency, StubDependency>();
-			_container.RegisterTypeMapping<DependencyController, DependencyController>();
+			_container.RegisterTypeMapping<ObjectBuilderDependencyController, ObjectBuilderDependencyController>();
 		}
 
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.PartialMock<HttpContextBase>();
 			MockApplication application = new MockApplication(_container);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -37,16 +38,16 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple"); //typeof(SimpleController));
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(ObjectBuilderSimpleController)));
 		}
 
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			MockApplication application = new MockApplication(_container);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -54,12 +55,12 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(DependencyController));
+			IController controller = factory.CreateController(context, "ObjectBuilderDependency"); //typeof(DependencyController));
 
 			Assert.That(controller, Is.Not.Null);
-			Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
+			Assert.That(controller, Is.AssignableFrom(typeof(ObjectBuilderDependencyController)));
 
-			DependencyController dependencyController = (DependencyController)controller;
+			ObjectBuilderDependencyController dependencyController = (ObjectBuilderDependencyController)controller;
 			Assert.That(dependencyController._dependency, Is.Not.Null);
 			Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 		}
@@ -68,7 +69,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenContainerIsNull()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			MockApplication application = new MockApplication(null);
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -76,14 +77,14 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenApplicationDoesNotImplementIContainerAccessor()
 		{
-			IHttpContext mockContext = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase mockContext = _mocks.DynamicMock<HttpContextBase>();
 			HttpApplication application = new HttpApplication();
 			Expect.Call(mockContext.ApplicationInstance).Return(application);
 			RequestContext context = new RequestContext(mockContext, new RouteData());
@@ -91,7 +92,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(context, typeof(SimpleController));
+			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
 
 		[Test]
@@ -100,7 +101,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
 
-			IController controller = factory.CreateController(null, typeof(SimpleController));
+			IController controller = factory.CreateController(null, "ObjectBuilderSimple");
 		}
 
 		public class MockApplication : HttpApplication, IDependencyContainerAccessor
@@ -118,7 +119,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			}
 		}
 
-		public class SimpleController : IController
+		public class ObjectBuilderSimpleController : IController
 		{
 			public void Execute(ControllerContext controllerContext)
 			{
@@ -126,11 +127,11 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			}
 		}
 
-		public class DependencyController : IController
+		public class ObjectBuilderDependencyController : IController
 		{
 			public IDependency _dependency;
 
-			public DependencyController(IDependency dependency)
+			public ObjectBuilderDependencyController(IDependency dependency)
 			{
 				_dependency = dependency;
 			}

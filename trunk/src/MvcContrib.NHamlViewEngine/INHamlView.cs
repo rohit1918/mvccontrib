@@ -6,8 +6,9 @@ namespace MvcContrib.NHamlViewEngine
 {
 	[AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	public interface INHamlView : IView
+	public interface INHamlView
 	{
 		void SetViewData(object viewData);
+		void RenderView(ViewContext context);
 	}
 }

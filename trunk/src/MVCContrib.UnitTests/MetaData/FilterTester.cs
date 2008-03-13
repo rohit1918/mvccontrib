@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 using MvcContrib.Castle;
 using MvcContrib.Filters;
@@ -31,8 +32,8 @@ namespace MvcContrib.UnitTests.MetaData
 			fakeRouteData.Values.Add("Action", "Index");
 			fakeRouteData.Values.Add("Controller", "Home");
 
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
 
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(request.RequestType).Return(requestType);
@@ -44,7 +45,6 @@ namespace MvcContrib.UnitTests.MetaData
 			controller.ControllerContext = controllerContext;
 		}
 
-
 		[Test]
 		public void ControllerDescriptorShouldFindFilters()
 		{
@@ -53,51 +53,9 @@ namespace MvcContrib.UnitTests.MetaData
 			ActionMetaData action = metaData.GetAction("MultipleFilters");
 
 			Assert.AreEqual(3, action.Filters.Count);
-			Assert.AreEqual(1, action.Filters[0].ExecutionOrder);
-			Assert.AreEqual(50, action.Filters[1].ExecutionOrder);
-			Assert.AreEqual(100, action.Filters[2].ExecutionOrder);
-		}
-
-		[Test]
-		public void ActionShouldBeInvokedIfFilterReturnsTrue()
-		{
-			bool result = _controller.DoInvokeAction("SuccessfulFilter");
-
-			Assert.IsTrue(result);
-			Assert.IsTrue(_controller.SuccessfulFilterCalled);
-		}
-
-		[Test]
-		public void ActionShouldNotBeInvokedIfFilterReturnsFalse()
-		{
-			bool result = _controller.DoInvokeAction("UnsuccessfulFilter");
-
-			Assert.IsFalse(result);
-			Assert.IsFalse(_controller.UnSuccessfulFilterCalled);
-		}
-
-		[Test]
-		public void FilterThatImplementsIFilterAttributeAwareShouldReceiveAttribute()
-		{
-			bool result = _controller.DoInvokeAction("AttributeAwareFilter");
-
-			Assert.IsTrue(result);
-			Assert.IsTrue(_controller.AttributeAwareFilterCalled);
-		}
-
-		[Test, ExpectedException(typeof(InvalidOperationException))]
-		public void InvalidFilterShouldThrow()
-		{
-			_controller.DoInvokeAction("InvalidFilter");
-		}
-
-		[Test]
-		public void ActionShouldNotBeInvokedIfOneFilterReturnsTrueAndAnotherReturnsFalse()
-		{
-			bool result = _controller.DoInvokeAction("MultipleFilters");
-
-			Assert.IsFalse(result);
-			Assert.IsFalse(_controller.MultipleFiltersCalled);
+			Assert.AreEqual(-1, action.Filters[0].Order);
+			Assert.AreEqual(1, action.Filters[1].Order);
+			Assert.AreEqual(100, action.Filters[2].Order);
 		}
 
 		[Test, ExpectedException(typeof(InvalidOperationException))]
@@ -119,84 +77,59 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void ShouldCreateUsingDependencyResolver()
+		public void ActionShouldNotBeInvokedIfOneFilterReturnsTrueAndAnotherReturnsFalse()
 		{
-			IWindsorContainer container = new WindsorContainer();
-			container.AddComponent(typeof(DependentFilter).Name, typeof(DependentFilter));
-			container.AddComponent(typeof(IDependency).Name, typeof(IDependency), typeof(SimpleDependency));
-			container.AddComponent(typeof(FilterReturnsTrue).Name, typeof(FilterReturnsTrue));
-			container.AddComponent(typeof(FilterReturnsFalse).Name, typeof(FilterReturnsFalse));
-			container.AddComponent(typeof(AttributeAwareFilter).Name, typeof(AttributeAwareFilter));
-			container.AddComponent(typeof(PostOnlyFilterImpl).Name, typeof(PostOnlyFilterImpl));
+			SetupHttpContext(_controller, "GET");
 
-			DependencyResolver.InitializeWith(new WindsorDependencyResolver(container));
+			bool result = _controller.DoInvokeAction("MultipleFilters");
 
-			bool result = _controller.DoInvokeAction("DependentFilter");
-
-			Assert.IsTrue(result);
-			Assert.IsTrue(_controller.DependentFilterCalled);
+			Assert.IsFalse(result);
+			Assert.IsFalse(_controller.MultipleFiltersCalled);
 		}
 
 		[Test]
-		public void Should_Not_Throw_If_Not_Registered_With_IoC()
+		public void ActionShouldBeInvokedIfFilterReturnsTrue()
 		{
-			IWindsorContainer container = new WindsorContainer();
-			DependencyResolver.InitializeWith(new WindsorDependencyResolver(container));
-			_controller.DoInvokeAction("SuccessfulFilter");
+			SetupHttpContext(_controller, "GET");
+
+			bool result = _controller.DoInvokeAction("SuccessfulFilter");
+
+			Assert.IsTrue(result);
+			Assert.IsTrue(_controller.SuccessfulFilterCalled);
 		}
 
-		class DependentFilter : IFilter
+		[Test]
+		public void ActionShouldNotBeInvokedIfFilterReturnsFalse()
 		{
-			private readonly IDependency _dependency;
+			SetupHttpContext(_controller, "GET");
 
-			public DependentFilter(IDependency dependency)
-			{
-				_dependency = dependency;
-			}
+			bool result = _controller.DoInvokeAction("UnsuccessfulFilter");
 
-			public bool Execute(ControllerContext context, ActionMetaData action)
-			{
-				return _dependency != null && _dependency is SimpleDependency;
-			}
+			Assert.IsFalse(result);
+			Assert.IsFalse(_controller.UnSuccessfulFilterCalled);
 		}
 
-		class FilterReturnsTrue : IFilter
+		class FilterReturnsTrue : ActionFilterAttribute
 		{
-			public bool Execute(ControllerContext context, ActionMetaData action)
+			public override void OnActionExecuting(FilterExecutingContext filterContext)
 			{
-				return true;
-			}
-		}
-
-		class FilterReturnsFalse : IFilter
-		{
-			public bool Execute(ControllerContext context, ActionMetaData action)
-			{
-				return false;
+				filterContext.Cancel = false;
 			}
 		}
 
-		class AttributeAwareFilter : IFilter, IFilterAttributeAware
+		class FilterReturnsFalse : ActionFilterAttribute
 		{
-			private FilterAttribute _attribute;
-
-			public bool Execute(ControllerContext context, ActionMetaData action)
+			public override void OnActionExecuting(FilterExecutingContext filterContext)
 			{
-				return _attribute != null;
-			}
-
-			public FilterAttribute Attribute
-			{
-				set { _attribute = value; }
+				filterContext.Cancel = true;
 			}
 		}
 
-		[Filter(typeof(FilterReturnsTrue))]
+		[FilterReturnsTrue]
 		class FilteredController : ConventionController
 		{
 			public bool SuccessfulFilterCalled = false;
 			public bool UnSuccessfulFilterCalled = false;
-			public bool AttributeAwareFilterCalled = false;
 			public bool MultipleFiltersCalled = false;
 			public bool PostOnlyCalled = false;
 			public bool DependentFilterCalled = false;
@@ -206,26 +139,20 @@ namespace MvcContrib.UnitTests.MetaData
 				return InvokeAction(action);
 			}
 
-			[Filter(typeof(FilterReturnsTrue))]
+			[FilterReturnsTrue]
 			public void SuccessfulFilter()
 			{
 				SuccessfulFilterCalled = true;
 			}
 
-			[Filter(typeof(FilterReturnsFalse))]
+			[FilterReturnsFalse]
 			public void UnsuccessfulFilter()
 			{
 				UnSuccessfulFilterCalled = true;
 			}
 
-			[Filter(typeof(AttributeAwareFilter))]
-			public void AttributeAwareFilter()
-			{
-				AttributeAwareFilterCalled = true;
-			}
-
-			[Filter(typeof(FilterReturnsTrue), ExecutionOrder = 1)]
-			[Filter(typeof(FilterReturnsFalse), ExecutionOrder = 100)]
+			[FilterReturnsTrue(Order = 1)]
+			[FilterReturnsFalse(Order = 100)]
 			public void MultipleFilters()
 			{
 				MultipleFiltersCalled = true;
@@ -235,17 +162,6 @@ namespace MvcContrib.UnitTests.MetaData
 			public void PostOnly()
 			{
 				PostOnlyCalled = true;
-			}
-
-			[Filter(typeof(string))]
-			public void InvalidFilter()
-			{
-			}
-
-			[Filter(typeof(DependentFilter))]
-			public void DependentFilter()
-			{
-				DependentFilterCalled = true;
 			}
 		}
 	}

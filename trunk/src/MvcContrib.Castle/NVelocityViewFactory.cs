@@ -10,7 +10,7 @@ using NVelocity.Runtime;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityViewFactory : IViewFactory
+	public class NVelocityViewFactory : IViewEngine
 	{
 		private static readonly IDictionary DEFAULT_PROPERTIES = new Hashtable();
 		private readonly VelocityEngine _engine;
@@ -42,17 +42,6 @@ namespace MvcContrib.Castle
 
 			_engine = new VelocityEngine();
 			_engine.Init(props);
-		}
-
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
-		{
-			string controllerName = (string)controllerContext.RouteData.Values["controller"];
-			string controllerFolder = controllerName;
-
-			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewName);
-			Template masterTemplate = ResolveMasterTemplate(masterName);
-
-			return new NVelocityView(viewTemplate, masterTemplate, controllerContext, viewData);
 		}
 
 		private Template ResolveMasterTemplate(string masterName)
@@ -96,5 +85,23 @@ namespace MvcContrib.Castle
 
 			return _engine.GetTemplate(targetView);
 		}
+
+		public void RenderView(ViewContext viewContext)
+		{
+			CreateView(viewContext).RenderView();
+		}
+
+		public NVelocityView CreateView(ViewContext viewContext)
+	    {
+			string controllerName = (string)viewContext.RouteData.Values["controller"];
+			string controllerFolder = controllerName;
+
+			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewContext.ViewName);
+			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
+
+	    	NVelocityView view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
+
+			return view;
+	    }
 	}
 }

@@ -1,5 +1,6 @@
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,11 +18,11 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_mocks = new MockRepository();
 
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(request["test"]).Return("testValue");
 			SetupResult.For(request["keyWithNullValue"]).Return(null);
 
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
 			SetupResult.For(context.Request).Return(request);
 
 			RouteData routeData = new RouteData();

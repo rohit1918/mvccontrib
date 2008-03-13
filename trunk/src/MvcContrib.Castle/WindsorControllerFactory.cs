@@ -1,23 +1,13 @@
 using System;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 
 namespace MvcContrib.ControllerFactories
 {
 	public class WindsorControllerFactory : IControllerFactory
 	{
-		IController IControllerFactory.CreateController(RequestContext context, Type controllerType)
-		{
-			return CreateControllerInternal(context, controllerType);
-		}
-
-		protected virtual IController CreateControllerInternal(RequestContext context, Type controllerType)
-		{
-			IWindsorContainer container = GetContainer(context);
-
-			return (IController)container.Resolve(controllerType);
-		}
-
 		protected virtual IWindsorContainer GetContainer(RequestContext context)
 		{
 			if( context == null )
@@ -40,5 +30,23 @@ namespace MvcContrib.ControllerFactories
 
 			return container;
 		}
+
+	    public IController CreateController(RequestContext context, string controllerName)
+	    {
+	    	controllerName = controllerName.ToLower() + "controller"; 
+
+	    	IWindsorContainer container = GetContainer(context);
+	    	return (IController)container.Resolve(controllerName);
+	    }
+
+	    public void DisposeController(IController controller)
+	    {
+	    	IDisposable disposable = controller as IDisposable;
+
+			if(disposable != null)
+			{
+				disposable.Dispose();
+			}
+	    }
 	}
 }

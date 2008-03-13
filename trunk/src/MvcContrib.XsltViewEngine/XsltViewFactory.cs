@@ -4,8 +4,7 @@ using MvcContrib.XsltViewEngine;
 
 namespace MvcContrib.ViewFactories
 {
-	public class XsltViewFactory : IViewFactory
-	{
+	public class XsltViewFactory : IViewEngine	{
 		private readonly IViewSourceLoader _viewSourceLoader;
 
 		public XsltViewFactory()
@@ -20,22 +19,19 @@ namespace MvcContrib.ViewFactories
 			_viewSourceLoader = viewSourceLoader;
 		}
 
-		#region IViewFactory Members
-
-		public IView CreateView(ControllerContext controllerContext, string viewName, string masterName, object viewData)
-		{
+	    public void RenderView(ViewContext viewContext)
+	    {
 			//First check if the data is valid then start working.
-			if(!(viewData is XsltViewData))
+			if (!(viewContext.ViewData is XsltViewData))
 				throw new ArgumentException("the view data object should be of type XsltViewData");
 
 
-			string controllerName = (string)controllerContext.RouteData.Values["controller"];
+			string controllerName = (string)viewContext.RouteData.Values["controller"];
 
-			XsltTemplate viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewName);
+			XsltTemplate viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
 
-			return new XsltView(viewTemplate, viewData as XsltViewData, string.Empty, controllerContext.HttpContext);
-		}
-
-		#endregion
+			var view = new XsltView(viewTemplate, viewContext.ViewData as XsltViewData, string.Empty, viewContext.HttpContext);
+	    	view.RenderView(viewContext);
+	    }
 	}
 }

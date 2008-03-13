@@ -1,7 +1,5 @@
-using System;
-using System.IO;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Xml;
 using MvcContrib.UnitTests.XsltViewEngine.Helpers;
 using MvcContrib.ViewFactories;
@@ -17,14 +15,13 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	{
 		private const string controller = "MyController";
 		private const string view = "MyView";
-		private static readonly string VIEW_ROOT_DIRECTORY = Path.Combine(Environment.CurrentDirectory, "../../XsltViewEngine/Data/Views");
+
 		private IViewSourceLoader _viewSourceLoader;
 
-		[SetUp]
-		public void SetUp()
+		public override void SetUp()
 		{
+			base.SetUp();
 			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
-			mockRepository.BackToRecord(_viewSourceLoader);
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
@@ -52,29 +49,15 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message", "controlId4"));
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message"));
 
-
 			RouteData routeData = new RouteData();
 			routeData.Values["controller"] = controller;
-			Request.PhysicalApplicationPath = "http://testing/mycontroller/test";
-			Identity.Name = "";
-			Version version = new Version(1, 1);
-			Browser.EcmaScriptVersion = version;
-			Browser.Browser = "Firefox 2.0.11";
-			Request.UserHostName = "::1";
-			Request.RequestType = Request.HttpMethod = "GET";
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
-			Request.Files = Activator.CreateInstance(typeof(HttpFileCollection), true) as HttpFileCollection;
 
-			ControllerContext controllerContext = new ControllerContext(HttpContext, routeData, new Controller());
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, vData,
+			                                          new TempDataDictionary(HttpContext));
 
-			IViewFactory viewFactory = new XsltViewFactory(_viewSourceLoader);
-
-			IView viewObj = viewFactory.CreateView(controllerContext, view, string.Empty, vData);
-
-			Assert.IsNotNull(viewObj);
-			Assert.IsTrue(viewObj is XsltView);
-
-			viewObj.RenderView(new ViewContext(controllerContext, vData, new TempDataDictionary(HttpContext)));
+			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
+			viewFactory.RenderView(viewContext);
 
 			string actual = ResponseOutput.ToString().Replace("\r\n", "");
 

@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.SimplyRestful;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -79,8 +80,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 	public abstract class BaseRouteHandlerTestFixture
 	{
 		protected MockRepository mocks;
-		protected IHttpContext httpContext;
-		protected IHttpRequest httpRequest;
+		protected HttpContextBase httpContext;
+		protected HttpRequestBase httpRequest;
 		protected RouteData routeData;
 		protected RequestContext requestContext;
 		protected NameValueCollection form;
@@ -88,8 +89,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		protected virtual void GivenSetupContext()
 		{
 			mocks = new MockRepository();
-			httpContext = mocks.DynamicMock<IHttpContext>();
-			httpRequest = mocks.DynamicMock<IHttpRequest>();
+			httpContext = mocks.DynamicMock<HttpContextBase>();
+			httpRequest = mocks.DynamicMock<HttpRequestBase>();
 
 			routeData = new RouteData();
 			routeData.Values.Add("controller", "testcontroller");

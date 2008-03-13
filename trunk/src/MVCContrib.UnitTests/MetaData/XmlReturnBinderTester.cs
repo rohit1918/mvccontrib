@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Attributes;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -26,9 +27,9 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_mocks = new MockRepository();
 
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
-			IHttpResponse response = _mocks.DynamicMock<IHttpResponse>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
 			TextWriter writer = _mocks.DynamicMock<TextWriter>();
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(context.Response).Return(response);

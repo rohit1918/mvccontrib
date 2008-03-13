@@ -1,5 +1,6 @@
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.SimplyRestful;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -15,7 +16,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		{
 			RouteCollection routeCollection = new RouteCollection();
 			SimplyRestfulRouteHandler.BuildRoutes(routeCollection);
-			Assert.That(routeCollection.Count, Is.EqualTo(8));
+			Assert.That(routeCollection.Count, Is.EqualTo(7));
 		}
 
 		[Test]
@@ -48,7 +49,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 			SimplyRestfulRouteHandler.BuildRoutes(routeCollection, null);
 			foreach(Route route in routeCollection)
 			{
-				Assert.That(route.Url, Text.StartsWith("[controller]"));
+				Assert.That(route.Url, Text.StartsWith("{controller}"));
 			}
 		}
 
@@ -56,9 +57,9 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void EnsureActionResolver_WhenResolverIsNull_ResolvesAndUsesOneFromTheContainer()
 		{
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.CreateMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.CreateMock<HttpContextBase>();
 			IRestfulActionResolver resolver = mocks.CreateMock<IRestfulActionResolver>();
-			IHttpRequest httpRequest = mocks.DynamicMock<IHttpRequest>();
+			HttpRequestBase httpRequest = mocks.DynamicMock<HttpRequestBase>();
 
 			IRouteHandler handler = new SimplyRestfulRouteHandler();
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
@@ -82,13 +83,13 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void EnsureActionResolver_WhenResolverIsNullAndCannotGetOneFromTheContainer_UsesRestfulActionResolver()
 		{
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.DynamicMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
 			IRouteHandler handler = new SimplyRestfulRouteHandler();
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
 
 			using(mocks.Record())
 			{
-				SetupResult.For(httpContext.Request).Return(mocks.DynamicMock<IHttpRequest>());
+				SetupResult.For(httpContext.Request).Return(mocks.DynamicMock<HttpRequestBase>());
 			}
 			using(mocks.Playback())
 			{
@@ -100,7 +101,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void EnsureActionResolver_WhenResolverIsUsedInTheConstructor_UsesRestfulActionResolver()
 		{
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.DynamicMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
 			IRestfulActionResolver resolver = mocks.CreateMock<IRestfulActionResolver>();
 			IRouteHandler handler = new SimplyRestfulRouteHandler(resolver);
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
@@ -119,7 +120,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void GetHttpHandler_WithARestfulAction_SetsRouteDataAction()
 		{
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.DynamicMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
 			IRestfulActionResolver resolver = mocks.DynamicMock<IRestfulActionResolver>();
 			IRouteHandler handler = new SimplyRestfulRouteHandler(resolver);
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
@@ -139,7 +140,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void GetHttpHandler_WithoutARestfulAction_DoesNotSetRouteDataAction()
 		{
 			MockRepository mocks = new MockRepository();
-			IHttpContext httpContext = mocks.DynamicMock<IHttpContext>();
+			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
 			IRestfulActionResolver resolver = mocks.DynamicMock<IRestfulActionResolver>();
 
 			IRouteHandler handler = new SimplyRestfulRouteHandler(resolver);
