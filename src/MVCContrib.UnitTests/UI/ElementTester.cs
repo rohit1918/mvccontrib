@@ -169,7 +169,7 @@ namespace MvcContrib.UnitTests.UI
             {
                 Element el = new Element();
                 el.Id = "goose";
-                el["checked"] = "";
+                el["checked"] = null;
                 Assert.That(el.ToString(), Text.DoesNotContain("checked"));
             }
 
@@ -241,6 +241,39 @@ namespace MvcContrib.UnitTests.UI
 				element["Gizmodo"] = "A cool Website";
 				Assert.That(element.ToString(), Is.EqualTo("<div id=\"MyID\" class=\"MyClass\" Style=\"MyStyle\" onclick=\"MyOnClick\" Gizmodo=\"A cool Website\">This is Text</div>"));
 			}
+
+			[Test]
+			public void When_value_is_empty_string_should_still_be_rendered()
+			{
+				Element element = new Element("input", new Hash(value => ""));
+				string actual = element.ToString();
+				string expected = "<input value=\"\"/>";
+				Assert.That(actual, Is.EqualTo(expected));
+				
+			}
+
+			[Test]
+			public void When_id_has_period_should_be_replaced_with_hyphen()
+			{
+				Element element = new Element();
+				element.Id = "foo.bar";
+				string actual = element.ToString();
+				string expected = "<div id=\"foo-bar\"/>";
+				Assert.That(actual, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void When_label_element_then_for_attribute_should_have_periods_replaced_with_hyphens()
+			{
+				Element element = new Element("label");
+				element["for"] = "foo.bar";
+				element.InnerText = "Test";
+				string actual = element.ToString();
+				string expected = "<label for=\"foo-bar\">Test</label>";
+				Assert.That(actual, Is.EqualTo(expected));
+				
+			}
+
 
 		}
 	}

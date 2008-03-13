@@ -2,6 +2,7 @@
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.NHamlViewEngine;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -21,9 +22,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_output = new StringWriter();
 
 			_mocks = new MockRepository();
-			IHttpContext httpContext = _mocks.DynamicMock<IHttpContext>();
-			IHttpResponse httpResponse = _mocks.DynamicMock<IHttpResponse>();
-			IHttpSessionState httpSessionState = _mocks.DynamicMock<IHttpSessionState>();
+			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
@@ -34,7 +35,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_mocks.ReplayAll();
 
 			_viewContext =
-				new ViewContext(controllerContext, new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "Index", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
 		}
 
 		[Test]

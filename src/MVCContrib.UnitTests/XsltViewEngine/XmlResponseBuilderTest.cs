@@ -11,23 +11,25 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	[TestFixture, Category("XsltViewEngine")]
 	public class XmlResponseBuilderTest : ViewTestBase
 	{
-		private void BuildGetRequest()
+		private void BuildRequest(bool usePost)
 		{
-			Request.PhysicalApplicationPath = "http://testing/mycontroller/test";
-			Identity.Name = "";
-			Version version = new Version(1, 1);
-			Browser.EcmaScriptVersion = version;
-			Browser.Browser = "Firefox 2.0.11";
-			Request.UserHostName = "::1";
-			Request.RequestType = Request.HttpMethod = "GET";
-			Request.QueryString["myQueryString"] = "myQueryStringValue";
+			if(usePost)
+			{
+				HttpMethodToReturn = "POST";
+				Request.Form["myFormVariable"] = "myFormVariableValue";
+			}
+			else
+			{
+				HttpMethodToReturn = "GET";
+				Request.QueryString["myQueryString"] = "myQueryStringValue";
+			}
 		}
 
 		[Test]
 		public void AppendDataSourceToResponse_Via_XmlNode()
 		{
 			string xml = "<MyEntities><MyEntity><ID>1</ID><Name>MyEntityName</Name></MyEntity></MyEntities>";
-			BuildGetRequest();
+			BuildRequest(false);
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithStringXmlDataSource.xml");
 
@@ -43,7 +45,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void AppendDataSourceToResponse_Via_XmlReader()
 		{
 			string xml = "<MyEntities><MyEntity><ID>1</ID><Name>MyEntityName</Name></MyEntity></MyEntities>";
-			BuildGetRequest();
+			BuildRequest(false);
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithStringXmlDataSource.xml");
 
@@ -58,7 +60,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void AppendPage_For_A_GetRequest_WithPageVars()
 		{
-			BuildGetRequest();
+			BuildRequest(false);
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithPageVars.xml");
 
@@ -101,7 +103,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void InitMessageStructure_For_A_GetRequest()
 		{
-			BuildGetRequest();
+			BuildRequest(false);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessage.xml");
 
 			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
@@ -114,7 +116,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void InitMessageStructure_For_A_GetRequest_WithMessages()
 		{
-			BuildGetRequest();
+			BuildRequest(false);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithMessages.xml");
 
 			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
@@ -129,15 +131,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void InitMessageStructure_For_A_PostRequest()
 		{
-			Request.PhysicalApplicationPath = "http://testing/mycontroller/test";
-			Identity.Name = "";
-			Version version = new Version(1, 1);
-			Browser.EcmaScriptVersion = version;
-			Browser.Browser = "Firefox 2.0.11";
-			Request.UserHostName = "::1";
-			Request.RequestType = Request.HttpMethod = "POST";
-			Request.Form["myFormVariable"] = "myFormVariableValue";
-
+			BuildRequest(true);
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderPostMessage.xml");
 
@@ -151,16 +145,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void InitMessageStructure_For_A_PostRequest_WithALowEcmaScriptVersion()
 		{
-			Request.PhysicalApplicationPath = "http://testing/mycontroller/test";
-			Identity.Name = "";
-			Version version = new Version(0, 4);
-			Browser.EcmaScriptVersion = version;
-			Browser.Browser = "Firefox 2.0.11";
-			Request.UserHostName = "::1";
-			Request.RequestType = Request.HttpMethod = "POST";
-			Request.Form["myFormVariable"] = "myFormVariableValue";
-
-
+			BuildRequest(true);
+			EcmaScriptVersionToReturn = new Version(0, 4);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderPostMessageNoJavascript.xml");
 
 			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
@@ -173,11 +159,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void InstantiateTest()
 		{
-			Request.PhysicalApplicationPath = Environment.CurrentDirectory.Replace("\\", "/");
+//			Request.SetPhysicalApplicationPath(Environment.CurrentDirectory.Replace("\\", "/"));
 			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			Assert.IsNotNull(responseBuilder);
-			Assert.AreEqual(Environment.CurrentDirectory.Replace("\\", "/"), responseBuilder.AppPath);
+			Assert.AreEqual("http://testing/mycontroller/test", responseBuilder.AppPath);
 		}
 	}
 }

@@ -215,6 +215,7 @@ namespace MvcContrib.UI.Html
 		{
 			string firstOption = ObtainAndRemove(attributes, "firstOption");
 			string firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
+			string selectedValue = ObtainAndRemove(attributes, "selectedValue");
 
 			Select select = new Select(attributes);
 			select.Name = name;
@@ -222,6 +223,7 @@ namespace MvcContrib.UI.Html
 			select.ValueField = valueField;
 			select.FirstOption = firstOption;
 			select.FirstOptionValue = firstOptionValue;
+			select.SelectedValue = selectedValue;
 			return Select(dataSource, select);
 		}
 
@@ -244,25 +246,39 @@ namespace MvcContrib.UI.Html
 			return options.ToString();
 		}
 
-		public virtual string RadioField(string name)
+		public virtual string RadioField(string name, object value)
 		{
-			return RadioField(name, Hash.Empty);
+			return RadioField(name, value, Hash.Empty);
 		}
 
-		public virtual string RadioField(string name, IDictionary attributes)
+		public virtual string RadioField(string name, object value, IDictionary attributes)
 		{
 			RadioField options = new RadioField(attributes);
 			options.Name = name;
+			options.Value = value;
 			return RadioField(options);
 		}
 
 		public virtual string RadioField(RadioField options)
 		{
-			if (string.IsNullOrEmpty(options.Id))
-				options.Id = options.Name;
+			if(options.Value != null)
+			{
+				object dataValue = ObtainFromViewData(options.Name);
+				if(dataValue != null && dataValue.ToString().Equals(options.Value))
+				{
+					options.Checked = true;
+				}
+			}
 
-			if (options.Value == null)
-				options.Value = ObtainFromViewData(options.Name);
+			if (string.IsNullOrEmpty(options.Id))
+			{
+				string id = options.Name;
+				if(options.Value != null)
+				{
+					id += "-" + options.Value.ToString().Replace(" ", string.Empty);
+				}
+				options.Id = id;
+			}
 
 			return options.ToString();
 		}
@@ -357,6 +373,26 @@ namespace MvcContrib.UI.Html
 				}
 			}
 
+		}
+
+		public void For<T>(string viewDataKey, string url, IDictionary attributes, Action<SmartForm<T>> block)
+		{
+			object raw = ObtainFromViewData(viewDataKey);
+
+			T item;
+
+			if(raw == null)
+			{
+				item = default(T);
+			}
+			else
+			{
+				//TODO: Introduce type checks.
+				item = (T)raw;
+			}
+
+			SmartForm<T> form = new SmartForm<T>(viewDataKey, url, block, this, item, attributes);
+			ViewContext.HttpContext.Response.Output.Write(form.ToString());
 		}
 
 		public void For<T>(T dataItem, string url, Action<SmartForm<T>> block)

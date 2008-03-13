@@ -84,7 +84,7 @@ namespace MvcContrib.UI
 				{
 					//format " [attribute]="[value encoded]""
 					sb.Append(" ").Append(attrib.Key).Append("=\"");
-					if (attrib.Key == "id")
+					if (attrib.Key == "id" || ( _element.Tag == "label" && attrib.Key == "for"))
 						sb.Append(EncodeAttribute(attrib.Value.Replace('.', '-'))).Append("\"");
 					else
 						sb.Append(EncodeAttribute(attrib.Value)).Append("\"");
@@ -96,7 +96,7 @@ namespace MvcContrib.UI
 				string val = string.Empty;
 				foreach (KeyValuePair<string, string> attrib in attribs)
 				{
-					if (attrib.Key == "id")
+					if (attrib.Key == "id" || (_element.Tag == "label" && attrib.Key == "for"))
 						val += string.Format(" {0}=\"{1}\"", attrib.Key, EncodeAttribute(attrib.Value.Replace('.', '-')));
 					else
 						val += string.Format(" {0}=\"{1}\"", attrib.Key, EncodeAttribute(attrib.Value));

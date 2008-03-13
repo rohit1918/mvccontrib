@@ -1,6 +1,7 @@
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Attributes;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -24,11 +25,11 @@ namespace MvcContrib.UnitTests.MetaData
 			NameValueCollection form = new NameValueCollection();
 			form["ids[1]"] = "2";
 
-			IHttpRequest request = _mocks.DynamicMock<IHttpRequest>();
+			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(request.QueryString).Return(queryString);
 			SetupResult.For(request.Form).Return(form);
 
-			IHttpContext context = _mocks.DynamicMock<IHttpContext>();
+			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
 			SetupResult.For(context.Request).Return(request);
 
 			RequestContext requestContext = new RequestContext(context, new RouteData());

@@ -17,7 +17,7 @@ namespace MvcContrib.TestHelper.Test
         {
             TestControllerBuilder builder = new TestControllerBuilder();
             builder.Session["Variable"] = "Value";
-            Controller c = builder.CreateController<TestController>();
+            Controller c = builder.CreateController<TestHelperController>();
             Assert.AreEqual("Value", c.HttpContext.Session["Variable"]);
         }
 

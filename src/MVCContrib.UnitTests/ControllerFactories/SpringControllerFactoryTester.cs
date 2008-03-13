@@ -2,7 +2,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Spring;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -19,6 +21,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[TestFixture]
 		public class WhenConfigureNotCalled
 		{
+            IControllerFactory factory;
 			[SetUp]
 			public void Setup()
 			{
@@ -29,18 +32,18 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Type springFactoryType = typeof(SpringControllerFactory);
 				FieldInfo factoryField = springFactoryType.GetField("_objectFactory", BindingFlags.NonPublic | BindingFlags.Static);
 
-				IControllerFactory factory = new SpringControllerFactory();
-				factoryField.SetValue(factory, null);
+				
+			    factory = new SpringControllerFactory();
+			    factoryField.SetValue(factory, null);
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void ShouldThrowExceptionForNoConfig()
 			{
-				IControllerFactory factory = new SpringControllerFactory();
-
-				IController controller = factory.CreateController(null,
-				                                                  Type.GetType(
-				                                                  	"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
+				
+				IController controller = factory.CreateController(null, "Simple"); 
+                //                                                  Type.GetType(
+                //                                                    "MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 			}
 		}
 
@@ -56,8 +59,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				                   "  <objects xmlns=\"http://www.springframework.net\" " +
 				                   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 				                   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
-				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
-				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
+				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SpringSimpleController\"/> " +
+				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SpringDependencyController\" > " +
 				                   "      <constructor-arg> " +
 				                   "        <object type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
 				                   "      </constructor-arg> " +
@@ -73,41 +76,41 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnTheController()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null, typeof(SimpleController));
+				IController controller = factory.CreateController(null,"Simple");
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller, Is.AssignableFrom(typeof(SimpleController)));
+				Assert.That(controller, Is.AssignableFrom(typeof(SpringSimpleController)));
 			}
 
 			[Test]
 			public void ShouldReturnControllerWithDependencies()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null, typeof(DependencyController));
+				IController controller = factory.CreateController(null, "Dependency");
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller, Is.AssignableFrom(typeof(DependencyController)));
+				Assert.That(controller, Is.AssignableFrom(typeof(SpringDependencyController)));
 
-				DependencyController dependencyController = (DependencyController)controller;
+				SpringDependencyController dependencyController = (SpringDependencyController)controller;
 				Assert.That(dependencyController._dependency, Is.Not.Null);
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
 
-			[Test, ExpectedException(typeof(ArgumentException))]
+			[Test, ExpectedException(typeof(InvalidOperationException))]
 			public void ShouldThrowExceptionForInvalidController()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null, typeof(NonValidController));
+			    IController controller = factory.CreateController(null, "NonValid");//typeof(NonValidController));
 			}
 
-			[Test, ExpectedException(typeof(ArgumentException))]
-			public void ShouldThrowExceptionForNullControllerType()
+            [Test, ExpectedException(typeof(ArgumentNullException))]
+			public void ShouldThrowExceptionForNullControllerName()
 			{
 				IControllerFactory factory = new SpringControllerFactory();
 				IController controller = factory.CreateController(null, null);
 			}
 
-			public class SimpleController : IController
+			public class SpringSimpleController : IController
 			{
 				public void Execute(ControllerContext controllerContext)
 				{
@@ -115,11 +118,11 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				}
 			}
 
-			public class DependencyController : IController
+			public class SpringDependencyController : IController
 			{
 				public IDependency _dependency;
 
-				public DependencyController(IDependency dependency)
+				public SpringDependencyController(IDependency dependency)
 				{
 					_dependency = dependency;
 				}
@@ -157,8 +160,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				                   "  <objects xmlns=\"http://www.springframework.net\" " +
 				                   "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
 				                   "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
-				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController\"/> " +
-				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+DependencyController\" > " +
+				                   "    <object id=\"SimpleController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SpringSimpleController\"/> " +
+				                   "    <object id=\"DependencyController\" singleton=\"true\" type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SpringDependencyController\" > " +
 				                   "      <constructor-arg> " +
 				                   "        <object type=\"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+StubDependency\" /> " +
 				                   "      </constructor-arg> " +
@@ -172,15 +175,39 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				ctx.Refresh();
 				SpringControllerFactory.Configure(ctx as IApplicationContext);
 				IControllerFactory factory = new SpringControllerFactory();
-				IController controller = factory.CreateController(null,
-				                                                  Type.GetType(
-				                                                  	"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
+			    IController controller = factory.CreateController(null, "Simple");
+				                                                  //Type.GetType("MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
 
 				Assert.That(controller, Is.Not.Null);
-				Assert.That(controller,
-				            Is.AssignableFrom(
-				            	Type.GetType(
-				            		"MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController")));
+				Assert.That(controller, Is.AssignableFrom(typeof(WhenAValidControllerTypeIsPassed.SpringSimpleController)));
+			}
+		}
+
+		[TestFixture]
+		public class WhenDisposeControllerInvoked
+		{
+			[Test]
+			public void ControllerShouldBeDisposed()
+			{
+				SpringControllerFactory factory = new SpringControllerFactory();
+				SpringDisposableController controller = new SpringDisposableController();
+				factory.DisposeController(controller);
+				Assert.That(controller.IsDisposed);
+			
+			}
+
+			private class SpringDisposableController : IController, IDisposable
+			{
+				public bool IsDisposed = false;
+
+				public void Dispose()
+				{
+					IsDisposed = true;	
+				}
+
+				public void Execute(ControllerContext controllerContext)
+				{
+				}
 			}
 		}
 	}

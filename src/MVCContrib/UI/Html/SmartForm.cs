@@ -9,6 +9,13 @@ namespace MvcContrib.UI.Html
 		private readonly T _item;
 		private readonly IFormHelper _helper;
 		private readonly Action<SmartForm<T>> _block;
+		private readonly string _viewDataKey;
+
+		public SmartForm(string viewDataKey, string url, Action<SmartForm<T>> block, IFormHelper helper, T item, IDictionary attributes)
+			: this(url, block, helper, item, attributes)
+		{
+			_viewDataKey = viewDataKey;
+		}
 
 		public SmartForm(string url, Action<SmartForm<T>> block, IFormHelper helper, T item, IDictionary attributes) : base(url, GetFormMethod(attributes), attributes)
 		{
@@ -42,6 +49,11 @@ namespace MvcContrib.UI.Html
 			get { return _item; }
 		}
 
+		public IFormHelper FormHelper
+		{
+			get { return _helper; }
+		}
+
 		public override string ToString()
 		{
 			BlockRenderer renderer = new BlockRenderer(_helper.ViewContext.HttpContext);
@@ -49,8 +61,20 @@ namespace MvcContrib.UI.Html
 			return base.ToString();
 		}
 
+		private string FixupName(string name)
+		{
+			if (_viewDataKey != null)
+			{
+				return _viewDataKey + "." +  name;
+			}
+
+			return name;
+		}
+
 		public string TextField(string name)
 		{
+			name = FixupName(name);
+
 			using(_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.TextField(name);						
@@ -67,6 +91,8 @@ namespace MvcContrib.UI.Html
 
 		public string TextField(string name, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.TextField(name, attributes);
@@ -75,6 +101,8 @@ namespace MvcContrib.UI.Html
 
 		public string PasswordField(string name)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.PasswordField(name);
@@ -91,6 +119,8 @@ namespace MvcContrib.UI.Html
 
 		public string PasswordField(string name, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.PasswordField(name, attributes);
@@ -99,6 +129,8 @@ namespace MvcContrib.UI.Html
 
 		public string HiddenField(string name)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.HiddenField(name);
@@ -107,6 +139,8 @@ namespace MvcContrib.UI.Html
 
 		public string HiddenField(string name, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.HiddenField(name, attributes);
@@ -123,6 +157,8 @@ namespace MvcContrib.UI.Html
 
 		public string CheckBoxField(string name)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.CheckBoxField(name);
@@ -131,6 +167,8 @@ namespace MvcContrib.UI.Html
 
 		public string CheckBoxField(string name, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.CheckBoxField(name, attributes);
@@ -147,6 +185,8 @@ namespace MvcContrib.UI.Html
 
 		public string TextArea(string name)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.TextArea(name);
@@ -155,6 +195,8 @@ namespace MvcContrib.UI.Html
 
 		public string TextArea(string name, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.TextArea(name, attributes);
@@ -191,6 +233,8 @@ namespace MvcContrib.UI.Html
 
 		public string Select(string name, object dataSource, string textField, string valueField)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.Select(name, dataSource, textField, valueField);
@@ -199,6 +243,8 @@ namespace MvcContrib.UI.Html
 
 		public string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
 				return _helper.Select(name, dataSource, textField, valueField, attributes);
@@ -213,19 +259,23 @@ namespace MvcContrib.UI.Html
 			}
 		}
 
-		public string RadioField(string name)
+		public string RadioField(string name, object value)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
-				return _helper.RadioField(name);
+				return _helper.RadioField(name, value);
 			}
 		}
 
-		public string RadioField(string name, IDictionary attributes)
+		public string RadioField(string name, object value, IDictionary attributes)
 		{
+			name = FixupName(name);
+
 			using (_helper.Binder.NestedBindingScope(Item))
 			{
-				return _helper.RadioField(name, attributes);
+				return _helper.RadioField(name, value, attributes);
 			}
 		}
 

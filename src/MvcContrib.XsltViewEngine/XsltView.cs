@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MvcContrib.XsltViewEngine
 {
-	public class XsltView : IView
+	public class XsltView 
 	{
 		private readonly string ajaxDeclaration;
 		private readonly XsltViewData viewData;
@@ -16,7 +16,7 @@ namespace MvcContrib.XsltViewEngine
 		private readonly XmlResponseBuilder construct;
 		private ViewContext viewContext;
 
-		public XsltView(XsltTemplate viewTemplate, XsltViewData viewData, string ajaxDeclaration, IHttpContext httpContext)
+		public XsltView(XsltTemplate viewTemplate, XsltViewData viewData, string ajaxDeclaration, HttpContextBase httpContext)
 		{
 			this.viewTemplate = viewTemplate;
 			this.viewData = viewData;

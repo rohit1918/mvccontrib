@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -32,9 +33,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 			_output = new StringWriter();
 
 			_mocks = new MockRepository();
-			IHttpContext httpContext = _mocks.DynamicMock<IHttpContext>();
-			IHttpResponse httpResponse = _mocks.DynamicMock<IHttpResponse>();
-			IHttpSessionState httpSessionState = _mocks.DynamicMock<IHttpSessionState>();
+			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			Expect.Call(httpContext.Session).Repeat.Any().Return(httpSessionState);
 			Expect.Call(httpContext.Response).Repeat.Any().Return(httpResponse);
 			Expect.Call(httpResponse.Output).Repeat.Any().Return(_output);
@@ -49,13 +50,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			IView view = _factory.CreateView(_controllerContext, "view", null, new Hashtable());
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new Hashtable(), null);
+
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("View Template", _output.ToString());
 		}
@@ -63,13 +64,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			IView view = _factory.CreateView(_controllerContext, "view", "master", new Hashtable());
+			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new Hashtable(), null);
+
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("Master Template View Template", _output.ToString());
 		}
@@ -79,14 +80,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			Dictionary<string, object> viewData = new Dictionary<string, object>();
 			viewData["test"] = "test";
+			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
 
-			IView view = _factory.CreateView(_controllerContext, "view", null, viewData);
+			var view = _factory.CreateView(viewContext);
 
 			_mocks.ReplayAll();
 
-			ViewContext viewContext = new ViewContext(_controllerContext, new Hashtable(), new TempDataDictionary(_controllerContext.HttpContext));
-
-			view.RenderView(viewContext);
+			view.RenderView();
 
 			Assert.AreEqual("View Template test", _output.ToString());
 		}

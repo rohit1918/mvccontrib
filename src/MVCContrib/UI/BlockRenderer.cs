@@ -8,9 +8,9 @@ namespace MvcContrib.UI
 	/// <summary>Renders an Action delegate and captures all output to a string. </summary>
 	public class BlockRenderer
 	{
-		private readonly IHttpContext _httpContext;
+		private readonly HttpContextBase _httpContext;
 
-		public BlockRenderer(IHttpContext httpContext)
+        public BlockRenderer(HttpContextBase httpContext)
 		{
 			_httpContext = httpContext;
 		}
@@ -20,7 +20,7 @@ namespace MvcContrib.UI
 		/// <returns>The rendered text.</returns>
 		public string Capture(Action viewRenderer)
 		{
-			IHttpResponse resp = _httpContext.Response;
+			HttpResponseBase resp = _httpContext.Response;
 			Stream originalFilter = null;
 			CapturingResponseFilter innerFilter;
 			string capturedHtml = "";
