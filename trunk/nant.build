@@ -267,9 +267,15 @@
 			</fileset>
 		</copy>
 
+    <copy todir="${build.base}/release" >
+      <fileset basedir=".">        
+        <include name="license.txt" />
+      </fileset>
+    </copy>
 		<zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
 			<fileset basedir="${build.base}/release/">
-				<include name="**/*.*"/>
+        <include name="license.txt" />
+        <include name="**/*.*"/>
 				<exclude name="**/*.CodeAnalysisLog.xml"/>
 				<exclude name="**/*.lastcodeanalysissucceeded"/>
 			</fileset>
