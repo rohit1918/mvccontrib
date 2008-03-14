@@ -151,6 +151,7 @@
     <Compile Include="IoC\WindsorDependencyResolverTester.cs" />
     <Compile Include="ConventionControllerTester.cs" />
     <Compile Include="IoC\WindsorExtensionTester.cs" />
+    <Compile Include="EmailTemplateServiceTest.cs" />
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
