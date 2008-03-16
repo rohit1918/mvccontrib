@@ -60,9 +60,13 @@ namespace MvcContrib.NHamlViewEngine
             return tname;
 		}
 
-		public void AppendOutput(string value)
+        public void AppendOutput(string value)
+        {
+            AppendOutput(value, false);
+        }
+		public void AppendOutput(string value, bool newLine)
 		{
-			AppendOutputInternal(value, "Append");
+			AppendOutputInternal(value, newLine ? "AppendLine" :"Append");
 		}
 
 		public void AppendOutputLine(string value)
@@ -84,23 +88,26 @@ namespace MvcContrib.NHamlViewEngine
 					}
 				}
 
+                //_output.Append("_buffer." + method + "(@\"" + value + "\");");
 				_output.AppendLine("_buffer." + method + "(@\"" + value + "\");");
 			}
 		}
 
 		public void AppendCodeLine(string code)
 		{
-			if(code != null)
-			{
-				_output.AppendLine("_buffer.AppendLine(Convert.ToString(" + code + "));");
-			}
+            AppendCode(code, true);
 		}
 
-		public void AppendCode(string code)
+        public void AppendCode(string code)
+        {
+            AppendCode(code, false);
+        }
+		public void AppendCode(string code, bool newLine)
 		{
 			if(code != null)
 			{
-				_output.AppendLine("_buffer.Append(" + code + ");");
+                var action = newLine ? "AppendLine" : "Append";
+				_output.AppendLine("_buffer." + action + "(Convert.ToString(" + code + "));");
 			}
 		}
 
