@@ -376,6 +376,9 @@
     <None Include="NHamlViewEngine\Results\Welcome.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="NHamlViewEngine\Results\WhitespaceSensitive.xhtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NHamlViewEngine\Templates\AltControllerPartial.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -449,6 +452,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\Welcome.haml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NHamlViewEngine\Templates\WhitespaceSensitive.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\_Button.haml">

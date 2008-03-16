@@ -141,5 +141,11 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		{
 			AssertRender("AltControllerPartial");
 		}
+
+        [Test]
+        public void WhitespaceSensitive()
+        {
+            AssertRender("WhitespaceSensitive");
+        }
 	}
 }

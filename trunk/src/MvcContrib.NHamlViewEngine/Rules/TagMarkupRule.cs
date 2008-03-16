@@ -24,6 +24,8 @@ namespace MvcContrib.NHamlViewEngine.Rules
             @"(?<Name>\@?\w+)\s?\=",
             RegexOptions.Compiled | RegexOptions.Singleline);
 
+		private static List<string> WhitespaceSensitiveTags = new List<string>{ "textarea", "pre" };
+
 		protected virtual string PreprocessLine(InputLine inputLine)
 		{
 			return inputLine.NormalizedText;
@@ -43,6 +45,8 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				SyntaxException.Throw(compilationContext.CurrentInputLine, Resources.ErrorParsingTag,
 				                      compilationContext.CurrentInputLine);
 			}
+
+			bool isWhitespaceSensitive = WhitespaceSensitiveTags.Contains(match.Groups[1].Value);
 
 			string openingTag = compilationContext.CurrentInputLine.Indent + '<' + match.Groups[1].Value;
 			string closingTag = "</" + match.Groups[1].Value + '>';
@@ -73,19 +77,25 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				{
 					if((content.Length > 50) || string.Equals("=", action))
 					{
-						compilationContext.ViewBuilder.AppendOutputLine(">");
-						compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");
+						compilationContext.ViewBuilder.AppendOutput(">", !isWhitespaceSensitive);
+                        if (!isWhitespaceSensitive)
+                        {
+                            compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");
+                        }
 
 						if(string.Equals("=", action))
 						{
-							compilationContext.ViewBuilder.AppendCodeLine(content);
+							compilationContext.ViewBuilder.AppendCode(content, !isWhitespaceSensitive);
 						}
 						else
 						{
-							compilationContext.ViewBuilder.AppendOutputLine(content);
+							compilationContext.ViewBuilder.AppendOutput(content, !isWhitespaceSensitive);
 						}
 
-						closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
+                        if (!isWhitespaceSensitive)
+                        {
+                            closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
+                        }
 					}
 					else
 					{
