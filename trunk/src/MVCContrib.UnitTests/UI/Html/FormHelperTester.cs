@@ -771,6 +771,26 @@ namespace MvcContrib.UnitTests.UI.Html
 					_helper.For<object>(new object(), "/home/index", new Hash(method => "get"), delegate { });
 					Assert.That(_output.ToString(), Is.EqualTo(expected));
 				}
+
+				[Test]
+				public void With_string_key_and_item_is_in_viewdata_then_item_should_be_extracted_from_viewdata()
+				{
+					Person p = new Person("Jeremy", 1);
+					((IDictionary)_viewContext.ViewData).Add("person", p);
+					_helper.For<Person>("person", "/home/index", Hash.Empty, f =>
+					{
+						Assert.That(f.Item.Name, Is.EqualTo("Jeremy"));
+					});
+				}
+
+				[Test]
+				public void With_string_key_and_item_is_not_in_viewdata_then_form_item_should_be_null()
+				{
+					_helper.For<Person>("person", "/home/index", Hash.Empty, f =>
+					{
+						Assert.That(f.Item, Is.Null);
+					});
+				}
 			}
 		}
 
