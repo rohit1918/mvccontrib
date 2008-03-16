@@ -119,6 +119,12 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BaseViewTester.cs" />
+    <Compile Include="ComponentControllerFactories\ComponentControllerBuilderTester.cs" />
+    <Compile Include="ComponentControllerFactories\DefaultComponentControllerFactoryTester.cs" />
+    <Compile Include="ComponentControllerFactories\NumberService.cs" />
+    <Compile Include="ComponentControllerFactories\IoCComponentControllerFactoryTester.cs" />
+    <Compile Include="ComponentControllerFactories\SampleComponentController.cs" />
+    <Compile Include="ComponentControllerFactories\SampleComponentController2.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
