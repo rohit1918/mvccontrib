@@ -94,6 +94,13 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\ASPXViewEngine\AutoTypeViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\ASPXViewEngine\AutoTypingHelper.cs" />
     <Compile Include="UI\BlockRenderer.cs" />
     <Compile Include="UI\CapturingResponseFilter.cs" />
     <Compile Include="UI\HtmlAttributes.cs" />
