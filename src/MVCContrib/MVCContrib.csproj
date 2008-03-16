@@ -68,8 +68,12 @@
     <Compile Include="Attributes\DeserializeAttribute.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="Attributes\XMLReturnBinder.cs" />
+    <Compile Include="ExtendedComponentController\ComponentControllerBuilder.cs" />
+    <Compile Include="ExtendedComponentController\DefaultComponentControllerFactory.cs" />
+    <Compile Include="ExtendedComponentController\IComponentControllerFactory.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
     <Compile Include="ConventionController.cs" />
+    <Compile Include="ExtendedComponentController\IoCComponentControllerFactory.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
@@ -110,6 +114,7 @@
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
     <Compile Include="UI\Html\BaseHelper.cs" />
+    <Compile Include="UI\Html\ComponentControllerExtensions.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
     <Compile Include="UI\Html\FormHelperExtensions.cs" />
