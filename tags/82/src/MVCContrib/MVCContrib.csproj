@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MvcContrib</RootNamespace>
+    <AssemblyName>MvcContrib</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
+    <Compile Include="Attributes\DefaultActionAttribute.cs" />
+    <Compile Include="Attributes\DeserializeAttribute.cs" />
+    <Compile Include="Attributes\RescueAttribute.cs" />
+    <Compile Include="Attributes\XMLReturnBinder.cs" />
+    <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
+    <Compile Include="ConventionController.cs" />
+    <Compile Include="Hash.cs" />
+    <Compile Include="Interfaces\IDependencyResolver.cs" />
+    <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
+    <Compile Include="Filters\PostOnlyAttribute.cs" />
+    <Compile Include="Services\EmailTemplateService.cs" />
+    <Compile Include="MetaData\ActionMetaData.cs" />
+    <Compile Include="MetaData\ActionParameterMetaData.cs" />
+    <Compile Include="MetaData\ControllerDescriptor.cs" />
+    <Compile Include="MetaData\IControllerDescriptor.cs" />
+    <Compile Include="MetaData\IReturnBinder.cs" />
+    <Compile Include="Attributes\ReturnBinderAttribute.cs" />
+    <Compile Include="MetaData\ReturnBinderDescriptor.cs" />
+    <Compile Include="MetaData\SimpleParameterBinder.cs" />
+    <Compile Include="MetaData\DefaultConvertible.cs" />
+    <Compile Include="MetaData\ControllerMetaData.cs" />
+    <Compile Include="MetaData\IParameterBinder.cs" />
+    <Compile Include="MetaData\NameValueDeserializer.cs" />
+    <Compile Include="Services\DependencyResolver.cs" />
+    <Compile Include="Services\IEmailTemplateService.cs" />
+    <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
+    <Compile Include="SimplyRestful\RestfulAction.cs" />
+    <Compile Include="SimplyRestful\RestfulActionResolver.cs" />
+    <Compile Include="SimplyRestful\RestfulGetAction.cs" />
+    <Compile Include="SimplyRestful\RestfulPostAction.cs" />
+    <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\ASPXViewEngine\AutoTypeViewUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\ASPXViewEngine\AutoTypingHelper.cs" />
+    <Compile Include="UI\BlockRenderer.cs" />
+    <Compile Include="UI\CapturingResponseFilter.cs" />
+    <Compile Include="UI\HtmlAttributes.cs" />
+    <Compile Include="UI\DomQuery.cs" />
+    <Compile Include="UI\DomQueryBuilder.cs" />
+    <Compile Include="UI\Element.cs" />
+    <Compile Include="UI\ElementRenderTool.cs" />
+    <Compile Include="UI\Html\BaseHelper.cs" />
+    <Compile Include="UI\Html\DefaultDataBinder.cs" />
+    <Compile Include="UI\Html\FormHelper.cs" />
+    <Compile Include="UI\Html\FormHelperExtensions.cs" />
+    <Compile Include="UI\Html\IDataBinder.cs" />
+    <Compile Include="UI\Html\IFormHelper.cs" />
+    <Compile Include="UI\Html\SmartForm.cs" />
+    <Compile Include="UI\IHtmlAttributes.cs" />
+    <Compile Include="UI\IElement.cs" />
+    <Compile Include="UI\IScriptableElement.cs" />
+    <Compile Include="UI\ScriptableElement.cs" />
+    <Compile Include="UI\Tags\CheckBoxField.cs" />
+    <Compile Include="UI\Tags\CheckBoxList.cs" />
+    <Compile Include="UI\Tags\Password.cs" />
+    <Compile Include="UI\Tags\Form.cs" />
+    <Compile Include="UI\Tags\HiddenField.cs" />
+    <Compile Include="UI\Tags\Image.cs" />
+    <Compile Include="UI\Tags\Input.cs" />
+    <Compile Include="UI\Tags\InputButton.cs" />
+    <Compile Include="UI\Tags\InputElementList.cs" />
+    <Compile Include="UI\Tags\InputImage.cs" />
+    <Compile Include="UI\Tags\Link.cs" />
+    <Compile Include="UI\Tags\Option.cs" />
+    <Compile Include="UI\Tags\RadioField.cs" />
+    <Compile Include="UI\Tags\RadioList.cs" />
+    <Compile Include="UI\Tags\Script.cs" />
+    <Compile Include="UI\Tags\Select.cs" />
+    <Compile Include="UI\Tags\SubmitButton.cs" />
+    <Compile Include="UI\Tags\TextArea.cs" />
+    <Compile Include="UI\Tags\TextBox.cs" />
+    <Compile Include="ViewFactories\FileSystemViewSourceLoader.cs" />
+    <Compile Include="ViewFactories\FileViewSource.cs" />
+    <Compile Include="ViewFactories\IViewSourceLoader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
