@@ -206,6 +206,7 @@
     <Compile Include="UI\DomQueryBuilderTester.cs" />
     <Compile Include="UI\DomQueryTester.cs" />
     <Compile Include="UI\ElementTester.cs" />
+    <Compile Include="UI\Html\ComponentControllerExtensionsTester.cs" />
     <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
     <Compile Include="UI\Html\FormHelperTester.cs" />
     <Compile Include="UI\Html\InputElementListTester.cs" />
