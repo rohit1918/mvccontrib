@@ -22,12 +22,34 @@ namespace MvcContrib.UnitTests.ComponentControllerFactories
 		}
 		
 		[Test]
-		public void WhenCreateComponentControllerIsCalled()
+		public void WhenCreateComponentControllerIsCalledWithGenerics()
 		{
 			var component=componentControllerFactory.CreateComponentController<SampleComponentController>();
 			Assert.IsNotNull(component);
+			Assert.IsAssignableFrom(typeof(SampleComponentController),component);
 		}
 
+		[Test]
+		public void WhenCreateComponentControllerIsCalledWithType()
+		{
+			var component = componentControllerFactory.CreateComponentController(typeof(SampleComponentController));
+			Assert.IsNotNull(component);
+			Assert.IsAssignableFrom(typeof(SampleComponentController), component);
+		}
+
+		[Test]
+		[ExpectedException(typeof(MissingMethodException))]
+		public void WhenCreateComponentControllerIsCalledWithDefaultConstructorlessComponent()
+		{
+			var component = componentControllerFactory.CreateComponentController(typeof(SampleComponentController2));
+		}
+
+		[Test]
+		public void DisposeWorks()
+		{
+			var component = componentControllerFactory.CreateComponentController(typeof(SampleComponentController));
+			componentControllerFactory.DisposeComponentController(component);
+		}
 
 		[TearDown]
 		public void TearDown()

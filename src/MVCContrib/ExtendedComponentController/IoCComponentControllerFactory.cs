@@ -20,10 +20,6 @@ namespace MvcContrib.ExtendedComponentController
 			_resolver = resolver;
 		}
 
-		public IoCComponentControllerFactory()
-		{
-		}
-
 		public ComponentController CreateComponentController(Type type)
 		{
 			return _resolver.GetImplementationOf(type) as ComponentController;
@@ -36,7 +32,7 @@ namespace MvcContrib.ExtendedComponentController
 
 		public void DisposeComponentController(ComponentController controller)
 		{
-			throw new NotImplementedException();
+			
 		}
 	}
 }

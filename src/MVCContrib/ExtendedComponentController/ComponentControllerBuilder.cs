@@ -22,7 +22,7 @@ namespace MvcContrib.ExtendedComponentController
 	
 		public IComponentControllerFactory GetComponentControllerFactory()
 		{
-			if (_current == null)
+			if (_currentComponentControllerFactory == null)
 				this._currentComponentControllerFactory = new DefaultComponentControllerFactory();
 			return _currentComponentControllerFactory;
 		}

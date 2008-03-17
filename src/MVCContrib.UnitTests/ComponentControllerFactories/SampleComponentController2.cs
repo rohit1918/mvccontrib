@@ -18,7 +18,7 @@ namespace MvcContrib.UnitTests.ComponentControllerFactories
 		public void ShowNumbersBetween(int low,int high)
 		{
 			var data = numberService.GetNumbersBetween(2, 4);
-			this.RenderView("sampleview",data);
+			
 		}
 	}
 }
