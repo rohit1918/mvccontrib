@@ -214,6 +214,14 @@ namespace MvcContrib.UnitTests.UI
 				attribs.TryGetValue("Key99", out val);
 				Assert.That(val, Is.EqualTo(null));
 			}
+
+			[Test]
+			public void Should_be_case_insensitive()
+			{
+				HtmlAttributes attributes = new HtmlAttributes();
+				attributes.Add("Key", "value");
+				Assert.That(attributes["key"], Is.EqualTo("value"));
+			}
 		}
 	}
 }
