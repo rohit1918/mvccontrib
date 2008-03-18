@@ -14,7 +14,7 @@ namespace MvcContrib.UI
 				'{', '}', '[', ']', '\t', '\r', '\n', ':', ';', '"', '\'', '<', ',', '>', '.', '?', '/'
 			};
 
-		private readonly Dictionary<string, string> _attributes = new Dictionary<string, string>(5);
+		private readonly Dictionary<string, string> _attributes = new Dictionary<string, string>(5, StringComparer.OrdinalIgnoreCase);
 
 		private int _estLength;
 			//Track approximate size in characters of what the rendered attributes will be, this will speed up the string builder.

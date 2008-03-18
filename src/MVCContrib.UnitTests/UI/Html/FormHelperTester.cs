@@ -562,6 +562,14 @@ namespace MvcContrib.UnitTests.UI.Html
 				string expected = "<input value=\"bar\" type=\"checkbox\" name=\"foo\" id=\"foo\"/><input type=\"hidden\" value=\"false\" id=\"fooH\" name=\"foo\"/>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void With_mixed_case_label_attribute_then_lowercase_label_should_be_generated()
+			{
+				string html = _helper.CheckBoxField("foo", new Hash(LAbel => "bar"));
+				string expected = "<input name=\"foo\" type=\"checkbox\" id=\"foo\" value=\"true\"/><label for=\"foo\">bar</label><input type=\"hidden\" value=\"false\" id=\"fooH\" name=\"foo\"/>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 		}
 
 		[TestFixture]
