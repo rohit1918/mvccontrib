@@ -198,6 +198,7 @@
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestHelperController.cs" />
+    <Compile Include="TestHelper\TestHelperControllerWithArgs.cs" />
     <Compile Include="UI\BlockRendererTester.cs" />
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPageTester.cs" />
