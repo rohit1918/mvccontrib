@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace MVCContrib.UnitTests.BrailViewEngine
+namespace MvcContrib.UnitTests.BrailViewEngine
 {
 	using NUnit.Framework;
 	using Rhino.Mocks;

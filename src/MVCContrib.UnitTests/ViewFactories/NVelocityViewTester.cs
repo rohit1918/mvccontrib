@@ -21,7 +21,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[SetUp]
 		public void SetUp()
 		{
-			string viewPath = "MVCContrib.UnitTests.ViewFactories";
+			string viewPath = "MvcContrib.UnitTests.ViewFactories";
 
 			IDictionary properties = new Hashtable();
 			properties["resource.loader"] = "assembly";

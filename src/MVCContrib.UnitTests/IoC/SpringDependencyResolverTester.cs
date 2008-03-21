@@ -8,7 +8,7 @@ using Spring.Core.IO;
 using Spring.Objects.Factory;
 using Spring.Objects.Factory.Xml;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.UnitTests.IoC
 {
     [TestFixture]
     public class SpringDependencyResolverTester
@@ -26,10 +26,10 @@ namespace MVCContrib.UnitTests.IoC
                    "  <objects xmlns=\"http://www.springframework.net\" " +
                    "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
                    "    xsi:schemaLocation=\"http://www.springframework.net http://www.springframework.net/xsd/spring-objects.xsd\"> " +
-                   "    <object id=\"SimpleDependency\" singleton=\"false\" type=\"MVCContrib.UnitTests.IoC.SimpleDependency\"/> " +
-                   "    <object id=\"NestedDependency\" singleton=\"false\" type=\"MVCContrib.UnitTests.IoC.NestedDependency\" > " +
+                   "    <object id=\"SimpleDependency\" singleton=\"false\" type=\"MvcContrib.UnitTests.IoC.SimpleDependency\"/> " +
+                   "    <object id=\"NestedDependency\" singleton=\"false\" type=\"MvcContrib.UnitTests.IoC.NestedDependency\" > " +
                    "      <constructor-arg> " +
-                   "        <object type=\"MVCContrib.UnitTests.IoC.SimpleDependency\" /> " +
+                   "        <object type=\"MvcContrib.UnitTests.IoC.SimpleDependency\" /> " +
                    "      </constructor-arg> " +
                    "    </object> " +
                    "  </objects>";

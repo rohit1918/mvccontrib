@@ -1,7 +1,7 @@
 using Boo.Lang.Compiler.Ast;
 using MvcContrib.BrailViewEngine;
 
-namespace MVCContrib.UnitTests.BrailViewEngine
+namespace MvcContrib.UnitTests.BrailViewEngine
 {
 	using NUnit.Framework;
 

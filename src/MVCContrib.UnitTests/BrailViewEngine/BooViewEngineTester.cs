@@ -10,7 +10,7 @@ using MvcContrib.ViewFactories;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.BrailViewEngine
+namespace MvcContrib.UnitTests.BrailViewEngine
 {
 	[TestFixture]
 	[Category("BrailViewEngine")]
@@ -139,7 +139,7 @@ namespace MVCContrib.UnitTests.BrailViewEngine
 		{
 			_mocks.ReplayAll();
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
-			_viewEngine.Options.BaseType = "MVCContrib.UnitTests.BrailViewEngine.TestBrailBase";
+			_viewEngine.Options.BaseType = "MvcContrib.UnitTests.BrailViewEngine.TestBrailBase";
 			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
 			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
 		}

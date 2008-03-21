@@ -3,7 +3,7 @@ using MvcContrib.Interfaces;
 using MvcContrib.ObjectBuilder;
 using NUnit.Framework;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.UnitTests.IoC
 {
     public class ObjectFactoryDependencyResolverTester
     {

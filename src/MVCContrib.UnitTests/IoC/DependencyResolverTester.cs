@@ -4,7 +4,7 @@ using MvcContrib.Services;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.UnitTests.IoC
 {
 	public abstract class WhenAValidTypeIsPassedBase
 	{

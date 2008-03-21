@@ -7,7 +7,7 @@ using System.Web.Routing;
 using MvcContrib.BrailViewEngine;
 using MvcContrib.ViewFactories;
 
-namespace MVCContrib.UnitTests.BrailViewEngine
+namespace MvcContrib.UnitTests.BrailViewEngine
 {
 	using NUnit.Framework;
 using Rhino.Mocks;

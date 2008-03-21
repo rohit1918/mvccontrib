@@ -6,7 +6,7 @@ using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.UnitTests.IoC
 {
 	[TestFixture]
 	public class WindsorDependencyResolverTester
