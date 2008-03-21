@@ -4,7 +4,7 @@ using MvcContrib.ObjectBuilder;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MVCContrib.UnitTests.ObjectBuilder
+namespace MvcContrib.UnitTests.ObjectBuilder
 {
 	[TestFixture, Category("ObjectBuilderFactory")]
 	public class ContainerXmlConfigTester
@@ -44,8 +44,8 @@ namespace MVCContrib.UnitTests.ObjectBuilder
 			@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ContainerConfig xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""container-config"">
 <Mappings>
-    <Mapping    FromType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+INotExisting,MVCContrib.UnitTests"" 
-                ToType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+NotExisting,MVCContrib.UnitTests"" />
+    <Mapping    FromType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+INotExisting,MVCContrib.UnitTests"" 
+                ToType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+NotExisting,MVCContrib.UnitTests"" />
 </Mappings>
 </ContainerConfig>
 ";
@@ -54,30 +54,30 @@ namespace MVCContrib.UnitTests.ObjectBuilder
 			@"<?xml version=""1.0"" encoding=""utf-16""?>
 <ContainerConfig xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""container-config"">
 <Mappings>
-    <Mapping    FromType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+IBar,MVCContrib.UnitTests"" 
-                ToType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar,MVCContrib.UnitTests"" />
-    <Mapping    FromType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+IFoo,MVCContrib.UnitTests"" 
-                ToType=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"" />
+    <Mapping    FromType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+IBar,MVCContrib.UnitTests"" 
+                ToType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar,MVCContrib.UnitTests"" />
+    <Mapping    FromType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+IFoo,MVCContrib.UnitTests"" 
+                ToType=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"" />
 </Mappings>
 <BuildRules>
-    <BuildRule Mode=""Instance"" Type=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"">
+    <BuildRule Mode=""Instance"" Type=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"">
         <Method Name=""SetSomething"">
             <Value Type=""System.String"">Foo</Value>
         </Method>
     </BuildRule>
-    <BuildRule Mode=""Instance"" Type=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"">
+    <BuildRule Mode=""Instance"" Type=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo,MVCContrib.UnitTests"">
         <Property Name=""SomethingElse"">
             <Value Type=""System.String"">Bar</Value>
         </Property>
     </BuildRule>
-    <BuildRule Mode=""Singleton"" Type=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar2,MVCContrib.UnitTests"">
+    <BuildRule Mode=""Singleton"" Type=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar2,MVCContrib.UnitTests"">
         <Constructor>
             <Value Type=""System.String"">Bar2</Value>
         </Constructor>
     </BuildRule>
-    <BuildRule Mode=""Instance"" Type=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo2,MVCContrib.UnitTests"">
+    <BuildRule Mode=""Instance"" Type=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Foo2,MVCContrib.UnitTests"">
         <Constructor>
-            <Ref Type=""MVCContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar2,MVCContrib.UnitTests"" />
+            <Ref Type=""MvcContrib.UnitTests.ObjectBuilder.DependencyContainerTester+Bar2,MVCContrib.UnitTests"" />
         </Constructor>
     </BuildRule>
 </BuildRules>

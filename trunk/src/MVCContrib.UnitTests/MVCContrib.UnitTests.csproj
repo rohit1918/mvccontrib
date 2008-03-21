@@ -8,7 +8,7 @@
     <ProjectGuid>{0B8EC0CE-1AC1-4ACF-A380-A588E5E1E9CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVCContrib.UnitTests</RootNamespace>
+    <RootNamespace>MvcContrib.UnitTests</RootNamespace>
     <AssemblyName>MVCContrib.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -119,6 +119,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="BaseViewTester.cs" />
+    <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="ComponentControllerFactories\ComponentControllerBuilderTester.cs" />
     <Compile Include="ComponentControllerFactories\DefaultComponentControllerFactoryTester.cs" />
     <Compile Include="ComponentControllerFactories\NumberService.cs" />
@@ -148,7 +149,6 @@
     <Compile Include="BrailViewEngine\IgnoreNullTester.cs" />
     <Compile Include="BrailViewEngine\RawAttributeTester.cs" />
     <Compile Include="BrailViewEngine\ReturnValueVisitorTester.cs" />
-    <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="BrailViewEngine\XmlExtenstionTester.cs" />
     <Compile Include="ControllerFactories\ObjectBuilderControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />

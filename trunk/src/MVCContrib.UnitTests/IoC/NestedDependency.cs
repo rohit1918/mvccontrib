@@ -1,4 +1,4 @@
-namespace MVCContrib.UnitTests.IoC
+namespace MvcContrib.UnitTests.IoC
 {
     public class NestedDependency : INestedDependency, IDependency
     {

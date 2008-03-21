@@ -46,7 +46,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
 		protected XmlDocument LoadXmlDocument(string path)
 		{
-			string assemblyPath = "MVCContrib.UnitTests.XsltViewEngine.Data." + path;
+			string assemblyPath = "MvcContrib.UnitTests.XsltViewEngine.Data." + path;
 
 			XmlDocument xmlDoc = new XmlDocument();
 
@@ -100,7 +100,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 	{
 		public Stream OpenViewStream()
 		{
-			string xsltViewPath = "MVCContrib.UnitTests.XsltViewEngine.Data.Views.MyController.MyView.xslt";
+			string xsltViewPath = "MvcContrib.UnitTests.XsltViewEngine.Data.Views.MyController.MyView.xslt";
 
 			return Assembly.GetExecutingAssembly().GetManifestResourceStream(xsltViewPath);
 		}

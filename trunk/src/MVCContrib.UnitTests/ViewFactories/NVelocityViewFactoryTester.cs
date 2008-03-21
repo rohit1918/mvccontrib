@@ -25,7 +25,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			_mocks = new MockRepository();
 			_output = new StringWriter();
 
-			string viewPath = "MVCContrib.UnitTests.ViewFactories";
+			string viewPath = "MvcContrib.UnitTests.ViewFactories";
 
 			IDictionary properties = new Hashtable();
 			properties["resource.loader"] = "assembly";

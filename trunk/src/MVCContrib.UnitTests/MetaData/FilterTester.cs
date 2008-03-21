@@ -7,7 +7,7 @@ using MvcContrib.Castle;
 using MvcContrib.Filters;
 using MvcContrib.MetaData;
 using MvcContrib.Services;
-using MVCContrib.UnitTests.IoC;
+using MvcContrib.UnitTests.IoC;
 using NUnit.Framework;
 using Rhino.Mocks;
 

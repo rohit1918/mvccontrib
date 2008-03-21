@@ -1,6 +1,6 @@
 using MvcContrib.BrailViewEngine;
 
-namespace MVCContrib.UnitTests.BrailViewEngine
+namespace MvcContrib.UnitTests.BrailViewEngine
 {
 	using NUnit.Framework;
 
