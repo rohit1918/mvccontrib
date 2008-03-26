@@ -22,15 +22,15 @@ namespace MvcContrib.NHamlViewEngine
 			_compiledView = (ICompiledView)this;
 		}
 
-		public void RenderView(ViewContext viewContext)
+		public void RenderView(ViewContext context)
 		{
-			_viewContext = viewContext;
+			_viewContext = context;
 
 			_ajax = new AjaxHelper(_viewContext);
 			_html = new HtmlHelper(_viewContext);
 			_url = new UrlHelper(_viewContext);
 
-			viewContext.HttpContext.Response.Output.Write(_compiledView.Render());
+			context.HttpContext.Response.Output.Write(_compiledView.Render());
 		}
 
 		public AjaxHelper Ajax

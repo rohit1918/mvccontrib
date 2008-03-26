@@ -3,7 +3,7 @@ using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.ViewFactories;
+using MvcContrib.NHamlViewEngine;
 
 namespace MvcContrib.ControllerFactories
 {

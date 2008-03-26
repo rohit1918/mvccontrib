@@ -225,6 +225,8 @@
     <Compile Include="UI\Html\SmartFormTester.cs" />
     <Compile Include="UI\Html\TagTester.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
+    <Compile Include="ViewDataExtensionsForIDictionaryTester.cs" />
+    <Compile Include="ViewDataExtensionsForViewDataTester.cs" />
     <Compile Include="ViewFactories\DescriptableDictionaryTester.cs" />
     <Compile Include="ViewFactories\ExtensionDuckTester.cs" />
     <Compile Include="ViewFactories\HtmlExtensionDuckTester.cs" />

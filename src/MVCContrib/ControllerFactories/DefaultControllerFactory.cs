@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Security;
 using System.Web.Mvc;
 
 namespace MvcContrib.ControllerFactories
