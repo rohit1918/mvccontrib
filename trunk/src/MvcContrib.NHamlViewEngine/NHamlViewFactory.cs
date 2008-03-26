@@ -3,187 +3,193 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.NHamlViewEngine;
+using System.Web.UI;
 using MvcContrib.NHamlViewEngine.Configuration;
 using MvcContrib.NHamlViewEngine.Utilities;
+using MvcContrib.ViewFactories;
 
-namespace MvcContrib.ViewFactories
+namespace MvcContrib.NHamlViewEngine
 {
-	[AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	public class NHamlViewFactory : IViewEngine
-	{
-		private static readonly Dictionary<string, CompiledView> _viewCache = new Dictionary<string, CompiledView>();
+    [AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+    [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
+    public class NHamlViewFactory : IViewEngine
+    {
+        private static readonly Dictionary<string, CompiledView> _viewCache = new Dictionary<string, CompiledView>();
 
-		private static readonly TemplateCompiler _templateCompiler = new TemplateCompiler();
+        private static readonly TemplateCompiler _templateCompiler = new TemplateCompiler();
 
-		private static bool _production;
+        private static bool _production;
 
-		private readonly IViewSourceLoader _viewSourceLoader;
+        private readonly IViewSourceLoader _viewSourceLoader;
 
-		[SuppressMessage("Microsoft.Performance", "CA1810")]
-		static NHamlViewFactory()
-		{
-			_templateCompiler.AddUsing("System.Web");
-			_templateCompiler.AddUsing("System.Web.Mvc");
-			_templateCompiler.AddUsing("System.Web.Routing");
-			_templateCompiler.AddUsing("MvcContrib.NHamlViewEngine");
+        [SuppressMessage("Microsoft.Performance", "CA1810")]
+        static NHamlViewFactory()
+        {
+            _templateCompiler.AddUsing("System.Web");
+            _templateCompiler.AddUsing("System.Web.Mvc");
+            _templateCompiler.AddUsing("System.Web.Routing");
+            _templateCompiler.AddUsing("MvcContrib.NHamlViewEngine");
 
-			_templateCompiler.ViewBaseType = typeof(NHamlView<>);
-			_templateCompiler.AddReference(typeof(System.Web.UI.UserControl).Assembly.Location);
-			_templateCompiler.AddReference(typeof(RouteValueDictionary).Assembly.Location);
-			_templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
-			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
+            _templateCompiler.ViewBaseType = typeof(NHamlView<>);
+            _templateCompiler.AddReference(typeof(UserControl).Assembly.Location);
+            _templateCompiler.AddReference(typeof(RouteValueDictionary).Assembly.Location);
+            _templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
+            _templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
 
-			LoadConfiguration();
-		}
+            LoadConfiguration();
+        }
 
-		public NHamlViewFactory()
-			: this(new FileSystemViewSourceLoader())
-		{
-		}
+        public NHamlViewFactory()
+            : this(new FileSystemViewSourceLoader())
+        {
+        }
 
-		public NHamlViewFactory(IViewSourceLoader viewSourceLoader)
-		{
-			Invariant.ArgumentNotNull(viewSourceLoader, "viewSourceLoader");
+        public NHamlViewFactory(IViewSourceLoader viewSourceLoader)
+        {
+            Invariant.ArgumentNotNull(viewSourceLoader, "viewSourceLoader");
 
-			_viewSourceLoader = viewSourceLoader;
-		}
+            _viewSourceLoader = viewSourceLoader;
+        }
 
-		private static void LoadConfiguration()
-		{
-			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
+        private static void LoadConfiguration()
+        {
+            NHamlViewEngineSection section = NHamlViewEngineSection.Read();
 
-			if(section != null)
-			{
-				_production = section.Production;
+            if(section != null)
+            {
+                _production = section.Production;
 
-				foreach(AssemblyConfigurationElement cfgAsm in section.Views.Assemblies)
-				{
-					_templateCompiler.AddReference(Assembly.Load(cfgAsm.Name).Location);
-				}
+                foreach(AssemblyConfigurationElement cfgAsm in section.Views.Assemblies)
+                {
+                    _templateCompiler.AddReference(Assembly.Load(cfgAsm.Name).Location);
+                }
 
-				foreach(NamespaceConfigurationElement cfgNs in section.Views.Namespaces)
-				{
-					_templateCompiler.AddUsing(cfgNs.Name);
-				}
-			}
-		}
+                foreach(NamespaceConfigurationElement cfgNs in section.Views.Namespaces)
+                {
+                    _templateCompiler.AddUsing(cfgNs.Name);
+                }
+            }
+        }
 
-		public static bool ViewDataIsDictionary(object viewData)
-		{
-			return (viewData != null)
-			       && (typeof(IDictionary).IsAssignableFrom(viewData.GetType()));
-		}
+        public static bool ViewDataIsDictionary(object viewData)
+        {
+            return (viewData != null)
+                   && (typeof(IDictionary).IsAssignableFrom(viewData.GetType()));
+        }
 
-		protected virtual IViewSource FindLayout(string mastersFolder, string masterName, string controller)
-		{
-			if (!string.IsNullOrEmpty(masterName))
-			{
-				string requestedPath = mastersFolder + "\\" + masterName + ".haml";
+        protected virtual IViewSource FindLayout(string mastersFolder, string masterName, string controller)
+        {
+            if(!string.IsNullOrEmpty(masterName))
+            {
+                string requestedPath = mastersFolder + "\\" + masterName + ".haml";
 
-				if (_viewSourceLoader.HasView(requestedPath))
-				{
-					return _viewSourceLoader.GetViewSource(requestedPath);
-				}
-				else
-				{
-					throw new InvalidOperationException(string.Format("Layout {0} was specified but couldn't be found.", masterName));
-				}
-			}
+                if(_viewSourceLoader.HasView(requestedPath))
+                {
+                    return _viewSourceLoader.GetViewSource(requestedPath);
+                }
 
-			string controllerPath = mastersFolder + "\\" + controller + ".haml";
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
+                                                        "Layout {0} was specified but couldn't be found.",
+                                                        masterName));
+            }
 
-			if (_viewSourceLoader.HasView(controllerPath))
-			{
-				return _viewSourceLoader.GetViewSource(controllerPath);
-			}
+            string controllerPath = mastersFolder + "\\" + controller + ".haml";
 
-			string applicationPath = mastersFolder + "\\application.haml";
+            if(_viewSourceLoader.HasView(controllerPath))
+            {
+                return _viewSourceLoader.GetViewSource(controllerPath);
+            }
 
-			if (_viewSourceLoader.HasView(applicationPath))
-			{
-				return _viewSourceLoader.GetViewSource(applicationPath);
-			}
+            string applicationPath = mastersFolder + "\\application.haml";
 
-			return null;
-		}
+            if(_viewSourceLoader.HasView(applicationPath))
+            {
+                return _viewSourceLoader.GetViewSource(applicationPath);
+            }
 
-		public static void ClearViewCache()
-		{
-			lock(_viewCache)
-			{
-				_viewCache.Clear();
-			}
-		}
+            return null;
+        }
 
-		public void RenderView(ViewContext viewContext)
-		{
-			string controller = (string)viewContext.RouteData.Values["controller"];
-			string viewKey = controller + "/" + viewContext.ViewName;
+        public static void ClearViewCache()
+        {
+            lock(_viewCache)
+            {
+                _viewCache.Clear();
+            }
+        }
 
-			CompiledView compiledView;
+        public void RenderView(ViewContext viewContext)
+        {
+            string controller = (string)viewContext.RouteData.Values["controller"];
+            string viewKey = controller + "/" + viewContext.ViewName;
 
-			if (!_viewCache.TryGetValue(viewKey, out compiledView))
-			{
-				lock (_viewCache)
-				{
-					if (!_viewCache.TryGetValue(viewKey, out compiledView))
-					{
-						string viewPath = viewKey;
+            CompiledView compiledView;
 
-						if (!Path.HasExtension(viewPath))
-						{
-							viewPath = string.Concat(viewPath, ".haml");
-						}
+            if(!_viewCache.TryGetValue(viewKey, out compiledView))
+            {
+                lock(_viewCache)
+                {
+                    if(!_viewCache.TryGetValue(viewKey, out compiledView))
+                    {
+                        string viewPath = viewKey;
 
-						if (!_viewSourceLoader.HasView(viewPath))
-						{
-							throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
-						}
+                        if(!Path.HasExtension(viewPath))
+                        {
+                            viewPath = string.Concat(viewPath, ".haml");
+                        }
 
-						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
+                        if(!_viewSourceLoader.HasView(viewPath))
+                        {
+                            throw new InvalidOperationException(
+                                string.Format(CultureInfo.CurrentCulture,
+                                "Couldn't find the template with name {0}.", 
+                                viewPath));
+                        }
 
-						Invariant.IsNotNull(viewSource);
+                        IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
 
-						IViewSource layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
+                        Invariant.IsNotNull(viewSource);
 
-						string layoutPath = null;
+                        IViewSource layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
 
-						if (layoutSource != null)
-						{
-							layoutPath = layoutSource.FullName;
-						}
+                        string layoutPath = null;
 
-						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath, viewContext.ViewData);
+                        if(layoutSource != null)
+                        {
+                            layoutPath = layoutSource.FullName;
+                        }
 
-						_viewCache.Add(viewKey, compiledView);
-					}
-				}
-			}
+                        compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
+                                                        viewContext.ViewData);
 
-			if (!_production)
-			{
-				compiledView.RecompileIfNecessary(viewContext.ViewData);
-			}
+                        _viewCache.Add(viewKey, compiledView);
+                    }
+                }
+            }
 
-			INHamlView view = compiledView.CreateView();
+            if(!_production)
+            {
+                compiledView.RecompileIfNecessary(viewContext.ViewData);
+            }
 
-			if (ViewDataIsDictionary(viewContext.ViewData))
-			{
-				view.SetViewData(new ViewData(viewContext.ViewData));
-			}
-			else
-			{
-				view.SetViewData(viewContext.ViewData);
-			}
-			view.RenderView(viewContext);						
-		}
-	}
+            INHamlView view = compiledView.CreateView();
+
+            if(ViewDataIsDictionary(viewContext.ViewData))
+            {
+                view.SetViewData(new ViewData(viewContext.ViewData));
+            }
+            else
+            {
+                view.SetViewData(viewContext.ViewData);
+            }
+            view.RenderView(viewContext);
+        }
+    }
 }

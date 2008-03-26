@@ -1,4 +1,8 @@
 <Configuration>
+  <CodeAnnotations>
+    <Namespace>JetBrains.Annotations</Namespace>
+    <DefaultNamespace>JetBrains.Annotations</DefaultNamespace>
+  </CodeAnnotations>
   <CodeStyleSettings>
     <Sharing>SOLUTION</Sharing>
     <ExternalPath>
@@ -201,7 +205,7 @@
     </CSharp>
     <VB>
       <FormatSettings>
-        <INSERT_TABS>False</INSERT_TABS>
+        <INSERT_TABS>True</INSERT_TABS>
         <INDENT_SIZE>4</INDENT_SIZE>
         <SPACE_BEFORE_INVOCATION_PARENTHESES>True</SPACE_BEFORE_INVOCATION_PARENTHESES>
         <SPACE_BEFORE_EMPTY_INVOCATION_PARENTHESES>False</SPACE_BEFORE_EMPTY_INVOCATION_PARENTHESES>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MvcContrib.NHamlViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 using Rhino.Mocks;
