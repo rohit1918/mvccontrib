@@ -1,0 +1,62 @@
+﻿<project schemaVersion="1.6.0.2">
+    <assemblies>
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.XML" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Castle.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Castle.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.NHamlViewEngine.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.NHamlViewEngine.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.NHamlViewEngine.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.NHamlViewEngine.XML" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.ObjectBuilder.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.ObjectBuilder.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.XML" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.XML" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.TestHelper.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.TestHelper.xml" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Unity.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Unity.XML" commentsOnly="False" />
+        <assembly assemblyPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.XsltViewEngine.dll" xmlCommentsPath="..\build\net-3.5.win32-MVCContrib-release\MvcContrib.XsltViewEngine.xml" commentsOnly="False" />
+    </assemblies>
+    <dependencies>
+        <dependencyItem depPath="..\build\net-3.5.win32-MVCContrib-release\*.*" />
+    </dependencies>
+    <apiFilter>
+        <filter entryType="Namespace" fullName="Microsoft.Practices.CompositeWeb.ObjectBuilder" isExposed="False" />
+        <filter entryType="Namespace" fullName="Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies" isExposed="False" />
+    </apiFilter>
+    <ProjectSummary />
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>.\Help\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>False</KeepLogFile>
+    <HelpFileFormat>Help1xAndWebsite</HelpFileFormat>
+    <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <Preliminary>True</Preliminary>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>Asp.Net MVC Framework - MvcContrib Documentation</HelpTitle>
+    <HtmlHelpName>MvcContrib-Api-Documentation</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref>http://mvccontrib.org</CopyrightHref>
+    <CopyrightText>MvcContrib.org - MVC Contribution project</CopyrightText>
+    <FeedbackEMailAddress />
+    <HeaderText />
+    <FooterText>MvcContrib Project - MvcContrib.org</FooterText>
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>Msdn</SdkLinkType>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>Prototype</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <ContentSiteMap path="" />
+    <TopicFileTransform path="" />
+</project>
