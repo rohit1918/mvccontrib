@@ -23,22 +23,22 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				if(string.IsNullOrEmpty(content))
 				{
 					compilationContext.ViewBuilder.AppendOutputLine(
-						@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">");
+						@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">");
 				}
 				else if(string.Equals(content, "1.1"))
 				{
 					compilationContext.ViewBuilder.AppendOutputLine(
-						@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">");
+            @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"">");
 				}
 				else if(string.Equals(content, "strict"))
 				{
 					compilationContext.ViewBuilder.AppendOutputLine(
-						@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">");
+            @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">");
 				}
 				else if(string.Equals(content, "frameset"))
 				{
 					compilationContext.ViewBuilder.AppendOutputLine(
-						@"<!DOCTYPE HTML PUBLIC ""-//W3C//DTD XHTML 1.0 Frameset//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"">");
+            @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Frameset//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"">");
 				}
 				else if(string.Equals(content, "html"))
 				{
