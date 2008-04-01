@@ -1,4 +1,4 @@
 namespace MvcContrib.NHamlViewEngine
 {
-	public delegate void BlockClosingAction();
+	public delegate void BlockClosingAction(); 
 }
