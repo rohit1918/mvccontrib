@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using MvcContrib.UI.Tags;
 using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace MvcContrib.UI.Html
 {
@@ -46,5 +47,31 @@ namespace MvcContrib.UI.Html
 		void For<T>(T dataItem, string url, Action<SmartForm<T>> block);
 		void For<T>(T dataItem, string url, IDictionary attributes, Action<SmartForm<T>> block);
 		void For<T>(string viewDataKey, string url, IDictionary attributes, Action<SmartForm<T>> block);
+      string ValidatorRegistrationScripts();
+      string ValidatorInitializationScripts();
+		IDictionary<string, object> FormValidation();
+		IDictionary<string, object> FormValidation(string validationGroup);
+		string RequiredValidator(string name, string referenceName, string text);
+		string RequiredValidator(string name, string referenceName, string text, IDictionary attributes);
+		string RequiredValidator(string name, string referenceName, string text, string validationGroup);
+		string RequiredValidator(string name, string referenceName, string text, string validationGroup, IDictionary attributes);
+		string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue);
+		string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue, IDictionary attributes);
+		string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text);
+		string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, IDictionary attributes);
+		string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, string validationGroup);
+		string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, string validationGroup, IDictionary attributes);
+		string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text);
+		string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, IDictionary attributes);
+		string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, string validationGroup);
+		string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, string validationGroup, IDictionary attributes);
+		string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text);
+		string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, IDictionary attributes);
+		string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, string validationGroup);
+		string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, string validationGroup, IDictionary attributes);
+		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text);
+		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, IDictionary attributes);
+		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup);
+		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup, IDictionary attributes);
 	}
 }
