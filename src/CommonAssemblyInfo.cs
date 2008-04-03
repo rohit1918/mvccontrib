@@ -13,11 +13,11 @@ using System.Runtime.InteropServices;
 //------------------------------------------------------------------------------
 
 [assembly: ComVisibleAttribute(false)]
-[assembly: AssemblyVersionAttribute("0.0.1.0")]
-[assembly: AssemblyFileVersionAttribute("0.0.1.0")]
+[assembly: AssemblyVersionAttribute("0.0.1.96")]
+[assembly: AssemblyFileVersionAttribute("0.0.1.96")]
 [assembly: AssemblyCopyrightAttribute("Copyright © MVC Contrib 2007-2008")]
 [assembly: AssemblyProductAttribute("MVCContrib")]
 [assembly: AssemblyCompanyAttribute("MVC Contrib")]
 [assembly: AssemblyConfigurationAttribute("release")]
-[assembly: AssemblyInformationalVersionAttribute("0.0.1.0")]
+[assembly: AssemblyInformationalVersionAttribute("0.0.1.96")]
 
