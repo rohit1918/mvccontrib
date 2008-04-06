@@ -201,6 +201,15 @@
     <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
     <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
     <Compile Include="RescueConventionTester.cs" />
+    <Compile Include="Rest\Routing\Model\Controller.cs" />
+    <Compile Include="Rest\Routing\RestfulRoutingFixture.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\SpecForExtraActions.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\SpecsForIdBuilder.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\SpecsForNestedRoutes.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\When_AddRouteFromPath.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\When_AddRoute_For_Controller_In_A_Different_Path.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\When_AddRoute_For_Controller_In_A_Different_Path_And_Default_Routes.cs" />
+    <Compile Include="Rest\Routing\Specs\For_RestfulRoutingBuilder\When_Register_For_Any_Controller.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
