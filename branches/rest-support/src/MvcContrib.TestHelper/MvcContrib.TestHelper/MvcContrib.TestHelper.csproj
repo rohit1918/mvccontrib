@@ -68,14 +68,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\Builders\MvcRequestBuilder.cs" />
+    <Compile Include="Context\Builders\RouteContextBuilder.cs" />
     <Compile Include="MockSession.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Context\Builders\RestfulRoutingFixtureContextAdapter.cs" />
+    <Compile Include="Stubs\ITestHttpContext.cs" />
+    <Compile Include="Stubs\ITestHttpRequest.cs" />
+    <Compile Include="Stubs\MvcHttpContextStub.cs" />
+    <Compile Include="Stubs\MvcHttpRequestStub.cs" />
     <Compile Include="TestControllerBuilder.cs" />
     <Compile Include="ControllerInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedirectToActionData.cs" />
     <Compile Include="RenderViewData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MVCContrib\MVCContrib.csproj">
+      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
+      <Name>MVCContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
