@@ -69,6 +69,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\mvpxml\Mvp.Xml.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject.Conditions, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\ninject\Ninject.Conditions.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Core, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\ninject\Ninject.Core.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\nunit\nunit.framework.dll</HintPath>
@@ -134,6 +142,7 @@
     <Compile Include="ComponentControllerFactories\IoCComponentControllerFactoryTester.cs" />
     <Compile Include="ComponentControllerFactories\SampleComponentController.cs" />
     <Compile Include="ComponentControllerFactories\SampleComponentController2.cs" />
+    <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
     <Compile Include="HashTester.cs" />
@@ -141,6 +150,7 @@
     <Compile Include="IoC\IDependency.cs" />
     <Compile Include="IoC\INestedDependency.cs" />
     <Compile Include="IoC\NestedDependency.cs" />
+    <Compile Include="IoC\NinjectDependencyResolverTester.cs" />
     <Compile Include="IoC\ObjectFactoryDependencyTesterResolver.cs" />
     <Compile Include="IoC\SimpleDependency.cs" />
     <Compile Include="IoC\SpringDependencyResolverTester.cs" />
@@ -257,6 +267,10 @@
     <ProjectReference Include="..\MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj">
       <Project>{9B885FC4-45C0-4526-9253-A799238EDD66}</Project>
       <Name>MvcContrib.NHamlViewEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
+      <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
+      <Name>MvcContrib.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.ObjectBuilder\MvcContrib.ObjectBuilder.csproj">
       <Project>{25482A84-38C4-470B-A8B8-5412226FDEEF}</Project>
