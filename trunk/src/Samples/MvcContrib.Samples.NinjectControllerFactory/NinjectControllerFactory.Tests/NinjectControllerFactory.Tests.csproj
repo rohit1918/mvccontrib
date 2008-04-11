@@ -33,11 +33,11 @@
   <ItemGroup>
     <Reference Include="Ninject.Core, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\ninject\Ninject.Core.dll</HintPath>
+      <HintPath>..\..\bin\Ninject.Core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\nunit\nunit.framework.dll</HintPath>
+      <HintPath>..\..\bin\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
