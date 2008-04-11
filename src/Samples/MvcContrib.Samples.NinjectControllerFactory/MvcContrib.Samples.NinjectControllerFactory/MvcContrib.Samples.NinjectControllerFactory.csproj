@@ -32,19 +32,19 @@
   <ItemGroup>
     <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
+      <HintPath>..\..\bin\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="MvcContrib.Ninject, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Ninject.dll</HintPath>
+      <HintPath>..\..\bin\MvcContrib.Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Conditions, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\ninject\Ninject.Conditions.dll</HintPath>
+      <HintPath>..\..\bin\Ninject.Conditions.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Core, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\bin\ninject\Ninject.Core.dll</HintPath>
+      <HintPath>..\..\bin\Ninject.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -56,15 +56,15 @@
     </Reference>
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET MVC Preview 2\Assemblies\System.Web.Abstractions.dll</HintPath>
+      <HintPath>..\..\bin\System.Web.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET MVC Preview 2\Assemblies\System.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\bin\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft ASP.NET MVC Preview 2\Assemblies\System.Web.Routing.dll</HintPath>
+      <HintPath>..\..\bin\System.Web.Routing.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
