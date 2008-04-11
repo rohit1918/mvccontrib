@@ -25,7 +25,7 @@
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
 	<target name="cruise" depends="build, package"/>
   <target name="cruise-coverage" depends="analyze"/>
-	<target name="commiter" depends="build, analyze, package"/>
+	<target name="commiter" depends="build, analyze, build-help,package"/>
 
 	<target name="init" description="Initializes build properties">
 		<tstamp>
@@ -155,13 +155,16 @@
   </target>
   
     <target name="compile-samples" depends="init, move-for-samples">
+      
     <echo message="Build Directory is ${build.dir}" />
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
 				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Clean /p:Configuration=${project.config} /v:q" workingdir="." />
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
 				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
-            commandline="${samples.dir}\MvcContrib.Samples.FormHelper\MvcContrib.Samples.FormHelper.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />      
+            commandline="${samples.dir}\MvcContrib.Samples.FormHelper\MvcContrib.Samples.FormHelper.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
+              commandline="${samples.dir}\MvcContrib.Samples.NinjectControllerFactory\MvcContrib.Samples.NinjectControllerFactory.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
     </target>
 
 
@@ -218,7 +221,10 @@
 		-->
 	</target>
 
-  
+  <target name="build-help">
+    <exec program="bin\sandcastle\Sandcastle Help File Builder\SandcastleBuilderConsole.exe"
+      commandline="documentation\docs.shfb" workingdir="." />
+  </target>  
   
   <target name="package">
 		<!-- 		
@@ -275,7 +281,12 @@
         <include name="license.txt" />
       </fileset>
     </copy>
-		<zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
+    <copy todir="${build.base}/release/" >
+      <fileset basedir="./build/help">
+        <include name="*.chm" />
+      </fileset>
+    </copy>
+    <zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
 			<fileset basedir="${build.base}/release/">
         <include name="license.txt" />
         <include name="**/*.*"/>
