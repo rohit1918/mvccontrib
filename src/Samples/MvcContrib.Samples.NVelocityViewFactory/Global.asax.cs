@@ -6,6 +6,7 @@ using System.Web.Routing;
 using Castle.Core;
 using Castle.Windsor;
 using MvcContrib.ControllerFactories;
+using MvcContrib.Castle;
 
 namespace MvcContrib.Samples.NVelocityViewFactory
 {
@@ -44,15 +45,9 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 				_container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(Castle.NVelocityViewFactory));
 
 				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
-				
-				foreach (Type type in assemblyTypes)
-				{
-					if (typeof(IController).IsAssignableFrom(type))
-					{
-						_container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-						ControllerBuilder.Current.SetControllerFactory( typeof(WindsorControllerFactory));
-					}
-				}
+
+				_container.RegisterControllers(assemblyTypes);
+				ControllerBuilder.Current.SetControllerFactory(typeof (WindsorControllerFactory));
 			}
 		}
 
