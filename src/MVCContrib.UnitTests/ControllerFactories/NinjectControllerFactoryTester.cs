@@ -1,6 +1,5 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib.ControllerFactories;
 using MvcContrib.Ninject;
 using Ninject.Conditions;
 using Ninject.Core;

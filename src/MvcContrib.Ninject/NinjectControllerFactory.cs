@@ -4,7 +4,7 @@ using System.Web.Routing;
 using MvcContrib.Ninject;
 using Ninject.Core.Parameters;
 
-namespace MvcContrib.ControllerFactories
+namespace MvcContrib.Ninject
 {
     public class NinjectControllerFactory : IControllerFactory
     {

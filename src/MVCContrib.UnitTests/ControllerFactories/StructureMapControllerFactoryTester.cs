@@ -1,6 +1,6 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib.ControllerFactories;
+using MvcContrib.StructureMap;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using StructureMap;

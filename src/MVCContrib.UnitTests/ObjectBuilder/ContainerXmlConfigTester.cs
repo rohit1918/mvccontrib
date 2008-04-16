@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Practices.ObjectBuilder;
-using MvcContrib.ObjectBuilder;
+using MvcContrib.ObjectBuilder.Configuration;
 using NUnit.Framework;
 using Rhino.Mocks;
 

@@ -62,24 +62,24 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DependencyContainer\CompositeWeb\Strategies\ConstructorReflectionStrategy.cs" />
-    <Compile Include="DependencyContainer\CompositeWeb\Strategies\CreationStrategy.cs" />
-    <Compile Include="DependencyContainer\CompositeWeb\Strategies\MethodReflectionStrategy.cs" />
-    <Compile Include="DependencyContainer\CompositeWeb\Strategies\PropertyReflectionStrategy.cs" />
-    <Compile Include="DependencyContainer\CompositeWeb\Strategies\ReflectionStrategy.cs" />
-    <Compile Include="DependencyContainer\CompositeWeb\WCSFBuilderBase.cs" />
-    <Compile Include="DependencyContainer\Configuration\ContainerXmlConfig.cs" />
-    <Compile Include="DependencyContainer\Configuration\ContainerXmlConfigElement.cs">
+    <Compile Include="DependencyContainer.cs" />
+    <Compile Include="CompositeWeb\Strategies\ConstructorReflectionStrategy.cs" />
+    <Compile Include="CompositeWeb\Strategies\CreationStrategy.cs" />
+    <Compile Include="CompositeWeb\Strategies\MethodReflectionStrategy.cs" />
+    <Compile Include="CompositeWeb\Strategies\PropertyReflectionStrategy.cs" />
+    <Compile Include="CompositeWeb\Strategies\ReflectionStrategy.cs" />
+    <Compile Include="CompositeWeb\WCSFBuilderBase.cs" />
+    <Compile Include="Configuration\ContainerXmlConfig.cs" />
+    <Compile Include="Configuration\ContainerXmlConfigElement.cs">
       <DependentUpon>ContainerXmlConfigElement.xsd</DependentUpon>
     </Compile>
-    <Compile Include="DependencyContainer\DependencyContainer.cs" />
-    <Compile Include="DependencyContainer\IDependencyContainerAccessor.cs" />
-    <Compile Include="DependencyContainer\IDependencyContainer.cs" />
+    <Compile Include="IDependencyContainer.cs" />
+    <Compile Include="IDependencyContainerAccessor.cs" />
     <Compile Include="ObjectBuilderControllerFactory.cs" />
     <Compile Include="ObjectFactoryDependencyResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DependencyContainer\Configuration\ContainerXmlConfigElement.xsd" />
+    <EmbeddedResource Include="Configuration\ContainerXmlConfigElement.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
