@@ -4,8 +4,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
 using MvcContrib.Unity;
+using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
-namespace MvcContrib.ControllerFactories
+namespace MvcContrib.Unity
 {
     public class UnityControllerFactory : DefaultControllerFactory
     {

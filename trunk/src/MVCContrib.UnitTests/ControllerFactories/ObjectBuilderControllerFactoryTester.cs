@@ -2,7 +2,6 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.ControllerFactories;
 using MvcContrib.ObjectBuilder;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
