@@ -79,15 +79,13 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void ReturnBinderReturnNullIfNoAttributeIsUsed()
+		public void MethodWithCustomReturnTypeAndNoReturnBinderIsNotAnAction()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
-			ActionMetaData action = metaData.GetActions("ActionReturningValueWithOutBinder")[0];
-
-			Assert.AreEqual(action.ReturnBinderDescriptor,null);
+			Assert.IsNull(metaData.GetAction("ActionReturningValueWithOutBinder"));
 		}
 
 		[Test]
@@ -212,6 +210,14 @@ namespace MvcContrib.UnitTests.MetaData
 			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
 			descriptor.GetMetaData((Type)null);
 		}
+
+		[Test]
+		public void ShouldThrowIfReturnTypeIsNull()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
+			Assert.IsNull(metaData.GetAction("VoidAction"));
+		}
 	}
 
 	internal class CountControllerDescriptor : IControllerDescriptor
@@ -233,29 +239,38 @@ namespace MvcContrib.UnitTests.MetaData
 	[Rescue("Test")]
 	internal class MetaDataTestController : ConventionController
 	{
-		public void BasicAction()
+		public void VoidAction()
 		{
+			
 		}
 
-		public void SimpleAction(string param1)
+		public ActionResult BasicAction()
 		{
+			return new EmptyResult();
 		}
 
-		public void SimpleAction(string param1, int param2)
+		public ActionResult SimpleAction(string param1)
 		{
+			return new EmptyResult();
+		}
+
+		public ActionResult SimpleAction(string param1, int param2)
+		{
+			return new EmptyResult();
 		}
 
 		public string Property { get; set; }
 
 		[NonAction]
-		public void NonAction()
+		public ActionResult NonAction()
 		{
-			
+			return new EmptyResult();
 		}
 
 		[DefaultAction]
-		public void CatchAllAction()
+		public ActionResult CatchAllAction()
 		{
+			return new EmptyResult();
 		}
 
 		[return: XMLReturnBinder]
@@ -270,36 +285,41 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Rescue("Test")]
-		public void ComplexAction([Deserialize("complex")] object complex)
+		public ActionResult ComplexAction([Deserialize("complex")] object complex)
 		{
+			return new EmptyResult();
 		}
 
-		public void InvalidAction(out string test, ref string test2)
+		public ActionResult InvalidAction(out string test, ref string test2)
 		{
 			test = "test";
+			return new EmptyResult();
 		}
 
-		public bool DoInvokeAction(string action)
-		{
-			return InvokeAction(action);
-		}
+//		public bool DoInvokeAction(string action)
+//		{
+//			return InvokeAction(action);
+//			throw new NotImplementedException();
+//		}
 
-		public void DoInvokeActionMethod(ActionMetaData action)
-		{
-			InvokeActionMethod(action);
-		}
+//		public void DoInvokeActionMethod(ActionMetaData action)
+//		{
+//			InvokeActionMethod(action);
+//		}
 	}
 
 	internal class TestControllerWithMultipleDefaultActions : ConventionController
 	{
 		[DefaultAction]
-		public void Action1()
+		public ActionResult Action1()
 		{
+			return new EmptyResult();
 		}
 
 		[DefaultAction]
-		public void Action2()
+		public ActionResult Action2()
 		{
+			return new EmptyResult();
 		}
 	}
 }

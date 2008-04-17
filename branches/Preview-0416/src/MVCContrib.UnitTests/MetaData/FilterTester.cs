@@ -111,7 +111,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 		class FilterReturnsTrue : ActionFilterAttribute
 		{
-			public override void OnActionExecuting(FilterExecutingContext filterContext)
+			public override void OnActionExecuting(ActionExecutingContext filterContext)
 			{
 				filterContext.Cancel = false;
 			}
@@ -119,7 +119,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 		class FilterReturnsFalse : ActionFilterAttribute
 		{
-			public override void OnActionExecuting(FilterExecutingContext filterContext)
+			public override void OnActionExecuting(ActionExecutingContext filterContext)
 			{
 				filterContext.Cancel = true;
 			}
@@ -136,7 +136,9 @@ namespace MvcContrib.UnitTests.MetaData
 
 			public bool DoInvokeAction(string action)
 			{
-				return InvokeAction(action);
+				//return InvokeAction(action);
+				//TODO: Fix
+				throw new NotImplementedException();
 			}
 
 			[FilterReturnsTrue]

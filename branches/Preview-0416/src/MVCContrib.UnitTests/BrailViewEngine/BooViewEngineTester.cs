@@ -21,6 +21,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		private HttpContextBase _httpContext;
 		private MockRepository _mocks;
 		private StringWriter _output;
+		private Controller _controller;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
 
@@ -36,8 +37,10 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			SetupResult.For(_httpContext.Response).Return(response);
 //			SetupResult.For(_httpContext.Session).Return(_mocks.DynamicMock<HttpSessionStateBase>());
 			RequestContext requestContext = new RequestContext(_httpContext, new RouteData());
-			IController controller = new Controller();
-			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
+			_controller = _mocks.CreateMock<Controller>();
+			_mocks.Replay(_controller);
+			
+			ControllerContext controllerContext = new ControllerContext(requestContext, _controller);
 			_viewContext = new ViewContext(controllerContext, "index", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
 				                null);
 
@@ -46,6 +49,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_viewEngine.Options = new BooViewEngineOptions();
 			_viewEngine.Initialize();
 			_mocks.Replay(_httpContext);
+			
 		}
 
 		[Test]

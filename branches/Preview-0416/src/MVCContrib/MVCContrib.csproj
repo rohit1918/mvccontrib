@@ -75,6 +75,7 @@
     <Compile Include="Attributes\DeserializeAttribute.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="Attributes\XMLReturnBinder.cs" />
+    <Compile Include="ConventionControllerActionInvoker.cs" />
     <Compile Include="ExtendedComponentController\ComponentControllerBuilder.cs" />
     <Compile Include="ExtendedComponentController\DefaultComponentControllerFactory.cs" />
     <Compile Include="ExtendedComponentController\IComponentControllerFactory.cs" />

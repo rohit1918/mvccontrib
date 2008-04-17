@@ -177,7 +177,7 @@ namespace MvcContrib.TestHelper
 		/// <summary>
 		/// Not Implemented
 		/// </summary>
-		public override HttpStaticObjectsCollection StaticObjects
+		public override HttpStaticObjectsCollectionBase StaticObjects
 		{
 			get { throw new NotImplementedException(); }
 		}

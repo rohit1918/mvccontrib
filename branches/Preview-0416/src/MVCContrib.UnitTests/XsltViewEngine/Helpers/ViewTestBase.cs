@@ -24,8 +24,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
 			mockRepository = new MockRepository();
 			HttpContext = mockRepository.DynamicHttpContextBase();
-			SetupResult.For(Request.QueryString).Return(new NameValueCollection());
-			SetupResult.For(Request.Form).Return(new NameValueCollection());
+			//SetupResult.For(Request.QueryString).Return(new NameValueCollection());
+			//SetupResult.For(Request.Form).Return(new NameValueCollection());
 			SetupResult.For(Request.UserHostAddress).Return("::1");
 			SetupResult.For(Request.UserHostName).Return("::1");
 			SetupResult.For(Request.RequestType).Do(new Func<string>(() => HttpMethodToReturn)); //.Return("GET");

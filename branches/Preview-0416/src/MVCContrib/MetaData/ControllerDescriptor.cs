@@ -41,8 +41,19 @@ namespace MvcContrib.MetaData
 
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
 				IReturnBinder returnBinder = GetReturnBinder(actionMetaData);
+
 				if(returnBinder!=null)
+				{
 					actionMetaData.ReturnBinderDescriptor = new ReturnBinderDescriptor(actionMetaData.MethodInfo.ReturnType, returnBinder);
+				}
+				else if(!typeof(ActionResult).IsAssignableFrom(actionMethod.ReturnType))
+				{
+					//Actions must have a return type assignable from ActionResult.
+					//The only exception to this is if a ReturnBinder is specified.
+					continue;
+				}
+
+
 				RescueAttribute[] actionRescues = GetRescues(actionMethod, false);
 
 				foreach (RescueAttribute rescue in actionRescues)

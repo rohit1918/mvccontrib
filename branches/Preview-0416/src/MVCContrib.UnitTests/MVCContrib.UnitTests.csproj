@@ -145,6 +145,10 @@
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
+    <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
+    <Compile Include="ConventionController\DefaultActionController.cs" />
+    <Compile Include="ConventionController\FakeReturnBinder.cs" />
+    <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -175,7 +179,7 @@
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
     <Compile Include="IoC\UnityDependencyTesterResolver.cs" />
     <Compile Include="IoC\WindsorDependencyResolverTester.cs" />
-    <Compile Include="ConventionControllerTester.cs" />
+    <Compile Include="ConventionController\ConventionControllerTester.cs" />
     <Compile Include="IoC\WindsorExtensionTester.cs" />
     <Compile Include="EmailTemplateServiceTest.cs" />
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />

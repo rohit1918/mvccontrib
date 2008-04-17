@@ -1,11 +1,9 @@
-﻿using System;
+/*
+using System;
 using System.Collections.Specialized;
 using System.Reflection;
-using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib;
-using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -151,104 +149,6 @@ namespace MvcContrib.UnitTests
 			_controller.DoInvokeAction("ReturnBinder");
 			Assert.IsTrue(_controller.ReturnBinderInvoked);
 		}
-
-		class TestController : ConventionController
-		{
-			public bool CancelAction = false;
-			public bool ActionWasCalled = false;
-			public bool OnErrorWasCalled = false;
-			public bool? OnErrorResult = null;
-			public bool ReturnBinderInvoked = false;
-
-			public void BasicAction(int id)
-			{
-			}
-
-			public void SimpleAction(string param1)
-			{
-			}
-
-			public void SimpleAction(string param1, int param2)
-			{
-			}
-
-			[return: FakeReturnBinder]
-			public string ReturnBinder()
-			{
-				return "Test";
-			}
-
-			public void ComplexAction([Deserialize("ids")] int[] ids)
-			{
-				ActionWasCalled = true;
-			}
-
-			public void WithRedirect()
-			{
-				RedirectToAction("ComplexAction");
-				//Simulate RedirectToAction throwing a ThreadAbortException
-				ConstructorInfo ctor = typeof(ThreadAbortException).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
-				ThreadAbortException exc = (ThreadAbortException)ctor.Invoke(Type.EmptyTypes);
-				throw exc;
-			}
-
-			public void BadAction()
-			{
-				throw new AbandonedMutexException();
-			}
-
-			protected override void OnActionExecuting(FilterExecutingContext filterContext)
-			{
-				filterContext.Cancel = CancelAction;
-			}
-
-			public bool DoInvokeAction(string action)
-			{
-				return InvokeAction(action);
-			}
-
-			public void DoInvokeActionMethod(ActionMetaData action)
-			{
-				InvokeActionMethod(action);
-			}
-
-			public void InvokeOnErrorWithoutInnerException()
-			{
-				Exception e = new Exception("Blah");
-				OnError(MetaData.GetAction("BasicAction"), e);
-			}
-
-			protected override bool OnError(ActionMetaData action, Exception exception)
-			{
-				bool result = base.OnError(action, exception);
-				OnErrorWasCalled = true;
-				OnErrorResult = result;
-				return result;
-			}
-		}
-
-		class DefaultActionController : ConventionController
-		{
-			public bool DefaultActionCalled = false;
-
-			[DefaultAction]
-			public void DefaultAction()
-			{
-				DefaultActionCalled = true;	
-			}
-
-			public bool DoInvokeAction(string action)
-			{
-				return InvokeAction(action);
-			}
-		}
-
-		class FakeReturnBinder : AbstractReturnBinderAttribute, IReturnBinder
-		{
-			public override void Bind(IController controller, ControllerContext controllerContext, Type returnType, object returnValue)
-			{
-				((TestController)controller).ReturnBinderInvoked = true;
-			}
-		}
 	}
 }
+*/

@@ -269,7 +269,7 @@ namespace MvcContrib.XsltViewEngine
 
 			for(int i = 0; i < httpContext.Request.Files.Count; i++)
 			{
-				HttpPostedFile file = httpContext.Request.Files[i];
+				HttpPostedFileBase file = httpContext.Request.Files[i];
 				string fileName = file.FileName.Substring(file.FileName.LastIndexOf("\\") + 1);
 
 				if((file.FileName != "") & (file.ContentLength != 0))
