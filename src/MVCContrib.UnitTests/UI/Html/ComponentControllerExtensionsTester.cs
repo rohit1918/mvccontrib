@@ -18,7 +18,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void SetUp()
 		{
 			builder = new TestControllerBuilder();
-			controller = builder.CreateController<TestHelperController>();
+			controller = new TestHelperController();
+			builder.InitializeController(controller);
 			htmlHelper = new HtmlHelper(new ViewContext(controller.ControllerContext, "someview", "", null, null));
 		}
 

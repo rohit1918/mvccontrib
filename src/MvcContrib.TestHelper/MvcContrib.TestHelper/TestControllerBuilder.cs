@@ -10,7 +10,7 @@ namespace MvcContrib.TestHelper
 {
 	/// <summary>
 	/// This is primary class used to create controllers.
-	/// After initializing, call CreateController to create a controller with proper environment elements.
+	/// After initializing, call InitializeController to create a controller with proper environment elements.
 	/// Exposed properties such as Form, QueryString, and HttpContext allow access to text environment.
 	/// RenderViewData and RedirectToActionData record those methods
 	/// </summary>
@@ -34,27 +34,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets the data object created by a controller calling RedirectToAction
-		/// </summary>
-		/// <value>The RedirectToAction data.</value>
-		public RedirectToActionData RedirectToActionData
-		{
-			get;
-			protected set;
-		}
-
-		/// <summary>
-		/// Gets the data object created by a controller calling RenderView
-		/// </summary>
-		/// <value>The RenderViewData data.</value>
-		public RenderViewData RenderViewData
-		{
-			get;
-			protected set;
-		}
-
-		/// <summary>
-		/// Gets the HttpContext that built controllers will have set internally when created with CreateController
+		/// Gets the HttpContext that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The HTTPContext</value>
 		public HttpContextBase HttpContext
@@ -64,7 +44,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets the Form data that built controllers will have set internally when created with CreateController
+		/// Gets the Form data that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The NameValueCollection Form</value>
 		public NameValueCollection Form
@@ -74,7 +54,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets the QueryString that built controllers will have set internally when created with CreateController
+		/// Gets the QueryString that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The NameValueCollection QueryString</value>
 		public NameValueCollection QueryString
@@ -84,7 +64,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets the Session that built controllers will have set internally when created with CreateController
+		/// Gets the Session that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The IHttpSessionState Session</value>
 		public HttpSessionStateBase Session
@@ -94,7 +74,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets the TempDataDictionary that built controllers will have set internally when created with CreateController
+		/// Gets the TempDataDictionary that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The TempDataDictionary</value>
 		public TempDataDictionary TempDataDictionary
@@ -104,7 +84,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets or sets the RouteData that built controllers will have set internally when created with CreateController
+		/// Gets or sets the RouteData that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The RouteData</value>
 		public RouteData RouteData
@@ -114,7 +94,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets or sets the AppRelativeCurrentExecutionFilePath that built controllers will have set internally when created with CreateController
+		/// Gets or sets the AppRelativeCurrentExecutionFilePath that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The RouteData</value>
 		public string AppRelativeCurrentExecutionFilePath
@@ -124,7 +104,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets or sets the AppRelativeCurrentExecutionFilePath string that built controllers will have set internally when created with CreateController
+		/// Gets or sets the AppRelativeCurrentExecutionFilePath string that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The ApplicationPath string</value>
 		public string ApplicationPath
@@ -134,7 +114,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Gets or sets the PathInfo string that built controllers will have set internally when created with CreateController
+		/// Gets or sets the PathInfo string that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The PathInfo string</value>
 		public string PathInfo
@@ -175,22 +155,12 @@ namespace MvcContrib.TestHelper
 		/// <summary>
 		/// Creates the controller with proper environment variables setup. 
 		/// </summary>
-		/// <typeparam name="T">The type of controller to create</typeparam>
-		/// <param name="constructorArgs">Arguments to pass to the constructor for the controller</param>
-		/// <returns>A new controller of the specified type</returns>
-		public T CreateController<T>(params object[] constructorArgs) where T : Controller
+		/// <param name="controller">The controller to initialize</param>
+		public void InitializeController(Controller controller)
 		{
-			ProxyGenerator generator = new ProxyGenerator(); //Castle DynamicProxy
-			Controller controller = (Controller)generator.CreateClassProxy(typeof(T), new IInterceptor[] { new ControllerInterceptor(this) }, constructorArgs);
-
-			ControllerContext controllerContext = new ControllerContext(HttpContext, RouteData, controller);
+            ControllerContext controllerContext = new ControllerContext(HttpContext, RouteData, controller);
 			controller.ControllerContext = controllerContext;
-			//normally set in the internal function controller.Execute();
-
-			typeof(T).GetProperty("TempData").SetValue(controller, TempDataDictionary, null);
-			//also set in controller.Execute();
-
-			return controller as T;
+			controller.TempData = TempDataDictionary;
 		}
 	}
 }
