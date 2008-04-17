@@ -18,8 +18,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			RequestContext context = new RequestContext(mocks.DynamicHttpContextBase(), new RouteData());
 
 			NHamlControllerFactory controllerFactory = new NHamlControllerFactory();
-			ConventionController controller =
-				(ConventionController)((IControllerFactory)controllerFactory).CreateController(context, "Convention");
+			MvcContrib.ConventionController controller =
+				(MvcContrib.ConventionController)((IControllerFactory)controllerFactory).CreateController(context, "Convention");
 
 			Assert.IsNotNull(controller.ViewEngine);
 			Assert.IsAssignableFrom(typeof(NHamlViewFactory), controller.ViewEngine);

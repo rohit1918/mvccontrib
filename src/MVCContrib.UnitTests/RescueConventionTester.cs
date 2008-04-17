@@ -160,7 +160,7 @@ namespace MvcContrib.UnitTests
 		}
 	}
 
-	internal abstract class BaseRescueTestController : ConventionController
+	internal abstract class BaseRescueTestController : MvcContrib.ConventionController
 	{
 		/*protected override void RenderView(string viewName, string masterName, object viewData)
 		{

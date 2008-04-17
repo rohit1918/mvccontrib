@@ -83,7 +83,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			bool result = _controller.DoInvokeAction("MultipleFilters");
 
-			Assert.IsFalse(result);
+			Assert.IsTrue(result);
 			Assert.IsFalse(_controller.MultipleFiltersCalled);
 		}
 
@@ -105,7 +105,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			bool result = _controller.DoInvokeAction("UnsuccessfulFilter");
 
-			Assert.IsFalse(result);
+			Assert.IsTrue(result); 
 			Assert.IsFalse(_controller.UnSuccessfulFilterCalled);
 		}
 
@@ -126,7 +126,7 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[FilterReturnsTrue]
-		class FilteredController : ConventionController
+		class FilteredController : MvcContrib.ConventionController
 		{
 			public bool SuccessfulFilterCalled = false;
 			public bool UnSuccessfulFilterCalled = false;
@@ -136,34 +136,37 @@ namespace MvcContrib.UnitTests.MetaData
 
 			public bool DoInvokeAction(string action)
 			{
-				//return InvokeAction(action);
-				//TODO: Fix
-				throw new NotImplementedException();
+				ActionInvoker = new ConventionControllerActionInvoker(ControllerContext);
+				return ActionInvoker.InvokeAction(action, null);
 			}
 
 			[FilterReturnsTrue]
-			public void SuccessfulFilter()
+			public ActionResult SuccessfulFilter()
 			{
 				SuccessfulFilterCalled = true;
+				return new EmptyResult();
 			}
 
 			[FilterReturnsFalse]
-			public void UnsuccessfulFilter()
+			public ActionResult UnsuccessfulFilter()
 			{
 				UnSuccessfulFilterCalled = true;
+				return new EmptyResult();
 			}
 
 			[FilterReturnsTrue(Order = 1)]
 			[FilterReturnsFalse(Order = 100)]
-			public void MultipleFilters()
+			public ActionResult MultipleFilters()
 			{
 				MultipleFiltersCalled = true;
+				return new EmptyResult();
 			}
 
 			[PostOnly]
-			public void PostOnly()
+			public ActionResult PostOnly()
 			{
 				PostOnlyCalled = true;
+				return new EmptyResult();
 			}
 		}
 	}

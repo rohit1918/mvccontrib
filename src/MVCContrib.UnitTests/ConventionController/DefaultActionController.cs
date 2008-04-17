@@ -2,9 +2,9 @@ using System;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
 
-namespace MvcContrib.UnitTests
+namespace MvcContrib.UnitTests.ConventionController
 {
-	class DefaultActionController : ConventionController
+	class DefaultActionController : MvcContrib.ConventionController
 	{
 		public bool DefaultActionCalled = false;
 
