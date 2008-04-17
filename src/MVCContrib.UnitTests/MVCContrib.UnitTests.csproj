@@ -187,7 +187,6 @@
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
     <Compile Include="MetaData\FilterTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
-    <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
     <Compile Include="ActionResults\XmlActionResultTester.cs" />
     <Compile Include="NHamlViewEngine\FunctionalTester.cs">
@@ -214,7 +213,7 @@
     <Compile Include="ObjectBuilder\CompositeWeb\WCSFBuilderBaseFixture.cs" />
     <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
     <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
-    <Compile Include="RescueConventionTester.cs" />
+    <Compile Include="ConventionController\RescueConventionTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />

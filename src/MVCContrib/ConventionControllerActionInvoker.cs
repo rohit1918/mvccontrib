@@ -66,7 +66,6 @@ namespace MvcContrib
 			InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);
 
 			//TODO: Sort filters to match the order ControllerActionInvoker uses.
-			//TODO: Return Binders
 			//TODO: Rescues
 
 			return true;

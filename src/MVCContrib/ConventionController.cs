@@ -100,13 +100,13 @@ namespace MvcContrib
 			return true;
 		}
 
-		private bool _isRedirected = false;
+		//private bool _isRedirected = false;
 /*		protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
 		{
 			_isRedirected = true;
 			base.RedirectToAction(values);
 		}*/
-
+/*
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{
 			Type baseExceptionType = exception.GetBaseException().GetType();
@@ -137,9 +137,14 @@ namespace MvcContrib
 			}
 
 			return false;
-		}
+		}*/
 
-		protected virtual void OnPreRescue(Exception thrownException)
+		/// <summary>
+		/// Occurs before a Rescue is invoked.
+		/// </summary>
+		/// <param name="thrownException">The exception that was thrown</param>
+		[NonAction]
+		public virtual void OnPreRescue(Exception thrownException)
 		{
 
 		}
