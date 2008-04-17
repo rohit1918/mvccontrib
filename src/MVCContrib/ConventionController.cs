@@ -10,9 +10,15 @@ namespace MvcContrib
 {
 	public class ConventionController : Controller
 	{
-		public ActionMetaData SelectedAction { get; protected set; }
+		public ActionMetaData SelectedAction { get; protected internal set; }
 
-		protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
+		protected override void Execute(ControllerContext controllerContext)
+		{
+			ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+			base.Execute(controllerContext);
+		}
+
+	/*	protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
 		{
 			if (string.IsNullOrEmpty(actionName))
 			{
@@ -47,7 +53,7 @@ namespace MvcContrib
 			SelectedAction = selectedAction;
 
 			FilterContext filterContext = new FilterContext(ControllerContext, selectedAction.MethodInfo);
-			FilterExecutingContext executingContext = new FilterExecutingContext(filterContext);
+			ActionExecutingContext executingContext = new ActionExecutingContext(filterContext);
 
 			OnActionExecuting(executingContext);
 
@@ -73,14 +79,14 @@ namespace MvcContrib
 				}
 				finally
 				{
-					OnActionExecuted(new FilterExecutedContext(filterContext, null));
+					OnActionExecuted(new ActionExecutedContext(filterContext, null));
 				}
 			}
 
 			return true;
 		}
-
-		protected virtual bool ExecutePreActionFilters(ActionMetaData action, FilterExecutingContext context)
+*/
+		protected virtual bool ExecutePreActionFilters(ActionMetaData action, ActionExecutingContext context)
 		{
 			foreach(var filter in action.Filters)
 			{
@@ -95,11 +101,11 @@ namespace MvcContrib
 		}
 
 		private bool _isRedirected = false;
-		protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
+/*		protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
 		{
 			_isRedirected = true;
 			base.RedirectToAction(values);
-		}
+		}*/
 
 		protected virtual bool OnError(ActionMetaData action, Exception exception)
 		{

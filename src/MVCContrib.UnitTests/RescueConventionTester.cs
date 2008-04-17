@@ -162,10 +162,10 @@ namespace MvcContrib.UnitTests
 
 	internal abstract class BaseRescueTestController : ConventionController
 	{
-		protected override void RenderView(string viewName, string masterName, object viewData)
+		/*protected override void RenderView(string viewName, string masterName, object viewData)
 		{
 			this.ViewRendered = viewName;
-		}
+		}*/
 
 		public string ViewRendered
 		{
@@ -175,7 +175,8 @@ namespace MvcContrib.UnitTests
 
 		public bool InvokeActionPublic(string actionName)
 		{
-			return base.InvokeAction(actionName);
+			//return base.InvokeAction(actionName);
+			throw new NotImplementedException();
 		}
 	}
 
