@@ -89,19 +89,6 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void ReturnBinderReturnCorrectType()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-
-			ActionMetaData action = metaData.GetActions("ActionWithReturnBinder")[0];
-
-			Assert.IsInstanceOfType(typeof(XMLReturnBinder),action.ReturnBinderDescriptor.ReturnTypeBinder);
-			Assert.That(action.ReturnBinderDescriptor.ReturnType == typeof(int[]));
-		}
-
-		[Test]
 		public void BindShouldReturnNullIfBinderIsNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
@@ -237,7 +224,7 @@ namespace MvcContrib.UnitTests.MetaData
 	}
 
 	[Rescue("Test")]
-	internal class MetaDataTestController : ConventionController
+	internal class MetaDataTestController : MvcContrib.ConventionController
 	{
 		public void VoidAction()
 		{
@@ -273,17 +260,6 @@ namespace MvcContrib.UnitTests.MetaData
 			return new EmptyResult();
 		}
 
-		[return: XMLReturnBinder]
-		public int[] ActionWithReturnBinder()
-		{
-			return new int[] {2,1,4,5};
-		}
-
-		public int[] ActionReturningValueWithOutBinder()
-		{
-			return new int[]{2,3,1,5};
-		}
-
 		[Rescue("Test")]
 		public ActionResult ComplexAction([Deserialize("complex")] object complex)
 		{
@@ -308,7 +284,7 @@ namespace MvcContrib.UnitTests.MetaData
 //		}
 	}
 
-	internal class TestControllerWithMultipleDefaultActions : ConventionController
+	internal class TestControllerWithMultipleDefaultActions : MvcContrib.ConventionController
 	{
 		[DefaultAction]
 		public ActionResult Action1()

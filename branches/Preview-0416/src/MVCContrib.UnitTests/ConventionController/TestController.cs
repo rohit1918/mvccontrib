@@ -5,15 +5,17 @@ using System.Web.Mvc;
 using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 
-namespace MvcContrib.UnitTests
+namespace MvcContrib.UnitTests.ConventionController
 {
-	class TestController : ConventionController
+	class TestController : MvcContrib.ConventionController
 	{
 		public bool CancelAction = false;
 		public bool ActionWasCalled = false;
 		public bool OnErrorWasCalled = false;
 		public bool? OnErrorResult = null;
 		public bool ReturnBinderInvoked = false;
+		public bool ActionExecutingCalled;
+		public bool CustomActionResultCalled;
 
 		public ActionResult BasicAction(int id)
 		{
@@ -30,16 +32,21 @@ namespace MvcContrib.UnitTests
 			return new EmptyResult();
 		}
 
-		[return: FakeReturnBinder]
-		public string ReturnBinder()
+		[NonAction]
+		public ActionResult HiddenAction()
 		{
-			return "Test";
+			return new EmptyResult();
 		}
 
 		public ActionResult ComplexAction([Deserialize("ids")] int[] ids)
 		{
 			ActionWasCalled = true;
 			return new EmptyResult();
+		}
+
+		public ActionResult CustomResult()
+		{
+			return new CustomActionResult();
 		}
 
 		/*public  WithRedirect()
@@ -58,6 +65,7 @@ namespace MvcContrib.UnitTests
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			ActionExecutingCalled = true;
 			filterContext.Cancel = CancelAction;
 		}
 

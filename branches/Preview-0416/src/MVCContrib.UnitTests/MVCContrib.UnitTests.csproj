@@ -146,8 +146,8 @@
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
     <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
+    <Compile Include="ConventionController\CustomActionResult.cs" />
     <Compile Include="ConventionController\DefaultActionController.cs" />
-    <Compile Include="ConventionController\FakeReturnBinder.cs" />
     <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
@@ -189,7 +189,7 @@
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
-    <Compile Include="MetaData\XmlReturnBinderTester.cs" />
+    <Compile Include="ActionResults\XmlActionResultTester.cs" />
     <Compile Include="NHamlViewEngine\FunctionalTester.cs">
       <SubType>Code</SubType>
     </Compile>

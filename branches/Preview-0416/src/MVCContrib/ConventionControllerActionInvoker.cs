@@ -55,7 +55,12 @@ namespace MvcContrib
 			Controller.SelectedAction = actionMetaData;
 
 			IDictionary<string, object> parameters = GetParameterValues(actionMetaData.MethodInfo, values);
-			IList<IActionFilter> filters = new List<IActionFilter>(actionMetaData.Filters.Cast<IActionFilter>());
+			
+			//The controller implements IActionFilter. 
+			//Make sure its the first one in the list so that OnActionExecuting/OnActionExecuted get called.
+			var filters = new List<IActionFilter> { Controller };
+			filters.AddRange(actionMetaData.Filters.Cast<IActionFilter>());
+			
 
 			ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo, parameters, filters);
 			InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);

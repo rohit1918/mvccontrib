@@ -5,11 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.MetaData;
+using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
-namespace MvcContrib.UnitTests
+namespace MvcContrib.UnitTests.ConventionController
 {
 	[TestFixture]
 	public class ConventionControllerActionInvokerTester
@@ -27,16 +28,6 @@ namespace MvcContrib.UnitTests
 			_context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _controller);
 			_mocks.ReplayAll();
 			_invoker = new ConventionControllerActionInvoker(_context);
-		}
-
-		private bool InvokeAction(string actionName, ConventionController controller)
-		{
-			throw new NotImplementedException();
-		}
-
-		private bool InvokeAction(string actionName)
-		{
-			return InvokeAction(actionName, _controller);
 		}
 
 		[Test]
@@ -129,68 +120,40 @@ namespace MvcContrib.UnitTests
 			Assert.IsTrue(_controller.ActionWasCalled);
 		}
 
-		/*[Test]
-		//[ExpectedException(typeof(TargetInvocationException))]
-		//public void BadActionThrows()
-		//{
-		//	InvokeAction("BadAction");
-		//}
-
 		[Test]
-		public void ValidActionReturnsTrue()
+		public void ActionExecuting_should_be_called()
 		{
-			Assert.IsTrue(InvokeAction("ComplexAction"));
-			Assert.IsTrue(_controller.ActionWasCalled);
+			_invoker.InvokeAction("ComplexAction", null);
+			Assert.IsTrue(_controller.ActionExecutingCalled);
+		}
+
+		[Test, ExpectedException(typeof(TargetInvocationException))]
+		public void Bad_action_throws()
+		{
+			_invoker.InvokeAction("BadAction", null);
 		}
 
 		[Test]
-		public void HiddenActionReturnsFalse()
+		public void HiddenAction_returns_false()
 		{
-			Assert.IsFalse(InvokeAction("HiddenAction"));
+			Assert.IsFalse(_invoker.InvokeAction("HiddenAction", null));
 		}
 
 		[Test]
-		public void ValidActionReturnsFalseWhenOnPreActionReturnsFalse()
+		public void Valid_action_returns_false_when_OnActionExecuting_cancels_action()
 		{
 			_controller.CancelAction = true;
-			InvokeAction("ComplexAction");
+			_invoker.InvokeAction("ComplexAction", null);
 			Assert.IsFalse(_controller.ActionWasCalled);
 		}
 
 		[Test]
-		public void ControllerDescriptorDefaultsToCached()
+		public void Custom_result_should_execute()
 		{
-			TestController controller = new TestController();
-			Assert.IsNotNull(controller.ControllerDescriptor);
-			Assert.AreEqual(typeof(CachedControllerDescriptor), controller.ControllerDescriptor.GetType());
+			Assert.That(_controller.CustomActionResultCalled, Is.False);
+			_invoker.InvokeAction("CustomResult", null);
+			Assert.That(_controller.CustomActionResultCalled, Is.True);
+
 		}
-
-		[Test]
-		public void OnErrorShouldNotThrowIfInnerExceptionIsNull()
-		{
-			TestController controller = new TestController();
-			controller.InvokeOnErrorWithoutInnerException();
-			Assert.IsTrue(controller.OnErrorWasCalled);
-		}
-
-		[Test]
-		public void ShouldNotBeRescuedWhenThreadAbortExceptionThrownDueToRedirect()
-		{
-			Expect.Call(() => _controller.Response.Redirect(null));
-			_mocks.Replay(_controller.Response);
-			InvokeAction("WithRedirect");
-			_mocks.Verify(_controller.Response);
-
-			Assert.IsTrue(_controller.OnErrorWasCalled);
-			Assert.IsTrue(_controller.OnErrorResult.Value);
-		}
-
-		[Test]
-		public void ReturnBinderShouldBeInvoked()
-		{
-			InvokeAction("ReturnBinder");
-			Assert.IsTrue(_controller.ReturnBinderInvoked);
-		}	*/
-		
 	}
 }
