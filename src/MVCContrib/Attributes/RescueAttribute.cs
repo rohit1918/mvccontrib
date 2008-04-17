@@ -17,7 +17,9 @@ namespace MvcContrib.Attributes
 	/// ]]>
 	/// </example>
 	/// </summary>
-	public class RescueAttribute : ActionFilterAttribute
+	[Serializable]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+	public class RescueAttribute : Attribute
 	{
 		private readonly string _view;
 		private readonly Type[] _exceptionsTypes;
@@ -54,49 +56,30 @@ namespace MvcContrib.Attributes
 		/// <summary>
 		/// After the action has been executed, the Rescue will be invoked if the filterContext has an Exception.
 		/// </summary>
-		/// <param name="filterContext">The filter context.</param>
-		public override void OnActionExecuted(ActionExecutedContext filterContext)
+		/// <param name="controller">The current controller.</param>
+		/// <param name="exception">The exception that was thrown.</param>
+		/// <returns>True if the error was handled, otherwise false.</returns>
+		public virtual bool PerformRescue(Exception exception, ConventionController controller)
 		{
-			if (filterContext.Exception == null || filterContext.ExceptionHandled)
-			{
-				return;
-			}
-
-			var exception = filterContext.Exception;
-			var controller = filterContext.Controller as Controller;
-
-			if(controller == null)
-			{
-				throw new NotSupportedException("The RescueAttribute can only be used with controllers that inherit from System.Web.Mvc.Controller.");
-			}
-
 			Type baseExceptionType = exception.GetBaseException().GetType();
 
 			//ThreadAbortException could have occurred due to a direct call to HttpResponse.Redirect.
 			//This is perfectly valid, so we don't want to invoke the rescue.
 			if (baseExceptionType == typeof(System.Threading.ThreadAbortException))
 			{
-				return;
+				return true;
 			}
-
-			//If we're using a ConventionController, ensure that the OnPreRescue method is called.
-			var conventionController = filterContext.Controller as ConventionController;
 
 			foreach (Type exceptionType in _exceptionsTypes)
 			{
 				if (exceptionType.IsAssignableFrom(baseExceptionType))
 				{
-					//If the current controller is a ConventionController, additional parsing of the exception can occur in OnPreRescue.
-					if(conventionController != null)
-					{
-						conventionController.OnPreRescue(exception);
-					}
-
-					filterContext.ExceptionHandled = true;
+					controller.OnPreRescue(exception);
 					controller.ViewEngine.RenderView(CreateViewContext(exception, controller));
-					return;
+					return true;
 				}
 			}
+			return false;
 		}
 
 		/// <summary>

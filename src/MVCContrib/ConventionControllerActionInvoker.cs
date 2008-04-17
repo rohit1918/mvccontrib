@@ -61,17 +61,43 @@ namespace MvcContrib
 			var filters = new List<IActionFilter> { Controller };
 			filters.AddRange(actionMetaData.Filters.Cast<IActionFilter>());
 			
-
-			ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo, parameters, filters);
-			InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);
-
+			try
+			{
+				ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo, parameters, filters);
+				InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);	
+			}
+			catch(Exception exception)
+			{
+				//Give the rescues an opportunity to handle the error, otherwise rethrow.
+				if(!InvokeRescues(actionMetaData, exception))
+				{
+					throw;
+				}
+			}
+			
 			//TODO: Sort filters to match the order ControllerActionInvoker uses.
-			//TODO: Rescues
 
 			return true;
 		}
 
+		/// <summary>
+		/// Executes each rescue attribute for the action.  
+		/// </summary>
+		/// <param name="action">The current action</param>
+		/// <param name="exception">The exception that was thrown</param>
+		/// <returns>True if a rescue executed. False if no rescues executed.</returns>
+		protected virtual bool InvokeRescues(ActionMetaData action, Exception exception)
+		{
+			foreach(var rescue in action.Rescues)
+			{
+				if(rescue.PerformRescue(exception, Controller))
+				{
+					return true;
+				}
+			}
 
+			return false;
+		}
 
 		//The base implementation of GetParameterValues inspects the MethodInfo directly by looping over all of its parameters. 
 		//We don't need to do this as the ControllerDescriptor has already gathered information about the parameters when it was instantiated.
