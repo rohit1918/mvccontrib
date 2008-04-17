@@ -144,12 +144,5 @@ namespace MvcContrib
 			return actions[0];
 		}
 
-		protected override System.Reflection.MethodInfo FindActionMethod(string actionName, System.Collections.Generic.IDictionary<string, object> values)
-		{
-			var meta = FindActionMetaData(actionName);
-			return meta == null ? null : meta.MethodInfo;
-		}
-
-
 	}
 }

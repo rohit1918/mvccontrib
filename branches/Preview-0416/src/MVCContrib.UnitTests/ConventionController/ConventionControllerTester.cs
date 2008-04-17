@@ -32,25 +32,5 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.IsNotNull(controller.ControllerDescriptor);
 			Assert.AreEqual(typeof(CachedControllerDescriptor), controller.ControllerDescriptor.GetType());
 		}
-
-/*		[Test]
-		public void OnErrorShouldNotThrowIfInnerExceptionIsNull()
-		{
-			TestController controller = new TestController();
-			controller.InvokeOnErrorWithoutInnerException();
-			Assert.IsTrue(controller.OnErrorWasCalled);
-		}
-
-		[Test]
-		public void ShouldNotBeRescuedWhenThreadAbortExceptionThrownDueToRedirect()
-		{
-			Expect.Call(delegate { _controller.Response.Redirect(null); });
-			_mocks.Replay(_controller.Response);
-			_controller.DoInvokeAction("WithRedirect");
-			_mocks.Verify(_controller.Response);
-
-			Assert.IsTrue(_controller.OnErrorWasCalled);
-			Assert.IsTrue(_controller.OnErrorResult.Value);
-		}*/
 	}
 }
