@@ -5,6 +5,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 	public class FunctionalTester : TestFixtureBase
 	{
 		[Test]
+		public void SharedPartial()
+		{
+			AssertRender("SharedPartial", "SharedPartial");
+		}
+
+		[Test]
 		public void Partials2()
 		{
 			AssertRender("Partials2", "Partials2");
