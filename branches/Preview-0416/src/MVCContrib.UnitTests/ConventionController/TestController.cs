@@ -49,15 +49,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			return new CustomActionResult();
 		}
 
-		/*public  WithRedirect()
-		{
-			RedirectToAction("ComplexAction");
-			//Simulate RedirectToAction throwing a ThreadAbortException
-			ConstructorInfo ctor = typeof(ThreadAbortException).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
-			ThreadAbortException exc = (ThreadAbortException)ctor.Invoke(Type.EmptyTypes);
-			throw exc;
-		}*/
-
 		public ActionResult BadAction()
 		{
 			throw new AbandonedMutexException();
@@ -69,20 +60,5 @@ namespace MvcContrib.UnitTests.ConventionController
 			filterContext.Cancel = CancelAction;
 		}
 
-		public ActionResult InvokeOnErrorWithoutInnerException()
-		{
-			Exception e = new Exception("Blah");
-			OnError(MetaData.GetAction("BasicAction"), e);
-
-			return new EmptyResult();
-		}
-
-		protected override bool OnError(ActionMetaData action, Exception exception)
-		{
-			bool result = base.OnError(action, exception);
-			OnErrorWasCalled = true;
-			OnErrorResult = result;
-			return result;
-		}
 	}
 }
