@@ -15,10 +15,8 @@ namespace MvcContrib.UnitTests.ConventionController
 	[TestFixture]
 	public class RescueTester
 	{
-		private RescueAttribute _rescue;
 		private RescueViewEngine _viewEngine;
 		private ControllerContext _controllerContext;
-		private ActionExecutedContext _filterContext;
 		private MockRepository _mocks;
 		private Exception _exception;
 		private BaseRescueTestController _controller;
@@ -28,7 +26,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			_mocks = new MockRepository();
 			_viewEngine = new RescueViewEngine();
-			_rescue = new RescueAttribute("TestRescue");
 			_exception = new Exception();
 
 			SetupController(new RescueTestController());
@@ -39,14 +36,14 @@ namespace MvcContrib.UnitTests.ConventionController
 			_controller = controller;
 			_controller.ViewEngine = _viewEngine;
 			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), controller);
-			_filterContext = new ActionExecutedContext(_controllerContext, _mocks.PartialMock<MethodInfo>(), _exception);
 			_controller.ControllerContext = _controllerContext;
 		}
 
 		[Test]
 		public void ViewName_should_return_name_of_view_appended_to_Rescues_directory()
 		{
-			Assert.That(_rescue.ViewName, Is.EqualTo("Rescues/TestRescue"));
+			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			Assert.That(rescue.ViewName, Is.EqualTo("Rescues/TestRescue"));
 		}
 
 		[Test]
@@ -59,7 +56,8 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void When_OnActionExecuted_is_invoked_then_the_correct_view_should_be_rendered()
 		{
-			_rescue.OnActionExecuted(_filterContext);
+			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			rescue.PerformRescue(_exception, _controller);
 			string expectedRescueView = "Rescues/TestRescue";
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
 		}
@@ -67,36 +65,41 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void If_controller_is_a_ConventionController_then_OnPreRescue_should_be_invoked()
 		{
-			Assert.That(((RescueTestController)_filterContext.Controller).OnPreRescueFired, Is.False);
-			_rescue.OnActionExecuted(_filterContext);
-			Assert.That(((RescueTestController)_filterContext.Controller).OnPreRescueFired, Is.True);
+			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
+			rescue.PerformRescue(_exception, _controller);
+			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.True);
 		}
 
 		[Test]
 		public void If_rescue_exception_type_does_not_match_exception_type_then_nothing_should_be_rendered()
 		{
+			RescueAttribute rescue = new RescueAttribute("TestRescue");
 			_exception = new RescueTestException();
 			SetupController(_controller);
-			_rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
-			_rescue.OnActionExecuted(_filterContext);
-
+			rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
+			rescue.PerformRescue(_exception, _controller);
+			
 			Assert.That(_viewEngine.ViewContext, Is.Null);
-			Assert.That(((RescueTestController)_filterContext.Controller).OnPreRescueFired, Is.False);
+			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
 		}
 
 		[Test]
 		public void If_rescue_exception_type_matches_exception_type_then_view_should_be_rendered()
 		{
+			RescueAttribute rescue = new RescueAttribute("TestRescue");
+
 			_exception = new RescueTestException();
 			SetupController(_controller);
-			_rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
-			_rescue.OnActionExecuted(_filterContext);
+			rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
+			rescue.PerformRescue(_exception, _controller);
+			
 			string expectedRescueView = "Rescues/TestRescue";
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
 
 		}
 
-		[Test, Ignore("Currently fails due to the order in which filters are executed. Controller-level filters execute before action-level filters, but the old Rescues implementation assumed that Action-level rescues execute before Controller-level rescues.")]
+		[Test]
 		public void When_exception_is_thrown_by_an_action_then_it_should_be_handled_by_action_level_rescue()
 		{
 			_controller.InvokeActionPublic("ThrowMethodError");
@@ -112,7 +115,7 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
 		}
 
-		[Test, Ignore("ControllerActionInvoker.InvokeActionMethodFilter does not currently allow for filters to handle exceptions thrown by other filters so this test will fail. As the method is internal and static, this behaviour cannot be changed at present.")]
+		[Test]
 		public void When_exception_is_thrown_by_a_filter_then_it_should_be_handled()
 		{
 			_controller.InvokeActionPublic("ThrowFilter");
