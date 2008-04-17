@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib;
@@ -57,7 +58,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		public void When_OnActionExecuted_is_invoked_then_the_correct_view_should_be_rendered()
 		{
 			RescueAttribute rescue = new RescueAttribute("TestRescue");
-			rescue.PerformRescue(_exception, _controller);
+			Assert.That(rescue.PerformRescue(_exception, _controller), Is.True);
 			string expectedRescueView = "Rescues/TestRescue";
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
 		}
@@ -67,7 +68,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			RescueAttribute rescue = new RescueAttribute("TestRescue");
 			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
-			rescue.PerformRescue(_exception, _controller);
+			Assert.That(rescue.PerformRescue(_exception, _controller), Is.True);
 			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.True);
 		}
 
@@ -78,8 +79,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			_exception = new RescueTestException();
 			SetupController(_controller);
 			rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
-			rescue.PerformRescue(_exception, _controller);
 			
+			Assert.That(rescue.PerformRescue(_exception, _controller), Is.False);
 			Assert.That(_viewEngine.ViewContext, Is.Null);
 			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
 		}
@@ -124,6 +125,16 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.IsFalse(((RescueTestController)_controller).ActionExecuted);
 		}
 
+		[Test]
+		public void ThreadAbortException_should_be_ignored()
+		{
+			ThreadAbortException exception =
+				(ThreadAbortException)typeof(ThreadAbortException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0].Invoke(null);
+
+			var rescue = new RescueAttribute("TestRescue");
+			Assert.IsTrue(rescue.PerformRescue(exception, _controller));
+			Assert.IsNull(_viewEngine.ViewContext);
+		}
 	}
 
 	public class RescueViewEngine : IViewEngine

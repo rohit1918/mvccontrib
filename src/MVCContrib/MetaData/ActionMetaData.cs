@@ -41,10 +41,5 @@ namespace MvcContrib.MetaData
 		{
 			get { return _filters; }
 		}
-
-		public object InvokeMethod(IController controller, object[] parameters)
-		{
-			return _methodInfo.Invoke(controller, parameters);
-		}
 	}
 }
