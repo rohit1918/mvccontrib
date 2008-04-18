@@ -94,7 +94,7 @@
     <None Include="Views\Home\About.haml" />
     <None Include="Views\Home\Index.haml" />
     <None Include="Views\Products\_Product.haml" />
-    <None Include="Views\Products\_Button.haml" />
+    <None Include="Views\Shared\_Button.haml" />
     <None Include="Views\Products\New.haml" />
     <None Include="Views\Products\Edit.haml" />
     <None Include="Views\Products\List.haml" />

@@ -4,7 +4,8 @@ namespace MvcContrib.NHamlViewEngine.Rules
 {
 	public class NullMarkupRule : MarkupRule
 	{
-		[SuppressMessage("Microsoft.Security", "CA2104")] public static readonly NullMarkupRule Instance =
+		[SuppressMessage("Microsoft.Security", "CA2104")]
+		public static readonly NullMarkupRule Instance =
 			new NullMarkupRule();
 
 		private NullMarkupRule()
@@ -18,7 +19,16 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 		public override BlockClosingAction Render(CompilationContext compilationContext)
 		{
-			compilationContext.ViewBuilder.AppendOutputLine(compilationContext.CurrentInputLine.Text);
+			string text = compilationContext.CurrentInputLine.Text;
+
+			if ((compilationContext.CurrentNode.Previous != null)
+				&& compilationContext.CurrentNode.Previous.Value.IsMultiline)
+			{
+				text = text.TrimStart();
+			}
+
+			compilationContext.ViewBuilder.AppendOutput(text,
+				!compilationContext.CurrentInputLine.IsMultiline);
 
 			return null;
 		}

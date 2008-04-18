@@ -34,6 +34,14 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				string partialTemplatePath
 					= Path.Combine(templateDirectory, partialName + ".haml");
 
+				if (!File.Exists(partialTemplatePath))
+				{
+					// try one level up
+
+					partialTemplatePath
+						= Path.Combine(templateDirectory, @"..\" + partialName + ".haml");
+				}
+
 				compilationContext.MergeTemplate(partialTemplatePath);
 			}
 			else if(!string.IsNullOrEmpty(compilationContext.LayoutPath))

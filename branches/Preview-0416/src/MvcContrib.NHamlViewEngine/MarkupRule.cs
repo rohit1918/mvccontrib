@@ -4,6 +4,11 @@ namespace MvcContrib.NHamlViewEngine
 	{
 		public abstract char Signifier { get; }
 
+		public virtual bool MergeMultiLine
+		{
+			get { return false; }
+		}
+
 		public abstract BlockClosingAction Render(CompilationContext compilationContext);
 
 		public virtual void Process(CompilationContext compilationContext)
