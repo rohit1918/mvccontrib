@@ -155,5 +155,13 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(_controller.CustomActionResultCalled, Is.True);
 
 		}
+
+		[Test]
+		public void Filters_should_execute_before_binders()
+		{
+			_invoker.InvokeAction("BinderFilterOrderingAction", null);
+			string expected = "FilterBinder";
+			Assert.That(_controller.BinderFilterOrdering, Is.EqualTo(expected));
+		}
 	}
 }

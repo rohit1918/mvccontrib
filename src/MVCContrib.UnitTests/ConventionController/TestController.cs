@@ -16,6 +16,13 @@ namespace MvcContrib.UnitTests.ConventionController
 		public bool ReturnBinderInvoked = false;
 		public bool ActionExecutingCalled;
 		public bool CustomActionResultCalled;
+		public string BinderFilterOrdering = string.Empty;
+
+		[TestFilter]
+		public ActionResult BinderFilterOrderingAction([TestBinder] object item)
+		{
+			return new EmptyResult();
+		}
 
 		public ActionResult BasicAction(int id)
 		{
