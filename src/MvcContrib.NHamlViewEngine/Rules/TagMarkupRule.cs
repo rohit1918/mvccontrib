@@ -20,11 +20,12 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			@"(?:(?:\#([-\w]+))|(?:\.([-\w]+)))+",
 			RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex _attributeNameReplacer = new Regex(
-            @"(?<Name>\@?\w+)\s?\=",
-            RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex _attributeNameReplacer = new Regex(
+				@"(?<Name>\@?\w+)\s?\=",
+				RegexOptions.Compiled | RegexOptions.Singleline);
 
-		private static List<string> WhitespaceSensitiveTags = new List<string>{ "textarea", "pre" };
+		private static readonly List<string> WhitespaceSensitiveTags
+			= new List<string> { "textarea", "pre" };
 
 		protected virtual string PreprocessLine(InputLine inputLine)
 		{
@@ -40,13 +41,15 @@ namespace MvcContrib.NHamlViewEngine.Rules
 		{
 			Match match = _tagRegex.Match(PreprocessLine(compilationContext.CurrentInputLine));
 
-			if(!match.Success)
+			if (!match.Success)
 			{
 				SyntaxException.Throw(compilationContext.CurrentInputLine, Resources.ErrorParsingTag,
-				                      compilationContext.CurrentInputLine);
+															compilationContext.CurrentInputLine);
 			}
 
 			bool isWhitespaceSensitive = WhitespaceSensitiveTags.Contains(match.Groups[1].Value);
+
+			bool newLine = !compilationContext.CurrentInputLine.IsMultiline;
 
 			string openingTag = compilationContext.CurrentInputLine.Indent + '<' + match.Groups[1].Value;
 			string closingTag = "</" + match.Groups[1].Value + '>';
@@ -57,54 +60,64 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 			string action = match.Groups[5].Value;
 
-			if(string.Equals("/", action)
-			   || compilationContext.TemplateCompiler.IsAutoClosing(match.Groups[1].Value))
+			if (string.Equals("/", action)
+				 || compilationContext.TemplateCompiler.IsAutoClosing(match.Groups[1].Value))
 			{
-				compilationContext.ViewBuilder.AppendOutputLine(" />");
+				string close = " />";
+
+				if (!newLine)
+				{
+					close += ' ';
+				} 
+
+				compilationContext.ViewBuilder.AppendOutput(close, newLine);
 
 				return null;
 			}
+
+			string content = match.Groups[6].Value.Trim();
+      
+			if (string.IsNullOrEmpty(content))
+			{
+				compilationContext.ViewBuilder.AppendOutput(">", newLine);
+				closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
+			}
 			else
 			{
-				string content = match.Groups[6].Value.Trim();
-
-				if(string.IsNullOrEmpty(content))
+				if ((content.Length > 50) || string.Equals("=", action))
 				{
-					compilationContext.ViewBuilder.AppendOutputLine(">");
-					closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
-				}
-				else
-				{
-					if((content.Length > 50) || string.Equals("=", action))
+					compilationContext.ViewBuilder.AppendOutput(">", !isWhitespaceSensitive);
+					if (!isWhitespaceSensitive)
 					{
-						compilationContext.ViewBuilder.AppendOutput(">", !isWhitespaceSensitive);
-                        if (!isWhitespaceSensitive)
-                        {
-                            compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");
-                        }
+						compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");
+					}
 
-						if(string.Equals("=", action))
-						{
-							compilationContext.ViewBuilder.AppendCode(content, !isWhitespaceSensitive);
-						}
-						else
-						{
-							compilationContext.ViewBuilder.AppendOutput(content, !isWhitespaceSensitive);
-						}
-
-                        if (!isWhitespaceSensitive)
-                        {
-                            closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
-                        }
+					if (string.Equals("=", action))
+					{
+						compilationContext.ViewBuilder.AppendCode(content, !isWhitespaceSensitive);
 					}
 					else
 					{
-						compilationContext.ViewBuilder.AppendOutput(">" + content);
+						compilationContext.ViewBuilder.AppendOutput(content, !isWhitespaceSensitive);
+					}
+
+					if (!isWhitespaceSensitive)
+					{
+						closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
 					}
 				}
-
-				return delegate { compilationContext.ViewBuilder.AppendOutputLine(closingTag); };
+				else
+				{
+					compilationContext.ViewBuilder.AppendOutput(">" + content);
+				}
 			}
+
+			if (!newLine)
+			{
+				closingTag += ' ';
+			} 
+
+			return delegate { compilationContext.ViewBuilder.AppendOutput(closingTag, newLine); };
 		}
 
 		private static void ParseAndRenderAttributes(CompilationContext compilationContext, Match tagMatch)
@@ -116,41 +129,41 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 			List<string> classes = new List<string>();
 
-			foreach(Capture capture in match.Groups[2].Captures)
+			foreach (Capture capture in match.Groups[2].Captures)
 			{
 				classes.Add(capture.Value);
 			}
 
-			if(classes.Count > 0)
+			if (classes.Count > 0)
 			{
 				attributesHash = PrependAttribute(attributesHash,
-				                                  '@' + Class, string.Join(" ", classes.ToArray()));
+																					'@' + Class, string.Join(" ", classes.ToArray()));
 			}
 
 			string id = null;
 
-			foreach(Capture capture in match.Groups[1].Captures)
+			foreach (Capture capture in match.Groups[1].Captures)
 			{
 				id = capture.Value;
 			}
 
-			if(!string.IsNullOrEmpty(id))
+			if (!string.IsNullOrEmpty(id))
 			{
 				attributesHash = PrependAttribute(attributesHash, Id, id);
 			}
 
-			if(!string.IsNullOrEmpty(attributesHash))
+			if (!string.IsNullOrEmpty(attributesHash))
 			{
 				compilationContext.ViewBuilder.AppendOutput(" ");
 
-                attributesHash =_attributeNameReplacer.Replace(
-                                    attributesHash,
-                                    m => CheckAttributeName(m.Groups["Name"].Value) + " = "
-                                    );
+				attributesHash = _attributeNameReplacer.Replace(
+														attributesHash,
+														m => CheckAttributeName(m.Groups["Name"].Value) + " = "
+														);
 
 				string attributes = TryPrecompileAttributes(compilationContext.TemplateCompiler, attributesHash);
 
-				if(!string.IsNullOrEmpty(attributes))
+				if (!string.IsNullOrEmpty(attributes))
 				{
 					compilationContext.ViewBuilder.AppendOutput(attributes);
 				}
@@ -164,13 +177,13 @@ namespace MvcContrib.NHamlViewEngine.Rules
 		private static string TryPrecompileAttributes(TemplateCompiler templateCompiler, string attributesHash)
 		{
 			string source = "public class AttributeEvaluator:IAttributeEvaluator{ public string Eval(){return new {"
-			                + attributesHash + "}.RenderAttributes();}}";
+											+ attributesHash + "}.RenderAttributes();}}";
 
 			Type type = new TypeBuilder(templateCompiler).Build(source, "AttributeEvaluator");
 
 			string attributes = null;
 
-			if(type != null)
+			if (type != null)
 			{
 				attributes = ((IAttributeEvaluator)Activator.CreateInstance(type)).Eval();
 			}
@@ -178,15 +191,15 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			return attributes;
 		}
 
-        private static readonly List<string> keywords = new List<string>{ "class", "new", "void", "public", "for" }; //.. etc
-        private static string CheckAttributeName(string name)
-        {
-            if (keywords.Contains(name))
-            {
-                return "@" + name;
-            }
-            return name;
-        }
+		private static readonly List<string> keywords = new List<string> { "class", "new", "void", "public", "for" }; //.. etc
+		private static string CheckAttributeName(string name)
+		{
+			if (keywords.Contains(name))
+			{
+				return "@" + name;
+			}
+			return name;
+		}
 
 		private static string PrependAttribute(string attributesHash, string name, string value)
 		{

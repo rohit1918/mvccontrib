@@ -5,6 +5,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 	public class FunctionalTester : TestFixtureBase
 	{
 		[Test]
+		public void SharedPartial()
+		{
+			AssertRender("SharedPartial", "SharedPartial");
+		}
+
+		[Test]
 		public void Partials2()
 		{
 			AssertRender("Partials2", "Partials2");
@@ -26,8 +32,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Welcome()
 		{
 			AssertRender("Welcome");
-		}		
-    
+		}
+
 		[Test]
 		public void Javascript()
 		{
@@ -142,10 +148,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			AssertRender("AltControllerPartial");
 		}
 
-        [Test]
-        public void WhitespaceSensitive()
-        {
-            AssertRender("WhitespaceSensitive");
-        }
+		[Test]
+		public void WhitespaceSensitive()
+		{
+			AssertRender("WhitespaceSensitive");
+		}
 	}
 }

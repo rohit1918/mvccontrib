@@ -25,7 +25,7 @@
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
 	<target name="cruise" depends="build, package"/>
   <target name="cruise-coverage" depends="analyze"/>
-	<target name="commiter" depends="build, analyze, build-help,package"/>
+	<target name="commiter" depends="build, analyze, build-help, package"/>
 
 	<target name="init" description="Initializes build properties">
 		<tstamp>
@@ -101,8 +101,13 @@
 			<fileset basedir="${solution.dir}">
 				<include name="**/Templates/Alt/*.haml"/>
 			</fileset>
-		</copy>		
-		<copy todir="${build.dir}/NHamlViewEngine/Results" flatten="true">
+		</copy>
+		<copy todir="${build.dir}/NHamlViewEngine/Shared" flatten="true">
+			<fileset basedir="${solution.dir}">
+				<include name="**/Shared/*.haml"/>
+			</fileset>
+		</copy>
+    <copy todir="${build.dir}/NHamlViewEngine/Results" flatten="true">
 			<fileset basedir="${solution.dir}">
 				<include name="**/Results/*.xhtml"/>
 			</fileset>

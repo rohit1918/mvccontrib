@@ -19,7 +19,7 @@ namespace MvcContrib.NHamlViewEngine
 		private readonly int _lineNumber;
 		private readonly string _indent;
 		private readonly int _indentSize;
-		private readonly bool _IsMultiline;
+		private bool _isMultiline;
 
 		public InputLine(string text, int lineNumber)
 		{
@@ -28,9 +28,9 @@ namespace MvcContrib.NHamlViewEngine
 
 			Match match = _multiLineRegex.Match(_text);
 
-			_IsMultiline = match.Success;
+			_isMultiline = match.Success;
 
-			if(_IsMultiline)
+			if(_isMultiline)
 			{
 				_text = _text.Remove(match.Groups[1].Index);
 			}
@@ -82,13 +82,14 @@ namespace MvcContrib.NHamlViewEngine
 
 		public bool IsMultiline
 		{
-			get { return _IsMultiline; }
+			get { return _isMultiline; }
 		}
 
 		public void Merge(InputLine nextInputLine)
 		{
-			_text += nextInputLine.Text;
-			_normalizedText += nextInputLine.Text;
+			_text += nextInputLine.Text.TrimStart();
+			_normalizedText += ' ' + nextInputLine.Text.Trim();
+			_isMultiline = nextInputLine.IsMultiline;
 		}
 
 		public override string ToString()

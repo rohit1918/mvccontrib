@@ -328,6 +328,12 @@
     <None Include="BrailViewEngine\Views\view_CustomViewData.brail">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="NHamlViewEngine\Results\SharedPartial.xhtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NHamlViewEngine\Shared\_Partial.haml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NHamlViewEngine\Results\AltControllerPartial.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -437,6 +443,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\Conditionals.haml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NHamlViewEngine\Templates\SharedPartial.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\Javascript.haml">

@@ -15,13 +15,13 @@ namespace MvcContrib.NHamlViewEngine
 			= new Regex(@"[-\\/\.:\s]", RegexOptions.Compiled | RegexOptions.Singleline);
 
 		private static readonly string[] DefaultAutoClosingTags
-			= new string[] {"META", "IMG", "LINK", "BR", "HR", "INPUT"};
+			= new string[] { "META", "IMG", "LINK", "BR", "HR", "INPUT" };
 
 		private readonly StringSet _autoClosingTags
 			= new StringSet(DefaultAutoClosingTags);
 
 		private static readonly string[] DefaultUsings
-			= new string[] {"System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities"};
+			= new string[] { "System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities" };
 
 		private readonly StringSet _usings
 			= new StringSet(DefaultUsings);
@@ -127,12 +127,12 @@ namespace MvcContrib.NHamlViewEngine
 		}
 
 		public Type Compile(string templatePath, string layoutPath,
-		                    ICollection<string> inputFiles, params Type[] genericArguments)
+												ICollection<string> inputFiles, params Type[] genericArguments)
 		{
 			Invariant.ArgumentNotEmpty(templatePath, "templatePath");
 			Invariant.FileExists(templatePath);
 
-			if(!string.IsNullOrEmpty(layoutPath))
+			if (!string.IsNullOrEmpty(layoutPath))
 			{
 				Invariant.FileExists(layoutPath);
 			}
@@ -146,7 +146,7 @@ namespace MvcContrib.NHamlViewEngine
 
 			Compile(compilationContext);
 
-			if(inputFiles != null)
+			if (inputFiles != null)
 			{
 				compilationContext.CollectInputFiles(inputFiles);
 			}
@@ -156,17 +156,18 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void Compile(CompilationContext compilationContext)
 		{
-			while(compilationContext.CurrentNode.Next != null)
+			while (compilationContext.CurrentNode.Next != null)
 			{
-				if(compilationContext.CurrentInputLine.IsMultiline
-				   && compilationContext.NextInputLine.IsMultiline)
+				MarkupRule rule = GetRule(compilationContext.CurrentInputLine);
+
+				if (compilationContext.CurrentInputLine.IsMultiline && rule.MergeMultiLine)
 				{
 					compilationContext.CurrentInputLine.Merge(compilationContext.NextInputLine);
 					compilationContext.InputLines.Remove(compilationContext.NextNode);
 				}
 				else
 				{
-					GetRule(compilationContext.CurrentInputLine).Process(compilationContext);
+					rule.Process(compilationContext);
 				}
 			}
 
@@ -181,10 +182,10 @@ namespace MvcContrib.NHamlViewEngine
 
 			Type viewType = typeBuilder.Build(source, compilationContext.ViewBuilder.ClassName);
 
-			if(viewType == null)
+			if (viewType == null)
 			{
 				ViewCompilationException.Throw(typeBuilder.CompilerResults,
-				                               typeBuilder.Source, compilationContext.TemplatePath);
+																			 typeBuilder.Source, compilationContext.TemplatePath);
 			}
 
 			return viewType;

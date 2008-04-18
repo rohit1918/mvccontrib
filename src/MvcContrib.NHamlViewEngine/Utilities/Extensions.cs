@@ -5,31 +5,31 @@ using System.Collections.Generic;
 
 namespace MvcContrib.NHamlViewEngine.Utilities
 {
-  public static class Extensions
-  {
-    [SuppressMessage("Microsoft.Naming", "CA1720")]
-    public static string RenderAttributes(this object obj)
-    {
-      if (obj != null)
-      {
-        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+	public static class Extensions
+	{
+		[SuppressMessage("Microsoft.Naming", "CA1720")]
+		public static string RenderAttributes(this object obj)
+		{
+			if (obj != null)
+			{
+				PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
 
-        if (properties.Count > 0)
-        {
-          StringBuilder attributes = new StringBuilder();
+				if (properties.Count > 0)
+				{
+					StringBuilder attributes = new StringBuilder();
 
-          attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + properties[0].GetValue(obj) + "\"");
+					attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + properties[0].GetValue(obj) + "\"");
 
-          for (int i = 1; i < properties.Count; i++)
-          {
-            attributes.Append(" " + properties[i].Name + "=\"" + properties[i].GetValue(obj) + "\"");
-          }
+					for (int i = 1; i < properties.Count; i++)
+					{
+						attributes.Append(" " + properties[i].Name + "=\"" + properties[i].GetValue(obj) + "\"");
+					}
 
-          return attributes.ToString();
-        }
-      }
+					return attributes.ToString();
+				}
+			}
 
-      return null;
-    }
-  }
+			return null;
+		}
+	}
 }
