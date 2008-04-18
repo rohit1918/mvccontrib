@@ -39,7 +39,7 @@ namespace MvcContrib.Samples.ObjectBuilderControllerFactory
 			{
 				_container = new DependencyContainer();
 				_container.RegisterTypeMapping(typeof(IService), typeof(Service));
-				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.ObjectBuilderControllerFactory));
+				ControllerBuilder.Current.SetControllerFactory(typeof(ObjectBuilder.ObjectBuilderControllerFactory));
 
                 Type[] assemblyTypes = typeof(HomeController).Assembly.GetTypes();
 				foreach (Type type in assemblyTypes)
