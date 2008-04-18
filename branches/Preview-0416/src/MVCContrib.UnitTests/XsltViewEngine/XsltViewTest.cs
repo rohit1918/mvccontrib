@@ -62,7 +62,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
 			viewFactory.RenderView(viewContext);
 
-			string actual = ResponseOutput.ToString().Replace("\r\n", "");
+			string actual = Response.Output.ToString().Replace("\r\n", "");
 
 			XmlDocument xDoc = LoadXmlDocument("ViewTest.xml");
 

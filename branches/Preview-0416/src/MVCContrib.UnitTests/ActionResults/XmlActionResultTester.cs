@@ -15,27 +15,21 @@ namespace MvcContrib.UnitTests.ActionResults
 	{
 		private MockRepository _mocks;
 		private ControllerContext _controllerContext;
-		private StringWriter _writer;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-
-			_writer = new StringWriter();
-			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
-			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
-			SetupResult.For(context.Request).Return(request);
-			SetupResult.For(context.Response).Return(response);
-			SetupResult.For(response.Output).Return(_writer);
-			RouteData routeData = new RouteData();
-
-			RequestContext requestContext = new RequestContext(context, routeData);
-
-			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
-			Expect.Call(response.ContentType).PropertyBehavior();
+			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<IController>());
 			_mocks.ReplayAll();
+		}
+
+		[Test]
+		public void ObjectToSerialize_should_return_the_object_to_serialize()
+		{
+			var result = new XmlResult(new Person {Id = 1, Name = "Bob"});
+			Assert.That(result.ObjectToSerialize, Is.InstanceOfType(typeof(Person)));
+			Assert.That(((Person)result.ObjectToSerialize).Name, Is.EqualTo("Bob"));
 		}
 
 		[Test]
@@ -53,7 +47,7 @@ namespace MvcContrib.UnitTests.ActionResults
 			result.ExecuteResult(_controllerContext);
 
 			XmlDocument doc = new XmlDocument();
-			doc.LoadXml(_writer.ToString());
+			doc.LoadXml(_controllerContext.HttpContext.Response.Output.ToString());
 			Assert.That(doc.SelectSingleNode("/Person/Name").InnerText, Is.EqualTo("Jeremy"));
 			Assert.That(doc.SelectSingleNode("/Person/Id").InnerText, Is.EqualTo("5"));
 		}
