@@ -14,33 +14,33 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		//
 		// Products/Category/1
 
-		
-		public void Category(int id)
+
+		public ActionResult Category(int id)
 		{
 			Category category = northwind.GetCategoryById(id);
 
-			RenderView("List", category);
+			return RenderView("List", category);
 		}
 
 		//
 		// Products/New
 
 		
-		public void New()
+		public ActionResult New()
 		{
 			ProductsNewViewData viewData = new ProductsNewViewData();
 
 			viewData.Suppliers = northwind.GetSuppliers();
 			viewData.Categories = northwind.GetCategories();
 
-			RenderView("New", viewData);
+			return RenderView("New", viewData);
 		}
 
 		//
 		// Products/Create
 
-		
-		public void Create()
+
+		public ActionResult Create()
 		{
 			Product product = new Product();
 			BindingHelperExtensions.UpdateFrom(product, Request.Form);
@@ -48,14 +48,14 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 			northwind.AddProduct(product);
 			northwind.SubmitChanges();
 
-			RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
+			return RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
 		}
 
 		//
 		// Products/Edit/5
 
-		
-		public void Edit(int id)
+
+		public ActionResult Edit(int id)
 		{
 			ProductsEditViewData viewData = new ProductsEditViewData();
 
@@ -63,21 +63,21 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 			viewData.Categories = northwind.GetCategories();
 			viewData.Suppliers = northwind.GetSuppliers();
 
-			RenderView("Edit", viewData);
+			return RenderView("Edit", viewData);
 		}
 
 		//
 		// Products/Update/5
 
-		
-		public void Update(int id)
+
+		public ActionResult Update(int id)
 		{
 			Product product = northwind.GetProductById(id);
 			BindingHelperExtensions.UpdateFrom(product, Request.Form);
 
 			northwind.SubmitChanges();
 
-			RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
+			return RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
 		}
 	}
 }
