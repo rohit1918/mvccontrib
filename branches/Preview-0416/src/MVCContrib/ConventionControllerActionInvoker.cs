@@ -54,8 +54,6 @@ namespace MvcContrib
 
 			Controller.SelectedAction = actionMetaData;
 
-			IDictionary<string, object> parameters = GetParameterValues(actionMetaData.MethodInfo, values);
-			
 			//The controller implements IActionFilter. 
 			//Make sure its the first one in the list so that OnActionExecuting/OnActionExecuted get called.
 			var filters = new List<IActionFilter> { Controller };
@@ -63,7 +61,7 @@ namespace MvcContrib
 			
 			try
 			{
-				ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo, parameters, filters);
+				ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo, values ?? new Dictionary<string, object>(), filters);
 				InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);	
 			}
 			catch(Exception exception)
@@ -78,6 +76,14 @@ namespace MvcContrib
 			//TODO: Sort filters to match the order ControllerActionInvoker uses.
 
 			return true;
+		}
+
+		
+		protected override ActionResult InvokeActionMethod(System.Reflection.MethodInfo methodInfo, IDictionary<string, object> parameters)
+		{
+			//The parameter list should be constructed here to ensure that any pre-action filters have executed before the paramter binders are invoked.
+			parameters = GetParameterValues(methodInfo, parameters);
+			return base.InvokeActionMethod(methodInfo, parameters);
 		}
 
 		/// <summary>

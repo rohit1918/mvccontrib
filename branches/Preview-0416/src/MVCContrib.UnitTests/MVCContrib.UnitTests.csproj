@@ -148,7 +148,9 @@
     <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
     <Compile Include="ConventionController\CustomActionResult.cs" />
     <Compile Include="ConventionController\DefaultActionController.cs" />
+    <Compile Include="ConventionController\TestBinder.cs" />
     <Compile Include="ConventionController\TestController.cs" />
+    <Compile Include="ConventionController\TestFilter.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
