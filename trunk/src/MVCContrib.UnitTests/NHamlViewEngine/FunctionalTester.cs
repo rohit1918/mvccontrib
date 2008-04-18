@@ -32,8 +32,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Welcome()
 		{
 			AssertRender("Welcome");
-		}		
-    
+		}
+
 		[Test]
 		public void Javascript()
 		{
@@ -148,10 +148,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			AssertRender("AltControllerPartial");
 		}
 
-        [Test]
-        public void WhitespaceSensitive()
-        {
-            AssertRender("WhitespaceSensitive");
-        }
+		[Test]
+		public void WhitespaceSensitive()
+		{
+			AssertRender("WhitespaceSensitive");
+		}
 	}
 }

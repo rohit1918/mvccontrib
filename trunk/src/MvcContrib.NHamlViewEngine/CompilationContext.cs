@@ -25,7 +25,7 @@ namespace MvcContrib.NHamlViewEngine
 			= new StringSet();
 
 		public CompilationContext(TemplateCompiler templateCompiler, ViewBuilder viewBuilder,
-		                          string templatePath, string layoutPath)
+															string templatePath, string layoutPath)
 		{
 			_templateCompiler = templateCompiler;
 			_viewBuilder = viewBuilder;
@@ -95,7 +95,7 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			inputFiles.Clear();
 
-			foreach(string inputFile in _inputFiles)
+			foreach (string inputFile in _inputFiles)
 			{
 				inputFiles.Add(inputFile);
 			}
@@ -108,11 +108,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void CloseBlocks()
 		{
-			for(int j = 0;
-			    ((j <= CurrentNode.Previous.Value.IndentSize
-			           - CurrentInputLine.IndentSize)
-			     && (_blockClosingActions.Count > 0));
-			    j++)
+			for (int j = 0;
+					((j <= CurrentNode.Previous.Value.IndentSize
+								 - CurrentInputLine.IndentSize)
+					 && (_blockClosingActions.Count > 0));
+					j++)
 			{
 				_blockClosingActions.Pop()();
 			}
@@ -124,14 +124,14 @@ namespace MvcContrib.NHamlViewEngine
 
 			int lineNumber = 0;
 
-			using(StreamReader reader = new StreamReader(templatePath))
+			using (StreamReader reader = new StreamReader(templatePath))
 			{
 				string line;
 
-				while((line = reader.ReadLine()) != null)
+				while ((line = reader.ReadLine()) != null)
 				{
 					_inputLines.AddBefore(_currentNode,
-					                      new InputLine(_currentNode.Value.Indent + line, lineNumber++));
+																new InputLine(_currentNode.Value.Indent + line, lineNumber++));
 				}
 			}
 
@@ -148,11 +148,11 @@ namespace MvcContrib.NHamlViewEngine
 
 			_inputLines.AddLast(new InputLine(string.Empty, lineNumber++));
 
-			using(StreamReader reader = new StreamReader(templatePath))
+			using (StreamReader reader = new StreamReader(templatePath))
 			{
 				string line;
 
-				while((line = reader.ReadLine()) != null)
+				while ((line = reader.ReadLine()) != null)
 				{
 					_inputLines.AddLast(new InputLine(line, lineNumber++));
 				}
