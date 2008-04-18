@@ -24,7 +24,7 @@ namespace MvcContrib.NHamlViewEngine
 			= new Dictionary<string, DateTime>();
 
 		public CompiledView(TemplateCompiler templateCompiler,
-		                    string templatePath, string layoutPath, object viewData)
+												string templatePath, string layoutPath, object viewData)
 		{
 			_templateCompiler = templateCompiler;
 			_templatePath = templatePath;
@@ -40,11 +40,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void RecompileIfNecessary(object viewData)
 		{
-			lock(_sync)
+			lock (_sync)
 			{
-				foreach(KeyValuePair<string, DateTime> inputFile in _fileTimestamps)
+				foreach (KeyValuePair<string, DateTime> inputFile in _fileTimestamps)
 				{
-					if(File.GetLastWriteTime(inputFile.Key) > inputFile.Value)
+					if (File.GetLastWriteTime(inputFile.Key) > inputFile.Value)
 					{
 						CompileView(viewData);
 
@@ -56,38 +56,38 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void CompileView(object viewData)
 		{
-            var viewDataType = viewData.GetType();
+			var viewDataType = viewData.GetType();
 
-            if (!NHamlViewFactory.ViewDataIsDictionary(viewData))
-            {
-                AddReferences(viewDataType);
-            }
-            else
-            {
-                viewDataType = typeof(ViewData);
-            }
+			if (!NHamlViewFactory.ViewDataIsDictionary(viewData))
+			{
+				AddReferences(viewDataType);
+			}
+			else
+			{
+				viewDataType = typeof(ViewData);
+			}
 
 			List<string> inputFiles = new List<string>();
 
 			_viewType = _templateCompiler.Compile(_templatePath, _layoutPath, inputFiles, viewDataType);
 
-			foreach(string inputFile in inputFiles)
+			foreach (string inputFile in inputFiles)
 			{
 				_fileTimestamps[inputFile] = File.GetLastWriteTime(inputFile);
 			}
 		}
 
-        private void AddReferences(Type type)
-        {
-            _templateCompiler.AddReference(type.Assembly.Location);
+		private void AddReferences(Type type)
+		{
+			_templateCompiler.AddReference(type.Assembly.Location);
 
-            if (type.IsGenericType)
-            {
-                foreach (var t in type.GetGenericArguments())
-                {
-                    AddReferences(t);
-                }
-            }
-        }
+			if (type.IsGenericType)
+			{
+				foreach (var t in type.GetGenericArguments())
+				{
+					AddReferences(t);
+				}
+			}
+		}
 	}
 }

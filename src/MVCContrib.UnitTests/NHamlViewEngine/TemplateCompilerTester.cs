@@ -21,8 +21,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			{
 				get
 				{
-                    object o = new T();
-                    var list = (List<int>)(object)o;
+					object o = new T();
+					var list = (List<int>)(object)o;
 
 					return list.Count + 9;
 				}
@@ -64,16 +64,16 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			List<string> inputFiles = new List<string>();
 
 			templateCompiler.Compile(TemplatesFolder + "Partials.haml",
-			                         TemplatesFolder + "Application.haml", inputFiles);
+															 TemplatesFolder + "Application.haml", inputFiles);
 
 			Assert.AreEqual(3, inputFiles.Count);
 		}
-    
+
 		[Test]
 		public void script_tag_not_auto_closing()
 		{
 			TemplateCompiler templateCompiler = new TemplateCompiler();
-			Assert.IsFalse(templateCompiler.IsAutoClosing("script"),"Script was auto-closed");
+			Assert.IsFalse(templateCompiler.IsAutoClosing("script"), "Script was auto-closed");
 		}
 	}
 }
