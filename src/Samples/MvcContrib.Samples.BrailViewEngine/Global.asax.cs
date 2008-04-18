@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core;
 using Castle.Windsor;
+using MvcContrib.Castle;
 using MvcContrib.ControllerFactories;
 using MvcContrib.ViewFactories;
 
@@ -45,8 +46,8 @@ namespace MvcContrib.Samples
             {
                 _container = new WindsorContainer();
 
-                // Add our singleton NVelocityViewFactory
                 _container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(BrailViewFactory));
+				ControllerBuilder.Current.SetControllerFactory(typeof(WindsorControllerFactory));
 
                 Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 
@@ -54,9 +55,7 @@ namespace MvcContrib.Samples
                 {
                     if(typeof(IController).IsAssignableFrom(type))
                     {
-                        _container.AddComponentWithLifestyle(type.Name, type, LifestyleType.Transient);
-                        ControllerBuilder.Current.SetControllerFactory(typeof(WindsorControllerFactory));
-                        //	ControllerBuilder .Current.SetControllerFactory(typeof(WindsorControllerFactory));
+                        _container.AddComponentWithLifestyle(type.Name.ToLower(), type, LifestyleType.Transient);
                     }
                 }
             }
