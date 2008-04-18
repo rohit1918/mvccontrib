@@ -65,6 +65,7 @@
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Dimension.cs" />
     <Compile Include="Models\Shipment.cs" />
+    <Compile Include="ResponseWriteResult.cs" />
     <Compile Include="Views\Shipment\ShipmentViews.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
