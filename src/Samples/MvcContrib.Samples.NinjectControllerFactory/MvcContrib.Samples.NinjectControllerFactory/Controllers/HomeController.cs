@@ -12,10 +12,10 @@ namespace MvcContrib.Samples.NinjectControllerFactory.Controllers
             _samurai = samurai;
         }
 
-        public void Index()
+        public ActionResult Index()
         {
             ViewData["attackresult"] = _samurai.Attack("the evildoers");
-            RenderView("index");
+            return RenderView("index");
         }
     }
 }
