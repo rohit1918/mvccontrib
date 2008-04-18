@@ -39,7 +39,7 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 		{
 			if (_container == null)
 			{
-				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.WindsorControllerFactory));
+				ControllerBuilder.Current.SetControllerFactory(typeof(MvcContrib.Castle.WindsorControllerFactory));
 				
 				_container = new WindsorContainer();
 				_container
