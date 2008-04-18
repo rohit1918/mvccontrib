@@ -19,15 +19,15 @@ namespace Website.Controllers
             this.linkRepository = repository;
         }
 
-        public void Index()
+        public ActionResult Index()
         {
             IEnumerable<Link> links = linkRepository.GetLinks();
-            RenderView("Index",links);
+            return RenderView("Index",links);
         }
 
-        public void About()
+        public ActionResult About()
         {
-            RenderView("About");
+            return RenderView("About");
         }
     }
 }
