@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
+using MvcContrib.ActionResults;
 using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 
@@ -67,5 +68,14 @@ namespace MvcContrib.UnitTests.ConventionController
 			filterContext.Cancel = CancelAction;
 		}
 
+		public ActionResult TextResult()
+		{
+			return RenderText("Test 1 2 3");
+		}
+
+		public ActionResult XmlResult()
+		{
+			return RenderXml("Test 1 2 3");
+		}
 	}
 }

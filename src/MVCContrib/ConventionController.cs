@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using MvcContrib.ActionResults;
 using MvcContrib.MetaData;
 
 namespace MvcContrib
@@ -62,6 +63,26 @@ namespace MvcContrib
 				return _controllerDescriptor;
 			}
 			set { _controllerDescriptor = value; }
+		}
+
+		/// <summary>
+		/// Creates a <see cref="TextResult"/> object for rendering the specified text to HTTP Response's output stream.
+		/// </summary>
+		/// <param name="toRender">The text to render</param>
+		/// <returns>A TextResult object</returns>
+		protected virtual TextResult RenderText(string toRender)
+		{
+			return new TextResult(toRender);
+		}
+
+		/// <summary>
+		/// Creates a <see cref="XmlResult"/> object for serializing the specified object as XML for writing to the HTTP Response's output stream.
+		/// </summary>
+		/// <param name="toSerialize">The object to serialize</param>
+		/// <returns>An XmlResult object</returns>
+		protected virtual XmlResult RenderXml(object toSerialize)
+		{
+			return new XmlResult(toSerialize);
 		}
 	}
 }

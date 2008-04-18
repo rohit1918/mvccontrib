@@ -28,6 +28,14 @@ namespace MvcContrib.ActionResults
 		}
 
 		/// <summary>
+		/// The object to be serialized to XML.
+		/// </summary>
+		public object ObjectToSerialize
+		{
+			get { return _objectToSerialize; }
+		}
+
+		/// <summary>
 		/// Serialises the object that was passed into the constructor to XML and writes the corresponding XML to the result stream.
 		/// </summary>
 		/// <param name="context">The controller context for the current request.</param>

@@ -46,14 +46,14 @@ namespace MvcContrib.Samples.Controllers
 		[NonAction]
 		public ActionResult Hidden()
 		{
-			return new ResponseWriteResult("This action cannot be called.");
+			return RenderText("This action cannot be called.");
 		}
 
 		[DefaultAction]
 		public ActionResult DefaultAction()
 		{
 			string originalAction = RouteData.Values["action"].ToString();
-			return new ResponseWriteResult(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
+			return RenderText(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
 		}
 
 		public XmlResult XmlAction()

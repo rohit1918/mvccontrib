@@ -70,6 +70,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionResults\TextResult.cs" />
     <Compile Include="ActionResults\XmlResult.cs" />
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />

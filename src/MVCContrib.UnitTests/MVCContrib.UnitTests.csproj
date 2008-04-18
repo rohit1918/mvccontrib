@@ -134,6 +134,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionResults\TextResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="ComponentControllerFactories\ComponentControllerBuilderTester.cs" />
