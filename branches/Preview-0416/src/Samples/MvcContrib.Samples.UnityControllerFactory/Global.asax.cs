@@ -40,7 +40,7 @@ namespace MvcContrib.Samples.UnityControllerFactory
 			{
 				_container = new UnityContainer();
 				_container.RegisterType(typeof(IService), typeof(Service));
-				ControllerBuilder.Current.SetControllerFactory(typeof(ControllerFactories.UnityControllerFactory));
+				ControllerBuilder.Current.SetControllerFactory(typeof(MvcContrib.Unity.UnityControllerFactory));
 
                 Type[] assemblyTypes = typeof(HomeController).Assembly.GetTypes();
 				foreach (Type type in assemblyTypes)
