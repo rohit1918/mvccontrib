@@ -41,17 +41,5 @@ namespace MvcContrib.MetaData
 		{
 			get { return _filters; }
 		}
-
-		private  ReturnBinderDescriptor _returnBinderDescriptor;
-		public ReturnBinderDescriptor ReturnBinderDescriptor
-		{
-			get { return _returnBinderDescriptor; }
-			set{ _returnBinderDescriptor = value;}
-		}
-
-		public object InvokeMethod(IController controller, object[] parameters)
-		{
-			return _methodInfo.Invoke(controller, parameters);
-		}
 	}
 }

@@ -5,15 +5,15 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 	public class HomeController : Controller
 	{
 		
-		public void Index()
+		public ActionResult Index()
 		{
-			RenderView("Index");
+			return RenderView("Index");
 		}
 
 		
-		public void About()
+		public ActionResult About()
 		{
-			RenderView("About");
+			return RenderView("About");
 		}
 	}
 }

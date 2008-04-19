@@ -34,15 +34,16 @@ namespace MvcContrib.MetaData
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
 			{
-				if (actionMethod.DeclaringType == typeof(object) || ! IsValidAction(actionMethod) || IsProperty(actionMethod))
+				if (actionMethod.DeclaringType == typeof(object) 
+					|| ! IsValidAction(actionMethod) 
+					|| IsProperty(actionMethod)
+					|| !typeof(ActionResult).IsAssignableFrom(actionMethod.ReturnType))
 				{
 					continue;
 				}
 
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
-				IReturnBinder returnBinder = GetReturnBinder(actionMetaData);
-				if(returnBinder!=null)
-					actionMetaData.ReturnBinderDescriptor = new ReturnBinderDescriptor(actionMetaData.MethodInfo.ReturnType, returnBinder);
+
 				RescueAttribute[] actionRescues = GetRescues(actionMethod, false);
 
 				foreach (RescueAttribute rescue in actionRescues)
@@ -153,15 +154,6 @@ namespace MvcContrib.MetaData
 			return (ActionFilterAttribute[])attributeProvider.GetCustomAttributes(typeof(ActionFilterAttribute), true);
 		}
 
-		protected virtual IReturnBinder GetReturnBinder(ActionMetaData actionMetaData)
-		{
-			object[] attributes=actionMetaData.MethodInfo.ReturnTypeCustomAttributes.GetCustomAttributes(typeof(IReturnBinder),false);
-			if(attributes!=null&&attributes.Length>0)
-			{
-				return attributes[0] as IReturnBinder;
-			}
-			return null;
-		}
 		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
 		{
 			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);

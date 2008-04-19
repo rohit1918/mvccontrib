@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Web.Mvc;
 using MvcContrib.Samples.FormHelper.Models;
 namespace MvcContrib.Samples.FormHelper.Controllers
 {
 	public class HomeController : ConventionController
 	{
-		public void Index()
+		public ActionResult Index()
 		{
 			Person person = new Person();
 			person.Id = 1;
@@ -18,7 +19,7 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 			roles.Add(new Role(3, "User"));
 			ViewData["roles"] = roles;
 
-			RenderView("index");
+			return RenderView("index");
 		}
 	}
 }

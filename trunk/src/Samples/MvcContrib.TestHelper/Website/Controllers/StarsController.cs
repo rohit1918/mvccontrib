@@ -10,40 +10,40 @@ namespace MvcContrib.TestHelper.Sample.Controllers
     public class StarsController : Controller
     {
         
-        public void List()
+        public ActionResult List()
         {
             List<Star> stars = StarDatabase.GetStars();
-            RenderView("List", stars);
+            return RenderView("List", stars);
         }
 
         
-        public void ListWithLinks()
+        public ActionResult ListWithLinks()
         {
             List<Star> stars = StarDatabase.GetStarsAndLinks(ControllerContext);
-            RenderView("ListWithLinks", stars);
+            return RenderView("ListWithLinks", stars);
         }
 
         
-        public void AddFormStar()
+        public ActionResult AddFormStar()
         {
             string name = Request.Form["NewStarName"];
             this.TempData["NewStarName"] = name;
-            RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         
-        public void AddSessionStar()
+        public ActionResult AddSessionStar()
         {
             string name = Request.Form["NewStarName"];
             this.HttpContext.Session["NewStarName"] = name;
-            RedirectToAction("List");
+            return RedirectToAction("List");
         }
 
         
-        public void Nearby()
+        public ActionResult Nearby()
         {
             //Placeholder link for demonstration of link checking
-            RedirectToAction("ListWithLinks");
+            return RedirectToAction("ListWithLinks");
         }
     }
 }

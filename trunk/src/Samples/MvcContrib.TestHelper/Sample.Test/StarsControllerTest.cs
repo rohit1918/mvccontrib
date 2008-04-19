@@ -19,51 +19,53 @@ namespace MvcContrib.TestHelper.Sample
     [TestFixture]
     public class StarsControllerTest
     {
+    	private StarsController _controller;
+    	private TestControllerBuilder _builder;
+
+    	[SetUp]
+    	public void Setup()
+    	{
+    		_controller = new StarsController();	
+			_builder = new TestControllerBuilder();
+    		_builder.InitializeController(_controller);
+		}
+
         [Test]
         public void ListControllerSelectsListView()
         {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            StarsController controller = builder.CreateController<StarsController>();
-            controller.List();
-            Assert.AreEqual("List", builder.RenderViewData.ViewName);
+            _builder.InitializeController(_controller);
+            ActionResult result = _controller.List();
+            Assert.AreEqual("List", ((RenderViewResult)result).ViewName);
         }
 
         [Test]
         public void AddFormStarShouldRedirectToList()
         {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            StarsController controller = builder.CreateController<StarsController>();
-            controller.AddFormStar();
-            Assert.AreEqual("List", builder.RedirectToActionData.ActionName);
+            var result = _controller.AddFormStar() as ActionRedirectResult;
+            Assert.AreEqual("List", result.Values["action"]);
         }
 
         [Test]
         public void AddFormStarShouldSaveFormToTempData()
         {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            StarsController controller = builder.CreateController<StarsController>();
-            builder.Form["NewStarName"] = "alpha c";
-            controller.AddFormStar();
-            Assert.AreEqual("alpha c", controller.TempData["NewStarName"]);
+            _builder.Form["NewStarName"] = "alpha c";
+            _controller.AddFormStar();
+            Assert.AreEqual("alpha c", _controller.TempData["NewStarName"]);
         }
 
         [Test]
         public void AddSessionStarShouldSaveFormToSession()
         {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            StarsController controller = builder.CreateController<StarsController>();
-            builder.Form["NewStarName"] = "alpha c";
-            controller.AddSessionStar();
-            Assert.AreEqual("alpha c", controller.HttpContext.Session["NewStarName"]);
+            _builder.Form["NewStarName"] = "alpha c";
+            _controller.AddSessionStar();
+            Assert.AreEqual("alpha c", _controller.HttpContext.Session["NewStarName"]);
         }
 
         [Test]
         public void NearbyShouldRedirectToListWithLinks() //ok, really it should do something more useful, but you get the point
         {
-            TestControllerBuilder builder = new TestControllerBuilder();
-            StarsController controller = builder.CreateController<StarsController>();
-            controller.Nearby();
-            Assert.AreEqual("ListWithLinks", builder.RedirectToActionData.ActionName);
+            var result = _controller.Nearby() as ActionRedirectResult;
+            Assert.AreEqual("ListWithLinks", result.Values["action"]);
         }
     }
 }

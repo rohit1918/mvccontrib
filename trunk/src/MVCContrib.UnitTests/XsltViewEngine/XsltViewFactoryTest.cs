@@ -18,6 +18,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		private const string view = "MyView";
 		private static readonly string BASE_PATH = Path.Combine(Environment.CurrentDirectory, @"..\..\XsltViewEngine\Data");
 		private IViewSourceLoader _viewSourceLoader;
+		private Controller _fakeController;
 
 		[SetUp]
 		public override void SetUp()
@@ -27,6 +28,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
+			_fakeController = mockRepository.CreateMock<Controller>();
+			mockRepository.Replay(_fakeController);
 		}
 
 		/*[Test]
@@ -89,7 +92,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
 			RouteData routeData = new RouteData();
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, new object(),
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new object(),
 			                                          new TempDataDictionary(HttpContext));
 				// new ControllerContext(HttpContext, routeData, new Controller());
 

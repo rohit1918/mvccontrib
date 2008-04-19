@@ -134,6 +134,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionResults\TextResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="ComponentControllerFactories\ComponentControllerBuilderTester.cs" />
@@ -145,6 +146,12 @@
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
+    <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
+    <Compile Include="ConventionController\CustomActionResult.cs" />
+    <Compile Include="ConventionController\DefaultActionController.cs" />
+    <Compile Include="ConventionController\TestBinder.cs" />
+    <Compile Include="ConventionController\TestController.cs" />
+    <Compile Include="ConventionController\TestFilter.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -175,7 +182,7 @@
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
     <Compile Include="IoC\UnityDependencyTesterResolver.cs" />
     <Compile Include="IoC\WindsorDependencyResolverTester.cs" />
-    <Compile Include="ConventionControllerTester.cs" />
+    <Compile Include="ConventionController\ConventionControllerTester.cs" />
     <Compile Include="IoC\WindsorExtensionTester.cs" />
     <Compile Include="EmailTemplateServiceTest.cs" />
     <Compile Include="MetaData\ControllerDescriptorTester.cs" />
@@ -183,9 +190,8 @@
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
     <Compile Include="MetaData\FilterTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
-    <Compile Include="MetaData\RescueAttributeTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
-    <Compile Include="MetaData\XmlReturnBinderTester.cs" />
+    <Compile Include="ActionResults\XmlActionResultTester.cs" />
     <Compile Include="NHamlViewEngine\FunctionalTester.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,7 +216,7 @@
     <Compile Include="ObjectBuilder\CompositeWeb\WCSFBuilderBaseFixture.cs" />
     <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
     <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
-    <Compile Include="RescueConventionTester.cs" />
+    <Compile Include="ConventionController\RescueConventionTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />

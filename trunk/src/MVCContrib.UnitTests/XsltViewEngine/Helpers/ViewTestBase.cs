@@ -20,19 +20,15 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 		{
 			HttpMethodToReturn = "GET";
 			EcmaScriptVersionToReturn = new Version(1, 1);
-			ResponseOutput = new StringWriter();
 
 			mockRepository = new MockRepository();
 			HttpContext = mockRepository.DynamicHttpContextBase();
-			SetupResult.For(Request.QueryString).Return(new NameValueCollection());
-			SetupResult.For(Request.Form).Return(new NameValueCollection());
 			SetupResult.For(Request.UserHostAddress).Return("::1");
 			SetupResult.For(Request.UserHostName).Return("::1");
 			SetupResult.For(Request.RequestType).Do(new Func<string>(() => HttpMethodToReturn)); //.Return("GET");
 			SetupResult.For(Request.HttpMethod).Do(new Func<string>(() => HttpMethodToReturn));
 			SetupResult.For(Request.PhysicalApplicationPath).Return("http://testing/mycontroller/test");
 			mockRepository.Replay(Request);
-			SetupResult.For(Response.Output).Return(ResponseOutput);
 			SetupResult.For(Request.Browser.EcmaScriptVersion).Do(new Func<Version>(() => EcmaScriptVersionToReturn));
 			SetupResult.For(Request.Browser.Browser).Return("Firefox 2.0.11");
 			SetupResult.For(HttpContext.User.Identity).Return(new MockIdentity {Name = string.Empty});
@@ -57,8 +53,6 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 
 			return xmlDoc;
 		}
-
-		protected StringWriter ResponseOutput { get; set; }
 
 		protected HttpRequestBase Request
 		{

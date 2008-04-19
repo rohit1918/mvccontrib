@@ -6,7 +6,7 @@ namespace MvcContrib.Filters
 {
 	public class PostOnlyAttribute : ActionFilterAttribute
 	{
-		public override void OnActionExecuting(FilterExecutingContext filterContext)
+		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			if (filterContext.HttpContext.Request.RequestType != "POST")
 				throw new InvalidOperationException(
