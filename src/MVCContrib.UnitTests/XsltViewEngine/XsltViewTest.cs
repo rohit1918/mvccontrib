@@ -15,6 +15,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	{
 		private const string controller = "MyController";
 		private const string view = "MyView";
+		private Controller _fakeController;
 
 		private IViewSourceLoader _viewSourceLoader;
 
@@ -25,6 +26,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
+			_fakeController = mockRepository.CreateMock<Controller>();
+			mockRepository.Replay(_fakeController);
 		}
 
 		[Test]
@@ -53,13 +56,13 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, new Controller(), view, string.Empty, vData,
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, vData,
 			                                          new TempDataDictionary(HttpContext));
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
 			viewFactory.RenderView(viewContext);
 
-			string actual = ResponseOutput.ToString().Replace("\r\n", "");
+			string actual = Response.Output.ToString().Replace("\r\n", "");
 
 			XmlDocument xDoc = LoadXmlDocument("ViewTest.xml");
 

@@ -13,10 +13,10 @@ namespace MvcContrib.Samples.WindsorControllerFactory.Controllers
 			_service = service;
 		}
 
-		public void Index()
+		public ActionResult Index()
 		{
 			ViewData["numbers"] = _service.GetNumbers();
-			RenderView("index");
+			return RenderView("index");
 		}
 	}
 }

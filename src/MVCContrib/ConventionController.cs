@@ -1,165 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
-using MvcContrib.Attributes;
-using MvcContrib.Filters;
+using MvcContrib.ActionResults;
 using MvcContrib.MetaData;
-using MvcContrib.Services;
 
 namespace MvcContrib
 {
+	/// <summary>
+	/// Base controller class that implements additional features over Controller.
+	/// Includes support for Rescues, Parameter Binders and Default Actions.
+	/// </summary>
 	public class ConventionController : Controller
 	{
-		public ActionMetaData SelectedAction { get; protected set; }
-
-		protected override bool InvokeAction(string actionName, System.Web.Routing.RouteValueDictionary values)
-		{
-			if (string.IsNullOrEmpty(actionName))
-			{
-				throw new ArgumentException("actionName is required", "actionName");
-			}
-
-			IList<ActionMetaData> actions = MetaData.GetActions(actionName);
-
-			ActionMetaData selectedAction;
-
-			if (actions == null || actions.Count == 0)
-			{
-				//No matching action found - see if there is a "catch all" action.
-				if (MetaData.DefaultAction != null)
-				{
-					selectedAction = MetaData.DefaultAction;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else if (actions.Count > 1)
-			{
-				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
-			}
-			else
-			{
-				selectedAction = actions[0];
-			}
-
-			SelectedAction = selectedAction;
-
-			FilterContext filterContext = new FilterContext(ControllerContext, selectedAction.MethodInfo);
-			FilterExecutingContext executingContext = new FilterExecutingContext(filterContext);
-
-			OnActionExecuting(executingContext);
-
-			if (!executingContext.Cancel)
-			{
-				try
-				{
-					if (!ExecutePreActionFilters(selectedAction, executingContext))
-					{
-						return false;
-					}
-
-					InvokeActionMethod(selectedAction);
-
-					//TODO: ExecutePostActionFilters
-				}
-				catch (Exception exc)
-				{
-					if(!OnError(selectedAction, exc))
-					{
-						throw;
-					}
-				}
-				finally
-				{
-					OnActionExecuted(new FilterExecutedContext(filterContext, null));
-				}
-			}
-
-			return true;
-		}
-
-		protected virtual bool ExecutePreActionFilters(ActionMetaData action, FilterExecutingContext context)
-		{
-			foreach(var filter in action.Filters)
-			{
-				filter.OnActionExecuting(context);
-				if(context.Cancel)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		private bool _isRedirected = false;
-		protected override void RedirectToAction(System.Web.Routing.RouteValueDictionary values)
-		{
-			_isRedirected = true;
-			base.RedirectToAction(values);
-		}
-
-		protected virtual bool OnError(ActionMetaData action, Exception exception)
-		{
-			Type baseExceptionType = exception.GetBaseException().GetType();
-
-			if (baseExceptionType == typeof(System.Threading.ThreadAbortException) && _isRedirected)
-			{
-				return true;
-			}
-
-			foreach (RescueAttribute rescue in action.Rescues)
-			{
-				foreach (Type exceptionType in rescue.ExceptionTypes)
-				{
-					if (exceptionType.IsAssignableFrom(baseExceptionType))
-					{
-						OnPreRescue(exception);
-
-						if (!string.IsNullOrEmpty(rescue.View))
-						{
-							string rescueView = string.Concat("Rescues/", rescue.View);
-
-							RenderView(rescueView, exception);
-
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		protected virtual void OnPreRescue(Exception thrownException)
-		{
-
-		}
-
-		protected virtual void InvokeActionMethod(ActionMetaData action)
-		{
-			object[] actionParameters = new object[action.Parameters.Count];
-
-			int index = 0;
-			foreach (ActionParameterMetaData actionParameter in action.Parameters)
-			{
-				actionParameters[index++] = actionParameter.Bind(ControllerContext);
-			}
-
-			object returnValue = action.InvokeMethod(this, actionParameters);
-			if (action.ReturnBinderDescriptor != null)
-			{
-				IReturnBinder binder = action.ReturnBinderDescriptor.ReturnTypeBinder;
-
-				// Runs return binder and keep going
-				binder.Bind(this, ControllerContext, action.ReturnBinderDescriptor.ReturnType, returnValue);
-			}
-		}
-
 		private ControllerMetaData _metaData;
+		private IControllerDescriptor _controllerDescriptor;
 
+		/// <summary>
+		/// The action currently being executed.
+		/// </summary>
+		public ActionMetaData SelectedAction { get; protected internal set; }
+
+		protected override void Execute(ControllerContext controllerContext)
+		{
+			ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+			base.Execute(controllerContext);
+		}
+
+		/// <summary>
+		/// Occurs before a Rescue is invoked.
+		/// </summary>
+		/// <param name="thrownException">The exception that was thrown</param>
+		[NonAction]
+		public virtual void OnPreRescue(Exception thrownException)
+		{
+		}
+
+		/// <summary>
+		/// Information about the controller.
+		/// </summary>
 		public ControllerMetaData MetaData
 		{
 			get
@@ -172,8 +49,9 @@ namespace MvcContrib
 			}
 		}
 
-		private IControllerDescriptor _controllerDescriptor;
-
+		/// <summary>
+		/// Descriptor used to obtain metadata about the current controller. By default, this will be a CachedControllerDescriptor.
+		/// </summary>
 		public IControllerDescriptor ControllerDescriptor
 		{
 			get
@@ -185,6 +63,26 @@ namespace MvcContrib
 				return _controllerDescriptor;
 			}
 			set { _controllerDescriptor = value; }
+		}
+
+		/// <summary>
+		/// Creates a <see cref="TextResult"/> object for rendering the specified text to HTTP Response's output stream.
+		/// </summary>
+		/// <param name="toRender">The text to render</param>
+		/// <returns>A TextResult object</returns>
+		protected virtual TextResult RenderText(string toRender)
+		{
+			return new TextResult(toRender);
+		}
+
+		/// <summary>
+		/// Creates a <see cref="XmlResult"/> object for serializing the specified object as XML for writing to the HTTP Response's output stream.
+		/// </summary>
+		/// <param name="toSerialize">The object to serialize</param>
+		/// <returns>An XmlResult object</returns>
+		protected virtual XmlResult RenderXml(object toSerialize)
+		{
+			return new XmlResult(toSerialize);
 		}
 	}
 }

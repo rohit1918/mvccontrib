@@ -79,28 +79,13 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void ReturnBinderReturnNullIfNoAttributeIsUsed()
+		public void MethodWithCustomReturnTypeAndNoReturnBinderIsNotAnAction()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
-			ActionMetaData action = metaData.GetActions("ActionReturningValueWithOutBinder")[0];
-
-			Assert.AreEqual(action.ReturnBinderDescriptor,null);
-		}
-
-		[Test]
-		public void ReturnBinderReturnCorrectType()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-
-			ActionMetaData action = metaData.GetActions("ActionWithReturnBinder")[0];
-
-			Assert.IsInstanceOfType(typeof(XMLReturnBinder),action.ReturnBinderDescriptor.ReturnTypeBinder);
-			Assert.That(action.ReturnBinderDescriptor.ReturnType == typeof(int[]));
+			Assert.IsNull(metaData.GetAction("ActionReturningValueWithOutBinder"));
 		}
 
 		[Test]
@@ -212,6 +197,14 @@ namespace MvcContrib.UnitTests.MetaData
 			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
 			descriptor.GetMetaData((Type)null);
 		}
+
+		[Test]
+		public void ShouldThrowIfReturnTypeIsNull()
+		{
+			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
+			Assert.IsNull(metaData.GetAction("VoidAction"));
+		}
 	}
 
 	internal class CountControllerDescriptor : IControllerDescriptor
@@ -231,75 +224,78 @@ namespace MvcContrib.UnitTests.MetaData
 	}
 
 	[Rescue("Test")]
-	internal class MetaDataTestController : ConventionController
+	internal class MetaDataTestController : MvcContrib.ConventionController
 	{
-		public void BasicAction()
+		public void VoidAction()
 		{
+			
 		}
 
-		public void SimpleAction(string param1)
+		public ActionResult BasicAction()
 		{
+			return new EmptyResult();
 		}
 
-		public void SimpleAction(string param1, int param2)
+		public ActionResult SimpleAction(string param1)
 		{
+			return new EmptyResult();
+		}
+
+		public ActionResult SimpleAction(string param1, int param2)
+		{
+			return new EmptyResult();
 		}
 
 		public string Property { get; set; }
 
 		[NonAction]
-		public void NonAction()
+		public ActionResult NonAction()
 		{
-			
+			return new EmptyResult();
 		}
 
 		[DefaultAction]
-		public void CatchAllAction()
+		public ActionResult CatchAllAction()
 		{
-		}
-
-		[return: XMLReturnBinder]
-		public int[] ActionWithReturnBinder()
-		{
-			return new int[] {2,1,4,5};
-		}
-
-		public int[] ActionReturningValueWithOutBinder()
-		{
-			return new int[]{2,3,1,5};
+			return new EmptyResult();
 		}
 
 		[Rescue("Test")]
-		public void ComplexAction([Deserialize("complex")] object complex)
+		public ActionResult ComplexAction([Deserialize("complex")] object complex)
 		{
+			return new EmptyResult();
 		}
 
-		public void InvalidAction(out string test, ref string test2)
+		public ActionResult InvalidAction(out string test, ref string test2)
 		{
 			test = "test";
+			return new EmptyResult();
 		}
 
-		public bool DoInvokeAction(string action)
-		{
-			return InvokeAction(action);
-		}
+//		public bool DoInvokeAction(string action)
+//		{
+//			return InvokeAction(action);
+//			throw new NotImplementedException();
+//		}
 
-		public void DoInvokeActionMethod(ActionMetaData action)
-		{
-			InvokeActionMethod(action);
-		}
+//		public void DoInvokeActionMethod(ActionMetaData action)
+//		{
+//			InvokeActionMethod(action);
+//		}
 	}
 
-	internal class TestControllerWithMultipleDefaultActions : ConventionController
+	internal class TestControllerWithMultipleDefaultActions : MvcContrib.ConventionController
 	{
 		[DefaultAction]
-		public void Action1()
+		public ActionResult Action1()
 		{
+			return new EmptyResult();
 		}
 
 		[DefaultAction]
-		public void Action2()
+		public ActionResult Action2()
 		{
+			return new EmptyResult();
 		}
 	}
 }

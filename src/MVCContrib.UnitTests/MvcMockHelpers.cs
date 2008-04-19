@@ -1,3 +1,5 @@
+using System.Collections.Specialized;
+using System.IO;
 using System.Web;
 using Rhino.Mocks;
 using HttpSessionStateBase = System.Web.HttpSessionStateBase;
@@ -55,11 +57,15 @@ namespace MvcContrib.UnitTests
         public static HttpRequestBase DynamicHttpRequestBase(this MockRepository mocks)
         {
             HttpRequestBase request = mocks.DynamicMock<HttpRequestBase>();
+        	SetupResult.For(request.Form).Return(new NameValueCollection());
+        	SetupResult.For(request.QueryString).Return(new NameValueCollection());
             return request;
         }
         public static HttpResponseBase DynamicHttpResponseBase(this MockRepository mocks)
         {
             HttpResponseBase response = mocks.DynamicMock<HttpResponseBase>();
+        	SetupResult.For(response.Output).Return(new StringWriter());
+        	SetupResult.For(response.ContentType).PropertyBehavior();
             return response;
         }
         public static HttpSessionStateBase DynamicHttpSessionStateBase(this MockRepository mocks)

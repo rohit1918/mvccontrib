@@ -7,13 +7,13 @@ namespace MvcContrib.Samples.NVelocityViewFactory.Controllers
 	public class HomeController : Controller
 	{
 		
-		public void Index()
+		public ActionResult Index()
 		{
-			RenderView("Index", "Site");
+			return RenderView("Index", "Site");
 		}
 
 		
-		public void Contact()
+		public ActionResult Contact()
 		{
 			CompanyInfo companyInfo = new CompanyInfo();
 			companyInfo.CompanyName = "Your company name here";
@@ -24,15 +24,15 @@ namespace MvcContrib.Samples.NVelocityViewFactory.Controllers
 			companyInfo.Zip = "00000";
 			companyInfo.Email = "email@yourcompany.com";
 			
-			RenderView("Contact", "Site", companyInfo);
+			return RenderView("Contact", "Site", companyInfo);
 		}
 
 		
-		public void About()
+		public ActionResult About()
 		{
 			ViewData["now"] = DateTime.Now;
 
-			RenderView("About", "Site");
+			return RenderView("About", "Site");
 		}
 	}
 }
