@@ -34,15 +34,13 @@ namespace MvcContrib.TestHelper.Sample
         public void ListControllerSelectsListView()
         {
             _builder.InitializeController(_controller);
-            ActionResult result = _controller.List();
-            Assert.AreEqual("List", ((RenderViewResult)result).ViewName);
+        	_controller.List().AssertViewRendered().ForView("List");
         }
 
         [Test]
         public void AddFormStarShouldRedirectToList()
         {
-            var result = _controller.AddFormStar() as ActionRedirectResult;
-            Assert.AreEqual("List", result.Values["action"]);
+        	_controller.AddFormStar().AssertActionRedirect().ToAction("List");
         }
 
         [Test]

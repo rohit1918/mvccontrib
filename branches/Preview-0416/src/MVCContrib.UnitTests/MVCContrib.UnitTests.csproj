@@ -221,6 +221,7 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="TestHelper\ActionResultHelperTester.cs" />
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestHelperController.cs" />
