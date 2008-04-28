@@ -4,6 +4,13 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 {
 	public class FunctionalTester : TestFixtureBase
 	{
+    [Test]
+    public void NullAttributes()
+    {
+      AssertRender("NullAttributes", "NullAttributes");
+    }
+
+
 		[Test]
 		public void SharedPartial()
 		{

@@ -1,35 +1,45 @@
+using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using System.Collections.Generic;
 
 namespace MvcContrib.NHamlViewEngine.Utilities
 {
-	public static class Extensions
-	{
-		[SuppressMessage("Microsoft.Naming", "CA1720")]
-		public static string RenderAttributes(this object obj)
-		{
-			if (obj != null)
-			{
-				PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+  public static class Extensions
+  {
+    [SuppressMessage("Microsoft.Naming", "CA1720")]
+    public static string RenderAttributes(this object obj)
+    {
+      if(obj != null)
+      {
+        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
 
-				if (properties.Count > 0)
-				{
-					StringBuilder attributes = new StringBuilder();
+        if(properties.Count > 0)
+        {
+          var attributes = new StringBuilder();
 
-					attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + properties[0].GetValue(obj) + "\"");
+          var value = Convert.ToString(properties[0].GetValue(obj));
 
-					for (int i = 1; i < properties.Count; i++)
-					{
-						attributes.Append(" " + properties[i].Name + "=\"" + properties[i].GetValue(obj) + "\"");
-					}
+          if(!string.IsNullOrEmpty(value))
+          {
+            attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + value + "\"");
+          }
 
-					return attributes.ToString();
-				}
-			}
+          for(int i = 1; i < properties.Count; i++)
+          {
+            value = Convert.ToString(properties[i].GetValue(obj));
 
-			return null;
-		}
-	}
+            if (!string.IsNullOrEmpty(value))
+            {
+              attributes.Append(" " + properties[i].Name + "=\"" + value + "\"");
+            }
+          }
+
+          return attributes.ToString();
+        }
+      }
+
+      return null;
+    }
+  }
 }
