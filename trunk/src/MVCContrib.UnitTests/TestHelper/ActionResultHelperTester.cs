@@ -107,5 +107,38 @@ namespace MvcContrib.UnitTests.TestHelper
 			var final = result.AssertActionRedirect().ToController("Home").ToAction("Index").WithParameter("id", 1);
 			Assert.That(final, Is.EqualTo(result));
 		}
+
+		[Test]
+		public void ToAction_should_support_strongly_typed_controller_and_action()
+		{
+				ActionResult result = new ActionRedirectResult(new RouteValueDictionary(new { controller = "PageHandler", action = "About" }));
+				var final = result.AssertActionRedirect().ToAction<PageHandler>(c => c.About());
+				Assert.That(final, Is.EqualTo(result));
+		}
+
+		[Test]
+		public void ToAction_with_strongly_typed_controller_can_ignore_the_controller_suffix()
+		{
+			ActionResult result = new ActionRedirectResult(new RouteValueDictionary(new { controller = "Fake", action = "About" }));
+			var final = result.AssertActionRedirect().ToAction<FakeController>(c => c.About());
+			Assert.That(final, Is.EqualTo(result));
+		}
+
+		class PageHandler : Controller
+		{
+			public ActionResult About()
+			{
+				return null;
+			}
+		}
+
+		class FakeController : Controller
+		{
+			public ActionResult About()
+			{
+				return null;
+			}
+		}
+
 	}
 }

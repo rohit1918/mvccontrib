@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace MvcContrib.TestHelper
@@ -68,7 +69,7 @@ namespace MvcContrib.TestHelper
 		}
 
 		/// <summary>
-		/// Asserts that an ActionRedirectReslt is for the specified controller.
+		/// Asserts that an ActionRedirectReslt is for the specified action.
 		/// </summary>
 		/// <param name="result">The result to check.</param>
 		/// <param name="action">The name of the action.</param>
@@ -77,6 +78,27 @@ namespace MvcContrib.TestHelper
 		{
 			return result.WithParameter("action", action);
 
+		}
+
+		/// <summary>
+		/// Asserts that an ActionRedirectResult is for the specified action on the specified controller
+		/// </summary>
+		/// <typeparam name="TController">The type of the controller.</typeparam>
+		/// <param name="result">The result to check.</param>
+		/// <param name="action">The action to call on the controller.</param>
+		/// <returns></returns>
+		public static ActionRedirectResult ToAction<TController>(this ActionRedirectResult result, Expression<Action<TController>> action) where TController : IController
+		{
+			var methodCall = (MethodCallExpression)action.Body;
+			string actionName = methodCall.Method.Name;
+
+			const string ControllerSuffix = "Controller";
+			var controllerTypeName = typeof(TController).Name;
+			if (controllerTypeName.EndsWith(ControllerSuffix, StringComparison.OrdinalIgnoreCase))
+			{
+				controllerTypeName = controllerTypeName.Substring(0, controllerTypeName.Length - ControllerSuffix.Length);
+			}
+			return result.ToController(controllerTypeName).ToAction(actionName);
 		}
 
 		/// <summary>
