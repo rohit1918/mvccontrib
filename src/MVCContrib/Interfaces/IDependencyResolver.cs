@@ -7,5 +7,6 @@ namespace MvcContrib.Interfaces
 		Interface GetImplementationOf<Interface>();
 		Interface GetImplementationOf<Interface>(Type type);
 		object GetImplementationOf(Type type);
+		void DisposeImplementation(object instance);
 	}
 }

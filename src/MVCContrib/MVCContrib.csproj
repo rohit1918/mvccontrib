@@ -104,7 +104,6 @@
     <Compile Include="MetaData\NameValueDeserializer.cs" />
     <Compile Include="Services\DependencyResolver.cs" />
     <Compile Include="Services\IEmailTemplateService.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="SimplyRestful\IRestfulActionResolver.cs" />
     <Compile Include="SimplyRestful\RestfulAction.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolver.cs" />

@@ -84,5 +84,12 @@ namespace MvcContrib.UnitTests.IoC
 			IAppDomainSetup dependency = _dependencyResolver.GetImplementationOf<IAppDomainSetup>();
 			Assert.That(dependency, Is.Null);
 		}
+
+		[Test]
+		public void For_Coverage()
+		{
+			//TODO: Check whether the other IoC containers need to release instances like Windsor's container.Release().
+			_dependencyResolver.DisposeImplementation(new object());
+		}
 	}
 }

@@ -42,5 +42,10 @@ namespace MvcContrib.Castle
 
 			return null;
 		}
+
+		public void DisposeImplementation(object instance)
+		{
+			_container.Release(instance);	
+		}
 	}
 }

@@ -47,7 +47,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 
 				_container.RegisterControllers(assemblyTypes);
-				ControllerBuilder.Current.SetControllerFactory(typeof (WindsorControllerFactory));
+				ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(_container));
 			}
 		}
 

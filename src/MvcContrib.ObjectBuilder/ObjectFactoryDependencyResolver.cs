@@ -34,5 +34,9 @@ namespace MvcContrib.ObjectBuilder
 				return null;
 			}
 		}
+
+		public void DisposeImplementation(object instance)
+		{
+		}
 	}
 }

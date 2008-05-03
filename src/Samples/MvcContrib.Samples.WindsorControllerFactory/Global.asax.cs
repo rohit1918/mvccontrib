@@ -39,9 +39,10 @@ namespace MvcContrib.Samples.WindsorControllerFactory
 		{
 			if (_container == null)
 			{
-				ControllerBuilder.Current.SetControllerFactory(typeof(MvcContrib.Castle.WindsorControllerFactory));
-				
 				_container = new WindsorContainer();
+
+				ControllerBuilder.Current.SetControllerFactory(new MvcContrib.Castle.WindsorControllerFactory(Container));
+				
 				_container
 					.RegisterControllers(typeof(HomeController).Assembly)
 					.AddComponent<IService, Service>();
