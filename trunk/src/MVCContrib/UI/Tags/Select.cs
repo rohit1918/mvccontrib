@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace MvcContrib.UI.Tags
@@ -17,22 +19,24 @@ namespace MvcContrib.UI.Tags
 		private readonly List<Option> _options = new List<Option>();
 		private string _textField;
 		private string _valueField;
-		private string _selectedValue;
+		private readonly List<string> _selectedValues = new List<string>();
 		private string _firstOption;
 		private string _firstOptionValue;
 
-		public Select(IDictionary attributes) : base("select", attributes)
+		public Select(IDictionary attributes)
+			: base("select", attributes)
 		{
 		}
 
-		public Select() : this(Hash.Empty)
+		public Select()
+			: this(Hash.Empty)
 		{
 		}
 
 		public string Name
 		{
 			get { return NullGet(NAME); }
-			set { NullSet(NAME,value); }
+			set { NullSet(NAME, value); }
 		}
 
 		public override bool UseFullCloseTag
@@ -138,10 +142,9 @@ namespace MvcContrib.UI.Tags
 			set { _valueField = value; }
 		}
 
-		public string SelectedValue
+		public IList<string> SelectedValues
 		{
-			get { return _selectedValue; }
-			set { _selectedValue = value; }
+			get { return _selectedValues.AsReadOnly(); }
 		}
 
 		public string FirstOption
@@ -165,8 +168,8 @@ namespace MvcContrib.UI.Tags
 		protected virtual string OptionsToString()
 		{
 			StringBuilder builder = new StringBuilder();
-			
-			if(FirstOption != null)
+
+			if (FirstOption != null)
 			{
 				Option option = new Option();
 				option.Value = FirstOptionValue;
@@ -177,13 +180,40 @@ namespace MvcContrib.UI.Tags
 
 			foreach (Option option in _options)
 			{
-				if(option.Value == SelectedValue)
+				if (SelectedValues.Contains(option.Value))
+				{
 					option.Selected = true;
+				}
 
 				builder.Append(option.ToString());
 			}
 
 			return builder.ToString();
+		}
+
+		public virtual void SetSelectedValues(object values)
+		{
+			if (values == null) return;
+			if (typeof(ICollection).IsAssignableFrom(values.GetType()))
+			{
+				foreach (var item in (ICollection)values)
+				{
+					_selectedValues.Add(ConvertValue(item));
+				}
+			}
+			else
+			{
+				_selectedValues.Add(ConvertValue(values));
+			}
+		}
+
+		private string ConvertValue(object value)
+		{
+			if(value.GetType().IsEnum)
+			{
+				return Convert.ToInt32(value).ToString();
+			}
+			return value.ToString();
 		}
 	}
 }

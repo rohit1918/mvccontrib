@@ -24,7 +24,7 @@ namespace MvcContrib.UI.Html
 
 		public static IFormHelper GetInstance(ViewContext context)
 		{
-			if(context.HttpContext.Items.Contains(CACHE_KEY))
+			if (context.HttpContext.Items.Contains(CACHE_KEY))
 				return (IFormHelper)context.HttpContext.Items[CACHE_KEY];
 
 			IFormHelper helper;
@@ -128,7 +128,7 @@ namespace MvcContrib.UI.Html
 			if (options.Value == null)
 				options.Value = "true";
 
-			if(options.Checked == null)
+			if (options.Checked == null)
 			{
 				object value = ObtainFromViewData(options.Name);
 				bool isChecked = value != null && value is bool && (bool)value;
@@ -138,7 +138,7 @@ namespace MvcContrib.UI.Html
 
 			HiddenField hidden = new HiddenField();
 			hidden.Value = "false";
-			if(!string.IsNullOrEmpty(options.Id))
+			if (!string.IsNullOrEmpty(options.Id))
 				hidden.Id = options.Id + "H";
 			hidden.Name = options.Name;
 
@@ -223,17 +223,28 @@ namespace MvcContrib.UI.Html
 
 		public virtual string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
-			string firstOption = ObtainAndRemove(attributes, "firstOption");
-			string firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
-			string selectedValue = ObtainAndRemove(attributes, "selectedValue");
-
-			Select select = new Select(attributes);
+			Select select = GetSelect(attributes, textField, valueField);
 			select.Name = name;
-			select.TextField = textField;
-			select.ValueField = valueField;
-			select.FirstOption = firstOption;
-			select.FirstOptionValue = firstOptionValue;
-			select.SelectedValue = selectedValue;
+			return Select(dataSource, select);
+		}
+
+		public virtual string Select<T>(string name) where T : struct
+		{
+			return Select<T>(name, null);
+		}
+
+		public virtual string Select<T>(string name, IDictionary attributes) where T : struct
+		{
+			var dataSource = new Hashtable();
+			if (typeof(T).IsEnum)
+			{
+				foreach (var item in Enum.GetValues(typeof(T)))
+				{
+					dataSource.Add(Convert.ToInt32(item).ToString(), item.ToString());
+				}
+			}
+			var select = GetSelect(attributes, null, null);
+			select.Name = name;
 			return Select(dataSource, select);
 		}
 
@@ -242,10 +253,10 @@ namespace MvcContrib.UI.Html
 			if (string.IsNullOrEmpty(options.Id))
 				options.Id = options.Name;
 
-			if (options.SelectedValue == null)
+			if (options.SelectedValues.Count == 0)
 			{
 				object value = ObtainFromViewData(options.Name);
-				options.SelectedValue = value != null ? value.ToString() : null;
+				options.SetSelectedValues(value);
 			}
 
 			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
@@ -254,6 +265,25 @@ namespace MvcContrib.UI.Html
 			});
 
 			return options.ToString();
+		}
+
+		protected virtual Select GetSelect(IDictionary attributes, string textField, string valueField)
+		{
+			if (attributes == null) return new Select();
+
+			var firstOption = ObtainAndRemove(attributes, "firstOption");
+			var firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
+			var selectedValue = ObtainAndRemove<object>(attributes, "selectedValue", null);
+
+			var select = new Select(attributes)
+				{
+					FirstOption = firstOption,
+					FirstOptionValue = firstOptionValue,
+					TextField= textField,
+					ValueField=valueField
+				};
+			select.SetSelectedValues(selectedValue);
+			return select;
 		}
 
 		public virtual string RadioField(string name, object value)
@@ -271,10 +301,10 @@ namespace MvcContrib.UI.Html
 
 		public virtual string RadioField(RadioField options)
 		{
-			if(options.Value != null)
+			if (options.Value != null)
 			{
 				object dataValue = ObtainFromViewData(options.Name);
-				if(dataValue != null && dataValue.ToString().Equals(options.Value))
+				if (dataValue != null && dataValue.ToString().Equals(options.Value))
 				{
 					options.Checked = true;
 				}
@@ -283,7 +313,7 @@ namespace MvcContrib.UI.Html
 			if (string.IsNullOrEmpty(options.Id))
 			{
 				string id = options.Name;
-				if(options.Value != null)
+				if (options.Value != null)
 				{
 					id += "-" + options.Value.ToString().Replace(" ", string.Empty);
 				}
@@ -317,7 +347,7 @@ namespace MvcContrib.UI.Html
 				field.Id = field.Name + "-" + count;
 				field.Value = value;
 
-				options.Add(field);                                                               		
+				options.Add(field);
 			});
 
 			return options;
@@ -339,7 +369,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual RadioList RadioList(object dataSource, RadioList options)
 		{
-			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value) 
+			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
 			{
 				RadioField field = new RadioField();
 				field.Name = options.Name;
@@ -354,35 +384,47 @@ namespace MvcContrib.UI.Html
 
 		protected void ProcessDataSource(object dataSource, string textField, string valueField, Action<int, object, object> forEachItemInDataSource)
 		{
-			IEnumerable ds = dataSource as IEnumerable;
-			PropertyInfo textProperty = null;
-			PropertyInfo valueProperty = null;
-
-			if (ds != null && textField != null && valueField != null)
+			if (dataSource != null && typeof(IDictionary).IsAssignableFrom(dataSource.GetType()))
 			{
-				IEnumerator enumerator = ds.GetEnumerator();
-
-				if (enumerator.MoveNext())
+				var ds = (IDictionary)dataSource;
+				var count = 0;
+				foreach (DictionaryEntry entry in ds)
 				{
-					Type type = enumerator.Current.GetType();
-					textProperty = type.GetProperty(textField);
-					valueProperty = type.GetProperty(valueField);
+					forEachItemInDataSource(count++, entry.Value, entry.Key);
 				}
 			}
-
-			if (textProperty != null && valueProperty != null)
+			else
 			{
-				int count = 0;
+				IEnumerable ds = dataSource as IEnumerable;
 
-				foreach (object item in ds)
+				PropertyInfo textProperty = null;
+				PropertyInfo valueProperty = null;
+
+				if (ds != null && textField != null && valueField != null)
 				{
-					object value = valueProperty.GetValue(item, null);
-					object text = textProperty.GetValue(item, null);
+					IEnumerator enumerator = ds.GetEnumerator();
 
-					forEachItemInDataSource(count++, text, value);
+					if (enumerator.MoveNext())
+					{
+						Type type = enumerator.Current.GetType();
+						textProperty = type.GetProperty(textField);
+						valueProperty = type.GetProperty(valueField);
+					}
+				}
+
+				if (textProperty != null && valueProperty != null)
+				{
+					int count = 0;
+
+					foreach (object item in ds)
+					{
+						object value = valueProperty.GetValue(item, null);
+						object text = textProperty.GetValue(item, null);
+
+						forEachItemInDataSource(count++, text, value);
+					}
 				}
 			}
-
 		}
 
 		public void For<T>(string viewDataKey, string url, IDictionary attributes, Action<SmartForm<T>> block)
@@ -391,7 +433,7 @@ namespace MvcContrib.UI.Html
 
 			T item;
 
-			if(raw == null)
+			if (raw == null)
 			{
 				item = default(T);
 			}
@@ -431,12 +473,33 @@ namespace MvcContrib.UI.Html
 
 		protected string ObtainAndRemove(IDictionary dictionary, string key)
 		{
-			if(!dictionary.Contains(key))
+			if (!dictionary.Contains(key))
 				return null;
 
-			string item = dictionary[key].ToString();
+			var item = dictionary[key];
+			var value = item.GetType().IsEnum
+					? Convert.ToInt32(item).ToString()
+					: dictionary[key].ToString();
 			dictionary.Remove(key);
-			return item;
+			return value;
+		}
+
+		protected T ObtainAndRemove<T>(IDictionary dictionary, string key, T defaultValue)
+		{
+			if (!dictionary.Contains(key))
+				return defaultValue;
+
+			var item = dictionary[key];
+			dictionary.Remove(key);
+			if (item is T)
+			{
+				return (T)item;
+			}
+			else
+			{
+				return defaultValue;
+			}
+
 		}
 
 		public string ValidatorRegistrationScripts()

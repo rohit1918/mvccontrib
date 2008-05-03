@@ -53,9 +53,17 @@
 	<p>
 		A dropdown takes an enumerable object as its DataSource parameter. The TextField and ValueField properties are used for databinding: <br />
 		<%= Html.Form().Select("person.RoleId", ViewData["roles"], "Name", "Id", new Hash(firstOption => "Please select...")) %>
-		<br /><br />
-		The options can also be strongly typed.
-		
+	</p>
+	<p>The options can also be strongly typed.</p>
+	<p>It is also possible to use an Enum as the datasource for a Select by using a generic overload:</p>	
+	<p>
+		<%= Html.Form().Select<Gender>("person.Gender") %>
+	</p>
+	
+	<h1>Listbox (select)</h1>
+	<p>
+		A listbox can also be created using the Select method by setting the 'Size' property to a value greater than 1. Multiple selected values are also supported.<br />
+		<%= Html.Form().Select("listbox1", ViewData["roles"], "Name", "Id", new Hash(size => 5, multiple => true, selectedValue => new[] { 1, 2 } )) %>
 	</p>
 	
 	<h1>Checkbox Lists and Radio Lists</h1>

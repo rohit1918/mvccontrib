@@ -119,7 +119,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Image img = new Image("http://foo.gif");
 				Assert.That(img.Src, Is.EqualTo("http://foo.gif"));
 			}
-			
+
 			[Test]
 			public void When_Creating_Image_With_Src_And_Dictionary_It_Sticks()
 			{
@@ -141,7 +141,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Input element = new Input("button",Hash.Empty);
+				Input element = new Input("button", Hash.Empty);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("button"));
 			}
@@ -202,7 +202,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				Input element = new Input("button", hash); 
+				Input element = new Input("button", hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("button"));
 				Assert.That(element.Attributes.Count == 4);
@@ -355,7 +355,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
-		
+
 		[TestFixture]
 		public class TextArea_With_All_Properties
 		{
@@ -485,7 +485,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
-		
+
 		[TestFixture]
 		public class InputImage_With_All_Properties
 		{
@@ -535,14 +535,14 @@ namespace MvcContrib.UnitTests.UI.Html
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				InputImage element = new InputImage("http://image.foo.jpg",hash);
+				InputImage element = new InputImage("http://image.foo.jpg", hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 5);
 				Assert.That(element["Key1"] == "Val1");
 				Assert.That(element.Src == "http://image.foo.jpg");
 			}
 		}
-		
+
 		[TestFixture]
 		public class HiddenField_With_All_Properties
 		{
@@ -567,7 +567,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
-		
+
 		[TestFixture]
 		public class Form_With_All_Properties
 		{
@@ -635,7 +635,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				Form element = new Form("http://aURL", Form.FORM_METHOD.GET,hash);
+				Form element = new Form("http://aURL", Form.FORM_METHOD.GET, hash);
 				Assert.That(element.Tag, Is.EqualTo("form"));
 				Assert.That(element.Attributes.Count == 5);
 				Assert.That(element["Key1"] == "Val1");
@@ -679,7 +679,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
-		
+
 		[TestFixture]
 		public class RadioField_With_All_Properties
 		{
@@ -717,8 +717,8 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["Key1"] == "Val1");
 			}
 		}
-		
-		
+
+
 		[TestFixture]
 		public class Option_With_All_Properties
 		{
@@ -801,7 +801,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				element.AddOption("value2", "text2");
 				element.FirstOptionValue = "FirstValue";
 				element.FirstOption = "FirstText";
-				element.SelectedValue = "value2";
+				element.SetSelectedValues("value2");
 				Assert.That(element.ToString(), Is.EqualTo("<select ><option value=\"FirstValue\">FirstText</option><option value=\"value\">text</option><option value=\"value2\" selected=\"selected\">text2</option></select>"));
 			}
 
@@ -829,7 +829,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Select element = new Select();
 				Assert.That(element.Size == 0);
 				Assert.That(element["maxlength"] == null);
-				
+
 				element["size"] = "A bad value";
 				Assert.That(element.Size == 0);
 
