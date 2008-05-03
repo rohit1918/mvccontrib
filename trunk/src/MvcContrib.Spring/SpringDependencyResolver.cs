@@ -34,5 +34,9 @@ namespace MvcContrib.Spring
 				return null;
 			}
 		}
+
+		public void DisposeImplementation(object instance)
+		{
+		}
 	}
 }

@@ -47,7 +47,7 @@ namespace MvcContrib.Samples
                 _container = new WindsorContainer();
 
                 _container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(BrailViewFactory));
-				ControllerBuilder.Current.SetControllerFactory(typeof(WindsorControllerFactory));
+				ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(_container));
 
                 Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 

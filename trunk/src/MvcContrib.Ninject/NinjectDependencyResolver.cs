@@ -34,5 +34,9 @@ namespace MvcContrib.Ninject
                 return null;
             }
         }
+
+    	public void DisposeImplementation(object instance)
+    	{
+    	}
     }
 }

@@ -5,48 +5,42 @@ using Castle.Windsor;
 
 namespace MvcContrib.Castle
 {
-    public class WindsorControllerFactory : IControllerFactory
-    {
-        protected virtual IWindsorContainer GetContainer(RequestContext context)
-        {
-            if(context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
+	/// <summary>
+	/// Controller Factory class for instantiating controllers using the Windsor IoC container.
+	/// </summary>
+	public class WindsorControllerFactory : IControllerFactory
+	{
+		private IWindsorContainer _container;
 
-            IContainerAccessor containerAccessor = context.HttpContext.ApplicationInstance as IContainerAccessor;
-            if(containerAccessor == null)
-            {
-                throw new InvalidOperationException(
-                    "You must extend the HttpApplication in your web project and implement the IContainerAccessor to properly expose your container instance");
-            }
+		/// <summary>
+		/// Creates a new instance of the <see cref="WindsorControllerFactory"/> class.
+		/// </summary>
+		/// <param name="container">The Windsor container instance to use when creating controllers.</param>
+		public WindsorControllerFactory(IWindsorContainer container)
+		{
+			if (container == null)
+			{
+				throw new ArgumentNullException("container");
+			}
+			_container = container;
+		}
 
-            IWindsorContainer container = containerAccessor.Container;
-            if(container == null)
-            {
-                throw new InvalidOperationException(
-                    "The container seems to be unavailable in your HttpApplication subclass");
-            }
+		public IController CreateController(RequestContext context, string controllerName)
+		{
+			controllerName = controllerName.ToLower() + "controller";
+			return (IController)_container.Resolve(controllerName);
+		}
 
-            return container;
-        }
+		public void DisposeController(IController controller)
+		{
+			IDisposable disposable = controller as IDisposable;
 
-        public IController CreateController(RequestContext context, string controllerName)
-        {
-            controllerName = controllerName.ToLower() + "controller";
+			if (disposable != null)
+			{
+				disposable.Dispose();
+			}
 
-            IWindsorContainer container = GetContainer(context);
-            return (IController)container.Resolve(controllerName);
-        }
-
-        public void DisposeController(IController controller)
-        {
-            IDisposable disposable = controller as IDisposable;
-
-            if(disposable != null)
-            {
-                disposable.Dispose();
-            }
-        }
-    }
+			_container.Release(controller);
+		}
+	}
 }

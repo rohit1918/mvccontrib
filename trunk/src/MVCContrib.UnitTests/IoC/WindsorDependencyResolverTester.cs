@@ -5,6 +5,7 @@ using MvcContrib.Interfaces;
 using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.IoC
 {
@@ -41,5 +42,35 @@ namespace MvcContrib.UnitTests.IoC
 				this._dependencyResolver = new WindsorDependencyResolver(container);
 			}
 		}
+
+		[TestFixture]
+		public class WhenDisposeImplementationIsCalled
+		{
+			private MockRepository _mocks;
+			private WindsorDependencyResolver _resolver;
+			private IWindsorContainer _container;
+
+			[SetUp]
+			public void Setup()
+			{
+				_mocks = new MockRepository();
+				_container = _mocks.DynamicMock<IWindsorContainer>();
+				_resolver = new WindsorDependencyResolver(_container);
+			}
+
+			[Test]
+			public void ThenReleaseShouldBeCalled()
+			{
+				var obj = new object();
+				using(_mocks.Record())
+				{
+					Expect.Call(() => _container.Release(obj));
+				}
+				using(_mocks.Playback())
+				{
+					_resolver.DisposeImplementation(obj);
+				}
+			}
+		} 
 	}
 }

@@ -44,5 +44,9 @@ namespace MvcContrib.Unity
                 return null;
             }
         }
+
+    	public void DisposeImplementation(object instance)
+    	{
+    	}
     }
 }
