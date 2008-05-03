@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Rhino.Mocks;
 using System.Web;
 using MvcContrib.Interfaces;
+using System.Linq;
 using MvcContrib.Services;
 namespace MvcContrib.UnitTests.UI.Html
 {
@@ -87,18 +88,18 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(_viewContext.HttpContext.Items[FormHelper.CACHE_KEY], Is.EqualTo(helper));
 				Assert.That(helper.ViewContext, Is.EqualTo(_viewContext));
 			}
-			
+
 			[Test]
 			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
 			{
 				FormHelper helper = new FormHelper();
-				using(mocks.Record())
+				using (mocks.Record())
 				{
 					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
 					DependencyResolver.InitializeWith(resolver);
 					Expect.Call(resolver.GetImplementationOf<IFormHelper>()).Return(helper);
 				}
-				using(mocks.Playback())
+				using (mocks.Playback())
 				{
 					IFormHelper instance = FormHelper.GetInstance(_viewContext);
 					Assert.That(instance, Is.EqualTo(helper));
@@ -410,7 +411,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_value_only_the_correct_html_is_generated()
 			{
-				string html = _helper.ImageButton("foo.gif","A Value");
+				string html = _helper.ImageButton("foo.gif", "A Value");
 				string expected = "<input type=\"image\" src=\"foo.gif\" alt=\"A Value\"/>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
@@ -481,9 +482,44 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("person", 2);
-				string html = _helper.Select("person", BuildPeople(), "Name", "Id");
-				string expected = "<select name=\"person\" id=\"person\"><option value=\"1\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
+				((IDictionary)_viewContext.ViewData).Add("persons", BuildPeople().Select(p => p.Id).ToArray());
+				string html = _helper.Select("persons", BuildPeople(), "Name", "Id");
+				string expected = "<select name=\"persons\" id=\"persons\"><option value=\"1\" selected=\"selected\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound_ids_only()
+			{
+				((IDictionary)_viewContext.ViewData).Add("persons", new[] { 1, 2 });
+				string html = _helper.Select("persons", BuildPeople(), "Name", "Id");
+				string expected = "<select name=\"persons\" id=\"persons\"><option value=\"1\" selected=\"selected\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void And_multiple_selectedvalues_are_specified_then_the_correct_items_should_be_selected()
+			{
+				string html = _helper.Select("persons", BuildPeople(), "Name", "Id", new Hash(selectedValue => new[] {1 , 2 }));
+				string expected = "<select name=\"persons\" id=\"persons\"><option value=\"1\" selected=\"selected\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_generic_enum_parameter_and_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
+			{
+				((IDictionary)_viewContext.ViewData).Add("enumArray", new TestEnum[] { TestEnum.One, TestEnum.Two });
+				var html = _helper.Select<TestEnum>("enumArray");
+				var expected = "<select name=\"enumArray\" id=\"enumArray\"><option value=\"0\" selected=\"selected\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_generic_enum_parameter_and_the_name_matches_property_on_complex_object_in_the_ViewData_it_should_be_databound()
+			{
+				((IDictionary)_viewContext.ViewData).Add("person", new Person("Jeremy", 1) {Test = TestEnum.Two});
+				var html = _helper.Select<TestEnum>("person.Test");
+				var expected = "<select name=\"person.Test\" id=\"person-Test\"><option value=\"0\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
 
@@ -494,7 +530,24 @@ namespace MvcContrib.UnitTests.UI.Html
 				string expected = "<select name=\"foo\" id=\"foo\"><option value=\"1\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
-			
+
+			[Test]
+			public void With_generic_enum_parameter_the_correct_html_is_generated()
+			{
+				var html = _helper.Select<TestEnum>("foo");
+				var expected =
+					"<select name=\"foo\" id=\"foo\"><option value=\"0\">One</option><option value=\"1\">Two</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void With_generic_enum_parameter__and_firstoption_and_selected_the_correct_html_is_generated()
+			{
+				var html = _helper.Select<TestEnum>("foo", new Hash(firstOption => "test", firstOptionValue => "", SelectedValue => TestEnum.Two));
+				var expected =
+					"<select name=\"foo\" id=\"foo\"><option value=\"\">test</option><option value=\"0\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 		}
 
 		[TestFixture]
@@ -599,7 +652,7 @@ namespace MvcContrib.UnitTests.UI.Html
 
 				string html = _helper.RadioField(field);
 				string expected = "<input type=\"radio\" value=\"bar\" name=\"foo\" id=\"foo-bar\"/>";
-				
+
 				Assert.That(html, Is.EqualTo(expected));
 			}
 
@@ -678,7 +731,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				list.TextField = "Name";
 				list.ValueField = "Id";
 
-				
+
 				CheckBoxList output = _helper.CheckBoxList(BuildPeople(), list);
 				Assert.That(output, Is.EqualTo(list));
 
@@ -768,7 +821,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				public void With_method_of_POST_in_the_attributes_the_correct_html_should_be_generated()
 				{
 					string expected = "<form method=\"post\" action=\"/home/index\"></form>";
-					_helper.For<object>(new object(), "/home/index", new Hash(method => "post"), delegate {});
+					_helper.For<object>(new object(), "/home/index", new Hash(method => "post"), delegate { });
 					Assert.That(_output.ToString(), Is.EqualTo(expected));
 				}
 
@@ -949,7 +1002,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				_helper.ValidatorRegistrationScripts();
 				_helper.RequiredValidator("myid", "refid", "error!");
 				string output = _helper.ValidatorInitializationScripts();
-				
+
 				Assert.IsTrue(javascriptRegex.IsMatch(output));
 			}
 
@@ -1059,7 +1112,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			private string _name;
 			private int _id;
-
+			private TestEnum _testEnum;
 
 			public Person(string name, int id)
 			{
@@ -1078,7 +1131,19 @@ namespace MvcContrib.UnitTests.UI.Html
 				get { return _id; }
 				set { _id = value; }
 			}
+
+			public TestEnum Test
+			{
+				get { return _testEnum;  }
+				set { _testEnum = value; }
+			}
 		}
 		#endregion
+
+		public enum TestEnum
+		{
+			One,
+			Two
+		}
 	}
 }

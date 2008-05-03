@@ -11,6 +11,7 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 			person.Id = 1;
 			person.Name = "Jeremy";
 			person.RoleId = 2;
+			person.Gender = Gender.Male;
 			ViewData["person"] = person;
 
 			List<Role> roles = new List<Role>();

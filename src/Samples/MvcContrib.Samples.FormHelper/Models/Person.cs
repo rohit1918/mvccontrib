@@ -5,6 +5,7 @@ namespace MvcContrib.Samples.FormHelper.Models
 		private string _name;
 		private int _id;
 		private int _roleId;
+		private Gender _gender;
 
 		public string Name
 		{
@@ -27,6 +28,12 @@ namespace MvcContrib.Samples.FormHelper.Models
 		public bool IsDeveloper
 		{
 			get { return _roleId == 2; }
+		}
+
+		public Gender Gender
+		{
+			get { return _gender;  }
+			set { _gender = value;}
 		}
 	}
 }

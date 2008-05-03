@@ -35,6 +35,8 @@ namespace MvcContrib.UI.Html
 		string Select(string name, object dataSource, string textField, string valueField);
 		string Select(string name, object dataSource, string textField, string valueField, IDictionary attributes);
 		string Select(object dataSource, Select options);
+		string Select<T>(string name) where T : struct;
+		string Select<T>(string name, IDictionary attributes) where T : struct;
 		string RadioField(string name, object value);
 		string RadioField(string name, object value, IDictionary attributes);
 		string RadioField(RadioField options);
@@ -47,8 +49,8 @@ namespace MvcContrib.UI.Html
 		void For<T>(T dataItem, string url, Action<SmartForm<T>> block);
 		void For<T>(T dataItem, string url, IDictionary attributes, Action<SmartForm<T>> block);
 		void For<T>(string viewDataKey, string url, IDictionary attributes, Action<SmartForm<T>> block);
-      string ValidatorRegistrationScripts();
-      string ValidatorInitializationScripts();
+		string ValidatorRegistrationScripts();
+		string ValidatorInitializationScripts();
 		IDictionary<string, object> FormValidation();
 		IDictionary<string, object> FormValidation(string validationGroup);
 		string RequiredValidator(string name, string referenceName, string text);
