@@ -92,6 +92,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Routing\DebugHttpHandler.cs" />
+    <Compile Include="Routing\DebugRoute.cs" />
+    <Compile Include="Routing\DebugRouteHandler.cs" />
+    <Compile Include="Routing\RouteDebugger.cs" />
     <Compile Include="Services\EmailTemplateService.cs" />
     <Compile Include="MetaData\ActionMetaData.cs" />
     <Compile Include="MetaData\ActionParameterMetaData.cs" />

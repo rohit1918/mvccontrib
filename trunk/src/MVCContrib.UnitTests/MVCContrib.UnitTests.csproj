@@ -217,6 +217,7 @@
     <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
     <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
     <Compile Include="ConventionController\RescueConventionTester.cs" />
+    <Compile Include="RouteDebuggerTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
