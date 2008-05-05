@@ -242,6 +242,7 @@
     <Compile Include="UI\Html\ScriptElementTester.cs" />
     <Compile Include="UI\Html\SmartFormTester.cs" />
     <Compile Include="UI\Html\TagTester.cs" />
+    <Compile Include="UI\Html\ValidationHelperTester.cs" />
     <Compile Include="UI\Html\ValidatorTester.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
     <Compile Include="ViewDataExtensionsForIDictionaryTester.cs" />
