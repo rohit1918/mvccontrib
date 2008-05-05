@@ -519,7 +519,7 @@ namespace MvcContrib.UI.Html
 						Type loaderType = typeof(AssemblyResourceLoader);
 						Assembly systemWebAssembly = Assembly.GetAssembly(loaderType);
 						MethodInfo webResourceUrlMethod = loaderType.GetMethod("GetWebResourceUrlInternal", BindingFlags.NonPublic | BindingFlags.Static);
-						_webValidationUrl = (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
+						_webValidationUrl = this.ViewContext.HttpContext.Request.ApplicationPath + (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
 					}
 				}
 			}
@@ -570,11 +570,11 @@ namespace MvcContrib.UI.Html
 			outputValidators.AppendLine("<script type=\"text/javascript\">");
 			outputValidators.AppendLine("//<![CDATA[");
 
-			List<BaseValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<BaseValidator>;
+			List<IValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
 
 			if (validators != null)
 			{
-				foreach (BaseValidator baseValidator in validators)
+				foreach (IValidator validator in validators)
 				{
 					if (!firstValidator)
 					{
@@ -582,11 +582,11 @@ namespace MvcContrib.UI.Html
 					}
 
 					outputValidatorArray.Append("document.getElementById(\"");
-					outputValidatorArray.Append(baseValidator.Id.Replace('.', '-'));
+					outputValidatorArray.Append(validator.Id.Replace('.', '-'));
 					outputValidatorArray.Append("\")");
 					firstValidator = false;
 
-					baseValidator.RenderClientHookup(outputValidators);
+					validator.RenderClientHookup(outputValidators);
 				}
 			}
 
@@ -619,18 +619,18 @@ namespace MvcContrib.UI.Html
 			return outputValidatorArray.ToString() + "\r\n" + outputValidators.ToString();
 		}
 
-		private void ValidateAndAddValidator(BaseValidator newValidator)
+		private void ValidateAndAddValidator(IValidator newValidator)
 		{
 			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
 			{
 				throw new InvalidOperationException("You must register the validation scripts before adding a validator.");
 			}
 
-			List<BaseValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<BaseValidator>;
+			List<IValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
 
 			if (validators == null)
 			{
-				validators = new List<BaseValidator>();
+				validators = new List<IValidator>();
 				this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] = validators;
 			}
 
@@ -827,6 +827,26 @@ namespace MvcContrib.UI.Html
 			CustomValidator validator = new CustomValidator(name, referenceName, clientValidationFunction, text, validationGroup, attributes);
 			this.ValidateAndAddValidator(validator);
 			return validator.ToString();
+		}
+
+		public string ElementValidation(ICollection<IValidator> validators)
+		{
+			return ElementValidation(validators, null);
+		}
+
+		public string ElementValidation(ICollection<IValidator> validators, string referenceName)
+		{
+			StringBuilder output = new StringBuilder();
+			foreach (IValidator validator in validators)
+			{
+				if (string.IsNullOrEmpty(referenceName) || validator.ReferenceId == referenceName)
+				{
+					this.ValidateAndAddValidator(validator);
+					output.AppendLine(validator.ToString());
+				}
+			}
+
+			return output.ToString();
 		}
 	}
 }

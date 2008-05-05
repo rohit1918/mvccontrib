@@ -69,7 +69,7 @@ namespace MvcContrib.UI.Tags.Validators
 
 		public override string ValidationFunction
 		{
-			get 
+			get
 			{
 				return "RangeValidatorEvaluateIsValid";
 			}
@@ -91,6 +91,20 @@ namespace MvcContrib.UI.Tags.Validators
 			{
 				throw new ArgumentException("Cannot convert value to selected validation type.", "maximumValue");
 			}
+		}
+
+		public override bool Validate(System.Web.HttpRequestBase request)
+		{
+			string formValue = request.Form[this.ReferenceId];
+
+			if (formValue == null)
+			{
+				this.IsValid = false;
+				return false;
+			}
+
+			this.IsValid = (this.CompareValues(formValue, this.MinimumValue, ValidationCompareOperator.GreaterThanEqual) && this.CompareValues(formValue, this.MaximumValue, ValidationCompareOperator.LessThanEqual));
+			return this.IsValid;
 		}
 	}
 }

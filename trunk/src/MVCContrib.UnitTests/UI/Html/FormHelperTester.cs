@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MvcContrib.UI.Html;
 using MvcContrib.UI.Tags;
+using MvcContrib.UI.Tags.Validators;
 using NUnit.Framework;
 using MvcContrib.UnitTests;
 using MvcContrib;
@@ -1104,6 +1105,58 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(output2, Is.EqualTo("<span Key1=\"Val1\" id=\"myid2\" style=\"display:none;color:red;\">error!</span>"));
 				Assert.That(output3, Is.EqualTo("<span id=\"myid3\" style=\"display:none;color:red;\">error!</span>"));
 				Assert.That(output4, Is.EqualTo("<span Key1=\"Val1\" id=\"myid4\" style=\"display:none;color:red;\">error!</span>"));
+			}
+		}
+
+		[TestFixture]
+		public class When_Element_Validators_is_invoked : BaseFormHelperTester
+		{
+			[Test]
+			public void The_correct_output_is_rendered()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
+
+				_helper.ValidatorRegistrationScripts();
+				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2 });
+
+				Assert.That(output, Is.EqualTo("<span id=\"myid1\" style=\"display:none;color:red;\">error!</span>\r\n<span id=\"myid2\" style=\"display:none;color:red;\">error!</span>\r\n"));
+			}
+
+			[Test]
+			public void The_correct_output_is_rendered_with_a_reference_id_specified()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
+				RequiredValidator validator3 = new RequiredValidator("myid3", "refid2", "error!");
+
+				_helper.ValidatorRegistrationScripts();
+				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2, validator3 }, "refid");
+
+				Assert.That(output, Is.EqualTo("<span id=\"myid1\" style=\"display:none;color:red;\">error!</span>\r\n<span id=\"myid2\" style=\"display:none;color:red;\">error!</span>\r\n"));
+			}
+
+			[Test]
+			public void No_output_is_rendered_with_no_matching_id_specified()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
+				RequiredValidator validator3 = new RequiredValidator("myid3", "refid2", "error!");
+
+				_helper.ValidatorRegistrationScripts();
+				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2, validator3 }, "refid3");
+
+				Assert.That(output, Is.Empty);
+			}
+
+			[Test, ExpectedException(typeof(System.ArgumentException))]
+			public void When_validator_is_duplicated_for_reference_control()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid", "refid", "error!");
+				RequiredValidator validator2 = new RequiredValidator("myid", "refid", "error!");
+
+				_helper.ValidatorRegistrationScripts();
+				_helper.ElementValidation(new BaseValidator[] { validator1, validator2 });
 			}
 		}
 
