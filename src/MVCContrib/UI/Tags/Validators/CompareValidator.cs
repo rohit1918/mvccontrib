@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.UI.WebControls;
 using System.Collections;
 using System.Web.UI;
+using System.Web;
 
 namespace MvcContrib.UI.Tags.Validators
 {
@@ -68,10 +69,26 @@ namespace MvcContrib.UI.Tags.Validators
 
 		public override string ValidationFunction
 		{
-			get 
+			get
 			{
 				return "CompareValidatorEvaluateIsValid";
 			}
+		}
+
+		public override bool Validate(HttpRequestBase request)
+		{
+			string formValue1 = request.Form[this.ReferenceId];
+			string formValue2 = request.Form[this.CompareReferenceId];
+
+			if (formValue1 == null || (formValue2 == null && this.OperatorType != ValidationCompareOperator.DataTypeCheck))
+			{
+				this.IsValid = false;
+				return false;
+			}
+
+			this.IsValid = this.CompareValues(formValue1, formValue2, this.OperatorType);
+
+			return this.IsValid;
 		}
 	}
 }

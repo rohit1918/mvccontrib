@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Web;
 
 namespace MvcContrib.UI.Tags.Validators
 {
 	public abstract class BaseValidator : Element, IValidator
 	{
 		private Hash<string> _expandoAttributes = new Hash<string>();
+		private bool isValid = true;
 
-		public BaseValidator(string id, string referenceId, string text) : base("span")
+		public BaseValidator(string id, string referenceId, string text)
+			: base("span")
 		{
 			this.Id = id;
 			this.ReferenceId = referenceId;
@@ -18,7 +21,8 @@ namespace MvcContrib.UI.Tags.Validators
 			this.NullSet("style", "display:none;color:red;");
 		}
 
-		public BaseValidator(string id, string referenceId, string text, IDictionary attributes) : base("span", attributes)
+		public BaseValidator(string id, string referenceId, string text, IDictionary attributes)
+			: base("span", attributes)
 		{
 			this.Id = id;
 			this.ReferenceId = referenceId;
@@ -26,7 +30,8 @@ namespace MvcContrib.UI.Tags.Validators
 			this.NullSet("style", "display:none;color:red;");
 		}
 
-		public BaseValidator(string id, string referenceId, string text, string validationGroup) : base("span")
+		public BaseValidator(string id, string referenceId, string text, string validationGroup)
+			: base("span")
 		{
 			this.Id = id;
 			this.ReferenceId = referenceId;
@@ -35,7 +40,8 @@ namespace MvcContrib.UI.Tags.Validators
 			this.NullSet("style", "display:none;color:red;");
 		}
 
-		public BaseValidator(string id, string referenceId, string text, string validationGroup, IDictionary attributes) : base("span", attributes)
+		public BaseValidator(string id, string referenceId, string text, string validationGroup, IDictionary attributes)
+			: base("span", attributes)
 		{
 			this.Id = id;
 			this.ReferenceId = referenceId;
@@ -88,10 +94,24 @@ namespace MvcContrib.UI.Tags.Validators
 			get;
 		}
 
+		public bool IsValid
+		{
+			get
+			{
+				return this.isValid;
+			}
+
+			protected set
+			{
+				this.isValid = value;
+				if (!value)
+					this.NullSet("style", "color:red;");
+			}
+		}
+
 		public virtual void RenderClientHookup(StringBuilder output)
 		{
 			string name = this.Id.Replace('.', '_');
-			string fieldName = this.Id.Replace('.', '-');
 
 			this.NullExpandoSet("evaluationfunction", this.ValidationFunction);
 			this.NullExpandoSet("display", "Dynamic");
@@ -100,9 +120,9 @@ namespace MvcContrib.UI.Tags.Validators
 			output.Append("var ");
 			output.Append(name);
 			output.Append(" = document.all ? document.all[\"");
-			output.Append(fieldName);
+			output.Append(this.Id);
 			output.Append("\"] : document.getElementById(\"");
-			output.Append(fieldName);
+			output.Append(this.Id);
 			output.Append("\");");
 			output.AppendLine();
 
@@ -113,10 +133,28 @@ namespace MvcContrib.UI.Tags.Validators
 				output.Append(".");
 				output.Append(en.Current.Key);
 				output.Append(" = \"");
-				output.Append(en.Current.Value);
+				output.Append(en.Current.Value.Replace("\\", "\\\\"));
 				output.Append("\";");
 				output.AppendLine();
 			}
+		}
+
+		public virtual bool Validate(HttpRequestBase request)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static bool Validate(HttpRequestBase request, ICollection<IValidator> validators)
+		{
+			bool valid = true;
+			foreach (IValidator validator in validators)
+			{
+				bool tempValid = validator.Validate(request);
+				if (valid && !tempValid)
+					valid = false;
+			}
+
+			return valid;
 		}
 
 		protected string NullExpandoGet(string key)

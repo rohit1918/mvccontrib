@@ -7,11 +7,93 @@ using MvcContrib.UI.Tags.Validators;
 using NUnit.Framework.SyntaxHelpers;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Rhino.Mocks;
+using System.Web;
+using System.Collections.Specialized;
 
 namespace MvcContrib.UnitTests.UI.Html
 {
 	public class ValidatorTester
 	{
+		[TestFixture]
+		public class Base_Validator
+		{
+			[Test]
+			public void All_Validators_Are_Valid()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid1", "Error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid2", "Error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1234");
+				formValues.Add("refid2", "5678");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(BaseValidator.Validate(request, new IValidator[] { validator1, validator2 }));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.IsValid);
+				}
+			}
+
+			[Test]
+			public void Single_Validator_Not_Valid()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid1", "Error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid2", "Error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1234");
+				formValues.Add("refid2", "");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(BaseValidator.Validate(request, new IValidator[] { validator1, validator2 }));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsFalse(validator2.IsValid);
+				}
+			}
+
+			[Test]
+			public void Multiple_Validators_Not_Valid()
+			{
+				RequiredValidator validator1 = new RequiredValidator("myid1", "refid1", "Error!");
+				RequiredValidator validator2 = new RequiredValidator("myid2", "refid2", "Error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "");
+				formValues.Add("refid2", "");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(BaseValidator.Validate(request, new IValidator[] { validator1, validator2 }));
+					Assert.IsFalse(validator1.IsValid);
+					Assert.IsFalse(validator2.IsValid);
+				}
+			}
+		}
+
 		[TestFixture]
 		public class Required_Validator_With_All_Properties
 		{
@@ -101,6 +183,90 @@ namespace MvcContrib.UnitTests.UI.Html
 				validator.RenderClientHookup(output);
 				Assert.IsTrue(outputRegex.IsMatch(output.ToString()));
 			}
+
+			[Test]
+			public void Validation_On_Value_Present()
+			{
+				RequiredValidator validator = new RequiredValidator("myid", "refid", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "value");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator.Validate(request));
+					Assert.IsTrue(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Value_Present()
+			{
+				RequiredValidator validator = new RequiredValidator("myid", "refid", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.IsFalse(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Form_Value_Present()
+			{
+				RequiredValidator validator = new RequiredValidator("myid", "refid", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicHttpRequestBase();
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+				}
+			}
+
+			[Test]
+			public void Rendering_Validator_When_IsValid_False_Initially_Displays()
+			{
+				RequiredValidator validator = new RequiredValidator("myid", "refid", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.That(validator.ToString(), Is.EqualTo("<span id=\"myid\" style=\"color:red;\">error!</span>"));
+				}
+			}
 		}
 
 		[TestFixture]
@@ -185,6 +351,69 @@ namespace MvcContrib.UnitTests.UI.Html
 				StringBuilder output = new StringBuilder();
 				validator.RenderClientHookup(output);
 				Assert.IsTrue(outputRegex.IsMatch(output.ToString()));
+			}
+
+			[Test]
+			public void Validation_On_Value_Present()
+			{
+				RegularExpressionValidator validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "1234");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator.Validate(request));
+					Assert.IsTrue(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Value_Present()
+			{
+				RegularExpressionValidator validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "value");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.IsFalse(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Form_Value_Present()
+			{
+				RegularExpressionValidator validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
+
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicHttpRequestBase();
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+				}
 			}
 		}
 
@@ -380,6 +609,371 @@ namespace MvcContrib.UnitTests.UI.Html
 
 				System.Threading.Thread.CurrentThread.CurrentCulture = priorInfo;
 			}
+
+			[Test]
+			public void Validation_On_Date_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThan, "error!");
+				CompareValidator validator3 = new CompareValidator("myid", "refid3", "compareRefId3", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator4 = new CompareValidator("myid", "refid4", "compareRefId4", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator5 = new CompareValidator("myid", "refid5", "compareRefId5", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.LessThan, "error!");
+				CompareValidator validator6 = new CompareValidator("myid", "refid6", "compareRefId6", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator7 = new CompareValidator("myid", "refid7", "compareRefId7", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
+				CompareValidator validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1/5/2008");
+				formValues.Add("compareRefId1", "1/5/2008");
+				formValues.Add("refid2", "1/6/2008");
+				formValues.Add("compareRefId2", "1/5/2008");
+				formValues.Add("refid3", "1/6/2008");
+				formValues.Add("compareRefId3", "1/5/2008");
+				formValues.Add("refid4", "1/5/2008");
+				formValues.Add("compareRefId4", "1/5/2008");
+				formValues.Add("refid5", "1/4/2008");
+				formValues.Add("compareRefId5", "1/5/2008");
+				formValues.Add("refid6", "1/4/2008");
+				formValues.Add("compareRefId6", "1/5/2008");
+				formValues.Add("refid7", "1/5/2008");
+				formValues.Add("compareRefId7", "1/5/2008");
+				formValues.Add("refid8", "1/4/2008");
+				formValues.Add("compareRefId8", "1/5/2008");
+				formValues.Add("refid9", "1/4/2008");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator1.Validate(request));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.Validate(request));
+					Assert.IsTrue(validator2.IsValid);
+					Assert.IsTrue(validator3.Validate(request));
+					Assert.IsTrue(validator3.IsValid);
+					Assert.IsTrue(validator4.Validate(request));
+					Assert.IsTrue(validator4.IsValid);
+					Assert.IsTrue(validator5.Validate(request));
+					Assert.IsTrue(validator5.IsValid);
+					Assert.IsTrue(validator6.Validate(request));
+					Assert.IsTrue(validator6.IsValid);
+					Assert.IsTrue(validator7.Validate(request));
+					Assert.IsTrue(validator7.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_Currency_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThan, "error!");
+				CompareValidator validator3 = new CompareValidator("myid", "refid3", "compareRefId3", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator4 = new CompareValidator("myid", "refid4", "compareRefId4", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator5 = new CompareValidator("myid", "refid5", "compareRefId5", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.LessThan, "error!");
+				CompareValidator validator6 = new CompareValidator("myid", "refid6", "compareRefId6", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator7 = new CompareValidator("myid", "refid7", "compareRefId7", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
+				CompareValidator validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1234.12");
+				formValues.Add("compareRefId1", "1234.12");
+				formValues.Add("refid2", "2345.12");
+				formValues.Add("compareRefId2", "1234.12");
+				formValues.Add("refid3", "2345.12");
+				formValues.Add("compareRefId3", "1234.12");
+				formValues.Add("refid4", "1234.12");
+				formValues.Add("compareRefId4", "1234.12");
+				formValues.Add("refid5", "123.12");
+				formValues.Add("compareRefId5", "1234.12");
+				formValues.Add("refid6", "123.12");
+				formValues.Add("compareRefId6", "1234.12");
+				formValues.Add("refid7", "1234.12");
+				formValues.Add("compareRefId7", "1234.12");
+				formValues.Add("refid8", "1234.12");
+				formValues.Add("compareRefId8", "2345.12");
+				formValues.Add("refid9", "1234.12");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator1.Validate(request));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.Validate(request));
+					Assert.IsTrue(validator2.IsValid);
+					Assert.IsTrue(validator3.Validate(request));
+					Assert.IsTrue(validator3.IsValid);
+					Assert.IsTrue(validator4.Validate(request));
+					Assert.IsTrue(validator4.IsValid);
+					Assert.IsTrue(validator5.Validate(request));
+					Assert.IsTrue(validator5.IsValid);
+					Assert.IsTrue(validator6.Validate(request));
+					Assert.IsTrue(validator6.IsValid);
+					Assert.IsTrue(validator7.Validate(request));
+					Assert.IsTrue(validator7.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_Double_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThan, "error!");
+				CompareValidator validator3 = new CompareValidator("myid", "refid3", "compareRefId3", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator4 = new CompareValidator("myid", "refid4", "compareRefId4", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator5 = new CompareValidator("myid", "refid5", "compareRefId5", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.LessThan, "error!");
+				CompareValidator validator6 = new CompareValidator("myid", "refid6", "compareRefId6", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator7 = new CompareValidator("myid", "refid7", "compareRefId7", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
+				CompareValidator validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1234.12");
+				formValues.Add("compareRefId1", "1234.12");
+				formValues.Add("refid2", "2345.12");
+				formValues.Add("compareRefId2", "1234.12");
+				formValues.Add("refid3", "2345.12");
+				formValues.Add("compareRefId3", "1234.12");
+				formValues.Add("refid4", "1234.12");
+				formValues.Add("compareRefId4", "1234.12");
+				formValues.Add("refid5", "123.12");
+				formValues.Add("compareRefId5", "1234.12");
+				formValues.Add("refid6", "123.12");
+				formValues.Add("compareRefId6", "1234.12");
+				formValues.Add("refid7", "1234.12");
+				formValues.Add("compareRefId7", "1234.12");
+				formValues.Add("refid8", "1234.12");
+				formValues.Add("compareRefId8", "2345.12");
+				formValues.Add("refid9", "1234.12");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator1.Validate(request));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.Validate(request));
+					Assert.IsTrue(validator2.IsValid);
+					Assert.IsTrue(validator3.Validate(request));
+					Assert.IsTrue(validator3.IsValid);
+					Assert.IsTrue(validator4.Validate(request));
+					Assert.IsTrue(validator4.IsValid);
+					Assert.IsTrue(validator5.Validate(request));
+					Assert.IsTrue(validator5.IsValid);
+					Assert.IsTrue(validator6.Validate(request));
+					Assert.IsTrue(validator6.IsValid);
+					Assert.IsTrue(validator7.Validate(request));
+					Assert.IsTrue(validator7.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_Integer_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThan, "error!");
+				CompareValidator validator3 = new CompareValidator("myid", "refid3", "compareRefId3", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator4 = new CompareValidator("myid", "refid4", "compareRefId4", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator5 = new CompareValidator("myid", "refid5", "compareRefId5", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.LessThan, "error!");
+				CompareValidator validator6 = new CompareValidator("myid", "refid6", "compareRefId6", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator7 = new CompareValidator("myid", "refid7", "compareRefId7", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
+				CompareValidator validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "1234");
+				formValues.Add("compareRefId1", "1234");
+				formValues.Add("refid2", "2345");
+				formValues.Add("compareRefId2", "1234");
+				formValues.Add("refid3", "2345");
+				formValues.Add("compareRefId3", "1234");
+				formValues.Add("refid4", "1234");
+				formValues.Add("compareRefId4", "1234");
+				formValues.Add("refid5", "123");
+				formValues.Add("compareRefId5", "1234");
+				formValues.Add("refid6", "123");
+				formValues.Add("compareRefId6", "1234");
+				formValues.Add("refid7", "1234");
+				formValues.Add("compareRefId7", "1234");
+				formValues.Add("refid8", "1234");
+				formValues.Add("compareRefId8", "2345");
+				formValues.Add("refid9", "1234");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator1.Validate(request));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.Validate(request));
+					Assert.IsTrue(validator2.IsValid);
+					Assert.IsTrue(validator3.Validate(request));
+					Assert.IsTrue(validator3.IsValid);
+					Assert.IsTrue(validator4.Validate(request));
+					Assert.IsTrue(validator4.IsValid);
+					Assert.IsTrue(validator5.Validate(request));
+					Assert.IsTrue(validator5.IsValid);
+					Assert.IsTrue(validator6.Validate(request));
+					Assert.IsTrue(validator6.IsValid);
+					Assert.IsTrue(validator7.Validate(request));
+					Assert.IsTrue(validator7.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_String_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThan, "error!");
+				CompareValidator validator3 = new CompareValidator("myid", "refid3", "compareRefId3", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator4 = new CompareValidator("myid", "refid4", "compareRefId4", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.GreaterThanEqual, "error!");
+				CompareValidator validator5 = new CompareValidator("myid", "refid5", "compareRefId5", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.LessThan, "error!");
+				CompareValidator validator6 = new CompareValidator("myid", "refid6", "compareRefId6", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator7 = new CompareValidator("myid", "refid7", "compareRefId7", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.LessThanEqual, "error!");
+				CompareValidator validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
+				CompareValidator validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "c");
+				formValues.Add("compareRefId1", "c");
+				formValues.Add("refid2", "d");
+				formValues.Add("compareRefId2", "c");
+				formValues.Add("refid3", "d");
+				formValues.Add("compareRefId3", "c");
+				formValues.Add("refid4", "c");
+				formValues.Add("compareRefId4", "c");
+				formValues.Add("refid5", "b");
+				formValues.Add("compareRefId5", "c");
+				formValues.Add("refid6", "b");
+				formValues.Add("compareRefId6", "c");
+				formValues.Add("refid7", "c");
+				formValues.Add("compareRefId7", "c");
+				formValues.Add("refid8", "b");
+				formValues.Add("compareRefId8", "c");
+				formValues.Add("refid9", "c");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator1.Validate(request));
+					Assert.IsTrue(validator1.IsValid);
+					Assert.IsTrue(validator2.Validate(request));
+					Assert.IsTrue(validator2.IsValid);
+					Assert.IsTrue(validator3.Validate(request));
+					Assert.IsTrue(validator3.IsValid);
+					Assert.IsTrue(validator4.Validate(request));
+					Assert.IsTrue(validator4.IsValid);
+					Assert.IsTrue(validator5.Validate(request));
+					Assert.IsTrue(validator5.IsValid);
+					Assert.IsTrue(validator6.Validate(request));
+					Assert.IsTrue(validator6.IsValid);
+					Assert.IsTrue(validator7.Validate(request));
+					Assert.IsTrue(validator7.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_InvalidType()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "abcd");
+				formValues.Add("compareRefId1", "1234.12");
+				formValues.Add("refid1", "1234.12");
+				formValues.Add("compareRefId1", "abcd");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator1.Validate(request));
+					Assert.IsFalse(validator2.Validate(request));
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("compareRefId1", "1234.12");
+				formValues.Add("refid2", "1234.12");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator1.Validate(request));
+					Assert.IsFalse(validator1.IsValid);
+					Assert.IsFalse(validator2.Validate(request));
+					Assert.IsFalse(validator2.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Form_Value_Present()
+			{
+				CompareValidator validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+				CompareValidator validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
+
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicHttpRequestBase();
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator1.Validate(request));
+					Assert.IsFalse(validator1.IsValid);
+					Assert.IsFalse(validator2.Validate(request));
+					Assert.IsFalse(validator2.IsValid);
+				}
+			}
 		}
 
 		[TestFixture]
@@ -503,6 +1097,136 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void When_maximum_value_is_not_specified()
 			{
 				RangeValidator validator = new RangeValidator("myId", "myReference", "1234", "", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
+			}
+
+			[Test]
+			public void Validation_On_String_Type()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid", "a", "c", System.Web.UI.WebControls.ValidationDataType.String, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "b");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator.Validate(request));
+					Assert.IsTrue(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_Double_Type()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid", "1234.12", "2345.12", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "2000.00");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator.Validate(request));
+					Assert.IsTrue(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_Integer_Type()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid", "1", "10", System.Web.UI.WebControls.ValidationDataType.Integer, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid", "5");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsTrue(validator.Validate(request));
+					Assert.IsTrue(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_InvalidType()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "abcd");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.IsFalse(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Value_Present()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+				NameValueCollection formValues = new NameValueCollection();
+				formValues.Add("refid1", "");
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicMock<HttpRequestBase>();
+					SetupResult.For(request.Form).Return(formValues);
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.IsFalse(validator.IsValid);
+				}
+			}
+
+			[Test]
+			public void Validation_On_No_Form_Value_Present()
+			{
+				RangeValidator validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
+
+				MockRepository mocks = new MockRepository();
+				HttpRequestBase request = null;
+
+				using (mocks.Record())
+				{
+					request = mocks.DynamicHttpRequestBase();
+				}
+
+				using (mocks.Playback())
+				{
+					Assert.IsFalse(validator.Validate(request));
+					Assert.IsFalse(validator.IsValid);
+				}
 			}
 		}
 

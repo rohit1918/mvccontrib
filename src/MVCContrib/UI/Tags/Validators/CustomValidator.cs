@@ -8,22 +8,26 @@ namespace MvcContrib.UI.Tags.Validators
 {
 	public class CustomValidator : BaseValidator
 	{
-		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text) : base(id, referenceId, text)
+		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text)
+			: base(id, referenceId, text)
 		{
 			this.ClientValidationFunction = clientValidationFunction;
 		}
 
-		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, IDictionary attributes) : base(id, referenceId, text, attributes)
+		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, IDictionary attributes)
+			: base(id, referenceId, text, attributes)
 		{
 			this.ClientValidationFunction = clientValidationFunction;
 		}
 
-		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup) : base(id, referenceId, text, validationGroup)
+		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup)
+			: base(id, referenceId, text, validationGroup)
 		{
 			this.ClientValidationFunction = clientValidationFunction;
 		}
 
-		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup, IDictionary attributes) : base(id, referenceId, text, validationGroup, attributes)
+		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup, IDictionary attributes)
+			: base(id, referenceId, text, validationGroup, attributes)
 		{
 			this.ClientValidationFunction = clientValidationFunction;
 		}
@@ -43,7 +47,7 @@ namespace MvcContrib.UI.Tags.Validators
 
 		public override string ValidationFunction
 		{
-			get 
+			get
 			{
 				return "CustomValidatorEvaluateIsValid";
 			}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Web;
+using System.Text.RegularExpressions;
 
 namespace MvcContrib.UI.Tags.Validators
 {
@@ -47,10 +49,23 @@ namespace MvcContrib.UI.Tags.Validators
 
 		public override string ValidationFunction
 		{
-			get 
+			get
 			{
 				return "RegularExpressionValidatorEvaluateIsValid";
 			}
+		}
+
+		public override bool Validate(HttpRequestBase request)
+		{
+			Regex regex = new Regex(this.ValidationExpression, RegexOptions.Compiled);
+			string value = request.Form[this.ReferenceId];
+
+			if (value != null)
+				this.IsValid = regex.IsMatch(value);
+			else
+				this.IsValid = false;
+
+			return this.IsValid;
 		}
 	}
 }

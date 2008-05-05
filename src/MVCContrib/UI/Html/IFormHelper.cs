@@ -3,7 +3,7 @@ using System.Collections;
 using MvcContrib.UI.Tags;
 using System.Web.Mvc;
 using System.Collections.Generic;
-
+using MvcContrib.UI.Tags.Validators;
 namespace MvcContrib.UI.Html
 {
 	public interface IFormHelper
@@ -75,5 +75,7 @@ namespace MvcContrib.UI.Html
 		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, IDictionary attributes);
 		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup);
 		string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup, IDictionary attributes);
+		string ElementValidation(ICollection<IValidator> validators);
+		string ElementValidation(ICollection<IValidator> validators, string referenceName);
 	}
 }

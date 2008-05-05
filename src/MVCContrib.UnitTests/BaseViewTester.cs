@@ -20,9 +20,12 @@ namespace MvcContrib.UnitTests
 
 			mocks = new MockRepository();
 			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
+			HttpRequestBase httpRequest = mocks.DynamicMock<HttpRequestBase>();
 			HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
 			HttpSessionStateBase httpSessionState = mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
+			SetupResult.For(httpContext.Request).Return(httpRequest);
+			SetupResult.For(httpRequest.ApplicationPath).Return("/");
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
 			SetupResult.For(httpResponse.ContentEncoding).Return(Encoding.UTF8);
@@ -33,8 +36,8 @@ namespace MvcContrib.UnitTests
 
 			mocks.ReplayAll();
 
-			_viewContext = new ViewContext(controllerContext,"index","", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
-			
+			_viewContext = new ViewContext(controllerContext, "index", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+
 		}
 	}
 }
