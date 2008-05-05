@@ -5,7 +5,13 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 {
 	public class HomeController : ConventionController
 	{
+
 		public ActionResult Index()
+		{
+			return RenderView();
+		}
+
+		public ActionResult FormHelper()
 		{
 			Person person = new Person();
 			person.Id = 1;
@@ -20,7 +26,12 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 			roles.Add(new Role(3, "User"));
 			ViewData["roles"] = roles;
 
-			return RenderView("index");
+			return RenderView();
+		}
+
+		public ActionResult ValidationHelper()
+		{
+			return RenderView();
 		}
 	}
 }
