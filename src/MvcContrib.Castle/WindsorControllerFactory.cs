@@ -25,13 +25,13 @@ namespace MvcContrib.Castle
 			_container = container;
 		}
 
-		public IController CreateController(RequestContext context, string controllerName)
+		public virtual IController CreateController(RequestContext context, string controllerName)
 		{
 			controllerName = controllerName.ToLower() + "controller";
 			return (IController)_container.Resolve(controllerName);
 		}
 
-		public void DisposeController(IController controller)
+		public virtual void DisposeController(IController controller)
 		{
 			IDisposable disposable = controller as IDisposable;
 
