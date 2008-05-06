@@ -806,6 +806,62 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 
 			[Test]
+			public void Create_Select_With_Multiple_Options_Selected()
+			{
+				Select element = new Select();
+				element.AddOption("value1", "text1");
+				element.AddOption("value2", "text2");
+				element.FirstOptionValue = "FirstValue";
+				element.FirstOption = "FirstText";
+				element.SetSelectedValues(new object[] { "value2", "FirstValue" });
+				Assert.That(element.ToString(), Is.EqualTo("<select ><option value=\"FirstValue\" selected=\"selected\">FirstText</option><option value=\"value1\">text1</option><option value=\"value2\" selected=\"selected\">text2</option></select>"));
+			}
+
+			[Test]
+			public void Create_Select_Null_Value_Selects_Empty_String_Option()
+			{
+				Select element = new Select();
+				element.AddOption("value1", "text1");
+				element.AddOption("value2", "text2");
+				element.FirstOptionValue = "";
+				element.FirstOption = "-Choose-";
+				element.SetSelectedValues(new object[] { null });
+				Assert.That(element.ToString(), Is.EqualTo("<select ><option value=\"\" selected=\"selected\">-Choose-</option><option value=\"value1\">text1</option><option value=\"value2\">text2</option></select>"));
+			}
+
+			[Test]
+			public void Create_Select_With_Selected_Value_From_Complex_Object()
+			{
+				var element = new Select();
+				element.ValueField = "Id";
+				element.TextField = "Name";
+				var person1 = new FormHelperTester.Person("Hillary", 1);
+				var person2 = new FormHelperTester.Person("Barak", 2);
+				var person3 = new FormHelperTester.Person("John", 3);
+				element.AddOption(person1.Id.ToString(), person1.Name);
+				element.AddOption(person2.Id.ToString(), person2.Name);
+				element.AddOption(person3.Id.ToString(), person3.Name);
+				element.SetSelectedValues(person1);
+				Assert.That(element.ToString(), Is.EqualTo("<select ><option value=\"1\" selected=\"selected\">Hillary</option><option value=\"2\">Barak</option><option value=\"3\">John</option></select>"));
+			}
+
+			[Test]
+			public void Create_Select_With_Mutliple_Selected_Values_From_Complex_Object()
+			{
+				var element = new Select();
+				element.ValueField = "Id";
+				element.TextField = "Name";
+				var person1 = new FormHelperTester.Person("Hillary", 1);
+				var person2 = new FormHelperTester.Person("Barak", 2);
+				var person3 = new FormHelperTester.Person("John", 3);
+				element.AddOption(person1.Id.ToString(), person1.Name);
+				element.AddOption(person2.Id.ToString(), person2.Name);
+				element.AddOption(person3.Id.ToString(), person3.Name);
+				element.SetSelectedValues(new[] { person2, person3 });
+				Assert.That(element.ToString(), Is.EqualTo("<select ><option value=\"1\">Hillary</option><option value=\"2\" selected=\"selected\">Barak</option><option value=\"3\" selected=\"selected\">John</option></select>"));
+			}
+
+			[Test]
 			public void Properties_Stick_When_Set()
 			{
 				Select element = new Select();

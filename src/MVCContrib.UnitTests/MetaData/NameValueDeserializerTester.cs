@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using MvcContrib.Attributes;
+using MvcContrib.UnitTests.UI.Html;
 using NUnit.Framework;
 
 namespace MvcContrib.UnitTests
@@ -120,6 +121,25 @@ namespace MvcContrib.UnitTests
 		}
 
 		[Test]
+		public void DeserializeSimpleArrayFromMultiple()
+		{
+			var collection = new NameValueCollection
+			{
+				{"array.ids", "10"}, 
+				{"array.ids", "20"}
+			};
+
+			var nvd = new NameValueDeserializer();
+
+			var array = nvd.Deserialize<ArrayClass>(collection, "array");
+
+			Assert.IsNotNull(array);
+			Assert.AreEqual(2, array.Ids.Length);
+			Assert.AreEqual(10, array.Ids[0]);
+			Assert.AreEqual(20, array.Ids[1]);
+		}
+
+		[Test]
 		public void DeserializePrimitiveArray()
 		{
 			NameValueCollection collection = new NameValueCollection();
@@ -129,6 +149,25 @@ namespace MvcContrib.UnitTests
 			NameValueDeserializer nvd = new NameValueDeserializer();
 
 			int[] array = (int[])nvd.Deserialize(collection, "ids", typeof(int[]));
+
+			Assert.IsNotNull(array);
+			Assert.AreEqual(2, array.Length);
+			Assert.AreEqual(10, array[0]);
+			Assert.AreEqual(20, array[1]);
+		}
+
+		[Test]
+		public void DeserializePrimitiveArrayFromMultiple()
+		{
+			var collection = new NameValueCollection
+				{
+					{"ids", "10"}, 
+					{"ids", "20"}
+				};
+
+			var nvd = new NameValueDeserializer();
+
+			var array = (int[])nvd.Deserialize(collection, "ids", typeof(int[]));
 
 			Assert.IsNotNull(array);
 			Assert.AreEqual(2, array.Length);
@@ -154,6 +193,42 @@ namespace MvcContrib.UnitTests
 		}
 
 		[Test]
+		public void DeserializePrimitiveGenericListFromMultiple()
+		{
+			var collection = new NameValueCollection
+				{
+					{"ids", "10"}, 
+					{"ids", "20"}
+				};
+
+			var nvd = new NameValueDeserializer();
+
+			var list = nvd.Deserialize<List<int>>(collection, "ids");
+
+			Assert.IsNotNull(list);
+			Assert.AreEqual(2, list.Count);
+			Assert.AreEqual(10, list[0]);
+			Assert.AreEqual(20, list[1]);
+		}
+
+		[Test]
+		public void DeserializeEnumGenericListFromMultiple()
+		{
+			var collection = new NameValueCollection();
+			collection.Add("testEnum", "0");
+			collection.Add("testEnum", "2");
+
+			var nvd = new NameValueDeserializer();
+
+			var list = nvd.Deserialize<List<TestEnum>>(collection, "testEnum");
+
+			Assert.IsNotNull(list);
+			Assert.AreEqual(2, list.Count);
+			Assert.AreEqual(TestEnum.One, list[0]);
+			Assert.AreEqual(TestEnum.Three, list[1]);
+		}
+
+		[Test]
 		public void DeserializeSimpleGenericList()
 		{
 			NameValueCollection collection = new NameValueCollection();
@@ -163,6 +238,25 @@ namespace MvcContrib.UnitTests
 			NameValueDeserializer nvd = new NameValueDeserializer();
 
 			GenericListClass list = nvd.Deserialize<GenericListClass>(collection, "list");
+
+			Assert.IsNotNull(list);
+			Assert.AreEqual(2, list.Ids.Count);
+			Assert.AreEqual(10, list.Ids[0]);
+			Assert.AreEqual(20, list.Ids[1]);
+		}
+
+		[Test]
+		public void DeserializeSimpleGenericListFromMultiple()
+		{
+			var collection = new NameValueCollection
+				{
+					{"list.Ids", "10"}, 
+					{"list.Ids", "20"}
+				};
+
+			var nvd = new NameValueDeserializer();
+
+			var list = nvd.Deserialize<GenericListClass>(collection, "list");
 
 			Assert.IsNotNull(list);
 			Assert.AreEqual(2, list.Ids.Count);
@@ -251,6 +345,32 @@ namespace MvcContrib.UnitTests
 		}
 
 		[Test]
+		public void DeserializeTrueBool()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["bool.myBool"] = "true,false";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			BoolClass boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
+
+			Assert.AreEqual(true, boolClass.MyBool);
+		}
+
+		[Test]
+		public void DeserializeFalseBool()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["bool.myBool"] = "false";
+
+			NameValueDeserializer nvd = new NameValueDeserializer();
+
+			BoolClass boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
+
+			Assert.AreEqual(false, boolClass.MyBool);
+		}
+
+		[Test]
 		public void EmptyCollectionReturnsNull()
 		{
 			NameValueDeserializer nvd = new NameValueDeserializer();
@@ -292,6 +412,11 @@ namespace MvcContrib.UnitTests
 			}
 		}
 
+		private class BoolClass
+		{
+			public bool MyBool { get; set; }
+		}
+
 		private class GenericListClass
 		{
 			public string Name
@@ -306,11 +431,11 @@ namespace MvcContrib.UnitTests
 				set;
 			}
 
-            private IList<int> _readonlyIds=null;
-            public IList<int> ReadonlyIds
-            {
-                get { return _readonlyIds; }
-            }
+			private IList<int> _readonlyIds = null;
+			public IList<int> ReadonlyIds
+			{
+				get { return _readonlyIds; }
+			}
 		}
 
 		private class Employee
@@ -329,7 +454,7 @@ namespace MvcContrib.UnitTests
 				get { return _phone; }
 			}
 
-			private Phone _batPhone=null;
+			private Phone _batPhone = null;
 			public Phone BatPhone
 			{
 				get { return _batPhone; }
@@ -346,7 +471,7 @@ namespace MvcContrib.UnitTests
 				get { return _age; }
 				set
 				{
-					if (value < 0 ) throw new ArgumentException("Age must be greater than 0");
+					if (value < 0) throw new ArgumentException("Age must be greater than 0");
 					_age = value;
 				}
 			}
@@ -366,6 +491,13 @@ namespace MvcContrib.UnitTests
 			{
 				get { return _areaCodes; }
 			}
+		}
+
+		public enum TestEnum
+		{
+			One,
+			Two,
+			Three
 		}
 	}
 }

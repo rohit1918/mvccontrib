@@ -67,6 +67,11 @@ namespace MvcContrib
 					string sValue = collection.Get(name);
 					if(sValue != null)
 					{
+						//An individual checkbox that is true is serialized as "true,false"
+						if(property.PropertyType == typeof(bool) && sValue.Contains(","))
+						{
+							sValue = sValue.Remove(sValue.IndexOf(','));
+						}
 						SetValue(instance, property, GetConvertible(sValue));
 					}
 				}
@@ -158,9 +163,29 @@ namespace MvcContrib
 
 		protected virtual ArrayList DeserializeArrayList(NameValueCollection collection, string prefix, Type elementType)
 		{
+			ArrayList arrayInstance;
+
+			if(IsSimpleProperty(elementType))
+			{
+				string[] sValueArray = collection.GetValues(prefix);
+				if(sValueArray != null)
+				{
+					arrayInstance = new ArrayList(sValueArray.Length);
+					foreach(var item in sValueArray)
+					{
+						var inst = GetConvertible(item).ToType(elementType, CultureInfo.CurrentCulture);
+						if(inst != null)
+						{
+							arrayInstance.Add(inst);
+						}
+					}
+					return arrayInstance;
+				}
+			}
+
 			string[] arrayPrefixes = GetArrayPrefixes(collection, prefix);
 
-			ArrayList arrayInstance = new ArrayList(arrayPrefixes.Length);
+			arrayInstance = new ArrayList(arrayPrefixes.Length);
 
 			foreach(string arrayPrefix in arrayPrefixes)
 			{

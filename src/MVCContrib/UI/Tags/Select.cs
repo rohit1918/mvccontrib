@@ -175,6 +175,11 @@ namespace MvcContrib.UI.Tags
 				option.Value = FirstOptionValue;
 				option.InnerText = FirstOption;
 
+				if (SelectedValues.Contains(option.Value))
+				{
+					option.Selected = true;
+				}
+
 				builder.Append(option.ToString());
 			}
 
@@ -193,27 +198,56 @@ namespace MvcContrib.UI.Tags
 
 		public virtual void SetSelectedValues(object values)
 		{
-			if (values == null) return;
-			if (typeof(ICollection).IsAssignableFrom(values.GetType()))
+			if (values == null)
 			{
-				foreach (var item in (ICollection)values)
-				{
-					_selectedValues.Add(ConvertValue(item));
-				}
+				_selectedValues.Add(string.Empty);
 			}
 			else
 			{
-				_selectedValues.Add(ConvertValue(values));
+				//NOTE: Could reduce code here by pushing GetProperty into the ConvertValue method. Did it here to minmize reflection
+				PropertyInfo prop = null;
+				if (typeof(ICollection).IsAssignableFrom(values.GetType()))
+				{
+					var collection = (ICollection)values;
+					if (!string.IsNullOrEmpty(_valueField) && collection.Count > 0)
+					{
+						var enumerator = collection.GetEnumerator();
+						if (enumerator.MoveNext())
+						{
+							var type = enumerator.Current.GetType();
+							prop = type.GetProperty(_valueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+						}
+					}
+					foreach (var item in collection)
+					{
+						_selectedValues.Add(ConvertValue(item, prop));
+					}
+				}
+				else
+				{
+					if (!string.IsNullOrEmpty(_valueField))
+					{
+						var type = values.GetType();
+						prop = type.GetProperty(_valueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+					}
+					_selectedValues.Add(ConvertValue(values, prop));
+				}
 			}
 		}
 
-		private string ConvertValue(object value)
+		private string ConvertValue(object value, PropertyInfo prop)
 		{
-			if(value.GetType().IsEnum)
+			if (value == null)
+			{
+				return string.Empty;
+			}
+			if (value.GetType().IsEnum)
 			{
 				return Convert.ToInt32(value).ToString();
 			}
-			return value.ToString();
+			return prop == null
+				? value.ToString()
+				: prop.GetValue(value, null).ToString();
 		}
 	}
 }
