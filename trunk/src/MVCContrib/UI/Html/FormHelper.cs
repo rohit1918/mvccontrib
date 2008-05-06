@@ -230,12 +230,12 @@ namespace MvcContrib.UI.Html
 
 		public virtual string Select<T>(string name, IDictionary attributes) where T : struct
 		{
-			var dataSource = new Hashtable();
+			var dataSource = new Dictionary<int, string>();
 			if (typeof(T).IsEnum)
 			{
 				foreach (var item in Enum.GetValues(typeof(T)))
 				{
-					dataSource.Add(Convert.ToInt32(item).ToString(), item.ToString());
+					dataSource.Add(Convert.ToInt32(item), item.ToString());
 				}
 			}
 			var select = GetSelect(attributes, null, null);
@@ -268,16 +268,22 @@ namespace MvcContrib.UI.Html
 
 			var firstOption = ObtainAndRemove(attributes, "firstOption");
 			var firstOptionValue = ObtainAndRemove(attributes, "firstOptionValue");
-			var selectedValue = ObtainAndRemove<object>(attributes, "selectedValue", null);
+
+			var hasSelectedValue = attributes.Contains("selectedValue");
+			var selectedValue = ObtainAndRemove(attributes, "selectedValue");
 
 			var select = new Select(attributes)
 				{
-					FirstOption = firstOption,
-					FirstOptionValue = firstOptionValue,
+					FirstOption = firstOption != null ? firstOption.ToString() : null,
+					FirstOptionValue = firstOptionValue != null ? firstOptionValue.ToString() : null,
 					TextField= textField,
-					ValueField=valueField
+					ValueField = valueField
 				};
-			select.SetSelectedValues(selectedValue);
+
+			if (hasSelectedValue)
+			{
+				select.SetSelectedValues(selectedValue);
+			}
 			return select;
 		}
 
@@ -466,37 +472,17 @@ namespace MvcContrib.UI.Html
 			}
 		}
 
-		protected string ObtainAndRemove(IDictionary dictionary, string key)
+		protected object ObtainAndRemove(IDictionary dictionary, string key)
 		{
 			if (!dictionary.Contains(key))
 				return null;
 
 			var item = dictionary[key];
-			var value = item.GetType().IsEnum
+			dictionary.Remove(key);
+			return item.GetType().IsEnum
 					? Convert.ToInt32(item).ToString()
-					: dictionary[key].ToString();
-			dictionary.Remove(key);
-			return value;
+					: item;
 		}
 
-		protected T ObtainAndRemove<T>(IDictionary dictionary, string key, T defaultValue)
-		{
-			if (!dictionary.Contains(key))
-				return defaultValue;
-
-			var item = dictionary[key];
-			dictionary.Remove(key);
-			if (item is T)
-			{
-				return (T)item;
-			}
-			else
-			{
-				return defaultValue;
-			}
-
-		}
-
-	
 	}
 }
