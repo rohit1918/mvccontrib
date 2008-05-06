@@ -5,5 +5,6 @@
 	<ul>
 		<li><%= Html.ActionLink("Form Helper", "FormHelper") %></li>
 		<li><%= Html.ActionLink("Validation Helper", "ValidationHelper") %></li>
+		<li><%= Html.ActionLink("Grid", "Grid") %></li>
 	</ul>
 </asp:Content>

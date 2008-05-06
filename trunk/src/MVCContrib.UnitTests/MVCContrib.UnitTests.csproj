@@ -238,6 +238,8 @@
     <Compile Include="UI\Html\ComponentControllerExtensionsTester.cs" />
     <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
     <Compile Include="UI\Html\FormHelperTester.cs" />
+    <Compile Include="UI\Html\GridColumnBuilderTester.cs" />
+    <Compile Include="UI\Html\HtmlGridTester.cs" />
     <Compile Include="UI\Html\InputElementListTester.cs" />
     <Compile Include="UI\Html\ScriptElementTester.cs" />
     <Compile Include="UI\Html\SmartFormTester.cs" />

@@ -33,5 +33,17 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 		{
 			return RenderView();
 		}
+
+		public ActionResult Grid()
+		{
+			var people = new List<Person>();
+			for (var i = 0; i < 10; i ++ )
+			{
+				people.Add(new Person {Id = i, Name = "Person " + i, Gender = i%2 == 0 ? Gender.Male : Gender.Female, RoleId=2 }); 
+			}
+
+			ViewData["people"] = people;
+			return RenderView();
+		}
 	}
 }
