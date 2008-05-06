@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
+using MvcContrib.Interfaces;
+using MvcContrib.Services;
 using MvcContrib.UI.Html;
 using MvcContrib.UI.Tags.Validators;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.UI.Html
 {
@@ -24,6 +28,78 @@ namespace MvcContrib.UnitTests.UI.Html
 				_helper.ViewContext = _viewContext;
 			}
 
+		}
+
+		[TestFixture]
+		public class When_GetInstance_Is_Invoked : BaseViewTester
+		{
+			[SetUp]
+			public void SetUp()
+			{
+				//Ensure there isn't a dependencyresolver hanging around from a previous test...
+				DependencyResolver.InitializeWith(null);
+				base.Setup();
+			}
+
+			[TearDown]
+			public void TearDown()
+			{
+				DependencyResolver.InitializeWith(null);
+			}
+
+			[Test]
+			public void The_ValidationHelper_in_HttpContext_Items_should_be_returned()
+			{
+				ValidationHelper helper = new ValidationHelper();
+				_viewContext.HttpContext.Items.Add(ValidationHelper.CACHE_KEY, helper);
+				Assert.That(ValidationHelper.GetInstance(_viewContext), Is.EqualTo(helper));
+			}
+
+			[Test]
+			public void A_new_ValidationHelper_should_be_created_and_cached_in_HttpContext_items_and_ViewContext_should_be_set()
+			{
+				IValidationHelper helper = ValidationHelper.GetInstance(_viewContext);
+				Assert.That(helper, Is.Not.Null);
+				Assert.That(_viewContext.HttpContext.Items[ValidationHelper.CACHE_KEY], Is.EqualTo(helper));
+				Assert.That(helper.ViewContext, Is.EqualTo(_viewContext));
+			}
+
+			[Test]
+			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
+			{
+				ValidationHelper helper = new ValidationHelper();
+				using (mocks.Record())
+				{
+					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
+					DependencyResolver.InitializeWith(resolver);
+					Expect.Call(resolver.GetImplementationOf<IValidationHelper>()).Return(helper);
+				}
+				using (mocks.Playback())
+				{
+					IValidationHelper instance = ValidationHelper.GetInstance(_viewContext);
+					Assert.That(instance, Is.EqualTo(helper));
+				}
+			}
+		}
+
+		[TestFixture]
+		public class When_FormHelperExtensions_Is_Used : BaseViewTester
+		{
+			[SetUp]
+			protected override void Setup()
+			{
+				base.Setup();
+				//Ensure there isn't a dependencyresolver hanging around from a previous test...
+				DependencyResolver.InitializeWith(null);
+			}
+
+			[Test]
+			public void Then_a_ValidationHelper_should_be_created()
+			{
+				HtmlHelper helper = new HtmlHelper(_viewContext);
+				IValidationHelper formHelper = HtmlHelperExtensions.Validation(helper);
+				Assert.IsNotNull(formHelper);
+			}
 		}
 
 		[TestFixture]
