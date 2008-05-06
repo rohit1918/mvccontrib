@@ -132,6 +132,15 @@
     <Compile Include="UI\Html\ComponentControllerExtensions.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
+    <Compile Include="UI\Html\Grid\GridColumn.cs" />
+    <Compile Include="UI\Html\Grid\GridColumnBuilder.cs" />
+    <Compile Include="UI\Html\Grid\GridHelper.cs" />
+    <Compile Include="UI\Html\Grid\Grid.cs" />
+    <Compile Include="UI\Html\Grid\IExpressionColumnBuilder.cs" />
+    <Compile Include="UI\Html\Grid\INestedGridColumnBuilder.cs" />
+    <Compile Include="UI\Html\Grid\IRootGridColumnBuilder.cs" />
+    <Compile Include="UI\Html\Grid\ISimpleColumnBuilder.cs" />
+    <Compile Include="UI\Html\Grid\GridBase.cs" />
     <Compile Include="UI\Html\HtmlHelperExtensions.cs" />
     <Compile Include="UI\Html\IDataBinder.cs" />
     <Compile Include="UI\Html\IFormHelper.cs" />

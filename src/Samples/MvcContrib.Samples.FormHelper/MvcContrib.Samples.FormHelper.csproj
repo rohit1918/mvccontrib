@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shared\Layout.master" />
+    <Content Include="Views\Home\Grid.aspx" />
     <Content Include="Views\Home\ValidationHelper.aspx" />
     <Content Include="Views\Home\FormHelper.aspx" />
     <Content Include="Views\Home\Index.aspx" />
