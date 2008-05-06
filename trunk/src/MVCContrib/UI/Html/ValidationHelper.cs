@@ -13,7 +13,7 @@ namespace MvcContrib.UI.Html
 {
 	public class ValidationHelper : BaseHelper, IValidationHelper
 	{
-		private const string CACHE_KEY = "__MvcContribValidationHelper__";
+		public const string CACHE_KEY = "__MvcContribValidationHelper__";
 		private const string VALIDATOR_CACHE_KEY = "__MvcContrib_Validators__";
 		private const string VALIDATOR_REGISTERED_CACHE_KEY = "__MvcContrib_Validations_Registered__";
 		private const string VALIDATOR_INITIALIZED_CACHE_KEY = "__MvcContrib_Validators_Initialized__";
