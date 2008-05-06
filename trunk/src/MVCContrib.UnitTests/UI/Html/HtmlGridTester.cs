@@ -114,9 +114,9 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Header_should_be_split_pascal_case()
 		{
-			helper.Grid<Person>("people", column => { column.For(p => p.DateOfBirth); });
+			helper.Grid<Person>("people", column => { column.For(p => p.DateOfBirth).Formatted("{0:dd}"); });
 
-			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>19/04/1987 00:00:00</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>19</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
