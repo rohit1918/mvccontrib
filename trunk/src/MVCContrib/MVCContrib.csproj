@@ -87,6 +87,9 @@
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
+    <Compile Include="Pagination\IPagination.cs" />
+    <Compile Include="Pagination\LazyPagination.cs" />
+    <Compile Include="Pagination\PaginationHelper.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
