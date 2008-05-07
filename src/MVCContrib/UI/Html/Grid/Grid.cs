@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
 using System.Collections;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Web;
+using MvcContrib.Pagination;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -140,7 +142,118 @@ namespace MvcContrib.UI.Html.Grid
 		protected override void RenderGridEnd()
 		{
 			RenderText("</table>");
-			//TODO: Implement pagination here using IPagination and Pagination<T> 
+			var pagination = Items as IPagination;
+			if (pagination != null)
+			{
+				RenderPagination(pagination);
+			}
+		}
+
+		/// <summary>
+		/// Renders the pagination section of the grid.
+		/// Eg "Showing 1 - 10 of 20 | last, prev, next, last"
+		/// </summary>
+		/// <param name="pagedList"></param>
+		protected virtual void RenderPagination(IPagination pagedList)
+		{
+			var builder = new StringBuilder();
+			builder.Append("<div class='pagination'>");
+			builder.Append("<span class='paginationLeft'>");
+			if (pagedList.PageSize == 1)
+			{
+				builder.AppendFormat("Showing {0} of {1} ", pagedList.FirstItem, pagedList.TotalItems);
+			}
+			else
+			{
+				builder.AppendFormat("Showing {0} - {1} of {2} ", pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
+			}
+			builder.Append("</span>");
+			builder.Append("<span class='paginationRight'>");
+
+			if (pagedList.PageNumber == 1)
+			{
+				builder.Append("first");
+			}
+			else
+			{
+				builder.Append(CreatePageLink(1, "first"));
+			}
+
+			builder.Append(" | ");
+
+			if (pagedList.HasPreviousPage)
+			{
+				builder.Append(CreatePageLink(pagedList.PageNumber - 1, "prev"));
+			}
+			else
+			{
+				builder.Append("prev");
+			}
+
+
+			builder.Append(" | ");
+
+			if (pagedList.HasNextPage)
+			{
+				builder.Append(CreatePageLink(pagedList.PageNumber + 1, "next"));
+			}
+			else
+			{
+				builder.Append("next");
+			}
+
+
+			builder.Append(" | ");
+
+			int lastPage = pagedList.TotalPages;
+
+			if (pagedList.PageNumber < lastPage)
+			{
+				builder.Append(CreatePageLink(lastPage, "last"));
+			}
+			else
+			{
+				builder.Append("last");
+			}
+
+
+			builder.Append(@"</span></div>");
+
+
+			RenderText(builder.ToString());
+		}
+
+		/// <summary>
+		/// Creates a pagination link and includes and curren
+		/// </summary>
+		/// <param name="pageNumber"></param>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		protected virtual string CreatePageLink(int pageNumber, string text)
+		{
+			string queryString = CreateQueryString(Context.Request.QueryString);
+			string filePath = Context.Request.FilePath;
+			return string.Format("<a href=\"{0}?page={1}{2}\">{3}</a>", filePath, pageNumber, queryString, text);
+		}
+
+		protected virtual string CreateQueryString(NameValueCollection values)
+		{
+			var builder = new StringBuilder();
+
+			foreach(string key in values.Keys)
+			{
+				if(key == "page") //Don't re-add any existing 'page' variable to the querystring - this will be handled in CreatePageLink.
+				{
+					continue;
+				}
+
+				foreach(string value in values.GetValues(key))
+				{
+					builder.AppendFormat("&amp;{0}={1}", key, value);
+				}
+			}
+
+			return builder.ToString();
 		}
 
 		protected override void RenderEmpty()
