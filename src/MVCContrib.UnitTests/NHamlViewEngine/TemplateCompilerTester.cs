@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using MvcContrib.NHamlViewEngine;
+using MvcContrib.NHamlViewEngine.Rules;
 using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.NHamlViewEngine
@@ -27,6 +29,16 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 					return list.Count + 9;
 				}
 			}
+		}
+
+		[Test]
+		public void BadSignifier()
+		{
+			var templateCompiler = new TemplateCompiler();
+
+			var inputLine = new InputLine(Convert.ToChar(128).ToString(), 1);
+
+			Assert.AreSame(NullMarkupRule.Instance, templateCompiler.GetRule(inputLine));
 		}
 
 		[Test]

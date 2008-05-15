@@ -15,19 +15,18 @@ namespace MvcContrib.NHamlViewEngine
 			= new Regex(@"[-\\/\.:\s]", RegexOptions.Compiled | RegexOptions.Singleline);
 
 		private static readonly string[] DefaultAutoClosingTags
-			= new string[] { "META", "IMG", "LINK", "BR", "HR", "INPUT" };
+			= new[] { "META", "IMG", "LINK", "BR", "HR", "INPUT" };
 
 		private readonly StringSet _autoClosingTags
 			= new StringSet(DefaultAutoClosingTags);
 
 		private static readonly string[] DefaultUsings
-			= new string[] { "System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities" };
+			= new[] { "System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities" };
 
 		private readonly StringSet _usings
 			= new StringSet(DefaultUsings);
 
-		private static readonly string[] DefaultReferences
-			= new string[]
+		private static readonly string[] DefaultReferences = new[]
 				{
 					typeof(INotifyPropertyChanging).Assembly.Location,
 					typeof(Action).Assembly.Location,
@@ -105,6 +104,11 @@ namespace MvcContrib.NHamlViewEngine
 		public MarkupRule GetRule(InputLine inputLine)
 		{
 			Invariant.ArgumentNotNull(inputLine, "line");
+
+			if (inputLine.Signifier >= 128)
+			{
+				return NullMarkupRule.Instance;
+			}
 
 			return _markupRules[inputLine.Signifier] ?? NullMarkupRule.Instance;
 		}
