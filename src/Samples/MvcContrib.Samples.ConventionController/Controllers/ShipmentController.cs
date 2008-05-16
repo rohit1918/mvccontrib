@@ -43,6 +43,15 @@ namespace MvcContrib.Samples.Controllers
 			throw new InvalidOperationException();
 		}
 
+        [Rescue("Error")]
+        public ActionResult DivideByZero ()
+        {
+            int j = 5;
+            int f = 0;
+            int y = j / f; //throw new DivideByZeroException(); // displays DivideByZeroException.aspx
+            return null;
+        }
+
 		[NonAction]
 		public ActionResult Hidden()
 		{

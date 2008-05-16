@@ -33,5 +33,6 @@
 	<br />
 	<a href="/shipment/XmlAction">To the Xml Outputing Action</a>
 	<a href="/shipment/toTheRescue">To the Rescue!</a>
+	<a href="/shipment/DivideByZero">Attempt to divide by zero!</a>
 	<br /><a href="/shipment/Hidden">Try and access the Hidden Action.</a>
 </asp:Content>

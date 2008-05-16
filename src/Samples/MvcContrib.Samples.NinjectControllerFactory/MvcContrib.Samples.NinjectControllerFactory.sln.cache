@@ -49,11 +49,11 @@
     <AspNetConfiguration>$(Configuration)</AspNetConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <SolutionDir>C:\MvcContribTrunk\src\samples\MvcContrib.Samples.NinjectControllerFactory\</SolutionDir>
+    <SolutionDir>C:\MVCContrib\src\samples\MvcContrib.Samples.NinjectControllerFactory\</SolutionDir>
     <SolutionExt>.sln</SolutionExt>
     <SolutionFileName>MvcContrib.Samples.NinjectControllerFactory.sln</SolutionFileName>
     <SolutionName>MvcContrib.Samples.NinjectControllerFactory</SolutionName>
-    <SolutionPath>C:\MvcContribTrunk\src\samples\MvcContrib.Samples.NinjectControllerFactory\MvcContrib.Samples.NinjectControllerFactory.sln</SolutionPath>
+    <SolutionPath>C:\MVCContrib\src\samples\MvcContrib.Samples.NinjectControllerFactory\MvcContrib.Samples.NinjectControllerFactory.sln</SolutionPath>
   </PropertyGroup>
   <PropertyGroup>
     <TargetFrameworkVersion Condition="'$(TargetFrameworkVersion)' == '' and '$(MSBuildToolsVersion)' == '2.0'">v2.0</TargetFrameworkVersion>
