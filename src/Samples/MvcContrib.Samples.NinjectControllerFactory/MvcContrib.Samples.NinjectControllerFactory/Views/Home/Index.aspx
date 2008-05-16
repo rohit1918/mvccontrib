@@ -6,9 +6,6 @@
     </head>
     <body>
             <div>
-                <img src="../../Content/ninjectlogo.jpg" alt="Ninja" />
-            </div>
-            <div>
                 Attack result by Samurai injected using Ninject:
                 <%= ViewData["attackresult"] %>               
             </div>
