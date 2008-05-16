@@ -388,6 +388,21 @@ namespace MvcContrib.UnitTests
 			Assert.AreEqual("test", attribute.Prefix);
 		}
 
+		[Test]
+		public void NoRequestForPropertyShouldNotInstantiateProperty()
+		{
+			NameValueCollection collection = new NameValueCollection();
+			collection["emp.Id"] = "20";
+			collection["emp.Phone.Number"] = "800-555-1212";
+
+			NameValueDeserializer deserializer = new NameValueDeserializer();
+			Employee emp = deserializer.Deserialize<Employee>(collection, "emp");
+
+			Assert.IsNotNull(emp, "Employee should not be null.");
+			Assert.IsNotNull(emp.Phone, "Employee phone should not be null.");
+			Assert.IsNull(emp.BatPhone, "Employee OtherPhones should be null because it was not in request parameters.");
+		}
+
 		private class Customer
 		{
 			public int Id
@@ -395,6 +410,8 @@ namespace MvcContrib.UnitTests
 				get;
 				set;
 			}
+
+			public Employee Employee { get; set; }
 		}
 
 		private class ArrayClass
@@ -464,6 +481,8 @@ namespace MvcContrib.UnitTests
 			{
 				get { return _otherPhones; }
 			}
+
+			public Customer Customer { get; set; }
 
 			private int _age;
 			public int Age

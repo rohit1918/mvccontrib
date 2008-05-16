@@ -5,9 +5,13 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using System.Linq;
 
 namespace MvcContrib
 {
+	/// <summary>
+	/// Provides the ability to deserialize a Request into a CLR object.
+	/// </summary>
 	public class NameValueDeserializer
 	{
 		protected virtual IConvertible GetConvertible(string sValue)
@@ -15,11 +19,25 @@ namespace MvcContrib
 			return new DefaultConvertible(sValue);
 		}
 
+		/// <summary>
+		/// Deserializes the specified request collection.
+		/// </summary>
+		/// <typeparam name="T">The type to deserialize to.</typeparam>
+		/// <param name="collection">The collection.</param>
+		/// <param name="prefix">The prefix.</param>
+		/// <returns></returns>
 		public T Deserialize<T>(NameValueCollection collection, string prefix) where T : new()
 		{
 			return (T)Deserialize(collection, prefix, typeof(T));
 		}
 
+		/// <summary>
+		/// Deserializes the specified request collection.
+		/// </summary>
+		/// <param name="collection">The collection.</param>
+		/// <param name="prefix">The prefix.</param>
+		/// <param name="targetType">Type of the target.</param>
+		/// <returns></returns>
 		public object Deserialize(NameValueCollection collection, string prefix, Type targetType)
 		{
 			if(collection == null || collection.Count == 0) return null;
@@ -44,60 +62,63 @@ namespace MvcContrib
 			{
 				object instance = null;
 				Deserialize(collection, prefix, targetType, ref instance);
-				return instance;
+				return instance ?? CreateInstance(targetType);
 			}
 		}
 
 		protected virtual void Deserialize(NameValueCollection collection, string prefix, Type targetType, ref object instance)
 		{
-			if(instance == null)
+			if (CheckPrefixInRequest(collection, prefix))
 			{
-				instance = CreateInstance(targetType);
-			}
-
-			PropertyInfo[] properties = GetProperties(targetType);
-
-			foreach(PropertyInfo property in properties)
-			{
-				string name = string.Concat(prefix, ".", property.Name);
-				Type propertyType = property.PropertyType;
-
-				if(IsSimpleProperty(propertyType))
+				if(instance == null)
 				{
-					string sValue = collection.Get(name);
-					if(sValue != null)
+					instance = CreateInstance(targetType);
+				}
+
+				PropertyInfo[] properties = GetProperties(targetType);
+
+				foreach(PropertyInfo property in properties)
+				{
+					string name = string.Concat(prefix, ".", property.Name);
+					Type propertyType = property.PropertyType;
+
+					if(IsSimpleProperty(propertyType))
 					{
-						//An individual checkbox that is true is serialized as "true,false"
-						if(property.PropertyType == typeof(bool) && sValue.Contains(","))
+						string sValue = collection.Get(name);
+						if(sValue != null)
 						{
-							sValue = sValue.Remove(sValue.IndexOf(','));
+							//An individual checkbox that is true is serialized as "true,false"
+							if(property.PropertyType == typeof(bool) && sValue.Contains(","))
+							{
+								sValue = sValue.Remove(sValue.IndexOf(','));
+							}
+							SetValue(instance, property, GetConvertible(sValue));
 						}
-						SetValue(instance, property, GetConvertible(sValue));
 					}
-				}
-				else if(propertyType.IsArray)
-				{
-					Type elementType = propertyType.GetElementType();
+					else if(propertyType.IsArray)
+					{
+						Type elementType = propertyType.GetElementType();
 
-					ArrayList arrayInstance = DeserializeArrayList(collection, name, elementType);
+						ArrayList arrayInstance = DeserializeArrayList(collection, name, elementType);
 
-					SetValue(instance, property, arrayInstance.ToArray(elementType));
-				}
-				else if(IsGenericList(propertyType))
-				{
-					IList genericListProperty = GetGenericListProperty(instance, property);
+						SetValue(instance, property, arrayInstance.ToArray(elementType));
+					}
+					else if(IsGenericList(propertyType))
+					{
+						IList genericListProperty = GetGenericListProperty(instance, property);
 
-					if(genericListProperty == null) continue;
+						if(genericListProperty == null) continue;
 
-					DeserializeGenericList(collection, name, propertyType, ref genericListProperty);
-				}
-				else
-				{
-					object complexProperty = GetComplexProperty(instance, property);
+						DeserializeGenericList(collection, name, propertyType, ref genericListProperty);
+					}
+					else
+					{
+						object complexProperty = GetComplexProperty(instance, property);
 
-					if(complexProperty == null) continue;
+						if(complexProperty == null) continue;
 
-					Deserialize(collection, name, propertyType, ref complexProperty);
+						Deserialize(collection, name, propertyType, ref complexProperty);
+					}
 				}
 			}
 		}
@@ -211,6 +232,11 @@ namespace MvcContrib
 			}
 
 			return arrayInstance;
+		}
+
+		protected virtual bool CheckPrefixInRequest(NameValueCollection collection, string prefix)
+		{
+			return collection.AllKeys.Any(key => key.StartsWith(prefix, true, CultureInfo.InvariantCulture));
 		}
 
 		protected virtual string[] GetArrayPrefixes(NameValueCollection collection, string prefix)
