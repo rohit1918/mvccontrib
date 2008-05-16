@@ -1,3 +1,4 @@
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
@@ -122,6 +123,73 @@ namespace MvcContrib.UnitTests.TestHelper
 			ActionResult result = new ActionRedirectResult(new RouteValueDictionary(new { controller = "Fake", action = "About" }));
 			var final = result.AssertActionRedirect().ToAction<FakeController>(c => c.About());
 			Assert.That(final, Is.EqualTo(result));
+		}
+
+		[Test, ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Expected view data of type 'CustomReferenceTypeViewData', actual was 'String'")]
+		public void WithViewData_should_throw_if_view_data_type_does_not_match()
+		{
+			const string wrongViewDataType = "WrongType";
+			var result = new RenderViewResult { ViewData = wrongViewDataType};
+
+			result.WithViewData<CustomReferenceTypeViewData>();
+		}
+
+		[Test]
+		public void WithViewData_should_return_view_data_if_view_data_type_matches()
+		{
+			var expectedData = new CustomReferenceTypeViewData {ID = 2, Name = "Foo"};
+			var renderResult = new RenderViewResult {ViewData = expectedData};
+
+			var result = renderResult.WithViewData<CustomReferenceTypeViewData>();
+
+			Assert.That(result, Is.EqualTo(expectedData));
+		}
+
+		[Test]
+		public void WithViewData_should_return_view_data_if_view_data_type_is_subclass_of_expected_type()
+		{
+			var expectedData = new DerivedCustomViewData {ID = 2, Name = "Foo"};
+			var renderResult = new RenderViewResult {ViewData = expectedData};
+
+			var result = renderResult.WithViewData<CustomReferenceTypeViewData>();
+
+			Assert.That(result, Is.EqualTo(expectedData));
+		}
+
+		[Test]
+		public void WithViewData_should_return_null_if_view_data_is_null_and_expected_type_is_reference_type()
+		{
+			var renderResult = new RenderViewResult {ViewData = null };
+
+			var result = renderResult.WithViewData<CustomReferenceTypeViewData>();
+
+			Assert.That(result, Is.Null);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Expected view data of type 'CustomValueTypeViewData', actual was NULL")]
+		public void WithViewData_should_throw_exception_if_view_data_is_null_and_expected_type_is_value_type()
+		{
+			var renderResult = new RenderViewResult {ViewData = null};
+
+			renderResult.WithViewData<CustomValueTypeViewData>();
+		}
+		
+
+		class DerivedCustomViewData : CustomReferenceTypeViewData
+		{
+		}
+
+		class CustomReferenceTypeViewData
+		{
+			public int ID { get; set; }
+			public string Name { get; set; }
+		}
+
+		struct CustomValueTypeViewData
+		{
+			public int ID { get; set; }
+			public string Name { get; set; }
 		}
 
 		class PageHandler : Controller
