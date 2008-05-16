@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 namespace MvcContrib.Attributes
 {
 	/// <summary>
 	/// Filter attribute for handling errors.
-	/// When an error occurs, the RescueAttribute will render the specified view.
+	/// When an error occurs, the RescueAttribute will first search for a view that matches the exception name,
+	/// then render the specified view if no matching exception view is found.
 	/// The rescue attribute can be limited to certain exception types.
 	/// <example>
 	/// <![CDATA[
@@ -13,21 +13,40 @@ namespace MvcContrib.Attributes
 	/// [Rescue("DatabaseError", typeof(SqlException)]
 	/// public class HomeController  {
 	/// 
+	///     public ActionResult Action()
+	///     {
+	///        throw new SqlException();
+	///       //will look for SqlException.aspx, then DatabaseError.aspx
+	///     
+	///        throw new InvalidOperationException();
+    ///       //will look for InvalidOperationException.aspx then MyErrorView.aspx 
+    ///     }
+    /// 
 	/// }
+	/// 
+    /// [Rescue("DefaultRescue")] 
+    /// public ActionResult ControllerAction  {
+    ///     throw new CookieException();
+    /// 
+    ///     //this will look for CookieException.aspx
+    ///     //then call DefaultRescue.aspx if not found
+    /// }
 	/// ]]>
+	/// 
+	/// 
 	/// </example>
 	/// </summary>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 	public class RescueAttribute : Attribute
 	{
-		private readonly string _view;
+		private string _view;
 		private readonly Type[] _exceptionsTypes;
 
 		/// <summary>
 		/// Creates a new instance of the RescueAttribute class.
 		/// </summary>
-		/// <param name="view">The name of the view to render when an exception is thrown.</param>
+        /// <param name="view">The name of the view to render when an exception is thrown if no matching view is found.</param>
 		public RescueAttribute(string view)
 			: this(view, typeof(Exception))
 		{
@@ -36,8 +55,8 @@ namespace MvcContrib.Attributes
 		/// <summary>
 		/// Creates a new instance of the RescueAttribute class.
 		/// </summary>
-		/// <param name="view">The name of the view to render when an exception is thrown.</param>
-		/// <param name="exceptionTypes">The types of exception that the attribute should apply to.</param>
+        /// <param name="view">The name of the view to render when an exception is thrown if no matching view is found.</param>
+		/// <param name="exceptionTypes">The types of exception that this attribute will be restricted in catching.</param>
 		public RescueAttribute(string view, params Type[] exceptionTypes)
 		{
 			if (string.IsNullOrEmpty(view))
@@ -51,6 +70,8 @@ namespace MvcContrib.Attributes
 			{
 				_exceptionsTypes = exceptionTypes;
 			}
+
+		    AutoLocate = true;
 		}
 
 		/// <summary>
@@ -63,24 +84,73 @@ namespace MvcContrib.Attributes
 		{
 			Type baseExceptionType = exception.GetBaseException().GetType();
 
-			//ThreadAbortException could have occurred due to a direct call to HttpResponse.Redirect.
-			//This is perfectly valid, so we don't want to invoke the rescue.
-			if (baseExceptionType == typeof(System.Threading.ThreadAbortException))
-			{
-				return true;
-			}
+            if(IsThreadAbortException(baseExceptionType))
+                return true;
 
-			foreach (Type exceptionType in _exceptionsTypes)
-			{
-				if (exceptionType.IsAssignableFrom(baseExceptionType))
-				{
-					controller.OnPreRescue(exception);
-					controller.ViewEngine.RenderView(CreateViewContext(exception, controller));
-					return true;
-				}
-			}
+            foreach(Type expectedExceptionType in ExceptionsTypes)
+            {
+                if(expectedExceptionType.IsAssignableFrom(baseExceptionType))
+                {
+                    if(AutoLocate)
+                    {
+                        if(ViewExists(baseExceptionType, controller))
+                        {
+                            ViewName = baseExceptionType.Name;
+                            ActivateSpecificRescue(exception, controller);
+                            return true;
+                        }
+
+                        if(ViewExists(expectedExceptionType, controller))
+                        {
+                            ViewName = expectedExceptionType.Name;
+                            ActivateSpecificRescue(exception, controller);
+                            return true;
+                        }
+                    }
+                    ActivateSpecificRescue(exception, controller);
+                    return true;
+                }
+            } 
 			return false;
 		}
+
+        /// <summary>
+        /// Determines if the view exists. Override in an inherited class to implement a custom view finding scheme. 
+        /// </summary>
+        /// <param name="exceptionType">The type of exception that was thrown.</param>
+        /// <param name="controller">The current controller.</param> 
+        /// <returns>True if the view is found, otherwise false.</returns>
+        protected virtual bool ViewExists(Type exceptionType, ConventionController controller)
+        {
+            IViewLocator locator = new WebFormViewLocator();
+            try
+            {
+                locator.GetViewLocation(controller.ControllerContext, "Rescues/" + exceptionType.Name);
+                return true;
+            }
+            catch //the GetViewLocation throws an exception if it isn't found.
+            {
+                return false;
+            }
+        }
+
+        protected virtual bool IsThreadAbortException(Type baseExceptionType)
+        {
+            //ThreadAbortException could have occurred due to a direct call to HttpResponse.Redirect.
+            //This is perfectly valid, so we don't want to invoke the rescue.
+            if(baseExceptionType == typeof(System.Threading.ThreadAbortException))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual void ActivateSpecificRescue(Exception exception, ConventionController controller)
+        {
+            controller.OnPreRescue(exception);
+            controller.ViewEngine.RenderView(CreateViewContext(exception, controller));
+        }
+
 
 		/// <summary>
 		/// Creates the ViewContext to be used when rendering the rescue.
@@ -99,6 +169,21 @@ namespace MvcContrib.Attributes
 		public string ViewName
 		{
 			get { return "Rescues/" + _view; }
+            protected set { _view = value; }
 		}
+
+        /// <summary>
+        /// The exception types used by this rescue.
+        /// </summary>
+	    public Type[] ExceptionsTypes
+	    {
+	        get { return _exceptionsTypes; }
+	    }
+
+        /// <summary>
+        /// When false, only the specified rescue will be called.
+        /// When true, rescues with a name matching the exception will be called.
+        /// </summary>
+        public bool AutoLocate { get; set; }
 	}
 }

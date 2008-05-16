@@ -147,6 +147,7 @@
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
     <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
+    <Compile Include="ConventionController\ConventionRescueTester.cs" />
     <Compile Include="ConventionController\CustomActionResult.cs" />
     <Compile Include="ConventionController\DefaultActionController.cs" />
     <Compile Include="ConventionController\TestBinder.cs" />
@@ -216,7 +217,7 @@
     <Compile Include="ObjectBuilder\CompositeWeb\WCSFBuilderBaseFixture.cs" />
     <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
     <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
-    <Compile Include="ConventionController\RescueConventionTester.cs" />
+    <Compile Include="ConventionController\RescueTester.cs" />
     <Compile Include="PaginationTester.cs" />
     <Compile Include="RouteDebuggerTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
@@ -227,7 +228,6 @@
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
     <Compile Include="TestHelper\TestHelperController.cs" />
-    <Compile Include="TestHelper\TestHelperControllerWithArgs.cs" />
     <Compile Include="UI\BlockRendererTester.cs" />
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPageTester.cs" />
