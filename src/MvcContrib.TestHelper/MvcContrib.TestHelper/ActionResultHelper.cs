@@ -154,5 +154,38 @@ namespace MvcContrib.TestHelper
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// Asserts that a RenderViewResult's value has been set using a strongly typed value, returning that value if successful.
+		/// If the type is a reference type, a view data set to null will be returned as null.
+		/// If the type is a value type, a view data set to null will throw an exception.
+		/// </summary>
+		/// <typeparam name="TViewData">The custom type for the view data.</typeparam>
+		/// <param name="actionResult">The result to check.</param>
+		/// <returns>The ViewData in it's strongly-typed form.</returns>
+		public static TViewData WithViewData<TViewData>(this RenderViewResult actionResult)
+		{
+			var actualViewData = actionResult.ViewData;
+			var expectedType = typeof(TViewData);
+
+			if (actualViewData == null && expectedType.IsValueType)
+			{
+				throw new ActionResultAssertionException(string.Format("Expected view data of type '{0}', actual was NULL",
+					expectedType.Name));
+			}
+
+			if (actualViewData == null)
+			{
+				return (TViewData)actualViewData;
+			}
+
+			if (actualViewData.GetType() != typeof(TViewData) && actualViewData.GetType().IsSubclassOf(typeof(TViewData)) == false)
+			{
+				throw new ActionResultAssertionException(string.Format("Expected view data of type '{0}', actual was '{1}'",
+					typeof(TViewData).Name, actualViewData.GetType().Name));
+			}
+
+			return (TViewData)actualViewData;
+		}
 	}
 }
