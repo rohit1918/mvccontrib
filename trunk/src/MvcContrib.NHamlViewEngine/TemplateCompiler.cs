@@ -49,6 +49,7 @@ namespace MvcContrib.NHamlViewEngine
 			AddRule(new IdMarkupRule());
 			AddRule(new EvalMarkupRule());
 			AddRule(new SilentEvalMarkupRule());
+			AddRule(new PreambleMarkupRule());
 			AddRule(new CommentMarkupRule());
 			AddRule(new EscapeMarkupRule());
 			AddRule(new PartialMarkupRule());

@@ -7,6 +7,7 @@ namespace MvcContrib.NHamlViewEngine
 {
 	public sealed class ViewBuilder
 	{
+		private readonly StringBuilder _preamble = new StringBuilder();
 		private readonly StringBuilder _output = new StringBuilder();
 
 		private readonly string _className;
@@ -17,13 +18,13 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			_className = className;
 
-			_output.AppendLine(StringUtils.FormatInvariant("public class {0} : {1}, ICompiledView {{",
-																										 _className,
-																										 MakeBaseTypeName(templateCompiler.ViewBaseType,
-																																			genericArguments)));
-			_output.AppendLine("StringBuilder _buffer;");
-			_output.AppendLine("public string Render(){");
-			_output.AppendLine("_buffer = new StringBuilder();");
+			_preamble.AppendLine(StringUtils.FormatInvariant("public class {0} : {1}, ICompiledView {{",
+																											 _className,
+																											 MakeBaseTypeName(templateCompiler.ViewBaseType,
+																																				genericArguments)));
+			_preamble.AppendLine("StringBuilder _buffer;");
+			_preamble.AppendLine("public string Render(){");
+			_preamble.AppendLine("_buffer = new StringBuilder();");
 		}
 
 		public string ClassName
@@ -84,7 +85,6 @@ namespace MvcContrib.NHamlViewEngine
 					}
 				}
 
-				//_output.Append("_buffer." + method + "(@\"" + value + "\");");
 				_output.AppendLine("_buffer." + method + "(@\"" + value + "\");");
 			}
 		}
@@ -135,11 +135,18 @@ namespace MvcContrib.NHamlViewEngine
 			_depth--;
 		}
 
+		public void AppendPreamble(string code)
+		{
+			_preamble.AppendLine(code + ';');
+		}
+
 		public string Build()
 		{
 			_output.Append("return _buffer.ToString();}}");
 
-			return _output.ToString();
+			_preamble.Append(_output);
+
+			return _preamble.ToString();
 		}
 	}
 }
