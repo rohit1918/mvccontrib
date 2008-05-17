@@ -22,7 +22,7 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			{
 				compilationContext.ViewBuilder.BeginCodeBlock();
 
-				return delegate { compilationContext.ViewBuilder.EndCodeBlock(); };
+				return () => compilationContext.ViewBuilder.EndCodeBlock();
 			}
 
 			return null;

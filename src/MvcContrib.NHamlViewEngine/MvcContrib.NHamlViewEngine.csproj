@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Rules\ClassMarkupRule.cs" />
     <Compile Include="Rules\CommentMarkupRule.cs" />
+    <Compile Include="Rules\PreambleMarkupRule.cs" />
     <Compile Include="Rules\DocTypeMarkupRule.cs" />
     <Compile Include="Rules\EofMarkupRule.cs" />
     <Compile Include="Rules\EscapeMarkupRule.cs" />
