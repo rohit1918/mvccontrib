@@ -84,5 +84,15 @@ namespace MvcContrib
 		{
 			return new XmlResult(toSerialize);
 		}
+
+		/// <summary>
+		/// Creates a <see cref="JsonResult"/> object for serializing the specified object as JSON for writing to the HTTP Response's output stream.
+		/// </summary>
+		/// <param name="toSerialize">The object to serialize</param>
+		/// <returns>An JsonResult object</returns>
+		protected virtual JsonResult RenderJson(object toSerialize)
+		{
+			return new JsonResult(toSerialize);
+		}
 	}
 }
