@@ -77,5 +77,10 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			return RenderXml("Test 1 2 3");
 		}
+
+		public ActionResult JsonResult()
+		{
+			return RenderJson("Test 1 2 3");
+		}
 	}
 }
