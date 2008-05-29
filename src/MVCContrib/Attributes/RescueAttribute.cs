@@ -160,7 +160,7 @@ namespace MvcContrib.Attributes
 		/// <returns>A ViewContext object.</returns>
 		protected virtual ViewContext CreateViewContext(Exception exception, Controller controller)
 		{
-			return new ViewContext(controller.ControllerContext, ViewName, null, exception, controller.TempData);
+			return new ViewContext(controller.ControllerContext, ViewName, null, new ViewDataDictionary(exception), controller.TempData);
 		}
 
 		/// <summary>

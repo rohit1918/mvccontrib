@@ -24,7 +24,7 @@ namespace MvcContrib.NHamlViewEngine
 			= new Dictionary<string, DateTime>();
 
 		public CompiledView(TemplateCompiler templateCompiler,
-												string templatePath, string layoutPath, object viewData)
+												string templatePath, string layoutPath, ViewDataDictionary viewData)
 		{
 			_templateCompiler = templateCompiler;
 			_templatePath = templatePath;
@@ -38,7 +38,7 @@ namespace MvcContrib.NHamlViewEngine
 			return (INHamlView)Activator.CreateInstance(_viewType);
 		}
 
-		public void RecompileIfNecessary(object viewData)
+		public void RecompileIfNecessary(ViewDataDictionary viewData)
 		{
 			lock (_sync)
 			{
@@ -54,17 +54,15 @@ namespace MvcContrib.NHamlViewEngine
 			}
 		}
 
-		private void CompileView(object viewData)
+		private void CompileView(ViewDataDictionary viewData)
 		{
-			var viewDataType = viewData.GetType();
+			Type viewDataType = typeof(object);
 
-			if (!NHamlViewFactory.ViewDataIsDictionary(viewData))
+			if (viewData != null && viewData.Model != null)
 			{
+				viewDataType = viewData.Model.GetType();
+
 				AddReferences(viewDataType);
-			}
-			else
-			{
-				viewDataType = typeof(ViewData);
 			}
 
 			List<string> inputFiles = new List<string>();

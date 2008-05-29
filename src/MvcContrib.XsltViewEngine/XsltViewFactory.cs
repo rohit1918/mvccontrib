@@ -22,7 +22,7 @@ namespace MvcContrib.ViewFactories
 	    public void RenderView(ViewContext viewContext)
 	    {
 			//First check if the data is valid then start working.
-			if (!(viewContext.ViewData is XsltViewData))
+			if (!(viewContext.ViewData.Model is XsltViewData))
 				throw new ArgumentException("the view data object should be of type XsltViewData");
 
 
@@ -30,7 +30,7 @@ namespace MvcContrib.ViewFactories
 
 			XsltTemplate viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
 
-			var view = new XsltView(viewTemplate, viewContext.ViewData as XsltViewData, string.Empty, viewContext.HttpContext);
+			var view = new XsltView(viewTemplate, viewContext.ViewData.Model as XsltViewData, string.Empty, viewContext.HttpContext);
 	    	view.RenderView(viewContext);
 	    }
 	}

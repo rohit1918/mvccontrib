@@ -36,25 +36,9 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
-		public void RenderText_should_return_TextResult_object()
-		{
-			var result = _controller.TextResult() as TextResult;
-			Assert.That(result, Is.Not.Null);
-			Assert.That(result.ToWrite, Is.EqualTo("Test 1 2 3"));
-		}
-
-		[Test]
 		public void RenderXml_should_return_XmlResult_object()
 		{
 			var result = _controller.XmlResult() as XmlResult;
-			Assert.That(result, Is.Not.Null);
-			Assert.That(result.ObjectToSerialize, Is.EqualTo("Test 1 2 3"));
-		}
-
-		[Test]
-		public void RenderJson_should_return_JsonResult_object()
-		{
-			var result = _controller.JsonResult() as JsonResult;
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.ObjectToSerialize, Is.EqualTo("Test 1 2 3"));
 		}

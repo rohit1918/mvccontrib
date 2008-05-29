@@ -32,9 +32,9 @@ namespace MvcContrib.TestHelper
 		/// </summary>
 		/// <param name="result">The result to convert.</param>
 		/// <returns></returns>
-		public static RenderViewResult AssertViewRendered(this ActionResult result)
+		public static ViewResult AssertViewRendered(this ActionResult result)
 		{
-			return result.AssertResultIs<RenderViewResult>();
+			return result.AssertResultIs<ViewResult>();
 		}
 
 		/// <summary>
@@ -42,9 +42,9 @@ namespace MvcContrib.TestHelper
 		/// </summary>
 		/// <param name="result">The result to convert.</param>
 		/// <returns></returns>
-		public static HttpRedirectResult AssertHttpRedirect(this ActionResult result)
+		public static RedirectResult AssertHttpRedirect(this ActionResult result)
 		{
-			return result.AssertResultIs<HttpRedirectResult>();
+			return result.AssertResultIs<RedirectResult>();
 		}
 
 		/// <summary>
@@ -52,9 +52,9 @@ namespace MvcContrib.TestHelper
 		/// </summary>
 		/// <param name="result">The result to convert.</param>
 		/// <returns></returns>
-		public static ActionRedirectResult AssertActionRedirect(this ActionResult result)
+		public static RedirectToRouteResult AssertActionRedirect(this ActionResult result)
 		{
-			return result.AssertResultIs<ActionRedirectResult>();
+			return result.AssertResultIs<RedirectToRouteResult>();
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="result">The result to check.</param>
 		/// <param name="controller">The name of the controller.</param>
 		/// <returns></returns>
-		public static ActionRedirectResult ToController(this ActionRedirectResult result, string controller)
+		public static RedirectToRouteResult ToController(this RedirectToRouteResult result, string controller)
 		{
 			return result.WithParameter("controller", controller);
 		}
@@ -74,7 +74,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="result">The result to check.</param>
 		/// <param name="action">The name of the action.</param>
 		/// <returns></returns>
-		public static ActionRedirectResult ToAction(this ActionRedirectResult result, string action)
+		public static RedirectToRouteResult ToAction(this RedirectToRouteResult result, string action)
 		{
 			return result.WithParameter("action", action);
 
@@ -87,7 +87,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="result">The result to check.</param>
 		/// <param name="action">The action to call on the controller.</param>
 		/// <returns></returns>
-		public static ActionRedirectResult ToAction<TController>(this ActionRedirectResult result, Expression<Action<TController>> action) where TController : IController
+		public static RedirectToRouteResult ToAction<TController>(this RedirectToRouteResult result, Expression<Action<TController>> action) where TController : IController
 		{
 			var methodCall = (MethodCallExpression)action.Body;
 			string actionName = methodCall.Method.Name;
@@ -108,7 +108,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="paramName">The name of the parameter to check for.</param>
 		/// <param name="value">The expected value.</param>
 		/// <returns></returns>
-		public static ActionRedirectResult WithParameter(this ActionRedirectResult result, string paramName, object value)
+		public static RedirectToRouteResult WithParameter(this RedirectToRouteResult result, string paramName, object value)
 		{
 			if(!result.Values.ContainsKey(paramName))
 			{
@@ -131,7 +131,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="result">The result to check.</param>
 		/// <param name="viewName">The name of the view.</param>
 		/// <returns></returns>
-		public static RenderViewResult ForView(this RenderViewResult result, string viewName)
+		public static ViewResult ForView(this ViewResult result, string viewName)
 		{
 			if(result.ViewName != viewName)
 			{
@@ -146,7 +146,7 @@ namespace MvcContrib.TestHelper
 		/// <param name="result">The result to check</param>
 		/// <param name="url">The URL that the result should be redirecting to.</param>
 		/// <returns></returns>
-		public static HttpRedirectResult ToUrl(this HttpRedirectResult result, string url)
+		public static RedirectResult ToUrl(this RedirectResult result, string url)
 		{
 			if(result.Url != url)
 			{
@@ -163,9 +163,9 @@ namespace MvcContrib.TestHelper
 		/// <typeparam name="TViewData">The custom type for the view data.</typeparam>
 		/// <param name="actionResult">The result to check.</param>
 		/// <returns>The ViewData in it's strongly-typed form.</returns>
-		public static TViewData WithViewData<TViewData>(this RenderViewResult actionResult)
+		public static TViewData WithViewData<TViewData>(this ViewResult actionResult)
 		{
-			var actualViewData = actionResult.ViewData;
+			var actualViewData = actionResult.ViewData.Model;
 			var expectedType = typeof(TViewData);
 
 			if (actualViewData == null && expectedType.IsValueType)

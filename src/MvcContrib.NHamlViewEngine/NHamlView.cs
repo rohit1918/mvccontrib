@@ -6,7 +6,7 @@ namespace MvcContrib.NHamlViewEngine
 {
 	[AspNetHostingPermission(SecurityAction.InheritanceDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
-	public abstract class NHamlView<TViewData> : INHamlView
+	public abstract class NHamlView<TViewData> : INHamlView where TViewData : class
 	{
 		private readonly ICompiledView _compiledView;
 
@@ -15,7 +15,7 @@ namespace MvcContrib.NHamlViewEngine
 		private HtmlHelper _html;
 		private UrlHelper _url;
 
-		private TViewData _viewData;
+		private ViewDataDictionary<TViewData> _viewData;
 
 		protected NHamlView()
 		{
@@ -27,7 +27,7 @@ namespace MvcContrib.NHamlViewEngine
 			_viewContext = context;
 
 			_ajax = new AjaxHelper(_viewContext);
-			_html = new HtmlHelper(_viewContext);
+			_html = new HtmlHelper(_viewContext, this);
 			_url = new UrlHelper(_viewContext);
 
 			context.HttpContext.Response.Output.Write(_compiledView.Render());
@@ -48,14 +48,25 @@ namespace MvcContrib.NHamlViewEngine
 			get { return _url; }
 		}
 
-		public TViewData ViewData
+		ViewDataDictionary IViewDataContainer.ViewData
+		{
+			get { return _viewData; }
+			set { _viewData = (ViewDataDictionary<TViewData>)value; }
+		}
+
+		public ViewDataDictionary<TViewData> ViewData
 		{
 			get { return _viewData; }
 		}
 
-		public void SetViewData(object viewData)
+		public TViewData Model
 		{
-			_viewData = (TViewData)viewData;
+			get { return _viewData.Model; }
+		}
+
+		public void SetViewData(ViewDataDictionary viewData)
+		{
+			_viewData = new ViewDataDictionary<TViewData>(viewData);
 		}
 	}
 }

@@ -7,7 +7,7 @@ using NVelocity;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityView
+	public class NVelocityView : IViewDataContainer
 	{
 		private readonly ViewContext _viewContext;
 		private readonly Template _masterTemplate;
@@ -28,6 +28,12 @@ namespace MvcContrib.Castle
 		public Template MasterTemplate
 		{
 			get { return _masterTemplate; }
+		}
+
+		public ViewDataDictionary ViewData
+		{
+			get { return _viewContext.ViewData; }
+			set { throw new NotSupportedException(); }
 		}
 
 		public void RenderView()
@@ -73,9 +79,9 @@ namespace MvcContrib.Castle
 			return new VelocityContext(entries);
 		}
 
-		private static void CreateAndAddHelpers(Hashtable entries, ViewContext context)
+		private void CreateAndAddHelpers(Hashtable entries, ViewContext context)
 		{
-			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(context);
+			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(context, this);
 			entries["url"] = entries["urlhelper"] = new UrlHelper(context);
 		}
 	}

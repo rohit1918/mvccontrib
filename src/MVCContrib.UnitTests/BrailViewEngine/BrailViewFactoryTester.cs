@@ -30,7 +30,7 @@ using Rhino.Mocks;
 			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
 			IController controller = _mocks.CreateMock<IController>();
 			_mocks.Replay(controller);
-			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", null, new object(), null);  //new ControllerContext(requestContext, controller);
+			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
 			BooViewEngine viewEngine = new BooViewEngine();
 			viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
