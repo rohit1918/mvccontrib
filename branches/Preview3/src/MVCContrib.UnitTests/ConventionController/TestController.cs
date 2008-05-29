@@ -68,19 +68,10 @@ namespace MvcContrib.UnitTests.ConventionController
 			filterContext.Cancel = CancelAction;
 		}
 
-		public ActionResult TextResult()
-		{
-			return RenderText("Test 1 2 3");
-		}
-
 		public ActionResult XmlResult()
 		{
-			return RenderXml("Test 1 2 3");
+			return Xml("Test 1 2 3");
 		}
 
-		public ActionResult JsonResult()
-		{
-			return RenderJson("Test 1 2 3");
-		}
 	}
 }

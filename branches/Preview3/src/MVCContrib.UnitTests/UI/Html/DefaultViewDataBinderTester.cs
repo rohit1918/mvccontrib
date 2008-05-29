@@ -51,7 +51,7 @@ namespace MvcContrib.UnitTests.UI.Html
 						_viewContext.Controller, 
 						_viewContext.ViewName, 
 						_viewContext.MasterName, 
-						new Person("Jeremy"), 
+						new ViewDataDictionary(new Person("Jeremy")), 
 						_viewContext.TempData);
 
 
@@ -71,7 +71,7 @@ namespace MvcContrib.UnitTests.UI.Html
 						_viewContext.Controller,
 						_viewContext.ViewName,
 						_viewContext.MasterName,
-						p,
+						new ViewDataDictionary(p), 
 						_viewContext.TempData);
 
 				object instance = _binder.ExtractValue("NestedPerson.Name", viewContext);

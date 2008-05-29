@@ -20,7 +20,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			builder = new TestControllerBuilder();
 			controller = new TestHelperController();
 			builder.InitializeController(controller);
-			htmlHelper = new HtmlHelper(new ViewContext(controller.ControllerContext, "someview", "", null, null));
+			htmlHelper = new HtmlHelper(new ViewContext(controller.ControllerContext, "someview", "", new ViewDataDictionary(), null), new ViewPage());
 		}
 
 		private TestControllerBuilder builder;

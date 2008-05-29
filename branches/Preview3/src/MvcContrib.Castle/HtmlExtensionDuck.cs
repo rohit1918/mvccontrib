@@ -16,8 +16,8 @@ namespace MvcContrib.Castle
                     typeof(TextInputExtensions), typeof(UserControlExtensions)
 				};
 
-		public HtmlExtensionDuck(ViewContext viewContext)
-			: this(new NVelocityHtmlHelper(viewContext))
+		public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)
+			: this(new NVelocityHtmlHelper(viewContext, container))
 		{
 		}
 

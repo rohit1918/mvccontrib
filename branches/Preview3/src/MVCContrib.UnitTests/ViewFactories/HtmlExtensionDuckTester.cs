@@ -31,9 +31,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 			IController controller = _mocks.DynamicMock<IController>();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
-			ViewContext viewContext = new ViewContext(controllerContext, "index","",new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
 
-			_htmlHelper = new HtmlHelper(viewContext);
+			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
 			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper);
 
 			_htmlHelperDuck.Introspector = new Introspector(new Logger());

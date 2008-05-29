@@ -16,7 +16,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 	{
 		private MockRepository _mocks;
 		private ControllerContext _controllerContext;
-		private Dictionary<string, object> _viewData;
+		private ViewDataDictionary _viewData;
 		private HttpRequestBase _httpRequest;
 		private StringWriter _output;
 
@@ -28,7 +28,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_mocks = new MockRepository();
 
 			_output = new StringWriter();
-			_viewData = new Dictionary<string, object>();
+			_viewData = new ViewDataDictionary();
 
 			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
 			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();

@@ -7,8 +7,8 @@ namespace MvcContrib.Castle
 {
 	public class NVelocityHtmlHelper : HtmlHelper
 	{
-		public NVelocityHtmlHelper(ViewContext viewContext)
-			: base(viewContext)
+		public NVelocityHtmlHelper(ViewContext viewContext, IViewDataContainer container)
+			: base(viewContext, container)
 		{
 		}
 
@@ -28,7 +28,7 @@ namespace MvcContrib.Castle
 			return TextBox(htmlName, string.Empty, htmlAttributes);
 		}
 
-		public string TextBox(string htmlName, object value, IDictionary htmlAttributes)
+		public string TextBox(string htmlName, string value, IDictionary htmlAttributes)
 		{
 			return this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
 		}

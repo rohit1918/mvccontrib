@@ -29,7 +29,7 @@ namespace MvcContrib.BrailViewEngine
 	/// support all the behind the scenes magic such as variable to PropertyBag trasnlation, 
 	/// resources usage, etc. 
 	/// </summary>
-	public abstract class BrailBase
+	public abstract class BrailBase : IViewDataContainer
 	{
 		protected IController __controller;
 		protected ViewContext __viewContext;
@@ -172,6 +172,12 @@ namespace MvcContrib.BrailViewEngine
 		public IDictionary Properties
 		{
 			get { return properties; }
+		}
+
+		public ViewDataDictionary ViewData
+		{
+			get { return this.ViewContext.ViewData; }
+			set { throw new NotSupportedException(); }
 		}
 
 		/// <summary>
@@ -414,7 +420,7 @@ namespace MvcContrib.BrailViewEngine
 				properties.Add("session", myContext.Session);
 			}
 
-			properties["html"] = new HtmlHelper(viewContext);
+			properties["html"] = new HtmlHelper(viewContext, this);
 			properties["url"] = new UrlHelper(viewContext);
 
 //			if (controllerContext.Resources != null)
