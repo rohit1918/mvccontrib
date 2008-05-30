@@ -35,14 +35,14 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_mocks.ReplayAll();
 
 			_viewContext =
-				new ViewContext(controllerContext, "Index", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "Index", "", new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
 		}
 
 		[Test]
 		public void View_Renders_Output_To_HttpContext_Response_Output()
 		{
 			TestView view = new TestView();
-			view.SetViewData("Rendered by NHaml");
+			view.SetViewData(new ViewDataDictionary<string>("Rendered by NHaml"));
 			view.RenderView(_viewContext);
 			Assert.AreEqual("Rendered by NHaml", _output.ToString());
 		}
@@ -81,7 +81,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		{
 			public string Render()
 			{
-				return ViewData;
+				return base.ViewData.Model;
 			}
 		}
 	}

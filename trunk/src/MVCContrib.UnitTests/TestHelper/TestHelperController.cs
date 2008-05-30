@@ -12,45 +12,45 @@ namespace MvcContrib.TestHelper
     public class TestHelperController : Controller
     {
         
-        public void RedirectWithAction()
+        public ActionResult RedirectWithAction()
         {
-            RedirectToAction("ActionName1");
+            return RedirectToAction("ActionName1");
+        }
+
+
+		public ActionResult  RedirectWithActionAndController()
+        {
+            return RedirectToAction("ActionName2", "ControllerName2");
         }
 
         
-        public void RedirectWithActionAndController()
+        public ActionResult RedirectWithObject()
         {
-            RedirectToAction("ActionName2", "ControllerName2");
+            return RedirectToAction("ActionName3", "ControllerName3", new { Id = 1 });
         }
 
         
-        public void RedirectWithObject()
+        public ActionResult RenderViewWithViewName()
         {
-            RedirectToAction(new RouteValueDictionary(new { Action = "ActionName3", Controller = "ControllerName3" }));
+            return View("View1");
         }
 
         
-        public void RenderViewWithViewName()
+        public ActionResult RenderViewWithViewNameAndData()
         {
-            RenderView("View1");
+            return View("View2", new { Prop1 = 1, Prop2 = 2 });
         }
 
         
-        public void RenderViewWithViewNameAndData()
+        public ActionResult RenderViewWithViewNameAndMaster()
         {
-            RenderView("View2", new { Prop1 = 1, Prop2 = 2 });
+            return View("View3", "Master3");
         }
 
         
-        public void RenderViewWithViewNameAndMaster()
+        public ActionResult RenderViewWithViewNameAndMasterAndData()
         {
-            RenderView("View3", "Master3");
-        }
-
-        
-        public void RenderViewWithViewNameAndMasterAndData()
-        {
-            RenderView("View4", "Master4", new { Prop1 = 3, Prop2 = 4 });
+            return View("View4", "Master4", new { Prop1 = 3, Prop2 = 4 });
         }
 
         public virtual int RandomOtherFunction()

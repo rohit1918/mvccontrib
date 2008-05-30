@@ -12,13 +12,13 @@ namespace MvcContrib.Samples.IoC.Controllers
         
         public ActionResult Index()
         {
-            return RenderView("Index");
+            return View("Index");
         }
 
         
         public ActionResult About()
         {
-            return RenderView("About");
+            return View("About");
         }
     }
 }

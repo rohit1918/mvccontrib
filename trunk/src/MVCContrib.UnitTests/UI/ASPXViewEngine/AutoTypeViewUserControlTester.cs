@@ -25,8 +25,8 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 			TestViewData data = new TestViewData();
-			viewPage.SetViewData(data);
-			Assert.AreSame(data, viewPage.ViewData, "ViewData was not set without conversion");
+			viewPage.SetViewData(new ViewDataDictionary(data));
+			Assert.AreSame(data, viewPage.ViewData.Model, "ViewData was not set without conversion");
 		}
 
 		[Test]
@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
+			var data = new ViewDataDictionary();
 			Uri uriValue = new Uri("http://www.google.com/");
 			data["StringValue"] = "hello";
 			data["BoolValue"] = true;
@@ -42,9 +42,9 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 			data["NonExistentValue"] = new object();
 
 			viewPage.SetViewData(data);
-			Assert.AreEqual("hello", viewPage.ViewData.StringValue);
-			Assert.AreEqual(true, viewPage.ViewData.BoolValue);
-			Assert.AreSame(uriValue, viewPage.ViewData.UriValue);
+			Assert.AreEqual("hello", viewPage.ViewData.Model.StringValue);
+			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
+			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
 		}
 
 		[Test]
@@ -52,45 +52,27 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
 			Uri uriValue = new Uri("http://www.google.com/");
-			viewPage.SetViewData(new
+			viewPage.SetViewData(new ViewDataDictionary(new
 			{
 				StringValue = "nice",
 				BoolValue = true,
 				UriValue = uriValue,
 				SomeOtherValue = new object(),
 				SomeRandomNullValue = (object)null
-			});
+			}));
 
-			Assert.AreEqual("nice", viewPage.ViewData.StringValue);
-			Assert.AreEqual(true, viewPage.ViewData.BoolValue);
-			Assert.AreSame(uriValue, viewPage.ViewData.UriValue);
-		}
-
-		[Test]
-		public void Accepts_Null()
-		{
-			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
-			viewPage.SetViewData(null);
-			try
-			{
-				object data = viewPage.ViewData;
-				Assert.Fail("Shouldn't be able to retrieve the ViewData from this ViewUserControl when it's NULL.");
-			}
-			catch (InvalidOperationException)
-			{
-				// The fact that this exception is thrown demonstrates that the ViewData is still NULL
-				// (Can't retrieve ViewData from a ViewUserControl that can't find an IViewDataContainer.)
-			}
+			Assert.AreEqual("nice", viewPage.ViewData.Model.StringValue);
+			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
+			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
 		}
 
 		/// <summary>
 		/// Exposes the protected SetViewData() method for the purpose of testing
 		/// </summary>
-		private class AutoTypeViewUserControlTestingSubclass<T> : AutoTypeViewUserControl<T>
+		private class AutoTypeViewUserControlTestingSubclass<T> : AutoTypeViewUserControl<T> where T : class 
 		{
-			public new void SetViewData(object viewData)
+			public new void SetViewData(ViewDataDictionary viewData)
 			{
 				base.SetViewData(viewData);
 			}

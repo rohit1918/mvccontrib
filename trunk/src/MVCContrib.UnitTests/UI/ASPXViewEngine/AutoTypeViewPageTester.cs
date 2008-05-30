@@ -24,7 +24,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 			viewPage.SetViewData(null);
-			Assert.IsNull(viewPage.ViewData);
+			Assert.IsNull(viewPage.ViewData.Model);
 		}
 
 		[Test]
@@ -32,8 +32,8 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 			TestViewData data = new TestViewData();
-			viewPage.SetViewData(data);
-			Assert.AreSame(data, viewPage.ViewData, "ViewData was not set without conversion");
+			viewPage.SetViewData(new ViewDataDictionary(data));
+			Assert.AreSame(data, viewPage.ViewData.Model, "ViewData was not set without conversion");
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
+			var data = new ViewDataDictionary();
 			Uri uriValue = new Uri("http://www.google.com/");
 			data["StringValue"] = "hello";
 			data["BoolValue"] = true;
@@ -49,9 +49,9 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 			data["NonExistentValue"] = new object();
 
 			viewPage.SetViewData(data);
-			Assert.AreEqual("hello", viewPage.ViewData.StringValue);
-			Assert.AreEqual(true, viewPage.ViewData.BoolValue);
-			Assert.AreSame(uriValue, viewPage.ViewData.UriValue);
+			Assert.AreEqual("hello", viewPage.ViewData.Model.StringValue);
+			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
+			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
 		}
 
 		[Test]
@@ -59,25 +59,24 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
 			Uri uriValue = new Uri("http://www.google.com/");
-			viewPage.SetViewData(new
+			viewPage.SetViewData(new ViewDataDictionary(new
 			{
 				StringValue = "nice",
 				BoolValue = true,
 				UriValue = uriValue,
 				SomeOtherValue = new object(),
 				SomeRandomNullValue = (object)null
-			});
+			}));
 
-			Assert.AreEqual("nice", viewPage.ViewData.StringValue);
-			Assert.AreEqual(true, viewPage.ViewData.BoolValue);
-			Assert.AreSame(uriValue, viewPage.ViewData.UriValue);
+			Assert.AreEqual("nice", viewPage.ViewData.Model.StringValue);
+			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
+			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
 		}
 
-		private class AutoTypeViewPageTestingSubclass<T> : AutoTypeViewPage<T>
+		private class AutoTypeViewPageTestingSubclass<T> : AutoTypeViewPage<T> where T : class 
 		{
-			public new void SetViewData(object viewData)
+			public new void SetViewData(ViewDataDictionary viewData)
 			{
 				base.SetViewData(viewData);
 			}

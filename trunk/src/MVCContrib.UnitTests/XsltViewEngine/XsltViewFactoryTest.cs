@@ -92,7 +92,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
 			RouteData routeData = new RouteData();
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new object(),
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
 			                                          new TempDataDictionary(HttpContext));
 				// new ControllerContext(HttpContext, routeData, new Controller());
 

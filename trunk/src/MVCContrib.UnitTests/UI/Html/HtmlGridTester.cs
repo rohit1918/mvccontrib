@@ -34,8 +34,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			_mocks = new MockRepository();
 			_context = _mocks.DynamicHttpContextBase();
 			SetupResult.For(_context.Request.FilePath).Return("Test.mvc");
-			_viewContext = new ViewContext(_context, new RouteData(), _mocks.DynamicMock<IController>(), "index", "", new Hashtable(), null);
-			_helper = new HtmlHelper(_viewContext);
+			_viewContext = new ViewContext(_context, new RouteData(), _mocks.DynamicMock<IController>(), "index", "", new ViewDataDictionary(), null);
+			_helper = new HtmlHelper(_viewContext, new ViewPage());
 			_people = new List<Person>
 			              	{
 			              		new Person() { Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}
@@ -52,7 +52,7 @@ namespace MvcContrib.UnitTests.UI.Html
 
 		private void AddToViewData(string key, Object value)
 		{
-			((Hashtable)_viewContext.ViewData).Add(key, value);
+			_viewContext.ViewData.Add(key, value);
 		}
 
 		[Test]

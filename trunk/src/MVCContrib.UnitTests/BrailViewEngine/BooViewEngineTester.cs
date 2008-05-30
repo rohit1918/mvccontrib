@@ -41,7 +41,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_mocks.Replay(_controller);
 			
 			ControllerContext controllerContext = new ControllerContext(requestContext, _controller);
-			_viewContext = new ViewContext(controllerContext, "index", "", new Hashtable(StringComparer.InvariantCultureIgnoreCase),
+			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), 
 				                null);
 
 			_viewEngine = new BooViewEngine();

@@ -136,7 +136,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_a_FormHelper_should_be_created()
 			{
-				HtmlHelper helper = new HtmlHelper(_viewContext);
+				HtmlHelper helper = new HtmlHelper(_viewContext, new ViewPage());
 				IFormHelper formHelper = HtmlHelperExtensions.Form(helper);
 				Assert.IsNotNull(formHelper);
 			}

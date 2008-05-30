@@ -94,22 +94,22 @@ namespace MvcContrib
 
         //ViewData extensions
 
-        public static T Get<T>(this ViewData bag)
+        public static T Get<T>(this ViewDataDictionary bag)
         {
             return bag.Get<T>(getKey(typeof(T)));
         }
 
-        public static T GetOrDefault<T>(this ViewData bag, string key, T defaultValue)
+        public static T GetOrDefault<T>(this ViewDataDictionary bag, string key, T defaultValue)
         {
-            if (bag.ContainsDataItem(key))
+            if (bag.ContainsKey(key))
                 return (T)bag[key];
 
             return defaultValue;
         }
 
-        public static object Get(this ViewData bag, Type type)
+        public static object Get(this ViewDataDictionary bag, Type type)
         {
-            if (!bag.ContainsDataItem(getKey(type)))
+            if (!bag.ContainsKey(getKey(type)))
             {
                 string message = string.Format("No object exists that is of type '{0}'.", type);
                 throw new ArgumentException(message);
@@ -118,24 +118,24 @@ namespace MvcContrib
             return bag[getKey(type)];
         }
 
-        public static bool Contains<T>(this ViewData bag)
+        public static bool Contains<T>(this ViewDataDictionary bag)
         {
-            return bag.ContainsDataItem(getKey(typeof(T)));
+            return bag.ContainsKey(getKey(typeof(T)));
         }
 
-        public static bool Contains(this ViewData bag, Type keyType)
+        public static bool Contains(this ViewDataDictionary bag, Type keyType)
         {
-            return bag.ContainsDataItem(getKey(keyType));
+            return bag.ContainsKey(getKey(keyType));
         }
 
-        public static bool Contains(this ViewData bag, string key)
+        public static bool Contains(this ViewDataDictionary bag, string key)
         {
-            return bag.ContainsDataItem(key);
+            return bag.ContainsKey(key);
         }
 
-        public static T Get<T>(this ViewData bag, string key)
+        public static T Get<T>(this ViewDataDictionary bag, string key)
         {
-            if (!bag.ContainsDataItem(key))
+            if (!bag.ContainsKey(key))
             {
                 string message = string.Format("No object exists with key '{0}'.", key);
                 throw new ArgumentException(message);

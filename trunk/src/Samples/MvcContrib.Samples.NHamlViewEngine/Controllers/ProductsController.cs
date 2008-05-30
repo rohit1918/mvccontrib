@@ -19,7 +19,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		{
 			Category category = northwind.GetCategoryById(id);
 
-			return RenderView("List", category);
+			return View("List", category);
 		}
 
 		//
@@ -30,10 +30,10 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		{
 			ProductsNewViewData viewData = new ProductsNewViewData();
 
-			viewData.Suppliers = northwind.GetSuppliers();
-			viewData.Categories = northwind.GetCategories();
+			viewData.Suppliers = new SelectList(northwind.GetSuppliers(),"SupplierID", "CompanyName");
+			viewData.Categories = new SelectList(northwind.GetCategories(),  "CategoryID", "CategoryName");
 
-			return RenderView("New", viewData);
+			return View("New", viewData);
 		}
 
 		//
@@ -48,7 +48,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 			northwind.AddProduct(product);
 			northwind.SubmitChanges();
 
-			return RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
+			return RedirectToAction("Category", new { ID = product.CategoryID });
 		}
 
 		//
@@ -60,10 +60,10 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 			ProductsEditViewData viewData = new ProductsEditViewData();
 
 			viewData.Product = northwind.GetProductById(id);
-			viewData.Categories = northwind.GetCategories();
-			viewData.Suppliers = northwind.GetSuppliers();
+			viewData.Categories = new SelectList(northwind.GetCategories(), "CategoryID", "CategoryName", viewData.Product.CategoryID);
+			viewData.Suppliers = new SelectList(northwind.GetSuppliers(), "SupplierID", "CompanyName", viewData.Product.SupplierID);
 
-			return RenderView("Edit", viewData);
+			return View("Edit", viewData);
 		}
 
 		//
@@ -77,7 +77,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 
 			northwind.SubmitChanges();
 
-			return RedirectToAction(new RouteValueDictionary(new { Action = "Category", ID = product.CategoryID }));
+			return RedirectToAction("Category", new { Action = "Category", ID = product.CategoryID });
 		}
 	}
 }

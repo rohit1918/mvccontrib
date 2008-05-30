@@ -62,8 +62,7 @@ namespace MvcContrib.TestHelper.Sample
         [Test]
         public void NearbyShouldRedirectToListWithLinks() //ok, really it should do something more useful, but you get the point
         {
-            var result = _controller.Nearby() as ActionRedirectResult;
-            Assert.AreEqual("ListWithLinks", result.Values["action"]);
+            _controller.Nearby().AssertActionRedirect().ToAction("ListWithLinks"); 
         }
     }
 }

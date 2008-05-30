@@ -22,12 +22,12 @@ namespace Website.Controllers
         public ActionResult Index()
         {
             IEnumerable<Link> links = linkRepository.GetLinks();
-            return RenderView("Index",links);
+            return View("Index",links);
         }
 
         public ActionResult About()
         {
-            return RenderView("About");
+            return View("About");
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Web.Mvc;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace MvcContrib.XsltViewEngine
 {
-	public class XsltView 
+	public class XsltView : IViewDataContainer
 	{
 		private readonly string ajaxDeclaration;
 		private readonly XsltViewData viewData;
@@ -27,6 +28,12 @@ namespace MvcContrib.XsltViewEngine
 			InitializeConstruct();
 
 			xslTransformer = viewTemplate.XslTransformer;
+		}
+
+		public ViewDataDictionary ViewData
+		{
+			get { return viewContext.ViewData; }
+			set { throw new NotSupportedException(); }
 		}
 
 		private void InitializeConstruct()
@@ -52,7 +59,7 @@ namespace MvcContrib.XsltViewEngine
 			this.viewContext = viewContext;
 
 			XsltArgumentList args = new XsltArgumentList();
-			args.AddExtensionObject("urn:HtmlHelper", new HtmlHelper(viewContext));
+			args.AddExtensionObject("urn:HtmlHelper", new HtmlHelper(viewContext, this));
             
 			args.AddParam("AjaxProScriptReferences", "", ajaxDeclaration);
 

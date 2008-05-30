@@ -31,9 +31,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
 			ViewContext viewContext =
-				new ViewContext(controllerContext, "index", "", new Hashtable(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
 
-			_htmlHelper = new NVelocityHtmlHelper(viewContext);
+			_htmlHelper = new NVelocityHtmlHelper(viewContext, new ViewPage());
 		}
 
 		[Test]
