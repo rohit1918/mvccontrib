@@ -1,17 +1,17 @@
-%h2= ViewData.Product.ProductName
-%form{action=Url.Action("Update", new { ID=ViewData.Product.ProductID }), method="post"}
+%h2= ViewData.Model.Product.ProductName
+%form{action=Url.Action("Update", new { ID=ViewData.Model.Product.ProductID }), method="post"}
   %table
     %tr
       %td Name:
-      %td= Html.TextBox("ProductName", ViewData.Product.ProductName)
+      %td= Html.TextBox("ProductName", ViewData.Model.Product.ProductName)
     %tr
       %td Category:
-      %td= Html.Select("CategoryID", ViewData.Categories, ViewData.Product.CategoryID)
+      %td= Html.DropDownList("CategoryID", ViewData.Model.Categories)
     %tr
       %td Supplier:
-      %td= Html.Select("SupplierID", ViewData.Suppliers, ViewData.Product.SupplierID)
+      %td= Html.DropDownList("SupplierID", ViewData.Model.Suppliers)
     %tr
       %td Unit Price:
-      %td= Html.TextBox("UnitPrice", ViewData.Product.UnitPrice)
+      %td= Html.TextBox("UnitPrice", ViewData.Model.Product.UnitPrice.ToString())
   %p
   _ Shared\Button
