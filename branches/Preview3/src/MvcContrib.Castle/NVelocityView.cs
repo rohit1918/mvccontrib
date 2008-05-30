@@ -56,19 +56,14 @@ namespace MvcContrib.Castle
 		private VelocityContext CreateContext(ViewContext context)
 		{
 			Hashtable entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			IDictionary<string, object> viewDataEntries = _viewContext.ViewData as IDictionary<string, object>;
-
-			if(viewDataEntries != null)
+			if (context.ViewData != null)
 			{
-				foreach(KeyValuePair<string, object> pair in viewDataEntries)
+				foreach(var pair in context.ViewData)
 				{
 					entries[pair.Key] = pair.Value;
 				}
 			}
-			else
-			{
-				entries["viewdata"] = _viewContext.ViewData;
-			}
+			entries["viewdata"] = _viewContext.ViewData;
 
 			entries["routedata"] = context.RouteData;
 			entries["controller"] = _viewContext.Controller;
