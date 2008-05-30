@@ -8,7 +8,7 @@ namespace MvcContrib.Samples
 		
 		public ActionResult Index()
 		{
-			return RenderView("Index", "Site");
+			return View("Index", "Site");
 		}
 
 		
@@ -23,7 +23,7 @@ namespace MvcContrib.Samples
 			companyInfo.Zip = "00000";
 			companyInfo.Email = "email@yourcompany.com";
 			
-			return RenderView("Contact", "Site", companyInfo);
+			return View("Contact", "Site", companyInfo);
 		}
 
 		
@@ -31,7 +31,7 @@ namespace MvcContrib.Samples
 		{
 			ViewData["now"] = DateTime.Now;
 
-			return RenderView("About", "Site");
+			return View("About", "Site");
 		}
 	}
 }

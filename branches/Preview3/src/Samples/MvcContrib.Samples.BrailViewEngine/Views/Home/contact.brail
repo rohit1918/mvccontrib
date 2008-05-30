@@ -2,6 +2,6 @@
 
 <form action="${Url.Action('sendmessage')}" method="post">
 
-Name: ${Html.TextBox('name', viewData.CompanyName)}
+Name: ${Html.TextBox('name', viewData.Model.CompanyName)}
 
 </form>
