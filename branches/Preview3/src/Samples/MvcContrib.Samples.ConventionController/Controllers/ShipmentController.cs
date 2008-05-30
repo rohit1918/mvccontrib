@@ -14,12 +14,12 @@ namespace MvcContrib.Samples.Controllers
 	{
 		public ActionResult Index()
 		{
-			return RenderView("index");
+			return View("index");
 		}
 
 		public ActionResult New([Deserialize("shipment")] Shipment newShipment)
 		{
-			return RenderView("new", newShipment);
+			return View("new", newShipment);
 		}
 
 		[PostOnly]
@@ -34,7 +34,7 @@ namespace MvcContrib.Samples.Controllers
 				}
 			}
 
-			return RenderView("track", validTrackingNumbers);
+			return View("track", validTrackingNumbers);
 		}
 
 		[Rescue("Error")]
@@ -55,14 +55,14 @@ namespace MvcContrib.Samples.Controllers
 		[NonAction]
 		public ActionResult Hidden()
 		{
-			return RenderText("This action cannot be called.");
+			return Content("This action cannot be called.");
 		}
 
 		[DefaultAction]
 		public ActionResult DefaultAction()
 		{
 			string originalAction = RouteData.Values["action"].ToString();
-			return RenderText(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
+			return Content(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
 		}
 
 		public XmlResult XmlAction()
