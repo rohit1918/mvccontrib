@@ -9,7 +9,7 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 
 		public ActionResult Index()
 		{
-			return RenderView();
+			return View();
 		}
 
 		public ActionResult FormHelper()
@@ -27,12 +27,12 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 			roles.Add(new Role(3, "User"));
 			ViewData["roles"] = roles;
 
-			return RenderView();
+			return View();
 		}
 
 		public ActionResult ValidationHelper()
 		{
-			return RenderView();
+			return View();
 		}
 
 		public ActionResult Grid(int? page)
@@ -44,7 +44,7 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 			}
 
 			ViewData["people"] = people.AsPagination(page.GetValueOrDefault(1), 10);
-			return RenderView();
+			return View();
 		}
 	}
 }
