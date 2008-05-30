@@ -175,7 +175,7 @@ namespace MvcContrib.NHamlViewEngine
 
 			INHamlView view = compiledView.CreateView();
 
-		  view.SetViewData(viewContext.ViewData);
+			view.SetViewData(viewContext.ViewData);
 			view.RenderView(viewContext);
 		}
 	}

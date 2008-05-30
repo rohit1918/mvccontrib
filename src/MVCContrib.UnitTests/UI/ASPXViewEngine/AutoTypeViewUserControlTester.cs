@@ -34,14 +34,14 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
+			var data = new ViewDataDictionary();
 			Uri uriValue = new Uri("http://www.google.com/");
 			data["StringValue"] = "hello";
 			data["BoolValue"] = true;
 			data["UriValue"] = uriValue;
 			data["NonExistentValue"] = new object();
 
-			viewPage.SetViewData(new ViewDataDictionary(data));
+			viewPage.SetViewData(data);
 			Assert.AreEqual("hello", viewPage.ViewData.Model.StringValue);
 			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
 			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
@@ -65,23 +65,6 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 			Assert.AreEqual("nice", viewPage.ViewData.Model.StringValue);
 			Assert.AreEqual(true, viewPage.ViewData.Model.BoolValue);
 			Assert.AreSame(uriValue, viewPage.ViewData.Model.UriValue);
-		}
-
-		[Test]
-		public void Accepts_Null()
-		{
-			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
-			viewPage.SetViewData(null);
-			try
-			{
-				object data = viewPage.ViewData;
-				Assert.Fail("Shouldn't be able to retrieve the ViewData from this ViewUserControl when it's NULL.");
-			}
-			catch (InvalidOperationException)
-			{
-				// The fact that this exception is thrown demonstrates that the ViewData is still NULL
-				// (Can't retrieve ViewData from a ViewUserControl that can't find an IViewDataContainer.)
-			}
 		}
 
 		/// <summary>

@@ -18,7 +18,7 @@ namespace MvcContrib.UnitTests.TestHelper
 			Assert.IsNotNull(converted);
 		}
 
-		[Test, ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Expected result to be of type EmptyResult. It is actually of type HttpRedirectResult.")]
+		[Test, ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Expected result to be of type EmptyResult. It is actually of type RedirectResult.")]
 		public void Should_throw_when_conversiontype_is_incorrect()
 		{
 			ActionResult result = new RedirectResult("http://mvccontrib.org");
@@ -159,7 +159,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test]
 		public void WithViewData_should_return_null_if_view_data_is_null_and_expected_type_is_reference_type()
 		{
-			var renderResult = new ViewResult {ViewData = null };
+			var renderResult = new ViewResult {ViewData = new ViewDataDictionary<CustomReferenceTypeViewData>() };
 
 			var result = renderResult.WithViewData<CustomReferenceTypeViewData>();
 
@@ -170,7 +170,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		[ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Expected view data of type 'CustomValueTypeViewData', actual was NULL")]
 		public void WithViewData_should_throw_exception_if_view_data_is_null_and_expected_type_is_value_type()
 		{
-			var renderResult = new ViewResult {ViewData = null};
+			var renderResult = new ViewResult {ViewData = new ViewDataDictionary<CustomReferenceTypeViewData>() };
 
 			renderResult.WithViewData<CustomValueTypeViewData>();
 		}

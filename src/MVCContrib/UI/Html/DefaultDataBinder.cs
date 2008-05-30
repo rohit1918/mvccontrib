@@ -20,7 +20,7 @@ namespace MvcContrib.UI.Html
 			object rootInstance = ObtainRootInstance(context, target, out pieces);
 
 			//strongly typed viewdata
-			if (rootInstance == context.ViewData && pieces.Length > 0)
+			if (rootInstance != null && rootInstance == context.ViewData.Model && pieces.Length > 0)
 			{
 				return QueryPropertyRecursive(rootInstance, pieces, 0);
 			}
@@ -48,13 +48,15 @@ namespace MvcContrib.UI.Html
 				return NestedRootInstance;
 			}
 
-			IDictionary viewData = context.ViewData as IDictionary;
-			if (viewData == null) return context.ViewData;
+			if(context.ViewData.Model != null)
+			{
+				return context.ViewData.Model;
+			}
 
-			object rootInstance = null;
+            object rootInstance = null;
 
-			if (viewData.Contains(target))
-				rootInstance = viewData[target];
+			if (context.ViewData.ContainsKey(target))
+				rootInstance = context.ViewData[target];
 			else if (context.TempData.ContainsKey(target))
 				rootInstance = context.TempData[target];
 
