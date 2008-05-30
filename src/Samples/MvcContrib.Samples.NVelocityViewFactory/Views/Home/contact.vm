@@ -2,6 +2,6 @@
 
 <form action="$Url.Action('sendmessage')" method="post">
 
-Name: $html.TextBox('name', $viewdata.companyname) ## Doesn't work because everything is an Extension method.  Not sure if/how to work around this.
+Name: $html.TextBox('name', $viewdata.Model.companyname) 
 
 </form>
