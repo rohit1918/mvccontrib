@@ -4,7 +4,7 @@
 <h2>Stars</h2>
 
 <ul>
-    <% foreach (var star in ViewData) { %>
+    <% foreach (var star in ViewData.Model) { %>
         <li>
             <%= star.Name %> approx: <%= star.Distance %> AU <%= this.Html.ActionLink("Nearby Stars","ListWithLinks")%>
         </li>

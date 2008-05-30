@@ -56,7 +56,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, vData,
+			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(vData), 
 			                                          new TempDataDictionary(HttpContext));
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);

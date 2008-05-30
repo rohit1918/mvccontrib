@@ -13,14 +13,14 @@ namespace MvcContrib.TestHelper.Sample.Controllers
         public ActionResult List()
         {
             List<Star> stars = StarDatabase.GetStars();
-            return RenderView("List", stars);
+            return View("List", stars);
         }
 
         
         public ActionResult ListWithLinks()
         {
             List<Star> stars = StarDatabase.GetStarsAndLinks(ControllerContext);
-            return RenderView("ListWithLinks", stars);
+            return View("ListWithLinks", stars);
         }
 
         

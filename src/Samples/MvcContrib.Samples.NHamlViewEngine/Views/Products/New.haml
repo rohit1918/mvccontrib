@@ -1,5 +1,5 @@
 %h2 Add Product
-%form{action="/Products/Create", method="post"}
+%form{action="/Products.mvc/Create", method="post"}
   %table
     %tr
       %td Name:
@@ -7,10 +7,10 @@
         %input{id="ProductName", type="text", name="ProductName"}
     %tr
       %td Category:
-      %td= Html.Select("CategoryID", ViewData.Categories)
+      %td= Html.DropDownList("CategoryID", ViewData.Model.Categories)
     %tr
       %td Supplier:
-      %td= Html.Select("SupplierID", ViewData.Suppliers)
+      %td= Html.DropDownList("SupplierID", ViewData.Model.Suppliers)
     %tr
       %td Unit Price:
       %td 

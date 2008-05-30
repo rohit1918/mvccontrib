@@ -4,23 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Reflection;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.ASPXViewEngine
 {
 	internal static class AutoTypingHelper
 	{
-		public static T PerformLooseTypecast<T>(object fromObject)
+		public static ViewDataDictionary PerformLooseTypecast<T>(ViewDataDictionary viewData)
 		{
-			if ((fromObject == null) || (typeof(T).IsAssignableFrom(fromObject.GetType())))
+			//There must always be some viewdata.
+			if(viewData == null)
+			{
+				return new ViewDataDictionary();
+			}
+
+			if (viewData.Model != null && (typeof(T).IsAssignableFrom(viewData.Model.GetType())))
 				// The incoming object is already of the right type
-				return (T)fromObject;
+				return viewData;
 			else
 			{
 				// Convert the incoming object to a dictionary, if it isn't one already
-				IDictionary suppliedProps = fromObject as IDictionary;
-				if (suppliedProps == null)
-					suppliedProps = fromObject.GetType().GetProperties()
-									.ToDictionary(pi => pi.Name, pi => pi.GetValue(fromObject, null));
+				IDictionary suppliedProps = viewData;
+				if(viewData.Model != null)
+				{
+					suppliedProps = viewData.Model.GetType().GetProperties()
+									.ToDictionary(pi => pi.Name, pi => pi.GetValue(viewData.Model, null));
+				}
 
 				// Construct a T object, taking values from suppliedProps where available
 				T result = Activator.CreateInstance<T>();
@@ -28,7 +37,9 @@ namespace MvcContrib.UI.ASPXViewEngine
 					if (suppliedProps.Contains(allowedProp.Name))
 						allowedProp.SetValue(result, suppliedProps[allowedProp.Name], null);
 
-				return result;
+				viewData.Model = result;
+
+				return viewData;
 			}
 		}
 	}

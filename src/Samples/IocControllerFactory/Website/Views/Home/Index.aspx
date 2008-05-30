@@ -9,7 +9,7 @@
     </p>
     <p>
     <ul>
-    <%foreach (Link link in this.ViewData)
+    <%foreach (Link link in this.ViewData.Model)
       {%>
     <li><a target="_blank" href="<%=link.Url%>"><%=link.Title%></a> </li>
     <%}%>

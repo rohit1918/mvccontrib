@@ -66,33 +66,13 @@ namespace MvcContrib
 		}
 
 		/// <summary>
-		/// Creates a <see cref="TextResult"/> object for rendering the specified text to HTTP Response's output stream.
-		/// </summary>
-		/// <param name="toRender">The text to render</param>
-		/// <returns>A TextResult object</returns>
-		protected virtual TextResult RenderText(string toRender)
-		{
-			return new TextResult(toRender);
-		}
-
-		/// <summary>
 		/// Creates a <see cref="XmlResult"/> object for serializing the specified object as XML for writing to the HTTP Response's output stream.
 		/// </summary>
 		/// <param name="toSerialize">The object to serialize</param>
 		/// <returns>An XmlResult object</returns>
-		protected virtual XmlResult RenderXml(object toSerialize)
+		protected virtual XmlResult Xml(object toSerialize)
 		{
 			return new XmlResult(toSerialize);
-		}
-
-		/// <summary>
-		/// Creates a <see cref="JsonResult"/> object for serializing the specified object as JSON for writing to the HTTP Response's output stream.
-		/// </summary>
-		/// <param name="toSerialize">The object to serialize</param>
-		/// <returns>An JsonResult object</returns>
-		protected virtual JsonResult RenderJson(object toSerialize)
-		{
-			return new JsonResult(toSerialize);
 		}
 	}
 }

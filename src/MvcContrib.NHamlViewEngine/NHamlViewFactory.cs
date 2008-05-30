@@ -78,12 +78,6 @@ namespace MvcContrib.NHamlViewEngine
 			}
 		}
 
-		public static bool ViewDataIsDictionary(object viewData)
-		{
-			return (viewData != null)
-						 && (typeof(IDictionary).IsAssignableFrom(viewData.GetType()));
-		}
-
 		protected virtual IViewSource FindLayout(string mastersFolder, string masterName, string controller)
 		{
 			if (!string.IsNullOrEmpty(masterName))
@@ -181,14 +175,7 @@ namespace MvcContrib.NHamlViewEngine
 
 			INHamlView view = compiledView.CreateView();
 
-			if (ViewDataIsDictionary(viewContext.ViewData))
-			{
-				view.SetViewData(new ViewData(viewContext.ViewData));
-			}
-			else
-			{
-				view.SetViewData(viewContext.ViewData);
-			}
+			view.SetViewData(viewContext.ViewData);
 			view.RenderView(viewContext);
 		}
 	}

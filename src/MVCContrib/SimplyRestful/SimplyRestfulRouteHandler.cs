@@ -93,38 +93,38 @@ namespace MvcContrib.SimplyRestful
 			routeCollection.Add(new Route(
 				controllerPath + "/{id}/{action}",
 				BuildDefaults(RestfulAction.Show, controller),
-				new RouteValueDictionary(new {httpMethod = "GET", id = idValidationRegex ?? MatchAny, action = "show|edit|delete"}),
+				new RouteValueDictionary(new {httpMethod = new HttpMethodConstraint("GET"), id = idValidationRegex ?? MatchAny, action = "show|edit|delete"}),
 				new MvcRouteHandler()));
 
 			routeCollection.Add(new Route(
 				controllerPath + "/{id}",
 				BuildDefaults(RestfulAction.None, controller),
-				new RouteValueDictionary(new { httpMethod = "POST", id = idValidationRegex ?? MatchAny }),
+				new RouteValueDictionary(new { httpMethod = new HttpMethodConstraint("POST"), id = idValidationRegex ?? MatchAny }),
 				new SimplyRestfulRouteHandler()));
 
 
 			routeCollection.Add(new Route(
 				controllerPath + "/{id}",
 				BuildDefaults(RestfulAction.Update, controller),
-				new RouteValueDictionary(new {httpMethod = "PUT", id = idValidationRegex ?? MatchAny}),
+				new RouteValueDictionary(new { httpMethod = new HttpMethodConstraint("PUT"), id = idValidationRegex ?? MatchAny }),
 				new MvcRouteHandler()));
 
 			routeCollection.Add(new Route(
 				controllerPath + "/{id}",
 				BuildDefaults(RestfulAction.Destroy, controller),
-				new RouteValueDictionary(new {httpMethod = "DELETE", id = idValidationRegex ?? MatchAny}),
+				new RouteValueDictionary(new { httpMethod = new HttpMethodConstraint("DELETE"), id = idValidationRegex ?? MatchAny }),
 				new MvcRouteHandler()));
 
 			routeCollection.Add(new Route(
 				controllerPath,
 				BuildDefaults(RestfulAction.Index, controller),
-				new RouteValueDictionary(new { httpMethod = "GET" }),
+				new RouteValueDictionary(new { httpMethod = new HttpMethodConstraint("GET") }),
 				new MvcRouteHandler()));
 
 			routeCollection.Add(new Route(
 				controllerPath,
 				BuildDefaults(RestfulAction.Create, controller),
-				new RouteValueDictionary(new Hash<object>(httpMethod => "POST")),
+				new RouteValueDictionary(new { httpMethod = new HttpMethodConstraint("POST")}),
 				new MvcRouteHandler()));
 		}
 
