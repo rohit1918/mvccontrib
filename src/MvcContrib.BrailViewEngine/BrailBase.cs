@@ -457,18 +457,12 @@ namespace MvcContrib.BrailViewEngine
 				}
 			}
 
-			IDictionary viewData = viewContext.ViewData as IDictionary;
-			if (viewData != null)
+			foreach (KeyValuePair<string, object> entry in viewContext.ViewData)
 			{
-				foreach (DictionaryEntry entry in viewData)
-				{
-					properties[entry.Key] = entry.Value;
-				}
+				properties[entry.Key] = entry.Value;
 			}
-			else
-			{
-				properties["viewData"] = viewContext.ViewData;
-			}
+
+			properties["viewData"] = viewContext.ViewData;
 
 //			if (controllerContext.Helpers != null)
 //			{
