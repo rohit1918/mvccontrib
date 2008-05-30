@@ -15,7 +15,7 @@ namespace MvcContrib.Samples.NinjectControllerFactory.Controllers
         public ActionResult Index()
         {
             ViewData["attackresult"] = _samurai.Attack("the evildoers");
-            return RenderView("index");
+            return View("index");
         }
     }
 }
