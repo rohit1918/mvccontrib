@@ -15,7 +15,7 @@ namespace MvcContrib.Samples.ObjectBuilderControllerFactory.Controllers
 		public ActionResult Index()
 		{
 			ViewData["numbers"] = _service.GetNumbers();
-			return RenderView("index");
+			return View("index");
 		}
 	}
 }
