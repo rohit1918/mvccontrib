@@ -42,7 +42,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void View_Renders_Output_To_HttpContext_Response_Output()
 		{
 			TestView view = new TestView();
-			view.SetViewData(new ViewDataDictionary("Rendered by NHaml"));
+			view.SetViewData(new ViewDataDictionary<string>("Rendered by NHaml"));
 			view.RenderView(_viewContext);
 			Assert.AreEqual("Rendered by NHaml", _output.ToString());
 		}

@@ -12,7 +12,13 @@ namespace MvcContrib.UI.ASPXViewEngine
 	{
 		public static ViewDataDictionary PerformLooseTypecast<T>(ViewDataDictionary viewData)
 		{
-			if ((viewData == null) || (typeof(T).IsAssignableFrom(viewData.Model.GetType())))
+			//There must always be some viewdata.
+			if(viewData == null)
+			{
+				return new ViewDataDictionary();
+			}
+
+			if (viewData.Model != null && (typeof(T).IsAssignableFrom(viewData.Model.GetType())))
 				// The incoming object is already of the right type
 				return viewData;
 			else
@@ -22,7 +28,7 @@ namespace MvcContrib.UI.ASPXViewEngine
 				if(viewData.Model != null)
 				{
 					suppliedProps = viewData.Model.GetType().GetProperties()
-									.ToDictionary(pi => pi.Name, pi => pi.GetValue(viewData, null));
+									.ToDictionary(pi => pi.Name, pi => pi.GetValue(viewData.Model, null));
 				}
 
 				// Construct a T object, taking values from suppliedProps where available

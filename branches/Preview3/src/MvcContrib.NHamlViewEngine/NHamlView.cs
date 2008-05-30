@@ -15,7 +15,7 @@ namespace MvcContrib.NHamlViewEngine
 		private HtmlHelper _html;
 		private UrlHelper _url;
 
-		private ViewDataDictionary<TViewData> _viewData;
+		private ViewDataDictionary<TViewData> _viewData = new ViewDataDictionary<TViewData>();
 
 		protected NHamlView()
 		{

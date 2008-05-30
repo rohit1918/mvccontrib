@@ -24,7 +24,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 			viewPage.SetViewData(null);
-			Assert.IsNull(viewPage.ViewData);
+			Assert.IsNull(viewPage.ViewData.Model);
 		}
 
 		[Test]
@@ -33,7 +33,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 			TestViewData data = new TestViewData();
 			viewPage.SetViewData(new ViewDataDictionary(data));
-			Assert.AreSame(data, viewPage.ViewData, "ViewData was not set without conversion");
+			Assert.AreSame(data, viewPage.ViewData.Model, "ViewData was not set without conversion");
 		}
 
 		[Test]
@@ -59,7 +59,6 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		{
 			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 
-			IDictionary<string, object> data = new Dictionary<string, object>();
 			Uri uriValue = new Uri("http://www.google.com/");
 			viewPage.SetViewData(new ViewDataDictionary(new
 			{
