@@ -91,6 +91,9 @@
     <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
     <Compile Include="ConventionController.cs" />
     <Compile Include="ExtendedComponentController\IoCComponentControllerFactory.cs" />
+    <Compile Include="Filters\PreconditionFilter.cs" />
+    <Compile Include="Filters\PredicatePreconditionFilter.cs" />
+    <Compile Include="Filters\RegExPreconditionFilter.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
