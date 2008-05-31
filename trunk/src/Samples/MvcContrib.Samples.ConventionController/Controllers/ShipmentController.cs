@@ -22,13 +22,20 @@ namespace MvcContrib.Samples.Controllers
 			return View("new", newShipment);
 		}
 
+		[Rescue("Error")]
+		[RegExPreconditionFilter("id", PreconditionFilter.ParamType.RouteData, ".+", typeof(ArgumentException))]
+		public ActionResult TrackSingle(string id)
+		{
+			return View("track", new List<string>() { id });
+		}
+
 		[PostOnly]
 		public ActionResult Track([Deserialize("trackingNumbers")] string[] trackingNumbers)
 		{
 			List<string> validTrackingNumbers = new List<string>();
-			foreach(string trackingNumber in trackingNumbers)
+			foreach (string trackingNumber in trackingNumbers)
 			{
-				if(!string.IsNullOrEmpty(trackingNumber))
+				if (!string.IsNullOrEmpty(trackingNumber))
 				{
 					validTrackingNumbers.Add(trackingNumber);
 				}
@@ -43,14 +50,14 @@ namespace MvcContrib.Samples.Controllers
 			throw new InvalidOperationException();
 		}
 
-        [Rescue("Error")]
-        public ActionResult DivideByZero ()
-        {
-            int j = 5;
-            int f = 0;
-            int y = j / f; //throw new DivideByZeroException(); // displays DivideByZeroException.aspx
-            return null;
-        }
+		[Rescue("Error")]
+		public ActionResult DivideByZero()
+		{
+			int j = 5;
+			int f = 0;
+			int y = j / f; //throw new DivideByZeroException(); // displays DivideByZeroException.aspx
+			return null;
+		}
 
 		[NonAction]
 		public ActionResult Hidden()
@@ -74,7 +81,7 @@ namespace MvcContrib.Samples.Controllers
 			return new XmlResult(dims);
 		}
 
-		protected  bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
+		protected bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
 		{
 			return false;
 		}

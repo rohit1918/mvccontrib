@@ -2,6 +2,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Collections.Specialized;
 using Castle.Windsor;
 using MvcContrib.Castle;
 using MvcContrib.Filters;
@@ -34,12 +35,17 @@ namespace MvcContrib.UnitTests.MetaData
 
 			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
 			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+			HttpResponseBase reponse = _mocks.DynamicMock<HttpResponseBase>();
 
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(request.RequestType).Return(requestType);
+			SetupResult.For(request.Params).Return(new NameValueCollection());
 
 			_mocks.Replay(context);
 			_mocks.Replay(request);
+			_mocks.Replay(reponse);
+
+			//request.Params = new NameValueCollection();
 
 			ControllerContext controllerContext = new ControllerContext(context, fakeRouteData, _controller);
 			controller.ControllerContext = controllerContext;
@@ -76,6 +82,106 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.IsTrue(_controller.PostOnlyCalled);
 		}
 
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void PredicatePreconditionShouldThrowSpecifiedExceptionOnInvalidRouteDataPrecondition()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.RouteData.Values.Add("id", "0"); //invalid id
+			_controller.DoInvokeAction("PredicatePreconditionRouteData");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void PredicatePreconditionShouldThrowSpecifiedExceptionOnInvalidRequestPrecondition()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.Request.Params.Add("id", "0"); //invalid id
+			_controller.DoInvokeAction("PredicatePreconditionRequest");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void PredicatePreconditionShouldThrowSpecifiedExceptionOnMissingRouteDataParameter()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.DoInvokeAction("PredicatePreconditionRouteData");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void PredicatePreconditionShouldThrowSpecifiedExceptionOnMissingRequestParameter()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.DoInvokeAction("PredicatePreconditionRequest");
+		}
+
+		[Test]
+		public void PredicatePreconditionShouldNotThrowSpecifiedExceptionOnValidRouteDataPrecondition()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.RouteData.Values.Add("id", "1"); //valid id
+			_controller.DoInvokeAction("PredicatePreconditionRouteData");
+
+			Assert.IsTrue(_controller.PredicatePreconditionCalled);
+		}
+
+		[Test]
+		public void PredicatePreconditionShouldNotThrowSpecifiedExceptionOnValidRequestPrecondition()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.Request.Params.Add("id", "1"); //valid id
+			_controller.DoInvokeAction("PredicatePreconditionRequest");
+
+			Assert.IsTrue(_controller.PredicatePreconditionCalled);
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void RegExPreconditionShouldThrowSpecifiedExceptionOnInvalidRouteDataRegEx()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.RouteData.Values.Add("id", "0"); //invalid id
+			_controller.DoInvokeAction("RegExPreconditionRouteData");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void RegExPreconditionShouldThrowSpecifiedExceptionOnInvalidRequestRegEx()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.Request.Params.Add("id", "0"); //invalid id
+			_controller.DoInvokeAction("RegExPreconditionRequest");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void RegExPreconditionShouldThrowSpecifiedExceptionOnMissingRouteDataParameter()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.DoInvokeAction("RegExPreconditionRouteData");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void RegExPreconditionShouldThrowSpecifiedExceptionOnMissingRequestParameter()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.DoInvokeAction("RegExPreconditionRequest");
+		}
+
+		[Test]
+		public void RegExPreconditionShouldNotThrowSpecifiedExceptionOnValidRouteDataRegEx()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.RouteData.Values.Add("id", "1"); //valid id
+			_controller.DoInvokeAction("RegExPreconditionRouteData");
+
+			Assert.IsTrue(_controller.RegExPreconditionCalled);
+		}
+
+		[Test]
+		public void RegExPreconditionShouldNotThrowSpecifiedExceptionOnValidRequestRegEx()
+		{
+			SetupHttpContext(_controller, "POST");
+			_controller.Request.Params.Add("id", "1"); //valid id
+			_controller.DoInvokeAction("RegExPreconditionRequest");
+
+			Assert.IsTrue(_controller.RegExPreconditionCalled);
+		}
+
 		[Test]
 		public void ActionShouldNotBeInvokedIfOneFilterReturnsTrueAndAnotherReturnsFalse()
 		{
@@ -105,7 +211,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			bool result = _controller.DoInvokeAction("UnsuccessfulFilter");
 
-			Assert.IsTrue(result); 
+			Assert.IsTrue(result);
 			Assert.IsFalse(_controller.UnSuccessfulFilterCalled);
 		}
 
@@ -133,6 +239,8 @@ namespace MvcContrib.UnitTests.MetaData
 			public bool MultipleFiltersCalled = false;
 			public bool PostOnlyCalled = false;
 			public bool DependentFilterCalled = false;
+			public bool PredicatePreconditionCalled = false;
+			public bool RegExPreconditionCalled = false;
 
 			public bool DoInvokeAction(string action)
 			{
@@ -168,6 +276,49 @@ namespace MvcContrib.UnitTests.MetaData
 				PostOnlyCalled = true;
 				return new EmptyResult();
 			}
+
+			[PredicatePreconditionFilter("id", PreconditionFilter.ParamType.RouteData, "IsGreaterThanZero", typeof(ArgumentOutOfRangeException))]
+			public ActionResult PredicatePreconditionRouteData()
+			{
+				PredicatePreconditionCalled = true;
+				return new EmptyResult();
+			}
+
+			[PredicatePreconditionFilter("id", PreconditionFilter.ParamType.Request, "IsGreaterThanZero", typeof(ArgumentOutOfRangeException))]
+			public ActionResult PredicatePreconditionRequest()
+			{
+				PredicatePreconditionCalled = true;
+				return new EmptyResult();
+			}
+
+			[RegExPreconditionFilter("id", PreconditionFilter.ParamType.RouteData, "^[1-9][0-9]*$", typeof(ArgumentOutOfRangeException))]
+			public ActionResult RegExPreconditionRouteData()
+			{
+				RegExPreconditionCalled = true;
+				return new EmptyResult();
+			}
+
+			[RegExPreconditionFilter("id", PreconditionFilter.ParamType.Request, "^[1-9][0-9]*$", typeof(ArgumentOutOfRangeException))]
+			public ActionResult RegExPreconditionRequest()
+			{
+				RegExPreconditionCalled = true;
+				return new EmptyResult();
+			}
+
+			//for PredicatePreconditionFilter test
+			protected bool IsGreaterThanZero(object value)
+			{
+				try
+				{
+					int id = Convert.ToInt32(value);
+					return id > 0;
+				}
+				catch
+				{
+					return false;
+				}
+			}
+
 		}
 	}
 }
