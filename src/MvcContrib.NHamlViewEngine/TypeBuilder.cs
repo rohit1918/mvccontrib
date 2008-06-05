@@ -53,7 +53,7 @@ namespace MvcContrib.NHamlViewEngine
 			BuildSource(source);
 			AddReferences();
 
-			CSharpCodeProvider codeProvider
+			var codeProvider
 				= new CSharpCodeProvider(_providerOptions);
 
 			_compilerResults = codeProvider
@@ -80,7 +80,7 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void BuildSource(string source)
 		{
-			StringBuilder sourceBuilder = new StringBuilder();
+			var sourceBuilder = new StringBuilder();
 
 			foreach(string usingStatement in _templateCompiler.Usings)
 			{

@@ -15,41 +15,41 @@ namespace MvcContrib.NHamlViewEngine.Rules
 		}
 
 
-		public override bool MergeMultiLine
+		public override bool MergeMultiline
 		{
 			get { return true; }
 		}
 
 		public override BlockClosingAction Render(CompilationContext compilationContext)
 		{
-			Match match = _commentRegex.Match(compilationContext.CurrentInputLine.NormalizedText);
+			var match = _commentRegex.Match(compilationContext.CurrentInputLine.NormalizedText);
 
-			if (!match.Success)
+			if(!match.Success)
 			{
 				SyntaxException.Throw(compilationContext.CurrentInputLine,
-															Resources.ErrorParsingTag, compilationContext.CurrentInputLine);
+				                      Resources.ErrorParsingTag, compilationContext.CurrentInputLine);
 			}
 
-			string ieBlock = match.Groups[1].Value;
-			string content = match.Groups[2].Value;
+			var ieBlock = match.Groups[1].Value;
+			var content = match.Groups[2].Value;
 
-			string openingTag = compilationContext.CurrentInputLine.Indent + "<!--";
-			string closingTag = "-->";
+			var openingTag = compilationContext.CurrentInputLine.Indent + "<!--";
+			var closingTag = "-->";
 
-			if (!string.IsNullOrEmpty(ieBlock))
+			if(!string.IsNullOrEmpty(ieBlock))
 			{
 				openingTag += ieBlock + '>';
 				closingTag = "<![endif]" + closingTag;
 			}
 
-			if (string.IsNullOrEmpty(content))
+			if(string.IsNullOrEmpty(content))
 			{
 				compilationContext.ViewBuilder.AppendOutputLine(openingTag);
 				closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
 			}
 			else
 			{
-				if (content.Length > 50)
+				if(content.Length > 50)
 				{
 					compilationContext.ViewBuilder.AppendOutputLine(openingTag);
 					compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");

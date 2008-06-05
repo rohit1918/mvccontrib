@@ -1,4 +1,5 @@
-﻿using System.Security.Permissions;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,6 +49,8 @@ namespace MvcContrib.NHamlViewEngine
 			get { return _url; }
 		}
 
+		[SuppressMessage("Microsoft.Usage", "CA2227")]
+		[SuppressMessage("Microsoft.Design", "CA1033")]
 		ViewDataDictionary IViewDataContainer.ViewData
 		{
 			get { return _viewData; }

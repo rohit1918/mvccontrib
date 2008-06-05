@@ -26,7 +26,7 @@ namespace MvcContrib.NHamlViewEngine
 			_text = text;
 			_lineNumber = lineNumber;
 
-			Match match = _multiLineRegex.Match(_text);
+			var match = _multiLineRegex.Match(_text);
 
 			_isMultiline = match.Success;
 

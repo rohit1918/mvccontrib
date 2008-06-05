@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using MvcContrib.NHamlViewEngine.Exceptions;
 using MvcContrib.NHamlViewEngine.Properties;
-using System.Text;
 
 namespace MvcContrib.NHamlViewEngine.Rules
 {
@@ -20,12 +18,24 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			@"(?:(?:\#([-\w]+))|(?:\.([-\w]+)))+",
 			RegexOptions.Compiled | RegexOptions.Singleline);
 
-		private static readonly Regex _attributeNameReplacer = new Regex(
-				@"(?<Name>\@?\w+)\s?\=",
-				RegexOptions.Compiled | RegexOptions.Singleline);
+		private static readonly Regex _staticAttributesRegex = new Regex(
+			@"^(?:[-\w]+\s*=\s*""[^""]+""\s*,?\s*)+$",
+			RegexOptions.Compiled | RegexOptions.Singleline);
 
-		private static readonly List<string> WhitespaceSensitiveTags
-			= new List<string> { "textarea", "pre" };
+		private static readonly Regex _commaStripperRegex = new Regex(
+			@"""\s*,\s*",
+			RegexOptions.Compiled | RegexOptions.Singleline);
+
+		private static readonly Regex _hyphenCleanerRegex = new Regex(
+			@"\b(http|accept)\-(equiv|charset)(\s*=)",
+			RegexOptions.Compiled | RegexOptions.Singleline);
+
+		private static readonly Regex _keywordEscaperRegex = new Regex(
+			@"(\bclass\s*=)|(\bfor\s*=)",
+			RegexOptions.Compiled | RegexOptions.Singleline);
+
+		private static readonly List<string> _whitespaceSensitiveTags
+			= new List<string> {"textarea", "pre"};
 
 		protected virtual string PreprocessLine(InputLine inputLine)
 		{
@@ -39,60 +49,60 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 		public override BlockClosingAction Render(CompilationContext compilationContext)
 		{
-			Match match = _tagRegex.Match(PreprocessLine(compilationContext.CurrentInputLine));
+			var match = _tagRegex.Match(PreprocessLine(compilationContext.CurrentInputLine));
 
-			if (!match.Success)
+			if(!match.Success)
 			{
 				SyntaxException.Throw(compilationContext.CurrentInputLine, Resources.ErrorParsingTag,
-															compilationContext.CurrentInputLine);
+				                      compilationContext.CurrentInputLine);
 			}
 
-			bool isWhitespaceSensitive = WhitespaceSensitiveTags.Contains(match.Groups[1].Value);
+			var isWhitespaceSensitive = _whitespaceSensitiveTags.Contains(match.Groups[1].Value);
 
-			bool newLine = !compilationContext.CurrentInputLine.IsMultiline;
+			var newLine = !compilationContext.CurrentInputLine.IsMultiline;
 
-			string openingTag = compilationContext.CurrentInputLine.Indent + '<' + match.Groups[1].Value;
-			string closingTag = "</" + match.Groups[1].Value + '>';
+			var openingTag = compilationContext.CurrentInputLine.Indent + '<' + match.Groups[1].Value;
+			var closingTag = "</" + match.Groups[1].Value + '>';
 
 			compilationContext.ViewBuilder.AppendOutput(openingTag);
 
 			ParseAndRenderAttributes(compilationContext, match);
 
-			string action = match.Groups[5].Value;
+			var action = match.Groups[5].Value;
 
-			if (string.Equals("/", action)
-				 || compilationContext.TemplateCompiler.IsAutoClosing(match.Groups[1].Value))
+			if(string.Equals("/", action)
+			   || compilationContext.TemplateCompiler.IsAutoClosing(match.Groups[1].Value))
 			{
-				string close = " />";
+				var close = " />";
 
-				if (!newLine)
+				if(!newLine)
 				{
 					close += ' ';
-				} 
+				}
 
 				compilationContext.ViewBuilder.AppendOutput(close, newLine);
 
 				return null;
 			}
 
-			string content = match.Groups[6].Value.Trim();
-      
-			if (string.IsNullOrEmpty(content))
+			var content = match.Groups[6].Value.Trim();
+
+			if(string.IsNullOrEmpty(content))
 			{
 				compilationContext.ViewBuilder.AppendOutput(">", newLine);
 				closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
 			}
 			else
 			{
-				if ((content.Length > 50) || string.Equals("=", action))
+				if((content.Length > 50) || string.Equals("=", action))
 				{
 					compilationContext.ViewBuilder.AppendOutput(">", !isWhitespaceSensitive);
-					if (!isWhitespaceSensitive)
+					if(!isWhitespaceSensitive)
 					{
 						compilationContext.ViewBuilder.AppendOutput(compilationContext.CurrentInputLine.Indent + "  ");
 					}
 
-					if (string.Equals("=", action))
+					if(string.Equals("=", action))
 					{
 						compilationContext.ViewBuilder.AppendCode(content, !isWhitespaceSensitive);
 					}
@@ -101,7 +111,7 @@ namespace MvcContrib.NHamlViewEngine.Rules
 						compilationContext.ViewBuilder.AppendOutput(content, !isWhitespaceSensitive);
 					}
 
-					if (!isWhitespaceSensitive)
+					if(!isWhitespaceSensitive)
 					{
 						closingTag = compilationContext.CurrentInputLine.Indent + closingTag;
 					}
@@ -112,98 +122,66 @@ namespace MvcContrib.NHamlViewEngine.Rules
 				}
 			}
 
-			if (!newLine)
+			if(!newLine)
 			{
 				closingTag += ' ';
-			} 
+			}
 
-			return delegate { compilationContext.ViewBuilder.AppendOutput(closingTag, newLine); };
+			return () => compilationContext.ViewBuilder.AppendOutput(closingTag, newLine);
 		}
 
 		private static void ParseAndRenderAttributes(CompilationContext compilationContext, Match tagMatch)
 		{
-			string idAndClasses = tagMatch.Groups[2].Value;
-			string attributesHash = tagMatch.Groups[4].Value.Trim();
+			var idAndClasses = tagMatch.Groups[2].Value;
+			var attributesHash = tagMatch.Groups[4].Value.Trim();
 
-			Match match = _idClassesRegex.Match(idAndClasses);
+			var match = _idClassesRegex.Match(idAndClasses);
 
-			List<string> classes = new List<string>();
+			var classes = new List<string>();
 
-			foreach (Capture capture in match.Groups[2].Captures)
+			foreach(Capture capture in match.Groups[2].Captures)
 			{
 				classes.Add(capture.Value);
 			}
 
-			if (classes.Count > 0)
+			if(classes.Count > 0)
 			{
-				attributesHash = PrependAttribute(attributesHash,
-																					'@' + Class, string.Join(" ", classes.ToArray()));
+				attributesHash = PrependAttribute(attributesHash, Class, string.Join(" ", classes.ToArray()));
 			}
 
 			string id = null;
 
-			foreach (Capture capture in match.Groups[1].Captures)
+			foreach(Capture capture in match.Groups[1].Captures)
 			{
 				id = capture.Value;
 			}
 
-			if (!string.IsNullOrEmpty(id))
+			if(!string.IsNullOrEmpty(id))
 			{
 				attributesHash = PrependAttribute(attributesHash, Id, id);
 			}
 
-			if (!string.IsNullOrEmpty(attributesHash))
+			if(!string.IsNullOrEmpty(attributesHash))
 			{
 				compilationContext.ViewBuilder.AppendOutput(" ");
 
-				attributesHash = _attributeNameReplacer.Replace(
-														attributesHash,
-														m => CheckAttributeName(m.Groups["Name"].Value) + " = "
-														);
-
-				string attributes = TryPrecompileAttributes(compilationContext.TemplateCompiler, attributesHash);
-
-				if (!string.IsNullOrEmpty(attributes))
+				if(_staticAttributesRegex.IsMatch(attributesHash))
 				{
-					compilationContext.ViewBuilder.AppendOutput(attributes);
+					compilationContext.ViewBuilder.AppendOutput(_commaStripperRegex.Replace(attributesHash, "\" "));
 				}
 				else
 				{
-					compilationContext.ViewBuilder.AppendCode("new {" + attributesHash + "}.RenderAttributes()");
+					compilationContext.ViewBuilder.AppendCode("new {"
+					                                          + _keywordEscaperRegex.Replace(
+					                                            	_hyphenCleanerRegex.Replace(attributesHash, "$1_$2$3"), "@$1$2") +
+					                                          "}.RenderAttributes()");
 				}
 			}
-		}
-
-		private static string TryPrecompileAttributes(TemplateCompiler templateCompiler, string attributesHash)
-		{
-			string source = "public class AttributeEvaluator:IAttributeEvaluator{ public string Eval(){return new {"
-											+ attributesHash + "}.RenderAttributes();}}";
-
-			Type type = new TypeBuilder(templateCompiler).Build(source, "AttributeEvaluator");
-
-			string attributes = null;
-
-			if (type != null)
-			{
-				attributes = ((IAttributeEvaluator)Activator.CreateInstance(type)).Eval();
-			}
-
-			return attributes;
-		}
-
-		private static readonly List<string> keywords = new List<string> { "class", "new", "void", "public", "for" }; //.. etc
-		private static string CheckAttributeName(string name)
-		{
-			if (keywords.Contains(name))
-			{
-				return "@" + name;
-			}
-			return name;
 		}
 
 		private static string PrependAttribute(string attributesHash, string name, string value)
 		{
-			string attribute = name + "=\"" + value + "\"";
+			var attribute = name + "=\"" + value + "\"";
 
 			return string.IsNullOrEmpty(attributesHash) ? attribute : attribute + "," + attributesHash;
 		}

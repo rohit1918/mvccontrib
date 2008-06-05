@@ -1,4 +1,3 @@
-﻿using System;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
@@ -13,8 +12,8 @@ namespace MvcContrib.ControllerFactories
 	{
 		protected override IController CreateController(RequestContext requestContext, string controllerName)
 		{
-			IController controller = base.CreateController(requestContext, controllerName);
-			Controller c = controller as Controller;
+			var controller = base.CreateController(requestContext, controllerName);
+			var c = controller as Controller;
 			if(c != null) c.ViewEngine = new NHamlViewFactory();
 			return controller;
 		}

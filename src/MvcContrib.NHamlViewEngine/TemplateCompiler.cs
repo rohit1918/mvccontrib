@@ -15,23 +15,23 @@ namespace MvcContrib.NHamlViewEngine
 			= new Regex(@"[-\\/\.:\s]", RegexOptions.Compiled | RegexOptions.Singleline);
 
 		private static readonly string[] DefaultAutoClosingTags
-			= new[] { "META", "IMG", "LINK", "BR", "HR", "INPUT" };
+			= new[] {"META", "IMG", "LINK", "BR", "HR", "INPUT"};
 
 		private readonly StringSet _autoClosingTags
 			= new StringSet(DefaultAutoClosingTags);
 
 		private static readonly string[] DefaultUsings
-			= new[] { "System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities" };
+			= new[] {"System", "System.Text", "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine.Utilities"};
 
 		private readonly StringSet _usings
 			= new StringSet(DefaultUsings);
 
 		private static readonly string[] DefaultReferences = new[]
-				{
-					typeof(INotifyPropertyChanging).Assembly.Location,
-					typeof(Action).Assembly.Location,
-					typeof(TemplateCompiler).Assembly.Location
-				};
+		                                                     	{
+		                                                     		typeof(INotifyPropertyChanging).Assembly.Location,
+		                                                     		typeof(Action).Assembly.Location,
+		                                                     		typeof(TemplateCompiler).Assembly.Location
+		                                                     	};
 
 		private readonly StringSet _references
 			= new StringSet(DefaultReferences);
@@ -106,7 +106,7 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			Invariant.ArgumentNotNull(inputLine, "line");
 
-			if (inputLine.Signifier >= 128)
+			if(inputLine.Signifier >= 128)
 			{
 				return NullMarkupRule.Instance;
 			}
@@ -132,17 +132,17 @@ namespace MvcContrib.NHamlViewEngine
 		}
 
 		public Type Compile(string templatePath, string layoutPath,
-												ICollection<string> inputFiles, params Type[] genericArguments)
+		                    ICollection<string> inputFiles, params Type[] genericArguments)
 		{
 			Invariant.ArgumentNotEmpty(templatePath, "templatePath");
 			Invariant.FileExists(templatePath);
 
-			if (!string.IsNullOrEmpty(layoutPath))
+			if(!string.IsNullOrEmpty(layoutPath))
 			{
 				Invariant.FileExists(layoutPath);
 			}
 
-			CompilationContext compilationContext
+			var compilationContext
 				= new CompilationContext(
 					this,
 					new ViewBuilder(this, MakeClassName(templatePath), genericArguments),
@@ -151,7 +151,7 @@ namespace MvcContrib.NHamlViewEngine
 
 			Compile(compilationContext);
 
-			if (inputFiles != null)
+			if(inputFiles != null)
 			{
 				compilationContext.CollectInputFiles(inputFiles);
 			}
@@ -161,11 +161,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void Compile(CompilationContext compilationContext)
 		{
-			while (compilationContext.CurrentNode.Next != null)
+			while(compilationContext.CurrentNode.Next != null)
 			{
-				MarkupRule rule = GetRule(compilationContext.CurrentInputLine);
+				var rule = GetRule(compilationContext.CurrentInputLine);
 
-				if (compilationContext.CurrentInputLine.IsMultiline && rule.MergeMultiLine)
+				if(compilationContext.CurrentInputLine.IsMultiline && rule.MergeMultiline)
 				{
 					compilationContext.CurrentInputLine.Merge(compilationContext.NextInputLine);
 					compilationContext.InputLines.Remove(compilationContext.NextNode);
@@ -181,16 +181,16 @@ namespace MvcContrib.NHamlViewEngine
 
 		private Type BuildView(CompilationContext compilationContext)
 		{
-			string source = compilationContext.ViewBuilder.Build();
+			var source = compilationContext.ViewBuilder.Build();
 
-			TypeBuilder typeBuilder = new TypeBuilder(this);
+			var typeBuilder = new TypeBuilder(this);
 
-			Type viewType = typeBuilder.Build(source, compilationContext.ViewBuilder.ClassName);
+			var viewType = typeBuilder.Build(source, compilationContext.ViewBuilder.ClassName);
 
-			if (viewType == null)
+			if(viewType == null)
 			{
 				ViewCompilationException.Throw(typeBuilder.CompilerResults,
-																			 typeBuilder.Source, compilationContext.TemplatePath);
+				                               typeBuilder.Source, compilationContext.TemplatePath);
 			}
 
 			return viewType;

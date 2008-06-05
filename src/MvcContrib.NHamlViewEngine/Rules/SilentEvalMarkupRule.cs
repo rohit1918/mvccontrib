@@ -7,14 +7,14 @@ namespace MvcContrib.NHamlViewEngine.Rules
 			get { return '-'; }
 		}
 
-		public override bool MergeMultiLine
+		public override bool MergeMultiline
 		{
 			get { return true; }
 		}
 
 		public override BlockClosingAction Render(CompilationContext compilationContext)
 		{
-			bool isBlock = compilationContext.NextInputLine.IndentSize > compilationContext.CurrentInputLine.IndentSize;
+			var isBlock = compilationContext.NextInputLine.IndentSize > compilationContext.CurrentInputLine.IndentSize;
 
 			compilationContext.ViewBuilder.AppendSilentCode(compilationContext.CurrentInputLine.NormalizedText, !isBlock);
 

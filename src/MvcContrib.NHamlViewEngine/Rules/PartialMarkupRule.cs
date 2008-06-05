@@ -21,20 +21,20 @@ namespace MvcContrib.NHamlViewEngine.Rules
 
 		public override BlockClosingAction Render(CompilationContext compilationContext)
 		{
-			Match match = _partialRegex.Match(compilationContext.CurrentInputLine.NormalizedText);
+			var match = _partialRegex.Match(compilationContext.CurrentInputLine.NormalizedText);
 
 			if(match.Success)
 			{
-				string templateDirectory
+				var templateDirectory
 					= Path.GetDirectoryName(compilationContext.TemplatePath);
 
-				string partialName = match.Groups[1].Value;
+				var partialName = match.Groups[1].Value;
 				partialName = partialName.Insert(partialName.LastIndexOf(@"\", StringComparison.OrdinalIgnoreCase) + 1, "_");
 
-				string partialTemplatePath
+				var partialTemplatePath
 					= Path.Combine(templateDirectory, partialName + ".haml");
 
-				if (!File.Exists(partialTemplatePath))
+				if(!File.Exists(partialTemplatePath))
 				{
 					// try one level up
 

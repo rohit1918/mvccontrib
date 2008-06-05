@@ -9,7 +9,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Can_Read_Production_Setting_From_AppSettings()
 		{
-			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
+			var section = NHamlViewEngineSection.Read();
 
 			Assert.IsNotNull(section);
 			Assert.IsFalse(section.Production);
@@ -18,10 +18,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Can_Read_Views_Assemblies_Section_From_AppSettings()
 		{
-			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
+			var section = NHamlViewEngineSection.Read();
 			Assert.IsNotNull(section);
 
-			AssemblyConfigurationElement assembly = section.Views.Assemblies[0];
+			var assembly = section.Views.Assemblies[0];
 			Assert.AreEqual(1, section.Views.Assemblies.Count);
 			Assert.AreEqual("System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=B77A5C561934E089", assembly.Name);
 		}
@@ -29,10 +29,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Can_Read_Views_Namespaces_Section_From_AppSettings()
 		{
-			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
+			var section = NHamlViewEngineSection.Read();
 			Assert.IsNotNull(section);
 
-			NamespaceConfigurationElement _namespace = section.Views.Namespaces[0];
+			var _namespace = section.Views.Namespaces[0];
 			Assert.AreEqual(1, section.Views.Namespaces.Count);
 			Assert.AreEqual("System.Collections", _namespace.Name);
 		}
@@ -43,9 +43,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			new AssemblyConfigurationElement("Name").Name = "Name";
 			new NamespaceConfigurationElement("Name").Name = "Name";
 
-			NamespacesConfigurationCollection ncc = new NamespacesConfigurationCollection();
+			var ncc = new NamespacesConfigurationCollection();
 			ncc.Add(new NamespaceConfigurationElement("Name"));
-			NamespaceConfigurationElement nce = ncc["Name"];
+			var nce = ncc["Name"];
 			ncc.IndexOf(nce);
 			ncc.Remove(nce);
 			ncc.Add(nce);

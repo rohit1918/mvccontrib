@@ -6,8 +6,8 @@ namespace MvcContrib.NHamlViewEngine.Rules
 		{
 			get { return '='; }
 		}
-    
-		public override bool MergeMultiLine
+
+		public override bool MergeMultiline
 		{
 			get { return true; }
 		}

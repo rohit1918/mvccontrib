@@ -44,7 +44,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void ViewBaseClass()
 		{
-			TemplateCompiler templateCompiler = new TemplateCompiler();
+			var templateCompiler = new TemplateCompiler();
 			templateCompiler.ViewBaseType = typeof(ViewBase);
 
 			AssertRender("CustomBaseClass", templateCompiler);
@@ -53,7 +53,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void ViewBaseClassGeneric()
 		{
-			TemplateCompiler templateCompiler = new TemplateCompiler();
+			var templateCompiler = new TemplateCompiler();
 			templateCompiler.ViewBaseType = typeof(ViewBaseGeneric<>);
 
 			AssertRender("CustomBaseClass", templateCompiler, typeof(List<int>));
@@ -62,7 +62,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void DuplicateUsings()
 		{
-			TemplateCompiler templateCompiler = new TemplateCompiler();
+			var templateCompiler = new TemplateCompiler();
 			templateCompiler.AddUsing("System");
 
 			AssertRender("List");
@@ -71,12 +71,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void CollectInputFiles()
 		{
-			TemplateCompiler templateCompiler = new TemplateCompiler();
+			var templateCompiler = new TemplateCompiler();
 
-			List<string> inputFiles = new List<string>();
+			var inputFiles = new List<string>();
 
 			templateCompiler.Compile(TemplatesFolder + "Partials.haml",
-															 TemplatesFolder + "Application.haml", inputFiles);
+			                         TemplatesFolder + "Application.haml", inputFiles);
 
 			Assert.AreEqual(3, inputFiles.Count);
 		}
@@ -84,7 +84,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void script_tag_not_auto_closing()
 		{
-			TemplateCompiler templateCompiler = new TemplateCompiler();
+			var templateCompiler = new TemplateCompiler();
 			Assert.IsFalse(templateCompiler.IsAutoClosing("script"), "Script was auto-closed");
 		}
 	}

@@ -1,45 +1,46 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace MvcContrib.NHamlViewEngine.Utilities
 {
-  public static class Extensions
-  {
-    [SuppressMessage("Microsoft.Naming", "CA1720")]
-    public static string RenderAttributes(this object obj)
-    {
-      if(obj != null)
-      {
-        PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(obj);
+	public static class Extensions
+	{
+		[SuppressMessage("Microsoft.Naming", "CA1720")]
+		public static string RenderAttributes(this object obj)
+		{
+			if(obj != null)
+			{
+				var properties = TypeDescriptor.GetProperties(obj);
 
-        if(properties.Count > 0)
-        {
-          var attributes = new StringBuilder();
+				if(properties.Count > 0)
+				{
+					var attributes = new StringBuilder();
 
-          var value = Convert.ToString(properties[0].GetValue(obj));
+					var value = Convert.ToString(properties[0].GetValue(obj), CultureInfo.InvariantCulture);
 
-          if(!string.IsNullOrEmpty(value))
-          {
-            attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + value + "\"");
-          }
+					if(!string.IsNullOrEmpty(value))
+					{
+						attributes.Append(properties[0].Name.Replace('_', '-') + "=\"" + value + "\"");
+					}
 
-          for(int i = 1; i < properties.Count; i++)
-          {
-            value = Convert.ToString(properties[i].GetValue(obj));
+					for(var i = 1; i < properties.Count; i++)
+					{
+						value = Convert.ToString(properties[i].GetValue(obj), CultureInfo.InvariantCulture);
 
-            if (!string.IsNullOrEmpty(value))
-            {
-              attributes.Append(" " + properties[i].Name + "=\"" + value + "\"");
-            }
-          }
+						if(!string.IsNullOrEmpty(value))
+						{
+							attributes.Append(" " + properties[i].Name.Replace('_', '-') + "=\"" + value + "\"");
+						}
+					}
 
-          return attributes.ToString();
-        }
-      }
+					return attributes.ToString();
+				}
+			}
 
-      return null;
-    }
-  }
+			return null;
+		}
+	}
 }

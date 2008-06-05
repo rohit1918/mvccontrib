@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -30,14 +29,14 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_output = new StringWriter();
 			_viewData = new ViewDataDictionary();
 
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var httpResponse = _mocks.DynamicMock<HttpResponseBase>();
 			_httpRequest = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(httpContext.Request).Return(_httpRequest);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<IController>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values["controller"] = "NHamlController";
@@ -56,10 +55,11 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Can_Compile_View()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			ViewContext context = new ViewContext(_controllerContext, "index", null, _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "index", null, _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
@@ -69,11 +69,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Can_Compile_View_With_Custom_View_Data()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			ViewContext context = new ViewContext(_controllerContext, "custom", null, _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "custom", null, _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
@@ -83,11 +84,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Can_Compile_View_With_Specific_Master()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			ViewContext context = new ViewContext(_controllerContext, "index", "specificMaster", _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "index", "specificMaster", _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
 		}
@@ -96,11 +98,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Can_Compile_View_With_Controller_Master()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			ViewContext context = new ViewContext(_controllerContext, "index", null, _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "index", null, _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
@@ -110,12 +113,13 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Can_Compile_View_With_Application_Master()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
 			_controllerContext.RouteData.Values["controller"] = "NHamlApplication";
-			ViewContext context = new ViewContext(_controllerContext, "index", null, _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "index", null, _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
@@ -126,10 +130,11 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Cant_Compile_Missing_View()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			ViewContext context = new ViewContext(_controllerContext, "missingView", null, _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "missingView", null, _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 
 			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
@@ -140,11 +145,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void Cant_Compile_View_With_Missing_Master()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			NHamlViewFactory viewFactory = new NHamlViewFactory(viewSourceLoader);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			ViewContext context = new ViewContext(_controllerContext, "index", "missingMaster", _viewData, new TempDataDictionary(_controllerContext.HttpContext));
+			var context = new ViewContext(_controllerContext, "index", "missingMaster", _viewData,
+			                              new TempDataDictionary(_controllerContext.HttpContext));
 
 			viewFactory.RenderView(context);
 
