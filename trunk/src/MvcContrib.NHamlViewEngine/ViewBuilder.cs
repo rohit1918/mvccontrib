@@ -19,9 +19,9 @@ namespace MvcContrib.NHamlViewEngine
 			_className = className;
 
 			_preamble.AppendLine(StringUtils.FormatInvariant("public class {0} : {1}, ICompiledView {{",
-																											 _className,
-																											 MakeBaseTypeName(templateCompiler.ViewBaseType,
-																																				genericArguments)));
+			                                                 _className,
+			                                                 MakeBaseTypeName(templateCompiler.ViewBaseType,
+			                                                                  genericArguments)));
 			_preamble.AppendLine("StringBuilder _buffer;");
 			_preamble.AppendLine("public string Render(){");
 			_preamble.AppendLine("_buffer = new StringBuilder();");
@@ -34,19 +34,19 @@ namespace MvcContrib.NHamlViewEngine
 
 		public static string MakeBaseTypeName(Type baseType, params Type[] genericArguments)
 		{
-			if (genericArguments != null && genericArguments.Length > 0)
+			if(genericArguments != null && genericArguments.Length > 0)
 			{
 				baseType = baseType.MakeGenericType(genericArguments);
 			}
 			var tname = baseType.FullName.Replace('+', '.');
 
-			if (baseType.IsGenericType)
+			if(baseType.IsGenericType)
 			{
 				tname = tname.Substring(0, tname.IndexOf('`'));
 				tname += "<";
 
 				var parameters = from t in baseType.GetGenericArguments()
-												 select MakeBaseTypeName(t, null);
+				                 select MakeBaseTypeName(t, null);
 
 				tname += string.Join(",", parameters.ToArray());
 
@@ -73,13 +73,13 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void AppendOutputInternal(string value, string method)
 		{
-			if (value != null)
+			if(value != null)
 			{
 				value = value.Replace("\"", "\"\"");
 
-				if (_depth > 0)
+				if(_depth > 0)
 				{
-					if (value.StartsWith(string.Empty.PadLeft(_depth * 2), StringComparison.Ordinal))
+					if(value.StartsWith(string.Empty.PadLeft(_depth * 2), StringComparison.Ordinal))
 					{
 						value = value.Remove(0, _depth * 2);
 					}
@@ -101,7 +101,7 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void AppendCode(string code, bool newLine)
 		{
-			if (code != null)
+			if(code != null)
 			{
 				var action = newLine ? "AppendLine" : "Append";
 				_output.AppendLine("_buffer." + action + "(Convert.ToString(" + code + "));");
@@ -110,11 +110,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void AppendSilentCode(string code, bool appendSemicolon)
 		{
-			if (code != null)
+			if(code != null)
 			{
 				code = code.Trim();
 
-				if (appendSemicolon && !code.EndsWith(";", StringComparison.Ordinal))
+				if(appendSemicolon && !code.EndsWith(";", StringComparison.Ordinal))
 				{
 					code += ';';
 				}

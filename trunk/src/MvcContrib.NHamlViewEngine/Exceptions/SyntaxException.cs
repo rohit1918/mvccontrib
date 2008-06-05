@@ -11,10 +11,10 @@ namespace MvcContrib.NHamlViewEngine.Exceptions
 	{
 		public static void Throw(InputLine inputLine, string errorFormat, params object[] values)
 		{
-			string message = StringUtils.FormatCurrentCulture(Resources.SyntaxError,
-																												inputLine.LineNumber,
-																												StringUtils.FormatCurrentCulture(errorFormat, values),
-																												inputLine.Text);
+			var message = StringUtils.FormatCurrentCulture(Resources.SyntaxError,
+			                                               inputLine.LineNumber,
+			                                               StringUtils.FormatCurrentCulture(errorFormat, values),
+			                                               inputLine.Text);
 
 			throw new SyntaxException(message, inputLine);
 		}

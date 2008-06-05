@@ -24,7 +24,7 @@ namespace MvcContrib.NHamlViewEngine
 			= new Dictionary<string, DateTime>();
 
 		public CompiledView(TemplateCompiler templateCompiler,
-												string templatePath, string layoutPath, ViewDataDictionary viewData)
+		                    string templatePath, string layoutPath, ViewDataDictionary viewData)
 		{
 			_templateCompiler = templateCompiler;
 			_templatePath = templatePath;
@@ -40,11 +40,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void RecompileIfNecessary(ViewDataDictionary viewData)
 		{
-			lock (_sync)
+			lock(_sync)
 			{
-				foreach (KeyValuePair<string, DateTime> inputFile in _fileTimestamps)
+				foreach(var inputFile in _fileTimestamps)
 				{
-					if (File.GetLastWriteTime(inputFile.Key) > inputFile.Value)
+					if(File.GetLastWriteTime(inputFile.Key) > inputFile.Value)
 					{
 						CompileView(viewData);
 
@@ -56,20 +56,20 @@ namespace MvcContrib.NHamlViewEngine
 
 		private void CompileView(ViewDataDictionary viewData)
 		{
-			Type viewDataType = typeof(object);
+			var viewDataType = typeof(object);
 
-			if (viewData != null && viewData.Model != null)
+			if(viewData != null && viewData.Model != null)
 			{
 				viewDataType = viewData.Model.GetType();
 
 				AddReferences(viewDataType);
 			}
 
-			List<string> inputFiles = new List<string>();
+			var inputFiles = new List<string>();
 
 			_viewType = _templateCompiler.Compile(_templatePath, _layoutPath, inputFiles, viewDataType);
 
-			foreach (string inputFile in inputFiles)
+			foreach(var inputFile in inputFiles)
 			{
 				_fileTimestamps[inputFile] = File.GetLastWriteTime(inputFile);
 			}
@@ -79,9 +79,9 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			_templateCompiler.AddReference(type.Assembly.Location);
 
-			if (type.IsGenericType)
+			if(type.IsGenericType)
 			{
-				foreach (var t in type.GetGenericArguments())
+				foreach(var t in type.GetGenericArguments())
 				{
 					AddReferences(t);
 				}

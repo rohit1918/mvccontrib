@@ -16,7 +16,7 @@ namespace MvcContrib.NHamlViewEngine.Exceptions
 
 		public static void Throw(CompilerResults compilerResults, string viewSource, string templatePath)
 		{
-			StringBuilder message = new StringBuilder();
+			var message = new StringBuilder();
 
 			message.AppendLine(StringUtils.FormatCurrentCulture(Resources.CompilationError, templatePath));
 

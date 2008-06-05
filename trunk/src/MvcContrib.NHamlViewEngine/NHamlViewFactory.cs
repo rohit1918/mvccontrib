@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Diagnostics.CodeAnalysis;
@@ -60,18 +59,18 @@ namespace MvcContrib.NHamlViewEngine
 
 		private static void LoadConfiguration()
 		{
-			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
+			var section = NHamlViewEngineSection.Read();
 
-			if (section != null)
+			if(section != null)
 			{
 				_production = section.Production;
 
-				foreach (AssemblyConfigurationElement cfgAsm in section.Views.Assemblies)
+				foreach(AssemblyConfigurationElement cfgAsm in section.Views.Assemblies)
 				{
 					_templateCompiler.AddReference(Assembly.Load(cfgAsm.Name).Location);
 				}
 
-				foreach (NamespaceConfigurationElement cfgNs in section.Views.Namespaces)
+				foreach(NamespaceConfigurationElement cfgNs in section.Views.Namespaces)
 				{
 					_templateCompiler.AddUsing(cfgNs.Name);
 				}
@@ -80,30 +79,30 @@ namespace MvcContrib.NHamlViewEngine
 
 		protected virtual IViewSource FindLayout(string mastersFolder, string masterName, string controller)
 		{
-			if (!string.IsNullOrEmpty(masterName))
+			if(!string.IsNullOrEmpty(masterName))
 			{
-				string requestedPath = mastersFolder + "\\" + masterName + ".haml";
+				var requestedPath = mastersFolder + "\\" + masterName + ".haml";
 
-				if (_viewSourceLoader.HasView(requestedPath))
+				if(_viewSourceLoader.HasView(requestedPath))
 				{
 					return _viewSourceLoader.GetViewSource(requestedPath);
 				}
 
 				throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-																								"Layout {0} was specified but couldn't be found.",
-																								masterName));
+				                                                  "Layout {0} was specified but couldn't be found.",
+				                                                  masterName));
 			}
 
-			string controllerPath = mastersFolder + "\\" + controller + ".haml";
+			var controllerPath = mastersFolder + "\\" + controller + ".haml";
 
-			if (_viewSourceLoader.HasView(controllerPath))
+			if(_viewSourceLoader.HasView(controllerPath))
 			{
 				return _viewSourceLoader.GetViewSource(controllerPath);
 			}
 
-			string applicationPath = mastersFolder + "\\application.haml";
+			var applicationPath = mastersFolder + "\\application.haml";
 
-			if (_viewSourceLoader.HasView(applicationPath))
+			if(_viewSourceLoader.HasView(applicationPath))
 			{
 				return _viewSourceLoader.GetViewSource(applicationPath);
 			}
@@ -113,7 +112,7 @@ namespace MvcContrib.NHamlViewEngine
 
 		public static void ClearViewCache()
 		{
-			lock (_viewCache)
+			lock(_viewCache)
 			{
 				_viewCache.Clear();
 			}
@@ -121,59 +120,59 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void RenderView(ViewContext viewContext)
 		{
-			string controller = (string)viewContext.RouteData.Values["controller"];
-			string viewKey = controller + "/" + viewContext.ViewName;
+			var controller = (string)viewContext.RouteData.Values["controller"];
+			var viewKey = controller + "/" + viewContext.ViewName;
 
 			CompiledView compiledView;
 
-			if (!_viewCache.TryGetValue(viewKey, out compiledView))
+			if(!_viewCache.TryGetValue(viewKey, out compiledView))
 			{
-				lock (_viewCache)
+				lock(_viewCache)
 				{
-					if (!_viewCache.TryGetValue(viewKey, out compiledView))
+					if(!_viewCache.TryGetValue(viewKey, out compiledView))
 					{
-						string viewPath = viewKey;
+						var viewPath = viewKey;
 
-						if (!Path.HasExtension(viewPath))
+						if(!Path.HasExtension(viewPath))
 						{
 							viewPath = string.Concat(viewPath, ".haml");
 						}
 
-						if (!_viewSourceLoader.HasView(viewPath))
+						if(!_viewSourceLoader.HasView(viewPath))
 						{
 							throw new InvalidOperationException(
-									string.Format(CultureInfo.CurrentCulture,
-									"Couldn't find the template with name {0}.",
-									viewPath));
+								string.Format(CultureInfo.CurrentCulture,
+								              "Couldn't find the template with name {0}.",
+								              viewPath));
 						}
 
-						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
+						var viewSource = _viewSourceLoader.GetViewSource(viewPath);
 
 						Invariant.IsNotNull(viewSource);
 
-						IViewSource layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
+						var layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
 
 						string layoutPath = null;
 
-						if (layoutSource != null)
+						if(layoutSource != null)
 						{
 							layoutPath = layoutSource.FullName;
 						}
 
 						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
-																						viewContext.ViewData);
+						                                viewContext.ViewData);
 
 						_viewCache.Add(viewKey, compiledView);
 					}
 				}
 			}
 
-			if (!_production)
+			if(!_production)
 			{
 				compiledView.RecompileIfNecessary(viewContext.ViewData);
 			}
 
-			INHamlView view = compiledView.CreateView();
+			var view = compiledView.CreateView();
 
 			view.SetViewData(viewContext.ViewData);
 			view.RenderView(viewContext);

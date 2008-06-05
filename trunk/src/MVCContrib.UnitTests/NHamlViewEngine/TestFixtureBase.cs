@@ -26,13 +26,13 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 		protected void AssertRender(string template, string layout)
 		{
-			Type viewType = _templateCompiler.Compile(
+			var viewType = _templateCompiler.Compile(
 				TemplatesFolder + template + ".haml",
 				TemplatesFolder + layout + ".haml");
 
-			ICompiledView view = (ICompiledView)Activator.CreateInstance(viewType);
+			var view = (ICompiledView)Activator.CreateInstance(viewType);
 
-			string output = view.Render();
+			var output = view.Render();
 
 			//Console.WriteLine(output);
 
@@ -42,12 +42,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		protected static void AssertRender(string template, TemplateCompiler templateCompiler,
 		                                   params Type[] genericArguments)
 		{
-			Type viewType = templateCompiler.Compile(
+			var viewType = templateCompiler.Compile(
 				TemplatesFolder + template + ".haml", genericArguments);
 
-			ICompiledView view = (ICompiledView)Activator.CreateInstance(viewType);
+			var view = (ICompiledView)Activator.CreateInstance(viewType);
 
-			string output = view.Render();
+			var output = view.Render();
 
 			//Console.WriteLine(output);
 

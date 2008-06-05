@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30428</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0B8EC0CE-1AC1-4ACF-A380-A588E5E1E9CF}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -339,6 +339,9 @@
     <None Include="BrailViewEngine\Views\view_CustomViewData.brail">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="NHamlViewEngine\Results\AttributeEval.xhtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="NHamlViewEngine\Results\NullAttributes.xhtml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -457,6 +460,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\Conditionals.haml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NHamlViewEngine\Templates\AttributeEval.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="NHamlViewEngine\Templates\NullAttributes.haml">

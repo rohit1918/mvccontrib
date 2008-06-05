@@ -4,7 +4,7 @@ namespace MvcContrib.NHamlViewEngine
 	{
 		public abstract char Signifier { get; }
 
-		public virtual bool MergeMultiLine
+		public virtual bool MergeMultiline
 		{
 			get { return false; }
 		}

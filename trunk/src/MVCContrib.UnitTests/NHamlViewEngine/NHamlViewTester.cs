@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.IO;
+﻿using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -22,26 +21,27 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_output = new StringWriter();
 
 			_mocks = new MockRepository();
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
-			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			var httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
-			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<IController>();
+			var controllerContext = new ControllerContext(requestContext, controller);
 
 			_mocks.ReplayAll();
 
 			_viewContext =
-				new ViewContext(controllerContext, "Index", "", new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
+				new ViewContext(controllerContext, "Index", "", new ViewDataDictionary(),
+				                new TempDataDictionary(controllerContext.HttpContext));
 		}
 
 		[Test]
 		public void View_Renders_Output_To_HttpContext_Response_Output()
 		{
-			TestView view = new TestView();
+			var view = new TestView();
 			view.SetViewData(new ViewDataDictionary<string>("Rendered by NHaml"));
 			view.RenderView(_viewContext);
 			Assert.AreEqual("Rendered by NHaml", _output.ToString());
@@ -50,7 +50,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void View_Creates_AjaxHelper_On_Render()
 		{
-			TestView view = new TestView();
+			var view = new TestView();
 
 			Assert.IsNull(view.Ajax);
 			view.RenderView(_viewContext);
@@ -60,7 +60,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void View_Creates_HtmlHelper_On_Render()
 		{
-			TestView view = new TestView();
+			var view = new TestView();
 
 			Assert.IsNull(view.Html);
 			view.RenderView(_viewContext);
@@ -70,7 +70,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void View_Creates_UrlHelper_On_Render()
 		{
-			TestView view = new TestView();
+			var view = new TestView();
 
 			Assert.IsNull(view.Url);
 			view.RenderView(_viewContext);
@@ -81,7 +81,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		{
 			public string Render()
 			{
-				return base.ViewData.Model;
+				return ViewData.Model;
 			}
 		}
 	}

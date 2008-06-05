@@ -10,7 +10,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void DocType()
 		{
-			InputLine inputLine = new InputLine("!!!", 1);
+			var inputLine = new InputLine("!!!", 1);
 
 			Assert.AreEqual(0, inputLine.IndentSize);
 			Assert.AreEqual(string.Empty, inputLine.Indent);
@@ -21,7 +21,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void RTrimmed()
 		{
-			InputLine inputLine = new InputLine("  %head ", 1);
+			var inputLine = new InputLine("  %head ", 1);
 
 			Assert.AreEqual("  %head ", inputLine.Text);
 			Assert.AreEqual("head", inputLine.NormalizedText);
@@ -44,7 +44,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Indent()
 		{
-			InputLine inputLine = new InputLine("%head", 1);
+			var inputLine = new InputLine("%head", 1);
 
 			Assert.AreEqual(0, inputLine.IndentSize);
 			Assert.AreEqual(string.Empty, inputLine.Indent);

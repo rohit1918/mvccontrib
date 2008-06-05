@@ -13,9 +13,9 @@ namespace MvcContrib.NHamlViewEngine.Utilities
 
 		public StringSet(IEnumerable<string> items)
 		{
-			int i = 0;
+			var i = 0;
 
-			foreach(string item in items)
+			foreach(var item in items)
 			{
 				base.InsertItem(i++, item);
 			}

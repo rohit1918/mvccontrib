@@ -25,14 +25,14 @@ namespace MvcContrib.NHamlViewEngine
 			= new StringSet();
 
 		public CompilationContext(TemplateCompiler templateCompiler, ViewBuilder viewBuilder,
-															string templatePath, string layoutPath)
+		                          string templatePath, string layoutPath)
 		{
 			_templateCompiler = templateCompiler;
 			_viewBuilder = viewBuilder;
 			_templatePath = templatePath;
 			_layoutPath = layoutPath;
 
-			string primaryTemplate = _layoutPath ?? _templatePath;
+			var primaryTemplate = _layoutPath ?? _templatePath;
 
 			_inputLines = BuildInputLines(primaryTemplate);
 
@@ -95,7 +95,7 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			inputFiles.Clear();
 
-			foreach (string inputFile in _inputFiles)
+			foreach(var inputFile in _inputFiles)
 			{
 				inputFiles.Add(inputFile);
 			}
@@ -108,11 +108,11 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void CloseBlocks()
 		{
-			for (int j = 0;
-					((j <= CurrentNode.Previous.Value.IndentSize
-								 - CurrentInputLine.IndentSize)
-					 && (_blockClosingActions.Count > 0));
-					j++)
+			for(var j = 0;
+			    ((j <= CurrentNode.Previous.Value.IndentSize
+			           - CurrentInputLine.IndentSize)
+			     && (_blockClosingActions.Count > 0));
+			    j++)
 			{
 				_blockClosingActions.Pop()();
 			}
@@ -120,18 +120,18 @@ namespace MvcContrib.NHamlViewEngine
 
 		public void MergeTemplate(string templatePath)
 		{
-			LinkedListNode<InputLine> previous = _currentNode.Previous;
+			var previous = _currentNode.Previous;
 
-			int lineNumber = 0;
+			var lineNumber = 0;
 
-			using (StreamReader reader = new StreamReader(templatePath))
+			using(var reader = new StreamReader(templatePath))
 			{
 				string line;
 
-				while ((line = reader.ReadLine()) != null)
+				while((line = reader.ReadLine()) != null)
 				{
 					_inputLines.AddBefore(_currentNode,
-																new InputLine(_currentNode.Value.Indent + line, lineNumber++));
+					                      new InputLine(_currentNode.Value.Indent + line, lineNumber++));
 				}
 			}
 
@@ -144,15 +144,15 @@ namespace MvcContrib.NHamlViewEngine
 
 		private LinkedList<InputLine> BuildInputLines(string templatePath)
 		{
-			int lineNumber = 0;
+			var lineNumber = 0;
 
 			_inputLines.AddLast(new InputLine(string.Empty, lineNumber++));
 
-			using (StreamReader reader = new StreamReader(templatePath))
+			using(var reader = new StreamReader(templatePath))
 			{
 				string line;
 
-				while ((line = reader.ReadLine()) != null)
+				while((line = reader.ReadLine()) != null)
 				{
 					_inputLines.AddLast(new InputLine(line, lineNumber++));
 				}

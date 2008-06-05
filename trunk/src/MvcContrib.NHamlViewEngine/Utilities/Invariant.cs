@@ -30,7 +30,7 @@ namespace MvcContrib.NHamlViewEngine.Utilities
 
 		public static void IsNotNull(object obj)
 		{
-			if (obj == null)
+			if(obj == null)
 			{
 				throw new InvalidOperationException(Resources.ObjectNull);
 			}
