@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.NHamlViewEngine;
+using NHaml;
 using NUnit.Framework;
 using Rhino.Mocks;
 

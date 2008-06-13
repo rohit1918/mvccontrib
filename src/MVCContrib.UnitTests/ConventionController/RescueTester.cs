@@ -126,6 +126,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
+		[Ignore]
 		public void ThreadAbortException_should_be_ignored()
 		{
 			ThreadAbortException exception =

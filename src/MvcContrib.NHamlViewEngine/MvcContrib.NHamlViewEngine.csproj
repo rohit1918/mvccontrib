@@ -40,6 +40,10 @@
     <NoWarn>1591 1574 1711 1572</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NHaml, Version=1.1.0.0, Culture=neutral, PublicKeyToken=d603208bac452365, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\nhaml\NHaml.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -66,17 +70,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BlockClosingAction.cs" />
-    <Compile Include="CompilationContext.cs" />
     <Compile Include="CompiledView.cs" />
     <Compile Include="Configuration\NHamlViewEngineSection.cs" />
     <Compile Include="Configuration\ViewsConfiguration.cs" />
-    <Compile Include="Exceptions\SyntaxException.cs" />
-    <Compile Include="Exceptions\ViewCompilationException.cs" />
-    <Compile Include="ICompiledView.cs" />
     <Compile Include="INHamlView.cs" />
-    <Compile Include="InputLine.cs" />
-    <Compile Include="MarkupRule.cs" />
     <Compile Include="NHamlControllerFactory.cs" />
     <Compile Include="NHamlView.cs" />
     <Compile Include="NHamlViewFactory.cs" />
@@ -86,25 +83,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Rules\ClassMarkupRule.cs" />
-    <Compile Include="Rules\CommentMarkupRule.cs" />
-    <Compile Include="Rules\PreambleMarkupRule.cs" />
-    <Compile Include="Rules\DocTypeMarkupRule.cs" />
-    <Compile Include="Rules\EofMarkupRule.cs" />
-    <Compile Include="Rules\EscapeMarkupRule.cs" />
-    <Compile Include="Rules\EvalMarkupRule.cs" />
-    <Compile Include="Rules\IdMarkupRule.cs" />
-    <Compile Include="Rules\NullMarkupRule.cs" />
-    <Compile Include="Rules\PartialMarkupRule.cs" />
-    <Compile Include="Rules\SilentEvalMarkupRule.cs" />
-    <Compile Include="Rules\TagMarkupRule.cs" />
-    <Compile Include="TemplateCompiler.cs" />
-    <Compile Include="TypeBuilder.cs" />
-    <Compile Include="Utilities\Extensions.cs" />
-    <Compile Include="Utilities\Invariant.cs" />
-    <Compile Include="Utilities\StringSet.cs" />
-    <Compile Include="Utilities\StringUtils.cs" />
-    <Compile Include="ViewBuilder.cs" />
+    <Compile Include="Utilities\Invariant.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVCContrib\MVCContrib.csproj">
