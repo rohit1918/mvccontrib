@@ -13,6 +13,7 @@ using System.Web.UI;
 using MvcContrib.NHamlViewEngine.Configuration;
 using MvcContrib.NHamlViewEngine.Utilities;
 using MvcContrib.ViewFactories;
+using NHaml;
 
 namespace MvcContrib.NHamlViewEngine
 {

@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
+using NHaml;
 
 namespace MvcContrib.NHamlViewEngine
 {
