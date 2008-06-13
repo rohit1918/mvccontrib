@@ -13,24 +13,10 @@ namespace MvcContrib
 	///	IDictionary dict = new Hash(id => "foo", @class => "bar");
 	/// ]]>
 	/// </example>
-	public class Hash : HybridDictionary
+	public class Hash : Hash<object>
 	{
-		public Hash(params Func<object, object>[] hash)
-			: base(hash == null ? 0 : hash.Length, true)
+		public Hash(params Func<object, object>[] hash) : base(hash)
 		{
-			if (hash != null)
-			{
-				foreach (Func<object, object> func in hash)
-				{
-					Add(func.Method.GetParameters()[0].Name, func(null));
-				}
-			}
-		}
-
-		/// <summary>Creates an empty string dictionary</summary>
-		public static IDictionary Empty
-		{
-			get { return new HybridDictionary(0, true); }
 		}
 	}
 
@@ -59,7 +45,7 @@ namespace MvcContrib
 		}
 
 		/// <summary>Creates an empty case insensitive dictionary of <see cref="string"/> keys and <typeparam name="TValue" /> values.</summary>
-		public static IDictionary<string, TValue> Empty
+		public static Dictionary<string, TValue> Empty
 		{
 			get { return new Dictionary<string, TValue>(0, StringComparer.OrdinalIgnoreCase); }
 		}

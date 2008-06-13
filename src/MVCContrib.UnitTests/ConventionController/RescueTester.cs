@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
@@ -128,8 +129,9 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void ThreadAbortException_should_be_ignored()
 		{
-			ThreadAbortException exception =
-				(ThreadAbortException)typeof(ThreadAbortException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)[0].Invoke(null);
+			var constructors = typeof(ThreadAbortException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
+			//Find the constructor with 0 args
+			var exception = (ThreadAbortException)constructors.Where(c => c.GetParameters().Length == 0).First().Invoke(null);
 
 			var rescue = new RescueAttribute("TestRescue");
 			Assert.IsTrue(rescue.PerformRescue(exception, _controller));
