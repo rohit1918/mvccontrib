@@ -16,6 +16,7 @@
 	<property name="version.revision" value="0"/>
 	<property name="project.fullversion" value="${version.major}.${version.minor}.${version.build}.${version.revision}" dynamic="true" />
 	<property name="nant.settings.currentframework" value="net-3.5" />
+	<property name="ncover.path" value="bin\ncover" />
 
 	<!-- default configuration -->
 	<property name="project.config" value="release" />
@@ -25,7 +26,7 @@
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
 	<target name="cruise" depends="build, package"/>
   <target name="cruise-coverage" depends="analyze"/>
-	<target name="commiter" depends="build, analyze, build-help, package"/>
+	<target name="commiter" depends="build, analyze, package"/>
 
 	<target name="init" description="Initializes build properties">
 		<tstamp>
@@ -155,8 +156,8 @@
 
 
   <target name="analyze" >
-		<loadtasks path="bin\ncover\Build Task Plugins"/>
-		<ncover program="bin\ncover\ncover.console.exe"
+		<loadtasks path="${ncover.path}\Build Task Plugins"/>
+		<ncover program="${ncover.path}\ncover.console.exe"
 						commandLineExe="bin\nunit\nunit-console.exe"
 						commandLineArgs="mvccontrib.unittests.dll /exclude=Integration"
 						coverageFile="${results.dir}\mvccontrib.coverage.xml"
@@ -206,10 +207,10 @@
 		-->
 	</target>
 
-  <target name="build-help">
+  <!--<target name="build-help">
     <exec program="bin\sandcastle\Sandcastle Help File Builder\SandcastleBuilderConsole.exe"
       commandline="documentation\docs.shfb" workingdir="." />
-  </target>  
+  </target>-->
   
   <target name="package">
 		<!-- 		
