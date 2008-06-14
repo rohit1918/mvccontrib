@@ -2,6 +2,7 @@ using System;
 using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
+using MvcContrib.Castle;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 
@@ -204,6 +205,15 @@ namespace MvcContrib.UnitTests.MetaData
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 			Assert.IsNull(metaData.GetAction("VoidAction"));
+		}
+
+		[Test]
+		public void CastleControllerDescriptor_should_use_CastleSimpleBinder_instead_of_SimpleBinder()
+		{
+			var controllerDescriptor = new CastleControllerDescriptor();
+			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
+			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
+			Assert.IsInstanceOfType(typeof(CastleSimpleBinder), parameter.ParameterBinder);
 		}
 	}
 
