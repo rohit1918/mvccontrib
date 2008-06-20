@@ -82,12 +82,12 @@ namespace MvcContrib.UI.Tags.Validators
 				throw new ArgumentException("The RangeValidator currently does not support Date or Currency types.");
 			}
 
-			if (string.IsNullOrEmpty(minimumValue) || !System.Web.UI.WebControls.BaseCompareValidator.CanConvert(minimumValue, type))
+			if (string.IsNullOrEmpty(minimumValue) || !System.Web.UI.WebControls.BaseCompareValidator.CanConvert(minimumValue, type, true))
 			{
 				throw new ArgumentException("Cannot convert value to selected validation type.", "minimumValue");
 			}
 
-			if (string.IsNullOrEmpty(maximumValue) || !System.Web.UI.WebControls.BaseCompareValidator.CanConvert(maximumValue, type))
+			if (string.IsNullOrEmpty(maximumValue) || !System.Web.UI.WebControls.BaseCompareValidator.CanConvert(maximumValue, type, true))
 			{
 				throw new ArgumentException("Cannot convert value to selected validation type.", "maximumValue");
 			}
