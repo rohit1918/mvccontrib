@@ -79,5 +79,9 @@ namespace MvcContrib.UnitTests.ConventionController
 			return new XmlResult("Test 1 2 3");
 		}
 
+		public ActionResult BinaryResult() 
+		{
+			return new BinaryResult(new byte[1], "application/ms-excel", true, "test.pdf");
+		}
 	}
 }

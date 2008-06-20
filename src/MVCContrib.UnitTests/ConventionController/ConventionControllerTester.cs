@@ -33,5 +33,12 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(result, Is.Not.Null);
 			Assert.That(result.ObjectToSerialize, Is.EqualTo("Test 1 2 3"));
 		}
+
+		[Test]
+		public void Binary_should_return_BinaryResult_object()
+		{
+			var result = _controller.BinaryResult() as BinaryResult;
+			Assert.That(result, Is.Not.Null);
+		}
 	}
 }
