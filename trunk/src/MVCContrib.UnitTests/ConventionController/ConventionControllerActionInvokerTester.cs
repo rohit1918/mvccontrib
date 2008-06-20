@@ -33,14 +33,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void When_instantiated_the_Controller_property_should_be_set()
 		{
-			Assert.That(_invoker.Controller, Is.SameAs(_controller));
-		}
-
-		[Test, ExpectedException(typeof(Exception), ExpectedMessage = "The ConventionControllerActionInvoker can only be used with controllers that inherit from ConventionController.")]
-		public void When_inistantiated_should_throw_if_controller_is_not_conventioncontroller()
-		{
-			_context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<IController>());
-			new ConventionControllerActionInvoker(_context);
+			Assert.That(_invoker.ControllerContext.Controller, Is.SameAs(_controller));
 		}
 
 		[Test]
@@ -80,13 +73,14 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void FindActionMeta_should_return_defaultaction_the_specified_action_does_not_exist()
 		{
-			var controller = new DefaultActionController
-			                 	{
-			                 		ControllerDescriptor = new ControllerDescriptor()
-			                 	};
+			var controller = new DefaultActionController();
 
 			_context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), controller);
-			_invoker = new ConventionControllerActionInvoker(_context);
+			_invoker = new ConventionControllerActionInvoker(_context)
+            {
+                ControllerDescriptor = new ControllerDescriptor()
+            };
+
 
 			var meta = _invoker.FindActionMetaData("Unknown");
 			Assert.AreEqual("DefaultAction", meta.Name);
@@ -101,10 +95,10 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void Should_set_selectedaction_on_controller()
 		{
-			Assert.That(_controller.SelectedAction, Is.Null);
+			Assert.That(_invoker.SelectedAction, Is.Null);
 			_invoker.InvokeAction("BasicAction", null);
-			Assert.That(_controller.SelectedAction, Is.Not.Null);
-			Assert.That(_controller.SelectedAction.Name, Is.EqualTo("BasicAction"));
+			Assert.That(_invoker.SelectedAction, Is.Not.Null);
+			Assert.That(_invoker.SelectedAction.Name, Is.EqualTo("BasicAction"));
 		}
 
 		[Test]

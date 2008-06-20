@@ -18,7 +18,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			var controllerFactory = new NHamlControllerFactory();
 			var controller =
-				(MvcContrib.ConventionController)((IControllerFactory)controllerFactory).CreateController(context, "Convention");
+				(Controller)((IControllerFactory)controllerFactory).CreateController(context, "Convention");
 
 			Assert.IsNotNull(controller.ViewEngine);
 			Assert.IsAssignableFrom(typeof(NHamlViewFactory), controller.ViewEngine);

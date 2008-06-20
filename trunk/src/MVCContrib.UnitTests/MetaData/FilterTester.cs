@@ -232,7 +232,7 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[FilterReturnsTrue]
-		class FilteredController : MvcContrib.ConventionController
+		class FilteredController : Controller
 		{
 			public bool SuccessfulFilterCalled = false;
 			public bool UnSuccessfulFilterCalled = false;

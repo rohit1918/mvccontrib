@@ -24,15 +24,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			_mocks = new MockRepository();
 			_controller = new TestController();
-			_controller.ControllerDescriptor = new ControllerDescriptor();
-		}
-
-		[Test]
-		public void ControllerDescriptorDefaultsToCached()
-		{
-			TestController controller = new TestController();
-			Assert.IsNotNull(controller.ControllerDescriptor);
-			Assert.AreEqual(typeof(CachedControllerDescriptor), controller.ControllerDescriptor.GetType());
 		}
 
 		[Test]
