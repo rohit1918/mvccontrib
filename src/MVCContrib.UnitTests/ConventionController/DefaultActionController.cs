@@ -1,14 +1,15 @@
 using System;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
+using MvcContrib.MetaData;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
-	class DefaultActionController : MvcContrib.ConventionController
+	class DefaultActionController : Controller
 	{
 		public bool DefaultActionCalled = false;
 
-		[DefaultAction]
+        [DefaultAction]
 		public ActionResult DefaultAction()
 		{
 			DefaultActionCalled = true;

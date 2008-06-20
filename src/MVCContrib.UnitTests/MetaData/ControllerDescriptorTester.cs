@@ -234,7 +234,7 @@ namespace MvcContrib.UnitTests.MetaData
 	}
 
 	[Rescue("Test")]
-	internal class MetaDataTestController : MvcContrib.ConventionController
+	internal class MetaDataTestController : Controller
 	{
 		public void VoidAction()
 		{
@@ -294,7 +294,7 @@ namespace MvcContrib.UnitTests.MetaData
 //		}
 	}
 
-	internal class TestControllerWithMultipleDefaultActions : MvcContrib.ConventionController
+	internal class TestControllerWithMultipleDefaultActions : Controller
 	{
 		[DefaultAction]
 		public ActionResult Action1()

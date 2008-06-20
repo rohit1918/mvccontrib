@@ -12,25 +12,53 @@ namespace MvcContrib
 	/// </summary>
 	public class ConventionControllerActionInvoker : ControllerActionInvoker
 	{
-		/// <summary>
-		/// The current ConventionController being executed.
-		/// </summary>
-		public ConventionController Controller { get; protected set; }
+        private ControllerMetaData _metaData;
+        private IControllerDescriptor _controllerDescriptor;
 
+        /// <summary>
+        /// The action currently being executed.
+        /// </summary>
+        public ActionMetaData SelectedAction { get; private set; }
+        
+        /// <summary>
+        /// Information about the controller.
+        /// </summary>
+        public ControllerMetaData MetaData
+        {
+            get
+            {
+                if (_metaData == null)
+                {
+                    _metaData = ControllerDescriptor.GetMetaData(ControllerContext.Controller);
+                }
+                return _metaData;
+            }
+        }
 
-		/// <summary>
+        /// <summary>
+        /// Descriptor used to obtain metadata about the current controller. By default, this will be a CachedControllerDescriptor.
+        /// </summary>
+        public IControllerDescriptor ControllerDescriptor
+        {
+            get
+            {
+                if (_controllerDescriptor == null)
+                {
+                    _controllerDescriptor = new CachedControllerDescriptor();
+                }
+                return _controllerDescriptor;
+            }
+            set { _controllerDescriptor = value; }
+        }
+
+        
+        /// <summary>
 		/// Creates a new instance of the ConventionControllerActionInvoker class.
 		/// </summary>
 		/// <param name="controllerContext">The controller context for use with the current request.</param>
 		public ConventionControllerActionInvoker(ControllerContext controllerContext) : base(controllerContext)
 		{
-			Controller = controllerContext.Controller as ConventionController;
-
-			if(Controller == null)
-			{
-				throw new Exception("The ConventionControllerActionInvoker can only be used with controllers that inherit from ConventionController.");
-			}
-		}
+        }
 
 		/// <summary>
 		/// Invokes the action with the specified action name. 
@@ -52,12 +80,9 @@ namespace MvcContrib
 				return false;
 			}
 
-			Controller.SelectedAction = actionMetaData;
+			SelectedAction = actionMetaData;
 
-			//The controller implements IActionFilter. 
-			//Make sure its the first one in the list so that OnActionExecuting/OnActionExecuted get called.
-			var filters = new List<IActionFilter> { Controller };
-			filters.AddRange(actionMetaData.Filters.Cast<IActionFilter>());
+			var filters = GetAllActionFilters(actionMetaData.MethodInfo);
 			
 			try
 			{
@@ -73,15 +98,12 @@ namespace MvcContrib
 				}
 			}
 			
-			//TODO: Sort filters to match the order ControllerActionInvoker uses.
-
 			return true;
 		}
-
-		
+	
 		protected override ActionResult InvokeActionMethod(System.Reflection.MethodInfo methodInfo, IDictionary<string, object> parameters)
 		{
-			//The parameter list should be constructed here to ensure that any pre-action filters have executed before the paramter binders are invoked.
+			//The parameter list should be constructed here to ensure that any pre-action filters have executed before the parameter binders are invoked.
 			parameters = GetParameterValues(methodInfo, parameters);
 			return base.InvokeActionMethod(methodInfo, parameters);
 		}
@@ -94,14 +116,13 @@ namespace MvcContrib
 		/// <returns>True if a rescue executed. False if no rescues executed.</returns>
 		protected virtual bool InvokeRescues(ActionMetaData action, Exception exception)
 		{
-			foreach(var rescue in action.Rescues)
-			{
-				if(rescue.PerformRescue(exception, Controller))
-				{
-					return true;
-				}
-			}
-
+            foreach (var rescue in action.Rescues)
+            {
+                if (rescue.PerformRescue(exception, ControllerContext))
+                {
+                    return true;
+                }
+            }
 			return false;
 		}
 
@@ -109,7 +130,7 @@ namespace MvcContrib
 		//We don't need to do this as the ControllerDescriptor has already gathered information about the parameters when it was instantiated.
 		protected override IDictionary<string, object> GetParameterValues(System.Reflection.MethodInfo methodInfo, IDictionary<string, object> values)
 		{
-			var actionMetaData = Controller.SelectedAction;
+			var actionMetaData = SelectedAction;
 			var parameters = new Dictionary<string, object>();
 
 			foreach(var parameter in actionMetaData.Parameters)
@@ -127,14 +148,14 @@ namespace MvcContrib
 		/// <returns>ActionMetaData or null if no action can be found with the specified name.</returns>
 		public virtual ActionMetaData FindActionMetaData(string actionName)
 		{
-			var actions = Controller.MetaData.GetActions(actionName);
-
+			var actions = MetaData.GetActions(actionName);
+            
 			if (actions == null || actions.Count == 0)
 			{
 				//No matching action found - see if there is a "catch all" action.
-				if (Controller.MetaData.DefaultAction != null)
+				if (MetaData.DefaultAction != null)
 				{
-					return Controller.MetaData.DefaultAction;
+					return MetaData.DefaultAction;
 				}
 				else
 				{

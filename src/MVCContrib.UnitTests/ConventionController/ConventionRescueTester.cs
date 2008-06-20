@@ -44,7 +44,7 @@ namespace MvcContrib.UnitTests.ConventionController
             CustomViewExists_ConventionRescueAttribute rescue =
                 new CustomViewExists_ConventionRescueAttribute("TestRescue");
 
-            Assert.That(rescue.PerformRescue(new Exception(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new Exception(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/TestRescue"));
         }
 
@@ -55,7 +55,7 @@ namespace MvcContrib.UnitTests.ConventionController
                 new CustomViewExists_ConventionRescueAttribute("TestRescue");
             rescue.ExistingRescues.Add("ConventionRescueTestException");
 
-            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/ConventionRescueTestException"));
         }
 
@@ -67,7 +67,7 @@ namespace MvcContrib.UnitTests.ConventionController
             rescue.ExistingRescues.Add("ConventionRescueTestException");
             rescue.AutoLocate = false;
 
-            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/TestRescue"));
         }
 
@@ -81,16 +81,16 @@ namespace MvcContrib.UnitTests.ConventionController
             rescue.ExistingRescues.Add("InheritedConventionRescueTestException");
             rescue.ExistingRescues.Add("ConventionRescueTestException");
 
-            Assert.That(rescue.PerformRescue(new InheritedConventionRescueTestException(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new InheritedConventionRescueTestException(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/InheritedConventionRescueTestException"));
 
-            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new ConventionRescueTestException(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/ConventionRescueTestException"));
 
             rescue = new CustomViewExists_ConventionRescueAttribute("TestRescue", typeof(ConventionRescueTestException));
             rescue.ExistingRescues.Add("ConventionRescueTestException");
 
-            Assert.That(rescue.PerformRescue(new InheritedConventionRescueTestException(), _controller), Is.True);
+            Assert.That(rescue.PerformRescue(new InheritedConventionRescueTestException(), _controllerContext), Is.True);
             Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo("Rescues/ConventionRescueTestException"));
 
         }
@@ -108,7 +108,7 @@ namespace MvcContrib.UnitTests.ConventionController
                 set { existingRescues = value; }
             }
 
-            protected override bool ViewExists(Type exceptionType, MvcContrib.ConventionController controller)
+            protected override bool ViewExists(Type exceptionType, ControllerContext controllerContext)
             {
                 return ExistingRescues.Contains(exceptionType.Name);
             }
@@ -131,7 +131,7 @@ namespace MvcContrib.UnitTests.ConventionController
             
         }
 
-        internal abstract class BaseConventionRescueTestController : MvcContrib.ConventionController
+        internal abstract class BaseConventionRescueTestController : Controller
         {
             public string ViewRendered
             {

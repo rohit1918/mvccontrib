@@ -8,7 +8,7 @@ using MvcContrib.MetaData;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
-	class TestController : MvcContrib.ConventionController
+	class TestController : Controller
 	{
 		public bool CancelAction = false;
 		public bool ActionWasCalled = false;
@@ -19,7 +19,13 @@ namespace MvcContrib.UnitTests.ConventionController
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
 
-		[TestFilter]
+        protected override void Execute(ControllerContext controllerContext)
+        {
+            this.ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+            base.Execute(controllerContext);
+        }
+        
+        [TestFilter]
 		public ActionResult BinderFilterOrderingAction([TestBinder] object item)
 		{
 			return new EmptyResult();
@@ -70,7 +76,7 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		public ActionResult XmlResult()
 		{
-			return Xml("Test 1 2 3");
+			return new XmlResult("Test 1 2 3");
 		}
 
 	}
