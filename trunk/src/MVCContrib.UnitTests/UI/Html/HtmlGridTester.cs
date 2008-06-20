@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -126,7 +127,9 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.DateOfBirth).Formatted("{0:ddd}"); });
 
-			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>Sun</td></tr></table>";
+		    var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
+
+			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>" + dayString + "</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
