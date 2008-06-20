@@ -194,12 +194,12 @@
 			</moduleThresholds>
 
 		</ncoverexplorer>
-		<property name="ndepend.input" value="${directory::get-current-directory()}\bin\ndepend\mvccontrib.xml"/>
+		<!--<property name="ndepend.input" value="${directory::get-current-directory()}\bin\ndepend\mvccontrib.xml"/>
 		<xmlpoke file="${ndepend.input}" xpath="/NDepend/Dirs/Dir" value="${directory::get-current-directory()}\${build.dir}" />
 		<xmlpoke file="${ndepend.input}" xpath="/NDepend/OutputDir" value="${directory::get-current-directory()}\${results.dir}" />
 		<exec program="bin\ndepend\NDepend.Console.exe">
 			<arg value="${ndepend.input}" />
-		</exec>
+		</exec>-->
 		<!--
 		<loadtasks path="bin\ndepend\nant" />
 		<NDepend NDependConsoleExePath="bin\ndepend\ndepend.console.exe"
