@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -138,6 +139,10 @@ namespace MvcContrib.TestHelper
 
 			Form = new NameValueCollection();
 			SetupResult.For(request.Form).Return(Form);
+
+			Func<NameValueCollection> paramsFunc = () => new NameValueCollection { QueryString, Form };
+
+			SetupResult.For(request.Params).Do(paramsFunc);
 
 			SetupResult.For(request.AppRelativeCurrentExecutionFilePath).Return(AppRelativeCurrentExecutionFilePath);
 			SetupResult.For(request.ApplicationPath).Return(ApplicationPath);
