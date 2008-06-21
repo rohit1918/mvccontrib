@@ -46,5 +46,17 @@ namespace MvcContrib.TestHelper.Test
 			handler.InitializeController(testController);
 			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 		}
+
+		[Test]
+		public void When_params_is_invoked_it_should_return_a_combination_of_form_and_querystring()
+		{
+			var builder = new TestControllerBuilder();
+			builder.QueryString["foo"] = "bar";
+			builder.Form["baz"] = "blah";
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			Assert.That(testController.Request.Params["foo"], Is.EqualTo("bar"));
+			Assert.That(testController.Request.Params["baz"], Is.EqualTo("blah"));
+		}
 	}
 }
