@@ -52,10 +52,30 @@ namespace MvcContrib.Castle
         /// <returns></returns>
         public virtual object Bind(Type targetType, string paramName, ControllerContext context)
         {
-            IDataBinder binder = CreateBinder();
+			IDataBinder binder = LocateBinder(context);
             object instance = binder.BindObject(targetType, Prefix ?? paramName, Exclude, null, new TreeBuilder().BuildSourceNode(context.HttpContext.Request.Form));
             return instance;
         }
+
+		/// <summary>
+		/// Finds the binder to use. If the controller implements ICastleBindingContainer then its binder is used. Otherwise, a new DataBinder is created.
+		/// </summary>
+		/// <returns></returns>
+		protected virtual IDataBinder LocateBinder(ControllerContext context)
+		{
+			var bindingContainer = context.Controller as ICastleBindingContainer;
+
+			if(bindingContainer != null)
+			{
+				if(bindingContainer.Binder == null)
+				{
+					bindingContainer.Binder = CreateBinder();
+				}
+				return bindingContainer.Binder;
+			}
+
+			return CreateBinder();
+		}
 
         /// <summary>
         /// Creates the binder to use.
