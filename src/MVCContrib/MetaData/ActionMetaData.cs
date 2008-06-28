@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
 using MvcContrib.Filters;
+using MvcContrib.Interfaces;
 
 namespace MvcContrib.MetaData
 {
@@ -30,8 +31,8 @@ namespace MvcContrib.MetaData
 			get { return _parameters; }
 		}
 
-		private readonly List<RescueAttribute> _rescues = new List<RescueAttribute>();
-		public IList<RescueAttribute> Rescues
+		private readonly List<IRescue> _rescues = new List<IRescue>();
+		public IList<IRescue> Rescues
 		{
 			get { return _rescues;  }
 		}

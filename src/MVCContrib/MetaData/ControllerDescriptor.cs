@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
 using MvcContrib.Filters;
+using MvcContrib.Interfaces;
 
 namespace MvcContrib.MetaData
 {
@@ -28,7 +29,7 @@ namespace MvcContrib.MetaData
 
 			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
 
-			RescueAttribute[] controllerRescues = GetRescues(metaData.ControllerType, true);
+			IRescue[] controllerRescues = GetRescues(metaData.ControllerType, true);
 			ActionFilterAttribute[] controllerFilters = GetFilters(metaData.ControllerType);
 
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
@@ -44,14 +45,14 @@ namespace MvcContrib.MetaData
 
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
 
-				RescueAttribute[] actionRescues = GetRescues(actionMethod, false);
+				IRescue[] actionRescues = GetRescues(actionMethod, false);
 
-				foreach (RescueAttribute rescue in actionRescues)
+				foreach (IRescue rescue in actionRescues)
 				{
 					actionMetaData.Rescues.Add(rescue);
 				}
 
-				foreach (RescueAttribute rescue in controllerRescues)
+				foreach (IRescue rescue in controllerRescues)
 				{
 					actionMetaData.Rescues.Add(rescue);
 				}
@@ -144,9 +145,9 @@ namespace MvcContrib.MetaData
 			return new ActionParameterMetaData(parameter);
 		}
 
-		protected virtual RescueAttribute[] GetRescues(ICustomAttributeProvider attributeProvider, bool inherit)
+		protected virtual IRescue[] GetRescues(ICustomAttributeProvider attributeProvider, bool inherit)
 		{
-			return (RescueAttribute[])attributeProvider.GetCustomAttributes(typeof(RescueAttribute), inherit);
+			return (IRescue[])attributeProvider.GetCustomAttributes(typeof(IRescue), inherit);
 		}
 
 		protected virtual ActionFilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
