@@ -8,7 +8,7 @@ namespace MvcContrib.Filters
 	/// <summary>
 	/// This is an action attribute that defines (via a regular expression) a required RouteData or Request
 	/// parameter "precondition" for the action. On precondition failure, the specified Exception type will be thrown.
-	/// More info <see href="http://blog.troyd.net/ASPNET+MVC+Controller+Action+Precondition+Filter.aspx">here</see>.
+    /// More info <see href="http://blog.troyd.net/ASPNET+MVC+Controller+Action+Precondition+Filter+V2+Now+Part+Of+MVCContrib+Project.aspx">here</see>.
 	/// </summary>
 	/// <example>
 	/// <code>
@@ -18,8 +18,6 @@ namespace MvcContrib.Filters
 	/// </code>
 	/// </example>
 
-	[System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.Interface,
-		AllowMultiple = true)]
 	public class RegExPreconditionFilter : PreconditionFilter
 	{
 

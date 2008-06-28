@@ -7,9 +7,10 @@ namespace MvcContrib.Filters
 	/// <summary>
 	/// This is an action attribute base class that defines a required RouteData or Request parameter
 	/// "precondition" for the action. On precondition failure, the specified Exception type will be thrown.
-	/// More info <see href="http://blog.troyd.net/ASPNET+MVC+Controller+Action+Precondition+Filter.aspx">here</see>.
+    /// More info <see href="http://blog.troyd.net/ASPNET+MVC+Controller+Action+Precondition+Filter+V2+Now+Part+Of+MVCContrib+Project.aspx">here</see>.
 	/// </summary>
 
+	[AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.Interface, AllowMultiple = true)]
 	public abstract class PreconditionFilter : ActionFilterAttribute
 	{
 
