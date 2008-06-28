@@ -42,7 +42,7 @@ namespace MvcContrib.Attributes
 	/// </summary>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-	public class RescueAttribute : Attribute
+	public class RescueAttribute : Attribute, IRescue
 	{
 		private string _view;
 		private readonly Type[] _exceptionsTypes;
