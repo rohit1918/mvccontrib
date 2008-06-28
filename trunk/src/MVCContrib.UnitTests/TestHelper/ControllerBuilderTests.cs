@@ -1,15 +1,16 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-using NUnit.Framework;
+﻿using System.Web.Routing;
+using MvcContrib.Interfaces;
+using MvcContrib.Services;
 using MvcContrib.TestHelper;
+using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-
 
 //Note: these tests confirm that the TestControllerBuilder works properly
 //for examples on how to use the TestControllerBuilder and other TestHelper classes,
 //look in the \src\Samples\MvcContrib.TestHelper solution
-namespace MvcContrib.TestHelper.Test
+
+namespace MvcContrib.UnitTests.TestHelper
 {
 	[TestFixture]
 	public class ControllerBuilderTests
@@ -17,7 +18,7 @@ namespace MvcContrib.TestHelper.Test
 		[Test]
 		public void CanSpecifyFormVariables()
 		{
-			TestControllerBuilder builder = new TestControllerBuilder();
+			var builder = new TestControllerBuilder();
 			builder.Form["Variable"] = "Value";
 			var controller = new TestHelperController();
 			builder.InitializeController(controller);
@@ -27,8 +28,8 @@ namespace MvcContrib.TestHelper.Test
 		[Test]
 		public void CanSpecifyRouteData()
 		{
-			TestControllerBuilder builder = new TestControllerBuilder();
-			RouteData rd = new RouteData();
+			var builder = new TestControllerBuilder();
+			var rd = new RouteData();
 			rd.Values["Variable"] = "Value";
 			builder.RouteData = rd;
 
@@ -40,10 +41,19 @@ namespace MvcContrib.TestHelper.Test
 		[Test]
 		public void CanSpecifyQueryString()
 		{
-			TestControllerBuilder handler = new TestControllerBuilder();
+			var handler = new TestControllerBuilder();
 			handler.QueryString["Variable"] = "Value";
 			var testController = new TestHelperController();
 			handler.InitializeController(testController);
+			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
+		}
+
+		[Test]
+		public void CanCreateControllerWithNoArgs()
+		{
+			var handler = new TestControllerBuilder();
+			handler.QueryString["Variable"] = "Value";
+			var testController = handler.CreateController<TestHelperController>();
 			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 		}
 
@@ -57,6 +67,37 @@ namespace MvcContrib.TestHelper.Test
 			builder.InitializeController(testController);
 			Assert.That(testController.Request.Params["foo"], Is.EqualTo("bar"));
 			Assert.That(testController.Request.Params["baz"], Is.EqualTo("blah"));
+		}
+
+		[Test]
+		public void CanCreateControllerWithArgs()
+		{
+			var handler = new TestControllerBuilder();
+			handler.QueryString["Variable"] = "Value";
+			var testController = handler.CreateController<TestHelperWithArgsController>(new TestService());
+			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
+			Assert.AreEqual("Moo", testController.ReturnMooFromService());
+		}
+
+		[Test]
+		public void CanCreateControllerWithIoCArgs()
+		{
+			var mocks = new MockRepository();
+			using(mocks.Record())
+			{
+				var resolver = mocks.DynamicMock<IDependencyResolver>();
+				Expect.Call(resolver.GetImplementationOf(typeof(TestHelperWithArgsController))).Return(
+					new TestHelperWithArgsController(new TestService()));
+				DependencyResolver.InitializeWith(resolver);
+			}
+			using(mocks.Playback())
+			{
+				var handler = new TestControllerBuilder();
+				handler.QueryString["Variable"] = "Value";
+				var testController = handler.CreateIoCController<TestHelperWithArgsController>();
+				Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
+				Assert.AreEqual("Moo", testController.ReturnMooFromService());
+			}
 		}
 	}
 }
