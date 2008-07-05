@@ -74,9 +74,10 @@ namespace MvcContrib.UI.Html.Grid
 		/// </summary>
 		protected virtual void RenderItems()
 		{
+			bool isAlternate = false;
 			foreach(var item in Items)
 			{
-				RenderRowStart(item);
+				RenderRowStart(item, isAlternate);
 
 				foreach(var column in Columns)
 				{
@@ -143,6 +144,8 @@ namespace MvcContrib.UI.Html.Grid
 				}
 
 				RenderRowEnd(item);
+
+				isAlternate = !isAlternate;
 			}
 		}
 
@@ -203,7 +206,8 @@ namespace MvcContrib.UI.Html.Grid
 		/// Renders the start of a row to the output stream.
 		/// </summary>
 		/// <param name="item">The item to be rendered into this row.</param>
-		protected virtual void RenderRowStart(T item)
+		/// <param name="isAlternate">Whether the row is an alternate row</param>
+		protected virtual void RenderRowStart(T item, bool isAlternate)
 		{
 			//If there's a custom delegate for rendering the start of the row, invoke it.
 			//Otherwise fall back to the default rendering.
@@ -213,7 +217,7 @@ namespace MvcContrib.UI.Html.Grid
 			}
 			else
 			{
-				RenderRowStart();
+				RenderRowStart(isAlternate);
 			}
 		}
 
@@ -237,7 +241,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected abstract void RenderHeaderCellEnd();
 		protected abstract void RenderHeaderCellStart();
-		protected abstract void RenderRowStart();
+		protected abstract void RenderRowStart(bool isAlternate);
 		protected abstract void RenderRowEnd();
 		protected abstract void RenderEndCell();
 		protected abstract void RenderStartCell(GridColumn<T> column);
