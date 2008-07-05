@@ -84,6 +84,7 @@
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
+    <Compile Include="Attributes\LayoutAttribute.cs" />
     <Compile Include="Interfaces\IRescue.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionControllerActionInvoker.cs" />
