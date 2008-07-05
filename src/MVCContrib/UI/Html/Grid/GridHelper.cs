@@ -13,16 +13,25 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, Action<IRootGridColumnBuilder<T>> columns) where T : class
 		{
-			Grid<T>(helper, viewDataKey, null, columns);
+			Grid<T>(helper, viewDataKey, null, columns, null);
 		}
 
+		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
+		{
+			Grid(helper, viewDataKey, null, columns, sections);
+		}
 
-		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns) where T : class
+		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns) where T : class 
+		{
+			Grid(helper, viewDataKey, htmlAttributes, columns, null);
+		}
+
+		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
 			var grid = new Grid<T>(
 				viewDataKey,
 				helper.ViewContext,
-				CreateColumnBuilder(columns),
+				CreateColumnBuilder(columns, sections),
 				htmlAttributes,
 				helper.ViewContext.HttpContext.Response.Output
 			);
@@ -32,14 +41,24 @@ namespace MvcContrib.UI.Html.Grid
 
 		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, Action<IRootGridColumnBuilder<T>> columns) where T : class
 		{
-			Grid<T>(helper, dataSource, null, columns);
+			Grid<T>(helper, dataSource, null, columns, null);
 		}
 
-		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns) where T : class
+		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class 
+		{
+			Grid(helper, dataSource, null, columns, sections);
+		}
+
+		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns) where T : class 
+		{
+			Grid(helper, dataSource, htmlAttributes, columns, null);
+		}
+
+		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
 			var grid = new Grid<T>(
 				dataSource,
-				CreateColumnBuilder(columns),
+				CreateColumnBuilder(columns, sections),
 				htmlAttributes,
 				helper.ViewContext.HttpContext.Response.Output,
 				helper.ViewContext.HttpContext
@@ -48,11 +67,19 @@ namespace MvcContrib.UI.Html.Grid
 			grid.Render();
 		}
 
-		private static GridColumnBuilder<T> CreateColumnBuilder<T>(Action<IRootGridColumnBuilder<T>> columns) where T : class
+		private static GridColumnBuilder<T> CreateColumnBuilder<T>(Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
 			var builder = new GridColumnBuilder<T>();
+
 			if (columns != null)
+			{
 				columns(builder);
+			}
+
+			if(sections != null)
+			{
+				sections(builder);	
+			}
 
 			return builder;
 		}

@@ -9,7 +9,7 @@ namespace MvcContrib.UI.Html.Grid
 	/// Constructs GridColumn objects representing the columns to be rendered in a grid.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, INestedGridColumnBuilder<T>, IEnumerable<GridColumn<T>> where T : class
+	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, INestedGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>> where T : class
 	{
 		
 		private readonly List<GridColumn<T>> columns = new List<GridColumn<T>>(); //Final collection of columns to render
