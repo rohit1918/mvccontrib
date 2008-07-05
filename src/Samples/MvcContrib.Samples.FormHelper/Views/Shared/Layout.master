@@ -10,6 +10,10 @@
 		{
 			background-color: Yellow;
 		}
+		.grid .gridrow_alternate 
+		{
+			background-color: Aqua;
+		}
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>

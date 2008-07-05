@@ -1,7 +1,12 @@
-<%@ Page Language="C#" MasterPageFile="~/Shared/Layout.master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Layout.master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="MvcContrib.Samples.FormHelper.Models" %>
 <%@ Import Namespace="MvcContrib.UI.Html.Grid" %>
 <%@ Import Namespace="MvcContrib" %>
+<asp:Content runat="server" ContentPlaceHolderID="head">
+	<style type="text/css">
+		
+	</style>
+</asp:Content>
 <asp:Content ContentPlaceHolderID="body" runat="server">
 	<h1>Grid</h1>
 	

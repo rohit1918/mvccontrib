@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Shared/Layout.master" Inherits="System.Web.Mvc.ViewPage" %>
+<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Layout.master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="MvcContrib.Samples.FormHelper.Models" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
 	<p>

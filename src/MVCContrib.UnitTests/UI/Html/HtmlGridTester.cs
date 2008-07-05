@@ -99,7 +99,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_render()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr><td>Jeremy</td><td>1</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -107,7 +107,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_render_with_custom_Header_section()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Name).Header(() => Writer.Write("<td>TEST</td>")); column.For(p => p.Id); });
-			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr><td>Jeremy</td><td>1</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 
 		}
@@ -117,7 +117,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.DateOfBirth).Formatted("{0:dd}"); });
 
-			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>19</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>19</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -129,7 +129,7 @@ namespace MvcContrib.UnitTests.UI.Html
 
 		    var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
 
-			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr><td>" + dayString + "</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>" + dayString + "</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -137,7 +137,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Complicated_column()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Id.ToString() + "-" + p.Name, "Test"); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Test</th></tr></thead><tr><td>1-Jeremy</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Test</th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -145,7 +145,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Column_heading_should_be_empty()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Id.ToString() + "-" + p.Name); });
-			string expected = "<table class=\"grid\"><thead><tr><th></th></tr></thead><tr><td>1-Jeremy</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th></th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -153,7 +153,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Custom_item_section()
 		{
 			_helper.Grid<Person>("people", column => { column.For("Name").Do(s => Writer.Write("<td>Test</td>")); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr><td>Test</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Test</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -162,7 +162,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			AddToViewData("test", new ArrayList { new { Name = "Testing" } });
 			_helper.Grid<object>("test", column => { column.For("Name"); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr><td>Testing</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Testing</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -170,7 +170,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void With_cell_condition()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id).CellCondition(p => false); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr><td>Jeremy</td><td></td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td></td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -178,7 +178,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void With_col_condition()
 		{
 			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id).ColumnCondition(() => false); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr><td>Jeremy</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 
 		}
@@ -188,7 +188,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			AddToViewData("people2", new List<Person> { new Person { Name = "Jeremy&" } });
 			_helper.Grid<Person>("people2", column => { column.For(p => p.Name); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr><td>Jeremy&amp;</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy&amp;</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -197,7 +197,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			AddToViewData("people2", new List<Person> { new Person { Name = "Jeremy&" } });
 			_helper.Grid<Person>("people2", column => { column.For(p => p.Name).DoNotEncode(); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr><td>Jeremy&</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy&</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -205,7 +205,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_render_with_strongly_typed_data()
 		{
 			_helper.Grid<Person>(new List<Person> { new Person { Id = 1 } }, column => { column.For(p => p.Id); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr><td>1</td></tr></table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected)); 
 		}
 
@@ -216,7 +216,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			                                                                                                        	{
 			                                                                                                        		Writer.Write("</tr>TEST");	
 			                                                                                                        	}); });
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr><td>Jeremy</td><td>1</td></tr>TEST</table>";
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr>TEST</table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
@@ -275,6 +275,16 @@ namespace MvcContrib.UnitTests.UI.Html
 			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
 
+		}
+
+		[Test]
+		public void Alternating_rows_should_have_correct_css_class()
+		{
+			_people.Add(new Person() { Name = "Person 2" });
+			_people.Add(new Person() { Name = "Person 3" });
+			_helper.Grid<Person>("people", column => { column.For(p => p.Name);});
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr><tr class=\"gridrow_alternate\"><td>Person 2</td></tr><tr class=\"gridrow\"><td>Person 3</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 	}
 }

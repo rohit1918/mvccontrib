@@ -100,9 +100,16 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText("<th>");
 		}
 
-		protected override void RenderRowStart()
+		protected override void RenderRowStart(bool isAlternate)
 		{
-			RenderText("<tr>");
+			if(isAlternate)
+			{
+				RenderText("<tr class=\"gridrow_alternate\">");				
+			}
+			else
+			{
+				RenderText("<tr class=\"gridrow\">");
+			}
 		}
 
 		protected override void RenderRowEnd()
