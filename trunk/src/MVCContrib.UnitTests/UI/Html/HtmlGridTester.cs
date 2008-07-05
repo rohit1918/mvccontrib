@@ -210,9 +210,26 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[Test]
+		public void Should_render_with_strongly_typed_data_and_custom_sections() 
+		{
+			_helper.Grid<Person>(new List<Person> { new Person { Id = 1 } }, column => { column.For(p => p.Id); }, sections => { sections.RowStart(p => { Writer.Write("<tr foo=\"bar\">"); }); });
+			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr foo=\"bar\"><td>1</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void Should_render_with_strongly_typed_data_and_custom_attributes() 
+		{
+			_helper.Grid<Person>(new List<Person> { new Person { Id = 1 } }, new Hash(style => "width: 100%"), column => { column.For(p => p.Id); });
+			string expected = "<table style=\"width: 100%\" class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
+
+
+		[Test]
 		public void Should_render_custom_row_end()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); column.RowEnd(person =>
+			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id);  }, sections => { sections.RowEnd(person =>
 			                                                                                                        	{
 			                                                                                                        		Writer.Write("</tr>TEST");	
 			                                                                                                        	}); });
@@ -223,7 +240,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Should_render_custom_row_start()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); column.RowStart(p =>
+			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); }, sections => { sections.RowStart(p =>
 			                                                                                                          	{
 			                                                                                                          		Writer.Write("<tr class=\"row\">");
 			                                                                                                          	}); });
