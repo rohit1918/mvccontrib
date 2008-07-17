@@ -5,7 +5,7 @@ using MvcContrib.Attributes;
 using MvcContrib.Castle;
 using MvcContrib.MetaData;
 using NUnit.Framework;
-
+using NUnit.Framework.SyntaxHelpers;
 namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
@@ -187,11 +187,11 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void ShouldThrowIfReturnTypeIsNull()
+		public void Methods_that_return_void_should_be_recognised_as_actions()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-			Assert.IsNull(metaData.GetAction("VoidAction"));
+			Assert.That(metaData.GetAction("VoidAction"), Is.Not.Null);
 		}
 
 		[Test]
@@ -201,6 +201,23 @@ namespace MvcContrib.UnitTests.MetaData
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
 			Assert.IsInstanceOfType(typeof(CastleSimpleBinder), parameter.ParameterBinder);
+		}
+
+		[Test]
+		public void Methods_that_return_objects_should_be_recognised_as_actions()
+		{
+			var descriptor = new ControllerDescriptor();
+			var action = descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("ContentAction");
+
+			Assert.That(action, Is.Not.Null);
+		}
+
+		[Test]
+		public void Methods_on_controller_should_not_be_recognised_as_actions()
+		{
+			var descriptor = new ControllerDescriptor();
+			var action = descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("Dispose");
+			Assert.That(action, Is.Null);
 		}
 	}
 
@@ -241,6 +258,11 @@ namespace MvcContrib.UnitTests.MetaData
 		public ActionResult SimpleAction(string param1, int param2)
 		{
 			return new EmptyResult();
+		}
+
+		public string ContentAction()
+		{
+			return string.Empty;
 		}
 
 		public string Property { get; set; }
