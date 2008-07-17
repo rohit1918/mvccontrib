@@ -40,6 +40,10 @@
     <NoWarn>1591 1574 1711</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -85,20 +89,14 @@
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
     <Compile Include="Attributes\LayoutAttribute.cs" />
-    <Compile Include="Interfaces\IRescue.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionControllerActionInvoker.cs" />
-    <Compile Include="ExtendedComponentController\ComponentControllerBuilder.cs" />
-    <Compile Include="ExtendedComponentController\DefaultComponentControllerFactory.cs" />
-    <Compile Include="ExtendedComponentController\IComponentControllerFactory.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
     <Compile Include="ConventionController.cs" />
-    <Compile Include="ExtendedComponentController\IoCComponentControllerFactory.cs" />
     <Compile Include="Filters\PreconditionFilter.cs" />
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />
     <Compile Include="Hash.cs" />
-    <Compile Include="Interfaces\IRescuable.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
@@ -147,7 +145,6 @@
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
     <Compile Include="UI\Html\BaseHelper.cs" />
-    <Compile Include="UI\Html\ComponentControllerExtensions.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
     <Compile Include="UI\Html\Grid\GridColumn.cs" />

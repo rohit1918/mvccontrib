@@ -51,19 +51,6 @@ namespace MvcContrib.UnitTests.MetaData
 			controller.ControllerContext = controllerContext;
 		}
 
-		[Test]
-		public void ControllerDescriptorShouldFindFilters()
-		{
-			ControllerDescriptor descriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = descriptor.GetMetaData(_controller);
-			ActionMetaData action = metaData.GetAction("MultipleFilters");
-
-			Assert.AreEqual(3, action.Filters.Count);
-			Assert.AreEqual(-1, action.Filters[0].Order);
-			Assert.AreEqual(1, action.Filters[1].Order);
-			Assert.AreEqual(100, action.Filters[2].Order);
-		}
-
 		[Test, ExpectedException(typeof(InvalidOperationException))]
 		public void PostOnlyShouldReturnFalseIfRequestTypeIsNotPost()
 		{

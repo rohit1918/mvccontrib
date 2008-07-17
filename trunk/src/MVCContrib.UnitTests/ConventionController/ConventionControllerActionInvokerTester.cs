@@ -49,14 +49,14 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void InvokeAction_should_throw_for_empty_action()
 		{
 			_invoker.InvokeAction(string.Empty, null);
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+		[ExpectedException(typeof(ArgumentException))]
 		public void InvokeAction_should_throw_for_null_action()
 		{
 			_invoker.InvokeAction(null, null);

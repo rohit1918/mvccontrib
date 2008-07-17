@@ -60,18 +60,12 @@ namespace MvcContrib.UnitTests.ConventionController
 		public void When_OnActionExecuted_is_invoked_then_the_correct_view_should_be_rendered()
 		{
 			RescueAttribute rescue = new RescueAttribute("TestRescue");
-            Assert.That(rescue.PerformRescue(_exception, _controllerContext), Is.True);
+
+			var context = new ExceptionContext(_controllerContext, _exception);
+			rescue.OnException(context);
+            Assert.That(context.ExceptionHandled);
 			string expectedRescueView = "Rescues/TestRescue";
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
-		}
-
-		[Test]
-		public void If_controller_is_a_ConventionController_then_OnPreRescue_should_be_invoked()
-		{
-			RescueAttribute rescue = new RescueAttribute("TestRescue");
-			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
-            Assert.That(rescue.PerformRescue(_exception, _controllerContext), Is.True);
-			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.True);
 		}
 
 		[Test]
@@ -81,10 +75,12 @@ namespace MvcContrib.UnitTests.ConventionController
 			_exception = new RescueTestException();
 			SetupController(_controller);
 			rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
+			var context = new ExceptionContext(_controllerContext, _exception);
+            rescue.OnException(context);
 
-            Assert.That(rescue.PerformRescue(_exception, _controllerContext), Is.False);
+			Assert.That(context.ExceptionHandled, Is.False);
 			Assert.That(_viewEngine.ViewContext, Is.Null);
-			Assert.That(((RescueTestController)_controller).OnPreRescueFired, Is.False);
+			Assert.That(((RescueTestController)_controller).OnExceptionFired, Is.False);
 		}
 
 		[Test]
@@ -95,7 +91,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			_exception = new RescueTestException();
 			SetupController(_controller);
 			rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
-            rescue.PerformRescue(_exception, _controllerContext);
+			var context = new ExceptionContext(_controllerContext, _exception);
+            rescue.OnException(context);
 			
 			string expectedRescueView = "Rescues/TestRescue";
 			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
@@ -135,7 +132,10 @@ namespace MvcContrib.UnitTests.ConventionController
 			var exception = (ThreadAbortException)constructors.Where(c => c.GetParameters().Length == 0).First().Invoke(null);
 
 			var rescue = new RescueAttribute("TestRescue");
-            Assert.IsTrue(rescue.PerformRescue(exception, _controllerContext));
+			var context = new ExceptionContext(_controllerContext, exception);
+			rescue.OnException(context);
+
+            Assert.IsTrue(context.ExceptionHandled);
 			Assert.IsNull(_viewEngine.ViewContext);
 		}
 	}
@@ -159,9 +159,9 @@ namespace MvcContrib.UnitTests.ConventionController
 	}
 
 	[Rescue("TestRescue")]
-    internal class RescueTestController : BaseRescueTestController, IRescuable
+    internal class RescueTestController : BaseRescueTestController
 	{
-		public bool OnPreRescueFired;
+		public bool OnExceptionFired;
 		public bool ActionExecuted;
 
 		public ActionResult ThrowError()
@@ -182,9 +182,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			return new EmptyResult();
 		}
 
-		public void OnPreRescue(Exception exception)
-		{
-			OnPreRescueFired = true;
+		protected override void OnException(ExceptionContext filterContext) {
+			OnExceptionFired = true;
 		}
 	}
 

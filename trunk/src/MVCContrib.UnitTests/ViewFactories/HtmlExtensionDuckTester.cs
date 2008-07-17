@@ -27,11 +27,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
+		    RouteData routeData = new RouteData();
+		    routeData.Values["controller"] = "testcontroller";
+		    RequestContext requestContext = new RequestContext(httpContext,
+		                                                       routeData
+		                                                          );
 			IController controller = _mocks.DynamicMock<IController>();
 			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
-			ViewContext viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
+			ViewContext viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary());
 
 			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
 			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper);

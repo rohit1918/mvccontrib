@@ -123,7 +123,8 @@ namespace MvcContrib.TestHelper
 			_mocks.Replay(request);
 			_mocks.Replay(response);
 
-			TempDataDictionary = new TempDataDictionary(HttpContext);
+			//TempDataDictionary = new TempDataDictionary(HttpContext);
+            TempDataDictionary = new TempDataDictionary();
 		}
 
 		/// <summary>

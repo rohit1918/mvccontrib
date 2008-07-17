@@ -1,7 +1,5 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MvcContrib.ActionResults;
-using MvcContrib.Interfaces;
 
 namespace MvcContrib
 {
@@ -9,21 +7,17 @@ namespace MvcContrib
 	/// Base controller class that implements additional features over Controller.
 	/// Includes support for Rescues, Parameter Binders and Default Actions.
 	/// </summary>
-	public class ConventionController : Controller, IRescuable
+	public class ConventionController : Controller
 	{
 		protected override void Execute(ControllerContext controllerContext)
 		{
-			ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+			ActionInvoker = CreateActionInvoker(controllerContext);
 			base.Execute(controllerContext);
 		}
 
-		/// <summary>
-		/// Occurs before a Rescue is invoked.
-		/// </summary>
-		/// <param name="thrownException">The exception that was thrown</param>
-		[NonAction]
-		public virtual void OnPreRescue(Exception thrownException)
+		protected virtual ControllerActionInvoker CreateActionInvoker(ControllerContext controllerContext)
 		{
+			return new ConventionControllerActionInvoker(controllerContext);
 		}
 
 		/// <summary>

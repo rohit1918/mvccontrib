@@ -36,7 +36,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_viewContext =
 				new ViewContext(controllerContext, "Index", "", new ViewDataDictionary(),
-				                new TempDataDictionary(controllerContext.HttpContext));
+				                new TempDataDictionary());
 		}
 
 		[Test]
