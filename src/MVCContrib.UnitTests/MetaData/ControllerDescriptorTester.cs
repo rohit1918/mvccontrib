@@ -40,19 +40,6 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void DoesParseControllerAndActionRescues()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-
-			MetaDataTestController controller = new MetaDataTestController();
-
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
-
-			Assert.AreEqual(1, metaData.GetAction("BasicAction").Rescues.Count);
-			Assert.AreEqual(2, metaData.GetAction("ComplexAction").Rescues.Count);
-		}
-
-		[Test]
 		public void OutAndRefParametersAreInvalid()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();

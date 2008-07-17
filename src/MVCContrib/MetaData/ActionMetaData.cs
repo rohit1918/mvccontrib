@@ -30,17 +30,5 @@ namespace MvcContrib.MetaData
 		{
 			get { return _parameters; }
 		}
-
-		private readonly List<IRescue> _rescues = new List<IRescue>();
-		public IList<IRescue> Rescues
-		{
-			get { return _rescues;  }
-		}
-
-		private readonly List<ActionFilterAttribute> _filters = new List<ActionFilterAttribute>();
-		public IList<ActionFilterAttribute> Filters
-		{
-			get { return _filters; }
-		}
 	}
 }
