@@ -93,7 +93,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		{
 			RouteData routeData = new RouteData();
 			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
-			                                          new TempDataDictionary(HttpContext));
+			                                          new TempDataDictionary());
 				// new ControllerContext(HttpContext, routeData, new Controller());
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
