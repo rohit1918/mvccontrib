@@ -11,8 +11,13 @@ namespace MvcContrib
 	{
 		protected override void Execute(ControllerContext controllerContext)
 		{
-			ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+			ActionInvoker = CreateActionInvoker(controllerContext);
 			base.Execute(controllerContext);
+		}
+
+		protected virtual ControllerActionInvoker CreateActionInvoker(ControllerContext controllerContext)
+		{
+			return new ConventionControllerActionInvoker(controllerContext);
 		}
 
 		/// <summary>
