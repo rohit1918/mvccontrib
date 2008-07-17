@@ -178,7 +178,10 @@ namespace MvcContrib.Attributes
 			if(controllerContext.Controller is Controller)
 				tempData = ((Controller)controllerContext.Controller).TempData;
 			else
-				tempData = new TempDataDictionary(controllerContext.HttpContext);
+			{
+			    tempData = new TempDataDictionary();
+                //tempData = new TempDataDictionary(controllerContext.HttpContext);
+			}
 			return new ViewContext(controllerContext, ViewName, null, new ViewDataDictionary(exception), tempData);
 		}
 

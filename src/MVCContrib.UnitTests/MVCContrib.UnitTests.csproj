@@ -149,12 +149,6 @@
     <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
-    <Compile Include="ComponentControllerFactories\ComponentControllerBuilderTester.cs" />
-    <Compile Include="ComponentControllerFactories\DefaultComponentControllerFactoryTester.cs" />
-    <Compile Include="ComponentControllerFactories\NumberService.cs" />
-    <Compile Include="ComponentControllerFactories\IoCComponentControllerFactoryTester.cs" />
-    <Compile Include="ComponentControllerFactories\SampleComponentController.cs" />
-    <Compile Include="ComponentControllerFactories\SampleComponentController2.cs" />
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
@@ -247,7 +241,6 @@
     <Compile Include="UI\DomQueryBuilderTester.cs" />
     <Compile Include="UI\DomQueryTester.cs" />
     <Compile Include="UI\ElementTester.cs" />
-    <Compile Include="UI\Html\ComponentControllerExtensionsTester.cs" />
     <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
     <Compile Include="UI\Html\FormHelperTester.cs" />
     <Compile Include="UI\Html\GridColumnBuilderTester.cs" />

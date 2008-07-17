@@ -82,15 +82,18 @@ namespace MvcContrib
 			}
 
 			SelectedAction = actionMetaData;
-
-			var filters = GetAllActionFilters(actionMetaData.MethodInfo);
+            
+			//var filters = GetAllActionFilters(actionMetaData.MethodInfo);
+            
+            FilterInfo filters = base.GetFiltersForActionMethod(actionMetaData.MethodInfo);
+            
 
 			try
 			{
 				ActionExecutedContext postContext = InvokeActionMethodWithFilters(actionMetaData.MethodInfo,
 				                                                                  values ?? new Dictionary<string, object>(),
-				                                                                  filters);
-				InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters);
+				                                                                  filters.ActionFilters);
+				InvokeActionResultWithFilters(postContext.Result ?? new EmptyResult(), filters.ResultFilters);
 			}
 			catch(Exception exception)
 			{
