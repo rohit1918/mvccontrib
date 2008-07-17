@@ -12,16 +12,17 @@ namespace MvcContrib.Castle
 		{
 		}
 
-		public string Submit(string buttonText)
-		{
-			return this.SubmitButton(string.Empty, buttonText);
-		}
+        //public string Submit(string buttonText)
+        //{
+        //    return base.b
+        //    return this.SubmitButton(string.Empty, buttonText);
+        //}
 
-		public string Submit(string buttonText, IDictionary htmlAttributes)
-		{
-			string id = RemoveKey(htmlAttributes, "id", string.Empty);
-			return this.SubmitButton(id, buttonText, (object)new DescriptableDictionary(htmlAttributes));
-		}
+        //public string Submit(string buttonText, IDictionary htmlAttributes)
+        //{
+        //    string id = RemoveKey(htmlAttributes, "id", string.Empty);
+        //    return this.SubmitButton(id, buttonText, (object)new DescriptableDictionary(htmlAttributes));
+        //}
 
 		public string TextBox(string htmlName, IDictionary htmlAttributes)
 		{
@@ -33,15 +34,16 @@ namespace MvcContrib.Castle
 			return this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
 		}
 
-		public string Mailto(string emailAddress, string linkText, IDictionary htmlAttributes)
-		{
-			string subject = RemoveKey(htmlAttributes, "subject", string.Empty);
-			string body = RemoveKey(htmlAttributes, "body", string.Empty);
-			string cc = RemoveKey(htmlAttributes, "cc", string.Empty);
-			string bcc = RemoveKey(htmlAttributes, "bcc", string.Empty);
+        //public string Mailto(string emailAddress, string linkText, IDictionary htmlAttributes)
+        //{
+        //    string subject = RemoveKey(htmlAttributes, "subject", string.Empty);
+        //    string body = RemoveKey(htmlAttributes, "body", string.Empty);
+        //    string cc = RemoveKey(htmlAttributes, "cc", string.Empty);
+        //    string bcc = RemoveKey(htmlAttributes, "bcc", string.Empty);
 
-			return this.Mailto(emailAddress, linkText, subject, body, cc, bcc, MakeGeneric(htmlAttributes));
-		}
+        //    return base.
+        //    return this.Mailto(emailAddress, linkText, subject, body, cc, bcc, MakeGeneric(htmlAttributes));
+        //}
 
 		private static T RemoveKey<T>(IDictionary hash, string key, T defaultValue)
 		{

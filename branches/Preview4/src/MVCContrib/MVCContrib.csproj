@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30428</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -40,6 +40,10 @@
     <NoWarn>1591 1574 1711</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -88,12 +92,8 @@
     <Compile Include="Interfaces\IRescue.cs" />
     <Compile Include="Attributes\RescueAttribute.cs" />
     <Compile Include="ConventionControllerActionInvoker.cs" />
-    <Compile Include="ExtendedComponentController\ComponentControllerBuilder.cs" />
-    <Compile Include="ExtendedComponentController\DefaultComponentControllerFactory.cs" />
-    <Compile Include="ExtendedComponentController\IComponentControllerFactory.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
     <Compile Include="ConventionController.cs" />
-    <Compile Include="ExtendedComponentController\IoCComponentControllerFactory.cs" />
     <Compile Include="Filters\PreconditionFilter.cs" />
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />
@@ -147,7 +147,6 @@
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
     <Compile Include="UI\Html\BaseHelper.cs" />
-    <Compile Include="UI\Html\ComponentControllerExtensions.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
     <Compile Include="UI\Html\Grid\GridColumn.cs" />

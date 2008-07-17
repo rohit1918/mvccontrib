@@ -47,7 +47,7 @@ namespace MvcContrib.UnitTests
 
             _mocks.Replay(httpContext);
 
-            return new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary(controllerContext.HttpContext));
+            return new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary());
         }
 
         private void WriteToStream(Stream stream, string content)

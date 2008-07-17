@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using MvcContrib.TestHelper;
-using MvcContrib.UnitTests.ComponentControllerFactories;
+//using MvcContrib.UnitTests.ComponentControllerFactories;
 using MvcContrib.UnitTests.TestHelper;
 using NUnit.Framework;
 using Rhino.Mocks;
