@@ -42,7 +42,7 @@ namespace MvcContrib.Attributes
 	/// </summary>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-	public class RescueAttribute : Attribute, IRescue
+	public class RescueAttribute : FilterAttribute, IExceptionFilter
 	{
 		private string _view;
 		private readonly Type[] _exceptionsTypes;
@@ -78,44 +78,43 @@ namespace MvcContrib.Attributes
 			AutoLocate = true;
 		}
 
+
 		/// <summary>
 		/// After the action has been executed, the Rescue will be invoked if the filterContext has an Exception.
 		/// </summary>
-		/// <param name="controllerContext">The current controllercontext.</param>
-		/// <param name="exception">The exception that was thrown.</param>
-		/// <returns>True if the error was handled, otherwise false.</returns>
-		public virtual bool PerformRescue(Exception exception, ControllerContext controllerContext)
+		/// <param name="filterContext">The current filter context.</param>
+		public virtual void OnException(ExceptionContext filterContext) 
 		{
-			Type baseExceptionType = exception.GetBaseException().GetType();
+			Type baseExceptionType = filterContext.Exception.GetBaseException().GetType();
 
-			if(IsThreadAbortException(baseExceptionType))
-				return true;
-
-			foreach(var expectedExceptionType in ExceptionsTypes)
+			if (IsThreadAbortException(baseExceptionType))
 			{
-				if(expectedExceptionType.IsAssignableFrom(baseExceptionType))
-				{
-					if(AutoLocate)
-					{
-						if(ViewExists(baseExceptionType, controllerContext))
-						{
+				filterContext.ExceptionHandled = true;
+				return;
+			}
+
+			foreach (var expectedExceptionType in ExceptionsTypes) {
+				if (expectedExceptionType.IsAssignableFrom(baseExceptionType)) {
+					if (AutoLocate) {
+						if (ViewExists(baseExceptionType, filterContext)) {
 							ViewName = baseExceptionType.Name;
-							ActivateSpecificRescue(exception, controllerContext);
-							return true;
+							ActivateSpecificRescue(filterContext.Exception, filterContext);
+							filterContext.ExceptionHandled = true;
+							return;
 						}
 
-						if(ViewExists(expectedExceptionType, controllerContext))
-						{
+						if (ViewExists(expectedExceptionType, filterContext)) {
 							ViewName = expectedExceptionType.Name;
-							ActivateSpecificRescue(exception, controllerContext);
-							return true;
+							ActivateSpecificRescue(filterContext.Exception, filterContext);
+							filterContext.ExceptionHandled = true;
+							return;
 						}
 					}
-					ActivateSpecificRescue(exception, controllerContext);
-					return true;
+					ActivateSpecificRescue(filterContext.Exception, filterContext);
+					filterContext.ExceptionHandled = true;
+					return;
 				}
 			}
-			return false;
 		}
 
 		/// <summary>
@@ -151,8 +150,6 @@ namespace MvcContrib.Attributes
 
 		protected virtual void ActivateSpecificRescue(Exception exception, ControllerContext controllerContext)
 		{
-			if(controllerContext.Controller is IRescuable && controllerContext.Controller != null)
-				((IRescuable)controllerContext.Controller).OnPreRescue(exception);
 			IViewEngine viewEngine = null;
 			if(controllerContext.Controller is Controller)
 				viewEngine = ((Controller)controllerContext.Controller).ViewEngine;
