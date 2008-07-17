@@ -33,9 +33,9 @@ namespace MvcContrib.MetaData
 			foreach (MethodInfo actionMethod in actionMethods)
 			{
 				if (actionMethod.DeclaringType == typeof(object) 
+					|| actionMethod.DeclaringType == typeof(Controller)
 					|| ! IsValidAction(actionMethod) 
-					|| IsProperty(actionMethod)
-					|| !typeof(ActionResult).IsAssignableFrom(actionMethod.ReturnType))
+					|| actionMethod.IsSpecialName)
 				{
 					continue;
 				}
@@ -71,7 +71,7 @@ namespace MvcContrib.MetaData
 
 		protected virtual bool IsProperty(MethodInfo method)
 		{
-			if((method.Name.StartsWith("get_") || method.Name.StartsWith("set_")) && method.IsSpecialName)
+			if(method.IsSpecialName)
 			{
 				return true;
 			}
