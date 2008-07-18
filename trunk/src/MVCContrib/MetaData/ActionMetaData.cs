@@ -30,5 +30,7 @@ namespace MvcContrib.MetaData
 		{
 			get { return _parameters; }
 		}
+
+		public FilterInfo Filters { get; set; }
 	}
 }

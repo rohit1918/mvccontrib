@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.Castle;
+using MvcContrib.Filters;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -219,6 +220,22 @@ namespace MvcContrib.UnitTests.MetaData
 			var action = descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("Dispose");
 			Assert.That(action, Is.Null);
 		}
+
+		[Test]
+		public void Filters_should_return_filters_for_controller_and_action()
+		{
+			var filters = new ControllerDescriptor().GetMetaData(typeof(MetaDataTestController)).GetAction("BasicAction").Filters;
+			Assert.That(filters.ExceptionFilters.Count, Is.EqualTo(1));
+			Assert.That(filters.ActionFilters.Count, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Filters_should_be_ordered_correctly()
+		{
+			var filters = new ControllerDescriptor().GetMetaData(typeof(MetaDataTestController)).GetAction("BasicAction").Filters;
+			Assert.That(filters.ActionFilters[0], Is.InstanceOfType(typeof(PostOnlyAttribute)));
+			Assert.That(filters.ActionFilters[1], Is.InstanceOfType(typeof(OutputCacheAttribute)));
+		}
 	}
 
 	internal class CountControllerDescriptor : IControllerDescriptor
@@ -237,7 +254,7 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 	}
 
-	[Rescue("Test")]
+	[Rescue("Test"), PostOnly]
 	internal class MetaDataTestController : Controller
 	{
 		public void VoidAction()
@@ -245,6 +262,7 @@ namespace MvcContrib.UnitTests.MetaData
 			
 		}
 
+		[OutputCache]
 		public ActionResult BasicAction()
 		{
 			return new EmptyResult();
@@ -290,17 +308,6 @@ namespace MvcContrib.UnitTests.MetaData
 			test = "test";
 			return new EmptyResult();
 		}
-
-//		public bool DoInvokeAction(string action)
-//		{
-//			return InvokeAction(action);
-//			throw new NotImplementedException();
-//		}
-
-//		public void DoInvokeActionMethod(ActionMetaData action)
-//		{
-//			InvokeActionMethod(action);
-//		}
 	}
 
 	internal class TestControllerWithMultipleDefaultActions : Controller
