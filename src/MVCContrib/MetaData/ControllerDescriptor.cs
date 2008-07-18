@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
@@ -29,6 +30,8 @@ namespace MvcContrib.MetaData
 
 			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
 
+			var controllerFilters = GetFilters(metaData.ControllerType);
+
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
 			foreach (MethodInfo actionMethod in actionMethods)
 			{
@@ -41,6 +44,8 @@ namespace MvcContrib.MetaData
 				}
 
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
+				
+				actionMetaData.Filters = CreateFilterInfo(controllerFilters, GetFilters(actionMethod), actionMetaData);
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
 				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
@@ -67,15 +72,6 @@ namespace MvcContrib.MetaData
 			}
 
 			return metaData;
-		}
-
-		protected virtual bool IsProperty(MethodInfo method)
-		{
-			if(method.IsSpecialName)
-			{
-				return true;
-			}
-			return false;
 		}
 
 		protected virtual bool IsDefaultAction(ActionMetaData actionMetaData)
@@ -116,6 +112,11 @@ namespace MvcContrib.MetaData
 			return new ActionParameterMetaData(parameter);
 		}
 
+		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
+		{
+			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
+		}
+
 		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
 		{
 			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);
@@ -130,6 +131,21 @@ namespace MvcContrib.MetaData
 			}
 
 			return null;
+		}
+
+		protected virtual FilterInfo CreateFilterInfo(FilterAttribute[] controllerFilters, FilterAttribute[] actionFilters, ActionMetaData actionMetaData) 
+		{
+			var filters = controllerFilters.Concat(actionFilters).OrderBy(f => f.Order).ToList();
+
+			var filterInfo = new FilterInfo 
+			{
+				ActionFilters = filters.OfType<IActionFilter>().ToList(),
+				AuthorizationFilters = filters.OfType<IAuthorizationFilter>().ToList(),
+				ExceptionFilters = filters.OfType<IExceptionFilter>().ToList(),
+				ResultFilters = filters.OfType<IResultFilter>().ToList()
+			};
+
+			return filterInfo;
 		}
 	}
 
