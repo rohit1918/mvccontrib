@@ -1,15 +1,6 @@
-using System;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Web.Mvc;
-using System.Web.Routing;
 using MvcContrib.ActionResults;
-using MvcContrib.MetaData;
-using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Rhino.Mocks;
-using System.Web;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
@@ -17,12 +8,10 @@ namespace MvcContrib.UnitTests.ConventionController
 	public class ConventionControllerTester
 	{
 		private TestController _controller;
-		private MockRepository _mocks;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mocks = new MockRepository();
 			_controller = new TestController();
 		}
 
@@ -39,6 +28,16 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			var result = _controller.BinaryResult() as BinaryResult;
 			Assert.That(result, Is.Not.Null);
+		}
+
+		[Test]
+		public void Expression_based_redirect_to_action_should_redirect_correctly()
+		{
+			var redirectToRouteResult = _controller.RedirectAction();
+
+			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("Test"));
+			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("BasicAction"));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
 		}
 	}
 }

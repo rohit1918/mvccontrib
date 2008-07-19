@@ -149,6 +149,7 @@
     <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
+    <Compile Include="ControllerExtensionsTester.cs" />
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />

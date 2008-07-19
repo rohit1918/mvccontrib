@@ -1,29 +1,19 @@
-using System;
-using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
-using MvcContrib.ActionResults;
 using MvcContrib.Attributes;
-using MvcContrib.MetaData;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
-	class TestController : Controller
+	class TestController : MvcContrib.ConventionController
 	{
-		public bool CancelAction = false;
-		public bool ActionWasCalled = false;
+		public bool CancelAction;
+		public bool ActionWasCalled;
 		public bool OnErrorWasCalled = false;
-		public bool? OnErrorResult = null;
+		public bool? OnErrorResult = false;
 		public bool ReturnBinderInvoked = false;
 		public bool ActionExecutingCalled;
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
-
-        protected override void Execute(ControllerContext controllerContext)
-        {
-            this.ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
-            base.Execute(controllerContext);
-        }
         
         [TestFilter]
 		public ActionResult BinderFilterOrderingAction([TestBinder] object item)
@@ -76,12 +66,17 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		public ActionResult XmlResult()
 		{
-			return new XmlResult("Test 1 2 3");
+			return Xml("Test 1 2 3");
 		}
 
 		public ActionResult BinaryResult() 
 		{
-			return new BinaryResult(new byte[1], "application/ms-excel", true, "test.pdf");
+			return Binary(new byte[1], "application/ms-excel", true, "test.pdf");
+		}
+
+		public RedirectToRouteResult RedirectAction()
+		{
+			return RedirectToAction<TestController>(c => c.BasicAction(1));
 		}
 	}
 }
