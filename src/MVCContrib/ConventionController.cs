@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq.Expressions;
+using System.Web.Mvc;
+using Microsoft.Web.Mvc.Internal;
 using MvcContrib.ActionResults;
 
 namespace MvcContrib
@@ -41,6 +44,17 @@ namespace MvcContrib
 		protected virtual BinaryResult Binary(byte[] content, string contentType, bool asAttachment, string filename)
 		{
 			return new BinaryResult(content, contentType, asAttachment, filename);
+		}
+
+		/// <summary>
+		/// Redirects to an action using expression-based syntax
+		/// </summary>
+		/// <typeparam name="T">The type of the controller</typeparam>
+		/// <param name="action">The action to redirect to on the controller</param>
+		/// <returns>A <see cref="RedirectToRouteResult"/> pointing to the specified action on the specified controller</returns>
+		protected virtual RedirectToRouteResult RedirectToAction<T>(Expression<Action<T>> action) where T : Controller
+		{
+			return new RedirectToRouteResult(ExpressionHelper.GetRouteValuesFromExpression(action));
 		}
 	}
 }
