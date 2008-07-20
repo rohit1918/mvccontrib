@@ -1,7 +1,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.Attributes;
+using MvcContrib.Filters;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;

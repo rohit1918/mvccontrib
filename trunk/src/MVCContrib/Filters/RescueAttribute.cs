@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
 
-namespace MvcContrib.Attributes
+namespace MvcContrib.Filters
 {
 	/// <summary>
 	/// Filter attribute for handling errors.
@@ -176,8 +176,8 @@ namespace MvcContrib.Attributes
 				tempData = ((Controller)controllerContext.Controller).TempData;
 			else
 			{
-			    tempData = new TempDataDictionary();
-                //tempData = new TempDataDictionary(controllerContext.HttpContext);
+				tempData = new TempDataDictionary();
+				//tempData = new TempDataDictionary(controllerContext.HttpContext);
 			}
 			return new ViewContext(controllerContext, ViewName, null, new ViewDataDictionary(exception), tempData);
 		}
