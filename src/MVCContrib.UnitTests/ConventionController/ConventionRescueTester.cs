@@ -4,7 +4,7 @@ using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib;
-using MvcContrib.Attributes;
+using MvcContrib.Filters;
 using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;

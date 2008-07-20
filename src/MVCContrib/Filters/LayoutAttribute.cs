@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-namespace MvcContrib.Attributes
+namespace MvcContrib.Filters
 {
 	/// <summary>
 	/// Decorates a controller class to denote the default layout for all actions on the controller.
