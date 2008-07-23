@@ -8,14 +8,12 @@ namespace MvcContrib.UnitTests.ConventionController
 	{
 		public bool CancelAction;
 		public bool ActionWasCalled;
-		public bool OnErrorWasCalled = false;
 		public bool? OnErrorResult = false;
-		public bool ReturnBinderInvoked = false;
 		public bool ActionExecutingCalled;
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
-        
-        [TestFilter]
+
+		[TestFilter]
 		public ActionResult BinderFilterOrderingAction([TestBinder] object item)
 		{
 			return new EmptyResult();
@@ -69,14 +67,19 @@ namespace MvcContrib.UnitTests.ConventionController
 			return Xml("Test 1 2 3");
 		}
 
-		public ActionResult BinaryResult() 
+		public ActionResult BinaryResult()
 		{
 			return Binary(new byte[1], "application/ms-excel", true, "test.pdf");
 		}
 
-		public RedirectToRouteResult RedirectAction()
+		public RedirectToRouteResult RedirectActionOnSameController()
 		{
 			return RedirectToAction<TestController>(c => c.BasicAction(1));
+		}
+
+		public RedirectToRouteResult RedirectActionOnAnotherController()
+		{
+			return RedirectToAction<AnotherTestController>(c => c.SomeAction(2));
 		}
 	}
 }

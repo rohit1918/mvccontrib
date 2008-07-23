@@ -47,14 +47,14 @@ namespace MvcContrib
 		}
 
 		/// <summary>
-		/// Redirects to an action using expression-based syntax
+		/// Redirects to an action on the same or another controller using expression-based syntax
 		/// </summary>
-		/// <typeparam name="T">The type of the controller</typeparam>
-		/// <param name="action">The action to redirect to on the controller</param>
-		/// <returns>A <see cref="RedirectToRouteResult"/> pointing to the specified action on the specified controller</returns>
+		/// <typeparam name="T">The type of the controller on which to call the action</typeparam>
+		/// <param name="action">An expression which identifies the action to redirect to on the controller of type <typeparamref name="T"/></param>
+		/// <returns>A <see cref="RedirectToRouteResult"/> pointing to the action specified by the <paramref name="action"/> expression</returns>
 		protected virtual RedirectToRouteResult RedirectToAction<T>(Expression<Action<T>> action) where T : Controller
 		{
-			return new RedirectToRouteResult(ExpressionHelper.GetRouteValuesFromExpression(action));
+			return ((Controller)this).RedirectToAction(action);
 		}
 	}
 }

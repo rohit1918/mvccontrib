@@ -31,13 +31,23 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
-		public void Expression_based_redirect_to_action_should_redirect_correctly()
+		public void Expression_based_redirect_to_action_should_redirect_correctly_to_same_controller()
 		{
-			var redirectToRouteResult = _controller.RedirectAction();
+			var redirectToRouteResult = _controller.RedirectActionOnSameController();
 
 			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("Test"));
 			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("BasicAction"));
 			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Expression_based_redirect_to_action_should_redirect_correctly_to_another_controller()
+		{
+			var redirectToRouteResult = _controller.RedirectActionOnAnotherController();
+
+			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("AnotherTest"));
+			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("SomeAction"));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(2));
 		}
 	}
 }
