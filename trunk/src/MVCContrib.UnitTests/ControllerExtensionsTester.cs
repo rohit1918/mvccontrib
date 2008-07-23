@@ -8,13 +8,23 @@ namespace MvcContrib.UnitTests
 	public class ControllerExtensionsTester
 	{
 		[Test]
-		public void RedirectToAction_should_redirect_correctly()
+		public void RedirectToAction_should_redirect_correctly_on_same_controller()
 		{
-			var redirectToRouteResult = new TestController().RedirectToAction(c => c.BasicAction(1));
+			var redirectToRouteResult = new AnotherTestController().RedirectToAction(c => c.SomeAction(1));
+
+			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("AnotherTest"));
+			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("SomeAction"));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
+		}
+
+		[Test]
+		public void RedirectToAction_should_redirect_correctly_on_another_controller()
+		{
+			var redirectToRouteResult = new AnotherTestController().RedirectToAction<TestController>(c => c.BasicAction(2));
 
 			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("Test"));
 			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("BasicAction"));
-			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(2));
 		}
 	}
 }
