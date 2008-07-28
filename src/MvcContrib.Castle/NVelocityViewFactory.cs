@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Configuration;
 using System.IO;
 using System.Web.Mvc;
 using Commons.Collections;
@@ -22,13 +23,15 @@ namespace MvcContrib.Castle
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.RESOURCE_LOADER, "file");
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, targetViewFolder);
 			DEFAULT_PROPERTIES.Add("master.folder", "masters");
+
+		    AddHtmlExtensionsFromConfig();
 		}
 
-		public NVelocityViewFactory() : this(DEFAULT_PROPERTIES)
+	    public NVelocityViewFactory() : this(DEFAULT_PROPERTIES)
 		{
 		}
 
-		public NVelocityViewFactory(IDictionary properties)
+	    public NVelocityViewFactory(IDictionary properties)
 		{
 			if( properties == null ) properties = DEFAULT_PROPERTIES;
 
@@ -44,7 +47,21 @@ namespace MvcContrib.Castle
 			_engine.Init(props);
 		}
 
-		private Template ResolveMasterTemplate(string masterName)
+	    private static void AddHtmlExtensionsFromConfig()
+	    {
+	        var section = ConfigurationManager.GetSection("nvelocity");
+            if (section == null)
+                return;
+
+	        var config = (NVelocityConfiguration)section;
+            
+            foreach(var t in  config.HtmlExtensionTypes)
+            {
+                HtmlExtensionDuck.AddExtension(t);
+            }
+	    }
+
+	    private Template ResolveMasterTemplate(string masterName)
 		{
 			Template masterTemplate = null;
 

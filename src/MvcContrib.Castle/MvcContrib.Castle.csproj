@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30428</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -53,10 +53,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\NVelocity.dll</HintPath>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -88,6 +93,7 @@
     <Compile Include="DescriptableDictionary.cs" />
     <Compile Include="HtmlExtensionDuck.cs" />
     <Compile Include="ICastleBindingContainer.cs" />
+    <Compile Include="NVelocityConfiguration.cs" />
     <Compile Include="NVelocityHtmlHelper.cs" />
     <Compile Include="NVelocityView.cs" />
     <Compile Include="NVelocityViewFactory.cs" />

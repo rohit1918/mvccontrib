@@ -1,12 +1,23 @@
 using System;
+using System.Web.Mvc;
 using MvcContrib.Castle;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("NVelocityViewEngine")]
 	public class ExtensionDuckTester
 	{
+	    private MockRepository _mocks;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _mocks = new MockRepository();
+        }
+
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Depends_On_Instance()
@@ -42,5 +53,28 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			object o = new ExtensionDuck(new object()).Introspector;
 		}
+
+        [Test]
+        public void CanAddExtensionsToHtmlExtensionDuck()
+        {
+            var viewContext = _mocks.DynamicViewContext("someView");
+            var viewDataContainer = _mocks.DynamicMock<IViewDataContainer>();
+
+            HtmlExtensionDuck.AddExtension(typeof(HtmlExtensionForTesting));
+            var htmlExtensionDuck = new HtmlExtensionDuck(viewContext, viewDataContainer);
+
+            object result = htmlExtensionDuck.Invoke("Foo");
+
+            Assert.That(result, Is.EqualTo("Bar"));
+                        
+        }       
 	}
+
+    public static class HtmlExtensionForTesting
+    {
+        public static string Foo(this HtmlHelper html)
+        {
+            return "Bar";
+        }
+    }
 }
