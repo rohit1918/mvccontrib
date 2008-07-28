@@ -1,30 +1,29 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using Microsoft.Web.Mvc;
 
 namespace MvcContrib.Castle
 {
 	public class HtmlExtensionDuck : ExtensionDuck
 	{
-		public static readonly Type[] HTML_EXTENSION_TYPES =
-			new Type[]
-				{
-					//typeof(ButtonsAndLinkExtensions),
-                    //typeof(CheckBoxExtension),
+	    private static readonly List<Type> _extensionTypes = new List<Type>
+	        {
+	        		typeof(ButtonsAndLinkExtensions),                    
 					typeof(FormExtensions), 
-                    //typeof(ImageExtensions), 
-                    typeof(LinkExtensions), 
-                    //typeof(RadioListExtension),
-					//typeof(SelectExtension),
-                    typeof(TextInputExtensions), typeof(UserControlExtensions)
-				};
+                    typeof(ImageExtensions), 
+                    typeof(LinkExtensions),                     
+                    typeof(TextInputExtensions), 
+                    typeof(UserControlExtensions)
+			};
 
-		public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)
+	    public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)
 			: this(new NVelocityHtmlHelper(viewContext, container))
 		{
 		}
 
 		public HtmlExtensionDuck(HtmlHelper htmlHelper)
-			: this(htmlHelper, HTML_EXTENSION_TYPES)
+			: this(htmlHelper, _extensionTypes.ToArray())
 		{
 		}
 
@@ -32,5 +31,17 @@ namespace MvcContrib.Castle
 			: base(htmlHelper, extentionTypes)
 		{
 		}
+
+	    ///<summary>
+	    /// Registers an extension type for evaluation later during duck typing interrogation.
+	    /// 
+	    /// Add your own extensions here in Application_Start for use in NVelocity views.
+	    ///</summary>
+	    ///<param name="type"></param>
+	    public static void AddExtension(Type type)
+	    {
+	        if (!_extensionTypes.Contains(type))
+	            _extensionTypes.Add(type);
+	    }
 	}
 }

@@ -1,6 +1,8 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 using Rhino.Mocks;
 using HttpSessionStateBase = System.Web.HttpSessionStateBase;
 using System.Security.Principal;
@@ -84,5 +86,16 @@ namespace MvcContrib.UnitTests
 			IPrincipal principal = mocks.DynamicMock<IPrincipal>();
 			return principal;
 		}
+
+        public static ViewContext DynamicViewContext(this MockRepository mocks, string viewName)
+        {
+            var httpContext = DynamicHttpContextBase(mocks);
+            var controller = mocks.DynamicMock<IController>();
+            mocks.Replay(controller);
+
+            var controllerContext = new ControllerContext(httpContext, new RouteData(), controller);            
+            
+            return new ViewContext(controllerContext, viewName, "", new ViewDataDictionary(), new TempDataDictionary());
+        }
 	}
 }

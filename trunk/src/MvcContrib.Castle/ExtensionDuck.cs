@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using NVelocity;
 using NVelocity.Runtime;
@@ -10,21 +11,21 @@ namespace MvcContrib.Castle
 	{
 		private readonly object _instance;
 		private readonly Type _instanceType;
-		private readonly Type[] _extensionTypes;
-		private Introspector _introspector;
+	    private readonly Type[] _extensionTypes;
+	    private Introspector _introspector;
 
 		public ExtensionDuck(object instance)
 			: this(instance, Type.EmptyTypes)
 		{
 		}
 
-		public ExtensionDuck(object instance, params Type[] extentionTypes)
+		public ExtensionDuck(object instance, params Type[] extensionTypes)
 		{
 			if(instance == null) throw new ArgumentNullException("instance");
 
 			_instance = instance;
 			_instanceType = _instance.GetType();
-			_extensionTypes = extentionTypes;
+		    _extensionTypes = extensionTypes;
 		}
 
 		public Introspector Introspector
@@ -40,7 +41,7 @@ namespace MvcContrib.Castle
 			set { _introspector = value; }
 		}
 
-		public object GetInvoke(string propName)
+	    public object GetInvoke(string propName)
 		{
 			throw new NotSupportedException();
 		}
