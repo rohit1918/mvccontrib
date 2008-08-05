@@ -118,6 +118,7 @@ namespace MvcContrib.TestHelper
 			SetupResult.For(request.AppRelativeCurrentExecutionFilePath).Return(AppRelativeCurrentExecutionFilePath);
 			SetupResult.For(request.ApplicationPath).Return(ApplicationPath);
 			SetupResult.For(request.PathInfo).Return(PathInfo);
+			SetupResult.For(HttpContext.User).PropertyBehavior();
 
 			_mocks.Replay(HttpContext);
 			_mocks.Replay(request);

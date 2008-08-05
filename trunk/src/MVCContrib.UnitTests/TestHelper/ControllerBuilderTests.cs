@@ -1,4 +1,5 @@
-﻿using System.Web.Routing;
+﻿using System.Security.Principal;
+using System.Web.Routing;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
 using MvcContrib.TestHelper;
@@ -98,6 +99,19 @@ namespace MvcContrib.UnitTests.TestHelper
 				Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 				Assert.AreEqual("Moo", testController.ReturnMooFromService());
 			}
+		}
+
+		[Test]
+		public void UserShouldBeMocked()
+		{
+			var mocks = new MockRepository();
+			var user = mocks.DynamicMock<IPrincipal>();
+            
+			var builder = new TestControllerBuilder();
+			var controller = builder.CreateController<TestHelperController>();
+			controller.ControllerContext.HttpContext.User = user;
+
+			Assert.AreSame(user, controller.User);
 		}
 	}
 }
