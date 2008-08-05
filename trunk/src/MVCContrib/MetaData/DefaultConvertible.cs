@@ -6,7 +6,7 @@ namespace MvcContrib
 {
 	public class DefaultConvertible : IConvertible
 	{
-		private static readonly Type[] ConvertTypes = new Type[]
+		private static readonly Type[] ConvertTypes = new[]
 			{
 				typeof(bool),
 				typeof(char),				// 1

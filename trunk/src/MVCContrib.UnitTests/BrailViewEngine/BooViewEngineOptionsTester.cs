@@ -13,7 +13,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Create_Options()
 		{
-			BooViewEngineOptions options = new BooViewEngineOptions();
+			var options = new BooViewEngineOptions();
 
 			options.Debug = true;
 			options.SaveToDisk = true;
@@ -25,7 +25,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Read_From_AppConfig()
 		{
-			BooViewEngineOptions options = ConfigurationManager.GetSection("brail") as BooViewEngineOptions;
+			var options = ConfigurationManager.GetSection("brail") as BooViewEngineOptions;
 			Assert.IsNotNull(options);
 		}
 	}

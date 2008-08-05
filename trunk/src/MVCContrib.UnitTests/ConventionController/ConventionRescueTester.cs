@@ -1,15 +1,10 @@
 using System;
-using System.Reflection;
-using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib;
 using MvcContrib.Filters;
-using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using System.Web;
 using System.Collections.Generic;
 
 namespace MvcContrib.UnitTests.ConventionController
@@ -41,7 +36,7 @@ namespace MvcContrib.UnitTests.ConventionController
         [Test]
         public void When_PerformRescue_is_invoked_with_no_matching_view_the_default_rescue_should_be_rendered()
         {
-            CustomViewExists_ConventionRescueAttribute rescue =
+            var rescue =
                 new CustomViewExists_ConventionRescueAttribute("TestRescue");
 
         	var context = new ExceptionContext(_controllerContext, new Exception());
@@ -54,7 +49,7 @@ namespace MvcContrib.UnitTests.ConventionController
         [Test]
         public void When_PerformRescue_is_invoked_with_matching_view_it_should_be_rendered()
         {
-            CustomViewExists_ConventionRescueAttribute rescue =
+            var rescue =
                 new CustomViewExists_ConventionRescueAttribute("TestRescue");
             rescue.ExistingRescues.Add("ConventionRescueTestException");
 
@@ -67,7 +62,7 @@ namespace MvcContrib.UnitTests.ConventionController
         [Test]
         public void When_PerformRescue_is_invoked_with_matching_view_and_AutoLocate_off_it_should_not_be_rendered()
         {
-            CustomViewExists_ConventionRescueAttribute rescue =
+            var rescue =
                 new CustomViewExists_ConventionRescueAttribute("TestRescue");
             rescue.ExistingRescues.Add("ConventionRescueTestException");
             rescue.AutoLocate = false;
@@ -82,7 +77,7 @@ namespace MvcContrib.UnitTests.ConventionController
         [Test]
         public void When_PerformRescue_exact_exception_executed_first()
         {
-            CustomViewExists_ConventionRescueAttribute rescue =
+            var rescue =
                new CustomViewExists_ConventionRescueAttribute("TestRescue");
 
             rescue.ExistingRescues.Add("InheritedConventionRescueTestException");

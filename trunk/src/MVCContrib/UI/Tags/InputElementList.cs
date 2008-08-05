@@ -7,25 +7,15 @@ namespace MvcContrib.UI.Tags
 	public class InputElementList<T> : ScriptableElement, IEnumerable<T> where T : Input
 	{
 		private readonly List<T> _elements = new List<T>();
-		private string _textField;
-		private string _valueField;
 
 		//Have to specify an element name, even though it won't ever render...
 		public InputElementList(IDictionary attributes) : base("div", attributes)
 		{
 		}
 
-		public string TextField
-		{
-			get { return _textField; }
-			set { _textField = value; }
-		}
+		public string TextField { get; set; }
 
-		public string ValueField
-		{
-			get { return _valueField; }
-			set { _valueField = value; }
-		}
+		public string ValueField { get; set; }
 
 		public string Name
 		{
@@ -35,7 +25,7 @@ namespace MvcContrib.UI.Tags
 
 		public void Add(T element)
 		{
-			foreach(KeyValuePair<string, string> attribute in _attributes)
+			foreach(var attribute in _attributes)
 			{
 				if(!element.Attributes.ContainsKey(attribute.Key))
 				{
@@ -53,9 +43,9 @@ namespace MvcContrib.UI.Tags
 
 		public override string ToString()
 		{
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
 
-			foreach(T element in _elements)
+			foreach(var element in _elements)
 			{
 				builder.Append(element.ToString());
 			}
@@ -65,9 +55,9 @@ namespace MvcContrib.UI.Tags
 
 		public string ToFormattedString(string format)
 		{
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
 
-			foreach (T element in _elements)
+			foreach (var element in _elements)
 			{
 				builder.AppendFormat(format, element);
 			}

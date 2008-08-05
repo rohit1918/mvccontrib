@@ -153,7 +153,7 @@ namespace MvcContrib.UI.Html
 		{
 			Type instanceType = instance.GetType();
 
-			IList list = instance as IList;
+			var list = instance as IList;
 
 			bool validList = false;
 
@@ -212,7 +212,7 @@ namespace MvcContrib.UI.Html
 
 		private static object GetArrayElement(object instance, int index)
 		{
-			IList list = instance as IList;
+			var list = instance as IList;
 
 			if (list == null && instance != null && instance.GetType().IsGenericType)
 			{
@@ -227,7 +227,7 @@ namespace MvcContrib.UI.Html
 
 				PropertyInfo countPropInfo = genType.GetProperty("Count");
 
-				int count = (int)countPropInfo.GetValue(instance, null);
+				var count = (int)countPropInfo.GetValue(instance, null);
 
 				if (count == 0 || index + 1 > count)
 				{

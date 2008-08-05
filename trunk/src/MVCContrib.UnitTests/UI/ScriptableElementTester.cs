@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MvcContrib;
-using MvcContrib.UI;
+﻿using MvcContrib.UI;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -18,14 +13,14 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Set_UseInlineScripts_Then_Get_UseInlineScripts()
 			{
-				ScriptableElement element = new ScriptableElement();
+				var element = new ScriptableElement();
 				element.UseInlineScripts = true;
 				Assert.That(element.UseInlineScripts, Is.EqualTo(true));
 			}
 			[Test]
 			public void All_Properties_Stick_When_Set()
 			{
-				ScriptableElement element = new ScriptableElement();
+				var element = new ScriptableElement();
 				element.OnClick = "OnClick Is Sticky";
 				Assert.That(element.OnClick, Is.EqualTo("OnClick Is Sticky"));
 				element.OnDblClick = "OnDblClick Is Sticky";
@@ -51,18 +46,18 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Init_With_Tag_Name_Uses_Tag()
 			{
-				ScriptableElement element = new ScriptableElement("div");
+				var element = new ScriptableElement("div");
 				Assert.That(element.Tag == "div");
 			}
 
 			[Test]
 			public void Init_With_Dictionary_Uses_Dictionary()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				ScriptableElement element = new ScriptableElement("div", hash);
+				var element = new ScriptableElement("div", hash);
 				Assert.That(element.Tag == "div");
 				Assert.That(element.Attributes.Count == 3);
 				Assert.That(element["Key1"] == "Val1");

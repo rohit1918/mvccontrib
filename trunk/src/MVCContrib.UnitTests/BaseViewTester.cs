@@ -19,10 +19,10 @@ namespace MvcContrib.UnitTests
 			_output = new StringWriter();
 
 			mocks = new MockRepository();
-			HttpContextBase httpContext = mocks.DynamicMock<HttpContextBase>();
-			HttpRequestBase httpRequest = mocks.DynamicMock<HttpRequestBase>();
-			HttpResponseBase httpResponse = mocks.DynamicMock<HttpResponseBase>();
-			HttpSessionStateBase httpSessionState = mocks.DynamicMock<HttpSessionStateBase>();
+			var httpContext = mocks.DynamicMock<HttpContextBase>();
+			var httpRequest = mocks.DynamicMock<HttpRequestBase>();
+			var httpResponse = mocks.DynamicMock<HttpResponseBase>();
+			var httpSessionState = mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Request).Return(httpRequest);
 			SetupResult.For(httpRequest.ApplicationPath).Return("/");
@@ -30,9 +30,9 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(httpResponse.Output).Return(_output);
 			SetupResult.For(httpResponse.ContentEncoding).Return(Encoding.UTF8);
 			SetupResult.For(httpContext.Items).Return(new Hashtable());
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = mocks.DynamicMock<IController>();
-			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = mocks.DynamicMock<IController>();
+			var controllerContext = new ControllerContext(requestContext, controller);
 
 			mocks.ReplayAll();
 

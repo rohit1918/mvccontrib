@@ -1,8 +1,8 @@
 using MvcContrib.BrailViewEngine;
+using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.BrailViewEngine
 {
-	using NUnit.Framework;
 
 	[TestFixture]
 	[Category("BrailViewEngine")]
@@ -16,7 +16,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Returns_Itself_For_Null_Targets()
 		{
-			IgnoreNull ignore = new IgnoreNull(null);
+			var ignore = new IgnoreNull(null);
 
 			Assert.AreEqual(ignore, ignore.QuackGet(null, null));
 			Assert.AreEqual(ignore, ignore.QuackSet(null, null, null));
@@ -26,7 +26,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Wraps_Result_In_IgnoreNull()
 		{
-			IgnoreNull ignore = new IgnoreNull(new Duck());
+			var ignore = new IgnoreNull(new Duck());
 
 			Assert.IsInstanceOfType(typeof(IgnoreNull), ignore.QuackGet("Name", null));
 			Assert.IsInstanceOfType(typeof(IgnoreNull), ignore.QuackSet("Name", null, "Donald"));
@@ -38,9 +38,9 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Get_With_Parameters()
 		{
-			Duck duck = new Duck();
+			var duck = new Duck();
 			duck.Name = "Donald";
-			IgnoreNull ignore = new IgnoreNull(duck);
+			var ignore = new IgnoreNull(duck);
 
 			Assert.AreEqual(duck.Name, ignore.QuackGet("Item", new object[1] {1}).ToString());
 		}
@@ -48,8 +48,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Set_With_Parameters()
 		{
-			Duck duck = new Duck();
-			IgnoreNull ignore = new IgnoreNull(duck);
+			var duck = new Duck();
+			var ignore = new IgnoreNull(duck);
 
 			ignore.QuackSet("Item", new object[1] {1}, "Donald");
 
@@ -59,7 +59,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void ToString_Returns_Empty_String_For_Null_Target()
 		{
-			IgnoreNull ignore = new IgnoreNull(null);
+			var ignore = new IgnoreNull(null);
 
 			Assert.AreEqual(string.Empty, ignore.ToString());
 
@@ -70,8 +70,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void AreEqual_Returns_Equality_Of_Targets()
 		{
-			IgnoreNull ignore1 = new IgnoreNull(1);
-			IgnoreNull ignore2 = new IgnoreNull(2 - 1);
+			var ignore1 = new IgnoreNull(1);
+			var ignore2 = new IgnoreNull(2 - 1);
 
 			Assert.IsTrue(IgnoreNull.AreEqual(ignore1, ignore2));
 		}

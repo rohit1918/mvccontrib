@@ -77,7 +77,7 @@ namespace MvcContrib
 
 				PropertyInfo[] properties = GetProperties(targetType);
 
-				foreach(PropertyInfo property in properties)
+				foreach(var property in properties)
 				{
 					string name = string.Concat(prefix, ".", property.Name);
 					Type propertyType = property.PropertyType;
@@ -130,7 +130,7 @@ namespace MvcContrib
 
 			ArrayList arrayInstance = DeserializeArrayList(collection, prefix, elementType);
 
-			foreach(object inst in arrayInstance)
+			foreach(var inst in arrayInstance)
 			{
 				instance.Add(inst);
 			}
@@ -140,7 +140,7 @@ namespace MvcContrib
 		{
 			// If property is already initialized (via object's constructor) use that
 			// Otherwise attempt to new it
-			IList genericListProperty = property.GetValue(instance, null) as IList;
+			var genericListProperty = property.GetValue(instance, null) as IList;
 			if(genericListProperty == null)
 			{
 				genericListProperty = CreateGenericListInstance(property.PropertyType);
@@ -208,7 +208,7 @@ namespace MvcContrib
 
 			arrayInstance = new ArrayList(arrayPrefixes.Length);
 
-			foreach(string arrayPrefix in arrayPrefixes)
+			foreach(var arrayPrefix in arrayPrefixes)
 			{
 				object inst = null;
 
@@ -241,12 +241,12 @@ namespace MvcContrib
 
 		protected virtual string[] GetArrayPrefixes(NameValueCollection collection, string prefix)
 		{
-			List<string> arrayPrefixes = new List<string>();
+			var arrayPrefixes = new List<string>();
 
 			prefix = string.Concat(prefix, "[").ToLower();
 			int prefixLength = prefix.Length;
 			string[] names = collection.AllKeys;
-			foreach(string name in names)
+			foreach(var name in names)
 			{
 				if(name.IndexOf(prefix, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{

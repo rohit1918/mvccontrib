@@ -58,7 +58,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		public override object BuildUp(IBuilderContext context, Type typeToBuild, object existing, string idToBuild)
 		{
 			IEnumerable<IReflectionMemberInfo<TMemberInfo>> members = InnerGetMembers(context, typeToBuild, existing, idToBuild);
-			foreach(IReflectionMemberInfo<TMemberInfo> member in members)
+			foreach(var member in members)
 			{
 				if(InnerMemberRequiresProcessing(member))
 				{
@@ -81,7 +81,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 				{
 					if(!_membersCache.TryGetValue(typeToBuild, out cachedMembers))
 					{
-						Dictionary<Type, IEnumerable<IReflectionMemberInfo<TMemberInfo>>> clonedMembersCache =
+						var clonedMembersCache =
 							new Dictionary<Type, IEnumerable<IReflectionMemberInfo<TMemberInfo>>>(_membersCache);
 						cachedMembers = GetMembers(context, typeToBuild, existing, idToBuild);
 						clonedMembersCache.Add(typeToBuild, cachedMembers);
@@ -102,7 +102,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 				{
 					if(!_memberRequiresProcessingCache.TryGetValue(member.MemberInfo, out requires))
 					{
-						Dictionary<TMemberInfo, bool> tempMemberRequiresProcessingCache =
+						var tempMemberRequiresProcessingCache =
 							new Dictionary<TMemberInfo, bool>(_memberRequiresProcessingCache);
 						requires = MemberRequiresProcessing(member);
 						tempMemberRequiresProcessingCache.Add(member.MemberInfo, requires);
@@ -128,9 +128,9 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 
 		private IEnumerable<IParameter> GenerateIParametersFromParameterInfos(ParameterInfo[] parameterInfos)
 		{
-			List<IParameter> result = new List<IParameter>();
+			var result = new List<IParameter>();
 
-			foreach(ParameterInfo parameterInfo in parameterInfos)
+			foreach(var parameterInfo in parameterInfos)
 			{
 				ParameterAttribute attribute = GetInjectionAttribute(parameterInfo);
 				result.Add(attribute.CreateParameter(parameterInfo.ParameterType));
@@ -141,7 +141,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 
 		private ParameterAttribute GetInjectionAttribute(ParameterInfo parameterInfo)
 		{
-			ParameterAttribute[] attributes =
+			var attributes =
 				(ParameterAttribute[])parameterInfo.GetCustomAttributes(typeof(ParameterAttribute), true);
 
 			switch(attributes.Length)

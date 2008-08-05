@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+
 namespace MvcContrib.UI
 {
 	public interface IElement:IEnumerable

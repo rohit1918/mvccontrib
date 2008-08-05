@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Interfaces;
@@ -9,7 +8,7 @@ namespace MvcContrib.ControllerFactories
 {
 	public class IoCControllerFactory : DefaultControllerFactory
 	{
-		private IDependencyResolver resolver = null;
+		private IDependencyResolver resolver;
 
 		public IoCControllerFactory(IDependencyResolver resolver)
 		{

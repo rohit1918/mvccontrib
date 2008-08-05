@@ -36,8 +36,8 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		                                                                                  Type typeToBuild, object existing,
 		                                                                                  string idToBuild)
 		{
-			List<IReflectionMemberInfo<ConstructorInfo>> result = new List<IReflectionMemberInfo<ConstructorInfo>>();
-			ICreationPolicy existingPolicy = context.Policies.Get<ICreationPolicy>(typeToBuild, idToBuild);
+			var result = new List<IReflectionMemberInfo<ConstructorInfo>>();
+			var existingPolicy = context.Policies.Get<ICreationPolicy>(typeToBuild, idToBuild);
 
 			if(existing == null && (existingPolicy == null || existingPolicy is DefaultCreationPolicy))
 			{
@@ -48,7 +48,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 					injectionCtor = ctors[0];
 				else
 				{
-					foreach(ConstructorInfo ctor in ctors)
+					foreach(var ctor in ctors)
 					{
 						if(Attribute.IsDefined(ctor, typeof(InjectionConstructorAttribute)))
 						{
@@ -75,9 +75,9 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		                                              IReflectionMemberInfo<ConstructorInfo> member,
 		                                              IEnumerable<IParameter> parameters)
 		{
-			ConstructorPolicy policy = new ConstructorPolicy();
+			var policy = new ConstructorPolicy();
 
-			foreach(IParameter parameter in parameters)
+			foreach(var parameter in parameters)
 				policy.AddParameter(parameter);
 
 			context.Policies.Set<ICreationPolicy>(policy, typeToBuild, idToBuild);

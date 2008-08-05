@@ -19,20 +19,20 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_mocks = new MockRepository();
 
-			NameValueCollection queryString = new NameValueCollection();
+			var queryString = new NameValueCollection();
 			queryString["ids[0]"] = "1";
 
-			NameValueCollection form = new NameValueCollection();
+			var form = new NameValueCollection();
 			form["ids[1]"] = "2";
 
-			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+			var request = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(request.QueryString).Return(queryString);
 			SetupResult.For(request.Form).Return(form);
 
-			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			var context = _mocks.DynamicMock<HttpContextBase>();
 			SetupResult.For(context.Request).Return(request);
 
-			RequestContext requestContext = new RequestContext(context, new RouteData());
+			var requestContext = new RequestContext(context, new RouteData());
 			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
 
 			_mocks.ReplayAll();
@@ -41,15 +41,15 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CanCreateAttribute()
 		{
-			DeserializeAttribute attr = new DeserializeAttribute("ids", RequestStore.Params);
+			var attr = new DeserializeAttribute("ids", RequestStore.Params);
 		}
 
 		[Test]
 		public void CanDeserializeFromQueryString()
 		{
-			DeserializeAttribute attr = new DeserializeAttribute("ids", RequestStore.QueryString);
+			var attr = new DeserializeAttribute("ids", RequestStore.QueryString);
 
-			int[] ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(1, ids[0]);
@@ -58,9 +58,9 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CanDeserializeFromForm()
 		{
-			DeserializeAttribute attr = new DeserializeAttribute("ids", RequestStore.Form);
+			var attr = new DeserializeAttribute("ids", RequestStore.Form);
 
-			int[] ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(2, ids[0]);
@@ -69,9 +69,9 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CanDeserializeFromParams()
 		{
-			DeserializeAttribute attr = new DeserializeAttribute("ids", RequestStore.Params);
+			var attr = new DeserializeAttribute("ids", RequestStore.Params);
 
-			int[] ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(2, ids.Length);
 		}

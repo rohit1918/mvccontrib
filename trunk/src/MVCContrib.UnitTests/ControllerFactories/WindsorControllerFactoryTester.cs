@@ -1,7 +1,6 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using Castle.Windsor;
 using MvcContrib.Castle;
 using NUnit.Framework;
@@ -48,7 +47,7 @@ namespace MvcContrib.UnitTests.Castle
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorDependencyController)));
 
-			WindsorDependencyController dependencyController = (WindsorDependencyController)controller;
+			var dependencyController = (WindsorDependencyController)controller;
 			Assert.That(dependencyController._dependency, Is.Not.Null);
 			Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 		}
@@ -64,7 +63,7 @@ namespace MvcContrib.UnitTests.Castle
 		public void ShouldDisposeOfController()
 		{
 			IControllerFactory factory = new WindsorControllerFactory(_container);
-			WindsorDisposableController controller = new WindsorDisposableController();
+			var controller = new WindsorDisposableController();
 			factory.DisposeController(controller);
 			Assert.That(controller.IsDisposed);
 		}
@@ -87,7 +86,13 @@ namespace MvcContrib.UnitTests.Castle
 
 		public class WindsorDisposableController : IDisposable, IController
 		{
-			public bool IsDisposed = false;
+			public bool IsDisposed;
+
+			public WindsorDisposableController()
+			{
+				IsDisposed = false;
+			}
+
 			public void Dispose()
 			{
 				IsDisposed = true;

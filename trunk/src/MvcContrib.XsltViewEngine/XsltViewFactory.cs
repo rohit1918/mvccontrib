@@ -26,9 +26,9 @@ namespace MvcContrib.ViewFactories
 				throw new ArgumentException("the view data object should be of type XsltViewData");
 
 
-			string controllerName = (string)viewContext.RouteData.Values["controller"];
+			var controllerName = (string)viewContext.RouteData.Values["controller"];
 
-			XsltTemplate viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
+			var viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
 
 			var view = new XsltView(viewTemplate, viewContext.ViewData.Model as XsltViewData, string.Empty, viewContext.HttpContext);
 	    	view.RenderView(viewContext);

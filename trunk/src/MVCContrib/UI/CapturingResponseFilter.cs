@@ -5,7 +5,6 @@ namespace MvcContrib.UI
 {
 	public class CapturingResponseFilter : Stream
 	{
-		private long _position;
 		private Stream _sink;
 		private MemoryStream mem;
 
@@ -36,11 +35,7 @@ namespace MvcContrib.UI
 			get { return 0; }
 		}
 
-		public override long Position
-		{
-			get { return _position; }
-			set { _position = value; }
-		}
+		public override long Position { get; set; }
 
 		public override long Seek(long offset, SeekOrigin direction)
 		{
@@ -79,7 +74,7 @@ namespace MvcContrib.UI
 
 		public string GetContents(Encoding enc)
 		{
-			byte[] buffer = new byte[mem.Length];
+			var buffer = new byte[mem.Length];
 			mem.Position = 0;
 			mem.Read(buffer, 0, buffer.Length);
 			return enc.GetString(buffer, 0, buffer.Length);

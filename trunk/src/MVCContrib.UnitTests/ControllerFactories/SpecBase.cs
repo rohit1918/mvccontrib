@@ -7,12 +7,12 @@ namespace MvcContrib.UnitTests.ControllerFactories
     [TestFixture]
     public abstract class SpecBase
     {
-        protected MockRepository _mocks = null;
+        protected MockRepository _mocks;
         [SetUp]
         public void Setup()
         {
             _mocks= new MockRepository();
-            this.BeforeEachSpec();
+            BeforeEachSpec();
         }
         protected IDisposable Record()
         {
@@ -28,7 +28,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
         public void Teardown()
         {
             //_mocks.VerifyAll();
-            this.AfterEachSpec();
+            AfterEachSpec();
             _mocks = null;
         }
 

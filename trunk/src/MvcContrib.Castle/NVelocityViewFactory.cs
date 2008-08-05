@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Web.Mvc;
 using Commons.Collections;
-using MvcContrib.Castle;
 using NVelocity;
 using NVelocity.App;
 using NVelocity.Runtime;
@@ -35,7 +34,7 @@ namespace MvcContrib.Castle
 		{
 			if( properties == null ) properties = DEFAULT_PROPERTIES;
 
-			ExtendedProperties props = new ExtendedProperties();
+			var props = new ExtendedProperties();
 			foreach(string key in properties.Keys)
 			{
 				props.AddProperty(key, properties[key]);
@@ -110,13 +109,13 @@ namespace MvcContrib.Castle
 
 		public NVelocityView CreateView(ViewContext viewContext)
 	    {
-			string controllerName = (string)viewContext.RouteData.Values["controller"];
+			var controllerName = (string)viewContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
 
 			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewContext.ViewName);
 			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
 
-	    	NVelocityView view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
+	    	var view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
 
 			return view;
 	    }

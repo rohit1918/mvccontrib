@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
+﻿using System.Collections;
 
 namespace MvcContrib.UI.Tags.Validators
 {
@@ -11,37 +7,37 @@ namespace MvcContrib.UI.Tags.Validators
 		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text)
 			: base(id, referenceId, text)
 		{
-			this.ClientValidationFunction = clientValidationFunction;
+			ClientValidationFunction = clientValidationFunction;
 		}
 
 		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, IDictionary attributes)
 			: base(id, referenceId, text, attributes)
 		{
-			this.ClientValidationFunction = clientValidationFunction;
+			ClientValidationFunction = clientValidationFunction;
 		}
 
 		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup)
 			: base(id, referenceId, text, validationGroup)
 		{
-			this.ClientValidationFunction = clientValidationFunction;
+			ClientValidationFunction = clientValidationFunction;
 		}
 
 		public CustomValidator(string id, string referenceId, string clientValidationFunction, string text, string validationGroup, IDictionary attributes)
 			: base(id, referenceId, text, validationGroup, attributes)
 		{
-			this.ClientValidationFunction = clientValidationFunction;
+			ClientValidationFunction = clientValidationFunction;
 		}
 
 		public string ClientValidationFunction
 		{
 			get
 			{
-				return this.NullExpandoGet("clientvalidationfunction");
+				return NullExpandoGet("clientvalidationfunction");
 			}
 
 			set
 			{
-				this.NullExpandoSet("clientvalidationfunction", value);
+				NullExpandoSet("clientvalidationfunction", value);
 			}
 		}
 

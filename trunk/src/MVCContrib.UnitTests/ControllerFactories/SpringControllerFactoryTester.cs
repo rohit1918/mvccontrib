@@ -2,13 +2,10 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using MvcContrib.Spring;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Spring.Context;
 using Spring.Context.Support;
 using Spring.Core.IO;
 using Spring.Objects.Factory;
@@ -91,7 +88,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(SpringDependencyController)));
 
-				SpringDependencyController dependencyController = (SpringDependencyController)controller;
+				var dependencyController = (SpringDependencyController)controller;
 				Assert.That(dependencyController._dependency, Is.Not.Null);
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
@@ -169,11 +166,11 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				                   "  </objects>";
 				Stream stream = new MemoryStream(ASCIIEncoding.Default.GetBytes(objectXml));
 				IResource resource = new InputStreamResource(stream, "In memory xml");
-				GenericApplicationContext ctx = new GenericApplicationContext();
-				XmlObjectDefinitionReader reader = new XmlObjectDefinitionReader(ctx);
+				var ctx = new GenericApplicationContext();
+				var reader = new XmlObjectDefinitionReader(ctx);
 				reader.LoadObjectDefinitions(resource);
 				ctx.Refresh();
-				SpringControllerFactory.Configure(ctx as IApplicationContext);
+				SpringControllerFactory.Configure(ctx);
 				IControllerFactory factory = new SpringControllerFactory();
 			    IController controller = factory.CreateController(null, "Simple");
 				                                                  //Type.GetType("MvcContrib.UnitTests.ControllerFactories.SpringControllerFactoryTester+WhenAValidControllerTypeIsPassed+SimpleController"));
@@ -189,8 +186,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			[Test]
 			public void ControllerShouldBeDisposed()
 			{
-				SpringControllerFactory factory = new SpringControllerFactory();
-				SpringDisposableController controller = new SpringDisposableController();
+				var factory = new SpringControllerFactory();
+				var controller = new SpringDisposableController();
 				factory.DisposeController(controller);
 				Assert.That(controller.IsDisposed);
 			
@@ -198,7 +195,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			private class SpringDisposableController : IController, IDisposable
 			{
-				public bool IsDisposed = false;
+				public bool IsDisposed;
 
 				public void Dispose()
 				{

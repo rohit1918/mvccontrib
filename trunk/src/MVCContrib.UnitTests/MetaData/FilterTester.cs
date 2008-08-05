@@ -3,12 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Collections.Specialized;
-using Castle.Windsor;
-using MvcContrib.Castle;
 using MvcContrib.Filters;
-using MvcContrib.MetaData;
-using MvcContrib.Services;
-using MvcContrib.UnitTests.IoC;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -29,13 +24,13 @@ namespace MvcContrib.UnitTests.MetaData
 
 		private void SetupHttpContext(Controller controller, string requestType)
 		{
-			RouteData fakeRouteData = new RouteData();
+			var fakeRouteData = new RouteData();
 			fakeRouteData.Values.Add("Action", "Index");
 			fakeRouteData.Values.Add("Controller", "Home");
 
-			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
-			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
-			HttpResponseBase reponse = _mocks.DynamicMock<HttpResponseBase>();
+			var context = _mocks.DynamicMock<HttpContextBase>();
+			var request = _mocks.DynamicMock<HttpRequestBase>();
+			var reponse = _mocks.DynamicMock<HttpResponseBase>();
 
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(request.RequestType).Return(requestType);
@@ -47,7 +42,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			//request.Params = new NameValueCollection();
 
-			ControllerContext controllerContext = new ControllerContext(context, fakeRouteData, _controller);
+			var controllerContext = new ControllerContext(context, fakeRouteData, _controller);
 			controller.ControllerContext = controllerContext;
 		}
 
@@ -221,13 +216,13 @@ namespace MvcContrib.UnitTests.MetaData
 		[FilterReturnsTrue]
 		class FilteredController : Controller
 		{
-			public bool SuccessfulFilterCalled = false;
-			public bool UnSuccessfulFilterCalled = false;
-			public bool MultipleFiltersCalled = false;
-			public bool PostOnlyCalled = false;
+			public bool SuccessfulFilterCalled;
+			public bool UnSuccessfulFilterCalled;
+			public bool MultipleFiltersCalled;
+			public bool PostOnlyCalled;
 			public bool DependentFilterCalled = false;
-			public bool PredicatePreconditionCalled = false;
-			public bool RegExPreconditionCalled = false;
+			public bool PredicatePreconditionCalled;
+			public bool RegExPreconditionCalled;
 
 			public bool DoInvokeAction(string action)
 			{

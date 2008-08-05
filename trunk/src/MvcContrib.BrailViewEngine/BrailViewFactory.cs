@@ -42,7 +42,7 @@ namespace MvcContrib.ViewFactories
 
 	    public void RenderView(ViewContext viewContext)
 	    {
-			string controller = viewContext.RouteData.Values["controller"] as string;
+			var controller = viewContext.RouteData.Values["controller"] as string;
 
 			string viewName = string.Concat(controller, "/", viewContext.ViewName);
 

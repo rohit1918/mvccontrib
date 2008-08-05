@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web;
 using System.Security.Principal;
-using System.Collections.Specialized;
 
 namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 {
@@ -44,7 +43,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 		{
 			string assemblyPath = "MvcContrib.UnitTests.XsltViewEngine.Data." + path;
 
-			XmlDocument xmlDoc = new XmlDocument();
+			var xmlDoc = new XmlDocument();
 
 			using(Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(assemblyPath))
 			{

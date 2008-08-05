@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using MvcContrib.Attributes;
-using MvcContrib.UnitTests.UI.Html;
 using NUnit.Framework;
 
 namespace MvcContrib.UnitTests
@@ -14,10 +13,10 @@ namespace MvcContrib.UnitTests
 		[ExpectedException(typeof(ArgumentException))]
 		public void NullPrefixThrows()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["junk"] = "stuff";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
 			object notGonnaDoIt = nvd.Deserialize(collection, null, typeof(Customer));
 		}
@@ -26,10 +25,10 @@ namespace MvcContrib.UnitTests
 		[ExpectedException(typeof(ArgumentException))]
 		public void EmptyPrefixThrows()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["junk"] = "stuff";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
 			object notGonnaDoIt = nvd.Deserialize(collection, string.Empty, typeof(Customer));
 		}
@@ -38,10 +37,10 @@ namespace MvcContrib.UnitTests
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void NullTargetTypeThrows()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["junk"] = "stuff";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
 			object notGonnaDoIt = nvd.Deserialize(collection, "junk", null);
 		}
@@ -49,13 +48,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ListPropertyIsSkippedIfNotInitializedAndReadOnly()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["list.ReadonlyIds[0]"] = "10";
 			collection["list.ReadonlyIds[1]"] = "20";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			GenericListClass list = nvd.Deserialize<GenericListClass>(collection, "list");
+			var list = nvd.Deserialize<GenericListClass>(collection, "list");
 
 			Assert.IsNotNull(list);
 			Assert.IsNull(list.ReadonlyIds);
@@ -64,12 +63,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ErrorsSettingPropertiesAreIgnored()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["emp.Age"] = "-1";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+			var emp = nvd.Deserialize<Employee>(collection, "emp");
 
 			Assert.IsNotNull(emp);
 			Assert.AreEqual(0, emp.Age);
@@ -78,12 +77,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ComplexPropertyIsSkippedIfNotInitializedAndReadOnly()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["emp.BatPhone.Number"] = "800-DRK-KNGT";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+			var emp = nvd.Deserialize<Employee>(collection, "emp");
 
 			Assert.IsNotNull(emp);
 			Assert.IsNull(emp.BatPhone);
@@ -92,12 +91,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeSimpleObject()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["cust.Id"] = "10";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Customer cust = nvd.Deserialize<Customer>(collection, "cust");
+			var cust = nvd.Deserialize<Customer>(collection, "cust");
 
 			Assert.IsNotNull(cust);
 			Assert.AreEqual(10, cust.Id);
@@ -106,13 +105,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeSimpleArray()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["array.Ids[0]"] = "10";
 			collection["array.Ids[1]"] = "20";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			ArrayClass array = nvd.Deserialize<ArrayClass>(collection, "array");
+			var array = nvd.Deserialize<ArrayClass>(collection, "array");
 
 			Assert.IsNotNull(array);
 			Assert.AreEqual(2, array.Ids.Length);
@@ -142,13 +141,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializePrimitiveArray()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["ids[0]"] = "10";
 			collection["ids[1]"] = "20";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			int[] array = (int[])nvd.Deserialize(collection, "ids", typeof(int[]));
+			var array = (int[])nvd.Deserialize(collection, "ids", typeof(int[]));
 
 			Assert.IsNotNull(array);
 			Assert.AreEqual(2, array.Length);
@@ -178,13 +177,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializePrimitiveGenericList()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["ids[0]"] = "10";
 			collection["ids[1]"] = "20";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			List<int> list = nvd.Deserialize<List<int>>(collection, "ids");
+			var list = nvd.Deserialize<List<int>>(collection, "ids");
 
 			Assert.IsNotNull(list);
 			Assert.AreEqual(2, list.Count);
@@ -231,13 +230,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeSimpleGenericList()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["list.Ids[0]"] = "10";
 			collection["list.Ids[1]"] = "20";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			GenericListClass list = nvd.Deserialize<GenericListClass>(collection, "list");
+			var list = nvd.Deserialize<GenericListClass>(collection, "list");
 
 			Assert.IsNotNull(list);
 			Assert.AreEqual(2, list.Ids.Count);
@@ -267,15 +266,15 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeComplexGenericList()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["emp.OtherPhones[0].Number"] = "800-555-1212";
 			collection["emp.OtherPhones[1].Number"] = "800-867-5309";
 			collection["emp.OtherPhones[1].AreaCodes[0]"] = "800";
 			collection["emp.OtherPhones[1].AreaCodes[1]"] = "877";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+			var emp = nvd.Deserialize<Employee>(collection, "emp");
 
 			Assert.IsNotNull(emp);
 			Assert.AreEqual(2, emp.OtherPhones.Count);
@@ -290,12 +289,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeWithEmptyArray()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["array.Name"] = "test";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			ArrayClass array = nvd.Deserialize<ArrayClass>(collection, "array");
+			var array = nvd.Deserialize<ArrayClass>(collection, "array");
 
 			Assert.IsNotNull(array);
 			Assert.AreEqual(0, array.Ids.Length);
@@ -304,13 +303,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeComplexObject()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["emp.Id"] = "20";
 			collection["emp.Phone.Number"] = "800-555-1212";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Employee emp = nvd.Deserialize<Employee>(collection, "emp");
+			var emp = nvd.Deserialize<Employee>(collection, "emp");
 
 			Assert.IsNotNull(emp);
 			Assert.AreEqual(20, emp.Id);
@@ -320,12 +319,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void EmptyValuesUseDefaultOfType()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["cust.Id"] = "";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Customer cust = nvd.Deserialize<Customer>(collection, "cust");
+			var cust = nvd.Deserialize<Customer>(collection, "cust");
 
 			Assert.IsNotNull(cust);
 			Assert.AreEqual(0, cust.Id);
@@ -334,12 +333,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void NoMatchingValuesReturnsNewedObject()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["cust.Id"] = "10";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Customer cust = nvd.Deserialize<Customer>(collection, "mash");
+			var cust = nvd.Deserialize<Customer>(collection, "mash");
 
 			Assert.IsNotNull(cust);
 		}
@@ -347,12 +346,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeTrueBool()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["bool.myBool"] = "true,false";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			BoolClass boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
+			var boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
 
 			Assert.AreEqual(true, boolClass.MyBool);
 		}
@@ -360,12 +359,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeFalseBool()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["bool.myBool"] = "false";
 
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			BoolClass boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
+			var boolClass = nvd.Deserialize<BoolClass>(collection, "bool");
 
 			Assert.AreEqual(false, boolClass.MyBool);
 		}
@@ -373,9 +372,9 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void EmptyCollectionReturnsNull()
 		{
-			NameValueDeserializer nvd = new NameValueDeserializer();
+			var nvd = new NameValueDeserializer();
 
-			Customer cust = nvd.Deserialize<Customer>(null, "cust");
+			var cust = nvd.Deserialize<Customer>(null, "cust");
 
 			Assert.IsNull(cust);
 		}
@@ -383,7 +382,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ForCompleteness()
 		{
-			DeserializeAttribute attribute = new DeserializeAttribute("test");
+			var attribute = new DeserializeAttribute("test");
 
 			Assert.AreEqual("test", attribute.Prefix);
 		}
@@ -391,12 +390,12 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void NoRequestForPropertyShouldNotInstantiateProperty()
 		{
-			NameValueCollection collection = new NameValueCollection();
+			var collection = new NameValueCollection();
 			collection["emp.Id"] = "20";
 			collection["emp.Phone.Number"] = "800-555-1212";
 
-			NameValueDeserializer deserializer = new NameValueDeserializer();
-			Employee emp = deserializer.Deserialize<Employee>(collection, "emp");
+			var deserializer = new NameValueDeserializer();
+			var emp = deserializer.Deserialize<Employee>(collection, "emp");
 
 			Assert.IsNotNull(emp, "Employee should not be null.");
 			Assert.IsNotNull(emp.Phone, "Employee phone should not be null.");

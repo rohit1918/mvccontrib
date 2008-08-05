@@ -56,7 +56,7 @@ namespace MvcContrib.UI.Html
 
 		public override string ToString()
 		{
-			BlockRenderer renderer = new BlockRenderer(_helper.ViewContext.HttpContext);
+			var renderer = new BlockRenderer(_helper.ViewContext.HttpContext);
 			InnerText = renderer.Capture(() => _block(this) );
 			return base.ToString();
 		}

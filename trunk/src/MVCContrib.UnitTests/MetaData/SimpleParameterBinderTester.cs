@@ -18,17 +18,17 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_mocks = new MockRepository();
 
-			HttpRequestBase request = _mocks.DynamicMock<HttpRequestBase>();
+			var request = _mocks.DynamicMock<HttpRequestBase>();
 			SetupResult.For(request["test"]).Return("testValue");
 			SetupResult.For(request["keyWithNullValue"]).Return(null);
 
-			HttpContextBase context = _mocks.DynamicMock<HttpContextBase>();
+			var context = _mocks.DynamicMock<HttpContextBase>();
 			SetupResult.For(context.Request).Return(request);
 
-			RouteData routeData = new RouteData();
+			var routeData = new RouteData();
 			routeData.Values.Add("key", "value");
 
-			RequestContext requestContext = new RequestContext(context, routeData);
+			var requestContext = new RequestContext(context, routeData);
 			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
 
 			_mocks.ReplayAll();
@@ -37,8 +37,8 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CanDeserializeFromRequest()
 		{
-			SimpleParameterBinder attr = new SimpleParameterBinder();
-			string value = attr.Bind(typeof(string), "test", _controllerContext) as string;
+			var attr = new SimpleParameterBinder();
+			var value = attr.Bind(typeof(string), "test", _controllerContext) as string;
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual("testValue", value);
@@ -47,8 +47,8 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CanDeserializeFromRouteData()
 		{
-			SimpleParameterBinder attr = new SimpleParameterBinder();
-			string value = attr.Bind(typeof(string), "key", _controllerContext) as string;
+			var attr = new SimpleParameterBinder();
+			var value = attr.Bind(typeof(string), "key", _controllerContext) as string;
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual("value", value);
@@ -59,8 +59,8 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_controllerContext.RouteData.Values.Add("keyWithNullValue", null);
 
-			SimpleParameterBinder attr = new SimpleParameterBinder();
-			string value = attr.Bind(typeof(string), "keyWithNullValue", _controllerContext) as string;
+			var attr = new SimpleParameterBinder();
+			var value = attr.Bind(typeof(string), "keyWithNullValue", _controllerContext) as string;
 
 			Assert.IsNull(value);
 		}

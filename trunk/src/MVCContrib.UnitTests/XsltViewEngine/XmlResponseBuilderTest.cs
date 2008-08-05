@@ -33,7 +33,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithStringXmlDataSource.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 			responseBuilder.AppendDataSourceToResponse(xml);
@@ -49,7 +49,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithStringXmlDataSource.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 			responseBuilder.AppendDataSourceToResponse(XmlReader.Create(new StringReader(xml)));
@@ -64,8 +64,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithPageVars.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
-			Dictionary<string, string> pageVars = new Dictionary<string, string>();
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
+			var pageVars = new Dictionary<string, string>();
 			pageVars.Add("myPageVar", "pageVar");
 			responseBuilder.InitMessageStructure();
 			responseBuilder.AppendPage("MyPage", "http://mysite.com/mycontroller/mypage", pageVars);
@@ -76,11 +76,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void CreateNewNode()
 		{
-			XmlDocument expected = new XmlDocument();
+			var expected = new XmlDocument();
 
 			expected.LoadXml("<myElement myAttribute=\"attrValue\">myElementValue</myElement>");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 			XmlElement actual = responseBuilder.CreateNewNode("myElement", "myElementValue", "myAttribute", "attrValue");
 
 			Assert.IsNotNull(actual);
@@ -90,11 +90,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void CreateNewNodeExtensionMethod()
 		{
-			XmlDocument expected = new XmlDocument();
+			var expected = new XmlDocument();
 
 			expected.LoadXml("<myElement myAttribute=\"attrValue\">myElementValue</myElement>");
 
-			XmlDocument message = new XmlDocument();
+			var message = new XmlDocument();
 			XmlElement actual = message.CreateNewNode("myElement", "myElementValue", "myAttribute", "attrValue");
 			Assert.IsNotNull(actual);
 			Assert.AreEqual(expected.DocumentElement.InnerXml, actual.InnerXml);
@@ -106,7 +106,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			BuildRequest(false);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessage.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 
@@ -119,7 +119,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			BuildRequest(false);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithMessages.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 			responseBuilder.AddMessage("This is the message", "INFO");
@@ -135,7 +135,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderPostMessage.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 
@@ -149,7 +149,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			EcmaScriptVersionToReturn = new Version(0, 4);
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderPostMessageNoJavascript.xml");
 
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			responseBuilder.InitMessageStructure();
 
@@ -160,7 +160,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void InstantiateTest()
 		{
 //			Request.SetPhysicalApplicationPath(Environment.CurrentDirectory.Replace("\\", "/"));
-			XmlResponseBuilder responseBuilder = new XmlResponseBuilder(HttpContext);
+			var responseBuilder = new XmlResponseBuilder(HttpContext);
 
 			Assert.IsNotNull(responseBuilder);
 			Assert.AreEqual("http://testing/mycontroller/test", responseBuilder.AppPath);

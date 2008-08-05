@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
+﻿using System.Collections;
 using System.Web;
 
 namespace MvcContrib.UI.Tags.Validators
@@ -12,25 +8,25 @@ namespace MvcContrib.UI.Tags.Validators
 		public RequiredValidator(string id, string referenceId, string text)
 			: base(id, referenceId, text)
 		{
-			this.InitialValue = string.Empty;
+			InitialValue = string.Empty;
 		}
 
 		public RequiredValidator(string id, string referenceId, string text, IDictionary attributes)
 			: base(id, referenceId, text, string.Empty, attributes)
 		{
-			this.InitialValue = string.Empty;
+			InitialValue = string.Empty;
 		}
 
 		public RequiredValidator(string id, string referenceId, string text, string validationGroup)
 			: base(id, referenceId, text, validationGroup)
 		{
-			this.InitialValue = string.Empty;
+			InitialValue = string.Empty;
 		}
 
 		public RequiredValidator(string id, string referenceId, string text, string validationGroup, IDictionary attributes)
 			: base(id, referenceId, text, validationGroup, attributes)
 		{
-			this.InitialValue = string.Empty;
+			InitialValue = string.Empty;
 		}
 
 		public override string ValidationFunction
@@ -45,20 +41,20 @@ namespace MvcContrib.UI.Tags.Validators
 		{
 			get
 			{
-				return this.NullExpandoGet("initialvalue");
+				return NullExpandoGet("initialvalue");
 			}
 
 			set
 			{
-				this.NullExpandoSet("initialvalue", value);
+				NullExpandoSet("initialvalue", value);
 			}
 		}
 
 		public override bool Validate(HttpRequestBase request)
 		{
-			this.IsValid = !string.IsNullOrEmpty(request.Form[this.ReferenceId]);
+			IsValid = !string.IsNullOrEmpty(request.Form[ReferenceId]);
 
-			return this.IsValid;
+			return IsValid;
 		}
 	}
 }

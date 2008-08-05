@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Globalization;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -60,7 +59,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_render_empty_table()
 		{
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
-			Grid<Person> grid = new Grid<Person>(null, null, null, Writer, null);
+			var grid = new Grid<Person>(null, null, null, Writer, null);
 			grid.Render();
 
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
@@ -88,7 +87,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Custom_html_attrs()
 		{
 			string expected = "<table class=\"sortable grid\"><tr><td>There is no data available.</td></tr></table>";
-			Grid<Person> grid = new Grid<Person>(null, null, new Hash(@class => "sortable grid"), Writer, null);
+			var grid = new Grid<Person>(null, null, new Hash(@class => "sortable grid"), Writer, null);
 			grid.Render();
 
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));

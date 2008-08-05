@@ -1,4 +1,3 @@
-using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
@@ -14,7 +13,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		public void Should_convert()
 		{
 			ActionResult result = new EmptyResult();
-			EmptyResult converted = result.AssertResultIs<EmptyResult>();
+			var converted = result.AssertResultIs<EmptyResult>();
 			Assert.IsNotNull(converted);
 		}
 
@@ -22,7 +21,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		public void Should_throw_when_conversiontype_is_incorrect()
 		{
 			ActionResult result = new RedirectResult("http://mvccontrib.org");
-			EmptyResult converted = result.AssertResultIs<EmptyResult>();
+			var converted = result.AssertResultIs<EmptyResult>();
 		}
 
 		[Test]

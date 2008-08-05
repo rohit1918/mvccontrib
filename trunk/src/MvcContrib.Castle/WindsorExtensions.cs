@@ -15,9 +15,9 @@ namespace MvcContrib.Castle
 		
 		public static IWindsorContainer RegisterControllers(this IWindsorContainer container, params Type[] controllerTypes)
 		{
-			foreach(Type type in controllerTypes)
+			foreach(var type in controllerTypes)
 			{
-				if(MvcContrib.ControllerFactories.DefaultControllerFactory.IsController(type))
+				if(ControllerFactories.DefaultControllerFactory.IsController(type))
 				{
 					container.AddComponentWithLifestyle(type.Name.ToLower(), type, LifestyleType.Transient);
 				}
@@ -28,7 +28,7 @@ namespace MvcContrib.Castle
 
 		public static IWindsorContainer RegisterControllers(this IWindsorContainer container, params Assembly[] assemblies)
 		{
-			foreach(Assembly assembly in assemblies)
+			foreach(var assembly in assemblies)
 			{
 				container.RegisterControllers(assembly.GetExportedTypes());
 			}

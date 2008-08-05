@@ -17,7 +17,7 @@ namespace MvcContrib.MetaData
 				sValue = context.RouteData.Values[paramName].ToString();
 			}
 
-			DefaultConvertible convertible = new DefaultConvertible(sValue);
+			var convertible = new DefaultConvertible(sValue);
 			return convertible.ToType(targetType, CultureInfo.CurrentCulture);
 		}
 	}

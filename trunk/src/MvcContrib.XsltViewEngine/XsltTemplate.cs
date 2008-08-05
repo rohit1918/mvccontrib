@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Web.Mvc;
 using System.Xml;
 using MvcContrib.ViewFactories;
 using Mvp.Xml.Common.Xsl;
@@ -38,7 +37,7 @@ namespace MvcContrib.XsltViewEngine
 
 			_transform = new MvpXslTransform();
 
-			XmlReaderSettings settings = new XmlReaderSettings();
+			var settings = new XmlReaderSettings();
 			settings.ProhibitDtd = false;
 
 			using(Stream viewSourceStream = viewSource.OpenViewStream())

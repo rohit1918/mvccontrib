@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
-using MvcContrib.Interfaces;
 using MvcContrib.MetaData;
 
 namespace MvcContrib

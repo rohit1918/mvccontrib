@@ -1,9 +1,9 @@
 using Boo.Lang.Compiler.Ast;
 using MvcContrib.BrailViewEngine;
+using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.BrailViewEngine
 {
-	using NUnit.Framework;
 
 	[TestFixture]
 	[Category("BrailViewEngine")]
@@ -12,7 +12,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Transform_Data()
 		{
-			HtmlAttribute html = new HtmlAttribute();
+			var html = new HtmlAttribute();
 
 			Assert.AreEqual("MvcContrib.BrailViewEngine.HtmlAttribute.Transform", html.TransformMethodName);
 			Assert.AreEqual("this &amp; that", HtmlAttribute.Transform("this & that"));

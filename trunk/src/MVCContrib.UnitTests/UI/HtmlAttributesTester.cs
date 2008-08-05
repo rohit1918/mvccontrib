@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Linq;
-using System.Text;
-using MvcContrib;
 using MvcContrib.UI;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -19,7 +16,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void A_Few_One_Liner_Tests()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();;
+				var attribs = new HtmlAttributes();;
 				Assert.That(attribs["IDontExist"], Is.EqualTo(null));
 				Assert.That(attribs.IsReadOnly, Is.False);
 				Assert.That(attribs.IsFixedSize, Is.False);
@@ -28,7 +25,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void An_Attribute_Sticks_In_The_Collection()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
+				var attribs = new HtmlAttributes();
 				attribs.Add("AnAttribute", "AValue");
 				Assert.That(attribs["AnAttribute"], Is.EqualTo("AValue"));
 			}
@@ -36,7 +33,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void An_Attribute_Sticks_When_Added_By_KeyValuePair()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
+				var attribs = new HtmlAttributes();
 				attribs.Add(new KeyValuePair<string,string>("AnAttribute","AValue"));
 				Assert.That(attribs["AnAttribute"], Is.EqualTo("AValue"));
 			}
@@ -44,8 +41,8 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Can_Add_Objects_As_Attribs_And_Values_And_Will_use_ToString()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
-				Element element = new Element();
+				var attribs = new HtmlAttributes();
+				var element = new Element();
 				attribs.Add(element, 96);
 				Assert.That(attribs[element.ToString()], Is.EqualTo("96"));
 			}
@@ -53,7 +50,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Counting_Is_Accurate()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
+				var attribs = new HtmlAttributes();
 				Assert.That(attribs.Count, Is.EqualTo(0));
 				attribs["X"] = "1";
 				attribs["Y"] = "2";
@@ -66,7 +63,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Est_Length_Is_Accurate()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
+				var attribs = new HtmlAttributes();
 				Assert.That(attribs.GetEstLength(), Is.EqualTo(0));
 				attribs["Attrib1"] = "1Value";
 				Assert.That(attribs.GetEstLength(), Is.EqualTo(16));
@@ -83,7 +80,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Removing_An_Item_Doesnot_Break_Est()
 			{
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes();
+				var attribs = new HtmlAttributes();
 				attribs["Attrib1"] = "1Value";
 				attribs["Attrib2"] = "2Value-Changed";
 				attribs["Attrib3-Changed"] = "3Val";
@@ -98,21 +95,21 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void I_Can_Add_A_Dictionary_At_Init()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes(hash);
+				var attribs = new HtmlAttributes(hash);
 				Assert.That(attribs["Key1"], Is.EqualTo("Val1"));
 			}
 
 			[Test]
 			public void Explisit_Interfaces_Work()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes(hash);
-				IDictionary iattribs = (IDictionary)attribs;
+				var attribs = new HtmlAttributes(hash);
+				var iattribs = (IDictionary)attribs;
 				Assert.That(iattribs.Count, Is.EqualTo(attribs.Count));
 				Assert.That(iattribs.Keys, Is.EqualTo(attribs.Keys));
 				Assert.That(iattribs.Values, Is.EqualTo(attribs.Values));
@@ -126,22 +123,22 @@ namespace MvcContrib.UnitTests.UI
 				}
 				iattribs["NewKey"] = null;
 				Assert.That(iattribs["NewKey"], Is.EqualTo(null));
-				IEnumerable enumAttribs = (IEnumerable)attribs;
+				var enumAttribs = (IEnumerable)attribs;
 				foreach (KeyValuePair<string,string> de in enumAttribs)
 				{
-					Assert.That(de.Value, Is.EqualTo(attribs[de.Key.ToString()]));
+					Assert.That(de.Value, Is.EqualTo(attribs[de.Key]));
 				}
 			}
 
 			[Test]
 			public void These_Method_Are_Not_Implemented()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes(hash);
-				ICollection iattribs = (ICollection)attribs;
+				var attribs = new HtmlAttributes(hash);
+				var iattribs = (ICollection)attribs;
 				int exceptionCount = 0;
 				try
 				{
@@ -155,7 +152,7 @@ namespace MvcContrib.UnitTests.UI
 
 				try
 				{
-					iattribs.CopyTo(new string[] { "1" }, 0);
+					iattribs.CopyTo(new[] { "1" }, 0);
 				}
 				catch(Exception ex)
 				{
@@ -175,7 +172,7 @@ namespace MvcContrib.UnitTests.UI
 
 				try
 				{
-					attribs.CopyTo(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("ValNew", "ValNew") }, 10);
+					attribs.CopyTo(new[] { new KeyValuePair<string, string>("ValNew", "ValNew") }, 10);
 				}
 				catch (Exception ex)
 				{
@@ -189,11 +186,11 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Contains_And_ContainsKeys_Work()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes(hash);
+				var attribs = new HtmlAttributes(hash);
 				Assert.IsTrue(attribs.Contains("Key1"));
 				Assert.IsFalse(attribs.Contains("Key99"));
 				Assert.IsTrue(attribs.Contains(new KeyValuePair<string,string>("Key1","OnlyKeyIsChecked")));
@@ -203,11 +200,11 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void TryGetValue_Does_Not_Fail()
 			{
-				Hash hash = new Hash();
+				var hash = new Hash();
 				hash.Add("Key1", "Val1");
 				hash.Add("Key2", "Val2");
 				hash.Add("Key3", "Val3");
-				MvcContrib.UI.HtmlAttributes attribs = new MvcContrib.UI.HtmlAttributes(hash);
+				var attribs = new HtmlAttributes(hash);
 				string val;
 				attribs.TryGetValue("Key1", out val);
 				Assert.That(val, Is.EqualTo("Val1"));
@@ -218,7 +215,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Should_be_case_insensitive()
 			{
-				HtmlAttributes attributes = new HtmlAttributes();
+				var attributes = new HtmlAttributes();
 				attributes.Add("Key", "value");
 				Assert.That(attributes["key"], Is.EqualTo("value"));
 			}

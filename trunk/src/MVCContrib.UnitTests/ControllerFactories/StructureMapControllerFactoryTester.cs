@@ -46,7 +46,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(StructureMapDependencyController)));
 
-				StructureMapDependencyController dependencyController = (StructureMapDependencyController)controller;
+				var dependencyController = (StructureMapDependencyController)controller;
 				Assert.That(dependencyController._dependency, Is.Not.Null);
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}

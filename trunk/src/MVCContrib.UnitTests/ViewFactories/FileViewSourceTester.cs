@@ -19,8 +19,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void Can_Open_Existing_File()
 		{
-			FileInfo fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-			FileViewSource viewSource = new FileViewSource(fileInfo);
+			var fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
+			var viewSource = new FileViewSource(fileInfo);
 
 			Assert.AreEqual(fileInfo.LastWriteTimeUtc.Ticks, viewSource.LastModified);
 

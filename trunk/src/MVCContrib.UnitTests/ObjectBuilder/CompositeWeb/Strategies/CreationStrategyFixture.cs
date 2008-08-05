@@ -38,7 +38,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void CreationStrategyUsesSingletonPolicyToLocateCreatedItems()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
@@ -53,7 +53,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void NoCreationStrategy()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 
 			ctx.HeadOfChain.BuildUp(ctx, typeof(object), null, null);
 		}
@@ -63,7 +63,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void NoCreationStrategyWithId()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 
 			ctx.HeadOfChain.BuildUp(ctx, typeof(object), null, Guid.NewGuid().ToString());
 		}
@@ -72,7 +72,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void CreationStrategyOnlyLocatesItemIfSingletonPolicySetForThatType()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 			ctx.Policies.Set<ISingletonPolicy>(new SingletonPolicy(false), typeof(object), null);
@@ -87,11 +87,11 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void AllCreatedDependenciesArePlacedIntoLocatorAndLifetimeContainer()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
-			MockDependingObject obj = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
+			var obj = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
 
 			Assert.AreEqual(2, container.Count);
 			Assert.AreSame(obj, ctx.Locator.Get(new DependencyResolutionLocatorKey(typeof(MockDependingObject), null)));
@@ -103,12 +103,12 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void InjectedDependencyIsReusedWhenDependingObjectIsCreatedTwice()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
-			MockDependingObject obj1 = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
-			MockDependingObject obj2 = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
+			var obj1 = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
+			var obj2 = (MockDependingObject)ctx.HeadOfChain.BuildUp(ctx, typeof(MockDependingObject), null, null);
 
 			Assert.AreSame(obj1.DependentObject, obj2.DependentObject);
 		}
@@ -117,7 +117,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void NamedObjectsOfSameTypeAreUnique()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
@@ -132,11 +132,11 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void CircularDependenciesCanBeResolved()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
-			CircularDependency1 d1 = (CircularDependency1)ctx.HeadOfChain.BuildUp(ctx, typeof(CircularDependency1), null, null);
+			var d1 = (CircularDependency1)ctx.HeadOfChain.BuildUp(ctx, typeof(CircularDependency1), null, null);
 
 			Assert.IsNotNull(d1);
 			Assert.IsNotNull(d1.Depends2);
@@ -150,7 +150,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void CreatingAbstractTypeThrows()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
@@ -181,7 +181,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void NotFindingAMatchingConstructorThrows()
 		{
 			MockBuilderContext ctx = CreateContext();
-			FailingCreationPolicy policy = new FailingCreationPolicy();
+			var policy = new FailingCreationPolicy();
 			ctx.Policies.SetDefault<ICreationPolicy>(policy);
 
 			ctx.HeadOfChain.BuildUp(ctx, typeof(object), null, null);
@@ -191,10 +191,10 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void CreationStrategyWillLocateExistingObjects()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
+			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ctx.Policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			ctx.Policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
-			object obj = new object();
+			var obj = new object();
 
 			ctx.HeadOfChain.BuildUp(ctx, typeof(object), obj, null);
 
@@ -207,8 +207,8 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void IncompatibleTypesThrows()
 		{
 			MockBuilderContext ctx = CreateContext();
-			ILifetimeContainer container = ctx.Locator.Get<ILifetimeContainer>();
-			ConstructorInfo ci = typeof(MockObject).GetConstructor(new Type[] {typeof(int)});
+			var container = ctx.Locator.Get<ILifetimeContainer>();
+			ConstructorInfo ci = typeof(MockObject).GetConstructor(new[] {typeof(int)});
 			ICreationPolicy policy = new ConstructorPolicy(ci, new ValueParameter<string>(String.Empty));
 			ctx.Policies.Set<ICreationPolicy>(policy, typeof(MockObject), null);
 
@@ -218,20 +218,20 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void CreationPolicyWillRecordSingletonsUsingLocalLifetimeContainerOnly()
 		{
-			BuilderStrategyChain chain = new BuilderStrategyChain();
+			var chain = new BuilderStrategyChain();
 			chain.Add(new Practices.ObjectBuilder.CreationStrategy());
 
-			Locator parentLocator = new Locator();
-			LifetimeContainer container = new LifetimeContainer();
+			var parentLocator = new Locator();
+			var container = new LifetimeContainer();
 			parentLocator.Add(typeof(ILifetimeContainer), container);
 
-			Locator childLocator = new Locator(parentLocator);
+			var childLocator = new Locator(parentLocator);
 
-			PolicyList policies = new PolicyList();
+			var policies = new PolicyList();
 			policies.SetDefault<ICreationPolicy>(new DefaultCreationPolicy());
 			policies.SetDefault<ISingletonPolicy>(new SingletonPolicy(true));
 
-			BuilderContext ctx = new BuilderContext(chain, childLocator, policies);
+			var ctx = new BuilderContext(chain, childLocator, policies);
 
 			object obj = ctx.HeadOfChain.BuildUp(ctx, typeof(object), null, null);
 
@@ -266,7 +266,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 
 		private MockBuilderContext CreateContext()
 		{
-			MockBuilderContext result = new MockBuilderContext();
+			var result = new MockBuilderContext();
 			result.InnerChain.Add(new SingletonStrategy());
 			result.InnerChain.Add(new CreationStrategy());
 			return result;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using NVelocity;
 using NVelocity.Runtime;
@@ -61,11 +60,11 @@ namespace MvcContrib.Castle
 				return methodInfo.Invoke(_instance, args);
 			}
 
-			object[] extensionArgs = new object[args.Length + 1];
+			var extensionArgs = new object[args.Length + 1];
 			extensionArgs[0] = _instance;
 			Array.Copy(args, 0, extensionArgs, 1, args.Length);
 
-			foreach(Type extensionType in _extensionTypes)
+			foreach(var extensionType in _extensionTypes)
 			{
 				methodInfo = Introspector.GetMethod(extensionType, method, extensionArgs);
 				if(methodInfo != null)

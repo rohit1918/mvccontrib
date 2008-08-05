@@ -1,9 +1,6 @@
-﻿using System;
-using MvcContrib.Interfaces;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Microsoft.Practices.Unity;
 using MvcContrib.Unity;
-using MvcContrib.Services;
 
 namespace MvcContrib.UnitTests.IoC
 {

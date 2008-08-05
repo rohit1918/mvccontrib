@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Web.Mvc;
-using MvcContrib.Interfaces;
 using MvcContrib.Services;
 
 namespace MvcContrib.Filters

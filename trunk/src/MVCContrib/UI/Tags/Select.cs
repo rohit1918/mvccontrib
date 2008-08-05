@@ -17,11 +17,8 @@ namespace MvcContrib.UI.Tags
 		private const string SIZE = "size";
 
 		private readonly List<Option> _options = new List<Option>();
-		private string _textField;
 		private string _valueField;
 		private readonly List<string> _selectedValues = new List<string>();
-		private string _firstOption;
-		private string _firstOptionValue;
 
 		public Select(IDictionary attributes)
 			: base("select", attributes)
@@ -120,7 +117,7 @@ namespace MvcContrib.UI.Tags
 
 		public void AddOption(string optionValue, string innerText)
 		{
-			Option option = new Option(new Hash(value => optionValue));
+			var option = new Option(new Hash(value => optionValue));
 			option.InnerText = innerText;
 			_options.Add(option);
 		}
@@ -130,11 +127,7 @@ namespace MvcContrib.UI.Tags
 			get { return _options; }
 		}
 
-		public string TextField
-		{
-			get { return _textField; }
-			set { _textField = value; }
-		}
+		public string TextField { get; set; }
 
 		public string ValueField
 		{
@@ -147,17 +140,9 @@ namespace MvcContrib.UI.Tags
 			get { return _selectedValues.AsReadOnly(); }
 		}
 
-		public string FirstOption
-		{
-			get { return _firstOption; }
-			set { _firstOption = value; }
-		}
+		public string FirstOption { get; set; }
 
-		public string FirstOptionValue
-		{
-			get { return _firstOptionValue; }
-			set { _firstOptionValue = value; }
-		}
+		public string FirstOptionValue { get; set; }
 
 		public override string ToString()
 		{
@@ -167,11 +152,11 @@ namespace MvcContrib.UI.Tags
 
 		protected virtual string OptionsToString()
 		{
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
 
 			if (FirstOption != null)
 			{
-				Option option = new Option();
+				var option = new Option();
 				option.Value = FirstOptionValue;
 				option.InnerText = FirstOption;
 
@@ -183,7 +168,7 @@ namespace MvcContrib.UI.Tags
 				builder.Append(option.ToString());
 			}
 
-			foreach (Option option in _options)
+			foreach (var option in _options)
 			{
 				if (SelectedValues.Contains(option.Value))
 				{

@@ -1,5 +1,3 @@
-using System;
-using MvcContrib.Interfaces;
 using MvcContrib.ObjectBuilder;
 using NUnit.Framework;
 

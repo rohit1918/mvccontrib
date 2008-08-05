@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Specialized;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.UnitTests.XsltViewEngine.Helpers;
 using MvcContrib.ViewFactories;
-using MvcContrib.XsltViewEngine;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -91,8 +89,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test, ExpectedException(typeof(ArgumentException))]
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
-			RouteData routeData = new RouteData();
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
+			var routeData = new RouteData();
+			var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
 			                                          new TempDataDictionary());
 				// new ControllerContext(HttpContext, routeData, new Controller());
 

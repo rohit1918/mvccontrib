@@ -63,10 +63,10 @@ namespace MvcContrib.ObjectBuilder
         {
             if(lifetime != null)
             {
-                List<object> items = new List<object>();
+                var items = new List<object>();
                 items.AddRange(lifetime);
 
-                foreach(object item in items)
+                foreach(var item in items)
                     builder.TearDown(locator, item);
 
                 lifetime.Dispose();
@@ -107,11 +107,11 @@ namespace MvcContrib.ObjectBuilder
             if(@object != null)
             {
                 string temporaryId = Guid.NewGuid().ToString();
-                PolicyList policies = new PolicyList(new PolicyList[0]);
+                var policies = new PolicyList(new PolicyList[0]);
                 policies.Set<ISingletonPolicy>(new SingletonPolicy(false), itemType, temporaryId);
                 policies.Set<ICreationPolicy>(new DefaultCreationPolicy(), itemType, temporaryId);
                 policies.Set<IPropertySetterPolicy>(new PropertySetterPolicy(), itemType, temporaryId);
-                return builder.BuildUp(locator, itemType, temporaryId, @object, new PolicyList[] {policies});
+                return builder.BuildUp(locator, itemType, temporaryId, @object, new[] {policies});
             }
             else
             {
@@ -125,7 +125,7 @@ namespace MvcContrib.ObjectBuilder
         /// <returns>An enumeration of the matching items</returns>
         virtual public IEnumerable<T> FindSingletons<T>()
         {
-            foreach(object obj in lifetime)
+            foreach(var obj in lifetime)
                 if(obj is T)
                     yield return (T)obj;
         }
@@ -225,7 +225,7 @@ namespace MvcContrib.ObjectBuilder
             {
                 throw new ArgumentNullException("propertyName");
             }
-            PropertySetterPolicy policy = new PropertySetterPolicy();
+            var policy = new PropertySetterPolicy();
             PropertyInfo pi = type.GetProperty(propertyName);
             if (pi == null)
                 throw new ApplicationException("Property not found: " + propertyName);
@@ -262,7 +262,7 @@ namespace MvcContrib.ObjectBuilder
             {
                 throw new ArgumentNullException("propertyName");
             }
-            PropertySetterPolicy policy = new PropertySetterPolicy();
+            var policy = new PropertySetterPolicy();
 
             policy.Properties.Add(propertyName, new PropertySetterInfo(propertyName, new CreationParameter(value)));
 
@@ -303,7 +303,7 @@ namespace MvcContrib.ObjectBuilder
 
         private MethodPolicy GetMethodPolicy(Type typeToBuild, string idToBuild)
         {
-            MethodPolicy policy = builder.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
+            var policy = builder.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
 
             if (policy == null)
             {

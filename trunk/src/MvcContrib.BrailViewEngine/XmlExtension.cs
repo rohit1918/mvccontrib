@@ -23,7 +23,7 @@ namespace MvcContrib.BrailViewEngine
 
 	public class XmlExtension : IDslLanguageExtension
 	{
-		private readonly TextWriter output = null;
+		private readonly TextWriter output;
 		private readonly XmlWriter writer;
 
 		public XmlExtension(TextWriter output)

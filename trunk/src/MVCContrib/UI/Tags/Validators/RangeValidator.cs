@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Web.UI.WebControls;
 using System.Collections;
 
@@ -12,45 +9,45 @@ namespace MvcContrib.UI.Tags.Validators
 		public RangeValidator(string id, string referenceId, string minimumValue, string maximumValue, ValidationDataType type, string text)
 			: base(id, referenceId, text, type)
 		{
-			this.ValidateInput(minimumValue, maximumValue, type);
-			this.MinimumValue = minimumValue;
-			this.MaximumValue = maximumValue;
+			ValidateInput(minimumValue, maximumValue, type);
+			MinimumValue = minimumValue;
+			MaximumValue = maximumValue;
 		}
 
 		public RangeValidator(string id, string referenceId, string minimumValue, string maximumValue, ValidationDataType type, string text, IDictionary attributes)
 			: base(id, referenceId, text, type, attributes)
 		{
-			this.ValidateInput(minimumValue, maximumValue, type);
-			this.MinimumValue = minimumValue;
-			this.MaximumValue = maximumValue;
+			ValidateInput(minimumValue, maximumValue, type);
+			MinimumValue = minimumValue;
+			MaximumValue = maximumValue;
 		}
 
 		public RangeValidator(string id, string referenceId, string minimumValue, string maximumValue, ValidationDataType type, string text, string validationGroup)
 			: base(id, referenceId, text, type, validationGroup)
 		{
-			this.ValidateInput(minimumValue, maximumValue, type);
-			this.MinimumValue = minimumValue;
-			this.MaximumValue = maximumValue;
+			ValidateInput(minimumValue, maximumValue, type);
+			MinimumValue = minimumValue;
+			MaximumValue = maximumValue;
 		}
 
 		public RangeValidator(string id, string referenceId, string minimumValue, string maximumValue, ValidationDataType type, string text, string validationGroup, IDictionary attributes)
 			: base(id, referenceId, text, type, validationGroup, attributes)
 		{
-			this.ValidateInput(minimumValue, maximumValue, type);
-			this.MinimumValue = minimumValue;
-			this.MaximumValue = maximumValue;
+			ValidateInput(minimumValue, maximumValue, type);
+			MinimumValue = minimumValue;
+			MaximumValue = maximumValue;
 		}
 
 		public string MinimumValue
 		{
 			get
 			{
-				return this.NullExpandoGet("minimumvalue");
+				return NullExpandoGet("minimumvalue");
 			}
 
 			set
 			{
-				this.NullExpandoSet("minimumvalue", value);
+				NullExpandoSet("minimumvalue", value);
 			}
 		}
 
@@ -58,12 +55,12 @@ namespace MvcContrib.UI.Tags.Validators
 		{
 			get
 			{
-				return this.NullExpandoGet("maximumvalue");
+				return NullExpandoGet("maximumvalue");
 			}
 
 			set
 			{
-				this.NullExpandoSet("maximumvalue", value);
+				NullExpandoSet("maximumvalue", value);
 			}
 		}
 
@@ -95,16 +92,16 @@ namespace MvcContrib.UI.Tags.Validators
 
 		public override bool Validate(System.Web.HttpRequestBase request)
 		{
-			string formValue = request.Form[this.ReferenceId];
+			string formValue = request.Form[ReferenceId];
 
 			if (formValue == null)
 			{
-				this.IsValid = false;
+				IsValid = false;
 				return false;
 			}
 
-			this.IsValid = (this.CompareValues(formValue, this.MinimumValue, ValidationCompareOperator.GreaterThanEqual) && this.CompareValues(formValue, this.MaximumValue, ValidationCompareOperator.LessThanEqual));
-			return this.IsValid;
+			IsValid = (CompareValues(formValue, MinimumValue, ValidationCompareOperator.GreaterThanEqual) && CompareValues(formValue, MaximumValue, ValidationCompareOperator.LessThanEqual));
+			return IsValid;
 		}
 	}
 }

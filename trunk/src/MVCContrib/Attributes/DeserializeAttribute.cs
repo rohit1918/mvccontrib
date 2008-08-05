@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.Mvc;
-using MvcContrib.MetaData;
 
 namespace MvcContrib.Attributes
 {

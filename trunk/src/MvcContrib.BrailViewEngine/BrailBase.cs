@@ -20,7 +20,6 @@ namespace MvcContrib.BrailViewEngine
 	using System.Collections;
 	using System.IO;
 	using System.Web;
-	using System.Collections.Generic;
 	using System.Text;
 	using System.Web.Mvc;
 
@@ -67,9 +66,6 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		/// <param name="viewEngine">The view engine.</param>
 		/// <param name="output">The output.</param>
-		/// <param name="context">The context.</param>
-		/// <param name="__controller">The controller.</param>
-		/// <param name="__controllerContext">The __controller context.</param>
 		public BrailBase(BooViewEngine viewEngine, TextWriter output)
 //		(BooViewEngine viewEngine, TextWriter output, IEngineContext context, IController __controller, IControllerContext __controllerContext)
 		{
@@ -77,12 +73,7 @@ namespace MvcContrib.BrailViewEngine
 			outputStream = output;
 		}
 
-		private BrailBase _layout;
-		public BrailBase Layout
-		{
-			get { return _layout; }
-			set { _layout = value; }
-		}
+		public BrailBase Layout { get; set; }
 
 		/// <summary>
 		///The path of the script, this is filled by AddBrailBaseClassStep
@@ -176,7 +167,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public ViewDataDictionary ViewData
 		{
-			get { return this.ViewContext.ViewData; }
+			get { return ViewContext.ViewData; }
 			set { throw new NotSupportedException(); }
 		}
 
@@ -433,7 +424,7 @@ namespace MvcContrib.BrailViewEngine
 
 			if (myContext != null && myContext.Request.QueryString != null)
 			{
-				foreach(string key in myContext.Request.QueryString.AllKeys)
+				foreach(var key in myContext.Request.QueryString.AllKeys)
 				{
 					if (key == null) continue;
 					properties[key] = myContext.Request.QueryString[key];
@@ -442,7 +433,7 @@ namespace MvcContrib.BrailViewEngine
 
 			if (myContext != null && myContext.Request.Form != null)
 			{
-				foreach(string key in myContext.Request.Form.AllKeys)
+				foreach(var key in myContext.Request.Form.AllKeys)
 				{
 					if (key == null) continue;
 					properties[key] = myContext.Request.Form[key];
@@ -451,13 +442,13 @@ namespace MvcContrib.BrailViewEngine
 
 			if (viewContext.TempData != null)
 			{
-				foreach (KeyValuePair<string, object> entry in viewContext.TempData)
+				foreach (var entry in viewContext.TempData)
 				{
 					properties[entry.Key] = entry.Value;
 				}
 			}
 
-			foreach (KeyValuePair<string, object> entry in viewContext.ViewData)
+			foreach (var entry in viewContext.ViewData)
 			{
 				properties[entry.Key] = entry.Value;
 			}
@@ -566,7 +557,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private void HandleException(string templateName, BrailBase view, Exception e)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			sb.Append("Exception on RenderView: ").AppendLine(templateName);
 			sb.Append("Last accessed variable: ").Append(view.LastVariableAccessed);
 			string msg = sb.ToString();

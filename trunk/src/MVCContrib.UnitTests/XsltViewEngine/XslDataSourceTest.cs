@@ -13,7 +13,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			string formatString = "<{0}><MyElementID>1</MyElementID></{0}>";
 			string expectedRootName = "MyRoot";
 			string expectedSnippet = string.Format(formatString, expectedRootName);
-			XslDataSource dataSource = new XslDataSource(expectedRootName, new MockXslDataSource(formatString));
+			var dataSource = new XslDataSource(expectedRootName, new MockXslDataSource(formatString));
 
 			Assert.IsNotNull(dataSource);
 			Assert.IsTrue(dataSource.DataSource is MockXslDataSource);
@@ -25,7 +25,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void Instantiate_WithoutRootName()
 		{
 			string expectedSnippet = "<Root><MyElementID>1</MyElementID></Root>";
-			XslDataSource dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
+			var dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
 
 			Assert.IsNotNull(dataSource);
 			Assert.IsTrue(dataSource.DataSource is MockXslDataSource);
@@ -51,7 +51,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 		public XmlNode ToXml(string root)
 		{
-			XmlDocument doc = new XmlDocument();
+			var doc = new XmlDocument();
 			doc.LoadXml(string.Format(formatString, root));
 
 			return doc.DocumentElement;

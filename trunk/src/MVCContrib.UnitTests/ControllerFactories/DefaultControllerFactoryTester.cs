@@ -18,7 +18,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			protected override void BeforeEachSpec()
 			{
 				_factory = new DefaultControllerFactory();
-				HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+				var httpContext = _mocks.DynamicMock<HttpContextBase>();
 				_mocks.Replay(httpContext);
 				_context = new RequestContext(httpContext, new RouteData());
 			}

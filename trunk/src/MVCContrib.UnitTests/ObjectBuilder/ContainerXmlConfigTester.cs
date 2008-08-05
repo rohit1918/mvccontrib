@@ -22,7 +22,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		{
 			IBuilder<BuilderStage> builder = new BuilderBase<BuilderStage>();
 
-			ContainerXmlConfig config = new ContainerXmlConfig(validConfig);
+			var config = new ContainerXmlConfig(validConfig);
 			config.ApplyConfiguration(builder);
 
 			Assert.AreEqual(8, builder.Policies.Count);
@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		{
 			IBuilder<BuilderStage> builder = new BuilderBase<BuilderStage>();
 
-			ContainerXmlConfig config = new ContainerXmlConfig(invalidTypeConfig);
+			var config = new ContainerXmlConfig(invalidTypeConfig);
 			config.ApplyConfiguration(builder);
 		}
 
