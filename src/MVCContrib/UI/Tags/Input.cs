@@ -17,7 +17,7 @@ namespace MvcContrib.UI.Tags
 
 		public Input(string type, IDictionary attributes) : base("input", attributes)
 		{
-			this.Type = type;
+			Type = type;
 			//Label is not an HTML attribute, so remove it and store separately.
 			if (Attributes.Contains(LABEL))
 			{
@@ -106,9 +106,9 @@ namespace MvcContrib.UI.Tags
 		{
 			if (!string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(Id))
 			{
-				Element label = new Element(LABEL, new Hash(@for => Id));
+				var label = new Element(LABEL, new Hash(@for => Id));
 				label.InnerText = _label;
-				return base.ToString() + label.ToString();
+				return base.ToString() + label;
 			}
 			return base.ToString();
 		}

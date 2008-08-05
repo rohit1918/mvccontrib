@@ -10,7 +10,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertBool()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("true");
+			var convertible = new DefaultConvertible("true");
 			bool value = convertible.ToBoolean(CultureInfo.InvariantCulture);
 
 			Assert.IsTrue(value);
@@ -22,7 +22,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertChar()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("t");
+			var convertible = new DefaultConvertible("t");
 			char value = convertible.ToChar(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual('t', value);
@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertSByte()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(sbyte.MaxValue.ToString());
+			var convertible = new DefaultConvertible(sbyte.MaxValue.ToString());
 			sbyte value = convertible.ToSByte(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(sbyte.MaxValue, value);
@@ -46,7 +46,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertByte()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(byte.MaxValue.ToString());
+			var convertible = new DefaultConvertible(byte.MaxValue.ToString());
 			byte value = convertible.ToByte(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(byte.MaxValue, value);
@@ -58,7 +58,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertShort()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(short.MaxValue.ToString());
+			var convertible = new DefaultConvertible(short.MaxValue.ToString());
 			short value = convertible.ToInt16(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(short.MaxValue, value);
@@ -70,7 +70,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertUShort()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(ushort.MaxValue.ToString());
+			var convertible = new DefaultConvertible(ushort.MaxValue.ToString());
 			ushort value = convertible.ToUInt16(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(ushort.MaxValue, value);
@@ -82,7 +82,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertInt()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(int.MaxValue.ToString());
+			var convertible = new DefaultConvertible(int.MaxValue.ToString());
 			int value = convertible.ToInt32(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(int.MaxValue, value);
@@ -94,7 +94,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertUInt()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(uint.MaxValue.ToString());
+			var convertible = new DefaultConvertible(uint.MaxValue.ToString());
 			uint value = convertible.ToUInt32(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(uint.MaxValue, value);
@@ -106,7 +106,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertLong()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(long.MaxValue.ToString());
+			var convertible = new DefaultConvertible(long.MaxValue.ToString());
 			long value = convertible.ToInt64(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(long.MaxValue, value);
@@ -118,7 +118,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertULong()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(ulong.MaxValue.ToString());
+			var convertible = new DefaultConvertible(ulong.MaxValue.ToString());
 			ulong value = convertible.ToUInt64(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(ulong.MaxValue, value);
@@ -130,7 +130,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertFloat()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("1.1");
+			var convertible = new DefaultConvertible("1.1");
 			float value = convertible.ToSingle(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.1F, value);
@@ -142,7 +142,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertDouble()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("1.2");
+			var convertible = new DefaultConvertible("1.2");
 			double value = convertible.ToDouble(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.2, value);
@@ -154,7 +154,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertDecimal()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("1.3");
+			var convertible = new DefaultConvertible("1.3");
 			decimal value = convertible.ToDecimal(CultureInfo.InvariantCulture);
 
 			Assert.AreEqual(1.3M, value);
@@ -166,9 +166,9 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertDateTime()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("11/05/1605");
+			var convertible = new DefaultConvertible("11/05/1605");
 			DateTime value = convertible.ToDateTime(CultureInfo.InvariantCulture);
-			DateTime actual = new DateTime(1605, 11, 5);
+			var actual = new DateTime(1605, 11, 5);
 
 			Assert.AreEqual(actual, value);
 
@@ -179,7 +179,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ReturnsCorrectTypeCode()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(string.Empty);
+			var convertible = new DefaultConvertible(string.Empty);
 			TypeCode value = convertible.GetTypeCode();
 
 			Assert.AreEqual(TypeCode.String, value);
@@ -197,8 +197,8 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanConvertEnum()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("Minute");
-			WeAre value = (WeAre)convertible.ToEnum(typeof(WeAre));
+			var convertible = new DefaultConvertible("Minute");
+			var value = (WeAre)convertible.ToEnum(typeof(WeAre));
 
 			Assert.AreEqual(WeAre.Minute, value);
 
@@ -209,8 +209,8 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void EnumDefaultsToDefault()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("BowWowWowWow");
-			WeAre value = (WeAre)convertible.ToEnum(typeof(WeAre));
+			var convertible = new DefaultConvertible("BowWowWowWow");
+			var value = (WeAre)convertible.ToEnum(typeof(WeAre));
 
 			Assert.AreEqual(WeAre.Lovin, value);
 		}
@@ -218,8 +218,8 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void EnumDefaultsToDefaultWhenNull()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(null);
-			WeAre value = (WeAre)convertible.ToEnum(typeof(WeAre));
+			var convertible = new DefaultConvertible(null);
+			var value = (WeAre)convertible.ToEnum(typeof(WeAre));
 
 			Assert.AreEqual(WeAre.Lovin, value);
 		}
@@ -228,7 +228,7 @@ namespace MvcContrib.UnitTests
 		public void CanConvertGuid()
 		{
 			Guid actual = Guid.NewGuid();
-			DefaultConvertible convertible = new DefaultConvertible(actual.ToString());
+			var convertible = new DefaultConvertible(actual.ToString());
 			Guid value = convertible.ToGuid();
 
 			Assert.AreEqual(actual, value);
@@ -240,7 +240,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void GuidDefaultsToEmpty()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("GetSome");
+			var convertible = new DefaultConvertible("GetSome");
 			Guid value = convertible.ToGuid();
 
 			Assert.AreEqual(Guid.Empty, value);
@@ -255,7 +255,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void GuidDefaultsToEmptyWhenNull()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(null);
+			var convertible = new DefaultConvertible(null);
 			Guid value = convertible.ToGuid();
 
 			Assert.AreEqual(Guid.Empty, value);
@@ -264,9 +264,9 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void FallsBackToTypeConverter()
 		{
-			DefaultConvertible convertible = new DefaultConvertible("1.02:03:04.005");
-			TimeSpan value = (TimeSpan)convertible.ToType(typeof(TimeSpan), CultureInfo.InvariantCulture);
-			TimeSpan actual = new TimeSpan(1, 2, 3, 4, 5);
+			var convertible = new DefaultConvertible("1.02:03:04.005");
+			var value = (TimeSpan)convertible.ToType(typeof(TimeSpan), CultureInfo.InvariantCulture);
+			var actual = new TimeSpan(1, 2, 3, 4, 5);
 
 			Assert.AreEqual(actual, value);
 		}
@@ -274,7 +274,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void NeverThrows()
 		{
-			DefaultConvertible convertible = new DefaultConvertible(null);
+			var convertible = new DefaultConvertible(null);
 
 			convertible.ToChar(CultureInfo.InvariantCulture);
 			convertible.ToBoolean(CultureInfo.InvariantCulture);

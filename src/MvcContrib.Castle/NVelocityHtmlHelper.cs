@@ -31,7 +31,7 @@ namespace MvcContrib.Castle
 
 		public string TextBox(string htmlName, string value, IDictionary htmlAttributes)
 		{
-			return this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
+			return TextBox(htmlName, value, MakeGeneric(htmlAttributes));
 		}
 
         //public string Mailto(string emailAddress, string linkText, IDictionary htmlAttributes)
@@ -64,7 +64,7 @@ namespace MvcContrib.Castle
 		//TODO: Make MvcContrib.Hash do this.
 		private static IDictionary<string, object> MakeGeneric(IDictionary source)
 		{
-			Dictionary<string, object> toReturn = new Dictionary<string, object>();
+			var toReturn = new Dictionary<string, object>();
 			foreach(DictionaryEntry entry in source)
 			{
 				toReturn.Add(entry.Key.ToString(), entry.Value);

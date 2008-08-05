@@ -25,14 +25,14 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void CreateTransformer()
 		{
-			IViewSourceLoader viewSourceLoader = _mocks.DynamicMock<IViewSourceLoader>();
+			var viewSourceLoader = _mocks.DynamicMock<IViewSourceLoader>();
 
 			SetupResult.For(viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 
 			_mocks.ReplayAll();
 
-			XsltTemplate template = new XsltTemplate(viewSourceLoader, controller, view);
+			var template = new XsltTemplate(viewSourceLoader, controller, view);
 
 			_mocks.VerifyAll();
 
@@ -45,13 +45,13 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public void ThrowExceptionWhenTemplateCantBeFound()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(Environment.CurrentDirectory);
-			XsltTemplate template = new XsltTemplate(viewSourceLoader, controller, view);
+			var template = new XsltTemplate(viewSourceLoader, controller, view);
 		}
 
 		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void XsltTemplate_DependsOn_ViewSourceLoader()
 		{
-			XsltTemplate template = new XsltTemplate(null, controller, view);
+			var template = new XsltTemplate(null, controller, view);
 		}
 	}
 }

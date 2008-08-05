@@ -75,13 +75,13 @@ namespace MvcContrib.Services
 
         private MailMessage ProcessContentStream(Stream stream, Encoding encoding)
         {
-            MailMessage message = new MailMessage();
+            var message = new MailMessage();
 
             stream.Position = 0;
-            using (StreamReader reader = new StreamReader(stream, encoding))
+            using (var reader = new StreamReader(stream, encoding))
             {
                 bool isInBody = false;
-                StringBuilder body = new StringBuilder();
+                var body = new StringBuilder();
                 string line, header, value;
 
                 while ((line = reader.ReadLine()) != null)

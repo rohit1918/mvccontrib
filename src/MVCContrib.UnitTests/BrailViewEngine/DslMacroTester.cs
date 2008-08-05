@@ -12,10 +12,10 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ForCoverage()
 		{
-			MacroStatement statement = new MacroStatement();
+			var statement = new MacroStatement();
 			statement.Arguments.Add(new ReferenceExpression("xml"));
 
-			DslMacro macro = new DslMacro();
+			var macro = new DslMacro();
 			macro.Expand(statement);
 		}
 	}

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -31,16 +29,16 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_output = new StringWriter();
 			_mocks = new MockRepository();
 			_httpContext = _mocks.DynamicMock<HttpContextBase>(); //new TestHttpContext();
-			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			var response = _mocks.DynamicMock<HttpResponseBase>();
 			SetupResult.For(response.Output).Return(_output);
 			SetupResult.For(_httpContext.Request).Return(_mocks.DynamicMock<HttpRequestBase>());
 			SetupResult.For(_httpContext.Response).Return(response);
 //			SetupResult.For(_httpContext.Session).Return(_mocks.DynamicMock<HttpSessionStateBase>());
-			RequestContext requestContext = new RequestContext(_httpContext, new RouteData());
+			var requestContext = new RequestContext(_httpContext, new RouteData());
 			_controller = _mocks.CreateMock<Controller>();
 			_mocks.Replay(_controller);
 			
-			ControllerContext controllerContext = new ControllerContext(requestContext, _controller);
+			var controllerContext = new ControllerContext(requestContext, _controller);
 			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), 
 				                null);
 

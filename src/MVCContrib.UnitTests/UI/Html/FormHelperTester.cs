@@ -1,15 +1,11 @@
 using System.Web.Mvc;
 using MvcContrib.UI.Html;
 using MvcContrib.UI.Tags;
-using MvcContrib.UI.Tags.Validators;
 using NUnit.Framework;
-using MvcContrib.UnitTests;
-using MvcContrib;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections;
 using System.Collections.Generic;
 using Rhino.Mocks;
-using System.Web;
 using MvcContrib.Interfaces;
 using System.Linq;
 using MvcContrib.Services;
@@ -32,7 +28,7 @@ namespace MvcContrib.UnitTests.UI.Html
 
 			protected List<Person> BuildPeople()
 			{
-				List<Person> people = new List<Person>();
+				var people = new List<Person>();
 				people.Add(new Person("Jeremy", 1));
 				people.Add(new Person("Josh", 2));
 
@@ -76,7 +72,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_FormHelper_in_HttpContext_Items_should_be_returned()
 			{
-				FormHelper helper = new FormHelper();
+				var helper = new FormHelper();
 				_viewContext.HttpContext.Items.Add(FormHelper.CACHE_KEY, helper);
 				Assert.That(FormHelper.GetInstance(_viewContext), Is.EqualTo(helper));
 			}
@@ -93,10 +89,10 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
 			{
-				FormHelper helper = new FormHelper();
+				var helper = new FormHelper();
 				using (mocks.Record())
 				{
-					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
+					var resolver = mocks.DynamicMock<IDependencyResolver>();
 					DependencyResolver.InitializeWith(resolver);
 					Expect.Call(resolver.GetImplementationOf<IFormHelper>()).Return(helper);
 				}
@@ -136,7 +132,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_a_FormHelper_should_be_created()
 			{
-				HtmlHelper helper = new HtmlHelper(_viewContext, new ViewPage());
+				var helper = new HtmlHelper(_viewContext, new ViewPage());
 				IFormHelper formHelper = HtmlHelperExtensions.Form(helper);
 				Assert.IsNotNull(formHelper);
 			}
@@ -149,7 +145,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				TextBox textField = new TextBox();
+				var textField = new TextBox();
 				textField.Name = "foo";
 				textField.Class = "bar";
 				textField.Value = "A Value";
@@ -201,7 +197,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				Password textField = new Password();
+				var textField = new Password();
 				textField.Name = "foo";
 				textField.Class = "bar";
 				textField.Value = "A Value";
@@ -253,7 +249,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				HiddenField hiddenField = new HiddenField();
+				var hiddenField = new HiddenField();
 				hiddenField.Name = "foo";
 				hiddenField.Class = "bar";
 				hiddenField.Value = "A Value";
@@ -304,7 +300,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				TextArea textArea = new TextArea();
+				var textArea = new TextArea();
 				textArea.Name = "foo";
 				textArea.Class = "bar";
 				textArea.InnerText = "A Value";
@@ -355,7 +351,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				SubmitButton button = new SubmitButton();
+				var button = new SubmitButton();
 				button.Name = "foo";
 				button.Class = "bar";
 				button.Value = "A Value";
@@ -397,7 +393,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				InputImage button = new InputImage();
+				var button = new InputImage();
 				button.Name = "foo";
 				button.Src = "foo.gif";
 				button.Class = "bar";
@@ -432,7 +428,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				Select select = new Select();
+				var select = new Select();
 				select.Name = "foo";
 				select.Class = "bar";
 				select.TextField = "Name";
@@ -509,7 +505,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_generic_enum_parameter_and_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("enumArray", new TestEnum[] { TestEnum.One, TestEnum.Two });
+				((IDictionary)_viewContext.ViewData).Add("enumArray", new[] { TestEnum.One, TestEnum.Two });
 				var html = _helper.Select<TestEnum>("enumArray");
 				var expected = "<select name=\"enumArray\" id=\"enumArray\"><option value=\"0\" selected=\"selected\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -557,7 +553,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				CheckBoxField checkBox = new CheckBoxField();
+				var checkBox = new CheckBoxField();
 				checkBox.Name = "foo";
 				checkBox.Class = "bar";
 
@@ -632,7 +628,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				RadioField radioField = new RadioField();
+				var radioField = new RadioField();
 				radioField.Id = "foo";
 				radioField.Name = "foo";
 				radioField.Class = "bar";
@@ -647,7 +643,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_value_is_not_null_then_the_autogenerated_id_should_end_with_value()
 			{
-				RadioField field = new RadioField();
+				var field = new RadioField();
 				field.Value = "bar";
 				field.Name = "foo";
 
@@ -660,7 +656,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_value_contains_a_space_then_the_autogenerated_id_should_remove_the_space()
 			{
-				RadioField field = new RadioField();
+				var field = new RadioField();
 				field.Value = "A value";
 				field.Name = "foo";
 
@@ -727,7 +723,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				CheckBoxList list = new CheckBoxList();
+				var list = new CheckBoxList();
 				list.Name = "foo";
 				list.TextField = "Name";
 				list.ValueField = "Id";
@@ -771,7 +767,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				RadioList list = new RadioList();
+				var list = new RadioList();
 				list.Name = "foo";
 				list.TextField = "Name";
 				list.ValueField = "Id";
@@ -837,7 +833,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				[Test]
 				public void With_string_key_and_item_is_in_viewdata_then_item_should_be_extracted_from_viewdata()
 				{
-					Person p = new Person("Jeremy", 1);
+					var p = new Person("Jeremy", 1);
 					((IDictionary)_viewContext.ViewData).Add("person", p);
 					_helper.For<Person>("person", "/home/index", Hash.Empty, f =>
 					{
@@ -860,33 +856,17 @@ namespace MvcContrib.UnitTests.UI.Html
 		#region Person test object
 		public class Person
 		{
-			private string _name;
-			private int _id;
-			private TestEnum _testEnum;
-
 			public Person(string name, int id)
 			{
-				_name = name;
-				_id = id;
+				Name = name;
+				Id = id;
 			}
 
-			public string Name
-			{
-				get { return _name; }
-				set { _name = value; }
-			}
+			public string Name { get; set; }
 
-			public int Id
-			{
-				get { return _id; }
-				set { _id = value; }
-			}
+			public int Id { get; set; }
 
-			public TestEnum Test
-			{
-				get { return _testEnum;  }
-				set { _testEnum = value; }
-			}
+			public TestEnum Test { get; set; }
 		}
 		#endregion
 

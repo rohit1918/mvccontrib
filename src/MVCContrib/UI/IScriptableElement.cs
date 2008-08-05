@@ -1,5 +1,4 @@
-﻿using System;
-namespace MvcContrib.UI
+﻿namespace MvcContrib.UI
 {
 	public interface IScriptableElement:IElement
 	{

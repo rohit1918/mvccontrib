@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -33,15 +32,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 			_output = new StringWriter();
 
 			_mocks = new MockRepository();
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
-			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			var httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			Expect.Call(httpContext.Session).Repeat.Any().Return(httpSessionState);
 			Expect.Call(httpContext.Response).Repeat.Any().Return(httpResponse);
 			Expect.Call(httpResponse.Output).Repeat.Any().Return(_output);
 
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<IController>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values.Add("controller", viewPath);
@@ -50,7 +49,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, "view", null, new ViewDataDictionary(), null);
 
 			var view = _factory.CreateView(viewContext);
 
@@ -64,7 +63,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, "view", "master", new ViewDataDictionary(), null);
 
 			var view = _factory.CreateView(viewContext);
 
@@ -78,9 +77,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithViewData()
 		{
-			ViewDataDictionary viewData = new ViewDataDictionary();
+			var viewData = new ViewDataDictionary();
 			viewData["test"] = "test";
-			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
+			var viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
 
 			var view = _factory.CreateView(viewContext);
 

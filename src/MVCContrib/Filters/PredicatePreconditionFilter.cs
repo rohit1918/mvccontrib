@@ -46,7 +46,7 @@ namespace MvcContrib.Filters
 		{
 
 			//convert predicate into callable form
-			Predicate<object> predicate = (Predicate<object>)Delegate.CreateDelegate(typeof(Predicate<object>), executingContext.Controller, _predicateMethod);
+			var predicate = (Predicate<object>)Delegate.CreateDelegate(typeof(Predicate<object>), executingContext.Controller, _predicateMethod);
 
 			switch (_paramType)
 			{

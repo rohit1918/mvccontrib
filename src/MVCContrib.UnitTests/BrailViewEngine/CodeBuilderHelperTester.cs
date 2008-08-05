@@ -13,7 +13,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void ForCoverage()
 		{
-			MacroStatement statement = new MacroStatement();
+			var statement = new MacroStatement();
 			statement.Block.Statements.Add(new MacroStatement());
 
 			CodeBuilderHelper.CreateCallableFromMacroBody(new BooCodeBuilder(new TypeSystemServices()), statement);

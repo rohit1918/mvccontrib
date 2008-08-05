@@ -33,7 +33,7 @@ namespace MvcContrib.Filters
 
 				if (typeof(Exception).IsAssignableFrom(_exceptionToThrow))
 				{
-					Exception ex = (Exception)_exceptionToThrow.GetConstructor(new Type[] { typeof(String) }).Invoke(new object[] { _thrownExceptionMessage });
+					var ex = (Exception)_exceptionToThrow.GetConstructor(new[] { typeof(String) }).Invoke(new object[] { _thrownExceptionMessage });
 					throw ex;
 				}
 

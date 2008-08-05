@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using NVelocity;
@@ -55,7 +54,7 @@ namespace MvcContrib.Castle
 
 		private VelocityContext CreateContext(ViewContext context)
 		{
-			Hashtable entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+			var entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 			if (context.ViewData != null)
 			{
 				foreach(var pair in context.ViewData)

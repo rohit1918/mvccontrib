@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
-using NVelocity.Runtime;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ViewFactories
@@ -34,13 +33,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 			properties["master.folder"] = viewPath;
 			_factory = new NVelocityViewFactory(properties);
 
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var response = _mocks.DynamicMock<HttpResponseBase>();
 			SetupResult.For(httpContext.Response).Return(response);
 			SetupResult.For(response.Output).Return(_output);
 
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<IController>();
 			
 			_mocks.ReplayAll();
 
@@ -51,14 +50,14 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void WillAcceptNullProperties()
 		{
-			NVelocityViewFactory factory = new NVelocityViewFactory();
+			var factory = new NVelocityViewFactory();
 			factory = new NVelocityViewFactory(null);
 		}
 
 		[Test]
 		public void LoadValidView()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", string.Empty, null, null);
+			var context = new ViewContext(_controllerContext, "view", string.Empty, null, null);
 			NVelocityView view = _factory.CreateView(context);
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
@@ -68,14 +67,14 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidViewThrows()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "nonExistant", string.Empty, null, null);
+			var context = new ViewContext(_controllerContext, "nonExistant", string.Empty, null, null);
 			_factory.CreateView(context);
 		}
 
 		[Test]
 		public void LoadValidViewWithMaster()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
+			var context = new ViewContext(_controllerContext, "view", "master", null, null);
 			NVelocityView view = _factory.CreateView(context);
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
@@ -86,7 +85,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidMasterThrows()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
+			var context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
 			_factory.CreateView(context);
 		}
 
@@ -94,7 +93,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void ShouldRenderView()
 		{
 			string expected = "Master Template View Template";
-			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
+			var context = new ViewContext(_controllerContext, "view", "master", null, null);
 			_factory.RenderView(context);
 			string output = _output.ToString();
 			Assert.AreEqual(expected, output);

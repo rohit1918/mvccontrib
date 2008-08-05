@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.IO;
 using System.Net.Mail;
 using System.Text;
@@ -37,13 +36,13 @@ namespace MvcContrib.UnitTests
 
         private ViewContext SetupViewContext()
         {
-            HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
+            var httpContext = _mocks.DynamicMock<HttpContextBase>();
             _responseMock = _mocks.DynamicMock<HttpResponseBase>();
             SetupResult.For(httpContext.Response).Return(_responseMock);
-            RequestContext requestContext = new RequestContext(httpContext, new RouteData());
+            var requestContext = new RequestContext(httpContext, new RouteData());
 
-            IController controller = _mocks.Stub<IController>();
-            ControllerContext controllerContext = new ControllerContext(requestContext, controller);
+            var controller = _mocks.Stub<IController>();
+            var controllerContext = new ControllerContext(requestContext, controller);
 
             _mocks.Replay(httpContext);
 
@@ -52,7 +51,7 @@ namespace MvcContrib.UnitTests
 
         private void WriteToStream(Stream stream, string content)
         {
-            StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+            var writer = new StreamWriter(stream, Encoding.UTF8);
             writer.Write(content);
             writer.Flush();
         }
@@ -112,7 +111,7 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanPreserveResponseFilter()
         {
-            Stream streamStub = _mocks.Stub<Stream>();
+            var streamStub = _mocks.Stub<Stream>();
 
             using (_mocks.Record())
             {
@@ -134,7 +133,7 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanPreserveReponseFilterOnException()
         {
-            Stream streamStub = _mocks.Stub<Stream>();
+            var streamStub = _mocks.Stub<Stream>();
 
             using (_mocks.Record())
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace MvcContrib.UI
@@ -79,8 +78,8 @@ namespace MvcContrib.UI
 			if (attribs.Count > 4)
 			{
 				int totalLength = attribs.GetEstLength();
-				StringBuilder sb = new StringBuilder(totalLength + 10);
-				foreach (KeyValuePair<string, string> attrib in attribs)
+				var sb = new StringBuilder(totalLength + 10);
+				foreach (var attrib in attribs)
 				{
 					//format " [attribute]="[value encoded]""
 					sb.Append(" ").Append(attrib.Key).Append("=\"");
@@ -94,7 +93,7 @@ namespace MvcContrib.UI
 			else
 			{
 				string val = string.Empty;
-				foreach (KeyValuePair<string, string> attrib in attribs)
+				foreach (var attrib in attribs)
 				{
 					if (attrib.Key == "id" || (_element.Tag == "label" && attrib.Key == "for"))
 						val += string.Format(" {0}=\"{1}\"", attrib.Key, EncodeAttribute(attrib.Value.Replace('.', '-')));

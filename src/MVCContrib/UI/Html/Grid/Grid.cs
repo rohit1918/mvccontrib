@@ -254,7 +254,7 @@ namespace MvcContrib.UI.Html.Grid
 					continue;
 				}
 
-				foreach(string value in values.GetValues(key))
+				foreach(var value in values.GetValues(key))
 				{
 					builder.AppendFormat("&amp;{0}={1}", key, value);
 				}

@@ -33,9 +33,9 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test]
 		public void RenderViewTest()
 		{
-			XsltViewData vData = new XsltViewData();
+			var vData = new XsltViewData();
 			string expectedSnippet = "<Root><MyElementID>1</MyElementID></Root>";
-			XslDataSource dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
+			var dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
 			vData.DataSources.Add(dataSource);
 			vData.Messages.Add(new Message(MessageType.Info, "This is a message"));
 			vData.Messages.Add(new Message(MessageType.Info, "This is a message for a control", "controlID"));
@@ -52,11 +52,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message", "controlId4"));
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message"));
 
-			RouteData routeData = new RouteData();
+			var routeData = new RouteData();
 			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(vData), 
+			var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(vData), 
 			                                          new TempDataDictionary());
 
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);

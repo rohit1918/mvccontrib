@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 
 namespace MvcContrib
 {
@@ -37,7 +36,7 @@ namespace MvcContrib
 		{
 			if (hash != null)
 			{
-				foreach (Func<object, TValue> func in hash)
+				foreach (var func in hash)
 				{
 					Add(func.Method.GetParameters()[0].Name, func(null));
 				}
@@ -64,7 +63,7 @@ namespace MvcContrib
 				return dict;
 			}
 
-			foreach (Func<object, T> func in hash)
+			foreach (var func in hash)
 			{
 				dict.Add(func.Method.GetParameters()[0].Name, func(null));
 			}
@@ -82,7 +81,7 @@ namespace MvcContrib
 				return dict;
 			}
 
-			foreach (Func<object, object> func in hash)
+			foreach (var func in hash)
 			{
 				dict.Add(func.Method.GetParameters()[0].Name, func(null));
 			}

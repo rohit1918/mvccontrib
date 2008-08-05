@@ -265,7 +265,7 @@ namespace MvcContrib.TestHelper
 			if (index < 0 || index >= _objects.Count)
 				throw new ArgumentOutOfRangeException();
 			int i = _objects.Count - 1; //Standard session implements as list, hashtable implements as stack
-			foreach (object key in _objects.Keys)
+			foreach (var key in _objects.Keys)
 			{
 				if (i-- == index)
 				{

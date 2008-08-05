@@ -24,13 +24,7 @@ namespace MvcContrib.MetaData
 			get { return _actions; }
 		}
 
-		private ActionMetaData _defaultAction;
-
-		public ActionMetaData DefaultAction
-		{
-			get { return _defaultAction; }
-			set { _defaultAction = value; }
-		}
+		public ActionMetaData DefaultAction { get; set; }
 
 		public ActionMetaData GetAction(string name)
 		{

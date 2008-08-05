@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
-using MvcContrib.Filters;
-using MvcContrib.Interfaces;
 
 namespace MvcContrib.MetaData
 {
@@ -33,7 +31,7 @@ namespace MvcContrib.MetaData
 			var controllerFilters = GetFilters(metaData.ControllerType);
 
 			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
-			foreach (MethodInfo actionMethod in actionMethods)
+			foreach (var actionMethod in actionMethods)
 			{
 				if (actionMethod.DeclaringType == typeof(object) 
 					|| actionMethod.DeclaringType == typeof(Controller)
@@ -48,7 +46,7 @@ namespace MvcContrib.MetaData
 				actionMetaData.Filters = CreateFilterInfo(controllerFilters, GetFilters(actionMethod), actionMetaData);
 
 				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
-				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
+				foreach (var actionMethodParameter in actionMethodParameters)
 				{
 					ActionParameterMetaData parameterMetaData = CreateParameterMetaData(metaData, actionMetaData, actionMethodParameter);
 					parameterMetaData.ParameterBinder = GetParameterBinder(parameterMetaData);

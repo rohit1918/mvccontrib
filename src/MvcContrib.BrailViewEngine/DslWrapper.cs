@@ -25,14 +25,14 @@ namespace MvcContrib.BrailViewEngine
 	public class DslProvider : IQuackFu
 	{
 		private readonly IDictionary<string, MethodInfo> extensionMethods = new Dictionary<string, MethodInfo>();
-		private readonly BrailBase view = null;
+		private readonly BrailBase view;
 		private readonly IDictionary<string, MethodInfo> viewProperties = new Dictionary<string, MethodInfo>();
-		private IDslLanguageExtension currentExtension = null;
+		private IDslLanguageExtension currentExtension;
 
 		public DslProvider(BrailBase view)
 		{
 			this.view = view;
-			foreach(PropertyInfo prop in typeof(BrailBase).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+			foreach(var prop in typeof(BrailBase).GetProperties(BindingFlags.Public | BindingFlags.Instance))
 			{
 				if (prop.Name == "Dsl" || prop.Name == "ViewEngine" || prop.Name == "Properties" || prop.CanRead == false)
 				{
@@ -103,7 +103,7 @@ namespace MvcContrib.BrailViewEngine
 		{
 			if (currentExtension == null)
 			{
-				foreach(MethodInfo method in dslExtension.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance))
+				foreach(var method in dslExtension.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance))
 				{
 					if (method.DeclaringType == typeof(object))
 						continue;

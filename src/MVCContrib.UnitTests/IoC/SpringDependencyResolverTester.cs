@@ -1,7 +1,5 @@
-using System;
 using System.IO;
 using System.Text;
-using MvcContrib.Interfaces;
 using MvcContrib.Spring;
 using NUnit.Framework;
 using Spring.Core.IO;

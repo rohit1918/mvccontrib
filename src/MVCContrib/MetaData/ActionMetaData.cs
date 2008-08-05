@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Mvc;
-using MvcContrib.Attributes;
-using MvcContrib.Filters;
-using MvcContrib.Interfaces;
 
 namespace MvcContrib.MetaData
 {

@@ -43,7 +43,7 @@ namespace MvcContrib.BrailViewEngine
 			    IsTryGetParameterInvocation(node.Right) == false)
 				return;
 
-			MethodInvocationExpression mie = new MethodInvocationExpression();
+			var mie = new MethodInvocationExpression();
 			ReferenceExpression expression = AstUtil.CreateReferenceExpression("MvcContrib.BrailViewEngine.IgnoreNull.AreEqual");
 			mie.Target = expression;
 			mie.Arguments.Add(node.Left);
@@ -76,7 +76,7 @@ namespace MvcContrib.BrailViewEngine
 				new StringLiteralExpression(name)
 				);
 
-			MemberReferenceExpression isNull =
+			var isNull =
 				new MemberReferenceExpression(condition, "_IsIgnoreNullReferencingNotNullObject_");
 
 			return isNull;
@@ -84,7 +84,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static bool IsTryGetParameterInvocation(Expression condition)
 		{
-			ReferenceExpression expression = condition as ReferenceExpression;
+			var expression = condition as ReferenceExpression;
 			if (expression == null)
 				return false;
 

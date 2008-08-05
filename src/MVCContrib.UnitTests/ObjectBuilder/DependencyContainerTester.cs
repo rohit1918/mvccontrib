@@ -12,7 +12,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		public void InjectTest()
 		{
 			IFoo classA = new Foo();
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterSingleton<IBar>();
@@ -24,7 +24,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void NullInjections()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				Assert.IsNull(container.Inject(null));
 				Assert.IsNull(container.Inject<Bar>(null));
@@ -35,15 +35,15 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void SingletonTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
-				Foo myFoo = new Foo();
+				var myFoo = new Foo();
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterSingleton<Bar>();
 				container.RegisterInstance<IFoo>(container.Inject(myFoo) as IFoo);
 
-				IFoo classA = container.Get<IFoo>();
-				IBar classB = container.Get<IBar>();
+				var classA = container.Get<IFoo>();
+				var classB = container.Get<IBar>();
 				classB.Name = "Foo";
 
 				Assert.IsNotNull(classA.Dependency);
@@ -54,13 +54,13 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void ConstructorTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterSingleton<Bar>();
 				container.RegisterTypeMapping<IFoo, Foo2>();
 
-				IFoo classA = container.Get<IFoo>();
+				var classA = container.Get<IFoo>();
 
 				Assert.IsNotNull(classA.Dependency);
 				Assert.IsInstanceOfType(typeof(Foo2), classA);
@@ -70,24 +70,24 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void FindSingletonsTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo2>();
 				container.RegisterSingleton<Bar>();
 
-				IBar bar1 = container.Get<IBar>();
-				Foo2 foo1 = container.Get<Foo2>();
-				Foo2 foo2 = container.Get<Foo2>();
-				IBar bar2 = container.Get<IBar>();
+				var bar1 = container.Get<IBar>();
+				var foo1 = container.Get<Foo2>();
+				var foo2 = container.Get<Foo2>();
+				var bar2 = container.Get<IBar>();
 
 				int count = 0;
-				foreach(IBar bar in container.FindSingletons<IBar>())
+				foreach(var bar in container.FindSingletons<IBar>())
 					count++;
 
 				Assert.AreEqual(count, 1);
 				//non-singletons, shouldn't be found
-				foreach(Foo2 foo in container.FindSingletons<Foo2>())
+				foreach(var foo in container.FindSingletons<Foo2>())
 					count++;
 				Assert.AreEqual(count, 1);
 			}
@@ -97,9 +97,9 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentException))]
 		public void InvalidTypeTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
-				IFoo classA = container.Get<IFoo>();
+				var classA = container.Get<IFoo>();
 			}
 		}
 
@@ -107,11 +107,11 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentException))]
 		public void InvalidTypeTest2()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IFoo, Foo>();
 				//dependency bar is not yet registered
-				IFoo classA = container.Get<IFoo>();
+				var classA = container.Get<IFoo>();
 			}
 		}
 
@@ -151,12 +151,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 </BuildRules>
 </ContainerConfig>
 ";
-			using(DependencyContainer container = new DependencyContainer(xmlConfig))
+			using(var container = new DependencyContainer(xmlConfig))
 			{
-				IFoo classA = container.Get<IFoo>();
-				IBar classB = container.Get<IBar>();
-				Bar2 bar2 = container.Get<Bar2>();
-				Foo2 foo2 = container.Get<Foo2>();
+				var classA = container.Get<IFoo>();
+				var classB = container.Get<IBar>();
+				var bar2 = container.Get<Bar2>();
+				var foo2 = container.Get<Foo2>();
 				classB.Name = "Foo";
 
 				Assert.IsNotNull(classA.Dependency);
@@ -173,7 +173,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(IncompatibleTypesException))]
 		public void IncompatibleTypesExceptionTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Foo>();
 				container.Get<IBar>();
@@ -184,7 +184,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentException))]
 		public void UnknownConstructorTest()
 		{
-			using(DependencyContainer container = new DependencyContainer())
+			using(var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IFoo, Foo2>();
 				container.Get<IFoo>();
@@ -194,12 +194,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void PropertySetterTest()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter<Foo>("Something", "FooSomething");
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 
 				Assert.AreEqual("FooSomething", foo.Something);
 			}
@@ -209,12 +209,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void PropertySetterTest_TypeNullException()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter(null, "Something", "FooSomething");
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 
 				Assert.AreEqual("FooSomething", foo.Something);
 			}
@@ -224,12 +224,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void PropertySetterTest_PropertyNullException()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter<Foo>(null, "FooSomething");
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 
@@ -237,12 +237,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ApplicationException))]
 		public void PropertySetterTest_InvalidProperty()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter<Foo>("PropertyThatDoesNotExist", "FooSomething");
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 
@@ -250,12 +250,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[Test]
 		public void Type_PropertySetterTest()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter<Foo, IBar>("SomeOtherBar");
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 
 				Assert.IsNotNull(((Foo)foo).SomeOtherBar);
 			}
@@ -265,12 +265,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Type_PropertySetterTest_TypeNullException()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter(null, "Something", typeof(IBar));
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 
@@ -278,24 +278,24 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Type_PropertySetterTest_PropertyNullException()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterPropertySetter<Foo, IBar>(null);
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 
 		[Test]
 		public void MethodInjectionTest()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterMethodInjection<Foo>("SetSomething", new ValueParameter<String>("I've been set"));
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 
 				Assert.AreEqual("I've been set", foo.Something);
 			}
@@ -305,12 +305,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void MethodInjectionTest_TypeNull()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterMethodInjection(null, "SetSomething", new ValueParameter<String>("I've been set"));
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 
@@ -318,12 +318,12 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void MethodInjectionTest_PropertyNull()
 		{
-			using (DependencyContainer container = new DependencyContainer())
+			using (var container = new DependencyContainer())
 			{
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterTypeMapping<IFoo, Foo>();
 				container.RegisterMethodInjection<Foo>(null, new ValueParameter<String>("I've been set"));
-				IFoo foo = container.Get<IFoo>();
+				var foo = container.Get<IFoo>();
 			}
 		}
 

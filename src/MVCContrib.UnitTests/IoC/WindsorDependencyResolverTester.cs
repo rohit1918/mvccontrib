@@ -1,10 +1,6 @@
-using System.Web.Mvc;
 using Castle.Windsor;
 using MvcContrib.Castle;
-using MvcContrib.Interfaces;
-using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.IoC
@@ -39,7 +35,7 @@ namespace MvcContrib.UnitTests.IoC
 				container.AddComponent("NestedDependency",
 				                       typeof(NestedDependency));
 
-				this._dependencyResolver = new WindsorDependencyResolver(container);
+				_dependencyResolver = new WindsorDependencyResolver(container);
 			}
 		}
 

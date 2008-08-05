@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
-using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -23,7 +22,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				using (Record())
 				{
 					Expect.Call(_dependencyResolver.GetImplementationOf(typeof(IocTestController))).Return(
-						new IocTestController() as IController);
+						new IocTestController());
 				}
 
 				IController controller;
@@ -61,7 +60,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				using (Record())
 				{
 					Expect.Call(_dependencyResolver.GetImplementationOf<IController>(typeof(IocTestController))).Return(
-						new IocTestController() as IController);
+						new IocTestController());
 				}
 
 				IController controller;
@@ -76,7 +75,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			}
 
 			[Test]
-			[ExpectedException(typeof(System.ArgumentNullException))]
+			[ExpectedException(typeof(ArgumentNullException))]
 			public void Should_throw_an_argument_null_exception_when_the_resolver_is_null()
 			{
 				IControllerFactory controllerFactory = new IoCControllerFactory(null);
@@ -171,7 +170,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 
 			protected override void BeforeEachSpec()
 			{
-				_dependencyResolver = base._mocks.DynamicMock<IDependencyResolver>();	
+				_dependencyResolver = _mocks.DynamicMock<IDependencyResolver>();	
 			}
 		}
 	}

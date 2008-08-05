@@ -67,10 +67,10 @@ namespace MvcContrib.BrailViewEngine
 
 		public static object Invoke(object target, string name, object[] args)
 		{
-			IQuackFu duck = target as IQuackFu;
+			var duck = target as IQuackFu;
 			if (null != duck) return duck.QuackInvoke(name, args);
 
-			Type type = target as Type;
+			var type = target as Type;
 			if (null != type)
 			{
 				// static method
@@ -91,17 +91,17 @@ namespace MvcContrib.BrailViewEngine
 
 		public static object SetProperty(object target, string name, object value)
 		{
-			IQuackFu duck = target as IQuackFu;
+			var duck = target as IQuackFu;
 			if (null != duck) return duck.QuackSet(name, null, value);
 
-			Type type = target as Type;
+			var type = target as Type;
 			if (null == type)
 			{
 				target.GetType().InvokeMember(name,
 				                              ResolveFlagsToUse(target.GetType(), SetPropertyBindingFlags),
 				                              null,
 				                              target,
-				                              new object[] {value});
+				                              new[] {value});
 			}
 			else
 			{
@@ -110,16 +110,16 @@ namespace MvcContrib.BrailViewEngine
 				                  SetPropertyBindingFlags,
 				                  null,
 				                  null,
-				                  new object[] {value});
+				                  new[] {value});
 			}
 			return value;
 		}
 
 		public static object GetProperty(object target, string name)
 		{
-			IQuackFu duck = target as IQuackFu;
+			var duck = target as IQuackFu;
 			if (null != duck) return duck.QuackGet(name, null);
-			Type type = target as Type;
+			var type = target as Type;
 			if (null == type)
 			{
 				return target.GetType().InvokeMember(name,
@@ -141,7 +141,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public static object GetSlice(object target, string name, object[] args)
 		{
-			IQuackFu duck = target as IQuackFu;
+			var duck = target as IQuackFu;
 			if (null != duck) return duck.QuackGet(name, args);
 
 			Type type = target.GetType();
@@ -160,7 +160,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public static object SetSlice(object target, string name, object[] args)
 		{
-			IQuackFu duck = target as IQuackFu;
+			var duck = target as IQuackFu;
 			if (null != duck)
 				return duck.QuackSet(name, (object[]) RuntimeServices.GetRange2(args, 0, args.Length - 1), args[args.Length - 1]);
 
@@ -183,13 +183,13 @@ namespace MvcContrib.BrailViewEngine
 			{
 				case MemberTypes.Field:
 					{
-						FieldInfo field = (FieldInfo) member;
+						var field = (FieldInfo) member;
 						SetSlice(field.GetValue(target), "", args);
 						break;
 					}
 				case MemberTypes.Method:
 					{
-						MethodInfo method = (MethodInfo) member;
+						var method = (MethodInfo) member;
 						method.Invoke(target, args);
 						break;
 					}
@@ -238,12 +238,12 @@ namespace MvcContrib.BrailViewEngine
 			{
 				case MemberTypes.Field:
 					{
-						FieldInfo field = (FieldInfo) member;
+						var field = (FieldInfo) member;
 						return GetSlice(field.GetValue(target), "", args);
 					}
 				case MemberTypes.Method:
 					{
-						MethodInfo method = (MethodInfo) member;
+						var method = (MethodInfo) member;
 						return method.Invoke(target, args);
 					}
 				case MemberTypes.Property:
@@ -261,11 +261,11 @@ namespace MvcContrib.BrailViewEngine
 		private static MemberInfo SelectSliceMember(MemberInfo[] found, ref object[] args, SetOrGet sliceKind)
 		{
 			if (1 == found.Length) return found[0];
-			MethodBase[] candidates = new MethodBase[found.Length];
+			var candidates = new MethodBase[found.Length];
 			for(int i = 0; i < found.Length; ++i)
 			{
 				MemberInfo member = found[i];
-				PropertyInfo property = member as PropertyInfo;
+				var property = member as PropertyInfo;
 				if (null == property) MemberNotSupported(member);
 				MethodInfo method = sliceKind == SetOrGet.Get ? GetGetMethod(property) : GetSetMethod(property);
 				candidates[i] = method;
@@ -283,7 +283,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static String GetDefaultMemberName(Type type)
 		{
-			DefaultMemberAttribute attribute =
+			var attribute =
 				(DefaultMemberAttribute) Attribute.GetCustomAttribute(type, typeof(DefaultMemberAttribute));
 			return attribute != null ? attribute.MemberName : "";
 		}
@@ -297,7 +297,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static object GetArraySlice(object target, object[] args)
 		{
-			IList list = (IList) target;
+			var list = (IList) target;
 			return list[RuntimeServices.NormalizeIndex(list.Count, (int) args[0])];
 		}
 
@@ -315,7 +315,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static object SetArraySlice(object target, object[] args)
 		{
-			IList list = (IList) target;
+			var list = (IList) target;
 			list[RuntimeServices.NormalizeIndex(list.Count, (int) args[0])] = args[1];
 			return args[1];
 		}

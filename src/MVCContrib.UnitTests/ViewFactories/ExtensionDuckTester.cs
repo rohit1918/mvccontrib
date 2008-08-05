@@ -29,7 +29,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(NotSupportedException))]
 		public void Does_Not_Support_Get()
 		{
-			ExtensionDuck duck = new ExtensionDuck(new object());
+			var duck = new ExtensionDuck(new object());
 			duck.GetInvoke(null);
 		}
 
@@ -37,14 +37,14 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[ExpectedException(typeof(NotSupportedException))]
 		public void Does_Not_Support_Set()
 		{
-			ExtensionDuck duck = new ExtensionDuck(new object());
+			var duck = new ExtensionDuck(new object());
 			duck.SetInvoke(null, null);
 		}
 
 		[Test]
 		public void Returns_Null_For_Empty_Invoke()
 		{
-			ExtensionDuck duck = new ExtensionDuck(new object());
+			var duck = new ExtensionDuck(new object());
 			Assert.IsNull(duck.Invoke(string.Empty));
 		}
 

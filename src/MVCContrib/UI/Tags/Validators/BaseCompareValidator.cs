@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Collections;
@@ -16,75 +14,75 @@ namespace MvcContrib.UI.Tags.Validators
 		public BaseCompareValidator(string id, string referenceId, string text, ValidationDataType type)
 			: base(id, referenceId, text)
 		{
-			this.Type = type;
+			Type = type;
 		}
 
 		public BaseCompareValidator(string id, string referenceId, string text, ValidationDataType type, IDictionary attributes)
 			: base(id, referenceId, text, attributes)
 		{
-			this.Type = type;
+			Type = type;
 		}
 
 		public BaseCompareValidator(string id, string referenceId, string text, ValidationDataType type, string validationGroup)
 			: base(id, referenceId, text, validationGroup)
 		{
-			this.Type = type;
+			Type = type;
 		}
 
 		public BaseCompareValidator(string id, string referenceId, string text, ValidationDataType type, string validationGroup, IDictionary attributes)
 			: base(id, referenceId, text, validationGroup, attributes)
 		{
-			this.Type = type;
+			Type = type;
 		}
 
 		public ValidationDataType Type
 		{
 			get
 			{
-				return this._type;
+				return _type;
 			}
 
 			set
 			{
-				this._type = value;
+				_type = value;
 			}
 		}
 
 		public override void RenderClientHookup(StringBuilder output)
 		{
-			if (this._type != ValidationDataType.String)
+			if (_type != ValidationDataType.String)
 			{
-				this.NullExpandoSet("type", PropertyConverter.EnumToString(typeof(ValidationDataType), this._type));
+				NullExpandoSet("type", PropertyConverter.EnumToString(typeof(ValidationDataType), _type));
 				NumberFormatInfo numberFormat = NumberFormatInfo.CurrentInfo;
 
-				switch (this._type)
+				switch (_type)
 				{
 					case ValidationDataType.Double:
-						this.NullExpandoSet("decimalchar", numberFormat.NumberDecimalSeparator);
+						NullExpandoSet("decimalchar", numberFormat.NumberDecimalSeparator);
 						break;
 					case ValidationDataType.Currency:
-						this.NullExpandoSet("decimalchar", numberFormat.CurrencyDecimalSeparator);
+						NullExpandoSet("decimalchar", numberFormat.CurrencyDecimalSeparator);
 						string currencyGroupSeparator = numberFormat.CurrencyGroupSeparator;
 						if (currencyGroupSeparator[0] == '\x00a0')
 						{
 							currencyGroupSeparator = " ";
 						}
 
-						this.NullExpandoSet("groupchar", currencyGroupSeparator);
-						this.NullExpandoSet("digits", numberFormat.CurrencyDecimalDigits.ToString(NumberFormatInfo.InvariantInfo));
+						NullExpandoSet("groupchar", currencyGroupSeparator);
+						NullExpandoSet("digits", numberFormat.CurrencyDecimalDigits.ToString(NumberFormatInfo.InvariantInfo));
 
 						int groupSize = GetCurrencyGroupSize(numberFormat);
 						if (groupSize > 0)
 						{
-							this.NullExpandoSet("groupsize", groupSize.ToString(NumberFormatInfo.InvariantInfo));
+							NullExpandoSet("groupsize", groupSize.ToString(NumberFormatInfo.InvariantInfo));
 						}
 
 						break;
 					case ValidationDataType.Date:
-						this.NullExpandoSet("dateorder", GetDateElementOrder());
-						this.NullExpandoSet("cutoffyear", DateTimeFormatInfo.CurrentInfo.Calendar.TwoDigitYearMax.ToString(NumberFormatInfo.InvariantInfo));
+						NullExpandoSet("dateorder", GetDateElementOrder());
+						NullExpandoSet("cutoffyear", DateTimeFormatInfo.CurrentInfo.Calendar.TwoDigitYearMax.ToString(NumberFormatInfo.InvariantInfo));
 						int year = DateTime.Today.Year;
-						this.NullExpandoSet("century", (year - (year % 100)).ToString(NumberFormatInfo.InvariantInfo));
+						NullExpandoSet("century", (year - (year % 100)).ToString(NumberFormatInfo.InvariantInfo));
 						break;
 				}
 			}
@@ -124,7 +122,7 @@ namespace MvcContrib.UI.Tags.Validators
 			object typeValue1 = null, typeValue2 = null;
 			bool parsed1 = false, parsed2 = false;
 
-			switch (this.Type)
+			switch (Type)
 			{
 				case ValidationDataType.Currency:
 					decimal decimalVal1, decimalVal2;

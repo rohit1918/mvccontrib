@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.IO;
-using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.BrailViewEngine;
@@ -26,13 +23,13 @@ using Rhino.Mocks;
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			TestHttpContext httpContext = new TestHttpContext();
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.CreateMock<IController>();
+			var httpContext = new TestHttpContext();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.CreateMock<IController>();
 			_mocks.Replay(controller);
 			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
-			BooViewEngine viewEngine = new BooViewEngine();
+			var viewEngine = new BooViewEngine();
 			viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			viewEngine.Options = new BooViewEngineOptions();
 			viewEngine.Initialize();
@@ -44,7 +41,7 @@ using Rhino.Mocks;
 		[Test]
 		public void Can_Create_Default_ViewFactory()
 		{
-			BrailViewFactory viewFactory = new BrailViewFactory();
+			var viewFactory = new BrailViewFactory();
 			Assert.IsNotNull(viewFactory.ViewEngine);
 		}
 

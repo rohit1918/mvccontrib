@@ -26,7 +26,7 @@ namespace MvcContrib.BrailViewEngine
 	//with the correct method call.
 	public class ReturnValueVisitor : DepthFirstVisitor
 	{
-		private bool found = false;
+		private bool found;
 		private MethodInvocationExpression mie;
 		private NormalizeStatementModifiers normalizer;
 
@@ -50,7 +50,7 @@ namespace MvcContrib.BrailViewEngine
 			if (stmt.Expression == null)
 				throw new Exception("An empty return statement on a method with output attribute");
 			found = true;
-			Block block = (Block) stmt.ParentNode;
+			var block = (Block) stmt.ParentNode;
 			int index = 0;
 			while(block.Statements[index] != stmt)
 			{

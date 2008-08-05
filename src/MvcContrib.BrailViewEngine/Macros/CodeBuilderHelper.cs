@@ -28,7 +28,7 @@ namespace MvcContrib.BrailViewEngine
 			Expression macroBody = new NullLiteralExpression();
 			if (macro.Block.Statements.Count > 0)
 			{
-				BlockExpression callableExpr = new BlockExpression();
+				var callableExpr = new BlockExpression();
 				callableExpr.Body = macro.Block;
 				callableExpr.Parameters.Add(
 					new ParameterDeclaration("OutputStream",

@@ -1,6 +1,5 @@
 using System;
 using System.Web.Mvc;
-using MvcContrib;
 using MvcContrib.Attributes;
 using MvcContrib.Castle;
 using MvcContrib.Filters;
@@ -17,7 +16,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			MetaDataTestController controller = new MetaDataTestController();
+			var controller = new MetaDataTestController();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
@@ -45,7 +44,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
 
-			MetaDataTestController controller = new MetaDataTestController();
+			var controller = new MetaDataTestController();
 
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
@@ -90,7 +89,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void NonExistentActionShouldReturnNull()
 		{
 			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			MetaDataTestController controller = new MetaDataTestController();
+			var controller = new MetaDataTestController();
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
 
 			Assert.IsNull(metaData.GetAction("Doesn't Exist"));
@@ -140,8 +139,8 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void CachedDescriptorReturnsCachedCopy()
 		{
-			CountControllerDescriptor inner = new CountControllerDescriptor();
-			CachedControllerDescriptor descriptor = new CachedControllerDescriptor(inner);
+			var inner = new CountControllerDescriptor();
+			var descriptor = new CachedControllerDescriptor(inner);
 			ControllerMetaData metaData = descriptor.GetMetaData(new MetaDataTestController());
 			ControllerMetaData metaDataAgain = descriptor.GetMetaData(new MetaDataTestController());
 
@@ -168,14 +167,14 @@ namespace MvcContrib.UnitTests.MetaData
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CachedDescriptorRequiresInnerDescriptor()
 		{
-			CachedControllerDescriptor descriptor = new CachedControllerDescriptor(null);
+			var descriptor = new CachedControllerDescriptor(null);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CachedDescriptorThrowsOnNullController()
 		{
-			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
+			var descriptor = new CachedControllerDescriptor();
 			descriptor.GetMetaData((IController)null);
 		}
 
@@ -183,7 +182,7 @@ namespace MvcContrib.UnitTests.MetaData
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void CachedDescriptorThrowsOnNullType()
 		{
-			CachedControllerDescriptor descriptor = new CachedControllerDescriptor();
+			var descriptor = new CachedControllerDescriptor();
 			descriptor.GetMetaData((Type)null);
 		}
 
@@ -240,7 +239,12 @@ namespace MvcContrib.UnitTests.MetaData
 
 	internal class CountControllerDescriptor : IControllerDescriptor
 	{
-		public int Calls = 0;
+		public int Calls;
+
+		public CountControllerDescriptor()
+		{
+			Calls = 0;
+		}
 
 		public ControllerMetaData GetMetaData(IController controller)
 		{

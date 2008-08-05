@@ -35,7 +35,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		protected override IEnumerable<IReflectionMemberInfo<MethodInfo>> GetMembers(IBuilderContext context, Type typeToBuild,
 		                                                                             object existing, string idToBuild)
 		{
-			foreach(MethodInfo method in typeToBuild.GetMethods())
+			foreach(var method in typeToBuild.GetMethods())
 				yield return new ReflectionMemberInfo<MethodInfo>(method);
 		}
 
@@ -46,7 +46,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		                                              IReflectionMemberInfo<MethodInfo> member,
 		                                              IEnumerable<IParameter> parameters)
 		{
-			MethodPolicy result = context.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
+			var result = context.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
 
 			if(result == null)
 			{

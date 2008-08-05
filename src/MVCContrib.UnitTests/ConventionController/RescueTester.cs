@@ -4,14 +4,10 @@ using System.Reflection;
 using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib;
 using MvcContrib.Filters;
-using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using System.Web;
-using MvcContrib.Interfaces;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
@@ -45,7 +41,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void ViewName_should_return_name_of_view_appended_to_Rescues_directory()
 		{
-			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			var rescue = new RescueAttribute("TestRescue");
 			Assert.That(rescue.ViewName, Is.EqualTo("Rescues/TestRescue"));
 		}
 
@@ -53,13 +49,13 @@ namespace MvcContrib.UnitTests.ConventionController
 		[ExpectedException(typeof(ArgumentException))]
 		public void Should_throw_if_ViewName_is_empty_string()
 		{
-			RescueAttribute rescue = new RescueAttribute(string.Empty);
+			var rescue = new RescueAttribute(string.Empty);
 		}
 
 		[Test]
 		public void When_OnActionExecuted_is_invoked_then_the_correct_view_should_be_rendered()
 		{
-			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			var rescue = new RescueAttribute("TestRescue");
 
 			var context = new ExceptionContext(_controllerContext, _exception);
 			rescue.OnException(context);
@@ -71,7 +67,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void If_rescue_exception_type_does_not_match_exception_type_then_nothing_should_be_rendered()
 		{
-			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			var rescue = new RescueAttribute("TestRescue");
 			_exception = new RescueTestException();
 			SetupController(_controller);
 			rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
@@ -86,7 +82,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		[Test]
 		public void If_rescue_exception_type_matches_exception_type_then_view_should_be_rendered()
 		{
-			RescueAttribute rescue = new RescueAttribute("TestRescue");
+			var rescue = new RescueAttribute("TestRescue");
 
 			_exception = new RescueTestException();
 			SetupController(_controller);
@@ -224,7 +220,7 @@ namespace MvcContrib.UnitTests.ConventionController
 
         protected override void Execute(ControllerContext controllerContext)
         {
-            this.ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
+            ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
             base.Execute(controllerContext);
         }
 	}

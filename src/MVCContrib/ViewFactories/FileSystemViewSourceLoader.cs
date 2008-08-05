@@ -59,7 +59,7 @@ namespace MvcContrib.ViewFactories
 		{
 			if( ViewRootDirectory == null ) return new string[0];
 
-			DirectoryInfo directory = new DirectoryInfo(Path.Combine(ViewRootDirectory, directoryName));
+			var directory = new DirectoryInfo(Path.Combine(ViewRootDirectory, directoryName));
 
 			if (directory.Exists)
 			{
@@ -128,7 +128,7 @@ namespace MvcContrib.ViewFactories
 
 		protected virtual void OnViewRootDirectoryChanged(object sender, FileSystemEventArgs e)
 		{
-			FileSystemEventHandler handler = (FileSystemEventHandler)_events[ViewRootDirectoryChangedEvent];
+			var handler = (FileSystemEventHandler)_events[ViewRootDirectoryChangedEvent];
 			if (handler != null)
 			{
 				handler(this, e);

@@ -11,13 +11,13 @@ namespace MvcContrib.UI.Tags
 
 		public Link(string url) : base("a")
 		{
-			this.Href = url;
+			Href = url;
 		}
 
 		public Link(string url, IDictionary attributes)
 			: base("a",attributes)
 		{
-			this.Href = url;
+			Href = url;
 		}
 
 		public virtual string Href

@@ -33,7 +33,7 @@ namespace MvcContrib.Castle
 
 		public virtual void DisposeController(IController controller)
 		{
-			IDisposable disposable = controller as IDisposable;
+			var disposable = controller as IDisposable;
 
 			if (disposable != null)
 			{

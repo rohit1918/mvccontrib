@@ -1,15 +1,13 @@
 using System.Collections;
 using MvcContrib.UI.Html;
-using MvcContrib.UnitTests;
 using NUnit.Framework.SyntaxHelpers;
+using System;
+using NUnit.Framework;
+using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace MvcContrib.UnitTests.UI.Html
 {
-	using System;
-	using NUnit.Framework;
-	using Rhino.Mocks;
-	using System.Web.Mvc;
-	using System.Collections.Generic;
 
 	[TestFixture]
 	public class DefaultDataBinderTester
@@ -45,7 +43,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_the_value_from_typed_ViewData()
 			{
-				ViewContext viewContext = new ViewContext(
+				var viewContext = new ViewContext(
 						_viewContext.HttpContext, 
 						_viewContext.RouteData, 
 						_viewContext.Controller, 
@@ -62,10 +60,10 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_nested_property_from_typed_viewdata()
 			{
-				Person p = new Person();
+				var p = new Person();
 				p.NestedPerson = new Person("Jeremy");
 
-				ViewContext viewContext = new ViewContext(
+				var viewContext = new ViewContext(
 						_viewContext.HttpContext,
 						_viewContext.RouteData,
 						_viewContext.Controller,
@@ -98,7 +96,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_field_value_for_complex_object()
 			{
-				Person p = new Person("Jeremy");
+				var p = new Person("Jeremy");
 				p.Country = "UK";
 
 				AddToViewData("person", p);
@@ -109,7 +107,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_item_from_a_collection()
 			{
-				List<string> values = new List<string>(new string[] { "Foo", "Bar", "FooBar" });
+				var values = new List<string>(new[] { "Foo", "Bar", "FooBar" });
 				AddToViewData("values", values);
 
 				object instance = _binder.ExtractValue("values[1]", _viewContext);
@@ -119,7 +117,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_item_from_a_generic_IList_that_does_not_implement_IList()
 			{
-				CustomList<string> values = new CustomList<string>();
+				var values = new CustomList<string>();
 				values.Add("Foo");
 				values.Add("Bar");
 
@@ -132,7 +130,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test] 
 			public void It_should_return_null_from_an_empty_generic_IList_that_does_not_implement_IList()
 			{
-				CustomList<string> values = new CustomList<string>();
+				var values = new CustomList<string>();
 				AddToViewData("values", values);
 
 				object instance = _binder.ExtractValue("values[1]", _viewContext);
@@ -142,7 +140,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_property_from_collection_of_complex_objects()
 			{
-				List<Person> people = new List<Person>();
+				var people = new List<Person>();
 				people.Add(new Person("Jeremy"));
 				people.Add(new Person("Josh"));
 
@@ -155,7 +153,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_nested_collection_properties()
 			{
-				Person p = new Person();
+				var p = new Person();
 				p.Languages.Add("C#");
 				p.Languages.Add("VB");
 
@@ -168,7 +166,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_nested_properties()
 			{
-				Person person = new Person();
+				var person = new Person();
 				person.NestedPerson = new Person("Jeremy");
 				AddToViewData("person", person);
 
@@ -179,7 +177,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "The specified index '-1' is outside the bounds of the array. Property people")]
 			public void It_should_throw_if_index_smaller_than_zero()
 			{
-				List<Person> people = new List<Person>();
+				var people = new List<Person>();
 				people.Add(new Person("Jeremy"));
 				people.Add(new Person("Josh"));
 
@@ -192,7 +190,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Could not convert (param people[foo]) index to Int32. Value is foo")]
 			public void It_should_throw_if_index_is_not_integer()
 			{
-				List<Person> people = new List<Person>();
+				var people = new List<Person>();
 				people.Add(new Person("Jeremy"));
 				people.Add(new Person("Josh"));
 
@@ -205,7 +203,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'NonReadable' cannot be read")]
 			public void It_should_throw_if_property_is_not_readable()
 			{
-				Person p = new Person();
+				var p = new Person();
 				p.NonReadable = "Foo";
 
 				AddToViewData("person", p);
@@ -217,7 +215,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'Item' has indexes, which are not supported")]
 			public void It_should_throw_for_indexer_properties()
 			{
-				List<string> values = new List<string>();
+				var values = new List<string>();
 				values.Add("Foo");
 				values.Add("Bar");
 
@@ -240,7 +238,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_return_null_for_an_empty_collection()
 			{
-				List<string> values = new List<string>();
+				var values = new List<string>();
 				AddToViewData("values", values);
 
 				object instance = _binder.ExtractValue("values[0]", _viewContext);
@@ -334,7 +332,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_it_should_be_used_to_obtain_root_instance()
 			{
-				Person p = new Person("Jeremy");
+				var p = new Person("Jeremy");
 				object value;
 				using(_binder.NestedBindingScope(p))
 				{
@@ -346,7 +344,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_rootInstance_should_return_to_null_when_scope_is_disposed()
 			{
-				Person p = new Person("Jeremy");
+				var p = new Person("Jeremy");
 				using (_binder.NestedBindingScope(p))
 				{
 					_binder.ExtractValue("Name", _viewContext);
@@ -357,8 +355,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_RootInstance_should_return_to_previous_root_instance_when_scope_is_disposed()
 			{
-				Person first = new Person();
-				Person second = new Person();
+				var first = new Person();
+				var second = new Person();
 
 				using (_binder.NestedBindingScope(first))
 				{
@@ -376,18 +374,11 @@ namespace MvcContrib.UnitTests.UI.Html
 		class Person
 		{
 			public string Country;
-			private string _name;
 			private string _nonReadable;
 			private List<string> _languages = new List<string>();
 
-			private Person _nestedPerson;
 
-
-			public Person NestedPerson
-			{
-				get { return _nestedPerson; }
-				set { _nestedPerson = value; }
-			}
+			public Person NestedPerson { get; set; }
 
 			public Person()
 			{
@@ -403,11 +394,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				get { return _languages; }
 			}
 
-			public string Name
-			{
-				get { return _name; }
-				set { _name = value; }
-			}
+			public string Name { get; set; }
 
 			public string NonReadable
 			{

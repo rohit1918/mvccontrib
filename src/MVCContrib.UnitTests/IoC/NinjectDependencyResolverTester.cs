@@ -1,4 +1,3 @@
-using System.Web.Mvc;
 using MvcContrib.Ninject;
 using Ninject.Core;
 using NUnit.Framework;

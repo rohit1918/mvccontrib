@@ -58,13 +58,13 @@ namespace MvcContrib.XsltViewEngine
 		{
 			this.viewContext = viewContext;
 
-			XsltArgumentList args = new XsltArgumentList();
+			var args = new XsltArgumentList();
 			args.AddExtensionObject("urn:HtmlHelper", new HtmlHelper(viewContext, this));
             
 			args.AddParam("AjaxProScriptReferences", "", ajaxDeclaration);
 
-			StringBuilder sb = new StringBuilder();
-			using (StringWriter sw = new StringWriter(sb))
+			var sb = new StringBuilder();
+			using (var sw = new StringWriter(sb))
 			{
 				xslTransformer.Transform(new XmlInput(construct.Message.CreateNavigator()), args,
 				                         new XmlOutput(sw));

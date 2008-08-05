@@ -44,12 +44,12 @@ namespace MvcContrib.ObjectBuilder.Configuration
             ProcessStrategies();
 
             if(config.Mappings != null)
-                foreach(MappingElement mapping in config.Mappings)
+                foreach(var mapping in config.Mappings)
                     ProcessMapping(mapping);
 
             if(config.BuildRules != null)
             {
-                foreach(BuildRuleElement buildRule in config.BuildRules)
+                foreach(var buildRule in config.BuildRules)
                 {
                     Type buildType = Type.GetType(buildRule.Type);
                     Debug.Assert(buildType != null);
@@ -66,7 +66,7 @@ namespace MvcContrib.ObjectBuilder.Configuration
 
         private MethodPolicy GetMethodPolicy(Type typeToBuild, string idToBuild)
         {
-            MethodPolicy policy = builder.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
+            var policy = builder.Policies.Get<IMethodPolicy>(typeToBuild, idToBuild) as MethodPolicy;
 
             if(policy == null)
             {
@@ -90,17 +90,17 @@ namespace MvcContrib.ObjectBuilder.Configuration
 
         private static ContainerXmlConfigElement ParseXmlConfiguration(string xml)
         {
-            XmlSerializer ser = new XmlSerializer(typeof(ContainerXmlConfigElement));
-            StringReader stringReader = new StringReader(xml);
+            var ser = new XmlSerializer(typeof(ContainerXmlConfigElement));
+            var stringReader = new StringReader(xml);
             XmlSchema schema =
                 XmlSchema.Read(
                     Assembly.GetExecutingAssembly().GetManifestResourceStream(
                         "MvcContrib.ObjectBuilder.Configuration.ContainerXmlConfigElement.xsd"), null);
-            XmlReaderSettings settings = new XmlReaderSettings();
+            var settings = new XmlReaderSettings();
             settings.ValidationType = ValidationType.Schema;
             settings.Schemas.Add(schema);
             XmlReader reader = XmlReader.Create(stringReader, settings);
-            ContainerXmlConfigElement configData = (ContainerXmlConfigElement)ser.Deserialize(reader);
+            var configData = (ContainerXmlConfigElement)ser.Deserialize(reader);
             return configData;
         }
 
@@ -131,9 +131,9 @@ namespace MvcContrib.ObjectBuilder.Configuration
             if(buildRule.Constructor == null)
                 return;
 
-            ConstructorPolicy policy = new ConstructorPolicy();
+            var policy = new ConstructorPolicy();
 
-            foreach(object param in buildRule.Constructor.Items)
+            foreach(var param in buildRule.Constructor.Items)
                 policy.AddParameter(GetParameterFromConfigParam(param));
 
             builder.Policies.Set<ICreationPolicy>(policy, buildType, null);
@@ -157,11 +157,11 @@ namespace MvcContrib.ObjectBuilder.Configuration
 
             MethodPolicy policy = GetMethodPolicy(buildType, null);
 
-            foreach(MethodElement method in buildRule.Method)
+            foreach(var method in buildRule.Method)
             {
-                List<IParameter> parameters = new List<IParameter>();
+                var parameters = new List<IParameter>();
 
-                foreach(object param in method.Items)
+                foreach(var param in method.Items)
                     parameters.Add(GetParameterFromConfigParam(param));
 
                 policy.Methods.Add(method.Name, new MethodCallInfo(method.Name, parameters));
@@ -173,9 +173,9 @@ namespace MvcContrib.ObjectBuilder.Configuration
             if(buildRule.Property == null)
                 return;
 
-            PropertySetterPolicy policy = new PropertySetterPolicy();
+            var policy = new PropertySetterPolicy();
 
-            foreach(PropertyElement prop in buildRule.Property)
+            foreach(var prop in buildRule.Property)
                 policy.Properties.Add(prop.Name,
                                       new PropertySetterInfo(prop.Name, GetParameterFromConfigParam(prop.Item)));
 

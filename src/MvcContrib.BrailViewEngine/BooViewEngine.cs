@@ -29,7 +29,7 @@ namespace MvcContrib.BrailViewEngine
 	using System.Web.Mvc;
 	using System.Runtime.CompilerServices;
 	using Boo.Lang.Runtime;
-	using MvcContrib.ViewFactories;
+	using ViewFactories;
 	using Boo.Lang.Compiler;
 	using Boo.Lang.Compiler.IO;
 	using Boo.Lang.Compiler.Pipelines;
@@ -141,7 +141,7 @@ namespace MvcContrib.BrailViewEngine
 			{
 				if( assembly.GetCustomAttributes(typeof(ExtensionAttribute), true).Length > 0 )
 				{
-					foreach( Type type in assembly.GetTypes() )
+					foreach( var type in assembly.GetTypes() )
 					{
 						foreach(string nmespace in options.NamespacesToImport)
 						{
@@ -451,8 +451,8 @@ namespace MvcContrib.BrailViewEngine
 		private BrailBase CreateBrailBase(TextWriter output, Type type)
 //		(IEngineContext context, IController controller, IControllerContext controllerContext,TextWriter output, Type type)
 		{
-			ConstructorInfo constructor = (ConstructorInfo) constructors[type];
-			BrailBase self = (BrailBase) FormatterServices.GetUninitializedObject(type);
+			var constructor = (ConstructorInfo) constructors[type];
+			var self = (BrailBase) FormatterServices.GetUninitializedObject(type);
 			constructor.Invoke(self, new object[] { this , output } ); //, context, controller, controllerContext});
 			return self;
 		}
@@ -478,14 +478,14 @@ namespace MvcContrib.BrailViewEngine
 				return CompileScript(filename, false);
 			}
 			Type type;
-			foreach(ICompilerInput input in inputs2FileName.Keys)
+			foreach(var input in inputs2FileName.Keys)
 			{
 				string viewName = Path.GetFileNameWithoutExtension(input.Name);
 				string typeName = TransformToBrailStep.GetViewTypeName(viewName);
 				type = result.Context.GeneratedAssembly.GetType(typeName);
 				Log("Adding {0} to the cache", type.FullName);
 				compilations[inputs2FileName[input]] = type;
-				constructors[type] = type.GetConstructor(new Type[]
+				constructors[type] = type.GetConstructor(new[]
 																								 {
 																									 typeof(BooViewEngine),
 																								 	 typeof(TextWriter)
@@ -504,8 +504,8 @@ namespace MvcContrib.BrailViewEngine
 		{
 			string errors = result.Context.Errors.ToString(true);
 			Log("Failed to compile {0} because {1}", filename, errors);
-			StringBuilder code = new StringBuilder();
-			foreach(ICompilerInput input in inputs2FileName.Keys)
+			var code = new StringBuilder();
+			foreach(var input in inputs2FileName.Keys)
 			{
 				code.AppendLine()
 					.Append(result.Processor.GetInputCode(input))
@@ -522,7 +522,7 @@ namespace MvcContrib.BrailViewEngine
 		// Otherwise, it would return just the single file
 		private IDictionary<ICompilerInput, string> GetInput(string filename, bool batch)
 		{
-			Dictionary<ICompilerInput, string> input2FileName = new Dictionary<ICompilerInput, string>();
+			var input2FileName = new Dictionary<ICompilerInput, string>();
 			if (batch == false)
 			{
 				input2FileName.Add(CreateInput(filename), filename);
@@ -531,7 +531,7 @@ namespace MvcContrib.BrailViewEngine
 			// use the System.IO.Path to get the folder name even though
 			// we are using the ViewSourceLoader to load the actual file
 			string directory = Path.GetDirectoryName(filename);
-			foreach(string file in ViewSourceLoader.ListViews(directory))
+			foreach(var file in ViewSourceLoader.ListViews(directory))
 			{
 				ICompilerInput input = CreateInput(file);
 				input2FileName.Add(input, file);
@@ -551,7 +551,7 @@ namespace MvcContrib.BrailViewEngine
 			// when to dispose of the stream. 
 			// It is not expected that this will be a big problem, the string
 			// will go away after the compile is done with them.
-			using(StreamReader stream = new StreamReader(viewSrc.OpenViewStream()))
+			using(var stream = new StreamReader(viewSrc.OpenViewStream()))
 			{
 				return new StringInput(name, stream.ReadToEnd());
 			}
@@ -585,7 +585,7 @@ namespace MvcContrib.BrailViewEngine
 			if (common != null)
 				compiler.Parameters.References.Add(common);
 			// pre procsssor needs to run before the parser
-			BrailPreProcessor processor = new BrailPreProcessor(this);
+			var processor = new BrailPreProcessor(this);
 			compiler.Parameters.Pipeline.Insert(0, processor);
 			// inserting the add class step after the parser
 			compiler.Parameters.Pipeline.Insert(2, new TransformToBrailStep(options));
@@ -642,7 +642,7 @@ namespace MvcContrib.BrailViewEngine
 		// common setup for the compiler
 		private static BooCompiler SetupCompiler(IEnumerable<ICompilerInput> files)
 		{
-			BooCompiler compiler = new BooCompiler();
+			var compiler = new BooCompiler();
 			compiler.Parameters.Ducky = true;
 			compiler.Parameters.Debug = options.Debug;
 			if (options.SaveToDisk)
@@ -652,7 +652,7 @@ namespace MvcContrib.BrailViewEngine
 			// replace the normal parser with white space agnostic one.
 			compiler.Parameters.Pipeline.RemoveAt(0);
 			compiler.Parameters.Pipeline.Insert(0, new WSABooParsingStep());
-			foreach(ICompilerInput file in files)
+			foreach(var file in files)
 			{
 				compiler.Parameters.Input.Add(file);
 			}

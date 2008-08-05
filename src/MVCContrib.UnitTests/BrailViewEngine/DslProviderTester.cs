@@ -1,10 +1,10 @@
 using System.IO;
+using NUnit.Framework;
+using Rhino.Mocks;
+using MvcContrib.BrailViewEngine;
 
 namespace MvcContrib.UnitTests.BrailViewEngine
 {
-	using NUnit.Framework;
-	using Rhino.Mocks;
-	using MvcContrib.BrailViewEngine;
 
 	[TestFixture]
 	[Category("BrailViewEngine")]
@@ -23,7 +23,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void ForCoverage()
 		{
-			DslProvider provider = new DslProvider(_view);
+			var provider = new DslProvider(_view);
 			provider.Register(new HtmlExtension(new StringWriter()));
 			provider.QuackGet("Dsl", null);
 			provider.QuackGet("NotThere", null);

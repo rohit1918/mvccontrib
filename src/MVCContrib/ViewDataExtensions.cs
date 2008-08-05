@@ -81,7 +81,7 @@ namespace MvcContrib
         public static int GetCount(this IDictionary<string, object> bag, Type type)
         {
             int count = 0;
-            foreach (object value in bag.Values)
+            foreach (var value in bag.Values)
             {
                 if (type.Equals(value.GetType()))
                 {

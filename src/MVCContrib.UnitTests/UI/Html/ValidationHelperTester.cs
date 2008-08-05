@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
@@ -50,7 +47,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_ValidationHelper_in_HttpContext_Items_should_be_returned()
 			{
-				ValidationHelper helper = new ValidationHelper();
+				var helper = new ValidationHelper();
 				_viewContext.HttpContext.Items.Add(ValidationHelper.CACHE_KEY, helper);
 				Assert.That(ValidationHelper.GetInstance(_viewContext), Is.EqualTo(helper));
 			}
@@ -67,10 +64,10 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
 			{
-				ValidationHelper helper = new ValidationHelper();
+				var helper = new ValidationHelper();
 				using (mocks.Record())
 				{
-					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
+					var resolver = mocks.DynamicMock<IDependencyResolver>();
 					DependencyResolver.InitializeWith(resolver);
 					Expect.Call(resolver.GetImplementationOf<IValidationHelper>()).Return(helper);
 				}
@@ -96,7 +93,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_a_ValidationHelper_should_be_created()
 			{
-				HtmlHelper helper = new HtmlHelper(_viewContext, new ViewPage());
+				var helper = new HtmlHelper(_viewContext, new ViewPage());
 				IValidationHelper formHelper = HtmlHelperExtensions.Validation(helper);
 				Assert.IsNotNull(formHelper);
 			}
@@ -109,7 +106,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void The_correct_url_is_rendered()
 			{
 				string html = _helper.ValidatorRegistrationScripts();
-				System.Text.RegularExpressions.Regex javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*WebResource\.axd.*function\sWebForm_OnSubmit\(\).*function\sWebForm_OnSubmitGroup\(group\).*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
+				var javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*WebResource\.axd.*function\sWebForm_OnSubmit\(\).*function\sWebForm_OnSubmitGroup\(group\).*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
 				Assert.IsTrue(javascriptRegex.IsMatch(html));
 			}
 
@@ -138,7 +135,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				_helper.ValidatorRegistrationScripts();
 				string html = _helper.ValidatorInitializationScripts();
-				System.Text.RegularExpressions.Regex javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(\);.*<script.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
+				var javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(\);.*<script.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
 				Assert.IsTrue(javascriptRegex.IsMatch(html));
 			}
 
@@ -209,7 +206,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				Hash<string> hash = new Hash<string>();
+				var hash = new Hash<string>();
 				hash["Key1"] = "Val1";
 
 				_helper.ValidatorRegistrationScripts();
@@ -245,7 +242,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_single_validator_is_initialized_verify_initialization()
 			{
-				System.Text.RegularExpressions.Regex javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(.*myid.*\);.*<script.*var\smyid.*.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
+				var javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(.*myid.*\);.*<script.*var\smyid.*.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
 				_helper.ValidatorRegistrationScripts();
 				_helper.RequiredValidator("myid", "refid", "error!");
 				string output = _helper.ValidatorInitializationScripts();
@@ -256,7 +253,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_multiple_validator_is_initialized_verify_initialization()
 			{
-				System.Text.RegularExpressions.Regex javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(.*myid.*myid2.*\);.*<script.*var\smyid.*.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
+				var javascriptRegex = new System.Text.RegularExpressions.Regex(@"<script.*var\sPage_Validators\s=\snew\sArray\(.*myid.*myid2.*\);.*<script.*var\smyid.*.*var\sPage_ValidationActive.*ValidatorOnLoad\(\).*function\sValidatorOnSubmit\(group\)\s{.*</script>", System.Text.RegularExpressions.RegexOptions.Singleline);
 				_helper.ValidatorRegistrationScripts();
 				_helper.RequiredValidator("myid", "refid", "error!");
 				_helper.RequiredValidator("myid2", "refid", "error!");
@@ -272,7 +269,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				Hash<string> hash = new Hash<string>();
+				var hash = new Hash<string>();
 				hash["Key1"] = "Val1";
 
 				_helper.ValidatorRegistrationScripts();
@@ -294,7 +291,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				Hash<string> hash = new Hash<string>();
+				var hash = new Hash<string>();
 				hash["Key1"] = "Val1";
 
 				_helper.ValidatorRegistrationScripts();
@@ -316,7 +313,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				Hash<string> hash = new Hash<string>();
+				var hash = new Hash<string>();
 				hash["Key1"] = "Val1";
 
 				_helper.ValidatorRegistrationScripts();
@@ -338,7 +335,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				Hash<string> hash = new Hash<string>();
+				var hash = new Hash<string>();
 				hash["Key1"] = "Val1";
 
 				_helper.ValidatorRegistrationScripts();
@@ -360,8 +357,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered()
 			{
-				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
-				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
+				var validator1 = new RequiredValidator("myid1", "refid", "error!");
+				var validator2 = new RequiredValidator("myid2", "refid", "error!");
 
 				_helper.ValidatorRegistrationScripts();
 				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2 });
@@ -372,9 +369,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_correct_output_is_rendered_with_a_reference_id_specified()
 			{
-				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
-				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
-				RequiredValidator validator3 = new RequiredValidator("myid3", "refid2", "error!");
+				var validator1 = new RequiredValidator("myid1", "refid", "error!");
+				var validator2 = new RequiredValidator("myid2", "refid", "error!");
+				var validator3 = new RequiredValidator("myid3", "refid2", "error!");
 
 				_helper.ValidatorRegistrationScripts();
 				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2, validator3 }, "refid");
@@ -385,9 +382,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void No_output_is_rendered_with_no_matching_id_specified()
 			{
-				RequiredValidator validator1 = new RequiredValidator("myid1", "refid", "error!");
-				RequiredValidator validator2 = new RequiredValidator("myid2", "refid", "error!");
-				RequiredValidator validator3 = new RequiredValidator("myid3", "refid2", "error!");
+				var validator1 = new RequiredValidator("myid1", "refid", "error!");
+				var validator2 = new RequiredValidator("myid2", "refid", "error!");
+				var validator3 = new RequiredValidator("myid3", "refid2", "error!");
 
 				_helper.ValidatorRegistrationScripts();
 				string output = _helper.ElementValidation(new BaseValidator[] { validator1, validator2, validator3 }, "refid3");
@@ -398,8 +395,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(System.ArgumentException))]
 			public void When_validator_is_duplicated_for_reference_control()
 			{
-				RequiredValidator validator1 = new RequiredValidator("myid", "refid", "error!");
-				RequiredValidator validator2 = new RequiredValidator("myid", "refid", "error!");
+				var validator1 = new RequiredValidator("myid", "refid", "error!");
+				var validator2 = new RequiredValidator("myid", "refid", "error!");
 
 				_helper.ValidatorRegistrationScripts();
 				_helper.ElementValidation(new BaseValidator[] { validator1, validator2 });

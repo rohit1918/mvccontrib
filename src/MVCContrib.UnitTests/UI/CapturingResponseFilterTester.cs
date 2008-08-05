@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Text;
 using MvcContrib.UI;
@@ -18,8 +17,8 @@ namespace MvcContrib.UnitTests.UI
 			public void Then_GetContents_Returns_The_Contents()
 			{
 				string text = null;
-				using(MemoryStream sink = new MemoryStream())
-				using(CapturingResponseFilter filter = new CapturingResponseFilter(sink))
+				using(var sink = new MemoryStream())
+				using(var filter = new CapturingResponseFilter(sink))
 				{
 					{
 						byte[] bytes = Encoding.UTF8.GetBytes("Goose");
@@ -46,7 +45,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Flush_Then_Sink_Is_Flushed()
 			{
-				Stream sink = _mocks.DynamicMock<Stream>();
+				var sink = _mocks.DynamicMock<Stream>();
 				
 				using (_mocks.Record())
 				{
@@ -62,7 +61,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Closed_Then_Sink_Is_Closed()
 			{
-				Stream sink = _mocks.DynamicMock<Stream>();
+				var sink = _mocks.DynamicMock<Stream>();
 
 				using (_mocks.Record())
 				{
@@ -78,7 +77,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_SetLength_Then_Sink_SetLength()
 			{
-				Stream sink = _mocks.DynamicMock<Stream>();
+				var sink = _mocks.DynamicMock<Stream>();
 
 				using (_mocks.Record())
 				{
@@ -94,8 +93,8 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Read_Then_Sink_Is_Read()
 			{
-				Stream sink = _mocks.DynamicMock<Stream>();
-				byte[] buf = new byte[100];
+				var sink = _mocks.DynamicMock<Stream>();
+				var buf = new byte[100];
 				using (_mocks.Record())
 				{
 					Expect.Call(sink.Read(buf, 0, 20)).Return(0);
@@ -114,7 +113,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_CanRead_Then_True()
 			{
-				using(CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using(var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					Assert.That(filter.CanRead, Is.True);
 				}
@@ -123,7 +122,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_CanSeek_Then_False()
 			{
-				using (CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using (var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					Assert.That(filter.CanSeek, Is.False);
 				}
@@ -132,7 +131,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_CanWrite_Then_False()
 			{
-				using (CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using (var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					Assert.That(filter.CanWrite, Is.False);
 				}
@@ -141,7 +140,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Get_Length_Then_0()
 			{
-				using (CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using (var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					Assert.That(filter.Length, Is.EqualTo(0));
 				}
@@ -150,7 +149,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Set_Position_Then_Get_Position()
 			{
-				using (CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using (var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					filter.Position = 100;
 					Assert.That(filter.Position, Is.EqualTo(100));
@@ -160,7 +159,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Seek_Then_0()
 			{
-				using (CapturingResponseFilter filter = new CapturingResponseFilter(new MemoryStream()))
+				using (var filter = new CapturingResponseFilter(new MemoryStream()))
 				{
 					Assert.That(filter.Seek(0, SeekOrigin.Current), Is.EqualTo(0));
 				}

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Web;
 
 namespace MvcContrib.UI
 {
-	public class HtmlAttributes : MvcContrib.UI.IHtmlAttributes
+	public class HtmlAttributes : IHtmlAttributes
 	{
-		private static char[] _invalidKeyCharacters = new char[]
+		private static char[] _invalidKeyCharacters = new[]
 			{
 				'`', '~', '!', '@', '#', '$', '^', '&', '*', '(', ')', '+', '=',
 				'{', '}', '[', ']', '\t', '\r', '\n', ':', ';', '"', '\'', '<', ',', '>', '.', '?', '/'
