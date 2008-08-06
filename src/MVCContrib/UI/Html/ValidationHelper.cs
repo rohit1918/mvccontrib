@@ -54,7 +54,15 @@ namespace MvcContrib.UI.Html
 						Type loaderType = typeof(AssemblyResourceLoader);
 						Assembly systemWebAssembly = Assembly.GetAssembly(loaderType);
 						MethodInfo webResourceUrlMethod = loaderType.GetMethod("GetWebResourceUrlInternal", BindingFlags.NonPublic | BindingFlags.Static);
-						_webValidationUrl = ViewContext.HttpContext.Request.ApplicationPath + (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
+
+						string applicatonPath = ViewContext.HttpContext.Request.ApplicationPath;
+
+						if(!applicatonPath.EndsWith("/"))
+						{
+							applicatonPath += "/";
+						}
+
+						_webValidationUrl = applicatonPath + (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
 					}
 				}
 			}

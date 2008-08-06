@@ -80,7 +80,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[TestFixture]
-		public class When_FormHelperExtensions_Is_Used : BaseViewTester
+		public class When_ValidationHelperExtensions_Is_Used : BaseViewTester
 		{
 			[SetUp]
 			protected override void Setup()
@@ -111,6 +111,26 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 
 			[Test]
+			public void The_correct_url_is_rendered_when_the_application_is_at_the_site_root()
+			{
+				string html = _helper.ValidatorRegistrationScripts();
+				Assert.That(html.StartsWith("<script src=\"/WebResource.axd"));
+			}
+
+			//TODO: Investigate changing validation helper so the cached URL can be reset between tests. 
+			[Test, Ignore("Passes when run by itself, but fails when all the tests in the fixture are run because validationHelper stores the validation url in a static variable.")]
+			public void The_correct_url_is_rendered_when_the_application_is_in_a_virtual_directory()
+			{
+				mocks.BackToRecord(base._viewContext.HttpContext.Request, BackToRecordOptions.None);
+				SetupResult.For(_viewContext.HttpContext.Request.ApplicationPath).Return("/Foo");
+				mocks.Replay(_viewContext.HttpContext.Request);
+
+
+				string html = _helper.ValidatorRegistrationScripts();
+				Assert.That(html.StartsWith("<script src=\"/Foo/WebResource.axd"));
+			}
+
+			[Test]
 			public void When_Validator_Registration_Scripts_is_invoked_twice_same_output_is_rendered()
 			{
 				string html1 = _helper.ValidatorRegistrationScripts();
@@ -125,6 +145,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				string html1 = _helper.ValidatorRegistrationScripts();
 				string html2 = _helper.ValidatorRegistrationScripts();
 			}
+
 		}
 
 		[TestFixture]
