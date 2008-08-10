@@ -86,5 +86,25 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.That(value, Is.Null);
 		}
 
+		[Test]
+		public void Should_be_able_to_look_up_simple_value_from_routedata() {
+			_context.RouteData.Values.Add("foo", 1);
+			var value = _binder.Bind(typeof(int), "foo", _context);
+			Assert.That(value, Is.TypeOf(typeof(int)));
+			Assert.That(value, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Should_be_able_to_look_up_complex_value_from_routedata() {
+			_context.RouteData.Values.Add("foo", new CastleBinderTestObject { Name = "Foo" });
+			var value = _binder.Bind(typeof(CastleBinderTestObject), "foo", _context) as CastleBinderTestObject;
+			Assert.That(value, Is.Not.Null);
+			Assert.That(((CastleBinderTestObject)value).Name, Is.EqualTo("Foo"));
+		}
+
+		public class CastleBinderTestObject
+		{
+			public string Name { get; set; }
+		}
 	}
 }
