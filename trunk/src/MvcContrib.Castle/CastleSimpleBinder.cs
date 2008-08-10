@@ -27,7 +27,14 @@ namespace MvcContrib.Castle
 				object routeValue = context.RouteData.Values[paramName];
 				if(routeValue != null)
 				{
-					value = routeValue.ToString();
+					if(targetType.IsAssignableFrom(routeValue.GetType()))
+					{
+						return routeValue;
+					}
+					else
+					{
+						value = routeValue.ToString();						
+					}
 				}
 			}
 

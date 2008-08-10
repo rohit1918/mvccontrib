@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.MetaData;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.MetaData
@@ -63,6 +64,31 @@ namespace MvcContrib.UnitTests.MetaData
 			var value = attr.Bind(typeof(string), "keyWithNullValue", _controllerContext) as string;
 
 			Assert.IsNull(value);
+		}
+
+		[Test]
+		public void CanLoadSimpleObjectDirectlyFromRouteData()
+		{
+			_controllerContext.RouteData.Values.Add("foo", 1);
+			var attr = new SimpleParameterBinder();
+			var value = attr.Bind(typeof(int), "foo", _controllerContext);
+			Assert.That(value, Is.TypeOf(typeof(int)));
+			Assert.That(value, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void CanLoadComplexObjectDirectlyFromRouteData()
+		{
+			_controllerContext.RouteData.Values.Add("foo", new SimpleParameterBinderTestObject { Name = "Foo" });
+			var attr = new SimpleParameterBinder();
+			var value = attr.Bind(typeof(SimpleParameterBinderTestObject), "foo", _controllerContext) as SimpleParameterBinderTestObject;
+			Assert.That(value, Is.Not.Null);
+			Assert.That(((SimpleParameterBinderTestObject)value).Name, Is.EqualTo("Foo"));
+		}
+
+		private class SimpleParameterBinderTestObject
+		{
+			public string Name { get; set; }	
 		}
 	}
 }
