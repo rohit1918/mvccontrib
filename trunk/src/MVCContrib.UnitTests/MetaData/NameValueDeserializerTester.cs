@@ -402,6 +402,15 @@ namespace MvcContrib.UnitTests
 			Assert.IsNull(emp.BatPhone, "Employee OtherPhones should be null because it was not in request parameters.");
 		}
 
+		[Test]
+		public void ShouldNotThrowWithNullValues()
+		{
+			var collection = new NameValueCollection { { null, null } };
+			var deserializer = new NameValueDeserializer();
+
+			deserializer.Deserialize(collection, "cust", typeof(Customer));
+		}
+
 		private class Customer
 		{
 			public int Id
