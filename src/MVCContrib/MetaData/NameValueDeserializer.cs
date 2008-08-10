@@ -236,7 +236,7 @@ namespace MvcContrib
 
 		protected virtual bool CheckPrefixInRequest(NameValueCollection collection, string prefix)
 		{
-			return collection.AllKeys.Any(key => key.StartsWith(prefix, true, CultureInfo.InvariantCulture));
+			return collection.AllKeys.Any(key => key != null && key.StartsWith(prefix, true, CultureInfo.InvariantCulture));
 		}
 
 		protected virtual string[] GetArrayPrefixes(NameValueCollection collection, string prefix)
