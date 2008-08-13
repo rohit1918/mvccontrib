@@ -11,6 +11,16 @@ namespace MvcContrib.UnitTests.IoC
 		[TestFixture]
 		public class WhenAValidTypeIsPassed : WhenAValidTypeIsPassedBase
 		{
+			public override void Setup()
+			{
+				IWindsorContainer container = new WindsorContainer();
+				container.AddComponent("SimpleDependency", typeof(SimpleDependency));
+				container.AddComponent("IDependency", typeof(IDependency), typeof(SimpleDependency));
+				container.AddComponent("NestedDependency",typeof(NestedDependency));
+
+				_dependencyResolver = new WindsorDependencyResolver(container);
+			}
+
 			[Test]
 			public void ForCoverage()
 			{
@@ -20,37 +30,18 @@ namespace MvcContrib.UnitTests.IoC
 			public override void TearDown()
 			{
 			}
-
-			public override void Setup()
-			{
-				IWindsorContainer container = new WindsorContainer();
-				container.AddComponent("SimpleDependency",
-				                       typeof(
-				                       	SimpleDependency));
-				container.AddComponent("IDependency",
-				                       typeof(
-				                       	IDependency),
-				                       typeof(
-				                       	SimpleDependency));
-				container.AddComponent("NestedDependency",
-				                       typeof(NestedDependency));
-
-				_dependencyResolver = new WindsorDependencyResolver(container);
-			}
 		}
 
 		[TestFixture]
 		public class WhenDisposeImplementationIsCalled
 		{
-			private MockRepository _mocks;
 			private WindsorDependencyResolver _resolver;
 			private IWindsorContainer _container;
 
 			[SetUp]
 			public void Setup()
 			{
-				_mocks = new MockRepository();
-				_container = _mocks.DynamicMock<IWindsorContainer>();
+				_container = MockRepository.GenerateMock<IWindsorContainer>();
 				_resolver = new WindsorDependencyResolver(_container);
 			}
 
@@ -58,15 +49,13 @@ namespace MvcContrib.UnitTests.IoC
 			public void ThenReleaseShouldBeCalled()
 			{
 				var obj = new object();
-				using(_mocks.Record())
-				{
-					Expect.Call(() => _container.Release(obj));
-				}
-				using(_mocks.Playback())
-				{
-					_resolver.DisposeImplementation(obj);
-				}
+
+				_container.Expect(c => c.Release(obj));
+
+				_resolver.DisposeImplementation(obj);
+
+				_container.VerifyAllExpectations();
 			}
-		} 
+		}
 	}
 }

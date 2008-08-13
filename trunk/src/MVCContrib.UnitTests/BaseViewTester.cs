@@ -37,7 +37,6 @@ namespace MvcContrib.UnitTests
 			mocks.ReplayAll();
 
 			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary());
-
 		}
 	}
 }

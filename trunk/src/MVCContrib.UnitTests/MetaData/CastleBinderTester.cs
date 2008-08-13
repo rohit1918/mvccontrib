@@ -1,10 +1,11 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Components.Binder;
-using NUnit.Framework;
-using Rhino.Mocks;
 using MvcContrib.Castle;
+using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
+
 namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
@@ -36,7 +37,7 @@ namespace MvcContrib.UnitTests.MetaData
 			var binder = new CastleBindAttribute();
 			object value = binder.Bind(typeof(Customer), "cust", _context);
 			var customer = value as Customer;
-			
+
 			Assert.That(customer, Is.Not.Null);
 			Assert.That(customer.Name, Is.EqualTo("Jeremy"));
 			Assert.That(customer.Id, Is.EqualTo(5));
@@ -58,7 +59,8 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void When_the_controller_implements_ICastleBindingContainer_then_the_binder_should_be_made_accessible_to_the_controller()
+		public void
+			When_the_controller_implements_ICastleBindingContainer_then_the_binder_should_be_made_accessible_to_the_controller()
 		{
 			var controller = new CastleBindableController();
 			_context = CreateContext(controller);
@@ -70,7 +72,8 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void When_the_controller_implements_ICastleBindingContainer_and_the_binder_is_already_set_then_it_should_be_used()
+		public void
+			When_the_controller_implements_ICastleBindingContainer_and_the_binder_is_already_set_then_it_should_be_used()
 		{
 			var castleBinder = new DataBinder();
 			var controller = new CastleBindableController {Binder = castleBinder};
@@ -80,7 +83,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			var binder = new CastleBindAttribute();
 			binder.Bind(typeof(Customer), "cust", _context);
-			
+
 			Assert.That(controller.Binder, Is.SameAs(castleBinder));
 			Assert.That(castleBinder.ErrorList["Id"], Is.Not.Null);
 		}

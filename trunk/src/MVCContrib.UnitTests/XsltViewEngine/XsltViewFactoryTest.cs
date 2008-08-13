@@ -22,11 +22,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public override void SetUp()
 		{
 			base.SetUp();
-			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
+            _viewSourceLoader = mockRepository.StrictMock<IViewSourceLoader>();
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
-			_fakeController = mockRepository.CreateMock<Controller>();
+            _fakeController = mockRepository.StrictMock<Controller>();
 			mockRepository.Replay(_fakeController);
 		}
 

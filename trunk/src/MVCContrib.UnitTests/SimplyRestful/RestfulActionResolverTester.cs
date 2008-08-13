@@ -12,150 +12,94 @@ namespace MvcContrib.UnitTests.SimplyRestful
 	[TestFixture]
 	public class RestfulActionResolverTester
 	{
-		private MockRepository _mocks;
 		private HttpContextBase _httpContext;
 		private HttpRequestBase _httpRequest;
 		private RouteData _routeData;
 		private NameValueCollection _form;
 		private RequestContext _requestContext;
+		private IRestfulActionResolver resolver;
 
 		[SetUp]
 		public void Setup()
 		{
-			_mocks = new MockRepository();
-			_httpContext = _mocks.DynamicMock<HttpContextBase>();
-			_httpRequest = _mocks.DynamicMock<HttpRequestBase>();
+			_httpContext = MockRepository.GenerateStub<HttpContextBase>();
+			_httpRequest = MockRepository.GenerateStub<HttpRequestBase>();
+			resolver = new RestfulActionResolver();
 		}
 
 		[Test, ExpectedException(typeof(NullReferenceException))]
 		public void ResolveAction_WithNullRequest_Throws()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
+			_httpContext.Stub(r => r.Request).Return(null);
+			_requestContext = new RequestContext(_httpContext, new RouteData());
 
-			using (_mocks.Record())
-			{
-				SetupResult.For(_httpContext.Request).Return(null);
-				_requestContext = new RequestContext(_httpContext, new RouteData());
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithEmptyRequestHttpMethod_ReturnsNoAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-
-			using (_mocks.Record())
-			{
-				GivenContext("", null);
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			GivenContext("", null);
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithNonPostRequest_ReturnsNoAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("GET", null);
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			GivenContext("GET", null);
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithPostRequestAndNullForm_ReturnsNoAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("POST", null);
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			GivenContext("POST", null);
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithPostRequestAndEmptyFormMethodValue_ReturnsNoAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("POST", "");
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			GivenContext("POST", "");
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithPostRequestAndInvalidFormMethodValue_ReturnsNoAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("POST", "GOOSE");
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
-			}
+			GivenContext("POST", "GOOSE");
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.None));
 		}
 
 		[Test]
 		public void ResolveAction_WithPostRequestAndFormMethodValuePUT_ReturnsUpdateAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("POST", "PUT");
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.Update));
-			}
+			GivenContext("POST", "PUT");
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.Update));
 		}
 
 		[Test]
 		public void ResolveAction_WithPostRequestAndFormMethodValueDELETE_ReturnsDestroyAction()
 		{
-			IRestfulActionResolver resolver = new RestfulActionResolver();
-			using (_mocks.Record())
-			{
-				GivenContext("POST", "DELETE");
-			}
-			using (_mocks.Playback())
-			{
-				Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.Destroy));
-			}
+			GivenContext("POST", "DELETE");
+			Assert.That(resolver.ResolveAction(_requestContext), Is.EqualTo(RestfulAction.Destroy));
 		}
 
 		private void GivenContext(string httpMethod, string formMethod)
 		{
-			SetupResult.For(_httpContext.Request).Return(_httpRequest);
-			SetupResult.For(_httpRequest.HttpMethod).Return(httpMethod);
+			_httpContext.Stub(c => c.Request).Return(_httpRequest).Repeat.Any();
+			_httpRequest.Stub(r => r.HttpMethod).Return(httpMethod).Repeat.Any();
 
 			_routeData = new RouteData();
 			_routeData.Values.Add("controller", "testcontroller");
 			_routeData.Values.Add("action", "SomeWeirdAction");
-			if (formMethod != null)
+
+			if(formMethod != null)
 			{
-				_form = new NameValueCollection();
-				_form.Add("_method", formMethod);
-				SetupResult.For(_httpRequest.Form).Return(_form);
+				_form = new NameValueCollection {{"_method", formMethod}};
+				_httpRequest.Stub(r => r.Form).Return(_form).Repeat.Any();
 			}
+
 			_requestContext = new RequestContext(_httpContext, _routeData);
 		}
 	}

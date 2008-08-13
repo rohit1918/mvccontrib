@@ -122,9 +122,7 @@ namespace MvcContrib.UnitTests.ConventionController
             {
                 return ExistingRescues.Contains(exceptionType.Name);
             }
-
         }
-
 
         public class RescueViewEngine : IViewEngine
         {

@@ -2,11 +2,11 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Microsoft.Practices.Unity;
 using MvcContrib.Unity;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Microsoft.Practices.Unity;
 
 namespace MvcContrib.UnitTests.ControllerFactories
 {
@@ -15,30 +15,31 @@ namespace MvcContrib.UnitTests.ControllerFactories
 	{
 		private MockRepository _mocks;
 		private IUnityContainer _container;
+		private RequestContext _context;
+		private IControllerFactory _factory;
+		private HttpContextBase _mockContext;
 
 		[SetUp]
 		public void Setup()
 		{
-			_mocks = new MockRepository();
-
 			_container = new UnityContainer();
 			_container.RegisterType<UnitySimpleController, UnitySimpleController>();
 			_container.RegisterType<IDependency, StubDependency>();
 			_container.RegisterType<UnityDependencyController, UnityDependencyController>();
+
+			_mocks = new MockRepository();
+			_mockContext = _mocks.PartialMock<HttpContextBase>();
+			_mockContext.Stub(c => c.ApplicationInstance).Return(new MockApplication(_container));
+			_mocks.ReplayAll();
+
+			_context = new RequestContext(_mockContext, new RouteData());
+			_factory = new UnityControllerFactory();
 		}
 
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			var mockContext = _mocks.PartialMock<HttpContextBase>();
-			var application = new MockApplication(_container);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
-			var context = new RequestContext(mockContext, new RouteData());
-			_mocks.ReplayAll();
-
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(context, "UnitySimple"); //typeof(SimpleController));
+			IController controller = _factory.CreateController(_context, "UnitySimple"); //typeof(SimpleController));
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(UnitySimpleController)));
@@ -47,15 +48,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			var mockContext = _mocks.DynamicMock<HttpContextBase>();
-			var application = new MockApplication(_container);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
-			var context = new RequestContext(mockContext, new RouteData());
-			_mocks.ReplayAll();
-
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(context, "UnityDependency"); //typeof(DependencyController));
+			IController controller = _factory.CreateController(_context, "UnityDependency"); //typeof(DependencyController));
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(UnityDependencyController)));
@@ -69,54 +62,36 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenContainerIsNull()
 		{
-			var mockContext = _mocks.DynamicMock<HttpContextBase>();
-			var application = new MockApplication(null);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
-			var context = new RequestContext(mockContext, new RouteData());
-			_mocks.ReplayAll();
+			_mockContext.BackToRecord(BackToRecordOptions.All);
+			_mockContext.Stub(c => c.ApplicationInstance).Return(new MockApplication(null));
+			_mockContext.Replay();
 
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(context, "UnitySimple");
+			_factory.CreateController(_context, "UnitySimple");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenApplicationDoesNotImplementIContainerAccessor()
 		{
-			var mockContext = _mocks.DynamicMock<HttpContextBase>();
-			var application = new HttpApplication();
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
-			var context = new RequestContext(mockContext, new RouteData());
-			_mocks.ReplayAll();
+			_mockContext.BackToRecord(BackToRecordOptions.All);
+			_mockContext.Stub(c => c.ApplicationInstance).Return(new HttpApplication());
+			_mockContext.Replay();
 
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(context, "UnitySimple");
+			_factory.CreateController(_context, "UnitySimple");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowExceptionWhenControllerDoesNotExist()
 		{
-			var mockContext = _mocks.DynamicMock<HttpContextBase>();
-			var application = new HttpApplication();
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
-			var context = new RequestContext(mockContext, new RouteData());
-			_mocks.ReplayAll();
-
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(context, "ControllerThatDoesNotExist");
+			_factory.CreateController(_context, "ControllerThatDoesNotExist");
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void ShouldThrowExceptionWhenRequestContextIsNull()
 		{
-			IControllerFactory factory = new UnityControllerFactory();
-
-			IController controller = factory.CreateController(null, "UnitySimple");
+			_factory.CreateController(null, "UnitySimple");
 		}
 
 		public class MockApplication : HttpApplication, IUnityContainerAccessor
