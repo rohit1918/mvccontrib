@@ -152,8 +152,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		{
 			if(!assignee.IsAssignableFrom(providedType))
 				throw new IncompatibleTypesException(string.Format(CultureInfo.CurrentCulture,
-				                                                   "The provided type {0} is not compatible with {1}.", assignee,
-				                                                   providedType, classBeingBuilt));
+                                                                   "The provided type {0} is not compatible with {1}. ClassBeingBuilt.FullName = '{2}'.", assignee, providedType, classBeingBuilt.FullName));
 		}
 	}
 }

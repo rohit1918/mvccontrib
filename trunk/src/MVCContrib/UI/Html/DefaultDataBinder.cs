@@ -128,7 +128,7 @@ namespace MvcContrib.UI.Html
 
 				if (propertyInfo.GetIndexParameters().Length != 0)
 				{
-					throw new Exception(string.Format("Property '{0}' has indexes, which are not supported", propertyInfo.Name, instanceType.FullName));
+					throw new Exception(string.Format("Property '{0}' has indexes, which are not supported. InstanceType.FullName = '{1}'.", propertyInfo.Name, instanceType.FullName));
 				}
 
 				instance = propertyInfo.GetValue(rootInstance, null);

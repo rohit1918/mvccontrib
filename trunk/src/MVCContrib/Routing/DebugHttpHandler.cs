@@ -91,7 +91,7 @@ namespace MvcContrib.Routing
 						dataTokens = FormatRouteValueDictionary(route.DataTokens);
 					}
 
-					routes += string.Format(@"<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{3}</td></tr>"
+					routes += string.Format(@"<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>"
 							, matchText
 							, url
 							, defaults
