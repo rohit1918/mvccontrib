@@ -212,7 +212,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.Fail("Should throw an exception as property is not readable.");
 			}
 
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'Item' has indexes, which are not supported")]
+			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'Item' has indexes, which are not supported. InstanceType.FullName = 'System.Collections.Generic.List`1[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]'.")]
 			public void It_should_throw_for_indexer_properties()
 			{
 				var values = new List<string>();
