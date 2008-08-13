@@ -35,7 +35,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			SetupResult.For(_httpContext.Response).Return(response);
 //			SetupResult.For(_httpContext.Session).Return(_mocks.DynamicMock<HttpSessionStateBase>());
 			var requestContext = new RequestContext(_httpContext, new RouteData());
-			_controller = _mocks.CreateMock<Controller>();
+            _controller = _mocks.StrictMock<Controller>();
 			_mocks.Replay(_controller);
 			
 			var controllerContext = new ControllerContext(requestContext, _controller);

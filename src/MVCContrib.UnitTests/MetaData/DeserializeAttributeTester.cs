@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Attributes;
@@ -18,24 +16,14 @@ namespace MvcContrib.UnitTests.MetaData
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
+			var context = _mocks.DynamicHttpContextBase();
+			_mocks.Replay(context.Request);
 
-			var queryString = new NameValueCollection();
-			queryString["ids[0]"] = "1";
-
-			var form = new NameValueCollection();
-			form["ids[1]"] = "2";
-
-			var request = _mocks.DynamicMock<HttpRequestBase>();
-			SetupResult.For(request.QueryString).Return(queryString);
-			SetupResult.For(request.Form).Return(form);
-
-			var context = _mocks.DynamicMock<HttpContextBase>();
-			SetupResult.For(context.Request).Return(request);
+			context.Request.QueryString["ids[0]"] = "1";
+			context.Request.Form["ids[1]"] = "2";
 
 			var requestContext = new RequestContext(context, new RouteData());
 			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
-
-			_mocks.ReplayAll();
 		}
 
 		[Test]

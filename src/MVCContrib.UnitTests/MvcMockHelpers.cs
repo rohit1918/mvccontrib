@@ -14,27 +14,14 @@ namespace MvcContrib.UnitTests
 		public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks)
 		{
 			return mocks.DynamicHttpContextBase
-				(mocks.DynamicHttpBrowserCapabilitiesBase(),
-				 mocks.DynamicHttpRequestBase(),
+				(mocks.DynamicHttpRequestBase(),
 				 mocks.DynamicHttpResponseBase(),
 				 mocks.DynamicHttpSessionStateBase(),
 				 mocks.DynamicHttpServerUtilityBase(),
 				 mocks.DynamicIPrincipal());
 		}
 
-		public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks, IPrincipal principal, HttpBrowserCapabilitiesBase browser)
-		{
-			return mocks.DynamicHttpContextBase
-				   (browser,
-					mocks.DynamicHttpRequestBase(),
-					mocks.DynamicHttpResponseBase(),
-					mocks.DynamicHttpSessionStateBase(),
-					mocks.DynamicHttpServerUtilityBase(),
-					principal);
-		}
-
 		public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks,
-			HttpBrowserCapabilitiesBase browser,
 			HttpRequestBase request,
 			HttpResponseBase response,
 			HttpSessionStateBase session,
@@ -43,7 +30,6 @@ namespace MvcContrib.UnitTests
 		{
 			var context = mocks.DynamicMock<HttpContextBase>();
 			SetupResult.For(context.User).Return(user);
-			SetupResult.For(request.Browser).Return(browser);
 			SetupResult.For(context.Request).Return(request);
 			SetupResult.For(context.Response).Return(response);
 			SetupResult.For(context.Session).Return(session);
@@ -51,17 +37,17 @@ namespace MvcContrib.UnitTests
 			mocks.Replay(context);
 			return context;
 		}
-		public static HttpBrowserCapabilitiesBase DynamicHttpBrowserCapabilitiesBase(this MockRepository mocks)
-		{
-			var browser = mocks.DynamicMock<HttpBrowserCapabilitiesBase>();
-			return browser;
-		}
-		public static HttpRequestBase DynamicHttpRequestBase(this MockRepository mocks)
+
+        public static HttpRequestBase DynamicHttpRequestBase(this MockRepository mocks)
 		{
 			var request = mocks.DynamicMock<HttpRequestBase>();
+            var browser = mocks.DynamicMock<HttpBrowserCapabilitiesBase>();
+
 			SetupResult.For(request.Form).Return(new NameValueCollection());
 			SetupResult.For(request.QueryString).Return(new NameValueCollection());
-			return request;
+		    SetupResult.For(request.Browser).Return(browser);
+
+            return request;
 		}
 		public static HttpResponseBase DynamicHttpResponseBase(this MockRepository mocks)
 		{
@@ -69,7 +55,8 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(response.OutputStream).Return(new MemoryStream());
 			SetupResult.For(response.Output).Return(new StringWriter());
 			SetupResult.For(response.ContentType).PropertyBehavior();
-			return response;
+
+            return response;
 		}
 		public static HttpSessionStateBase DynamicHttpSessionStateBase(this MockRepository mocks)
 		{

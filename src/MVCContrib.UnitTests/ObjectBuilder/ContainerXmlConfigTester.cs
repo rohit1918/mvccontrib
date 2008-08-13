@@ -2,21 +2,12 @@
 using Microsoft.Practices.ObjectBuilder;
 using MvcContrib.ObjectBuilder.Configuration;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ObjectBuilder
 {
 	[TestFixture, Category("ObjectBuilderFactory")]
 	public class ContainerXmlConfigTester
 	{
-		private MockRepository _mocks;
-
-		[SetUp]
-		public void Setup()
-		{
-			_mocks = new MockRepository();
-		}
-
 		[Test]
 		public void ValidXmlTest()
 		{

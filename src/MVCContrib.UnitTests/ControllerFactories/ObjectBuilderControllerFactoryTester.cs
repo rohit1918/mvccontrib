@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			var mockContext = _mocks.PartialMock<HttpContextBase>();
 			var application = new MockApplication(_container);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
+			mockContext.Expect(c => c.ApplicationInstance).Return(application);
 			var context = new RequestContext(mockContext, new RouteData());
 			_mocks.ReplayAll();
 
@@ -48,7 +48,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			var mockContext = _mocks.DynamicMock<HttpContextBase>();
 			var application = new MockApplication(_container);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
+			mockContext.Expect(c => c.ApplicationInstance).Return(application);
 			var context = new RequestContext(mockContext, new RouteData());
 			_mocks.ReplayAll();
 
@@ -70,7 +70,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			var mockContext = _mocks.DynamicMock<HttpContextBase>();
 			var application = new MockApplication(null);
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
+			mockContext.Expect(c => c.ApplicationInstance).Return(application);
 			var context = new RequestContext(mockContext, new RouteData());
 			_mocks.ReplayAll();
 
@@ -85,7 +85,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		{
 			var mockContext = _mocks.DynamicMock<HttpContextBase>();
 			var application = new HttpApplication();
-			Expect.Call(mockContext.ApplicationInstance).Return(application);
+			mockContext.Expect(c => c.ApplicationInstance).Return(application);
 			var context = new RequestContext(mockContext, new RouteData());
 			_mocks.ReplayAll();
 

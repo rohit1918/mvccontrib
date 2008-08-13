@@ -12,15 +12,13 @@ namespace MvcContrib.UnitTests.ActionFilters
 	public class LayoutAttributeTester
 	{
 		private MockRepository _mocks;
-		private Controller _controller;
 		private ControllerContext _controllerContext;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			_controller = _mocks.PartialMock<Controller>();
-			_controllerContext = new ControllerContext(_mocks.DynamicMock<HttpContextBase>(), new RouteData(), _controller);
+			_controllerContext = new ControllerContext(_mocks.DynamicMock<HttpContextBase>(), new RouteData(), _mocks.PartialMock<Controller>());
 		}
 
 		[Test]

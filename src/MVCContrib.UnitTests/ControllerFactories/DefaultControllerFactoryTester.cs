@@ -2,6 +2,7 @@ using System.Web;
 using System.Web.Mvc;
 using MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester;
 using NUnit.Framework;
+using Rhino.Mocks;
 using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 using NUnit.Framework.SyntaxHelpers;
 using System.Web.Routing;
@@ -18,9 +19,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			protected override void BeforeEachSpec()
 			{
 				_factory = new DefaultControllerFactory();
-				var httpContext = _mocks.DynamicMock<HttpContextBase>();
-				_mocks.Replay(httpContext);
-				_context = new RequestContext(httpContext, new RouteData());
+				_context = new RequestContext(MockRepository.GenerateStub<HttpContextBase>(), new RouteData());
 			}
 
 			protected override void AfterEachSpec()

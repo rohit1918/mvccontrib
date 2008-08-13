@@ -66,7 +66,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			_invoker.FindActionMetaData("SimpleAction");
 		}
 
-
 		[Test]
 		public void FindActionMeta_should_return_defaultaction_the_specified_action_does_not_exist()
 		{

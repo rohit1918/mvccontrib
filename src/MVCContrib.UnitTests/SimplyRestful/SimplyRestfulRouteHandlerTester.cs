@@ -56,8 +56,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		public void EnsureActionResolver_WhenResolverIsNull_ResolvesAndUsesOneFromTheContainer()
 		{
 			var mocks = new MockRepository();
-			var httpContext = mocks.CreateMock<HttpContextBase>();
-			var resolver = mocks.CreateMock<IRestfulActionResolver>();
+			var httpContext = mocks.StrictMock<HttpContextBase>();
+			var resolver = mocks.StrictMock<IRestfulActionResolver>();
 			var httpRequest = mocks.DynamicMock<HttpRequestBase>();
 
 			IRouteHandler handler = new SimplyRestfulRouteHandler();
@@ -66,11 +66,11 @@ namespace MvcContrib.UnitTests.SimplyRestful
 			using(mocks.Record())
 			{
 				/// Context has to be a mock b/c we want to assert that GetService is called.
-				Expect.Call(httpContext.Request).Repeat.Any().Return(httpRequest);
-				Expect.Call(httpContext.GetService(typeof(IRestfulActionResolver))).Return(resolver).Repeat.Once();
+				httpContext.Expect(c => c.Request).Repeat.Any().Return(httpRequest);
+				httpContext.Expect(c => c.GetService(typeof(IRestfulActionResolver))).Return(resolver).Repeat.Once();
 
 				/// Resolver has to be a mock b/c we want to assert that it was gotten from the container and actually used.
-				Expect.Call(resolver.ResolveAction(requestContext)).Return(RestfulAction.None);
+				resolver.Expect(r => r.ResolveAction(requestContext)).Return(RestfulAction.None);
 			}
 			using(mocks.Playback())
 			{
@@ -101,7 +101,7 @@ namespace MvcContrib.UnitTests.SimplyRestful
 		{
 			var mocks = new MockRepository();
 			var httpContext = mocks.DynamicMock<HttpContextBase>();
-			var resolver = mocks.CreateMock<IRestfulActionResolver>();
+			var resolver = mocks.StrictMock<IRestfulActionResolver>();
 			IRouteHandler handler = new SimplyRestfulRouteHandler(resolver);
 			var requestContext = new RequestContext(httpContext, new RouteData());
 

@@ -12,15 +12,15 @@ namespace MvcContrib.UnitTests.Castle
 	[TestFixture]
 	public class WindsorControllerFactoryTester
 	{
-		private MockRepository _mocks;
 		private IWindsorContainer _container;
+		private IControllerFactory _factory;
 
 		[SetUp]
 		public void Setup()
 		{
-			_mocks = new MockRepository();
-
 			_container = new WindsorContainer();
+			_factory = new WindsorControllerFactory(_container);
+
 			_container.AddComponent("simplecontroller", typeof(WindsorSimpleController));
 			_container.AddComponent("StubDependency", typeof(IDependency), typeof(StubDependency));
 			_container.AddComponent("dependencycontroller", typeof(WindsorDependencyController));
@@ -29,9 +29,7 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
-
-			IController controller = factory.CreateController(null, "Simple");
+			IController controller = _factory.CreateController(null, "Simple");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorSimpleController)));
@@ -40,9 +38,7 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
-
-			IController controller = factory.CreateController(null, "Dependency");
+			IController controller = _factory.CreateController(null, "Dependency");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorDependencyController)));
@@ -62,26 +58,21 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldDisposeOfController()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
 			var controller = new WindsorDisposableController();
-			factory.DisposeController(controller);
+			_factory.DisposeController(controller);
 			Assert.That(controller.IsDisposed);
 		}
 
 		[Test]
 		public void ShouldReleaseController()
 		{
-			var mockContainer = _mocks.DynamicMock<IWindsorContainer>();
+			var mockContainer = MockRepository.GenerateStub<IWindsorContainer>();
 			var controller = new WindsorSimpleController();
-			using(_mocks.Record())
-			{
-				Expect.Call(() => mockContainer.Release(controller));
-			}
-			using(_mocks.Playback())
-			{
-				var factory = new WindsorControllerFactory(mockContainer);
-				factory.DisposeController(controller);
-			}
+			var factory = new WindsorControllerFactory(mockContainer);
+
+			factory.DisposeController(controller);
+
+			mockContainer.AssertWasCalled(c => c.Release(controller));
 		}
 
 		public class WindsorDisposableController : IDisposable, IController
