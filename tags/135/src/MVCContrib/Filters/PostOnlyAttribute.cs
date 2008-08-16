@@ -1,0 +1,15 @@
+using System;
+using System.Web.Mvc;
+
+namespace MvcContrib.Filters
+{
+	public class PostOnlyAttribute : ActionFilterAttribute
+	{
+		public override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			if (filterContext.HttpContext.Request.RequestType != "POST")
+				throw new InvalidOperationException(
+					string.Format("Action '{0}' can only be accessed using an HTTP Post.", filterContext.ActionMethod.Name));
+		}
+	}
+}
