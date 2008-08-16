@@ -167,12 +167,11 @@ namespace MvcContrib.BrailViewEngine
 		{
 			Log("Starting to process request for {0}", viewName);
 			string file = viewName + ViewFileExtension;
-			BrailBase view;
 			// Output may be the layout's child output if a layout exists
 			// or the context.Response.Output if the layout is null
 			LayoutViewOutput layoutViewOutput = GetOutput(output, masterName);
 			// Will compile on first time, then save the assembly on the cache.
-			view = GetCompiledScriptInstance(file, layoutViewOutput.Output);
+			BrailBase view = GetCompiledScriptInstance(file, layoutViewOutput.Output);
 			view.Layout = layoutViewOutput.Layout;
 
 			return view;

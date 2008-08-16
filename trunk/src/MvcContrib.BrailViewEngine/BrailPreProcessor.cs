@@ -40,9 +40,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static IDictionary CreateSeparators()
 		{
-			var seperators = new Hashtable();
-			seperators.Add("<?brail", "?>");
-			seperators.Add("<%", "%>");
+			var seperators = new Hashtable {{"<?brail", "?>"}, {"<%", "%>"}};
 			return seperators;
 		}
 
@@ -95,10 +93,9 @@ namespace MvcContrib.BrailViewEngine
 			var buffer = new StringWriter();
 			int index = 0;
 			int lastIndex = 0;
-			string start, end;
 			DictionaryEntry seperators = GetSeperators(code);
-			start = seperators.Key.ToString();
-			end = seperators.Value.ToString();
+			string start = seperators.Key.ToString();
+			string end = seperators.Value.ToString();
 
 			while(index != -1)
 			{
@@ -214,7 +211,7 @@ namespace MvcContrib.BrailViewEngine
 				prevCharWasDollar = code[index] == '$' && !prevCharWasDollar;
 				prevCharWasBang = code[index] == '!' && !prevCharWasBang;
 			}
-			bracesPositions.RemoveAll(delegate(ExpressionPosition obj) { return !obj.PrevCharWasDollarOrBang; });
+			bracesPositions.RemoveAll(obj => !obj.PrevCharWasDollarOrBang);
 			return bracesPositions;
 		}
 
@@ -233,14 +230,15 @@ namespace MvcContrib.BrailViewEngine
 			string start = null, end = null;
 			foreach(DictionaryEntry entry in separators)
 			{
-				if (code.IndexOf(entry.Key as string, 0) != -1)
+				string key = (string)entry.Key;
+				if (code.IndexOf(key, 0) != -1)
 				{
-					if (start != null && code.IndexOf(entry.Key as string) != -1)
+					if (start != null && code.IndexOf(key) != -1)
 						continue; //handle a shorthanded seperator.
 					// handle long seperator
 					if (start != null && entry.Key.ToString().IndexOf(start) == -1)
 					{
-						throw new Exception("Can't mix seperators in one file. Found both " + start + " and " + entry.Key);
+						throw new Exception(string.Format("Can't mix seperators in one file. Found both {0} and {1}", start, entry.Key));
 					}
 					start = entry.Key.ToString();
 					end = entry.Value.ToString();

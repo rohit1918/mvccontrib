@@ -14,8 +14,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Tag_Has_No_Value_Exception_Is_Thrown()
 			{
-				var element = new Element();
-				element.Tag = "";
+				var element = new Element {Tag = ""};
 				try
 				{
 					string val = element.ToString();
@@ -50,8 +49,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Tag_Is_Set_Then_Tag_Is_Got()
 			{
-				var el = new Element();
-				el.Tag = "goose";
+				var el = new Element {Tag = "goose"};
 				Assert.That(el.Tag, Is.EqualTo("goose"));
 			}
 
@@ -104,9 +102,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Id_And_Class_Are_Set_Then_Can_Enumerate_Over_Id_And_Class()
 			{
-				var el = new Element();
-				el.Id = "goose";
-				el.Class = "chicken";
+				var el = new Element {Id = "goose", Class = "chicken"};
 				bool sawId = false;
 				bool sawClass = false;
 				foreach (DictionaryEntry attribute in el)
@@ -127,9 +123,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Id_And_Class_Are_Set_Then_Can_Enumerate_Over_Id_And_Class_NonGeneric()
 			{
-				var el = new Element();
-				el.Id = "goose";
-				el.Class = "chicken";
+				var el = new Element {Id = "goose", Class = "chicken"};
 				bool sawId = false;
 				bool sawClass = false;
 				foreach (var val in (IEnumerable)el)
@@ -158,42 +152,36 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_Getting_ToString_With_Id_Then_Id_Attribute_Is_Generated()
 			{
-				var el = new Element();
-				el.Id = "goose";
+				var el = new Element {Id = "goose"};
 				Assert.That(el.ToString(), Text.Contains("id=\"goose\""));
 			}
 
             [Test]
             public void When_Getting_ToString_With_A_Empty_Attribute_Then_It_Is_Not_Generated()
             {
-                var el = new Element();
-                el.Id = "goose";
-                el["checked"] = null;
+                var el = new Element {Id = "goose"};
+            	el["checked"] = null;
                 Assert.That(el.ToString(), Text.DoesNotContain("checked"));
             }
 
 			[Test]
 			public void When_Set_Selector_Then_Get_Selector()
 			{
-				var element = new Element();
-				element.Selector = "#foo";
+				var element = new Element {Selector = "#foo"};
 				Assert.That(element.Selector.ToString(), Is.EqualTo("#foo"));
 			}
 
 			[Test]
 			public void When_Set_Id_Then_Get_Selector()
 			{
-				var element = new Element();
-				element.Id = "foo";
+				var element = new Element {Id = "foo"};
 				Assert.That(element.Selector.ToString(), Is.EqualTo("#foo"));
 			}
 
 			[Test]
 			public void When_Selector_Is_Null_Get_ID()
 			{
-				var element = new Element();
-				element.Id = "foo";
-				element.Selector = null;
+				var element = new Element {Id = "foo", Selector = null};
 				Assert.That(element.Selector.ToString(), Is.EqualTo("foo"));
 			}
 
@@ -214,27 +202,21 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Tag_Will_Close_With_Full_Tag_If_There_Is_InnerText()
 			{
-				var element = new Element();
-				element.InnerText = "This is Text";
+				var element = new Element {InnerText = "This is Text"};
 				Assert.That(element.ToString(), Is.EqualTo("<div >This is Text</div>"));
 			}
 
 			[Test]
 			public void Tag_With_Escaped_Flag_Has_Escaped_Content_When_Rendered()
 			{
-				var element = new Element();
-				element.InnerText = "This is Text";
-				element.EscapeInnerText = true;
+				var element = new Element {InnerText = "This is Text", EscapeInnerText = true};
 				Assert.That(element.ToString(), Is.EqualTo("<div >/*<![CDATA[*/\r\nThis is Text\r\n//]]></div>"));
 			}
 
 			[Test]
 			public void Tag_With_Four_Or_More_Attributes_Renders_Correctly()
 			{
-				var element = new Element();
-				element.InnerText = "This is Text";
-				element.Id = "MyID";
-				element.Class = "MyClass";
+				var element = new Element {InnerText = "This is Text", Id = "MyID", Class = "MyClass"};
 				element["Style"] = "MyStyle";
 				element["onclick"] = "MyOnClick";
 				element["Gizmodo"] = "A cool Website";
@@ -254,8 +236,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void When_id_has_period_should_be_replaced_with_hyphen()
 			{
-				var element = new Element();
-				element.Id = "foo.bar";
+				var element = new Element {Id = "foo.bar"};
 				string actual = element.ToString();
 				string expected = "<div id=\"foo-bar\"/>";
 				Assert.That(actual, Is.EqualTo(expected));

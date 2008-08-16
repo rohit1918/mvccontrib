@@ -106,8 +106,7 @@ namespace MvcContrib.UI.Tags
 		{
 			if (!string.IsNullOrEmpty(_label) && !string.IsNullOrEmpty(Id))
 			{
-				var label = new Element(LABEL, new Hash(@for => Id));
-				label.InnerText = _label;
+				var label = new Element(LABEL, new Hash(@for => Id)) {InnerText = _label};
 				return base.ToString() + label;
 			}
 			return base.ToString();

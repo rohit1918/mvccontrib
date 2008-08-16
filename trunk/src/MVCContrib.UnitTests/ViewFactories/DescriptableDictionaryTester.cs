@@ -34,9 +34,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 			PropertyDescriptor property = TypeDescriptor.GetProperties(dict)[0];
 
 			property.CanResetValue(null);
-			object o = property.ComponentType;
-			o = property.IsReadOnly;
-			o = property.PropertyType;
+			var componentType = property.ComponentType;
+			var isReadOnly = property.IsReadOnly;
+			var propertyType = property.PropertyType;
 			property.ResetValue(null);
 			property.SetValue(null, null);
 			property.ShouldSerializeValue(null);

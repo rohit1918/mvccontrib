@@ -382,9 +382,8 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			object parentValue = 25;
 			object childValue = 15;
 			parent.Add(new DependencyResolutionLocatorKey(typeof(int), null), parentValue);
-			var child = new Locator(parent);
-			child.Add(new DependencyResolutionLocatorKey(typeof(int), null), childValue);
-			MockBuilderContext context = CreateContext(child);
+			var child = new Locator(parent) {{new DependencyResolutionLocatorKey(typeof(int), null), childValue}};
+		    MockBuilderContext context = CreateContext(child);
 
 			var obj =
 				(SearchLocalMockObject)context.HeadOfChain.BuildUp(context, typeof(SearchLocalMockObject), null, null);

@@ -37,14 +37,13 @@ namespace MvcContrib.XsltViewEngine
 
 			_transform = new MvpXslTransform();
 
-			var settings = new XmlReaderSettings();
-			settings.ProhibitDtd = false;
+			var settings = new XmlReaderSettings {ProhibitDtd = false};
 
-			using(Stream viewSourceStream = viewSource.OpenViewStream())
+			using(var viewSourceStream = viewSource.OpenViewStream())
 			{
-				using (XmlReader reader = XmlReader.Create(viewSourceStream, settings))
+				using (var xmlReader = XmlReader.Create(viewSourceStream, settings))
 				{
-					_transform.Load(reader);
+					_transform.Load(xmlReader);
 				}
 			}
 		}

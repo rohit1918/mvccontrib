@@ -210,7 +210,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			var container = ctx.Locator.Get<ILifetimeContainer>();
 			ConstructorInfo ci = typeof(MockObject).GetConstructor(new[] {typeof(int)});
 			ICreationPolicy policy = new ConstructorPolicy(ci, new ValueParameter<string>(String.Empty));
-			ctx.Policies.Set<ICreationPolicy>(policy, typeof(MockObject), null);
+			ctx.Policies.Set(policy, typeof(MockObject), null);
 
 			object obj = ctx.HeadOfChain.BuildUp(ctx, typeof(MockObject), null, null);
 		}

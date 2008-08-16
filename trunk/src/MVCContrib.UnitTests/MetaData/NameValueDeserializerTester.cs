@@ -213,9 +213,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void DeserializeEnumGenericListFromMultiple()
 		{
-			var collection = new NameValueCollection();
-			collection.Add("testEnum", "0");
-			collection.Add("testEnum", "2");
+			var collection = new NameValueCollection {{"testEnum", "0"}, {"testEnum", "2"}};
 
 			var nvd = new NameValueDeserializer();
 

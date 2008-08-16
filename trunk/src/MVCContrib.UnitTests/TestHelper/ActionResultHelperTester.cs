@@ -21,7 +21,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		public void Should_throw_when_conversiontype_is_incorrect()
 		{
 			ActionResult result = new RedirectResult("http://mvccontrib.org");
-			var converted = result.AssertResultIs<EmptyResult>();
+			result.AssertResultIs<EmptyResult>();
 		}
 
 		[Test]

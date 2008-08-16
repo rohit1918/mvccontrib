@@ -118,9 +118,9 @@ namespace MvcContrib.Services
             response.Flush(); //clear out anything that is in there already
 
             MailMessage message;
-            Stream filter = null, oldFilter;
+            Stream filter = null;
 
-            oldFilter = response.Filter;
+            Stream oldFilter = response.Filter;
             try
             {
                 filter = new MemoryStream();

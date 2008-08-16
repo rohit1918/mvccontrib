@@ -22,10 +22,8 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator1 = new RequiredValidator("myid1", "refid1", "Error!");
 				var validator2 = new RequiredValidator("myid2", "refid2", "Error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1234");
-				formValues.Add("refid2", "5678");
+				HttpRequestBase request;
+				var formValues = new NameValueCollection {{"refid1", "1234"}, {"refid2", "5678"}};
 
 				using (mocks.Record())
 				{
@@ -47,12 +45,10 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator1 = new RequiredValidator("myid1", "refid1", "Error!");
 				var validator2 = new RequiredValidator("myid2", "refid2", "Error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1234");
-				formValues.Add("refid2", "");
+				HttpRequestBase request;
+				var formValues = new NameValueCollection {{"refid2", ""}, {"refid1", "1234"}};
 
-				using (mocks.Record())
+			    using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
 					SetupResult.For(request.Form).Return(formValues);
@@ -72,10 +68,8 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator1 = new RequiredValidator("myid1", "refid1", "Error!");
 				var validator2 = new RequiredValidator("myid2", "refid2", "Error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "");
-				formValues.Add("refid2", "");
+				HttpRequestBase request;
+				var formValues = new NameValueCollection {{"refid1", ""}, {"refid2", ""}};
 
 				using (mocks.Record())
 				{
@@ -106,14 +100,16 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				var validator = new RequiredValidator("myId", "myReference", "Error!");
-				validator.InitialValue = "test";
-				Assert.That(validator.InitialValue, Is.EqualTo("test"));
-				validator.ErrorMessage = "error";
+				var validator = new RequiredValidator("myId", "myReference", "Error!")
+				                    {
+				                        InitialValue = "test",
+				                        ErrorMessage = "error",
+				                        ValidationGroup = "group",
+				                        ReferenceId = "reference"
+				                    };
+			    Assert.That(validator.InitialValue, Is.EqualTo("test"));
 				Assert.That(validator.ErrorMessage, Is.EqualTo("error"));
-				validator.ValidationGroup = "group";
 				Assert.That(validator.ValidationGroup, Is.EqualTo("group"));
-				validator.ReferenceId = "reference";
 				Assert.That(validator.ReferenceId, Is.EqualTo("reference"));
 			}
 
@@ -135,10 +131,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RequiredValidator("myId", "myReference", "Error!", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -151,10 +144,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_validation_group_and_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RequiredValidator("myId", "myReference", "Error!", "test", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -187,10 +177,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RequiredValidator("myid", "refid", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "value");
+				var formValues = new NameValueCollection {{"refid", "value"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -209,10 +198,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RequiredValidator("myid", "refid", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "");
+				var formValues = new NameValueCollection {{"refid", ""}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -231,8 +219,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RequiredValidator("myid", "refid", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicHttpRequestBase();
@@ -249,10 +236,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RequiredValidator("myid", "refid", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "");
+				var formValues = new NameValueCollection {{"refid", ""}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -302,10 +288,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RegularExpressionValidator("myId", "myReference", ".*", "Error!", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -319,10 +302,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_validation_group_and_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RegularExpressionValidator("myId", "myReference", ".*", "Error!", "test", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -356,10 +336,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "1234");
+				var formValues = new NameValueCollection {{"refid", "1234"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -378,10 +357,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "value");
+				var formValues = new NameValueCollection {{"refid", "value"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -401,7 +379,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator = new RegularExpressionValidator("myid", "refid", "^\\d*$", "error!");
 
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
+				HttpRequestBase request;
 
 				using (mocks.Record())
 				{
@@ -452,10 +430,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new CompareValidator("myId", "myReference", "compareReference", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "Error!", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -468,10 +443,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_validation_group_and_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new CompareValidator("myId", "myReference", "compareReference", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "Error!", "test", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -622,24 +594,26 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Date, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
 				var mocks = new MockRepository();
 				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1/5/2008");
-				formValues.Add("compareRefId1", "1/5/2008");
-				formValues.Add("refid2", "1/6/2008");
-				formValues.Add("compareRefId2", "1/5/2008");
-				formValues.Add("refid3", "1/6/2008");
-				formValues.Add("compareRefId3", "1/5/2008");
-				formValues.Add("refid4", "1/5/2008");
-				formValues.Add("compareRefId4", "1/5/2008");
-				formValues.Add("refid5", "1/4/2008");
-				formValues.Add("compareRefId5", "1/5/2008");
-				formValues.Add("refid6", "1/4/2008");
-				formValues.Add("compareRefId6", "1/5/2008");
-				formValues.Add("refid7", "1/5/2008");
-				formValues.Add("compareRefId7", "1/5/2008");
-				formValues.Add("refid8", "1/4/2008");
-				formValues.Add("compareRefId8", "1/5/2008");
-				formValues.Add("refid9", "1/4/2008");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "1/5/2008"},
+				                 		{"compareRefId1", "1/5/2008"},
+				                 		{"refid2", "1/6/2008"},
+				                 		{"compareRefId2", "1/5/2008"},
+				                 		{"refid3", "1/6/2008"},
+				                 		{"compareRefId3", "1/5/2008"},
+				                 		{"refid4", "1/5/2008"},
+				                 		{"compareRefId4", "1/5/2008"},
+				                 		{"refid5", "1/4/2008"},
+				                 		{"compareRefId5", "1/5/2008"},
+				                 		{"refid6", "1/4/2008"},
+				                 		{"compareRefId6", "1/5/2008"},
+				                 		{"refid7", "1/5/2008"},
+				                 		{"compareRefId7", "1/5/2008"},
+				                 		{"refid8", "1/4/2008"},
+				                 		{"compareRefId8", "1/5/2008"},
+				                 		{"refid9", "1/4/2008"}
+				                 	};
 
 				using (mocks.Record())
 				{
@@ -680,24 +654,26 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Currency, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
 				var mocks = new MockRepository();
 				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1234.12");
-				formValues.Add("compareRefId1", "1234.12");
-				formValues.Add("refid2", "2345.12");
-				formValues.Add("compareRefId2", "1234.12");
-				formValues.Add("refid3", "2345.12");
-				formValues.Add("compareRefId3", "1234.12");
-				formValues.Add("refid4", "1234.12");
-				formValues.Add("compareRefId4", "1234.12");
-				formValues.Add("refid5", "123.12");
-				formValues.Add("compareRefId5", "1234.12");
-				formValues.Add("refid6", "123.12");
-				formValues.Add("compareRefId6", "1234.12");
-				formValues.Add("refid7", "1234.12");
-				formValues.Add("compareRefId7", "1234.12");
-				formValues.Add("refid8", "1234.12");
-				formValues.Add("compareRefId8", "2345.12");
-				formValues.Add("refid9", "1234.12");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "1234.12"},
+				                 		{"compareRefId1", "1234.12"},
+				                 		{"refid2", "2345.12"},
+				                 		{"compareRefId2", "1234.12"},
+				                 		{"refid3", "2345.12"},
+				                 		{"compareRefId3", "1234.12"},
+				                 		{"refid4", "1234.12"},
+				                 		{"compareRefId4", "1234.12"},
+				                 		{"refid5", "123.12"},
+				                 		{"compareRefId5", "1234.12"},
+				                 		{"refid6", "123.12"},
+				                 		{"compareRefId6", "1234.12"},
+				                 		{"refid7", "1234.12"},
+				                 		{"compareRefId7", "1234.12"},
+				                 		{"refid8", "1234.12"},
+				                 		{"compareRefId8", "2345.12"},
+				                 		{"refid9", "1234.12"}
+				                 	};
 
 				using (mocks.Record())
 				{
@@ -737,26 +713,28 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
 				var validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1234.12");
-				formValues.Add("compareRefId1", "1234.12");
-				formValues.Add("refid2", "2345.12");
-				formValues.Add("compareRefId2", "1234.12");
-				formValues.Add("refid3", "2345.12");
-				formValues.Add("compareRefId3", "1234.12");
-				formValues.Add("refid4", "1234.12");
-				formValues.Add("compareRefId4", "1234.12");
-				formValues.Add("refid5", "123.12");
-				formValues.Add("compareRefId5", "1234.12");
-				formValues.Add("refid6", "123.12");
-				formValues.Add("compareRefId6", "1234.12");
-				formValues.Add("refid7", "1234.12");
-				formValues.Add("compareRefId7", "1234.12");
-				formValues.Add("refid8", "1234.12");
-				formValues.Add("compareRefId8", "2345.12");
-				formValues.Add("refid9", "1234.12");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "1234.12"},
+				                 		{"compareRefId1", "1234.12"},
+				                 		{"refid2", "2345.12"},
+				                 		{"compareRefId2", "1234.12"},
+				                 		{"refid3", "2345.12"},
+				                 		{"compareRefId3", "1234.12"},
+				                 		{"refid4", "1234.12"},
+				                 		{"compareRefId4", "1234.12"},
+				                 		{"refid5", "123.12"},
+				                 		{"compareRefId5", "1234.12"},
+				                 		{"refid6", "123.12"},
+				                 		{"compareRefId6", "1234.12"},
+				                 		{"refid7", "1234.12"},
+				                 		{"compareRefId7", "1234.12"},
+				                 		{"refid8", "1234.12"},
+				                 		{"compareRefId8", "2345.12"},
+				                 		{"refid9", "1234.12"}
+				                 	};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -795,26 +773,28 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
 				var validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.Integer, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "1234");
-				formValues.Add("compareRefId1", "1234");
-				formValues.Add("refid2", "2345");
-				formValues.Add("compareRefId2", "1234");
-				formValues.Add("refid3", "2345");
-				formValues.Add("compareRefId3", "1234");
-				formValues.Add("refid4", "1234");
-				formValues.Add("compareRefId4", "1234");
-				formValues.Add("refid5", "123");
-				formValues.Add("compareRefId5", "1234");
-				formValues.Add("refid6", "123");
-				formValues.Add("compareRefId6", "1234");
-				formValues.Add("refid7", "1234");
-				formValues.Add("compareRefId7", "1234");
-				formValues.Add("refid8", "1234");
-				formValues.Add("compareRefId8", "2345");
-				formValues.Add("refid9", "1234");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "1234"},
+				                 		{"compareRefId1", "1234"},
+				                 		{"refid2", "2345"},
+				                 		{"compareRefId2", "1234"},
+				                 		{"refid3", "2345"},
+				                 		{"compareRefId3", "1234"},
+				                 		{"refid4", "1234"},
+				                 		{"compareRefId4", "1234"},
+				                 		{"refid5", "123"},
+				                 		{"compareRefId5", "1234"},
+				                 		{"refid6", "123"},
+				                 		{"compareRefId6", "1234"},
+				                 		{"refid7", "1234"},
+				                 		{"compareRefId7", "1234"},
+				                 		{"refid8", "1234"},
+				                 		{"compareRefId8", "2345"},
+				                 		{"refid9", "1234"}
+				                 	};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -853,26 +833,28 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator8 = new CompareValidator("myid", "refid8", "compareRefId8", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.NotEqual, "error!");
 				var validator9 = new CompareValidator("myid", "refid9", "compareRefId9", System.Web.UI.WebControls.ValidationDataType.String, System.Web.UI.WebControls.ValidationCompareOperator.DataTypeCheck, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "c");
-				formValues.Add("compareRefId1", "c");
-				formValues.Add("refid2", "d");
-				formValues.Add("compareRefId2", "c");
-				formValues.Add("refid3", "d");
-				formValues.Add("compareRefId3", "c");
-				formValues.Add("refid4", "c");
-				formValues.Add("compareRefId4", "c");
-				formValues.Add("refid5", "b");
-				formValues.Add("compareRefId5", "c");
-				formValues.Add("refid6", "b");
-				formValues.Add("compareRefId6", "c");
-				formValues.Add("refid7", "c");
-				formValues.Add("compareRefId7", "c");
-				formValues.Add("refid8", "b");
-				formValues.Add("compareRefId8", "c");
-				formValues.Add("refid9", "c");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "c"},
+				                 		{"compareRefId1", "c"},
+				                 		{"refid2", "d"},
+				                 		{"compareRefId2", "c"},
+				                 		{"refid3", "d"},
+				                 		{"compareRefId3", "c"},
+				                 		{"refid4", "c"},
+				                 		{"compareRefId4", "c"},
+				                 		{"refid5", "b"},
+				                 		{"compareRefId5", "c"},
+				                 		{"refid6", "b"},
+				                 		{"compareRefId6", "c"},
+				                 		{"refid7", "c"},
+				                 		{"compareRefId7", "c"},
+				                 		{"refid8", "b"},
+				                 		{"compareRefId8", "c"},
+				                 		{"refid9", "c"}
+				                 	};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -904,13 +886,15 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
 				var validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "abcd");
-				formValues.Add("compareRefId1", "1234.12");
-				formValues.Add("refid1", "1234.12");
-				formValues.Add("compareRefId1", "abcd");
+				var formValues = new NameValueCollection
+				                 	{
+				                 		{"refid1", "abcd"},
+				                 		{"compareRefId1", "1234.12"},
+				                 		{"refid1", "1234.12"},
+				                 		{"compareRefId1", "abcd"}
+				                 	};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -930,11 +914,9 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator1 = new CompareValidator("myid", "refid1", "compareRefId1", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
 				var validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("compareRefId1", "1234.12");
-				formValues.Add("refid2", "1234.12");
+				var formValues = new NameValueCollection {{"compareRefId1", "1234.12"}, {"refid2", "1234.12"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -957,7 +939,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator2 = new CompareValidator("myid", "refid2", "compareRefId2", System.Web.UI.WebControls.ValidationDataType.Double, System.Web.UI.WebControls.ValidationCompareOperator.Equal, "error!");
 
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
+				HttpRequestBase request;
 
 				using (mocks.Record())
 				{
@@ -1010,10 +992,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RangeValidator("myId", "myReference", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "Error!", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -1028,10 +1007,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_validation_group_and_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new RangeValidator("myId", "myReference", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "Error!", "test", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -1064,37 +1040,37 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_validation_type_is_date()
 			{
-				var validator = new RangeValidator("myId", "myReference", "1/1/2008", "3/1/2008", System.Web.UI.WebControls.ValidationDataType.Date, "Error!");
+				new RangeValidator("myId", "myReference", "1/1/2008", "3/1/2008", System.Web.UI.WebControls.ValidationDataType.Date, "Error!");
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_validation_type_is_currency()
 			{
-				var validator = new RangeValidator("myId", "myReference", "$1.00", "$3.00", System.Web.UI.WebControls.ValidationDataType.Currency, "Error!");
+				new RangeValidator("myId", "myReference", "$1.00", "$3.00", System.Web.UI.WebControls.ValidationDataType.Currency, "Error!");
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_minimum_value_is_not_valid_type()
 			{
-				var validator = new RangeValidator("myId", "myReference", "abcd", "1234", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
+				new RangeValidator("myId", "myReference", "abcd", "1234", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_maximum_value_is_not_valid_type()
 			{
-				var validator = new RangeValidator("myId", "myReference", "1234", "abcd", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
+				new RangeValidator("myId", "myReference", "1234", "abcd", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_minimum_value_is_not_specified()
 			{
-				var validator = new RangeValidator("myId", "myReference", "", "1234", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
+				new RangeValidator("myId", "myReference", "", "1234", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
 			}
 
 			[Test, ExpectedException(typeof(ArgumentException))]
 			public void When_maximum_value_is_not_specified()
 			{
-				var validator = new RangeValidator("myId", "myReference", "1234", "", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
+				new RangeValidator("myId", "myReference", "1234", "", System.Web.UI.WebControls.ValidationDataType.Double, "Error!");
 			}
 
 			[Test]
@@ -1102,9 +1078,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RangeValidator("myid", "refid", "a", "c", System.Web.UI.WebControls.ValidationDataType.String, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "b");
+				HttpRequestBase request;
+				var formValues = new NameValueCollection {{"refid", "b"}};
 
 				using (mocks.Record())
 				{
@@ -1124,10 +1099,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RangeValidator("myid", "refid", "1234.12", "2345.12", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "2000.00");
+				var formValues = new NameValueCollection {{"refid", "2000.00"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -1146,10 +1120,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RangeValidator("myid", "refid", "1", "10", System.Web.UI.WebControls.ValidationDataType.Integer, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid", "5");
+				var formValues = new NameValueCollection {{"refid", "5"}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -1168,9 +1141,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "abcd");
+				HttpRequestBase request;
+				var formValues = new NameValueCollection {{"refid1", "abcd"}};
 
 				using (mocks.Record())
 				{
@@ -1190,10 +1162,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
-				var formValues = new NameValueCollection();
-				formValues.Add("refid1", "");
+				var formValues = new NameValueCollection {{"refid1", ""}};
 
+				HttpRequestBase request;
 				using (mocks.Record())
 				{
 					request = mocks.DynamicMock<HttpRequestBase>();
@@ -1213,7 +1184,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				var validator = new RangeValidator("myid", "refid1", "1", "10", System.Web.UI.WebControls.ValidationDataType.Double, "error!");
 
 				var mocks = new MockRepository();
-				HttpRequestBase request = null;
+				HttpRequestBase request;
 
 				using (mocks.Record())
 				{
@@ -1264,10 +1235,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new CustomValidator("myId", "myReference", "MyFunction", "Error!", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));
@@ -1281,10 +1249,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_creating_element_with_validation_group_and_dictionary_it_sticks()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var validator = new CustomValidator("myId", "myReference", "MyFunction", "Error!", "test", hash);
 				Assert.That(validator.Id, Is.EqualTo("myId"));
 				Assert.That(validator.ReferenceId, Is.EqualTo("myReference"));

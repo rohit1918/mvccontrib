@@ -60,8 +60,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_nested_property_from_typed_viewdata()
 			{
-				var p = new Person();
-				p.NestedPerson = new Person("Jeremy");
+				var p = new Person {NestedPerson = new Person("Jeremy")};
 
 				var viewContext = new ViewContext(
 						_viewContext.HttpContext,
@@ -96,10 +95,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_field_value_for_complex_object()
 			{
-				var p = new Person("Jeremy");
-				p.Country = "UK";
+				var person = new Person("Jeremy") {Country = "UK"};
 
-				AddToViewData("person", p);
+				AddToViewData("person", person);
 				object instance = _binder.ExtractValue("person.Country", _viewContext);
 				Assert.That(instance, Is.EqualTo("UK"));
 			}
@@ -117,9 +115,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_item_from_a_generic_IList_that_does_not_implement_IList()
 			{
-				var values = new CustomList<string>();
-				values.Add("Foo");
-				values.Add("Bar");
+				var values = new CustomList<string> {"Foo", "Bar"};
 
 				AddToViewData("values", values);
 
@@ -140,9 +136,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_property_from_collection_of_complex_objects()
 			{
-				var people = new List<Person>();
-				people.Add(new Person("Jeremy"));
-				people.Add(new Person("Josh"));
+				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
 
 				AddToViewData("people", people);
 
@@ -166,8 +160,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_nested_properties()
 			{
-				var person = new Person();
-				person.NestedPerson = new Person("Jeremy");
+				var person = new Person {NestedPerson = new Person("Jeremy")};
 				AddToViewData("person", person);
 
 				object instance = _binder.ExtractValue("person.NestedPerson.Name", _viewContext);
@@ -177,9 +170,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "The specified index '-1' is outside the bounds of the array. Property people")]
 			public void It_should_throw_if_index_smaller_than_zero()
 			{
-				var people = new List<Person>();
-				people.Add(new Person("Jeremy"));
-				people.Add(new Person("Josh"));
+				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
 
 				AddToViewData("people", people);
 
@@ -190,9 +181,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Could not convert (param people[foo]) index to Int32. Value is foo")]
 			public void It_should_throw_if_index_is_not_integer()
 			{
-				var people = new List<Person>();
-				people.Add(new Person("Jeremy"));
-				people.Add(new Person("Josh"));
+				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
 
 				AddToViewData("people", people);
 
@@ -203,8 +192,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'NonReadable' cannot be read")]
 			public void It_should_throw_if_property_is_not_readable()
 			{
-				var p = new Person();
-				p.NonReadable = "Foo";
+				var p = new Person {NonReadable = "Foo"};
 
 				AddToViewData("person", p);
 
@@ -215,9 +203,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'Item' has indexes, which are not supported. InstanceType.FullName = 'System.Collections.Generic.List`1[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]'.")]
 			public void It_should_throw_for_indexer_properties()
 			{
-				var values = new List<string>();
-				values.Add("Foo");
-				values.Add("Bar");
+				var values = new List<string> {"Foo", "Bar"};
 
 				AddToViewData("values", values);
 

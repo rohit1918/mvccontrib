@@ -26,8 +26,7 @@ namespace MvcContrib.ObjectBuilder.Configuration
 
         public ContainerXmlConfig(bool enableReflection)
         {
-            config = new ContainerXmlConfigElement();
-            config.EnableReflection = enableReflection;
+            config = new ContainerXmlConfigElement {EnableReflection = enableReflection};
         }
 
         public ContainerXmlConfig(string xml)
@@ -96,9 +95,8 @@ namespace MvcContrib.ObjectBuilder.Configuration
                 XmlSchema.Read(
                     Assembly.GetExecutingAssembly().GetManifestResourceStream(
                         "MvcContrib.ObjectBuilder.Configuration.ContainerXmlConfigElement.xsd"), null);
-            var settings = new XmlReaderSettings();
-            settings.ValidationType = ValidationType.Schema;
-            settings.Schemas.Add(schema);
+            var settings = new XmlReaderSettings {ValidationType = ValidationType.Schema};
+        	settings.Schemas.Add(schema);
             XmlReader reader = XmlReader.Create(stringReader, settings);
             var configData = (ContainerXmlConfigElement)ser.Deserialize(reader);
             return configData;

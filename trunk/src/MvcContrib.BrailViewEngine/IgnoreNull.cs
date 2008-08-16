@@ -74,9 +74,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static object[] GetParameterArray(object[] parameters, object obj)
 		{
-			var args = new List<object>(parameters);
-			args.Add(obj);
-			return args.ToArray();
+			return new List<object>(parameters) {obj}.ToArray();
 		}
 
 		public override string ToString()

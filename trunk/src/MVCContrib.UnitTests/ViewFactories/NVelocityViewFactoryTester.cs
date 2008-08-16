@@ -50,8 +50,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void WillAcceptNullProperties()
 		{
-			var factory = new NVelocityViewFactory();
-			factory = new NVelocityViewFactory(null);
+			new NVelocityViewFactory();
+			new NVelocityViewFactory(null);
 		}
 
 		[Test]

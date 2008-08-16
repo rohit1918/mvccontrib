@@ -25,16 +25,14 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void An_Attribute_Sticks_In_The_Collection()
 			{
-				var attribs = new HtmlAttributes();
-				attribs.Add("AnAttribute", "AValue");
+				var attribs = new HtmlAttributes {{"AnAttribute", "AValue"}};
 				Assert.That(attribs["AnAttribute"], Is.EqualTo("AValue"));
 			}
 
 			[Test]
 			public void An_Attribute_Sticks_When_Added_By_KeyValuePair()
 			{
-				var attribs = new HtmlAttributes();
-				attribs.Add(new KeyValuePair<string,string>("AnAttribute","AValue"));
+				var attribs = new HtmlAttributes {new KeyValuePair<string, string>("AnAttribute", "AValue")};
 				Assert.That(attribs["AnAttribute"], Is.EqualTo("AValue"));
 			}
 
@@ -95,8 +93,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void I_Can_Add_A_Dictionary_At_Init()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
+				var hash = new Hash {{"Key1", "Val1"}};
 				var attribs = new HtmlAttributes(hash);
 				Assert.That(attribs["Key1"], Is.EqualTo("Val1"));
 			}
@@ -104,10 +101,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Explisit_Interfaces_Work()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var attribs = new HtmlAttributes(hash);
 				var iattribs = (IDictionary)attribs;
 				Assert.That(iattribs.Count, Is.EqualTo(attribs.Count));
@@ -133,10 +127,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void These_Method_Are_Not_Implemented()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var attribs = new HtmlAttributes(hash);
 				var iattribs = (ICollection)attribs;
 				int exceptionCount = 0;
@@ -186,10 +177,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Contains_And_ContainsKeys_Work()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var attribs = new HtmlAttributes(hash);
 				Assert.IsTrue(attribs.Contains("Key1"));
 				Assert.IsFalse(attribs.Contains("Key99"));
@@ -200,10 +188,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void TryGetValue_Does_Not_Fail()
 			{
-				var hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
 				var attribs = new HtmlAttributes(hash);
 				string val;
 				attribs.TryGetValue("Key1", out val);
@@ -215,8 +200,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void Should_be_case_insensitive()
 			{
-				var attributes = new HtmlAttributes();
-				attributes.Add("Key", "value");
+				var attributes = new HtmlAttributes {{"Key", "value"}};
 				Assert.That(attributes["key"], Is.EqualTo("value"));
 			}
 		}

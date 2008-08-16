@@ -40,7 +40,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 				var myFoo = new Foo();
 				container.RegisterTypeMapping<IBar, Bar>();
 				container.RegisterSingleton<Bar>();
-				container.RegisterInstance<IFoo>(container.Inject(myFoo) as IFoo);
+				container.RegisterInstance(container.Inject(myFoo) as IFoo);
 
 				var classA = container.Get<IFoo>();
 				var classB = container.Get<IBar>();

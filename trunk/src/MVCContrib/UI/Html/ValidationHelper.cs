@@ -215,16 +215,15 @@ namespace MvcContrib.UI.Html
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue)
 		{
-			var validator = new RequiredValidator(name, referenceName, text, validationGroup);
-			validator.InitialValue = initialValue;
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup) {InitialValue = initialValue};
 			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue, IDictionary attributes)
 		{
-			var validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes);
-			validator.InitialValue = initialValue;
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes)
+			                	{InitialValue = initialValue};
 			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
@@ -236,8 +235,7 @@ namespace MvcContrib.UI.Html
 				throw new InvalidOperationException("You must register the validation scripts before setting up form validation.");
 			}
 
-			var values = new Dictionary<string, object>();
-			values.Add("onsubmit", "javascript:return WebForm_OnSubmit();");
+			var values = new Dictionary<string, object> {{"onsubmit", "javascript:return WebForm_OnSubmit();"}};
 
 			return values;
 		}
@@ -254,8 +252,8 @@ namespace MvcContrib.UI.Html
 				return FormValidation();
 			}
 
-			var values = new Dictionary<string, object>();
-			values.Add("onsubmit", "javascript:return WebForm_OnSubmitGroup('" + validationGroup + "');");
+			var values = new Dictionary<string, object>
+			             	{{"onsubmit", "javascript:return WebForm_OnSubmitGroup('" + validationGroup + "');"}};
 
 			return values;
 		}

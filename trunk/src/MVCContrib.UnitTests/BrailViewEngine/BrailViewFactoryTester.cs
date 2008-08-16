@@ -29,9 +29,11 @@ using Rhino.Mocks;
 			_mocks.Replay(controller);
 			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
-			var viewEngine = new BooViewEngine();
-			viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			viewEngine.Options = new BooViewEngineOptions();
+			var viewEngine = new BooViewEngine
+			                 	{
+			                 		ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY),
+			                 		Options = new BooViewEngineOptions()
+			                 	};
 			viewEngine.Initialize();
 
 			_viewFactory = new BrailViewFactory(viewEngine);

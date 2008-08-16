@@ -26,8 +26,7 @@ namespace MvcContrib.Attributes
 			switch(RequestStore)
 			{
 				case RequestStore.Params:
-					store = new NameValueCollection(context.HttpContext.Request.Form);
-					store.Add(context.HttpContext.Request.QueryString);
+					store = new NameValueCollection(context.HttpContext.Request.Form) {context.HttpContext.Request.QueryString};
 					break;
 				case RequestStore.Form:
 					store = context.HttpContext.Request.Form;
