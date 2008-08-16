@@ -37,9 +37,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			var viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary());
 
 			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
-			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper);
-
-			_htmlHelperDuck.Introspector = new Introspector(new Logger());
+			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper) {Introspector = new Introspector(new Logger())};
 		}
 
 		[Test]

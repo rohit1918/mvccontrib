@@ -39,8 +39,10 @@ namespace MvcContrib.BrailViewEngine
 			var codeBlock = new Block();
 
 			// MvcContrib.BrailViewEngine.DslProvider(BrailBase)
-			var newDslWrapper = new MethodInvocationExpression();
-			newDslWrapper.Target = AstUtil.CreateReferenceExpression("MvcContrib.BrailViewEngine.DslProvider");
+			var newDslWrapper = new MethodInvocationExpression
+			                    	{
+			                    		Target = AstUtil.CreateReferenceExpression("MvcContrib.BrailViewEngine.DslProvider")
+			                    	};
 			newDslWrapper.Arguments.Add(new SelfLiteralExpression());
 
 			// dsl = MvcContrib.BrailViewEngine.DslPRovider(BrailBase)
@@ -51,12 +53,16 @@ namespace MvcContrib.BrailViewEngine
 			{
 				string language = LookupLanguageExtension(macro.Arguments[0].ToString());
 				// LanguageExtension(OutputStream)
-				var newLanguage = new MethodInvocationExpression();
-				newLanguage.Target = AstUtil.CreateReferenceExpression(language);
+				var newLanguage = new MethodInvocationExpression
+				                  	{
+				                  		Target = AstUtil.CreateReferenceExpression(language)
+				                  	};
 				newLanguage.Arguments.Add(AstUtil.CreateReferenceExpression("OutputStream"));
 
-				var registerLanguage = new MethodInvocationExpression();
-				registerLanguage.Target = AstUtil.CreateReferenceExpression("dsl.Register");
+				var registerLanguage = new MethodInvocationExpression
+				                       	{
+				                       		Target = AstUtil.CreateReferenceExpression("dsl.Register")
+				                       	};
 				registerLanguage.Arguments.Add(newLanguage);
 
 				// dsl.Register(LanguageExtension(OutputStream))
@@ -65,7 +71,7 @@ namespace MvcContrib.BrailViewEngine
 
 			// rewrite the remaining code to invoke methods on
 			// the dsl reference
-			Block macroBlock = macro.Block;
+			var macroBlock = macro.Block;
 			(new NameExpander(dslReference)).Visit(macroBlock);
 			codeBlock.Add(macroBlock);
 			// dsl.Flush();
@@ -184,9 +190,7 @@ namespace MvcContrib.BrailViewEngine
 					return;
 				}
 
-				var mre = new MemberReferenceExpression(node.LexicalInfo);
-				mre.Name = node.Name;
-				mre.Target = _reference.CloneNode();
+				var mre = new MemberReferenceExpression(node.LexicalInfo) {Name = node.Name, Target = _reference.CloneNode()};
 
 				ReplaceCurrentNode(mre);
 			}

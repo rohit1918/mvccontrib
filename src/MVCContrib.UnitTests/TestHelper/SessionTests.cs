@@ -13,9 +13,9 @@ namespace MvcContrib.UnitTests.TestHelper
 		{
 			var builder = new TestControllerBuilder();
 			builder.Session["Variable"] = "Value";
-			var c = new TestHelperController();
-			builder.InitializeController(c);
-			Assert.AreEqual("Value", c.HttpContext.Session["Variable"]);
+			var testHelperController = new TestHelperController();
+			builder.InitializeController(testHelperController);
+			Assert.AreEqual("Value", testHelperController.HttpContext.Session["Variable"]);
 		}
 
 		[Test]
@@ -161,8 +161,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test, ExpectedException(typeof(NotImplementedException))]
 		public void TimeoutSet_IsNotImplemnted()
 		{
-			var builder = new TestControllerBuilder();
-			builder.Session.Timeout = 0;
+			new TestControllerBuilder {Session = {Timeout = 0}};
 		}
 
 		[Test, ExpectedException(typeof(NotImplementedException))]
@@ -210,8 +209,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test, ExpectedException(typeof(NotImplementedException))]
 		public void LCIDSet_IsNotImplemnted()
 		{
-			var builder = new TestControllerBuilder();
-			builder.Session.LCID = 0;
+			 new TestControllerBuilder {Session = {LCID = 0}};
 		}
 
 		[Test, ExpectedException(typeof(NotImplementedException))]
@@ -231,8 +229,7 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test, ExpectedException(typeof(NotImplementedException))]
 		public void CodePageSet_IsNotImplemnted()
 		{
-			var builder = new TestControllerBuilder();
-			builder.Session.CodePage = 0;
+			new TestControllerBuilder {Session = {CodePage = 0}};
 		}
 	}
 }

@@ -13,13 +13,14 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Create_Options()
 		{
-			var options = new BooViewEngineOptions();
-
-			options.Debug = true;
-			options.SaveToDisk = true;
-			options.BatchCompile = true;
-			options.CommonScriptsDirectory = "CommonScripts";
-			options.SaveDirectory = "SaveDirectory";
+			 new BooViewEngineOptions
+			              	{
+			              		Debug = true,
+			              		SaveToDisk = true,
+			              		BatchCompile = true,
+			              		CommonScriptsDirectory = "CommonScripts",
+			              		SaveDirectory = "SaveDirectory"
+			              	};
 		}
 
 		[Test]

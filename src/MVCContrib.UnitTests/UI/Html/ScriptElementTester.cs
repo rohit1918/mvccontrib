@@ -32,9 +32,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Src_Is_Set_Then_Src_Is_Got()
 			{
-                var el = new Script();
-				el.Src = "goose";
-				Assert.That(el.Src, Is.EqualTo("goose"));
+                var el = new Script {Src = "goose"};
+			    Assert.That(el.Src, Is.EqualTo("goose"));
 			}
 
 			[Test]
@@ -110,9 +109,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Getting_ToString_With_Script_Then_Script_Is_Wrapped_In_Xhtml_Compliant_Comments()
 			{
-                var el = new Script();
-				el.Code = "goose";
-				Assert.That(el.ToString(), Text.Contains("/*<![CDATA[*/\r\ngoose\r\n//]]>"));
+                var el = new Script {Code = "goose"};
+			    Assert.That(el.ToString(), Text.Contains("/*<![CDATA[*/\r\ngoose\r\n//]]>"));
 			}
 		}
 	}

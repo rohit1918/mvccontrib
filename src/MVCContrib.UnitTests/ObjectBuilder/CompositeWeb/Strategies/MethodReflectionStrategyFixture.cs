@@ -80,15 +80,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void CreateNewAttributeAlwaysCreatesNewObject()
 		{
-			MockBuilderContext context;
-
-			context = CreateContext();
+			var context1 = CreateContext();
 			var depending1 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+				(MockRequiresNewObject)context1.HeadOfChain.BuildUp(context1, typeof(MockRequiresNewObject), null, null);
 
-			context = CreateContext();
+			var context2 = CreateContext();
 			var depending2 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+				(MockRequiresNewObject)context2.HeadOfChain.BuildUp(context2, typeof(MockRequiresNewObject), null, null);
 
 			Assert.IsNotNull(depending1);
 			Assert.IsNotNull(depending2);
@@ -100,21 +98,20 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void NamedAndUnnamedObjectsInLocatorDontGetUsedForCreateNew()
 		{
-			MockBuilderContext context;
 			var unnamed = new object();
 			var named = new object();
 
-			context = CreateContext();
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
+			var context1 = CreateContext();
+			context1.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
+			context1.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
 			var depending1 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+				(MockRequiresNewObject)context1.HeadOfChain.BuildUp(context1, typeof(MockRequiresNewObject), null, null);
 
-			context = CreateContext();
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
+			var context2 = CreateContext();
+			context2.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
+			context2.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
 			var depending2 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+				(MockRequiresNewObject)context2.HeadOfChain.BuildUp(context2, typeof(MockRequiresNewObject), null, null);
 
 			Assert.IsFalse(depending1.Foo == unnamed);
 			Assert.IsFalse(depending1.Foo == unnamed);
@@ -143,15 +140,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void InjectionCreatingNewUnnamedObjectWillOnlyCreateOnce()
 		{
 			// Mode 2, both flavors
-			MockBuilderContext context;
-
-			context = CreateContext();
+			var context1 = CreateContext();
 			var depending1 =
-				(MockDependingObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingObject), null, null);
+				(MockDependingObject)context1.HeadOfChain.BuildUp(context1, typeof(MockDependingObject), null, null);
 
-			context = CreateContext(context.Locator);
+			var context2 = CreateContext(context1.Locator);
 			var depending2 =
-				(MockDependingObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingObject), null, null);
+				(MockDependingObject)context2.HeadOfChain.BuildUp(context2, typeof(MockDependingObject), null, null);
 
 			Assert.AreSame(depending1.InjectedObject, depending2.InjectedObject);
 		}
@@ -203,15 +198,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void InjectionCreatingNewNamedObjectWillOnlyCreateOnce()
 		{
 			// Mode 3, both flavors
-			MockBuilderContext context;
-
-			context = CreateContext();
+			var context1 = CreateContext();
 			var depending1 =
-				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
+				(MockDependingNamedObject)context1.HeadOfChain.BuildUp(context1, typeof(MockDependingNamedObject), null, null);
 
-			context = CreateContext(context.Locator);
+			var context2 = CreateContext(context1.Locator);
 			var depending2 =
-				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
+				(MockDependingNamedObject)context2.HeadOfChain.BuildUp(context2, typeof(MockDependingNamedObject), null, null);
 
 			Assert.AreSame(depending1.InjectedObject, depending2.InjectedObject);
 		}
@@ -380,9 +373,8 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			object parentValue = 25;
 			object childValue = 15;
 			parent.Add(new DependencyResolutionLocatorKey(typeof(int), null), parentValue);
-			var child = new Locator(parent);
-			child.Add(new DependencyResolutionLocatorKey(typeof(int), null), childValue);
-			MockBuilderContext context = CreateContext(child);
+			var child = new Locator(parent) {{new DependencyResolutionLocatorKey(typeof(int), null), childValue}};
+		    MockBuilderContext context = CreateContext(child);
 
 			var obj =
 				(SearchLocalMockObject)context.HeadOfChain.BuildUp(context, typeof(SearchLocalMockObject), null, null);

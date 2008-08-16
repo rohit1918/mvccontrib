@@ -39,9 +39,7 @@ namespace MvcContrib.MetaData
 
 		public IList<ActionMetaData> GetActions(string name)
 		{
-			return
-				_actions.FindAll(
-					delegate(ActionMetaData action) { return action.Name.Equals(name, StringComparison.OrdinalIgnoreCase); });
+			return _actions.FindAll(action => action.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
 		}
 	}
 }

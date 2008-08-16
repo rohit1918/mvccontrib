@@ -76,7 +76,7 @@ namespace MvcContrib.XsltViewEngine
 		/// <returns></returns>
 		public XmlElement CreateNewNode(string sNode, string sText, params string[] sAttributes)
 		{
-			XmlElement xmlelem = null;
+			XmlElement xmlelem;
 
 			try
 			{

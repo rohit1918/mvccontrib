@@ -38,9 +38,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void Can_Get_With_Parameters()
 		{
-			var duck = new Duck();
-			duck.Name = "Donald";
-			var ignore = new IgnoreNull(duck);
+			var duck = new Duck {Name = "Donald"};
+		    var ignore = new IgnoreNull(duck);
 
 			Assert.AreEqual(duck.Name, ignore.QuackGet("Item", new object[1] {1}).ToString());
 		}

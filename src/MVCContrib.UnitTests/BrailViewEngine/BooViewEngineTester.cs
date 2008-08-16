@@ -42,9 +42,11 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), 
 				                null);
 
-			_viewEngine = new BooViewEngine();
-			_viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			_viewEngine.Options = new BooViewEngineOptions();
+			_viewEngine = new BooViewEngine
+			              	{
+			              		ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY),
+			              		Options = new BooViewEngineOptions()
+			              	};
 			_viewEngine.Initialize();
 			_mocks.Replay(_httpContext);
 			

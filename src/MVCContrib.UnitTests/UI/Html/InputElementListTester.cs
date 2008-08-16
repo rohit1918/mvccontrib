@@ -17,11 +17,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var field1 = new CheckBoxField(new Hash(name => "foo", value => "bar"));
 				var field2 = new CheckBoxField(new Hash(name => "x", value => "y"));
-				string expected = field1.ToString() + field2.ToString();
+				string expected = string.Concat(field1, field2);
 
-				var list = new InputElementList<CheckBoxField>(Hash.Empty);
-				list.Add(field1);
-				list.Add(field2);
+				var list = new InputElementList<CheckBoxField>(Hash.Empty) {field1, field2};
 				string html = list.ToString();
 
 				Assert.That(html, Is.EqualTo(expected));
@@ -33,9 +31,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				var field1 = new CheckBoxField(new Hash(name => "foo", value => "bar"));
 				var field2 = new CheckBoxField(new Hash(name => "x", value => "y"));
 
-				var list = new InputElementList<CheckBoxField>(Hash.Empty);
-				list.Add(field1);
-				list.Add(field2);
+				var list = new InputElementList<CheckBoxField>(Hash.Empty) {field1, field2};
 
 				var boxes = new List<CheckBoxField>();
 				
@@ -56,10 +52,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void They_should_be_applied_to_all_checkboxes()
 			{
-				var list = new InputElementList<CheckBoxField>(new Hash(@class => "foo"));
-
-				list.Add(new CheckBoxField());
-				list.Add(new CheckBoxField());
+				var list = new InputElementList<CheckBoxField>(new Hash(@class => "foo")) {new CheckBoxField(), new CheckBoxField()};
 
 				foreach(var field in list)
 				{
@@ -70,8 +63,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void They_should_not_overwrite_existing_attributes()
 			{
-				var list = new InputElementList<CheckBoxField>(new Hash(@class => "foo"));
-				list.Add(new CheckBoxField(new Hash(@class => "bar")));
+				var list = new InputElementList<CheckBoxField>(new Hash(@class => "foo"))
+				           	{new CheckBoxField(new Hash(@class => "bar"))};
 				Assert.That(list.First().Class, Is.EqualTo("bar"));
 			}
 		}
@@ -82,9 +75,11 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_the_format_should_be_applied_to_each_checkbox()
 			{
-				var list = new InputElementList<CheckBoxField>(Hash.Empty);
-				list.Add(new CheckBoxField(new Hash(name => "Test1")));
-				list.Add(new CheckBoxField(new Hash(name => "Test2")));
+				var list = new InputElementList<CheckBoxField>(Hash.Empty)
+				           	{
+				           		new CheckBoxField(new Hash(name => "Test1")),
+				           		new CheckBoxField(new Hash(name => "Test2"))
+				           	};
 
 				string expected = "<input name=\"Test1\" type=\"checkbox\"/><br /><input name=\"Test2\" type=\"checkbox\"/><br />";
 				string output = list.ToFormattedString("{0}<br />");

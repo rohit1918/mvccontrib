@@ -119,7 +119,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder
 			if(typeof(TItem).IsValueType == false && item == null)
 				throw new ArgumentNullException("item");
 
-			return DoTearDown<TItem>(locator, item);
+			return DoTearDown(locator, item);
 		}
 
 		private TItem DoTearDown<TItem>(IReadWriteLocator locator, TItem item)

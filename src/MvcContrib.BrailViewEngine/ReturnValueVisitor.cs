@@ -33,8 +33,10 @@ namespace MvcContrib.BrailViewEngine
 		public ReturnValueVisitor()
 		{
 			normalizer = new NormalizeStatementModifiers();
-			mie = new MethodInvocationExpression();
-			mie.Target = AstUtil.CreateReferenceExpression("transform");
+			mie = new MethodInvocationExpression
+			      	{
+			      		Target = AstUtil.CreateReferenceExpression("transform")
+			      	};
 		}
 
 		public bool Found

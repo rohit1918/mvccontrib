@@ -306,9 +306,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				
 				if(!string.IsNullOrEmpty(formMethod))
 				{
-					var form = new NameValueCollection();
-					form.Add("_method", formMethod);
-					SetupResult.For(httpRequest.Form).Return(form);
+					var form = new NameValueCollection {{"_method", formMethod}};
+				    SetupResult.For(httpRequest.Form).Return(form);
 				}
 			}
 		}

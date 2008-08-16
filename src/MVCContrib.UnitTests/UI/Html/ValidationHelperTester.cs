@@ -21,8 +21,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			protected override void Setup()
 			{
 				base.Setup();
-				_helper = new ValidationHelper();
-				_helper.ViewContext = _viewContext;
+				_helper = new ValidationHelper {ViewContext = _viewContext};
 			}
 
 		}

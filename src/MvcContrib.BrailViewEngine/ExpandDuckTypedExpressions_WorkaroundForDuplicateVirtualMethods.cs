@@ -270,7 +270,7 @@ namespace MvcContrib.BrailViewEngine
 				MethodInfo method = sliceKind == SetOrGet.Get ? GetGetMethod(property) : GetSetMethod(property);
 				candidates[i] = method;
 			}
-			object state = null;
+			object state;
 			return
 				Type.DefaultBinder.BindToMethod(DefaultBindingFlags | BindingFlags.OptionalParamBinding, candidates, ref args, null,
 				                                null, null, out state);

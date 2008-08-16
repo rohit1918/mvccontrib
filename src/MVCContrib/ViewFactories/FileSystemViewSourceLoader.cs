@@ -102,13 +102,15 @@ namespace MvcContrib.ViewFactories
 		{
 			if (Directory.Exists(ViewRootDirectory))
 			{
-				_viewRootDirectoryWatcher = new FileSystemWatcher(ViewRootDirectory);
-				_viewRootDirectoryWatcher.IncludeSubdirectories = true;
+				_viewRootDirectoryWatcher = new FileSystemWatcher(ViewRootDirectory)
+				                            	{
+				                            		IncludeSubdirectories = true,
+				                            		EnableRaisingEvents = true
+				                            	};
 				_viewRootDirectoryWatcher.Changed += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Created += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Deleted += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Renamed += OnViewRootDirectoryChanged;
-				_viewRootDirectoryWatcher.EnableRaisingEvents = true;
 			}
 		}
 

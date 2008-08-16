@@ -67,10 +67,10 @@ namespace MvcContrib.UnitTests
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 Expect.Call(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-                Expect.Call(delegate() { _responseMock.Flush(); }).Repeat.Twice();
+                Expect.Call(() => _responseMock.Flush()).Repeat.Twice();
 
-                Expect.Call(delegate() { _viewEngineMock.RenderView(_viewContext); }).Do(
-                    new RenderViewDelegate(delegate(ViewContext context) { WriteToStream(_responseMock.Filter, messageBody); }));
+                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
+                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
             }
 
             MailMessage message;
@@ -94,8 +94,8 @@ namespace MvcContrib.UnitTests
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
 
-                Expect.Call(delegate() { _viewEngineMock.RenderView(_viewContext); }).Do(
-                    new RenderViewDelegate(delegate(ViewContext context) { WriteToStream(_responseMock.Filter, messageBody); }));
+                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
+                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
             }
 
             MailMessage message;
@@ -139,7 +139,7 @@ namespace MvcContrib.UnitTests
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-                Expect.Call(delegate() { _viewEngineMock.RenderView(_viewContext); }).Throw(new Exception());
+                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Throw(new Exception());
             }
 
             _responseMock.Filter = streamStub;
@@ -163,15 +163,15 @@ namespace MvcContrib.UnitTests
 
         private MailMessage CanProcessMessageHeaders(string header, string value)
         {
-            string messageBody = String.Format("{0}: {1}" + Environment.NewLine + "test message body...", header, value);
+			string messageBody = String.Format("{0}: {1}{2}test message body...", header, value, Environment.NewLine);
 
             using (_mocks.Record())
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
 
-                Expect.Call(delegate() { _viewEngineMock.RenderView(_viewContext); }).Do(
-                    new RenderViewDelegate(delegate(ViewContext context) { WriteToStream(_responseMock.Filter, messageBody); }));
+                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
+                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
             }
 
             MailMessage message;

@@ -65,8 +65,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			XmlDocument expected = LoadXmlDocument("ResponseBuilderMessageWithPageVars.xml");
 
 			var responseBuilder = new XmlResponseBuilder(HttpContext);
-			var pageVars = new Dictionary<string, string>();
-			pageVars.Add("myPageVar", "pageVar");
+			var pageVars = new Dictionary<string, string> {{"myPageVar", "pageVar"}};
 			responseBuilder.InitMessageStructure();
 			responseBuilder.AppendPage("MyPage", "http://mysite.com/mycontroller/mypage", pageVars);
 
