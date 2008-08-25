@@ -41,8 +41,15 @@ namespace MvcContrib
 
 		public bool ToBoolean(IFormatProvider provider)
 		{
+			string value = _value;
+
+			if(value != null && value.Contains(","))
+			{
+				value = value.Remove(value.IndexOf(','));
+			}
+
 			bool oValue;
-			if(bool.TryParse(_value, out oValue))
+			if(bool.TryParse(value, out oValue))
 			{
 				return oValue;
 			}

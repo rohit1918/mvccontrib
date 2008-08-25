@@ -87,11 +87,6 @@ namespace MvcContrib
 						string sValue = collection.Get(name);
 						if(sValue != null)
 						{
-							//An individual checkbox that is true is serialized as "true,false"
-							if(property.PropertyType == typeof(bool) && sValue.Contains(","))
-							{
-								sValue = sValue.Remove(sValue.IndexOf(','));
-							}
 							SetValue(instance, property, GetConvertible(sValue));
 						}
 					}

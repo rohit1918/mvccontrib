@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace MvcContrib.UnitTests
 {
@@ -17,6 +18,13 @@ namespace MvcContrib.UnitTests
 
 			object oValue = convertible.ToType(typeof(bool), CultureInfo.InvariantCulture);
 			Assert.AreEqual(true, oValue);
+		}
+
+		[Test]
+		public void CanConvertBoolWithComma() {
+			var convertible = new DefaultConvertible("true,false");
+			Assert.That(convertible.ToType(typeof(bool), CultureInfo.CurrentCulture), Is.EqualTo(true));
+			Assert.That(convertible.ToBoolean(CultureInfo.CurrentCulture), Is.True);
 		}
 
 		[Test]
