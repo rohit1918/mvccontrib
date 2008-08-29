@@ -22,12 +22,6 @@ namespace MvcContrib.MetaData
 			get { return _methodInfo; }
 		}
 
-		private readonly List<ActionParameterMetaData> _parameters = new List<ActionParameterMetaData>();
-		public IList<ActionParameterMetaData> Parameters
-		{
-			get { return _parameters; }
-		}
-
 		public FilterInfo Filters { get; set; }
 	}
 }

@@ -45,14 +45,6 @@ namespace MvcContrib.MetaData
 				
 				actionMetaData.Filters = CreateFilterInfo(controllerFilters, GetFilters(actionMethod), actionMetaData);
 
-				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
-				foreach (var actionMethodParameter in actionMethodParameters)
-				{
-					ActionParameterMetaData parameterMetaData = CreateParameterMetaData(metaData, actionMetaData, actionMethodParameter);
-					parameterMetaData.ParameterBinder = GetParameterBinder(parameterMetaData);
-					actionMetaData.Parameters.Add(parameterMetaData);
-				}
-
 				if (IsDefaultAction(actionMetaData))
 				{
 					if(metaData.DefaultAction == null)
@@ -105,30 +97,9 @@ namespace MvcContrib.MetaData
 			return new ActionMetaData(actionMethod);
 		}
 
-		protected virtual ActionParameterMetaData CreateParameterMetaData(ControllerMetaData controllerMetaData, ActionMetaData actionMetaData, ParameterInfo parameter)
-		{
-			return new ActionParameterMetaData(parameter);
-		}
-
 		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
 		{
 			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
-		}
-
-		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
-		{
-			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);
-
-			if( attributes != null && attributes.Length > 0 )
-			{
-				return attributes[0] as IParameterBinder;
-			}
-			else if(parameterMetaData.IsValid)
-			{
-				return new SimpleParameterBinder();
-			}
-
-			return null;
 		}
 
 		protected virtual FilterInfo CreateFilterInfo(FilterAttribute[] controllerFilters, FilterAttribute[] actionFilters, ActionMetaData actionMetaData) 
