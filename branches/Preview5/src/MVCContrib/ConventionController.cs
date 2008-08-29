@@ -11,17 +11,6 @@ namespace MvcContrib
 	/// </summary>
 	public class ConventionController : Controller
 	{
-		protected override void Execute(ControllerContext controllerContext)
-		{
-			ActionInvoker = CreateActionInvoker(controllerContext);
-			base.Execute(controllerContext);
-		}
-
-		protected virtual ControllerActionInvoker CreateActionInvoker(ControllerContext controllerContext)
-		{
-			return new ConventionControllerActionInvoker(controllerContext);
-		}
-
 		/// <summary>
 		/// Creates a <see cref="XmlResult"/> object for serializing the specified object as XML for writing to the HTTP Response's output stream.
 		/// </summary>
