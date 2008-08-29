@@ -22,7 +22,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context = new ControllerContext(
 				_mocks.DynamicHttpContextBase(), 
 				new RouteData(), 
-				_mocks.DynamicMock<IController>()
+				_mocks.DynamicMock<ControllerBase>()
 			);
 
 		}
@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void Should_convert_parameter_from_routedata()
 		{
 			_context.RouteData.Values.Add("foo", "1");
-			object value = _binder.Bind(typeof(int), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.EqualTo(1));
 		}
 
@@ -41,7 +41,7 @@ namespace MvcContrib.UnitTests.MetaData
 			SetupResult.For(_context.HttpContext.Request["foo"]).Return("1");
 			_mocks.ReplayAll();
 
-			object value = _binder.Bind(typeof(int), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.EqualTo(1));
 		}
 
@@ -52,21 +52,21 @@ namespace MvcContrib.UnitTests.MetaData
 			SetupResult.For(_context.HttpContext.Request["foo"]).Return("1");
 			_mocks.ReplayAll();
 
-			object value = _binder.Bind(typeof(int), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.EqualTo(2));
 		}
 
 		[Test]
 		public void When_no_parameter_can_be_found_then_the_default_value_should_be_returned_for_value_types()
 		{
-			object value = _binder.Bind(typeof(int), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.EqualTo(0));
 		}
 
 		[Test]
 		public void When_no_parameter_can_be_found_then_null_should_be_returned_for_reference_types()
 		{
-			object value = _binder.Bind(typeof(object), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(object), null);
 			Assert.That(value, Is.Null);
 		}
 
@@ -74,7 +74,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void When_conversion_fails_then_default_value_should_be_returned_for_value_types()
 		{
 			_context.RouteData.Values.Add("foo", "bar");
-			object value = _binder.Bind(typeof(int), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.EqualTo(0));
 		}
 
@@ -82,14 +82,14 @@ namespace MvcContrib.UnitTests.MetaData
 		public void When_conversion_fails_then_null_should_be_returned_for_reference_types()
 		{
 			_context.RouteData.Values.Add("foo", "bar");
-			object value = _binder.Bind(typeof(CastleSimpleBinderTester), "foo", _context);
+			object value = _binder.GetValue(_context, "foo", typeof(CastleSimpleBinderTester), null);
 			Assert.That(value, Is.Null);
 		}
 
 		[Test]
 		public void Should_be_able_to_look_up_simple_value_from_routedata() {
 			_context.RouteData.Values.Add("foo", 1);
-			var value = _binder.Bind(typeof(int), "foo", _context);
+			var value = _binder.GetValue(_context, "foo", typeof(int), null);
 			Assert.That(value, Is.TypeOf(typeof(int)));
 			Assert.That(value, Is.EqualTo(1));
 		}
@@ -97,7 +97,7 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void Should_be_able_to_look_up_complex_value_from_routedata() {
 			_context.RouteData.Values.Add("foo", new CastleBinderTestObject { Name = "Foo" });
-			var value = _binder.Bind(typeof(CastleBinderTestObject), "foo", _context) as CastleBinderTestObject;
+			var value = _binder.GetValue(_context, "foo", typeof(CastleBinderTestObject), null) as CastleBinderTestObject;
 			Assert.That(value, Is.Not.Null);
 			Assert.That(((CastleBinderTestObject)value).Name, Is.EqualTo("Foo"));
 		}

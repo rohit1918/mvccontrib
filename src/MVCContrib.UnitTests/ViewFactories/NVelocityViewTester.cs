@@ -40,7 +40,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			Expect.Call(httpResponse.Output).Repeat.Any().Return(_output);
 
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values.Add("controller", viewPath);
@@ -49,13 +49,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			var viewContext = new ViewContext(_controllerContext, "view", null, new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, "view", new ViewDataDictionary(), null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", null).View;
 
 			_mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("View Template", _output.ToString());
 		}
@@ -63,13 +63,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			var viewContext = new ViewContext(_controllerContext, "view", "master", new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, "view", new ViewDataDictionary(), null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", "master").View;
 
 			_mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("Master Template View Template", _output.ToString());
 		}
@@ -79,13 +79,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			var viewData = new ViewDataDictionary();
 			viewData["test"] = "test";
-			var viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
+			var viewContext = new ViewContext(_controllerContext,"view", viewData, null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", null).View;
 
 			_mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("View Template test", _output.ToString());
 		}

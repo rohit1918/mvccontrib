@@ -23,7 +23,6 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.IsNotNull(metaData);
 			Assert.AreEqual(typeof(MetaDataTestController), metaData.ControllerType);
 			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
-			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
 		}
 
 		[Test]
@@ -36,34 +35,6 @@ namespace MvcContrib.UnitTests.MetaData
 			Assert.IsNotNull(metaData);
 			Assert.AreEqual(typeof(MetaDataTestController), metaData.ControllerType);
 			Assert.AreEqual(2, metaData.GetActions("simpleaction").Count);
-			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
-		}
-
-		[Test]
-		public void OutAndRefParametersAreInvalid()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-
-			var controller = new MetaDataTestController();
-
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(controller);
-
-			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[0].IsValid);
-			Assert.IsFalse(metaData.GetActions("InvalidAction")[0].Parameters[1].IsValid);
-			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[0].ParameterBinder);
-			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[1].ParameterBinder);
-		}
-
-		[Test]
-		public void BinderShouldDefaultToSimpleParameterBinder()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-
-			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
-
-			Assert.IsInstanceOfType(typeof(SimpleParameterBinder), parameter.ParameterBinder);
 		}
 
 		[Test]
@@ -74,15 +45,6 @@ namespace MvcContrib.UnitTests.MetaData
 			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
 
 			Assert.IsNull(metaData.GetAction("ActionReturningValueWithOutBinder"));
-		}
-
-		[Test]
-		public void BindShouldReturnNullIfBinderIsNull()
-		{
-			IControllerDescriptor controllerDescriptor = new ControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-
-			Assert.IsNull(metaData.GetActions("InvalidAction")[0].Parameters[0].Bind(null));
 		}
 
 		[Test]
@@ -195,15 +157,6 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void CastleControllerDescriptor_should_use_CastleSimpleBinder_instead_of_SimpleBinder()
-		{
-			var controllerDescriptor = new CastleControllerDescriptor();
-			ControllerMetaData metaData = controllerDescriptor.GetMetaData(typeof(MetaDataTestController));
-			ActionParameterMetaData parameter = metaData.GetActions("SimpleAction")[0].Parameters[0];
-			Assert.IsInstanceOfType(typeof(CastleSimpleBinder), parameter.ParameterBinder);
-		}
-
-		[Test]
 		public void Methods_that_return_objects_should_be_recognised_as_actions()
 		{
 			var descriptor = new ControllerDescriptor();
@@ -258,7 +211,7 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 	}
 
-	[Rescue("Test"), PostOnly]
+	[/*Rescue("Test"),*/ PostOnly]
 	internal class MetaDataTestController : Controller
 	{
 		public void VoidAction()
@@ -301,7 +254,7 @@ namespace MvcContrib.UnitTests.MetaData
 			return new EmptyResult();
 		}
 
-		[Rescue("Test")]
+//		[Rescue("Test")]
 		public ActionResult ComplexAction([Deserialize("complex")] object complex)
 		{
 			return new EmptyResult();

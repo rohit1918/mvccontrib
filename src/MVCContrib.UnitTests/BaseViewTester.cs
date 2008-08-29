@@ -31,12 +31,12 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(httpResponse.ContentEncoding).Return(Encoding.UTF8);
 			SetupResult.For(httpContext.Items).Return(new Hashtable());
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = mocks.DynamicMock<IController>();
+			var controller = mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
 
 			mocks.ReplayAll();
 
-			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary());
+			_viewContext = new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
 		}
 	}
 }

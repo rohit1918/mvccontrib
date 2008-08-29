@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.MetaData
 			routeData.Values.Add("key", "value");
 
 			var requestContext = new RequestContext(context, routeData);
-			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
+			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<ControllerBase>());
 
 			_mocks.ReplayAll();
 		}
@@ -39,7 +39,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void CanDeserializeFromRequest()
 		{
 			var attr = new SimpleParameterBinder();
-			var value = attr.Bind(typeof(string), "test", _controllerContext) as string;
+			var value = attr.GetValue(_controllerContext, "test", typeof(string), null) as string;
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual("testValue", value);
@@ -49,7 +49,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void CanDeserializeFromRouteData()
 		{
 			var attr = new SimpleParameterBinder();
-			var value = attr.Bind(typeof(string), "key", _controllerContext) as string;
+			var value = attr.GetValue(_controllerContext, "key", typeof(string), null) as string;
 
 			Assert.IsNotNull(value);
 			Assert.AreEqual("value", value);
@@ -61,7 +61,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_controllerContext.RouteData.Values.Add("keyWithNullValue", null);
 
 			var attr = new SimpleParameterBinder();
-			var value = attr.Bind(typeof(string), "keyWithNullValue", _controllerContext) as string;
+			var value = attr.GetValue(_controllerContext, "keyWithNullValue", typeof(string), null) as string;
 
 			Assert.IsNull(value);
 		}
@@ -71,7 +71,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_controllerContext.RouteData.Values.Add("foo", 1);
 			var attr = new SimpleParameterBinder();
-			var value = attr.Bind(typeof(int), "foo", _controllerContext);
+			var value = attr.GetValue(_controllerContext, "foo", typeof(int), null );
 			Assert.That(value, Is.TypeOf(typeof(int)));
 			Assert.That(value, Is.EqualTo(1));
 		}
@@ -81,7 +81,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			_controllerContext.RouteData.Values.Add("foo", new SimpleParameterBinderTestObject { Name = "Foo" });
 			var attr = new SimpleParameterBinder();
-			var value = attr.Bind(typeof(SimpleParameterBinderTestObject), "foo", _controllerContext) as SimpleParameterBinderTestObject;
+			var value = attr.GetValue(_controllerContext, "foo", typeof(SimpleParameterBinderTestObject), null) as SimpleParameterBinderTestObject;
 			Assert.That(value, Is.Not.Null);
 			Assert.That(((SimpleParameterBinderTestObject)value).Name, Is.EqualTo("Foo"));
 		}

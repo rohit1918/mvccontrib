@@ -23,7 +23,7 @@ namespace MvcContrib.UnitTests.MetaData
 			context.Request.Form["ids[1]"] = "2";
 
 			var requestContext = new RequestContext(context, new RouteData());
-			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<IController>());
+			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<ControllerBase>());
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.QueryString);
 
-			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(1, ids[0]);
@@ -48,7 +48,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.Form);
 
-			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(2, ids[0]);
@@ -59,7 +59,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.Params);
 
-			var ids = (int[])attr.Bind(typeof(int[]), null, _controllerContext);
+			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(2, ids.Length);
 		}

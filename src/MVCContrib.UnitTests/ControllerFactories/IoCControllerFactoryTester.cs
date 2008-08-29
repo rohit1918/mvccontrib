@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
@@ -156,21 +157,17 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 
 	public class IocTestController : IController
 	{
-		#region IController Members
-
-		public void Execute(ControllerContext controllerContext)
+		public void Execute(RequestContext controllerContext)
 		{
 			throw new NotImplementedException();
 		}
-
-		#endregion
 	}
 
 	public class DisposableIocTestController : IController, IDisposable
 	{
 		public bool IsDisposed;
 
-		public void Execute(ControllerContext controllerContext)
+		public void Execute(RequestContext controllerContext)
 		{
 			throw new NotImplementedException();
 		}

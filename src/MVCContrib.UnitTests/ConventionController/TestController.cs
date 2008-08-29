@@ -59,7 +59,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			ActionExecutingCalled = true;
-			filterContext.Cancel = CancelAction;
+			filterContext.Result = new EmptyResult();
 		}
 
 		public ActionResult XmlResult()
