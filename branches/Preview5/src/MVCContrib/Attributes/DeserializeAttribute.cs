@@ -19,24 +19,24 @@ namespace MvcContrib.Attributes
 		{
 		}
 
-		public override object Bind(Type targetType, string paramName, ControllerContext context)
+		public override object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState)
 		{
 			NameValueCollection store = null;
 
-			switch(RequestStore)
-			{
+			switch (RequestStore) {
 				case RequestStore.Params:
-					store = new NameValueCollection(context.HttpContext.Request.Form) {context.HttpContext.Request.QueryString};
+					store = new NameValueCollection(controllerContext.HttpContext.Request.Form) { controllerContext.HttpContext.Request.QueryString };
 					break;
 				case RequestStore.Form:
-					store = context.HttpContext.Request.Form;
+					store = controllerContext.HttpContext.Request.Form;
 					break;
 				case RequestStore.QueryString:
-					store = context.HttpContext.Request.QueryString;
+					store = controllerContext.HttpContext.Request.QueryString;
 					break;
 			}
 
-			return _deserializer.Deserialize(store, Prefix, targetType);
+			return _deserializer.Deserialize(store, Prefix, modelType);
+
 		}
 	}
 }
