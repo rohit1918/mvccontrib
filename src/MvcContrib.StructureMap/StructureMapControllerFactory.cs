@@ -8,7 +8,7 @@ namespace MvcContrib.StructureMap
 {
     public class StructureMapControllerFactory : DefaultControllerFactory
     {
-        protected override IController CreateController(RequestContext context, string controllerName)
+        public override IController CreateController(RequestContext context, string controllerName)
         {
             Type controllerType = base.GetControllerType(controllerName);
             return ObjectFactory.GetInstance(controllerType) as IController;

@@ -7,7 +7,7 @@ namespace MvcContrib.ObjectBuilder
 {
     public class ObjectBuilderControllerFactory : DefaultControllerFactory
     {
-        protected override IController CreateController(RequestContext context, string controllerName)
+        public override IController CreateController(RequestContext context, string controllerName)
         {
             Type type = base.GetControllerType(controllerName);
 
