@@ -6,17 +6,16 @@ using NVelocity;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityView : IViewDataContainer
+	public class NVelocityView : IViewDataContainer, IView
 	{
-		private readonly ViewContext _viewContext;
+		private ViewContext _viewContext;
 		private readonly Template _masterTemplate;
 		private readonly Template _viewTemplate;
 
-		public NVelocityView(Template viewTemplate, Template masterTemplate, ViewContext viewContext)
+		public NVelocityView(Template viewTemplate, Template masterTemplate)
 		{
 			_viewTemplate = viewTemplate;
 			_masterTemplate = masterTemplate;
-			_viewContext = viewContext;
 		}
 
 		public Template ViewTemplate
@@ -35,48 +34,50 @@ namespace MvcContrib.Castle
 			set { throw new NotSupportedException(); }
 		}
 
-		public void RenderView()
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
+			_viewContext = viewContext;
 			bool hasLayout = _masterTemplate != null;
-			TextWriter writer = hasLayout ? new StringWriter() : _viewContext.HttpContext.Response.Output;
 
-			VelocityContext context = CreateContext(_viewContext);
+			TextWriter writerToUse = hasLayout ? new StringWriter() : writer;
 
-			_viewTemplate.Merge(context, writer);
+			VelocityContext context = CreateContext();
+
+			_viewTemplate.Merge(context, writerToUse);
 
 			if(hasLayout)
 			{
-				context.Put("childContent", (writer as StringWriter).GetStringBuilder().ToString());
+				context.Put("childContent", (writerToUse as StringWriter).GetStringBuilder().ToString());
 
-				_masterTemplate.Merge(context, _viewContext.HttpContext.Response.Output);
+				_masterTemplate.Merge(context, writer);
 			}
 		}
 
-		private VelocityContext CreateContext(ViewContext context)
+		private VelocityContext CreateContext()
 		{
 			var entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			if (context.ViewData != null)
+			if (_viewContext.ViewData != null)
 			{
-				foreach(var pair in context.ViewData)
+				foreach(var pair in _viewContext.ViewData)
 				{
 					entries[pair.Key] = pair.Value;
 				}
 			}
 			entries["viewdata"] = _viewContext.ViewData;
 
-			entries["routedata"] = context.RouteData;
+			entries["routedata"] = _viewContext.RouteData;
 			entries["controller"] = _viewContext.Controller;
 			entries["httpcontext"] = _viewContext.HttpContext;
 
-			CreateAndAddHelpers(entries, context);
+			CreateAndAddHelpers(entries);
 
 			return new VelocityContext(entries);
 		}
 
-		private void CreateAndAddHelpers(Hashtable entries, ViewContext context)
+		private void CreateAndAddHelpers(Hashtable entries)
 		{
-			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(context, this);
-			entries["url"] = entries["urlhelper"] = new UrlHelper(context);
+			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(_viewContext, this);
+			entries["url"] = entries["urlhelper"] = new UrlHelper(_viewContext);
 		}
 	}
 }
