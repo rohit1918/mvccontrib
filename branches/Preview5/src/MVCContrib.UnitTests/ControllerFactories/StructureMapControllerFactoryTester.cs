@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.StructureMap;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -60,7 +61,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 					_dependency = dependency;
 				}
 
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
@@ -77,7 +78,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 	    public class StructureMapSimpleController : IController
 	    {
-	        public void Execute(ControllerContext controllerContext)
+	        public void Execute(RequestContext controllerContext)
 	        {
 	            throw new NotImplementedException();
 	        }

@@ -27,11 +27,11 @@ namespace MvcContrib.UnitTests.ViewFactories
 			SetupResult.For(httpContext.Server).Return(httpServer);
 			SetupResult.For(httpServer.HtmlEncode(null)).IgnoreArguments().Return(string.Empty);
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
 			var viewContext =
-				new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary());
+				new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
 
 			_htmlHelper = new NVelocityHtmlHelper(viewContext, new ViewPage());
 		}

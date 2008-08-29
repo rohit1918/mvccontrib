@@ -48,7 +48,6 @@ namespace MvcContrib.UnitTests.UI.Html
 						_viewContext.RouteData, 
 						_viewContext.Controller, 
 						_viewContext.ViewName, 
-						_viewContext.MasterName, 
 						new ViewDataDictionary(new Person("Jeremy")), 
 						_viewContext.TempData);
 
@@ -67,7 +66,6 @@ namespace MvcContrib.UnitTests.UI.Html
 						_viewContext.RouteData,
 						_viewContext.Controller,
 						_viewContext.ViewName,
-						_viewContext.MasterName,
 						new ViewDataDictionary(p), 
 						_viewContext.TempData);
 

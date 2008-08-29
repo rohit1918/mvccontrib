@@ -36,7 +36,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values["controller"] = "NHamlController";
@@ -58,8 +58,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
-			                              new TempDataDictionary());
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();

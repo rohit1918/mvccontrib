@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Spring;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -109,7 +110,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			public class SpringSimpleController : IController
 			{
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
@@ -124,7 +125,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 					_dependency = dependency;
 				}
 
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
@@ -132,7 +133,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			public class NonValidController : IController
 			{
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
@@ -202,7 +203,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 					IsDisposed = true;	
 				}
 
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 				}
 			}

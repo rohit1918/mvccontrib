@@ -108,6 +108,7 @@ namespace MvcContrib.Castle
 			return FindView(controllerContext, partialViewName, null);
 		}
 
+		//TODO: Preview 5: Instead of throwing exceptions if the view cannot be found, return a ViewEngineResult with SearchedLocations populated.
 		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
 		{
 			var controllerName = (string)controllerContext.RouteData.Values["controller"];

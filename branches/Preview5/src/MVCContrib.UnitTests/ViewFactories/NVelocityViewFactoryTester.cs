@@ -39,7 +39,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			SetupResult.For(response.Output).Return(_output);
 
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 			
 			_mocks.ReplayAll();
 
@@ -57,44 +57,44 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void LoadValidView()
 		{
-			var context = new ViewContext(_controllerContext, "view", string.Empty, null, null);
-			NVelocityView view = _factory.CreateView(context);
+			var context = new ViewContext(_controllerContext, "view", null, null);
+			NVelocityView view = (NVelocityView)_factory.FindView(_controllerContext, "view", null).View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 		}
 
-		[Test]
+		[Test] //TODO: Preview 5 This should not throw according to the new view engine rules.
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidViewThrows()
 		{
-			var context = new ViewContext(_controllerContext, "nonExistant", string.Empty, null, null);
-			_factory.CreateView(context);
+			var context = new ViewContext(_controllerContext, "nonExistant", null, null);
+			_factory.FindView(_controllerContext, "nonExistant", null);
 		}
 
 		[Test]
 		public void LoadValidViewWithMaster()
 		{
-			var context = new ViewContext(_controllerContext, "view", "master", null, null);
-			NVelocityView view = _factory.CreateView(context);
+			var context = new ViewContext(_controllerContext, "view", null, null);
+			NVelocityView view = (NVelocityView)_factory.FindView(_controllerContext, "view", "master").View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 			Assert.IsNotNull(view.MasterTemplate);
 		}
 
-		[Test]
+		[Test] //TODO: Preview 5 This should not throw according to the new view engine rules.
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidMasterThrows()
 		{
-			var context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
-			_factory.CreateView(context);
+			var context = new ViewContext(_controllerContext, "view", null, null);
+			_factory.FindView(_controllerContext, "view", "nonExistant");
 		}
 
 		[Test]
 		public void ShouldRenderView()
 		{
 			string expected = "Master Template View Template";
-			var context = new ViewContext(_controllerContext, "view", "master", null, null);
-			_factory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "view", null, null);
+			_factory.FindView(_controllerContext, "view", null).View.Render(context, _output);
 			string output = _output.ToString();
 			Assert.AreEqual(expected, output);
 		}

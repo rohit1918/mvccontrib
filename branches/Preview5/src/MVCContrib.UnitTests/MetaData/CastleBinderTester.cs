@@ -18,10 +18,10 @@ namespace MvcContrib.UnitTests.MetaData
 		public void Setup()
 		{
 			_mocks = new MockRepository();
-			_context = CreateContext(_mocks.DynamicMock<IController>());
+			_context = CreateContext(_mocks.DynamicMock<ControllerBase>());
 		}
 
-		private ControllerContext CreateContext(IController controller)
+		private ControllerContext CreateContext(ControllerBase controller)
 		{
 			var context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), controller);
 			_mocks.ReplayAll();
@@ -35,7 +35,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute();
-			object value = binder.Bind(typeof(Customer), "cust", _context);
+			object value = binder.GetValue(_context, "cust", typeof(Customer), null);
 			var customer = value as Customer;
 
 			Assert.That(customer, Is.Not.Null);
@@ -50,7 +50,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute("cust");
-			object value = binder.Bind(typeof(Customer), "Foo", _context);
+			object value = binder.GetValue(_context, "Foo", typeof(Customer), null);
 			var customer = value as Customer;
 
 			Assert.That(customer, Is.Not.Null);
@@ -66,7 +66,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context = CreateContext(controller);
 
 			var binder = new CastleBindAttribute();
-			binder.Bind(typeof(Customer), "cust", _context);
+			binder.GetValue(_context, "cust", typeof(Customer), null);
 
 			Assert.That(controller.Binder, Is.Not.Null);
 		}
@@ -82,7 +82,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Id"] = "Fail";
 
 			var binder = new CastleBindAttribute();
-			binder.Bind(typeof(Customer), "cust", _context);
+			binder.GetValue(_context, "cust", typeof(Customer), null);
 
 			Assert.That(controller.Binder, Is.SameAs(castleBinder));
 			Assert.That(castleBinder.ErrorList["Id"], Is.Not.Null);

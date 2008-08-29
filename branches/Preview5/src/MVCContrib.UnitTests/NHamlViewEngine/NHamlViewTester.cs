@@ -29,14 +29,12 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
 
 			_mocks.ReplayAll();
 
-			_viewContext =
-				new ViewContext(controllerContext, "Index", "", new ViewDataDictionary(),
-				                new TempDataDictionary());
+			_viewContext = new ViewContext(controllerContext, "Index", new ViewDataDictionary(), new TempDataDictionary());
 		}
 
 		[Test]

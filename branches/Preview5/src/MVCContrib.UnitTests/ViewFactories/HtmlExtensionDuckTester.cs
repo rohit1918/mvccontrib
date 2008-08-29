@@ -31,10 +31,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 		    var requestContext = new RequestContext(httpContext,
 		                                                       routeData
 		                                                          );
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
 			_mocks.ReplayAll();
-			var viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary());
+			var viewContext = new ViewContext(controllerContext, "index",new ViewDataDictionary(), new TempDataDictionary());
 
 			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
 			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper) {Introspector = new Introspector(new Logger())};
