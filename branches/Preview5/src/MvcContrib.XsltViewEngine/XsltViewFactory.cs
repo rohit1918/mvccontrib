@@ -33,5 +33,19 @@ namespace MvcContrib.ViewFactories
 			var view = new XsltView(viewTemplate, viewContext.ViewData.Model as XsltViewData, string.Empty, viewContext.HttpContext);
 	    	view.RenderView(viewContext);
 	    }
-	}
+
+        #region IViewEngine Members
+
+        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }
