@@ -15,6 +15,14 @@ namespace MvcContrib.UnitTests.ConventionController
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
 
+		public TestController()
+		{
+		}
+
+		public TestController(IActionInvoker invokerToUse) : base(invokerToUse)
+		{
+		}
+
 		[TestFilter]
 		public ActionResult BinderFilterOrderingAction([TestBinder] object item)
 		{

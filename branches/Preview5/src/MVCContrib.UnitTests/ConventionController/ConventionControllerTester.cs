@@ -1,6 +1,8 @@
+using System.Web.Mvc;
 using MvcContrib.ActionResults;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
@@ -48,6 +50,20 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("AnotherTest"));
 			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("SomeAction"));
 			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(2));
+		}
+
+		[Test]
+		public void When_a_conventioncontroller_is_instantiated_then_the_invoker_should_be_a_ConventionControllerActionInvoker()
+		{
+			Assert.That(_controller.ActionInvoker, Is.InstanceOfType(typeof(ConventionControllerActionInvoker)));
+		}
+
+		[Test]
+		public void When_a_custom_actioninvoker_is_specified_in_the_constructor_then_the_ActionInvoker_property_should_be_set()
+		{
+			var invoker = MockRepository.GenerateStub<IActionInvoker>();
+			_controller = new TestController(invoker);
+			Assert.That(_controller.ActionInvoker, Is.SameAs(invoker));
 		}
 	}
 }
