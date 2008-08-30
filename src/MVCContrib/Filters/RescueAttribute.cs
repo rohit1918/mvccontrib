@@ -140,8 +140,8 @@ namespace MvcContrib.Filters {
 		/// <returns>True if the view is found, otherwise false.</returns>
 		protected virtual bool ViewExists(Type exceptionType, ControllerContext controllerContext) {
 			string viewName = "Rescues/" + exceptionType.Name;
-			var view = ViewEngines.DefaultEngine.FindView(controllerContext, viewName, null);
-			return view != null;
+			var viewResult = ViewEngines.DefaultEngine.FindView(controllerContext, viewName, null);
+			return viewResult.View != null;
 		}
 
 		protected virtual bool IsThreadAbortException(Type baseExceptionType) {
