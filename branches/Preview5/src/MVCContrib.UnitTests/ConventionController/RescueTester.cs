@@ -1,4 +1,3 @@
-/*
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +8,8 @@ using MvcContrib.Filters;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-
+using MvcContrib.TestHelper;
+using System.Collections.Generic;
 namespace MvcContrib.UnitTests.ConventionController
 {
 	[TestFixture]
@@ -19,7 +19,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		private ControllerContext _controllerContext;
 		private MockRepository _mocks;
 		private Exception _exception;
-		private BaseRescueTestController _controller;
+		private Controller _controller;
 
 		[SetUp]
 		public void Setup()
@@ -28,14 +28,26 @@ namespace MvcContrib.UnitTests.ConventionController
 			_viewEngine = new RescueViewEngine();
 			_exception = new Exception();
 
+			ViewEngines.Engines.Clear();
+			ViewEngines.Engines.Add(_viewEngine);
+
 			SetupController(new RescueTestController());
+			
 		}
 
-		private void SetupController(BaseRescueTestController controller)
+		[TearDown]
+		public void Teardown()
+		{
+			ViewEngines.Engines.Clear();
+		}
+
+		private void SetupController(Controller controller)
 		{
 			_controller = controller;
-			_controller.ViewEngine = _viewEngine;
-			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), controller);
+			var routeData = new RouteData();
+			routeData.Values.Add("controller", "test");
+			routeData.Values.Add("action", "foo");
+			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), routeData, controller);
 			_controller.ControllerContext = _controllerContext;
 		}
 
@@ -62,63 +74,35 @@ namespace MvcContrib.UnitTests.ConventionController
 			rescue.OnException(context);
             Assert.That(context.ExceptionHandled);
 			string expectedRescueView = "Rescues/TestRescue";
-			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
+
+			context.Result.AssertViewRendered().ForView(expectedRescueView);
 		}
 
 		[Test]
 		public void If_rescue_exception_type_does_not_match_exception_type_then_nothing_should_be_rendered()
 		{
-			var rescue = new RescueAttribute("TestRescue");
 			_exception = new RescueTestException();
 			SetupController(_controller);
-			rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
+			var rescue = new RescueAttribute("TestRescue", typeof(InvalidOperationException));
 			var context = new ExceptionContext(_controllerContext, _exception);
             rescue.OnException(context);
 
 			Assert.That(context.ExceptionHandled, Is.False);
-			Assert.That(_viewEngine.ViewContext, Is.Null);
 			Assert.That(((RescueTestController)_controller).OnExceptionFired, Is.False);
 		}
 
 		[Test]
 		public void If_rescue_exception_type_matches_exception_type_then_view_should_be_rendered()
 		{
-			var rescue = new RescueAttribute("TestRescue");
-
 			_exception = new RescueTestException();
 			SetupController(_controller);
-			rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
+			var rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
 			var context = new ExceptionContext(_controllerContext, _exception);
             rescue.OnException(context);
 			
 			string expectedRescueView = "Rescues/TestRescue";
-			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
 
-		}
-
-		[Test]
-		public void When_exception_is_thrown_by_an_action_then_it_should_be_handled_by_action_level_rescue()
-		{
-			_controller.InvokeActionPublic("ThrowMethodError");
-			string expectedRescueView = "Rescues/TestMethodRescue";
-			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
-		}
-
-		[Test]
-		public void When_exception_is_thrown_by_an_action_then_it_should_be_handled_by_controller_level_rescue()
-		{
-			_controller.InvokeActionPublic("ThrowError");
-			string expectedRescueView = "Rescues/TestRescue";
-			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
-		}
-
-		[Test]
-		public void When_exception_is_thrown_by_a_filter_then_it_should_be_handled()
-		{
-			_controller.InvokeActionPublic("ThrowFilter");
-			string expectedRescueView = "Rescues/TestRescue";
-			Assert.That(_viewEngine.ViewContext.ViewName, Is.EqualTo(expectedRescueView));
-			Assert.IsFalse(((RescueTestController)_controller).ActionExecuted);
+			context.Result.AssertViewRendered().ForView(expectedRescueView);
 		}
 
 		[Test]
@@ -133,101 +117,38 @@ namespace MvcContrib.UnitTests.ConventionController
 			rescue.OnException(context);
 
             Assert.IsTrue(context.ExceptionHandled);
-			Assert.IsNull(_viewEngine.ViewContext);
+			Assert.That(context.Result, Is.InstanceOfType(typeof(EmptyResult)));
+		}
+
+		private class RescueViewEngine : IViewEngine 
+		{
+			public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName) 
+			{
+				return null;
+			}
+
+			public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName) 
+			{
+				return new ViewEngineResult(new List<string>());
+			}
+		}
+
+		[Rescue("TestRescue")]
+		private class RescueTestController : Controller 
+		{
+			public bool OnExceptionFired;
+
+			protected override void OnException(ExceptionContext filterContext)
+			{
+				OnExceptionFired = true;
+			}
+		}
+
+
+		private class RescueTestException : Exception 
+		{
 		}
 	}
 
-	public class RescueViewEngine : IViewEngine
-	{
-		public ViewContext ViewContext { get; set; }
-
-		public void RenderView(ViewContext viewContext)
-		{
-			ViewContext = viewContext;
-		}
-	}
-
-	public class ThrowFilter : ActionFilterAttribute
-	{
-		public override void OnActionExecuting(ActionExecutingContext filterContext)
-		{
-			throw new Exception();
-		}
-	}
-
-	[Rescue("TestRescue")]
-    internal class RescueTestController : BaseRescueTestController
-	{
-		public bool OnExceptionFired;
-		public bool ActionExecuted;
-
-		public ActionResult ThrowError()
-		{
-			throw new NotImplementedException();
-		}
-
-		[Rescue("TestMethodRescue")]
-		public ActionResult ThrowMethodError()
-		{
-			throw new NotImplementedException();
-		}
-
-		[ThrowFilter]
-		public ActionResult ThrowFilter()
-		{
-			ActionExecuted = true;
-			return new EmptyResult();
-		}
-
-		protected override void OnException(ExceptionContext filterContext) {
-			OnExceptionFired = true;
-		}
-	}
-
-	[Rescue("Test", typeof(RescueTestException))]
-	internal class RescueTestControllerWithExceptionTypes : BaseRescueTestController
-	{
-		public void ThrowError()
-		{
-			throw new RescueTestException();
-		}
-
-		[Rescue("Test", typeof(RescueTestException))]
-		public void ThrowMethodError()
-		{
-			throw new RescueTestException();
-		}
-
-		[Rescue("Test", typeof(RescueTestException))]
-		public void DontDoThis()
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	internal abstract class BaseRescueTestController : Controller
-	{
-		public string ViewRendered
-		{
-			get;
-			private set;
-		}
-
-		public void InvokeActionPublic(string actionName)
-		{
-			ControllerContext.RouteData.Values.Add("action", actionName);
-			Execute(ControllerContext);
-		}
-
-        protected override void Execute(ControllerContext controllerContext)
-        {
-            ActionInvoker = new ConventionControllerActionInvoker(controllerContext);
-            base.Execute(controllerContext);
-        }
-	}
-
-	internal class RescueTestException : Exception
-	{
-	}
+	
 }
-*/
