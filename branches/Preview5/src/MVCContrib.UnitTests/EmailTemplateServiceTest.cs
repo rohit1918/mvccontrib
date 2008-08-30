@@ -21,7 +21,7 @@ namespace MvcContrib.UnitTests
         private ViewContext _viewContext;
         private EmailTemplateService _service;
 
-        private delegate void RenderViewDelegate(ViewContext context);
+        private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
 
         [SetUp]
         public void Setup()
@@ -66,13 +66,15 @@ namespace MvcContrib.UnitTests
             using (_mocks.Record())
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
+            	TextWriter writer = new StringWriter();
+            	SetupResult.For(_responseMock.Output).Return(writer);
                 Expect.Call(_responseMock.ContentEncoding).Return(Encoding.UTF8);
                 Expect.Call(() => _responseMock.Flush()).Repeat.Twice();
 
-            	Assert.Fail("Fix me");
+            	var fakeView = _mocks.DynamicMock<IView>();
+				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
 
-                //Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
-                  //  new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
+				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(new ViewEngineResult(fakeView));
             }
 
             MailMessage message;
@@ -89,16 +91,19 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanRenderHtmlMessage()
         {
-/*
             string messageBody = "<html> <body> <p><b>test</b> message body...</p></body></html>" + Environment.NewLine;
 
             using (_mocks.Record())
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
+				TextWriter writer = new StringWriter();
+				SetupResult.For(_responseMock.Output).Return(writer);
 
-                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
-                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
+				var fakeView = _mocks.DynamicMock<IView>();
+				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
+
+				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(new ViewEngineResult(fakeView));
             }
 
             MailMessage message;
@@ -109,8 +114,6 @@ namespace MvcContrib.UnitTests
 
             Assert.AreEqual(messageBody, message.Body);
             Assert.IsTrue(message.IsBodyHtml);
-*/
-			Assert.Fail("Fix me");
         }
 
         [Test]
@@ -122,6 +125,9 @@ namespace MvcContrib.UnitTests
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
+
+				var fakeView = _mocks.DynamicMock<IView>();
+				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(new ViewEngineResult(fakeView));
             }
 
             _responseMock.Filter = streamStub;
@@ -138,14 +144,21 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanPreserveReponseFilterOnException()
         {
-/*
             var streamStub = _mocks.Stub<Stream>();
 
             using (_mocks.Record())
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Throw(new Exception());
+				TextWriter writer = new StringWriter();
+				SetupResult.For(_responseMock.Output).Return(writer);
+
+				var fakeView = _mocks.DynamicMock<IView>();
+            	fakeView.Expect(x => x.Render(_viewContext, writer)).Throw(new Exception());
+
+				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(new ViewEngineResult(fakeView));
+            
+
             }
 
             _responseMock.Filter = streamStub;
@@ -161,8 +174,6 @@ namespace MvcContrib.UnitTests
 
             //make sure the response filter we set is still there
             Assert.AreEqual(streamStub.GetHashCode(), _responseMock.Filter.GetHashCode());
-*/
-			Assert.Fail("Fix me");
         }
 
         #endregion
@@ -171,16 +182,19 @@ namespace MvcContrib.UnitTests
 
         private MailMessage CanProcessMessageHeaders(string header, string value)
         {
-/*
 			string messageBody = String.Format("{0}: {1}{2}test message body...", header, value, Environment.NewLine);
 
             using (_mocks.Record())
             {
                 SetupResult.For(_responseMock.Filter).PropertyBehavior();
                 SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
+            	var writer = new StringWriter();
+            	SetupResult.For(_responseMock.Output).Return(writer);
 
-                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
-                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
+				var fakeView = _mocks.DynamicMock<IView>();
+				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
+
+				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(new ViewEngineResult(fakeView));
             }
 
             MailMessage message;
@@ -190,7 +204,6 @@ namespace MvcContrib.UnitTests
             }
 
             return message;
-*/
 			throw new AssertionException("Fix me");
         }
 
