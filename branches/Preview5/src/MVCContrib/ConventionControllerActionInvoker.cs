@@ -1,4 +1,3 @@
-/*
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -52,44 +51,19 @@ namespace MvcContrib
 			set { _controllerDescriptor = value; }
 		}
 
+		protected override MethodInfo FindActionMethod(string actionName) {
+			var method = base.FindActionMethod(actionName);
 
-		/// <summary>
-		/// Creates a new instance of the ConventionControllerActionInvoker class.
-		/// </summary>
-		/// <param name="controllerContext">The controller context for use with the current request.</param>
-		public ConventionControllerActionInvoker(ControllerContext controllerContext) : base(controllerContext)
-		{
-		}
-
-		protected override ActionResult InvokeActionMethod(MethodInfo methodInfo, IDictionary<string, object> parameters)
-		{
-			//Bind parameters here to ensure that filters have finished executing.
-			PerformBinding(parameters); 
-			return base.InvokeActionMethod(methodInfo, parameters);
-		}
-
-		protected virtual void PerformBinding(IDictionary<string, object> values)
-		{
-			foreach (var parameter in SelectedAction.Parameters)
+			//No actions found - look to see if there's a DefaultAction instead.
+			if(method == null)
 			{
-				values[parameter.ParameterInfo.Name] = parameter.Bind(ControllerContext);
+				//TODO: Find default actions.
 			}
+
+			return method;
 		}
 
-		//Override the built in parameter binding. The default binding for MVC happens before filters are invoked. 
-		//Our parameter binding takes place in the PerformBinding method, which happens as part of InvokeActionMethod.
-		//This is done so that filters can pre-process the parameter values if necessary.
-		protected override IDictionary<string, object> GetParameterValues(MethodInfo methodInfo, IDictionary<string, object> values)
-		{
-			return values ?? new Dictionary<string, object>();
-		}
-
-		protected override MethodInfo FindActionMethod(string actionName, IDictionary<string, object> values) {
-			SelectedAction = FindActionMetaData(actionName);
-			return SelectedAction == null ? null : SelectedAction.MethodInfo;
-		}
-
-		/// <summary>
+		/*/// <summary>
 		/// Finds the ActionMetaData with the specified action name.
 		/// </summary>
 		/// <param name="actionName">Name of the action to locate.</param>
@@ -117,7 +91,6 @@ namespace MvcContrib
 			}
 
 			return actions[0];
-		}
+		}*/
 	}
 }
-*/

@@ -7,10 +7,25 @@ namespace MvcContrib
 {
 	/// <summary>
 	/// Base controller class that implements additional features over Controller.
-	/// Includes support for Rescues, Parameter Binders and Default Actions.
 	/// </summary>
-	public class ConventionController : Controller
+	public abstract class ConventionController : Controller
 	{
+		/// <summary>
+		/// Creates a new instance of the ConventionController
+		/// </summary>
+		protected ConventionController() : this(new ConventionControllerActionInvoker())
+		{
+		}
+
+		/// <summary>
+		/// Creates a new instance of the ConventionController using the specified ActionInvoker.
+		/// </summary>
+		/// <param name="invokerToUse">The action invoker to use.</param>
+		protected ConventionController(IActionInvoker invokerToUse)
+		{
+			ActionInvoker = invokerToUse;
+		}
+
 		/// <summary>
 		/// Creates a <see cref="XmlResult"/> object for serializing the specified object as XML for writing to the HTTP Response's output stream.
 		/// </summary>
