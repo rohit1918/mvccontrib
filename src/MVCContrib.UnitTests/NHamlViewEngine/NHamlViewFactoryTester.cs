@@ -67,21 +67,24 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Can_Compile_View_With_Custom_View_Data()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "custom", null, _viewData,
-			                              new TempDataDictionary());
+			var context = new ViewContext(_controllerContext, "custom", _viewData, new TempDataDictionary());
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Specific_Master()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
@@ -91,11 +94,14 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			                              new TempDataDictionary());
 			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix m");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Controller_Master()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
@@ -106,11 +112,14 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Application_Master()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
@@ -122,12 +131,15 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void Cant_Compile_Missing_View()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
@@ -137,12 +149,15 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void Cant_Compile_View_With_Missing_Master()
 		{
+/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
@@ -154,6 +169,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			viewFactory.RenderView(context);
 
 			_mocks.VerifyAll();
+*/
+			Assert.Fail("Fix me");
 		}
 	}
 }

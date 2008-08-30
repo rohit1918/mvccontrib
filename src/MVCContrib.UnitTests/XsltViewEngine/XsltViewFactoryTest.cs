@@ -89,6 +89,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test, ExpectedException(typeof(ArgumentException))]
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
+/*
 			var routeData = new RouteData();
 			var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
 			                                          new TempDataDictionary());
@@ -97,6 +98,8 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
 
 			viewFactory.RenderView(viewContext);
+*/
+			Assert.Fail("Fix me");
 		}
 	}
 }
