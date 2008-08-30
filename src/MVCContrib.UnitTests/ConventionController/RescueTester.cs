@@ -120,8 +120,70 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(context.Result, Is.InstanceOfType(typeof(EmptyResult)));
 		}
 
+		[Test]
+		public void When_PerformRescue_is_invoked_with_matching_view_it_should_be_rendered()
+		{
+			var rescue = new RescueAttribute("TestRescue");
+			_viewEngine.CustomViews.Add("Rescues/RescueTestException");
+
+			var context = new ExceptionContext(_controllerContext, new RescueTestException());
+
+			rescue.OnException(context);
+			
+			Assert.That(context.ExceptionHandled);
+			context.Result.AssertViewRendered().ForView("Rescues/RescueTestException");
+		}
+
+		[Test]
+		public void When_PerformRescue_is_invoked_with_matching_view_and_AutoLocate_off_it_should_not_be_rendered() 
+		{
+			_viewEngine.CustomViews.Add("Rescues/RescueTestException");
+			var rescue = new RescueAttribute("TestRescue") {AutoLocate = false};
+
+			var context = new ExceptionContext(_controllerContext, new RescueTestException());
+			rescue.OnException(context);
+			Assert.That(context.ExceptionHandled);
+			context.Result.AssertViewRendered().ForView("Rescues/TestRescue");
+		}
+
+		[Test]
+		public void When_PerformRescue_exact_exception_executed_first() 
+		{
+			var rescue = new RescueAttribute("TestRescue");
+
+			_viewEngine.CustomViews.Add("Rescues/InheritedRescueTestException");
+			_viewEngine.CustomViews.Add("Rescues/RescueTestException");
+
+			var context = new ExceptionContext(_controllerContext, new InheritedRescueTestException());
+			rescue.OnException(context);
+
+			Assert.That(context.ExceptionHandled);
+			context.Result.AssertViewRendered().ForView("Rescues/InheritedRescueTestException");
+
+			context = new ExceptionContext(_controllerContext, new RescueTestException());
+			rescue.OnException(context);
+
+			Assert.That(context.ExceptionHandled);
+			context.Result.AssertViewRendered().ForView("Rescues/RescueTestException");
+
+			rescue = new RescueAttribute("TestRescue", typeof(RescueTestException));
+
+			_viewEngine.CustomViews.Clear();
+			_viewEngine.CustomViews.Add("Rescues/RescueTestException");
+			
+			context = new ExceptionContext(_controllerContext, new InheritedRescueTestException());
+			rescue.OnException(context);
+
+			Assert.That(context.ExceptionHandled);
+			context.Result.AssertViewRendered().ForView("Rescues/RescueTestException");
+
+		}
+
 		private class RescueViewEngine : IViewEngine 
 		{
+
+			public List<string> CustomViews = new List<string>();
+
 			public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName) 
 			{
 				return null;
@@ -129,6 +191,10 @@ namespace MvcContrib.UnitTests.ConventionController
 
 			public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName) 
 			{
+				if(CustomViews.Contains(viewName))
+				{
+					return new ViewEngineResult(MockRepository.GenerateStub<IView>());
+				}
 				return new ViewEngineResult(new List<string>());
 			}
 		}
@@ -146,6 +212,10 @@ namespace MvcContrib.UnitTests.ConventionController
 
 
 		private class RescueTestException : Exception 
+		{
+		}
+
+		private class InheritedRescueTestException : RescueTestException 
 		{
 		}
 	}
