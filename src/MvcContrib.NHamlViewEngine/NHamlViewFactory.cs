@@ -41,7 +41,7 @@ namespace MvcContrib.NHamlViewEngine
 			_templateCompiler.AddReference(typeof(UserControl).Assembly.Location);
 			_templateCompiler.AddReference(typeof(RouteValueDictionary).Assembly.Location);
 			_templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
-			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
+//			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
 
 			LoadConfiguration();
 		}
@@ -119,64 +119,83 @@ namespace MvcContrib.NHamlViewEngine
 			}
 		}
 
-		public void RenderView(ViewContext viewContext)
-		{
-			var controller = (string)viewContext.RouteData.Values["controller"];
-			var viewKey = controller + "/" + viewContext.ViewName;
+        //public void RenderView(ViewContext viewContext)
+        //{
+        //    var controller = (string)viewContext.RouteData.Values["controller"];
+        //    var viewKey = controller + "/" + viewContext.ViewName;
 
-			CompiledView compiledView;
+        //    CompiledView compiledView;
 
-			if(!_viewCache.TryGetValue(viewKey, out compiledView))
-			{
-				lock(_viewCache)
-				{
-					if(!_viewCache.TryGetValue(viewKey, out compiledView))
-					{
-						var viewPath = viewKey;
+        //    if(!_viewCache.TryGetValue(viewKey, out compiledView))
+        //    {
+        //        lock(_viewCache)
+        //        {
+        //            if(!_viewCache.TryGetValue(viewKey, out compiledView))
+        //            {
+        //                var viewPath = viewKey;
 
-						if(!Path.HasExtension(viewPath))
-						{
-							viewPath = string.Concat(viewPath, ".haml");
-						}
+        //                if(!Path.HasExtension(viewPath))
+        //                {
+        //                    viewPath = string.Concat(viewPath, ".haml");
+        //                }
 
-						if(!_viewSourceLoader.HasView(viewPath))
-						{
-							throw new InvalidOperationException(
-								string.Format(CultureInfo.CurrentCulture,
-								              "Couldn't find the template with name {0}.",
-								              viewPath));
-						}
+        //                if(!_viewSourceLoader.HasView(viewPath))
+        //                {
+        //                    throw new InvalidOperationException(
+        //                        string.Format(CultureInfo.CurrentCulture,
+        //                                      "Couldn't find the template with name {0}.",
+        //                                      viewPath));
+        //                }
 
-						var viewSource = _viewSourceLoader.GetViewSource(viewPath);
+        //                var viewSource = _viewSourceLoader.GetViewSource(viewPath);
 
-						Invariant.IsNotNull(viewSource);
+        //                Invariant.IsNotNull(viewSource);
 
-						var layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
+        //                var layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
 
-						string layoutPath = null;
+        //                string layoutPath = null;
 
-						if(layoutSource != null)
-						{
-							layoutPath = layoutSource.FullName;
-						}
+        //                if(layoutSource != null)
+        //                {
+        //                    layoutPath = layoutSource.FullName;
+        //                }
 
-						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
-						                                viewContext.ViewData);
+        //                compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
+        //                                                viewContext.ViewData);
 
-						_viewCache.Add(viewKey, compiledView);
-					}
-				}
-			}
+        //                _viewCache.Add(viewKey, compiledView);
+        //            }
+        //        }
+        //    }
 
-			if(!_production)
-			{
-				compiledView.RecompileIfNecessary(viewContext.ViewData);
-			}
+        //    if(!_production)
+        //    {
+        //        compiledView.RecompileIfNecessary(viewContext.ViewData);
+        //    }
 
-			var view = compiledView.CreateView();
+        //    var view = compiledView.CreateView();
 
-			view.SetViewData(viewContext.ViewData);
-			view.RenderView(viewContext);
-		}
-	}
+        //    view.SetViewData(viewContext.ViewData);
+        //    view.RenderView(viewContext);
+        //}
+
+        #region IViewEngine Members
+
+        public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public void RenderView(ViewContext context)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
