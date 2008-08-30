@@ -41,12 +41,12 @@ namespace MvcContrib.UnitTests
             SetupResult.For(httpContext.Response).Return(_responseMock);
             var requestContext = new RequestContext(httpContext, new RouteData());
 
-            var controller = _mocks.Stub<IController>();
+            var controller = _mocks.Stub<ControllerBase>();
             var controllerContext = new ControllerContext(requestContext, controller);
 
             _mocks.Replay(httpContext);
 
-            return new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), new TempDataDictionary());
+            return new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
         }
 
         private void WriteToStream(Stream stream, string content)
@@ -69,8 +69,10 @@ namespace MvcContrib.UnitTests
                 Expect.Call(_responseMock.ContentEncoding).Return(Encoding.UTF8);
                 Expect.Call(() => _responseMock.Flush()).Repeat.Twice();
 
-                Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
-                    new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
+            	Assert.Fail("Fix me");
+
+                //Expect.Call(() => _viewEngineMock.RenderView(_viewContext)).Do(
+                  //  new RenderViewDelegate(context => WriteToStream(_responseMock.Filter, messageBody)));
             }
 
             MailMessage message;
@@ -87,6 +89,7 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanRenderHtmlMessage()
         {
+/*
             string messageBody = "<html> <body> <p><b>test</b> message body...</p></body></html>" + Environment.NewLine;
 
             using (_mocks.Record())
@@ -106,6 +109,8 @@ namespace MvcContrib.UnitTests
 
             Assert.AreEqual(messageBody, message.Body);
             Assert.IsTrue(message.IsBodyHtml);
+*/
+			Assert.Fail("Fix me");
         }
 
         [Test]
@@ -133,6 +138,7 @@ namespace MvcContrib.UnitTests
         [Test]
         public void CanPreserveReponseFilterOnException()
         {
+/*
             var streamStub = _mocks.Stub<Stream>();
 
             using (_mocks.Record())
@@ -155,6 +161,8 @@ namespace MvcContrib.UnitTests
 
             //make sure the response filter we set is still there
             Assert.AreEqual(streamStub.GetHashCode(), _responseMock.Filter.GetHashCode());
+*/
+			Assert.Fail("Fix me");
         }
 
         #endregion
@@ -163,6 +171,7 @@ namespace MvcContrib.UnitTests
 
         private MailMessage CanProcessMessageHeaders(string header, string value)
         {
+/*
 			string messageBody = String.Format("{0}: {1}{2}test message body...", header, value, Environment.NewLine);
 
             using (_mocks.Record())
@@ -181,6 +190,8 @@ namespace MvcContrib.UnitTests
             }
 
             return message;
+*/
+			throw new AssertionException("Fix me");
         }
 
         [Test]

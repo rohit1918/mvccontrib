@@ -6,7 +6,9 @@ namespace MvcContrib.UnitTests.ConventionController
 {
 	class TestController : MvcContrib.ConventionController
 	{
+/*
 		public bool CancelAction;
+*/
 		public bool ActionWasCalled;
 		public bool? OnErrorResult = false;
 		public bool ActionExecutingCalled;
