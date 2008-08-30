@@ -204,7 +204,6 @@ namespace MvcContrib.UnitTests
             }
 
             return message;
-			throw new AssertionException("Fix me");
         }
 
         [Test]
