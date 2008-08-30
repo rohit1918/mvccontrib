@@ -106,9 +106,9 @@ namespace MvcContrib.BrailViewEngine
 				new ParameterDeclaration("viewEngine",
 				                         new SimpleTypeReference("MvcContrib.BrailViewEngine.BooViewEngine"))); // TODO: Update Reference
 
-			ctor.Parameters.Add(
-				new ParameterDeclaration("output",
-				                         new SimpleTypeReference("System.IO.TextWriter")));
+//			ctor.Parameters.Add(
+//				new ParameterDeclaration("output",
+//				                         new SimpleTypeReference("System.IO.TextWriter")));
 //			ctor.Parameters.Add(
 //				new ParameterDeclaration("context",
 //				                         new SimpleTypeReference("Castle.MonoRail.Framework.IEngineContext")));
@@ -124,7 +124,7 @@ namespace MvcContrib.BrailViewEngine
 
 			var mie = new MethodInvocationExpression(new SuperLiteralExpression());
 			mie.Arguments.Add(AstUtil.CreateReferenceExpression("viewEngine"));
-			mie.Arguments.Add(AstUtil.CreateReferenceExpression("output"));
+//			mie.Arguments.Add(AstUtil.CreateReferenceExpression("output"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("context"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("__controller"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("__controllerContext"));

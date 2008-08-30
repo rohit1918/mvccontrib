@@ -17,7 +17,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-            _view = _mocks.StrictMock<BrailBase>(null, null);
+			_view = _mocks.StrictMock<BrailBase>(null);
 		}
 
 		[Test]
