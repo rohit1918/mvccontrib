@@ -20,7 +20,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
 		public bool CatchAllWasCalled;
-		public int? BasicActionResult;
 
 		public TestController()
 		{
@@ -43,9 +42,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			return new EmptyResult();
 		}
 
-		public ActionResult BasicAction(int id)
+		public ActionResult BasicAction(int? id)
 		{
-			BasicActionResult = id;
 			return new EmptyResult();
 		}
 

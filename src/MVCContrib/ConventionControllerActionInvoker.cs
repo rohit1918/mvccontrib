@@ -86,19 +86,5 @@ namespace MvcContrib
 
 			return action;
 		}
-
-		protected override object GetParameterValue(ParameterInfo parameterInfo) 
-		{
-			//The DefaultModelBinder does not play nicely with value types.
-			//For example, if a parameter named "foo" is of type int, and that parameter is not in the RouteData/Request, then the DefaultModelBinder will throw.
-			//So, if the DefaultBinder is the default (ie a DefaultModelBinder instance) then we replace it temporarily with a SimpleParameterBinder which will instead return 0.
-			//However, if the user has replaced the DefaultBinder with one of their own (eg the CastleSimpleBinder) then we let that do the work.
-			if(ModelBinders.DefaultBinder.GetType() == typeof(DefaultModelBinder))
-			{
-				var binder = new SimpleParameterBinder();
-				return binder.GetValue(ControllerContext, parameterInfo.Name, parameterInfo.ParameterType, this.ControllerContext.Controller.ViewData.ModelState);
-			}
-			return base.GetParameterValue(parameterInfo);
-		}
 	}
 }
