@@ -42,7 +42,24 @@ namespace MvcContrib.MetaData
 		/// <returns>ActionMetaData</returns>
 		public ActionMetaData GetAction(string name, ControllerContext context)
 		{
-			throw new NotImplementedException();
+			if(string.IsNullOrEmpty(name))
+			{
+				throw new ArgumentNullException("name");
+			}
+
+			var actions = Actions.Where(x => x.IsValidForRequest(name, context)).ToList();
+			
+			if(actions.Count == 0)
+			{
+				return null;
+			}
+
+			if(actions.Count > 1)
+			{
+				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", name));	
+			}
+
+			return actions[0];
 		}
 
 		/// <summary>
