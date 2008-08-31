@@ -54,45 +54,51 @@ namespace MvcContrib
 
 		protected override MethodInfo FindActionMethod(string actionName) 
 		{
-			var method = base.FindActionMethod(actionName);
-
-			//No actions found - look to see if there's a DefaultAction instead.
-			if(method == null)
+			if (string.IsNullOrEmpty(actionName)) 
 			{
-				//TODO: Find default actions.
+				throw new ArgumentNullException("actionName");
 			}
 
-			return method;
+			var action = FindActionMetaData(actionName);
+			
+			if(action != null)
+			{
+				SelectedAction = action;
+				return action.MethodInfo;
+			}
+
+			return null;
 		}
 
-		/*/// <summary>
+		/// <summary>
 		/// Finds the ActionMetaData with the specified action name.
 		/// </summary>
 		/// <param name="actionName">Name of the action to locate.</param>
 		/// <returns>ActionMetaData or null if no action can be found with the specified name.</returns>
 		public virtual ActionMetaData FindActionMetaData(string actionName)
 		{
-			var actions = MetaData.GetActions(actionName);
+			var action = MetaData.GetAction(actionName, ControllerContext);
 
-			if(actions == null || actions.Count == 0)
+			if(action == null && MetaData.DefaultAction != null)
 			{
-				//No matching action found - see if there is a "catch all" action.
-				if(MetaData.DefaultAction != null)
-				{
-					return MetaData.DefaultAction;
-				}
-				else
-				{
-					return null;
-				}
+				action = MetaData.DefaultAction;
 			}
 
-			if(actions.Count > 1)
-			{
-				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
-			}
+			return action;
+		}
 
-			return actions[0];
-		}*/
+		protected override object GetParameterValue(ParameterInfo parameterInfo) 
+		{
+			//The DefaultModelBinder does not play nicely with value types.
+			//For example, if a parameter named "foo" is of type int, and that parameter is not in the RouteData/Request, then the DefaultModelBinder will throw.
+			//So, if the DefaultBinder is the default (ie a DefaultModelBinder instance) then we replace it temporarily with a SimpleParameterBinder which will instead return 0.
+			//However, if the user has replaced the DefaultBinder with one of their own (eg the CastleSimpleBinder) then we let that do the work.
+			if(ModelBinders.DefaultBinder.GetType() == typeof(DefaultModelBinder))
+			{
+				var binder = new SimpleParameterBinder();
+				return binder.GetValue(ControllerContext, parameterInfo.Name, parameterInfo.ParameterType, this.ControllerContext.Controller.ViewData.ModelState);
+			}
+			return base.GetParameterValue(parameterInfo);
+		}
 	}
 }

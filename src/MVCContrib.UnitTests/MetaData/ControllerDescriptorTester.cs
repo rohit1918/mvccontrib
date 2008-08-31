@@ -1,12 +1,16 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Attributes;
 using MvcContrib.Filters;
 using MvcContrib.MetaData;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
+
 namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
@@ -18,6 +22,17 @@ namespace MvcContrib.UnitTests.MetaData
 		public void Setup()
 		{
 			_descriptor = new ControllerDescriptor();
+		}
+
+		private ControllerContext CreateContext(string httpMethod)
+		{
+			var httpContext = MockRepository.GenerateMock<HttpContextBase>();
+			var request = MockRepository.GenerateMock<HttpRequestBase>();
+
+			httpContext.Expect(x => x.Request).Return(request).Repeat.Any();
+			request.Expect(x => x.HttpMethod).Return(httpMethod).Repeat.Any();
+
+			return new ControllerContext(httpContext, new RouteData(), MockRepository.GenerateStub<ControllerBase>());
 		}
 
 		[Test]
@@ -68,7 +83,7 @@ namespace MvcContrib.UnitTests.MetaData
 		public void GetActionMethods_should_find_action_methods()
 		{
 			var actions = _descriptor.GetMetaData(typeof(MetaDataTestController)).Actions;
-			Assert.That(actions.Length, Is.EqualTo(9));
+			Assert.That(actions.Length, Is.EqualTo(10));
 		}
 
 		[Test]
@@ -219,73 +234,122 @@ namespace MvcContrib.UnitTests.MetaData
 		[Test]
 		public void SelectionAttributes_should_return_action_selection_attributes()
 		{
-			Assert.Fail("Implement me");			
+			var action = _descriptor.GetMetaData(typeof(MetaDataTestController)).Actions.Single(x => x.Name == "GetOnlyAction");
+			Assert.That(action.SelectionAttributes.Length, Is.EqualTo(1));
+			Assert.That(action.SelectionAttributes[0], Is.InstanceOfType(typeof(AcceptVerbsAttribute)));
 		}
 
 		[Test]
 		public void Action_should_not_be_valid_if_name_does_not_equal_action()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[0], new FilterInfo());
+			Assert.IsFalse(actionMetaData.IsValidForRequest("Foo", null));
 		}
 
 		[Test]
 		public void Action_should_not_be_valid_if_selector_is_not_valid()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[] {new AcceptVerbsAttribute("POST")}, new FilterInfo());
+			var ctx = CreateContext("GET");
+
+			bool result = actionMetaData.IsValidForRequest("BasicAction", ctx);
+
+			Assert.IsFalse(result);
 		}
 
 		[Test]
 		public void Action_should_be_valid_if_name_is_valid_and_all_selectors_are_valid()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST") }, new FilterInfo());
+			var ctx = CreateContext("POST");
+
+			bool result = actionMetaData.IsValidForRequest("BasicAction", ctx);
+
+			Assert.IsTrue(result);		
 		}
 
 		[Test]
 		public void Action_should_be_valid_if_name_is_valid_and_there_are_no_selectors()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[0], new FilterInfo());
+
+			bool result = actionMetaData.IsValidForRequest("BasicAction", null);
+
+			Assert.IsTrue(result);		
 		}
 
 		[Test]
 		public void AliasedAction_should_not_be_valid_if_no_aliases_are_valid()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[0], new[] { new ActionNameAttribute("Foo") });
+
+			bool result = actionMetaData.IsValidForRequest("Bar", null);
+			Assert.IsFalse(result);
 		}
 
 		[Test]
 		public void AliasedAction_Should_not_be_valid_if_selector_is_not_valid()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST")  }, new ActionNameAttribute[0]);
+
+			bool result = actionMetaData.IsValidForRequest("Bar", CreateContext("GET"));
+			Assert.IsFalse(result);
+
 		}
 
 		[Test]
 		public void AliasedAction_should_be_valid_if_aliases_are_all_valid_and_selectors_are_valid()
 		{
-			Assert.Fail("Implement me");			
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST") }, new[] { new ActionNameAttribute("Foo") });
+
+			bool result = actionMetaData.IsValidForRequest("Foo", CreateContext("POST"));
+			Assert.IsTrue(result);
 		}
 
 		[Test]
 		public void Aliased_action_should_be_valid_if_aliases_are_all_valid_and_there_are_no_selectors()
 		{
-			Assert.Fail("Implement me");
+			var type = typeof(MetaDataTestController);
+			var method = type.GetMethod("BasicAction");
+			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[0], new[] { new ActionNameAttribute("Foo") });
+
+			bool result = actionMetaData.IsValidForRequest("Foo", CreateContext("POST"));
+			Assert.IsTrue(result);
 		}
 
 		[Test]
 		public void GetAction_Should_return_null_when_there_are_no_matches()
 		{
-			Assert.Fail("Implement me");			
+			var action = _descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("Bar", CreateContext("GET"));
+			Assert.IsNull(action);
 		}
 
 		[Test]
 		public void GetAction_Should_return_valid_action()
 		{
-			Assert.Fail("Implement me");			
+			var action = _descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("BasicAction", CreateContext("GEt"));
+			Assert.That(action, Is.Not.Null);
+			Assert.That(action.Name, Is.EqualTo("BasicAction"));
 		}
 
-		[Test]
+		[Test, ExpectedException(typeof(InvalidOperationException), ExpectedMessage = "More than one action with name 'SimpleAction' found")]
 		public void GetAction_should_throw_if_there_are_multiple_valid_actions()
 		{
-			Assert.Fail("Implement me");
+			_descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("SimpleAction", CreateContext("GET"));
 		}
 
 	}
@@ -351,6 +415,12 @@ namespace MvcContrib.UnitTests.MetaData
 
 		[DefaultAction]
 		public ActionResult CatchAllAction()
+		{
+			return new EmptyResult();
+		}
+
+		[AcceptVerbs("GET")]
+		public ActionResult GetOnlyAction()
 		{
 			return new EmptyResult();
 		}

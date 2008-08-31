@@ -4,6 +4,14 @@ using MvcContrib.Attributes;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
+	class TestControllerWithNoDefaultActions : Controller
+	{
+		public ActionResult Index()
+		{
+			return new EmptyResult();
+		}
+	}
+
 	class TestController : MvcContrib.ConventionController
 	{
 		public bool ActionWasCalled;
@@ -12,6 +20,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
 		public bool CatchAllWasCalled;
+		public int? BasicActionResult;
 
 		public TestController()
 		{
@@ -36,6 +45,7 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		public ActionResult BasicAction(int id)
 		{
+			BasicActionResult = id;
 			return new EmptyResult();
 		}
 
