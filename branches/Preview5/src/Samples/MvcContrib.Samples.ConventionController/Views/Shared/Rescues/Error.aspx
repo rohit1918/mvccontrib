@@ -2,5 +2,5 @@
 <asp:Content ContentPlaceHolderId="childContent" runat="server">
 Whoops an error occured! 
 <p>Error Message:</p>
-<p><%= ((Exception)ViewData.Model).GetBaseException().Message %></p>
+<p><%= ((HandleErrorInfo)ViewData.Model).Exception.GetBaseException().Message %></p>
 </asp:Content>
