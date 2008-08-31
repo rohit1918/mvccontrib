@@ -199,7 +199,7 @@ namespace MvcContrib.XsltViewEngine
 		{
 			if(Response.SelectSingleNode("Page") == null)
 			{
-				Response.AppendChild(CreateNewNode("Page", "", "Name", pageName, "Uri", pageUri));
+				Response.AppendChild(CreateNewNode("Page", "", "Uri", pageUri));
 
 				XmlNode pageVarsNode = Response.SelectSingleNode("Page").AppendChild(CreateNewNode("PageVars", ""));
 

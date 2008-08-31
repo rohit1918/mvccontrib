@@ -32,7 +32,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			_mocks.ReplayAll();
 
-			var template = new XsltTemplate(viewSourceLoader,  view);
+            var template = new XsltTemplate(viewSourceLoader, "MyController/MyView.xslt");
 
 			_mocks.VerifyAll();
 

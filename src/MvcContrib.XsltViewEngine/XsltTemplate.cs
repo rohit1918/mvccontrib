@@ -9,7 +9,7 @@ namespace MvcContrib.XsltViewEngine
 	public class XsltTemplate
 	{
 		private readonly MvpXslTransform _transform;
-
+        public string ViewUrl { get; private set; }
 		public XsltTemplate(IViewSourceLoader viewSourceLoader,string viewPath)
 		{
 
@@ -22,6 +22,7 @@ namespace MvcContrib.XsltViewEngine
 			{
 				throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
 			}
+		    ViewUrl = viewPath;
 
 			IViewSource viewSource = viewSourceLoader.GetViewSource(viewPath);
 
