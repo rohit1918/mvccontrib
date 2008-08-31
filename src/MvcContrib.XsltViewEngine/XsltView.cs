@@ -8,7 +8,7 @@ using System.Web;
 
 namespace MvcContrib.XsltViewEngine
 {
-	public class XsltView : IViewDataContainer
+	public class XsltView : IViewDataContainer,IView
 	{
 		private readonly string ajaxDeclaration;
 		private readonly XsltViewData viewData;
@@ -49,7 +49,7 @@ namespace MvcContrib.XsltViewEngine
 					construct.AddMessage(message.Content, message.MessageType.ToString().ToUpperInvariant(), message.ControlID);
 			});
 
-			construct.AppendPage(viewTemplate.ViewName, viewTemplate.ViewUrl, viewData.PageVars);
+			//construct.AppendPage(viewTemplate.ViewName, viewTemplate.ViewUrl, viewData.PageVars);
 		}
 
 		#region IView Members
@@ -81,8 +81,17 @@ namespace MvcContrib.XsltViewEngine
 		{
 		}
 
-        
 
-        
-	}
+
+
+
+        #region IView Members
+
+        public void Render(ViewContext viewContext, TextWriter writer)
+        {
+            RenderView(viewContext);
+        }
+
+        #endregion
+    }
 }

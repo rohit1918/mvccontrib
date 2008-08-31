@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0B8EC0CE-1AC1-4ACF-A380-A588E5E1E9CF}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -204,15 +204,6 @@
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
     <Compile Include="ActionResults\XmlActionResultTester.cs" />
-    <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NHamlViewEngine\NHamlViewTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\ConstructorReflectionStrategyFixture.cs" />
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\CreationStrategyFixture.cs" />
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\MethodReflectionStrategyFixture.cs" />
@@ -280,10 +271,6 @@
     <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
       <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
       <Name>MvcContrib.Castle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj">
-      <Project>{9B885FC4-45C0-4526-9253-A799238EDD66}</Project>
-      <Name>MvcContrib.NHamlViewEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
       <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
@@ -358,24 +345,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="BrailViewEngine\Views\view.brail">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlApplication\index.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlController\custom.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlController\index.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\application.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\NHamlController.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\specificMaster.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

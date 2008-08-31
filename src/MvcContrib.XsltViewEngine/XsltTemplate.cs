@@ -8,20 +8,10 @@ namespace MvcContrib.XsltViewEngine
 {
 	public class XsltTemplate
 	{
-		private readonly string _viewName;
-		private readonly string _viewUrl;
 		private readonly MvpXslTransform _transform;
 
-		public XsltTemplate(IViewSourceLoader viewSourceLoader, string controllerName, string viewName)
+		public XsltTemplate(IViewSourceLoader viewSourceLoader,string viewPath)
 		{
-			_viewName = viewName;
-			_viewUrl = string.Format("/{0}/{1}", controllerName, _viewName);
-
-			string viewPath = string.Concat(controllerName, "/", viewName);
-			if( !Path.HasExtension(viewPath) )
-			{
-				viewPath += ".xslt";
-			}
 
 			if( viewSourceLoader == null )
 			{
@@ -46,16 +36,6 @@ namespace MvcContrib.XsltViewEngine
 					_transform.Load(xmlReader);
 				}
 			}
-		}
-
-		public string ViewName
-		{
-			get { return _viewName; }
-		}
-
-		public string ViewUrl
-		{
-			get { return _viewUrl; }
 		}
 
 		public MvpXslTransform XslTransformer
