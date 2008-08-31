@@ -94,7 +94,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			string expected = "Master Template View Template";
 			var context = new ViewContext(_controllerContext, "view", null, null);
-			_factory.FindView(_controllerContext, "view", null).View.Render(context, _output);
+			_factory.FindView(_controllerContext, "view", "master").View.Render(context, _output);
 			string output = _output.ToString();
 			Assert.AreEqual(expected, output);
 		}

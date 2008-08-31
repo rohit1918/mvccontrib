@@ -9,10 +9,11 @@ namespace MvcContrib.ViewFactories
 		private readonly IViewSourceLoader _viewSourceLoader;
         public XsltViewFactory(IViewSourceLoader loader)
         {
+
+            if(loader==null)
+                throw new ArgumentNullException();
+
             _viewSourceLoader = loader;
-        }
-		public XsltViewFactory():this(new FileSystemViewSourceLoader())	
-		{
             MasterLocationFormats = new string[0];
 
             ViewLocationFormats = new[]
@@ -23,15 +24,17 @@ namespace MvcContrib.ViewFactories
 
             PartialViewLocationFormats = ViewLocationFormats;
         }
+		public XsltViewFactory():this(new FileSystemViewSourceLoader())	
+		{
+        }
+        
         protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
         {
             return CreateView(controllerContext, partialPath, null);
         }
 
-        protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
-        {
-            
-            
+	    protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
+        {                        
             if (!(controllerContext.Controller.ViewData.Model is XsltViewData))
                 throw new ArgumentException("the view data object should be of type XsltViewData");
 
@@ -41,7 +44,11 @@ namespace MvcContrib.ViewFactories
             return view;
         }
 
-        //public XsltViewFactory(IViewSourceLoader viewSourceLoader)
+        public IView CreateView(string viewPath, string masterPath,ControllerContext controllerContext)
+        {
+            return CreateView(controllerContext, viewPath, masterPath);
+        }
+            //public XsltViewFactory(IViewSourceLoader viewSourceLoader)
         //{
         //    if (viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
 
