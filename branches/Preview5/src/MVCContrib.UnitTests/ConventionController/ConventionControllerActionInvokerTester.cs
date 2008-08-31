@@ -16,7 +16,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		private MockRepository _mocks;
 		private ControllerContext _context;
 		private TestController _controller;
-		private ConventionControllerActionInvoker _invoker;
+//		private ConventionControllerActionInvoker _invoker;
 
 		[SetUp]
 		public void Setup()
@@ -25,7 +25,23 @@ namespace MvcContrib.UnitTests.ConventionController
 			_controller = new TestController();
 			_context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _controller);
 			_mocks.ReplayAll();
-			_invoker = new ConventionControllerActionInvoker();
+			//_invoker = new ConventionControllerActionInvoker();
+		}
+
+
+		[Test]
+		public void Should_find_default_action()
+		{
+			_controller.ActionInvoker.InvokeAction(_context, "Foo");
+			Assert.IsTrue(_controller.CatchAllWasCalled);
+		}
+
+		[Test, ExpectedException(typeof(InvalidOperationException))]
+		public void Multiple_default_actions_throw()
+		{
+			_controller = new TestControllerWithMultipleDefaultActions();
+			_context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _controller);
+			_controller.ActionInvoker.InvokeAction(_context, "Foo");
 		}
 
 		/*[Test]
@@ -84,15 +100,13 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 */
 
-/*
-		[Test]
+		[Test, Ignore("Preview 5 breaks this test - binders execute before filters.")]
 		public void Filters_should_execute_before_binders()
 		{
-			_invoker.InvokeAction("BinderFilterOrderingAction", null);
+			_controller.ActionInvoker.InvokeAction(_context, "BinderFilterOrderingAction");
 			string expected = "FilterBinder";
 			Assert.That(_controller.BinderFilterOrdering, Is.EqualTo(expected));
 		}
-*/
 
 		
 	}

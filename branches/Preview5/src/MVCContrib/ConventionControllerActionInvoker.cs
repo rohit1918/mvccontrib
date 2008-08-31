@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.MetaData;
@@ -51,7 +52,8 @@ namespace MvcContrib
 			set { _controllerDescriptor = value; }
 		}
 
-		protected override MethodInfo FindActionMethod(string actionName) {
+		protected override MethodInfo FindActionMethod(string actionName) 
+		{
 			var method = base.FindActionMethod(actionName);
 
 			//No actions found - look to see if there's a DefaultAction instead.
