@@ -6,14 +6,12 @@ namespace MvcContrib.UnitTests.ConventionController
 {
 	class TestController : MvcContrib.ConventionController
 	{
-/*
-		public bool CancelAction;
-*/
 		public bool ActionWasCalled;
 		public bool? OnErrorResult = false;
 		public bool ActionExecutingCalled;
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
+		public bool CatchAllWasCalled;
 
 		public TestController()
 		{
@@ -21,6 +19,13 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		public TestController(IActionInvoker invokerToUse) : base(invokerToUse)
 		{
+		}
+
+		[DefaultAction]
+		public ActionResult CatchAll()
+		{
+			CatchAllWasCalled = true;
+			return new EmptyResult();
 		}
 
 		[TestFilter]
@@ -69,7 +74,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			ActionExecutingCalled = true;
-			filterContext.Result = new EmptyResult();
 		}
 
 		public ActionResult XmlResult()
@@ -90,6 +94,21 @@ namespace MvcContrib.UnitTests.ConventionController
 		public RedirectToRouteResult RedirectActionOnAnotherController()
 		{
 			return RedirectToAction<AnotherTestController>(c => c.SomeAction(2));
+		}
+	}
+
+	internal class TestControllerWithMultipleDefaultActions : TestController
+	{
+		[DefaultAction]
+		public ActionResult Action1()
+		{
+			return new EmptyResult();
+		}
+
+		[DefaultAction]
+		public ActionResult Action2()
+		{
+			return new EmptyResult();
 		}
 	}
 }
