@@ -96,21 +96,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(_invoker.SelectedAction.Name, Is.EqualTo("BasicAction"));
 		}
 
-		[Test]
-		public void When_binding_a_non_nullable_value_type_and_no_value_is_specified_then_the_default_for_that_type_should_be_returned()
-		{
-			_invoker.InvokeAction(_context, "BasicAction");
-			Assert.That(_controller.BasicActionResult, Is.EqualTo(0));
-		}
-
-		[Test]
-		public void The_binder_should_only_be_replaced_if_the_default_binder_is_the_DefaultModelBinder()
-		{
-			ModelBinders.DefaultBinder = new BinderStub();
-			_invoker.InvokeAction(_context, "BasicAction");
-			Assert.That(_controller.BasicActionResult, Is.EqualTo(5));
-		}
-
 		[Test, Ignore("Preview 5 breaks this test - binders execute before filters.")]
 		public void Filters_should_execute_before_binders()
 		{
@@ -119,29 +104,11 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(_controller.BinderFilterOrdering, Is.EqualTo(expected));
 		}
 
-		[TearDown]
-		public void Teardown()
-		{
-			ModelBinders.DefaultBinder = null;
-		}
-
 		private class TestActionInvoker : ConventionControllerActionInvoker
 		{
 			public void SetContext(ControllerContext ctx)
 			{
 				ControllerContext = ctx;
-			}
-		}
-
-		private class BinderStub : DefaultModelBinder 
-		{
-			public override object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState) 
-			{
-				if(modelType == typeof(int))
-				{
-					return 5;
-				}
-				return base.GetValue(controllerContext, modelName, modelType, modelState);
 			}
 		}
 
