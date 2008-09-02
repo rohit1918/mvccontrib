@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.NHamlViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.NHamlViewEngine
@@ -59,7 +61,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}
@@ -67,110 +70,93 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		[Test]
 		public void Can_Compile_View_With_Custom_View_Data()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
 			var context = new ViewContext(_controllerContext, "custom", _viewData, new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "custom", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Specific_Master()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", "specificMaster", _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "index", "specificMaster");
+			viewResult.View.Render(context, _output);
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix m");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Controller_Master()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
+			var context = new ViewContext(_controllerContext, "index", _viewData,
 			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		public void Can_Compile_View_With_Application_Master()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
 			_controllerContext.RouteData.Values["controller"] = "NHamlApplication";
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix me");
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidOperationException))]
 		public void Cant_Compile_Missing_View()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			var context = new ViewContext(_controllerContext, "missingView", null, _viewData,
-			                              new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "missingView", null);
+			Assert.That(viewResult.View, Is.Null);
+			Assert.That(viewResult.SearchedLocations.Count(), Is.EqualTo(1));
 
-			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix me");
 		}
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void Cant_Compile_View_With_Missing_Master()
 		{
-/*
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", "missingMaster", _viewData,
-			                              new TempDataDictionary());
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
 
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "index", "missingMaster");
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
-*/
-			Assert.Fail("Fix me");
 		}
 	}
 }

@@ -38,11 +38,11 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		}
 
 		[Test]
-		public void View_Renders_Output_To_HttpContext_Response_Output()
+		public void View_Renders_Output_To_Writer()
 		{
+			_viewContext.ViewData.Model = "Rendered by NHaml";
 			var view = new TestView();
-			view.SetViewData(new ViewDataDictionary<string>("Rendered by NHaml"));
-			view.RenderView(_viewContext);
+			view.Render(_viewContext, _output);
 			Assert.AreEqual("Rendered by NHaml", _output.ToString());
 		}
 
@@ -50,9 +50,8 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 		public void View_Creates_AjaxHelper_On_Render()
 		{
 			var view = new TestView();
-
 			Assert.IsNull(view.Ajax);
-			view.RenderView(_viewContext);
+			view.Render(_viewContext, _output);
 			Assert.IsNotNull(view.Ajax);
 		}
 
@@ -62,7 +61,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			var view = new TestView();
 
 			Assert.IsNull(view.Html);
-			view.RenderView(_viewContext);
+			view.Render(_viewContext, _output);
 			Assert.IsNotNull(view.Html);
 		}
 
@@ -72,7 +71,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			var view = new TestView();
 
 			Assert.IsNull(view.Url);
-			view.RenderView(_viewContext);
+			view.Render(_viewContext, _output);
 			Assert.IsNotNull(view.Url);
 		}
 
