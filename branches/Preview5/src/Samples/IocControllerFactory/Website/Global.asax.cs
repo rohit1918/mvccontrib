@@ -9,6 +9,7 @@ using MvcContrib.Services;
 using MvcContrib.StructureMap;
 using StructureMap;
 using Website.Controllers;
+using Website.Models;
 
 namespace Website
 {
@@ -40,6 +41,7 @@ namespace Website
         {
             StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;
             StructureMapConfiguration.BuildInstancesOf<HomeController>().TheDefaultIsConcreteType<HomeController>();
+			StructureMapConfiguration.BuildInstancesOf<ILinkRepository>().TheDefaultIsConcreteType<InMemoryLinkRepository>();
             DependencyResolver.InitializeWith(new StructureMapDependencyResolver());
             ControllerBuilder.Current.SetControllerFactory(new IoCControllerFactory());
         }
