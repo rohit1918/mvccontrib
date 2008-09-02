@@ -96,14 +96,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			Assert.That(_invoker.SelectedAction.Name, Is.EqualTo("BasicAction"));
 		}
 
-		[Test, Ignore("Preview 5 breaks this test - binders execute before filters.")]
-		public void Filters_should_execute_before_binders()
-		{
-			_controller.ActionInvoker.InvokeAction(_context, "BinderFilterOrderingAction");
-			string expected = "FilterBinder";
-			Assert.That(_controller.BinderFilterOrdering, Is.EqualTo(expected));
-		}
-
 		private class TestActionInvoker : ConventionControllerActionInvoker
 		{
 			public void SetContext(ControllerContext ctx)
