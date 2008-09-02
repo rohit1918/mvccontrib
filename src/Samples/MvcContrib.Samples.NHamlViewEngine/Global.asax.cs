@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.ControllerFactories;
+using MvcContrib.NHamlViewEngine;
 
 namespace MvcContrib.Samples.NHamlViewEngine
 {
@@ -25,7 +26,7 @@ namespace MvcContrib.Samples.NHamlViewEngine
 				Defaults = new RouteValueDictionary(new { controller = "Home", action = "index", id = "" })
 			});
 
-			ControllerBuilder.Current.SetControllerFactory(new NHamlControllerFactory());
+			ViewEngines.Engines.Add(new NHamlViewFactory());
 		}
 	}
 }

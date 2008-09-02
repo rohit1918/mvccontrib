@@ -39,8 +39,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_mocks.Replay(_controller);
 			
 			var controllerContext = new ControllerContext(requestContext, _controller);
-			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), 
-				                null);
+			_viewContext = new ViewContext(controllerContext, "index", new ViewDataDictionary(), null);
 
 			_viewEngine = new BooViewEngine
 			              	{
@@ -132,8 +131,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		public void Layout_And_View_Should_Have_ViewContext()
 		{
 			_mocks.ReplayAll();
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", "/Master");
-			view.RenderView(_viewContext);
+			BrailBase view = _viewEngine.Process("view", "/Master");
+			view.Render(_viewContext, _httpContext.Response.Output);
 			Assert.IsNotNull(view.ViewContext);
 			Assert.AreEqual(view.ViewContext, view.Layout.ViewContext);
 		}
@@ -144,7 +143,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_mocks.ReplayAll();
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
 			_viewEngine.Options.BaseType = "MvcContrib.UnitTests.BrailViewEngine.TestBrailBase";
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
+			BrailBase view = _viewEngine.Process("view", null);
 			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
 		}
 
@@ -155,15 +154,15 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 
 		private string GetViewOutput(string viewName, string masterName)
 		{
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
-			view.RenderView(_viewContext);
+			BrailBase view = _viewEngine.Process(viewName, masterName);
+			view.Render(_viewContext, _httpContext.Response.Output);
 			return _httpContext.Response.Output.ToString();
 		}
 	}
 
 	public abstract class TestBrailBase : BrailBase
 	{
-		protected TestBrailBase(BooViewEngine viewEngine, TextWriter output) : base(viewEngine, output)
+		protected TestBrailBase(BooViewEngine viewEngine) : base(viewEngine)
 		{
 		}
 	}

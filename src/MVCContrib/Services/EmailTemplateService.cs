@@ -126,7 +126,9 @@ namespace MvcContrib.Services
                 filter = new MemoryStream();
                 response.Filter = filter;
 
-                _viewEngine.RenderView(viewContext);
+				//NOTE: Preview 5: Can no longer access the MasterName from the ViewContext, so this might break
+				//NOTE: Preview 5: Although Render can supposedly render to a TextWriter, as far as I can tell the WebFormView completely ignores this.
+				_viewEngine.FindView(viewContext.Controller.ControllerContext, viewContext.ViewName, null).View.Render(viewContext, /*new StringWriter()*/ viewContext.HttpContext.Response.Output);
 
                 response.Flush(); //flush content to our filter
                 message = ProcessContentStream(filter, response.ContentEncoding);

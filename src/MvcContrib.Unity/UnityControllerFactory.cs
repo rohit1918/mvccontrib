@@ -8,7 +8,7 @@ namespace MvcContrib.Unity
 {
     public class UnityControllerFactory : DefaultControllerFactory
     {
-        protected override IController CreateController(RequestContext context, string controllerName)
+        public override IController CreateController(RequestContext context, string controllerName)
         {
             Type type = GetControllerType(controllerName);
 

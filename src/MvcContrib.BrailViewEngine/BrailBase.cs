@@ -14,6 +14,8 @@
 
 // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 
+using MvcContrib.UI.Html;
+
 namespace MvcContrib.BrailViewEngine
 {
 	using System;
@@ -28,7 +30,7 @@ namespace MvcContrib.BrailViewEngine
 	/// support all the behind the scenes magic such as variable to PropertyBag trasnlation, 
 	/// resources usage, etc. 
 	/// </summary>
-	public abstract class BrailBase : IViewDataContainer
+	public abstract class BrailBase : IView, IViewDataContainer
 	{
 		protected IController __controller;
 		protected ViewContext __viewContext;
@@ -66,11 +68,10 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		/// <param name="viewEngine">The view engine.</param>
 		/// <param name="output">The output.</param>
-		public BrailBase(BooViewEngine viewEngine, TextWriter output)
+		public BrailBase(BooViewEngine viewEngine)
 //		(BooViewEngine viewEngine, TextWriter output, IEngineContext context, IController __controller, IControllerContext __controllerContext)
 		{
 			this.viewEngine = viewEngine;
-			outputStream = output;
 		}
 
 		public BrailBase Layout { get; set; }
@@ -207,13 +208,13 @@ namespace MvcContrib.BrailViewEngine
 		public void OutputSubView(string subviewName, TextWriter writer, IDictionary parameters)
 		{
 			string subViewFileName = GetSubViewFilename(subviewName);
-			BrailBase subView = viewEngine.GetCompiledScriptInstance(subViewFileName, writer);
+			BrailBase subView = viewEngine.GetCompiledScriptInstance(subViewFileName);
 			subView.SetParent(this);
 			foreach(DictionaryEntry entry in parameters)
 			{
 				subView.properties[entry.Key] = entry.Value;
 			}
-			subView.RenderView(__viewContext);
+			subView.Render(__viewContext, writer);
 			foreach(DictionaryEntry entry in subView.Properties)
 			{
 				if (subView.Properties.Contains(entry.Key + ".@bubbleUp") == false)
@@ -413,6 +414,7 @@ namespace MvcContrib.BrailViewEngine
 
 			properties["html"] = new HtmlHelper(viewContext, this);
 			properties["url"] = new UrlHelper(viewContext);
+			properties["form"] = new FormHelper() { ViewContext = viewContext };
 
 //			if (controllerContext.Resources != null)
 //			{
@@ -524,10 +526,19 @@ namespace MvcContrib.BrailViewEngine
 //
 //		#endregion
 
-		public void RenderView(ViewContext viewContext)
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
 			__controller = viewContext.Controller;
 			__viewContext = viewContext;
+
+			if( Layout != null )
+			{
+				Layout.ChildOutput = outputStream = new StringWriter();
+			}
+			else
+			{
+				outputStream = writer;
+			}
 
 			InitProperties(__viewContext);
 
@@ -543,10 +554,9 @@ namespace MvcContrib.BrailViewEngine
 			if (Layout != null)
 			{
 				Layout.SetParent(this);
-				Layout.ViewContext = viewContext;
 				try
 				{
-					Layout.Run();
+					Layout.Render(__viewContext, writer);
 				}
 				catch (Exception e)
 				{

@@ -4,9 +4,9 @@ namespace MvcContrib.UI.Html
 {
 	public static class HtmlHelperExtensions
 	{
-		public static IFormHelper Form(this HtmlHelper helper)
+		public static IFormHelper FormHelper(this HtmlHelper helper)
 		{
-			return FormHelper.GetInstance(helper.ViewContext);
+			return Html.FormHelper.GetInstance(helper.ViewContext);
 		}
 
 		public static IValidationHelper Validation(this HtmlHelper helper)

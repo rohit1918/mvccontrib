@@ -102,22 +102,24 @@ namespace MvcContrib.Castle
 			return _engine.GetTemplate(targetView);
 		}
 
-		public void RenderView(ViewContext viewContext)
+		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
 		{
-			CreateView(viewContext).RenderView();
+			//TODO: Preview 5: Does this method need any custom logic?
+			return FindView(controllerContext, partialViewName, null);
 		}
 
-		public NVelocityView CreateView(ViewContext viewContext)
-	    {
-			var controllerName = (string)viewContext.RouteData.Values["controller"];
+		//TODO: Preview 5: Instead of throwing exceptions if the view cannot be found, return a ViewEngineResult with SearchedLocations populated.
+		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+		{
+			var controllerName = (string)controllerContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
 
-			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewContext.ViewName);
-			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
+			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewName);
+			Template masterTemplate = ResolveMasterTemplate(masterName);
 
-	    	var view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
+			var view = new NVelocityView(viewTemplate, masterTemplate);
 
-			return view;
-	    }
+			return new ViewEngineResult(view);
+		}
 	}
 }

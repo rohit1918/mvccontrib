@@ -4,34 +4,71 @@ using MvcContrib.XsltViewEngine;
 
 namespace MvcContrib.ViewFactories
 {
-	public class XsltViewFactory : IViewEngine	{
+	public class XsltViewFactory : System.Web.Mvc.VirtualPathProviderViewEngine, IViewEngine
+    {
 		private readonly IViewSourceLoader _viewSourceLoader;
+        public XsltViewFactory(IViewSourceLoader loader)
+        {
 
-		public XsltViewFactory()
-			: this(new FileSystemViewSourceLoader())
+            if(loader==null)
+                throw new ArgumentNullException();
+
+            _viewSourceLoader = loader;
+            MasterLocationFormats = new string[0];
+
+            ViewLocationFormats = new[]
+            {
+                "~/Views/{1}/{0}.xslt",   
+                "~/Views/Shared/{0}.xslt"
+            };
+
+            PartialViewLocationFormats = ViewLocationFormats;
+        }
+		public XsltViewFactory():this(new FileSystemViewSourceLoader())	
 		{
-		}
+        }
+        
+        protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
+        {
+            return CreateView(controllerContext, partialPath, null);
+        }
 
-		public XsltViewFactory(IViewSourceLoader viewSourceLoader)
-		{
-			if (viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
+	    protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
+        {                        
+            if (!(controllerContext.Controller.ViewData.Model is XsltViewData))
+                throw new ArgumentException("the view data object should be of type XsltViewData");
 
-			_viewSourceLoader = viewSourceLoader;
-		}
+            var viewTemplate = new XsltTemplate(_viewSourceLoader, viewPath);
 
-	    public void RenderView(ViewContext viewContext)
-	    {
-			//First check if the data is valid then start working.
-			if (!(viewContext.ViewData.Model is XsltViewData))
-				throw new ArgumentException("the view data object should be of type XsltViewData");
+            var view = new XsltView(viewTemplate, controllerContext.Controller.ViewData.Model as XsltViewData, string.Empty, controllerContext.HttpContext);
+            return view;
+        }
+
+        public IView CreateView(string viewPath, string masterPath,ControllerContext controllerContext)
+        {
+            return CreateView(controllerContext, viewPath, masterPath);
+        }
+            //public XsltViewFactory(IViewSourceLoader viewSourceLoader)
+        //{
+        //    if (viewSourceLoader == null) throw new ArgumentNullException("viewSourceLoader");
+
+        //    _viewSourceLoader = viewSourceLoader;
+        //}
+
+        //public void RenderView(ViewContext viewContext)
+        //{
+        //    //First check if the data is valid then start working.
+        //    if (!(viewContext.ViewData.Model is XsltViewData))
+        //        throw new ArgumentException("the view data object should be of type XsltViewData");
 
 
-			var controllerName = (string)viewContext.RouteData.Values["controller"];
+        //    var controllerName = (string)viewContext.RouteData.Values["controller"];
 
-			var viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
+        //    var viewTemplate = new XsltTemplate(_viewSourceLoader, controllerName, viewContext.ViewName);
 
-			var view = new XsltView(viewTemplate, viewContext.ViewData.Model as XsltViewData, string.Empty, viewContext.HttpContext);
-	    	view.RenderView(viewContext);
-	    }
-	}
+        //    var view = new XsltView(viewTemplate, viewContext.ViewData.Model as XsltViewData, string.Empty, viewContext.HttpContext);
+        //    view.RenderView(viewContext);
+        //}
+
+    }
 }

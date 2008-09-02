@@ -6,7 +6,7 @@ namespace MvcContrib.Attributes
 {
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-	public abstract class AbstractParameterBinderAttribute : Attribute, IParameterBinder
+	public abstract class AbstractParameterBinderAttribute : CustomModelBinderAttribute, IModelBinder
 	{
 		public AbstractParameterBinderAttribute(string prefix)
 			: this(prefix, RequestStore.Params)
@@ -31,7 +31,11 @@ namespace MvcContrib.Attributes
 			get { return _requestStore; }
 		}
 
-		public abstract object Bind(Type targetType, string paramName, ControllerContext context);
+		public override IModelBinder GetBinder() {
+			return this;
+		}
+
+		public abstract object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState);
 	}
 
 	public enum RequestStore

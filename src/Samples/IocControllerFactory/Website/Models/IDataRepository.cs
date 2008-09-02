@@ -7,13 +7,11 @@ using StructureMap;
 
 namespace Website.Models
 {
-    [PluginFamily("Default")]
     public interface ILinkRepository
     {
         IEnumerable<Link> GetLinks();
     }
 
-    [Pluggable("Default")]
     public class  InMemoryLinkRepository:ILinkRepository
     {
         public IEnumerable<Link> GetLinks()

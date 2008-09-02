@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.NHamlViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.NHamlViewEngine
@@ -36,7 +38,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			SetupResult.For(httpContext.Response).Return(httpResponse);
 			SetupResult.For(httpResponse.Output).Return(_output);
 			var requestContext = new RequestContext(httpContext, new RouteData());
-			var controller = _mocks.DynamicMock<IController>();
+			var controller = _mocks.DynamicMock<ControllerBase>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values["controller"] = "NHamlController";
@@ -58,9 +60,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}
@@ -73,9 +75,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "custom", null, _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "custom", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "custom", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}
@@ -88,9 +90,9 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", "specificMaster", _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "index", "specificMaster");
+			viewResult.View.Render(context, _output);
 			_mocks.VerifyAll();
 		}
 
@@ -102,9 +104,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
+			var context = new ViewContext(_controllerContext, "index", _viewData,
 			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}
@@ -118,25 +121,24 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			_mocks.ReplayAll();
 
 			_controllerContext.RouteData.Values["controller"] = "NHamlApplication";
-			var context = new ViewContext(_controllerContext, "index", null, _viewData,
-			                              new TempDataDictionary());
-			viewFactory.RenderView(context);
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidOperationException))]
 		public void Cant_Compile_Missing_View()
 		{
 			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
 			var viewFactory = new NHamlViewFactory(viewSourceLoader);
 
 			_mocks.ReplayAll();
-			var context = new ViewContext(_controllerContext, "missingView", null, _viewData,
-			                              new TempDataDictionary());
+			var viewResult = viewFactory.FindView(_controllerContext, "missingView", null);
+			Assert.That(viewResult.View, Is.Null);
+			Assert.That(viewResult.SearchedLocations.Count(), Is.EqualTo(1));
 
-			viewFactory.RenderView(context);
 			_mocks.VerifyAll();
 		}
 
@@ -149,10 +151,10 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 
-			var context = new ViewContext(_controllerContext, "index", "missingMaster", _viewData,
-			                              new TempDataDictionary());
+			var context = new ViewContext(_controllerContext, "index", _viewData, new TempDataDictionary());
 
-			viewFactory.RenderView(context);
+			var viewResult = viewFactory.FindView(_controllerContext, "index", "missingMaster");
+			viewResult.View.Render(context, _output);
 
 			_mocks.VerifyAll();
 		}

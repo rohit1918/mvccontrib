@@ -14,7 +14,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	public class XsltViewTest : ViewTestBase
 	{
 		private const string controller = "MyController";
-		private const string view = "MyView";
+		private const string viewName = "MyView";
 		private Controller _fakeController;
 
 		private IViewSourceLoader _viewSourceLoader;
@@ -56,13 +56,17 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-			var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(vData), 
+		    _fakeController.ViewData.Model = vData;
+			var viewContext = new ViewContext(HttpContext, routeData, _fakeController, viewName, new ViewDataDictionary(vData), 
 			                                          new TempDataDictionary());
 
-			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
-			viewFactory.RenderView(viewContext);
+            var viewFactory = new XsltViewFactory(_viewSourceLoader);
+            var view = viewFactory.CreateView("MyController/MyView.xslt", null, new ControllerContext(HttpContext, routeData, _fakeController));
+            
 
-			string actual = Response.Output.ToString().Replace("\r\n", "");
+			view.Render(viewContext, Response.Output);
+            
+            string actual = Response.Output.ToString().Replace("\r\n", "");
 
 			XmlDocument xDoc = LoadXmlDocument("ViewTest.xml");
 

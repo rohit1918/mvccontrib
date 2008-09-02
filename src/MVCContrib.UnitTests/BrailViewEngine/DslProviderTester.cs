@@ -12,12 +12,13 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 	{
 		private MockRepository _mocks;
 		private BrailBase _view;
-
+	    private BooViewEngine _viewEngine;
 		[SetUp]
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-            _view = _mocks.StrictMock<BrailBase>(null, null);
+		    _viewEngine = _mocks.DynamicMock<BooViewEngine>();
+            _view = _mocks.StrictMock<BrailBase>(_viewEngine);
 		}
 
 		[Test]

@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Ninject;
 using Ninject.Conditions;
 using Ninject.Core;
@@ -48,7 +49,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
         private class NinjaController : IController
         {
-            public void Execute(ControllerContext controllerContext)
+            public void Execute(RequestContext controllerContext)
             {
                 throw new NotImplementedException();
             }
@@ -62,7 +63,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
                 IsDisposed = true;
             }
 
-            public void Execute(ControllerContext controllerContext)
+            public void Execute(RequestContext controllerContext)
             {
                 throw new NotImplementedException();
             }

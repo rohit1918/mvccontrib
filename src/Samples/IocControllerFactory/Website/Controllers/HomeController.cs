@@ -8,8 +8,6 @@ using Website.Models;
 
 namespace Website.Controllers
 {
-    [PluginFamily("Default")]
-    [Pluggable("Default")]
     public class HomeController : Controller
     {
         private readonly ILinkRepository linkRepository;

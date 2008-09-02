@@ -28,6 +28,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 		{
 			InitializeWindsor();
 			AddRoutes();
+			ViewEngines.Engines.Add(new Castle.NVelocityViewFactory());
 		}
 
 		/// <summary>

@@ -8,7 +8,7 @@ using System.Web;
 
 namespace MvcContrib.XsltViewEngine
 {
-	public class XsltView : IViewDataContainer
+	public class XsltView : IViewDataContainer,IView
 	{
 		private readonly string ajaxDeclaration;
 		private readonly XsltViewData viewData;
@@ -49,12 +49,12 @@ namespace MvcContrib.XsltViewEngine
 					construct.AddMessage(message.Content, message.MessageType.ToString().ToUpperInvariant(), message.ControlID);
 			});
 
-			construct.AppendPage(viewTemplate.ViewName, viewTemplate.ViewUrl, viewData.PageVars);
+			construct.AppendPage("", viewTemplate.ViewUrl, viewData.PageVars);
 		}
 
 		#region IView Members
 
-		public void RenderView(ViewContext viewContext)
+        public void RenderView(ViewContext viewContext, TextWriter writer)
 		{
 			this.viewContext = viewContext;
 
@@ -64,25 +64,25 @@ namespace MvcContrib.XsltViewEngine
 			args.AddParam("AjaxProScriptReferences", "", ajaxDeclaration);
 
 			var sb = new StringBuilder();
-			using (var sw = new StringWriter(sb))
-			{
-				xslTransformer.Transform(new XmlInput(construct.Message.CreateNavigator()), args,
-				                         new XmlOutput(sw));
-			}
 
-			PostTransform(ref sb);
-
-			viewContext.HttpContext.Response.Output.Write(sb.ToString());
+            xslTransformer.Transform(new XmlInput(construct.Message.CreateNavigator()), args,
+				                         new XmlOutput(writer));
 		}
 
 		#endregion
 
-		public virtual void PostTransform(ref StringBuilder sb)
-		{
-		}
 
-        
 
-        
-	}
+
+
+
+        #region IView Members
+
+        public void Render(ViewContext viewContext, TextWriter writer)
+        {
+            RenderView(viewContext, writer);
+        }
+
+        #endregion
+    }
 }

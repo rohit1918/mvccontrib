@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Castle.Windsor;
 using MvcContrib.Castle;
 using NUnit.Framework;
@@ -89,7 +90,7 @@ namespace MvcContrib.UnitTests.Castle
 				IsDisposed = true;
 			}
 
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 			}
 		}
@@ -111,7 +112,7 @@ namespace MvcContrib.UnitTests.Castle
 
 		public class WindsorSimpleController : IController
 		{
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 				throw new NotImplementedException();
 			}
@@ -126,7 +127,7 @@ namespace MvcContrib.UnitTests.Castle
 				_dependency = dependency;
 			}
 
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 				throw new NotImplementedException();
 			}
