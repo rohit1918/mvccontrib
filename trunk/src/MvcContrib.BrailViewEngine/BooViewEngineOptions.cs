@@ -14,6 +14,8 @@
 
 // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 
+using MvcContrib.ViewFactories;
+
 namespace MvcContrib.BrailViewEngine
 {
 	using System.Web.Mvc;
@@ -33,7 +35,9 @@ namespace MvcContrib.BrailViewEngine
 			AssembliesToReference.Add(typeof(BooViewEngineOptions).Assembly); //Brail's assembly
 			AssembliesToReference.Add(typeof(Controller).Assembly); //MVC Framework's assembly
 			AssembliesToReference.Add(typeof(AssertMacro).Assembly); //Boo.Lang.Extensions assembly
+			AssembliesToReference.Add(typeof(IViewSourceLoader).Assembly); // MvcContrib assembly
 
+			NamespacesToImport.Add("MvcContrib.UI.Html");
 			NamespacesToImport.Add("MvcContrib.BrailViewEngine");
 			NamespacesToImport.Add("System.Web.Mvc");
 		}

@@ -67,7 +67,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			var responseBuilder = new XmlResponseBuilder(HttpContext);
 			var pageVars = new Dictionary<string, string> {{"myPageVar", "pageVar"}};
 			responseBuilder.InitMessageStructure();
-			responseBuilder.AppendPage("MyPage", "http://mysite.com/mycontroller/mypage", pageVars);
+			responseBuilder.AppendPage("", "http://mysite.com/mycontroller/mypage", pageVars);
 
 			Assert.AreEqual(expected.OuterXml, responseBuilder.Message.OuterXml);
 		}

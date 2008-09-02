@@ -201,7 +201,6 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			public override void OnActionExecuting(ActionExecutingContext filterContext)
 			{
-				filterContext.Cancel = false;
 			}
 		}
 
@@ -209,7 +208,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			public override void OnActionExecuting(ActionExecutingContext filterContext)
 			{
-				filterContext.Cancel = true;
+				filterContext.Result = new EmptyResult();
 			}
 		}
 
@@ -226,8 +225,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 			public bool DoInvokeAction(string action)
 			{
-				ActionInvoker = new ConventionControllerActionInvoker(ControllerContext);
-				return ActionInvoker.InvokeAction(action, null);
+				return ActionInvoker.InvokeAction(ControllerContext, action);
 			}
 
 			[FilterReturnsTrue]

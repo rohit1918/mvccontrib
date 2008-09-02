@@ -40,14 +40,20 @@ namespace MvcContrib.ViewFactories
 			}
 		}
 
-	    public void RenderView(ViewContext viewContext)
-	    {
-			var controller = viewContext.RouteData.Values["controller"] as string;
+		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
+		{
+			return FindView(controllerContext, partialViewName, null);
+		}
 
-			string viewName = string.Concat(controller, "/", viewContext.ViewName);
+		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+		{
+			var controller = controllerContext.RouteData.Values["controller"] as string;
 
-	    	BrailBase view = _viewEngine.Process(viewContext.HttpContext.Response.Output, viewName, viewContext.MasterName);
-			view.RenderView(viewContext);
-	    }
+			string fullViewName = string.Concat(controller, "/", viewName);
+
+			IView view = _viewEngine.Process(fullViewName, masterName);
+
+			return new ViewEngineResult(view);
+		}
 	}
 }

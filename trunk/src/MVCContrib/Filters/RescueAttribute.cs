@@ -3,8 +3,7 @@ using System.Threading;
 using System.Web.Mvc;
 using MvcContrib.Services;
 
-namespace MvcContrib.Filters
-{
+namespace MvcContrib.Filters {
 	/// <summary>
 	/// Filter attribute for handling errors.
 	/// When an error occurs, the RescueAttribute will first search for a view that matches the exception name,
@@ -41,8 +40,7 @@ namespace MvcContrib.Filters
 	/// </summary>
 	[Serializable]
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
-	public class RescueAttribute : FilterAttribute, IExceptionFilter
-	{
+	public class RescueAttribute : FilterAttribute, IExceptionFilter {
 		private string _view;
 		private readonly Type[] _exceptionsTypes;
 
@@ -51,8 +49,7 @@ namespace MvcContrib.Filters
 		/// </summary>
 		/// <param name="view">The name of the view to render when an exception is thrown if no matching view is found.</param>
 		public RescueAttribute(string view)
-			: this(view, typeof(Exception))
-		{
+			: this(view, typeof(Exception)) {
 		}
 
 		/// <summary>
@@ -60,17 +57,14 @@ namespace MvcContrib.Filters
 		/// </summary>
 		/// <param name="view">The name of the view to render when an exception is thrown if no matching view is found.</param>
 		/// <param name="exceptionTypes">The types of exception that this attribute will be restricted in catching.</param>
-		public RescueAttribute(string view, params Type[] exceptionTypes)
-		{
-			if(string.IsNullOrEmpty(view))
-			{
+		public RescueAttribute(string view, params Type[] exceptionTypes) {
+			if (string.IsNullOrEmpty(view)) {
 				throw new ArgumentException("view is required", "view");
 			}
 
 			_view = view;
 
-			if(exceptionTypes != null)
-			{
+			if (exceptionTypes != null) {
 				_exceptionsTypes = exceptionTypes;
 			}
 
@@ -97,23 +91,45 @@ namespace MvcContrib.Filters
 					if (AutoLocate) {
 						if (ViewExists(baseExceptionType, filterContext)) {
 							ViewName = baseExceptionType.Name;
-							ActivateSpecificRescue(filterContext.Exception, filterContext);
+							filterContext.Result = CreateActionResult(filterContext.Exception, filterContext);
 							filterContext.ExceptionHandled = true;
 							return;
 						}
 
 						if (ViewExists(expectedExceptionType, filterContext)) {
 							ViewName = expectedExceptionType.Name;
-							ActivateSpecificRescue(filterContext.Exception, filterContext);
+							filterContext.Result = CreateActionResult(filterContext.Exception, filterContext);
 							filterContext.ExceptionHandled = true;
 							return;
 						}
 					}
-					ActivateSpecificRescue(filterContext.Exception, filterContext);
+					filterContext.Result = CreateActionResult(filterContext.Exception, filterContext);
 					filterContext.ExceptionHandled = true;
 					return;
 				}
 			}
+		}
+
+		protected virtual ActionResult CreateActionResult(Exception exception, ExceptionContext context) {
+			var controller = (string)context.RouteData.Values["controller"];
+			var action = (string)context.RouteData.Values["action"];
+
+			var viewData = new ViewDataDictionary<HandleErrorInfo>(new HandleErrorInfo(exception, controller, action));
+
+			return new ViewResult 
+			{
+				ViewName = ViewName,
+				//MasterName = this.Master,
+				ViewData = viewData,
+				TempData = context.Controller.TempData
+			};
+		}
+
+		protected virtual ViewDataDictionary CreateViewData(Exception exception, ExceptionContext context) {
+			var controller = (string)context.RouteData.Values["controller"];
+			var action = (string)context.RouteData.Values["action"];
+
+			return new ViewDataDictionary<HandleErrorInfo>(new HandleErrorInfo(exception, controller, action));
 		}
 
 		/// <summary>
@@ -122,45 +138,20 @@ namespace MvcContrib.Filters
 		/// <param name="exceptionType">The type of exception that was thrown.</param>
 		/// <param name="controllerContext">The current controllercontext.</param> 
 		/// <returns>True if the view is found, otherwise false.</returns>
-		protected virtual bool ViewExists(Type exceptionType, ControllerContext controllerContext)
-		{
-			IViewLocator locator = new WebFormViewLocator();
-			try
-			{
-				locator.GetViewLocation(controllerContext, "Rescues/" + exceptionType.Name);
-				return true;
-			}
-			catch //the GetViewLocation throws an exception if it isn't found.
-			{
-				return false;
-			}
+		protected virtual bool ViewExists(Type exceptionType, ControllerContext controllerContext) {
+			string viewName = "Rescues/" + exceptionType.Name;
+			var viewResult = ViewEngines.DefaultEngine.FindView(controllerContext, viewName, null);
+			return viewResult.View != null;
 		}
 
-		protected virtual bool IsThreadAbortException(Type baseExceptionType)
-		{
+		protected virtual bool IsThreadAbortException(Type baseExceptionType) {
 			//ThreadAbortException could have occurred due to a direct call to HttpResponse.Redirect.
 			//This is perfectly valid, so we don't want to invoke the rescue.
-			if(baseExceptionType == typeof(ThreadAbortException))
-			{
+			if (baseExceptionType == typeof(ThreadAbortException)) {
 				return true;
 			}
 			return false;
 		}
-
-		protected virtual void ActivateSpecificRescue(Exception exception, ControllerContext controllerContext)
-		{
-			IViewEngine viewEngine = null;
-			if(controllerContext.Controller is Controller)
-				viewEngine = ((Controller)controllerContext.Controller).ViewEngine;
-			else if(DependencyResolver.Resolver != null)
-				viewEngine = DependencyResolver.Resolver.GetImplementationOf<IViewEngine>();
-
-			if(viewEngine == null)
-				viewEngine = new WebFormViewEngine();
-
-			viewEngine.RenderView(CreateViewContext(exception, controllerContext));
-		}
-
 
 		/// <summary>
 		/// Creates the ViewContext to be used when rendering the rescue.
@@ -168,24 +159,14 @@ namespace MvcContrib.Filters
 		/// <param name="exception">The exception which will become the ViewData.</param>
 		/// <param name="controllerContext">The current controllercpontext.</param>
 		/// <returns>A ViewContext object.</returns>
-		protected virtual ViewContext CreateViewContext(Exception exception, ControllerContext controllerContext)
-		{
-			TempDataDictionary tempData;
-			if(controllerContext.Controller is Controller)
-				tempData = ((Controller)controllerContext.Controller).TempData;
-			else
-			{
-				tempData = new TempDataDictionary();
-				//tempData = new TempDataDictionary(controllerContext.HttpContext);
-			}
-			return new ViewContext(controllerContext, ViewName, null, new ViewDataDictionary(exception), tempData);
+		protected virtual ViewContext CreateViewContext(Exception exception, ControllerContext controllerContext) {
+			return new ViewContext(controllerContext, ViewName, new ViewDataDictionary(exception), controllerContext.Controller.TempData);
 		}
 
 		/// <summary>
 		/// The view to render.
 		/// </summary>
-		public string ViewName
-		{
+		public string ViewName {
 			get { return "Rescues/" + _view; }
 			protected set { _view = value; }
 		}
@@ -193,8 +174,7 @@ namespace MvcContrib.Filters
 		/// <summary>
 		/// The exception types used by this rescue.
 		/// </summary>
-		public Type[] ExceptionsTypes
-		{
+		public Type[] ExceptionsTypes {
 			get { return _exceptionsTypes; }
 		}
 

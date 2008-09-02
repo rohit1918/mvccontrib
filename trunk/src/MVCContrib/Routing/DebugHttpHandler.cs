@@ -17,7 +17,7 @@ namespace MvcContrib.Routing
 
 		public void ProcessRequest(HttpContext context)
 		{
-			ProcessRequest(new HttpContextWrapper2(context), RouteTable.Routes);
+			ProcessRequest(new HttpContextWrapper(context), RouteTable.Routes);
 		}
 
 		public void ProcessRequest(HttpContextBase context, RouteCollection routeTable)

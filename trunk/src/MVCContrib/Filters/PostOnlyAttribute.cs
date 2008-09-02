@@ -7,9 +7,10 @@ namespace MvcContrib.Filters
 	{
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
+			string actionName = filterContext.RouteData.GetRequiredString("action");
 			if (filterContext.HttpContext.Request.RequestType != "POST")
 				throw new InvalidOperationException(
-					string.Format("Action '{0}' can only be accessed using an HTTP Post.", filterContext.ActionMethod.Name));
+					string.Format("Action '{0}' can only be accessed using an HTTP Post.", actionName));
 		}
 	}
 }

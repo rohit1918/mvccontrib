@@ -33,6 +33,7 @@ namespace MvcContrib.Samples
         {
             InitializeWindsor();
             AddRoutes();
+        	ViewEngines.Engines.Add( new BrailViewFactory() );  
         }
 
         /// <summary>
