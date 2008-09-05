@@ -9,6 +9,10 @@ namespace MvcContrib.Attributes
 	{
 		private readonly NameValueDeserializer _deserializer = new NameValueDeserializer();
 
+		public DeserializeAttribute() : base(null)
+		{
+		}
+
 		public DeserializeAttribute(string prefix)
 			: base(prefix)
 		{
