@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace MvcContrib
 {
@@ -25,7 +25,7 @@ namespace MvcContrib
 		/// <typeparam name="T">The type to deserialize to.</typeparam>
 		/// <param name="collection">The collection.</param>
 		/// <param name="prefix">The prefix.</param>
-		/// <returns></returns>
+		/// <returns>The deserialized object</returns>
 		public T Deserialize<T>(NameValueCollection collection, string prefix) where T : new()
 		{
 			return (T)Deserialize(collection, prefix, typeof(T));
@@ -34,15 +34,37 @@ namespace MvcContrib
 		/// <summary>
 		/// Deserializes the specified request collection.
 		/// </summary>
+		/// <typeparam name="T">The type to deserialize to.</typeparam>
+		/// <param name="collection">The collection.</param>
+		/// <returns>The deserialized object</returns>
+		public T Deserialize<T>(NameValueCollection collection) where T : new()
+		{
+			return (T)Deserialize(collection, null, typeof(T));
+		}
+
+		/// <summary>
+		/// Deserializes the specified request collection.
+		/// </summary>
+		/// <param name="collection">The collection.</param>
+		/// <param name="targetType">Type of the target.</param>
+		/// <returns>The deserialized object</returns>
+		public object Deserialize(NameValueCollection collection, Type targetType)
+		{
+			return Deserialize(collection, null, targetType);
+		}
+
+		/// <summary>
+		/// Deserializes the specified request collection.
+		/// </summary>
 		/// <param name="collection">The collection.</param>
 		/// <param name="prefix">The prefix.</param>
 		/// <param name="targetType">Type of the target.</param>
-		/// <returns></returns>
+		/// <returns>The deserialized object</returns>
 		public object Deserialize(NameValueCollection collection, string prefix, Type targetType)
 		{
 			if(collection == null || collection.Count == 0) return null;
 
-			if(string.IsNullOrEmpty(prefix)) throw new ArgumentException("prefix is requried");
+			if(prefix == string.Empty) throw new ArgumentException("prefix must not be empty", prefix);
 
 			if(targetType == null) throw new ArgumentNullException("targetType");
 
@@ -52,23 +74,22 @@ namespace MvcContrib
 				ArrayList arrayInstance = DeserializeArrayList(collection, prefix, elementType);
 				return arrayInstance.ToArray(elementType);
 			}
-			else if(IsGenericList(targetType))
+
+			if(IsGenericList(targetType))
 			{
 				IList genericListInstance = CreateGenericListInstance(targetType);
 				DeserializeGenericList(collection, prefix, targetType, ref genericListInstance);
 				return genericListInstance;
 			}
-			else
-			{
-				object instance = null;
-				Deserialize(collection, prefix, targetType, ref instance);
-				return instance ?? CreateInstance(targetType);
-			}
+
+			object instance = null;
+			Deserialize(collection, prefix, targetType, ref instance);
+			return instance ?? CreateInstance(targetType);
 		}
 
 		protected virtual void Deserialize(NameValueCollection collection, string prefix, Type targetType, ref object instance)
 		{
-			if (CheckPrefixInRequest(collection, prefix))
+			if(CheckPrefixInRequest(collection, prefix))
 			{
 				if(instance == null)
 				{
@@ -79,7 +100,7 @@ namespace MvcContrib
 
 				foreach(var property in properties)
 				{
-					string name = string.Concat(prefix, ".", property.Name);
+					string name = prefix != null ? string.Concat(prefix, ".", property.Name) : property.Name;
 					Type propertyType = property.PropertyType;
 
 					if(IsSimpleProperty(propertyType))
@@ -231,7 +252,9 @@ namespace MvcContrib
 
 		protected virtual bool CheckPrefixInRequest(NameValueCollection collection, string prefix)
 		{
-			return collection.AllKeys.Any(key => key != null && key.StartsWith(prefix, true, CultureInfo.InvariantCulture));
+			return prefix != null
+			       	? collection.AllKeys.Any(key => key != null && key.StartsWith(prefix, true, CultureInfo.InvariantCulture))
+			       	: true;
 		}
 
 		protected virtual string[] GetArrayPrefixes(NameValueCollection collection, string prefix)
@@ -261,6 +284,7 @@ namespace MvcContrib
 		}
 
 		private static readonly Dictionary<Type, PropertyInfo[]> _cachedProperties = new Dictionary<Type, PropertyInfo[]>();
+
 		private static readonly object _syncRoot = new object();
 
 		protected static PropertyInfo[] GetProperties(Type targetType)
