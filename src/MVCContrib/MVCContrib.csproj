@@ -89,6 +89,7 @@
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\LayoutAttribute.cs" />
     <Compile Include="Filters\RescueAttribute.cs" />
     <Compile Include="ControllerExtensions.cs" />
