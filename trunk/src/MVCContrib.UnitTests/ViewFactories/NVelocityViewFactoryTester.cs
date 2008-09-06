@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -29,7 +30,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			IDictionary properties = new Hashtable();
 			properties["resource.loader"] = "assembly";
 			properties["assembly.resource.loader.class"] = "NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader, NVelocity";
-			properties["assembly.resource.loader.assembly"] = "MVCContrib.UnitTests";
+			properties["assembly.resource.loader.assembly"] = new List<string>() {"MVCContrib.UnitTests"};
 			properties["master.folder"] = viewPath;
 			_factory = new NVelocityViewFactory(properties);
 
