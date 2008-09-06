@@ -1,4 +1,6 @@
+using System.Linq;
 using Castle.Core;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using System.Web.Mvc;
 using System;
@@ -19,7 +21,7 @@ namespace MvcContrib.Castle
 			{
 				if(ControllerFactories.DefaultControllerFactory.IsController(type))
 				{
-					container.AddComponentWithLifestyle(type.Name.ToLower(), type, LifestyleType.Transient);
+					container.AddComponentLifeStyle(type.Name.ToLower(), type, LifestyleType.Transient);
 				}
 			}
 

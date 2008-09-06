@@ -4,41 +4,6 @@
         <name>Castle.MonoRail.WindsorExtension</name>
     </assembly>
     <members>
-        <member name="T:Castle.MonoRail.WindsorExtension.ControllerTreeAccessor">
-            <summary>
-            Bridge between the windsor controlled controller tree and
-            the monorail service provider.
-            </summary>
-        </member>
-        <member name="M:Castle.MonoRail.WindsorExtension.ControllerTreeAccessor.#ctor">
-            <summary>
-            Construct the controller tree accessor
-            </summary>
-        </member>
-        <member name="M:Castle.MonoRail.WindsorExtension.ControllerTreeAccessor.AddController(System.String,System.String,System.Type)">
-            <summary>
-            Register a controller on the tree. If the specified
-            area name matches the current node, the controller is
-            register on the node itself, otherwise on the right or 
-            on the left node.
-            </summary>
-            <remarks>
-            Note that the controller is an <c>object</c>. That allows
-            different implementation of a controller factory to register
-            different representation of what a controller is (a name, a descriptor etc)
-            </remarks>
-            <param name="areaName">The area name, or <c>String.Empty</c></param>
-            <param name="controllerName">The controller name</param>
-            <param name="controller">The controller representation</param>
-        </member>
-        <member name="M:Castle.MonoRail.WindsorExtension.ControllerTreeAccessor.GetController(System.String,System.String)">
-            <summary>
-            Returns a controller previously registered. 
-            </summary>
-            <param name="areaName">The area name, or <c>String.Empty</c></param>
-            <param name="controllerName">The controller name</param>
-            <returns>The controller representation or null</returns>
-        </member>
         <member name="T:Castle.MonoRail.WindsorExtension.DefaultWizardPageFactory">
             <summary>
             Default implementation of <see cref="T:Castle.MonoRail.WindsorExtension.IWizardPageFactory"/>
@@ -94,7 +59,7 @@
             <param name="stepPageType"></param>
             <returns>The step page instance</returns>
         </member>
-        <member name="T:Castle.MonoRail.WindsorExtension.RailsFacility">
+        <member name="T:Castle.MonoRail.WindsorExtension.MonoRailFacility">
             <summary>
             Facility responsible for registering the controllers in
             the controllerTree.
@@ -107,6 +72,25 @@
             controller instances.
             </summary>
         </member>
+        <member name="M:Castle.MonoRail.WindsorExtension.WindsorDynamicActionProviderFactory.#ctor(Castle.MicroKernel.IKernel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.WindsorExtension.WindsorDynamicActionProviderFactory"/> class.
+            </summary>
+            <param name="kernel">The kernel.</param>
+        </member>
+        <member name="M:Castle.MonoRail.WindsorExtension.WindsorDynamicActionProviderFactory.Create(System.Type)">
+            <summary>
+            Creates the specified dynamic action provider type.
+            </summary>
+            <param name="dynamicActionProviderType">Type of the dynamic action provider.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.WindsorExtension.WindsorDynamicActionProviderFactory.Release(Castle.MonoRail.Framework.IDynamicActionProvider)">
+            <summary>
+            Releases the specified dynamic action provider.
+            </summary>
+            <param name="dynamicActionProvider">The dynamic action provider.</param>
+        </member>
         <member name="T:Castle.MonoRail.WindsorExtension.WindsorFilterFactory">
             <summary>
             Custom implementation of <see cref="T:Castle.MonoRail.Framework.IFilterFactory"/>
@@ -114,6 +98,21 @@
             instances, and, if not available, uses the default implementation
             of <see cref="T:Castle.MonoRail.Framework.IFilterFactory"/>.
             </summary>
+        </member>
+        <member name="M:Castle.MonoRail.WindsorExtension.WindsorHelperFactory.#ctor(Castle.MicroKernel.IKernel)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.WindsorExtension.WindsorHelperFactory"/> class.
+            </summary>
+            <param name="kernel">The kernel.</param>
+        </member>
+        <member name="M:Castle.MonoRail.WindsorExtension.WindsorHelperFactory.Create(System.Type,Castle.MonoRail.Framework.IEngineContext,System.Boolean@)">
+            <summary>
+            Creates the helper.
+            </summary>
+            <param name="helperType">Type of the helper.</param>
+            <param name="engineContext">The engine context.</param>
+            <param name="initialized">if set to <c>true</c> the helper is already initialized.</param>
+            <returns></returns>
         </member>
         <member name="T:Castle.MonoRail.WindsorExtension.WindsorMonoRailSectionHandler">
             <summary>

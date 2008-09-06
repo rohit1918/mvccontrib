@@ -4,6 +4,117 @@
         <name>Castle.Facilities.Synchronize</name>
     </assembly>
     <members>
+        <member name="T:Castle.Facilities.Synchronize.AbstractAsyncResult">
+            <summary>
+            Abstract result for asynchronous operations.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.#ctor(System.AsyncCallback,System.Object)">
+            <summary>
+            Initializes a new <see cref="T:Castle.Facilities.Synchronize.AbstractAsyncResult"/>
+            </summary>
+            <param name="callback">The async callback.</param>
+            <param name="state">The async state</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.TimeoutAfter(System.Int32)">
+            <summary>
+            Establishes an async timeout for the interval.
+            </summary>
+            <param name="interval">The timeout interval without units.</param>
+            <returns>The timeout specification.</returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.End(System.IAsyncResult)">
+            <summary>
+            Ends the asynchronous request.
+            </summary>
+            <param name="asyncResult">The asynchronous result.</param>
+            <returns>The result.</returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Complete(System.Boolean)">
+            <summary>
+            Completes the asynchronous request.
+            </summary>
+            <param name="synchronously">true if synchronously.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Complete(System.Boolean,System.Object)">
+            <summary>
+            Completes the asynchronous request.
+            </summary>
+            <param name="synchronously">true if synchronously.</param>
+            <param name="result">The result.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Complete(System.Boolean,System.Exception)">
+            <summary>
+            Completes the asynchronous request with exception.
+            </summary>
+            <param name="synchronously">true if synchronously.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.OnTimeout">
+            <summary>
+            Performs any behavior when a timeout occurs.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Cleanup">
+            <summary>
+            Performs any cleanup.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Finalize">
+            <summary>
+            Finalizer to ensure cleanup.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.AbstractAsyncResult.AsyncState">
+            <summary>
+            Gets the asynchournous state.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.AbstractAsyncResult.IsCompleted">
+            <summary>
+            Determines if the result is available.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.AbstractAsyncResult.CompletedSynchronously">
+            <summary>
+            Determines if the result completed synchronously.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.AbstractAsyncResult.AsyncWaitHandle">
+            <summary>
+            Gets the asynchronous <see cref="T:System.Threading.WaitHandle"/>.
+            </summary>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout">
+            <summary>
+            Represents the timeout description.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout.#ctor(Castle.Facilities.Synchronize.AbstractAsyncResult,System.Int32)">
+            <summary>
+            Constructs a new <see cref="T:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout"/>
+            </summary>
+            <param name="result">The async result.</param>
+            <param name="interval">The timeout interval.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout.MilliSeconds">
+            <summary>
+            Registers the timeout in milliseconds.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout.Seconds">
+            <summary>
+            Registers the timeout in seconds. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.AbstractAsyncResult.Timeout.Minutes">
+            <summary>
+            Registers the timeout in minutes.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Castle.Facilities.Synchronize.Constants">
             <summary>
             Exposes constants used by the facility and its internal 
@@ -94,6 +205,87 @@
         <member name="T:Castle.Facilities.Synchronize.ControlUtils">
             <summary>
             Common support for Windows Form Controls.
+            </summary>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.Result">
+            <summary>
+            Represents the result of an asynchronous operation.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.#ctor">
+            <summary>
+            Initializes the <see cref="T:Castle.Facilities.Synchronize.Result"/>.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.#ctor(System.Object)">
+            <summary>
+            Initializes the <see cref="T:Castle.Facilities.Synchronize.Result"/> with value.
+            </summary>
+            <param name="value">The result value.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.SetValue(System.Boolean,System.Object)">
+            <summary>
+            Completes the asynchronous request.
+            </summary>
+            <param name="synchronously">true if synchronously.</param>
+            <param name="result">The result.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.SetException(System.Boolean,System.Exception)">
+            <summary>
+            Completes the asynchronous request with exception.
+            </summary>
+            <param name="synchronously">true if synchronously.</param>
+            <param name="exception">The exception.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.Of``1(``0)">
+            <summary>
+            Gets the result of the last called made.
+            </summary>
+            <typeparam name="T">The result type.</typeparam>
+            <param name="ignored"></param>
+            <returns>The result handle.</returns>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result.Value">
+            <summary>
+            Gets the result value, blocking if not available yet.
+            </summary>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.Result`1">
+            <summary>
+            Represents the typed result of an asynchronous operation.
+            </summary>
+            <typeparam name="T">The result type.</typeparam>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result`1.op_Implicit(Castle.Facilities.Synchronize.Result{`0})~`0">
+            <summary>
+            Provide implicit conversion to the actual value.
+            </summary>
+            <param name="result">The result holder.</param>
+            <returns>The actual result value.</returns>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result`1.Value">
+            <summary>
+            Gets the result value, blocking if not available yet.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result`1.AsyncState">
+            <summary>
+            Gets the asynchournous state.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result`1.AsyncWaitHandle">
+            <summary>
+            Gets the asynchronous <see cref="T:System.Threading.WaitHandle"/>.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result`1.CompletedSynchronously">
+            <summary>
+            Determines if the result completed synchronously.
+            </summary>
+        </member>
+        <member name="P:Castle.Facilities.Synchronize.Result`1.IsCompleted">
+            <summary>
+            Determines if the result is available.
             </summary>
         </member>
         <member name="T:Castle.Facilities.Synchronize.SynchronizeAttribute">
@@ -344,11 +536,39 @@
             	<c>true</c> if continued; otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.InvokeSafely(Castle.Core.Interceptor.IInvocation)">
+        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.InvokeSynchronously(Castle.Core.Interceptor.IInvocation)">
+            <summary>
+            Continues the invocation synchronously.
+            </summary>
+            <param name="invocation">The invocation.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.InvokeSynchronously(Castle.Core.Interceptor.IInvocation,Castle.Facilities.Synchronize.Result)">
+            <summary>
+            Continues the invocation synchronously.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <param name="result">The result holder.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.InvokeSafely(Castle.Core.Interceptor.IInvocation,Castle.Facilities.Synchronize.Result)">
             <summary>
             Used by the safe synchronization delegate.
             </summary>
             <param name="invocation">The invocation.</param>
+            <param name="result">The result holder.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.CreateResult(Castle.Core.Interceptor.IInvocation)">
+            <summary>
+            Creates the result of the invocation.
+            </summary>
+            <param name="invocation">The invocation.</param>
+            <returns>Holds the invocation result.</returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronizeInterceptor.GetDefault(System.Type)">
+            <summary>
+            Gets the default value for a type.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The default value for the type.</returns>
         </member>
         <member name="T:Castle.Facilities.Synchronize.SynchronizeMetaInfo">
             <summary>
@@ -456,6 +676,51 @@
             </summary>
             <param name="kernel">The kernel.</param>
             <returns>The <see cref="T:Castle.MicroKernel.SubSystems.Conversion.IConversionManager"/>.</returns>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.SynchronousResult">
+            <summary>
+            Represents a synchronous result.
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor(System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor(System.AsyncCallback,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="callback"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor(System.Object,System.AsyncCallback,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="result"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.SynchronousResult.#ctor(System.Exception,System.AsyncCallback,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="callback"></param>
+            <param name="state"></param>
         </member>
     </members>
 </doc>
