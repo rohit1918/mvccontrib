@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MvcContrib
 {
@@ -87,6 +88,26 @@ namespace MvcContrib
 			}
 
 			return dict;
+		}
+
+		/// <summary>
+		/// Takes an anonymous object and converts it to a <see cref="Dictionary{String,Object}"/>
+		/// </summary>
+		/// <param name="objectToConvert">The object to convert</param>
+		/// <returns>A generic dictionary</returns>
+		public static Dictionary<string, object> AnonymousObjectToCaseSensitiveDictionary(object objectToConvert) 
+		{
+			var dictionary = new Dictionary<string, object>(StringComparer.Ordinal);
+
+			if (objectToConvert != null) 
+			{
+				foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(objectToConvert)) 
+				{
+					dictionary[property.Name] = property.GetValue(objectToConvert);
+				}
+			}
+
+			return dictionary;
 		}
 	}
 }
