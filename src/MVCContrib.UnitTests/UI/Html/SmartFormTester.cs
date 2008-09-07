@@ -12,6 +12,8 @@ using System.Collections;
 
 namespace MvcContrib.UnitTests.UI.Html
 {
+	#pragma warning disable 618,612
+
 	[TestFixture]
 	public class SmartFormTester
 	{
@@ -163,7 +165,6 @@ namespace MvcContrib.UnitTests.UI.Html
 					Expect.Call(_helper.RadioField("Role", null)).Return(null);
 					Expect.Call(_helper.RadioField("Role", null, hash)).Return(null);
 					Expect.Call(_helper.RadioField(radio)).Return(null);
-
 				}
 				using(_mocks.Playback())
 				{
@@ -271,4 +272,5 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 		}
 	}
+	#pragma warning restore 618,612
 }
