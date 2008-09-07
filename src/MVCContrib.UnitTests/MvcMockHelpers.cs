@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Web;
@@ -55,6 +56,7 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(response.OutputStream).Return(new MemoryStream());
 			SetupResult.For(response.Output).Return(new StringWriter());
 			SetupResult.For(response.ContentType).PropertyBehavior();
+			SetupResult.For(response.ApplyAppPathModifier(null)).IgnoreArguments().Do(new Func<string, string>(x => x));
 
             return response;
 		}

@@ -11,11 +11,15 @@ namespace MvcContrib.UI.Ajax.Internal
 	public abstract class AjaxGenerator
 	{
 		protected AjaxHelper AjaxHelper { get; set; }
+		protected UrlHelper UrlHelper { get; private set; }
 
 		protected AjaxGenerator(AjaxHelper ajaxHelper)
 		{
 			AjaxHelper = ajaxHelper;
+			UrlHelper = new UrlHelper(ajaxHelper.ViewContext);
 		}
+
+		#region ActionLink
 
 		public string ActionLink(string linkText, string actionName, AjaxOptions ajaxOptions)
 		{
@@ -65,10 +69,30 @@ namespace MvcContrib.UI.Ajax.Internal
 			return ActionLink(linkText, actionName, controllerName, valuesDictionary, ajaxOptions, htmlAttributesDictionary);
 		}
 
-		public virtual string ActionLink(string linkText, string actionName, string controllerName, RouteValueDictionary values, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+		public string ActionLink(string linkText, string actionName, string controllerName, RouteValueDictionary values, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(linkText)) 
+			{
+				throw new ArgumentNullException("linkText");
+			}
+			
+			if (string.IsNullOrEmpty(actionName)) 
+			{
+				throw new ArgumentNullException("actionName");
+			}
+
+			if (ajaxOptions == null) 
+			{
+				throw new ArgumentNullException("ajaxOptions");
+			}
+
+			string url = CreateUrl(null, actionName, controllerName, values);
+			return CreateLink(linkText, url, ajaxOptions, htmlAttributes ?? new Dictionary<string, object>());
 		}
+
+		#endregion
+
+		#region Form
 
 		public IDisposable Form(string actionName, AjaxOptions ajaxOptions)
 		{
@@ -119,7 +143,9 @@ namespace MvcContrib.UI.Ajax.Internal
 
 		public abstract IDisposable Form(string actionName, string controllerName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
 
-		public abstract bool IsMvcAjaxRequest();
+		#endregion
+
+		#region RouteLink
 
 		public string RouteLink(string linkText, object values, AjaxOptions ajaxOptions)
 		{
@@ -197,5 +223,34 @@ namespace MvcContrib.UI.Ajax.Internal
 		}
 
 		public abstract string RouteLink(string linkText, string routeName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+
+		#endregion
+
+		protected abstract string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+
+		public abstract bool IsMvcAjaxRequest();
+
+		protected virtual string CreateUrl(string routeName, string action, string controller, RouteValueDictionary values)
+		{
+			values = values ?? new RouteValueDictionary();
+
+			if(action != null)
+			{
+				if(controller != null)
+				{
+					return UrlHelper.Action(action, controller, values);
+				}
+
+				return UrlHelper.Action(action, values);
+			}
+
+			if(routeName != null)
+			{
+				return UrlHelper.RouteUrl(routeName, values);
+			}
+
+			return null;
+		}
+
 	}
 }
