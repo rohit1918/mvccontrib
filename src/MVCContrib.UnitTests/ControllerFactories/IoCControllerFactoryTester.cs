@@ -34,6 +34,8 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			public void Should_call_into_the_static_resolver_to_create_a_controller()
 			{
 				IControllerFactory controllerFactory = new IoCControllerFactory();
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
+
 				IController controller = controllerFactory.CreateController(null, "IocTest");
 
 				Assert.That(controller, Is.TypeOf(typeof(IocTestController)));
@@ -67,6 +69,8 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				_dependencyResolver.Replay();
 
 				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
+
 				IController controller = controllerFactory.CreateController(null, "IocTest");
 
 				Assert.That(controller, Is.TypeOf(typeof(IocTestController)));
@@ -94,6 +98,8 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			public void Should_throw_if_controller_type_cannot_be_resolved()
 			{
 				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
+
 				controllerFactory.CreateController(null, "DoesNotExist");
 			}
 

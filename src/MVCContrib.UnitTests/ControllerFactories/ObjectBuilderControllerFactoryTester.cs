@@ -36,6 +36,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks.ReplayAll();
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
+			factory.InitializeWithControllerTypes(typeof(ObjectBuilderSimpleController), typeof(ObjectBuilderDependencyController));
 
 			IController controller = factory.CreateController(context, "ObjectBuilderSimple"); //typeof(SimpleController));
 
@@ -53,6 +54,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks.ReplayAll();
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
+			factory.InitializeWithControllerTypes(typeof(ObjectBuilderSimpleController), typeof(ObjectBuilderDependencyController));
 
 			IController controller = factory.CreateController(context, "ObjectBuilderDependency"); //typeof(DependencyController));
 
@@ -75,6 +77,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks.ReplayAll();
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
+			factory.InitializeWithControllerTypes(typeof(ObjectBuilderSimpleController), typeof(ObjectBuilderDependencyController));
 
 			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
@@ -90,6 +93,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			_mocks.ReplayAll();
 
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
+			factory.InitializeWithControllerTypes(typeof(ObjectBuilderSimpleController),
+			                                      typeof(ObjectBuilderDependencyController));
 
 			IController controller = factory.CreateController(context, "ObjectBuilderSimple");
 		}
@@ -99,6 +104,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 		public void ShouldThrowExceptionWhenRequestContextIsNull()
 		{
 			IControllerFactory factory = new ObjectBuilderControllerFactory();
+			factory.InitializeWithControllerTypes(typeof(ObjectBuilderSimpleController),
+			                                      typeof(ObjectBuilderDependencyController));
 
 			IController controller = factory.CreateController(null, "ObjectBuilderSimple");
 		}

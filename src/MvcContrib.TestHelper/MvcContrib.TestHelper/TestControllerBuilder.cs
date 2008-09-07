@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.ControllerFactories;
+using MvcContrib.Services;
 using Rhino.Mocks;
 
 namespace MvcContrib.TestHelper
@@ -30,15 +31,8 @@ namespace MvcContrib.TestHelper
 			RouteData = new RouteData();
 			_mocks = new MockRepository();
 			Session = new MockSession();
-			IControllerFactory = new IoCControllerFactory();
 			SetupHttpContext();
 		}
-
-		/// <summary>
-		/// Gets the IControllerFactory that will be used to create controllers with CreateController, by default IoCControllerFactory
-		/// </summary>
-		/// <value>The IControllerFactory</value>
-		public IControllerFactory IControllerFactory { get; protected set; }
 
 		/// <summary>
 		/// Gets the HttpContext that built controllers will have set internally when created with InitializeController
@@ -124,7 +118,6 @@ namespace MvcContrib.TestHelper
 			_mocks.Replay(request);
 			_mocks.Replay(response);
 
-			//TempDataDictionary = new TempDataDictionary(HttpContext);
             TempDataDictionary = new TempDataDictionary();
 		}
 
@@ -160,9 +153,9 @@ namespace MvcContrib.TestHelper
 		/// <returns>A new controller of the specified type</returns>
 		public T CreateIoCController<T>() where T : Controller
 		{
-			var controller = (Controller)IControllerFactory.CreateController(null, typeof(T).Name);
+			var controller = DependencyResolver.GetImplementationOf<T>();
 			InitializeController(controller);
-			return controller as T;
+			return controller;
 		}
 	}
 }

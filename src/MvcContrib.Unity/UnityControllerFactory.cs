@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
-using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
 namespace MvcContrib.Unity
 {

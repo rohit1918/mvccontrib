@@ -5,6 +5,8 @@ using Castle.Windsor;
 using System.Web.Mvc;
 using System;
 using System.Reflection;
+using MvcContrib.MetaData;
+
 namespace MvcContrib.Castle
 {
 	public static class WindsorExtensions
@@ -19,7 +21,7 @@ namespace MvcContrib.Castle
 		{
 			foreach(var type in controllerTypes)
 			{
-				if(ControllerFactories.DefaultControllerFactory.IsController(type))
+				if(ControllerDescriptor.IsController(type))
 				{
 					container.AddComponentLifeStyle(type.Name.ToLower(), type, LifestyleType.Transient);
 				}
