@@ -207,16 +207,11 @@
         <MandatoryImports length="0" />
         <KeepNontrivialAlias>True</KeepNontrivialAlias>
       </UsingsSettings>
-      <Naming2>
-        <ExceptionName />
-        <LongerNamesFirst>False</LongerNamesFirst>
-        <OverrideDefaultSettings>False</OverrideDefaultSettings>
-      </Naming2>
     </CSharp>
     <VB>
       <FormatSettings>
         <INSERT_TABS>True</INSERT_TABS>
-        <INDENT_SIZE>4</INDENT_SIZE>
+        <INDENT_SIZE>2</INDENT_SIZE>
         <SPACE_BEFORE_INVOCATION_PARENTHESES>True</SPACE_BEFORE_INVOCATION_PARENTHESES>
         <SPACE_BEFORE_EMPTY_INVOCATION_PARENTHESES>False</SPACE_BEFORE_EMPTY_INVOCATION_PARENTHESES>
         <SPACE_BEFORE_METHOD_PARENTHESES>True</SPACE_BEFORE_METHOD_PARENTHESES>
@@ -299,10 +294,5 @@
       <Parameter prefix="" suffix="" />
       <LocalVariable prefix="" suffix="" />
     </Naming>
-    <Naming2>
-      <ExceptionName />
-      <LongerNamesFirst>False</LongerNamesFirst>
-      <OverrideDefaultSettings>False</OverrideDefaultSettings>
-    </Naming2>
   </CodeStyleSettings>
 </Configuration>
