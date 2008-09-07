@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -89,6 +89,7 @@
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
+    <Compile Include="Binders\SubControllerBinder.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\LayoutAttribute.cs" />
     <Compile Include="Filters\RescueAttribute.cs" />
@@ -99,10 +100,12 @@
     <Compile Include="Filters\PreconditionFilter.cs" />
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />
+    <Compile Include="Filters\SubControllerActionToViewDataAttribute.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
+    <Compile Include="ISubController.cs" />
     <Compile Include="MetaData\CachedControllerDescriptor.cs" />
     <Compile Include="Pagination\IPagination.cs" />
     <Compile Include="Pagination\LazyPagination.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="SubController.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

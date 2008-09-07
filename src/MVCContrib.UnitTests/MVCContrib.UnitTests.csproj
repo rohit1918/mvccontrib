@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0B8EC0CE-1AC1-4ACF-A380-A588E5E1E9CF}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -150,6 +150,7 @@
     <Compile Include="ActionFilters\LayoutAttributeTester.cs" />
     <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
+    <Compile Include="Binders\SubControllerBinderTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="ControllerExtensionsTester.cs" />
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
@@ -164,6 +165,7 @@
     <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="ConventionController\TestFilter.cs" />
     <Compile Include="EnumerableExtensionTests.cs" />
+    <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -223,6 +225,7 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="SubControllerTester.cs" />
     <Compile Include="TestHelper\ActionResultHelperTester.cs" />
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
