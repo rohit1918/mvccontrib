@@ -296,5 +296,14 @@ namespace MvcContrib.UnitTests.UI.Html
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr><tr class=\"gridrow_alternate\"><td>Person 2</td></tr><tr class=\"gridrow\"><td>Person 3</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
+
+		[Test]
+		public void Should_not_render_pagination_when_datasource_is_empty()
+		{
+			AddToViewData("foo", new List<Person>().AsPagination(1));
+			_helper.Grid<Person>("foo", column => column.For(p => p.Name));
+			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
 	}
 }

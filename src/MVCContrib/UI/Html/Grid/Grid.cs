@@ -146,13 +146,16 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText(string.Format("<table{0}>", attrs));
 		}
 
-		protected override void RenderGridEnd()
+		protected override void RenderGridEnd(bool isEmpty)
 		{
 			RenderText("</table>");
-			var pagination = Items as IPagination;
-			if (pagination != null)
+			
+			if(!isEmpty)
 			{
-				RenderPagination(pagination);
+				var pagination = Items as IPagination;
+				if (pagination != null) {
+					RenderPagination(pagination);
+				}	
 			}
 		}
 
