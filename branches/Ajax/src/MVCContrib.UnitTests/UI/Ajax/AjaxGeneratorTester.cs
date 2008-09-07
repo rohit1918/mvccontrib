@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.UI.Ajax;
@@ -91,6 +92,28 @@ namespace MvcContrib.UnitTests.UI.Ajax
 			Assert.That(url, Is.EqualTo("/home/Show/1"));
 		}
 
+		[Test]
+		public void DisposableElement_should_write_start_tag_when_instantiated()
+		{
+			var writer = new StringWriter();
+			var builder = new TagBuilder("form");
+			var element = new DisposableElement(writer, builder);
+
+			Assert.That(writer.ToString(), Is.EqualTo("<form>"));
+		}
+
+		[Test]
+		public void DisposableElement_should_write_end_tag_when_disposed()
+		{
+			var writer = new StringWriter();
+			var builder = new TagBuilder("form");
+			
+			using(new DisposableElement(writer, builder))
+			{
+			}
+
+			Assert.That(writer.ToString(), Is.EqualTo("<form></form>"));
+		}
 
 		[Test]
 		public void ActionLink_overloads_should_delegate_to_final_implementation()
