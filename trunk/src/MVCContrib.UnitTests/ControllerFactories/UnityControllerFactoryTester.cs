@@ -34,6 +34,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 			_context = new RequestContext(_mockContext, new RouteData());
 			_factory = new UnityControllerFactory();
+			_factory.InitializeWithControllerTypes(typeof(UnitySimpleController), typeof(UnityDependencyController));
+
 		}
 
 		[Test]

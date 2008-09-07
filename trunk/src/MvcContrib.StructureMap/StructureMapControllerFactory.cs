@@ -2,7 +2,6 @@ using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using StructureMap;
-using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
 namespace MvcContrib.StructureMap
 {

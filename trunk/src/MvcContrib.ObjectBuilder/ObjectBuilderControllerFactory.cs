@@ -1,7 +1,6 @@
 using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
 namespace MvcContrib.ObjectBuilder
 {
