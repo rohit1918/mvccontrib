@@ -25,10 +25,10 @@ namespace MvcContrib.NHamlViewEngine
 			_compiledView = (ICompiledView)this;
 		}
 
-		public void Render(ViewContext context, TextWriter writer)
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
-			_viewContext = context;
-			_viewData = new ViewDataDictionary<TViewData>(context.ViewData);
+			_viewContext = viewContext;
+			_viewData = new ViewDataDictionary<TViewData>(viewContext.ViewData);
 
 			_ajax = new AjaxHelper(_viewContext);
 			_html = new HtmlHelper(_viewContext, this);
