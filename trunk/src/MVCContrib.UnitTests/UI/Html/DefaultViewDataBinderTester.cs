@@ -74,51 +74,12 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 
 			[Test]
-			public void It_should_obtain_the_value_from_TempData_if_not_in_ViewData()
-			{
-				_viewContext.TempData["test"] = "Value";
-				object instance = _binder.ExtractValue("test", _viewContext);
-				Assert.That(instance, Is.EqualTo("Value"));
-			}
-
-			[Test]
 			public void It_should_obtain_property_value_for_complex_object()
 			{
 				AddToViewData("person", new Person("Jeremy"));
 
 				object instance = _binder.ExtractValue("person.Name", _viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));
-			}
-
-			[Test]
-			public void It_should_obtain_field_value_for_complex_object()
-			{
-				var person = new Person("Jeremy") {Country = "UK"};
-
-				AddToViewData("person", person);
-				object instance = _binder.ExtractValue("person.Country", _viewContext);
-				Assert.That(instance, Is.EqualTo("UK"));
-			}
-
-			[Test]
-			public void It_should_obtain_item_from_a_collection()
-			{
-				var values = new List<string>(new[] { "Foo", "Bar", "FooBar" });
-				AddToViewData("values", values);
-
-				object instance = _binder.ExtractValue("values[1]", _viewContext);
-				Assert.That(instance, Is.EqualTo("Bar"));
-			}
-
-			[Test]
-			public void It_should_obtain_item_from_a_generic_IList_that_does_not_implement_IList()
-			{
-				var values = new CustomList<string> {"Foo", "Bar"};
-
-				AddToViewData("values", values);
-
-				object instance = _binder.ExtractValue("values[1]", _viewContext);
-				Assert.That(instance, Is.EqualTo("Bar"));
 			}
 
 			[Test] 
@@ -132,30 +93,6 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 
 			[Test]
-			public void It_should_obtain_property_from_collection_of_complex_objects()
-			{
-				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
-
-				AddToViewData("people", people);
-
-				object instance = _binder.ExtractValue("people[1].Name", _viewContext);
-				Assert.That(instance, Is.EqualTo("Josh"));
-			}
-
-			[Test]
-			public void It_should_obtain_nested_collection_properties()
-			{
-				var p = new Person();
-				p.Languages.Add("C#");
-				p.Languages.Add("VB");
-
-				AddToViewData("person", p);
-
-				object instance = _binder.ExtractValue("person.Languages[0]", _viewContext);
-				Assert.That(instance, Is.EqualTo("C#"));
-			}
-
-			[Test]
 			public void It_should_obtain_nested_properties()
 			{
 				var person = new Person {NestedPerson = new Person("Jeremy")};
@@ -163,60 +100,6 @@ namespace MvcContrib.UnitTests.UI.Html
 
 				object instance = _binder.ExtractValue("person.NestedPerson.Name", _viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));
-			}
-
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "The specified index '-1' is outside the bounds of the array. Property people")]
-			public void It_should_throw_if_index_smaller_than_zero()
-			{
-				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
-
-				AddToViewData("people", people);
-
-				_binder.ExtractValue("people[-1].Name", _viewContext);
-				Assert.Fail("Should throw an exception as index < 0");
-			}
-
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Could not convert (param people[foo]) index to Int32. Value is foo")]
-			public void It_should_throw_if_index_is_not_integer()
-			{
-				var people = new List<Person> {new Person("Jeremy"), new Person("Josh")};
-
-				AddToViewData("people", people);
-
-				_binder.ExtractValue("people[foo].Name", _viewContext);
-				Assert.Fail("Should throw an exception as index is not a valid int.");
-			}
-
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'NonReadable' cannot be read")]
-			public void It_should_throw_if_property_is_not_readable()
-			{
-				var p = new Person {NonReadable = "Foo"};
-
-				AddToViewData("person", p);
-
-				_binder.ExtractValue("person.NonReadable", _viewContext);
-				Assert.Fail("Should throw an exception as property is not readable.");
-			}
-
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Property 'Item' has indexes, which are not supported. InstanceType.FullName = 'System.Collections.Generic.List`1[[System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]'.")]
-			public void It_should_throw_for_indexer_properties()
-			{
-				var values = new List<string> {"Foo", "Bar"};
-
-				AddToViewData("values", values);
-
-				_binder.ExtractValue("values.Item", _viewContext);
-
-				Assert.Fail("Should throw as indexer properties are not supported");
-			}
-
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "The property Name is being accessed as an indexed property but does not seem to implement IList. In fact the type is String")]
-			public void It_should_throw_if_indexed_property_is_not_valid_collection()
-			{
-				AddToViewData("person", new Person("Jeremy"));
-
-				_binder.ExtractValue("person.Name[0]", _viewContext);
-				Assert.Fail("Should throw as Name is not a list.");
 			}
 
 			[Test]
@@ -357,11 +240,6 @@ namespace MvcContrib.UnitTests.UI.Html
 
 		class Person
 		{
-			public string Country;
-			private string _nonReadable;
-			private List<string> _languages = new List<string>();
-
-
 			public Person NestedPerson { get; set; }
 
 			public Person()
@@ -373,17 +251,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Name = name;
 			}
 
-			public List<string> Languages
-			{
-				get { return _languages; }
-			}
-
 			public string Name { get; set; }
-
-			public string NonReadable
-			{
-				set { _nonReadable = value; }
-			}
 		}
 
 	}
