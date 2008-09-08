@@ -1,147 +1,166 @@
 using System;
 using System.IO;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
 namespace MvcContrib.Services
 {
-    /// <remarks>
-    /// Inspired by Castle's EmailTemplateService.
-    /// </remarks>
-    public class EmailTemplateService : IEmailTemplateService
-    {
-        private static readonly String HeaderPattern = @"[ \t]*(?<header>(to|from|cc|bcc|subject|X-\w+)):[ \t]*(?<value>(.)+)(\r*\n*)?";
-        private static readonly Regex HeaderRegEx = new Regex(HeaderPattern, RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+	/// <remarks>
+	/// Inspired by Castle's EmailTemplateService.
+	/// </remarks>
+	public class EmailTemplateService : IEmailTemplateService
+	{
+		private static readonly String HeaderPattern = @"[ \t]*(?<header>(to|from|cc|bcc|subject|X-\w+)):[ \t]*(?<value>(.)+)(\r*\n*)?";
 
-        private readonly IViewEngine _viewEngine;
+		private static readonly Regex HeaderRegEx = new Regex(HeaderPattern, RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        public EmailTemplateService(IViewEngine viewEngine)
-        {
-            if (viewEngine == null) throw new ArgumentNullException("viewEngine");
-            _viewEngine = viewEngine;
-        }
+		private readonly IViewEngine _viewEngine;
 
-        #region Message Processing
+		public EmailTemplateService(IViewEngine viewEngine)
+		{
+			if(viewEngine == null) throw new ArgumentNullException("viewEngine");
+			_viewEngine = viewEngine;
+		}
 
-        private bool IsLineAHeader(string line, out string header, out string value)
-        {
-            Match match = HeaderRegEx.Match(line);
+		#region Message Processing
 
-            if (match.Success)
-            {
-                header = match.Groups["header"].ToString();
-                value = match.Groups["value"].ToString();
-                return true;
-            }
-            else
-            {
-                header = value = null;
-                return false;
-            }
-        }
+		private bool IsLineAHeader(string line, out string header, out string value)
+		{
+			Match match = HeaderRegEx.Match(line);
 
-        private void ProcessHeader(MailMessage message, string header, string value)
-        {
-            switch (header.ToLowerInvariant())
-            {
-                case "to":
-                    message.To.Add(new MailAddress(value));
-                    break;
+			if(match.Success)
+			{
+				header = match.Groups["header"].ToString();
+				value = match.Groups["value"].ToString();
+				return true;
+			}
+			else
+			{
+				header = value = null;
+				return false;
+			}
+		}
 
-                case "cc":
-                    message.CC.Add(new MailAddress(value));
-                    break;
+		private void ProcessHeader(MailMessage message, string header, string value)
+		{
+			switch(header.ToLowerInvariant())
+			{
+				case "to":
+					message.To.Add(BuildMailAddress(value));
+					break;
 
-                case "bcc":
-                    message.Bcc.Add(new MailAddress(value));
-                    break;
+				case "cc":
+					message.CC.Add(BuildMailAddress(value));
+					break;
 
-                case "subject":
-                    message.Subject = value;
-                    break;
+				case "bcc":
+					message.Bcc.Add(BuildMailAddress(value));
+					break;
 
-                case "from":
-                    message.From = new MailAddress(value);
-                    break;
+				case "subject":
+					message.Subject = value;
+					break;
 
-                default:
-                    message.Headers[header] = value;
-                    break;
-            }
-        }
+				case "from":
+					message.From = BuildMailAddress(value);
+					break;
 
-        private MailMessage ProcessContentStream(Stream stream, Encoding encoding)
-        {
-            var message = new MailMessage();
+				default:
+					message.Headers[header] = value;
+					break;
+			}
+		}
 
-            stream.Position = 0;
-            using (var reader = new StreamReader(stream, encoding))
-            {
-                bool isInBody = false;
-                var body = new StringBuilder();
-                string line, header, value;
+		private static MailAddress BuildMailAddress(string value)
+		{
+			int indexOfOpeningParenthesis = value.IndexOf('(');
+			if(indexOfOpeningParenthesis < 0)
+			{
+				return new MailAddress(value);
+			}
+			else
+			{
+				int indexOfClosingParenthesis = value.IndexOf(')');
+				int length = indexOfClosingParenthesis - indexOfOpeningParenthesis - 1;
 
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (!isInBody && String.IsNullOrEmpty(line))
-                        continue; //skip blank lines in beginning of message
+				string email = value.Substring(0, indexOfOpeningParenthesis);
+				string name = value.Substring(indexOfOpeningParenthesis + 1, length);
 
-                    if (!isInBody && IsLineAHeader(line, out header, out value))
-                    {
-                        ProcessHeader(message, header, value);
-                    }
-                    else
-                    {
-                        isInBody = true;
-                        body.AppendLine(line);
-                    }
-                }
+				return new MailAddress(email, name);
+			}
+		}
 
-                message.Body = body.ToString();
-            }
+		private MailMessage ProcessContentStream(Stream stream, Encoding encoding)
+		{
+			var message = new MailMessage();
 
-            if (message.Body.ToLowerInvariant().Contains("<html>"))
-                message.IsBodyHtml = true;
+			stream.Position = 0;
+			using(var reader = new StreamReader(stream, encoding))
+			{
+				bool isInBody = false;
+				var body = new StringBuilder();
+				string line, header, value;
 
-            return message;
-        }
+				while((line = reader.ReadLine()) != null)
+				{
+					if(!isInBody && String.IsNullOrEmpty(line))
+						continue; //skip blank lines in beginning of message
 
-        #endregion
+					if(!isInBody && IsLineAHeader(line, out header, out value))
+					{
+						ProcessHeader(message, header, value);
+					}
+					else
+					{
+						isInBody = true;
+						body.AppendLine(line);
+					}
+				}
 
-        public virtual MailMessage RenderMessage(ViewContext viewContext)
-        {
-            HttpResponseBase response = viewContext.HttpContext.Response;
+				message.Body = body.ToString();
+			}
 
-            response.Flush(); //clear out anything that is in there already
+			if(message.Body.ToLowerInvariant().Contains("<html>"))
+				message.IsBodyHtml = true;
 
-            MailMessage message;
-            Stream filter = null;
+			return message;
+		}
 
-            Stream oldFilter = response.Filter;
-            try
-            {
-                filter = new MemoryStream();
-                response.Filter = filter;
+		#endregion
 
-				//NOTE: Preview 5: Can no longer access the MasterName from the ViewContext, so this might break
-				//NOTE: Preview 5: Although Render can supposedly render to a TextWriter, as far as I can tell the WebFormView completely ignores this.
-				_viewEngine.FindView(viewContext.Controller.ControllerContext, viewContext.ViewName, null).View.Render(viewContext, /*new StringWriter()*/ viewContext.HttpContext.Response.Output);
+		public virtual MailMessage RenderMessage(ViewContext viewContext)
+		{
+			HttpResponseBase response = viewContext.HttpContext.Response;
 
-                response.Flush(); //flush content to our filter
-                message = ProcessContentStream(filter, response.ContentEncoding);
-            }
-            finally
-            {
-                if (filter != null)
-                    filter.Dispose();
+			response.Flush(); //clear out anything that is in there already
 
-                response.Filter = oldFilter;
-            }
+			MailMessage message;
+			Stream filter = null;
 
-            return message;
-        }
-    }
+			Stream oldFilter = response.Filter;
+			try
+			{
+				filter = new MemoryStream();
+				response.Filter = filter;
+
+				var view = _viewEngine.FindView(viewContext.Controller.ControllerContext, viewContext.ViewName, null).View;
+				view.Render(viewContext, viewContext. HttpContext. Response.Output);
+
+				response.Flush(); //flush content to our filter
+				message = ProcessContentStream(filter, response.ContentEncoding);
+			}
+			finally
+			{
+				if(filter != null)
+					filter.Dispose();
+
+				response.Filter = oldFilter;
+			}
+
+			return message;
+		}
+	}
 }
