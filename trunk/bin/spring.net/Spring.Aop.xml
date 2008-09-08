@@ -17,7 +17,6 @@
             <author>Adrian Colyer</author>
             <author>Rod Johnson</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AopNamespaceParser.cs,v 1.3 2007/08/09 02:42:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Config.AopNamespaceParser.Init">
             <summary>
@@ -32,7 +31,6 @@
             <author>Rob Harrop</author>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AopNamespaceUtils.cs,v 1.4 2007/05/26 19:25:48 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.Config.AopNamespaceUtils.AUTO_PROXY_CREATOR_OBJECT_NAME">
             <summary>
@@ -64,7 +62,6 @@
             The <see cref="T:Spring.Objects.Factory.Xml.IObjectDefinitionParser"/> for the <code>&lt;aop:config&gt;</code> tag.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ConfigObjectDefinitionParser.cs,v 1.2 2007/06/29 00:09:32 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.Config.ConfigObjectDefinitionParser.PROXY_TARGET_TYPE">
             <summary>
@@ -78,7 +75,7 @@
             embedded in the supplied <see cref="T:Spring.Objects.Factory.Xml.ParserContext"/>
             </summary>
             <param name="element">The element to be parsed.</param>
-            <param name="parserContext">TThe object encapsulating the current state of the parsing process.
+            <param name="parserContext">The object encapsulating the current state of the parsing process.
             Provides access to a IObjectDefinitionRegistry</param>
             <returns>The primary object definition.</returns>
             <remarks>
@@ -90,7 +87,7 @@
         </member>
         <member name="M:Spring.Aop.Config.ConfigObjectDefinitionParser.ParseAdvisor(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ParserContext)">
             <summary>
-            Parses the supplied advisor. element and registers the resulting <see cref="T:Spring.Aop.IAdvisor"/> 
+            Parses the supplied advisor element and registers the resulting <see cref="T:Spring.Aop.IAdvisor"/> 
             </summary>
             <param name="advisorElement">The advisor element.</param>
             <param name="parserContext">The parser context.</param>
@@ -113,7 +110,6 @@
             </remarks>
             <author>Dmitriy Kopylenko</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AdvisorAdapterRegistrationManager.cs,v 1.5 2007/08/22 08:49:08 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.AdvisorAdapterRegistrationManager.PostProcessBeforeInitialization(System.Object,System.String)">
             <summary>
@@ -172,7 +168,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AfterReturningAdviceAdapter.cs,v 1.5 2007/03/16 04:01:20 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.Adapter.IAdvisorAdapter">
             <summary>
@@ -195,7 +190,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvisorAdapter.cs,v 1.4 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.IAdvisorAdapter.SupportsAdvice(AopAlliance.Aop.IAdvice)">
             <summary>
@@ -294,7 +288,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AfterReturningAdviceInterceptor.cs,v 1.8 2007/03/16 04:01:21 aseovic Exp $</version>
         </member>
         <member name="T:AopAlliance.Intercept.IMethodInterceptor">
             <summary>
@@ -398,7 +391,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: BeforeAdviceAdapter.cs,v 1.4 2007/03/16 04:01:21 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.BeforeAdviceAdapter.SupportsAdvice(AopAlliance.Aop.IAdvice)">
             <summary>
@@ -440,7 +432,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: DefaultAdvisorAdapterRegistry.cs,v 1.5 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.Adapter.IAdvisorAdapterRegistry">
             <summary>
@@ -459,7 +450,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvisorAdapterRegistry.cs,v 1.3 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.IAdvisorAdapterRegistry.Wrap(System.Object)">
             <summary>
@@ -592,7 +582,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: GlobalAdvisorAdapterRegistry.cs,v 1.5 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.GlobalAdvisorAdapterRegistry.#ctor">
             <summary>
@@ -630,7 +619,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: MethodBeforeAdviceInterceptor.cs,v 1.5 2007/03/16 04:01:21 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.MethodBeforeAdviceInterceptor.#ctor(Spring.Aop.IMethodBeforeAdvice)">
             <summary>
@@ -670,7 +658,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ThrowsAdviceAdapter.cs,v 1.4 2007/03/16 04:01:21 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.ThrowsAdviceAdapter.SupportsAdvice(AopAlliance.Aop.IAdvice)">
             <summary>
@@ -777,7 +764,6 @@
              </example>
              <author>Rod Johnson</author>
              <author>Aleksandar Seovic (.NET)</author>
-             <version>$Id: ThrowsAdviceInterceptor.cs,v 1.8 2007/05/04 13:16:44 bbaia Exp $</version>
              <seealso cref="T:Spring.Aop.IThrowsAdvice"/>
         </member>
         <member name="F:Spring.Aop.Framework.Adapter.ThrowsAdviceInterceptor.exceptionHandlers">
@@ -873,7 +859,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: UnknownAdviceTypeException.cs,v 1.4 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.Adapter.UnknownAdviceTypeException.#ctor(System.Object)">
             <summary>
@@ -941,7 +926,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Adhari C Mahendra (.NET)</author>
-            <version>$Id: ITargetSourceCreator.cs,v 1.3 2007/08/22 08:49:08 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.AutoProxy.ITargetSourceCreator.GetTargetSource(System.Type,System.String,Spring.Objects.Factory.IObjectFactory)">
             <summary>
@@ -1000,7 +984,6 @@
             <seealso cref="M:Spring.Aop.Framework.AutoProxy.AbstractAdvisorAutoProxyCreator.FindCandidateAdvisors"/>
             <author>Rod Johnson</author>
             <author>Adhari C Mahendra (.NET)</author>
-            <version>$Id: AbstractAdvisorAutoProxyCreator.cs,v 1.5 2007/08/22 08:49:08 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator">
             <summary>
@@ -1035,7 +1018,6 @@
             <author>Adhari C Mahendra (.NET)</author>
             <seealso cref="P:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.InterceptorNames"/>
             <seealso cref="T:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator"/>
-            <version>$Id: AbstractAutoProxyCreator.cs,v 1.13 2007/10/08 22:04:51 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.ProxyConfig">
             <summary>
@@ -1055,7 +1037,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ProxyConfig.cs,v 1.13 2007/09/07 01:51:49 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.ProxyConfig.CopyFrom(Spring.Aop.Framework.ProxyConfig)">
             <summary>
@@ -1245,7 +1226,7 @@
         <member name="M:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.IsInfrastructureType(System.Type,System.String)">
             <summary>
             Determines whether the object is an infrastructure type,
-            IAdvisor, IAdvice, IAspect, AbstractAutoProxyCreator
+            IAdvisor, IAdvice, IAdvisors or AbstractAutoProxyCreator
             </summary>
             <param name="type">The object type to compare</param>
             <param name="name">The name of the object</param>
@@ -1296,6 +1277,12 @@
             object (may be empty but not null)</param>
             <param name="targetSource">The target source for the proxy, already pre-configured to access the object.</param>
             <returns>The AOP Proxy for the object.</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.CreateProxyFactory">
+            <summary>
+            Obtain a new proxy factory instance to be used for proxying a particular object
+            </summary>
+            <returns>A proxy factory instance for proxying a particular object</returns>
         </member>
         <member name="M:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.BuildAdvisors(System.String,System.Object[])">
             <summary>
@@ -1494,7 +1481,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Adhari C Mahendra (.NET)</author>
-            <version>$Id: DefaultAdvisorAutoProxyCreator.cs,v 1.9 2007/10/08 22:04:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.AutoProxy.DefaultAdvisorAutoProxyCreator.SEPARATOR">
             <summary>
@@ -1542,6 +1528,193 @@
             </p>
             </remarks>
         </member>
+        <member name="T:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer">
+            <summary>
+            <see cref="T:Spring.Objects.Factory.Config.IObjectFactoryPostProcessor"/> implementation that replaces a group of objects 
+            with a 'true' inheritance based AOP mechanism that delegates 
+            to the given interceptors before invoking the object itself.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.PostProcessObjectFactory(Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
+            <summary>
+            Allows for custom modification of an application context's object definitions.
+            </summary>
+            <remarks>
+            <p>
+            If the object name matches, replaces the type by a AOP proxied type based on inheritance.
+            </p>
+            </remarks>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.IsInfrastructureType(System.Type,System.String)">
+            <summary>
+            Determines whether the object is an infrastructure type,
+            IAdvisor, IAdvice, IAdvisors, AbstractAutoProxyCreator or InheritanceBasedAopConfigurer.
+            </summary>
+            <param name="type">The object type to compare</param>
+            <param name="name">The name of the object</param>
+            <returns>
+            <c>true</c> if [is infrastructure type] [the specified obj]; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.CreateProxyFactory(System.Type,System.String)">
+            <summary>
+            Create an AOP proxy for the given object.
+            </summary>
+            <param name="objectType">Type of the object.</param>
+            <param name="objectName">The name of the object.</param>
+            <returns>The AOP Proxy for the object.</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.IsObjectNameMatch(System.String)">
+            <summary>
+            Return if the given object name matches one of the object names specified.
+            </summary>
+            <remarks>
+            <p>
+            The default implementation checks for "xxx*", "*xxx" and "*xxx*" matches,
+            as well as direct equality. Can be overridden in subclasses.
+            </p>
+            </remarks>
+            <param name="objectName">the object name to check</param>
+            <returns>if the names match</returns>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.ObjectNames">
+            <summary>
+            Set the names of the objects in IList fashioned way 
+            that should automatically get intercepted.
+            </summary>
+            <remarks>
+            A name can specify a prefix to match by ending with "*", e.g. "myObject,tx*"
+            will match the object named "myObject" and all objects whose name start with "tx".
+            </remarks>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.InterceptorNames">
+            <summary> 
+            Sets the common interceptors, a list of <see cref="T:AopAlliance.Aop.IAdvice"/>, 
+            <see cref="T:Spring.Aop.IAdvisor"/> and introduction object names.
+            </summary>
+            <remarks>
+            <para>
+            If this property isn't set, there will be zero common interceptors. 
+            This is perfectly valid, if "specific" interceptors such as
+            matching Advisors are all we want.
+            </para>
+            </remarks>
+            <value>
+            The list of <see cref="T:AopAlliance.Aop.IAdvice"/>, 
+            <see cref="T:Spring.Aop.IAdvisor"/> and introduction object names.
+            </value>
+            <seealso cref="T:AopAlliance.Aop.IAdvice"/>
+            <seealso cref="T:Spring.Aop.IAdvisor"/>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.ProxyTargetAttributes">
+            <summary>
+            Is target type attributes, method attributes, method's return type attributes 
+            and method's parameter attributes to be proxied in addition
+            to any interfaces declared on the proxied <see cref="T:System.Type"/>?
+            </summary>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.ProxyDeclaredMembersOnly">
+            <summary>
+            Gets or sets a value indicating whether inherited members should be proxied.
+            </summary>
+            <value>
+            <see langword="true"/> if inherited members should be proxied; 
+            otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.ProxyInterfaces">
+            <summary>
+            Gets or sets a value indicating whether interfaces members should be proxied.
+            </summary>
+            <value>
+            <see langword="true"/> if interfaces members should be proxied; 
+            otherwise, <see langword="false"/>.
+            </value>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.ObjectFactory">
+            <summary>
+            Callback that supplies the owning factory to an object instance.
+            </summary>
+            <value>
+            Owning <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
+            (may not be <see langword="null"/>). The object can immediately
+            call methods on the factory.
+            </value>
+            <remarks>
+            <p>
+            Invoked after population of normal object properties but before an init
+            callback like <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            method or a custom init-method.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            In case of initialization errors.
+            </exception>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.InheritanceBasedAopConfigurer.Order">
+            <summary>
+            Return the order value of this object, where a higher value means greater in
+            terms of sorting.
+            </summary>
+            <remarks>
+            Ordering which will apply to this class's implementation
+            of Ordered, used when applying multiple ObjectPostProcessors.
+            Default value is int.MaxValue, meaning that it's non-ordered.
+            </remarks>
+            <returns>The order value.</returns>
+        </member>
+        <member name="T:Spring.Aop.ITargetSource">
+            <summary>
+            Used to obtain the current "target" of an AOP invocation
+            </summary>
+            <remarks>
+            <p>
+            This target will be invoked via reflection if no around advice chooses
+            to end the interceptor chain itself.
+            </p>
+            <p>
+            If an <see cref="T:Spring.Aop.ITargetSource"/> is <c>"static"</c>, it
+            will always return the same target, allowing optimizations in the AOP
+            framework. Dynamic target sources can support pooling, hot swapping etc.
+            </p>
+            <p>
+            Application developers don't usually need to work with target sources
+            directly: this is an AOP framework interface.
+            </p>
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Aleksandar Seovic (.NET)</author>
+        </member>
+        <member name="M:Spring.Aop.ITargetSource.GetTarget">
+            <summary>
+            Returns the target object.
+            </summary>
+            <returns>The target object.</returns>
+            <exception cref="T:System.Exception">
+            If unable to obtain the target object.
+            </exception>
+        </member>
+        <member name="M:Spring.Aop.ITargetSource.ReleaseTarget(System.Object)">
+            <summary>
+            Releases the target object.
+            </summary>
+            <param name="target">The target object to release.</param>
+        </member>
+        <member name="P:Spring.Aop.ITargetSource.TargetType">
+            <summary>
+            The <see cref="T:System.Type"/> of the target object.
+            </summary>
+        </member>
+        <member name="P:Spring.Aop.ITargetSource.IsStatic">
+            <summary>
+            Is the target source static?
+            </summary>
+            <value>
+            <see langword="true"/> if the target source is static.
+            </value>
+        </member>
         <member name="T:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator">
             <summary>
             Object Auto Proxy Creator
@@ -1557,18 +1730,9 @@
             the factory-object prefix "&amp;"  e.g. "&amp;MyFactoryObject".
             </para>
             </remarks>
-            <seealso cref="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.SetObjectNames(System.String[])"/>
             <seealso cref="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.IsMatch(System.String,System.String)"/>
             <author>Juergen Hoeller</author>
             <author>Adhari C Mahendra (.NET)</author>
-            <version>$Id: ObjectNameAutoProxyCreator.cs,v 1.7 2007/09/07 01:51:49 markpollack Exp $</version>
-        </member>
-        <member name="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.SetObjectNames(System.String[])">
-            <summary>
-            Set the names of the objects that should automatically get wrapped with proxies.
-            A name can specify a prefix to match by ending with "*", e.g. "myObject,tx*"
-            will match the object named "myObject" and all objects whose name start with "tx".
-            </summary>
         </member>
         <member name="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.GetAdvicesAndAdvisorsForObject(System.Type,System.String,Spring.Aop.ITargetSource)">
             <summary>
@@ -1603,7 +1767,6 @@
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: AbstractAopProxyMethodBuilder.cs,v 1.8 2007/08/02 16:28:29 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.aopProxyGenerator">
             <summary>
@@ -1614,6 +1777,12 @@
             <summary>
             The dictionary to cache the list of target  
             <see cref="T:System.Reflection.MethodInfo"/>s.
+            </summary>
+        </member>
+        <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.onProxyTargetMethods">
+            <summary>
+            The dictionary to cache the list of target  
+            <see cref="T:System.Reflection.MethodInfo"/>s defined on the proxy.
             </summary>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.interceptors">
@@ -1639,12 +1808,24 @@
         <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.genericTargetMethod">
             <summary>
             The local variable to store the closed generic method 
-            when the proxied method is generic.
+            when the target method is generic.
+            </summary>
+        </member>
+        <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.genericOnProxyTargetMethod">
+            <summary>
+            The local variable to store the closed generic method 
+            when the target method defined on the proxy is generic.
             </summary>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.targetMethodCacheField">
             <summary>
             The field to cache the target <see cref="T:System.Reflection.MethodInfo"/>.
+            </summary>
+        </member>
+        <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.onProxyTargetMethodCacheField">
+            <summary>
+            The field to cache the target <see cref="T:System.Reflection.MethodInfo"/> 
+            defined on the proxy.
             </summary>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.methodReturnsValue">
@@ -1667,6 +1848,27 @@
             <param name="targetMethods">
             The dictionary to cache the list of target 
             <see cref="T:System.Reflection.MethodInfo"/>s.
+            </param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.#ctor(System.Reflection.Emit.TypeBuilder,Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator,System.Boolean,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Creates a new instance of the method builder.
+            </summary>
+            <param name="typeBuilder">The type builder to use.</param>
+            <param name="aopProxyGenerator">
+            The <see cref="T:Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator"/> implementation to use.
+            </param>
+            <param name="explicitImplementation">
+            <see langword="true"/> if the interface is to be
+            implemented explicitly; otherwise <see langword="false"/>.
+            </param>
+            <param name="targetMethods">
+            The dictionary to cache the list of target 
+            <see cref="T:System.Reflection.MethodInfo"/>s.
+            </param>
+            <param name="onProxyTargetMethods">
+            The dictionary to cache the list of target  
+            <see cref="T:System.Reflection.MethodInfo"/>s defined on the proxy.
             </param>
         </member>
         <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.GenerateMethod(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo,System.Reflection.MethodInfo)">
@@ -1693,6 +1895,27 @@
             <param name="il">The IL generator to use.</param>
             <param name="method">The target method.</param>
         </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.GenerateOnProxyTargetMethodCacheField(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo)">
+            <summary>
+            Create static field that will cache target method when defined on the proxy.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+            <param name="method">The target method.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.MakeGenericMethod(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo,System.Reflection.Emit.FieldBuilder,System.Reflection.Emit.LocalBuilder)">
+            <summary>
+            Create a closed generic method for the current call 
+            if target method is a generic definition.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+            <param name="method">The target method.</param>
+            <param name="methodCacheField">
+            The field that contains the method generic definition
+            </param>
+            <param name="localMethod">
+            The local variable to store the closed generic method.
+            </param>
+        </member>
         <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.PushTargetType(System.Reflection.Emit.ILGenerator)">
             <summary>
             Generates the IL instructions that pushes 
@@ -1711,6 +1934,13 @@
         <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.PushTargetMethodInfo(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo)">
             <summary>
             Pushes the target <see cref="T:System.Reflection.MethodInfo"/> to stack.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+            <param name="method">The method to proxy.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder.PushOnProxyTargetMethodInfo(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo)">
+            <summary>
+            Pushes the target <see cref="T:System.Reflection.MethodInfo"/> defined on the proxy to stack.
             </summary>
             <param name="il">The IL generator to use.</param>
             <param name="method">The method to proxy.</param>
@@ -1801,7 +2031,6 @@
             to create an AOP proxy for any object.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: AbstractAopProxyTypeBuilder.cs,v 1.5 2007/12/03 09:06:58 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator">
             <summary>
@@ -1809,7 +2038,6 @@
             used to build the Aop proxy type.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: IAopProxyTypeGenerator.cs,v 1.2 2006/11/05 20:36:59 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator.PushAdvisedProxy(System.Reflection.Emit.ILGenerator)">
             <summary>
@@ -1852,7 +2080,6 @@
             Represents the AOP configuration data built-in with the proxy.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: AdvisedProxy.cs,v 1.9 2007/10/08 22:04:51 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.IAdvised">
             <summary>
@@ -1871,7 +2098,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvised.cs,v 1.15 2007/10/10 18:07:38 markpollack Exp $</version>
             <seealso cref="T:Spring.Aop.Framework.AdvisedSupport"/>
         </member>
         <member name="M:Spring.Aop.Framework.IAdvised.AddAdvice(AopAlliance.Aop.IAdvice)">
@@ -2396,7 +2622,7 @@
             The current <see cref="T:Spring.Aop.Framework.IAopProxy"/> implementation.
             </param>
         </member>
-        <member name="M:Spring.Aop.Framework.DynamicProxy.AdvisedProxy.Invoke(System.Object,System.Object,System.Type,System.Reflection.MethodInfo,System.Object[],System.Collections.IList)">
+        <member name="M:Spring.Aop.Framework.DynamicProxy.AdvisedProxy.Invoke(System.Object,System.Object,System.Type,System.Reflection.MethodInfo,System.Reflection.MethodInfo,System.Object[],System.Collections.IList)">
             <summary>
             Invokes intercepted methods using reflection
             </summary>
@@ -2404,6 +2630,7 @@
             <param name="target">target object to invoke method on</param>
             <param name="targetType">target type</param>
             <param name="targetMethod">taget method to invoke</param>
+            <param name="proxyMethod">The method to invoke on proxy.</param>
             <param name="args">method arguments</param>
             <param name="interceptors">interceptor chain</param>
             <returns>value returned by invocation chain</returns>
@@ -2450,13 +2677,53 @@
             </summary>
             <value>The type of the target or null if not known.</value>
         </member>
+        <member name="T:Spring.Aop.Framework.DynamicProxy.BaseAopProxyMethodBuilder">
+            <summary>
+            <see cref="T:Spring.Proxy.IProxyMethodBuilder"/> implementation 
+            that delegates method calls to the base method.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.BaseAopProxyMethodBuilder.#ctor(System.Reflection.Emit.TypeBuilder,Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator,System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Creates a new instance of the method builder.
+            </summary>
+            <param name="typeBuilder">The type builder to use.</param>
+            <param name="aopProxyGenerator">
+            The <see cref="T:Spring.Aop.Framework.DynamicProxy.IAopProxyTypeGenerator"/> implementation to use.
+            </param>
+            <param name="targetMethods">
+            The dictionary to cache the list of target 
+            <see cref="T:System.Reflection.MethodInfo"/>s.
+            </param>
+            <param name="onProxyTargetMethods">
+            The dictionary to cache the list of target  
+            <see cref="T:System.Reflection.MethodInfo"/>s defined on the proxy.
+            </param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.BaseAopProxyMethodBuilder.GenerateOnProxyTargetMethodCacheField(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo)">
+            <summary>
+            Create static field that will cache target method when defined on the proxy.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+            <param name="method">The target method.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.BaseAopProxyMethodBuilder.CallDirectProxiedMethod(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo,System.Reflection.MethodInfo)">
+            <summary>
+            Calls target method directly.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+            <param name="method">The method to proxy.</param>
+            <param name="interfaceMethod">
+            The interface definition of the method, if applicable.
+            </param>
+        </member>
         <member name="T:Spring.Aop.Framework.DynamicProxy.BaseCompositionAopProxy">
             <summary>
             Base class that each dynamic composition proxy has to extend.
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: BaseCompositionAopProxy.cs,v 1.2 2007/03/16 04:01:22 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.IAopProxy">
             <summary>
@@ -2464,7 +2731,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAopProxy.cs,v 1.4 2006/11/16 02:30:49 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.IAopProxy.GetProxy">
             <summary>
@@ -2532,7 +2798,6 @@
             <author>Erich Eichinger</author>
             <seealso cref="T:Spring.Aop.Framework.DynamicProxy.DefaultAopProxyFactory"/>
             <seealso cref="T:Spring.Aop.Framework.IAopProxyFactory"/>
-            <version>$Id: CachedAopProxyFactory.cs,v 1.1 2007/08/02 04:15:21 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.DynamicProxy.DefaultAopProxyFactory">
             <summary>
@@ -2556,7 +2821,6 @@
             <author>Aleksandar Seovic (.NET)</author>
             <author>Bruno Baia (.NET)</author>
             <seealso cref="T:Spring.Aop.Framework.IAopProxyFactory"/>
-            <version>$Id: DefaultAopProxyFactory.cs,v 1.2 2007/08/02 16:28:29 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.IAopProxyFactory">
             <summary> 
@@ -2566,7 +2830,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAopProxyFactory.cs,v 1.3 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.IAopProxyFactory.CreateAopProxy(Spring.Aop.Framework.AdvisedSupport)">
             <summary>
@@ -2628,7 +2891,6 @@
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: CompositionAopProxyTypeBuilder.cs,v 1.15 2007/12/07 17:58:56 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.DynamicProxy.CompositionAopProxyTypeBuilder.#ctor(Spring.Aop.Framework.IAdvised)">
             <summary>
@@ -2686,7 +2948,6 @@
             Builds an AOP proxy type using the decorator pattern.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: DecoratorAopProxyTypeBuilder.cs,v 1.17 2007/12/07 17:58:56 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.DecoratorAopProxyTypeBuilder.advisedProxyField">
             <summary>
@@ -2772,7 +3033,6 @@
             method calls to an <see cref="T:Spring.Aop.Framework.IAdvised"/> instance.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: IAdvisedProxyMethodBuilder.cs,v 1.3 2006/11/12 01:37:47 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.IAdvisedProxyMethodBuilder._aopProxyGenerator">
             <summary>
@@ -2795,6 +3055,112 @@
             </summary>
             <param name="il">The IL generator to use.</param>
         </member>
+        <member name="T:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder">
+            <summary>
+            Builds an AOP proxy type using inheritance.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="F:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.advisedProxyField">
+            <summary>
+            AdvisedProxy instance calls should be delegated to.
+            </summary>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.#ctor(Spring.Aop.Framework.IAdvised)">
+            <summary>
+            Creates a new instance of the 
+            <see cref="T:Spring.Aop.Framework.DynamicProxy.CompositionAopProxyTypeBuilder"/> class.
+            </summary>
+            <param name="advised">The proxy configuration.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.BuildProxyType">
+            <summary>
+            Creates the proxy type.
+            </summary>
+            <returns>The generated proxy class.</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.PushTarget(System.Reflection.Emit.ILGenerator)">
+            <summary>
+            Generates the IL instructions that pushes 
+            the target instance on which calls should be delegated to.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.PushAdvisedProxy(System.Reflection.Emit.ILGenerator)">
+            <summary>
+            Generates the IL instructions that pushes  
+            the current <see cref="T:Spring.Aop.Framework.DynamicProxy.AdvisedProxy"/> 
+            instance on stack.
+            </summary>
+            <param name="il">The IL generator to use.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.DeclareAdvisedProxyInstanceField(System.Reflection.Emit.TypeBuilder)">
+            <summary>
+            Declares field that holds the <see cref="T:Spring.Aop.Framework.DynamicProxy.AdvisedProxy"/>
+            instance used by the proxy.
+            </summary>
+            <param name="builder">
+            The <see cref="T:System.Type"/> builder to use for code generation.
+            </param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.ImplementGetObjectDataMethod(System.Reflection.Emit.TypeBuilder)">
+            <summary>
+            Implements serialization method.
+            </summary>
+            <param name="typeBuilder"></param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.ImplementSerializationConstructor(System.Reflection.Emit.TypeBuilder)">
+            <summary>
+            Implements serialization constructor.
+            </summary>
+            <param name="typeBuilder">Type builder to use.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.DefineConstructorParameters(System.Reflection.ConstructorInfo)">
+            <summary>
+            Defines the types of the parameters for the specified constructor.
+            </summary>
+            <param name="constructor">The constructor to use.</param>
+            <returns>The types for constructor's parameters.</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.GenerateConstructor(System.Reflection.Emit.ConstructorBuilder,System.Reflection.Emit.ILGenerator,System.Reflection.ConstructorInfo)">
+            <summary>
+            Generates the proxy constructor.
+            </summary>
+            <remarks>
+            <p>
+            This implementation creates instance of the AdvisedProxy object.
+            </p>
+            </remarks>
+            <param name="builder">The constructor builder to use.</param>
+            <param name="il">The IL generator to use.</param>
+            <param name="constructor">The constructor to delegate the creation to.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.ImplementIAopProxy(System.Reflection.Emit.TypeBuilder)">
+            <summary>
+            Implements <see cref="T:Spring.Aop.Framework.IAopProxy"/> interface.
+            </summary>
+            <param name="typeBuilder">The type builder to use.</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.IsInheritanceProxy(System.Type)">
+            <summary>
+            Determines if the specified <paramref name="type"/> 
+            is one of those generated by this builder.
+            </summary>
+            <param name="type">The type to check.</param>
+            <returns>
+            <see langword="true"/> if the type is a inheritance-based proxy;
+            otherwise <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="P:Spring.Aop.Framework.DynamicProxy.InheritanceAopProxyTypeBuilder.ProxyDeclaredMembersOnly">
+            <summary>
+            Gets or sets a value indicating whether inherited members should be proxied.
+            </summary>
+            <value>
+            <see langword="true"/> if inherited members should be proxied; 
+            otherwise, <see langword="false"/>.
+            </value>
+        </member>
         <member name="T:Spring.Aop.Framework.DynamicProxy.IntroductionProxyMethodBuilder">
             <summary>
             <see cref="T:Spring.Proxy.IProxyMethodBuilder"/> implementation 
@@ -2802,7 +3168,6 @@
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: IntroductionProxyMethodBuilder.cs,v 1.5 2006/11/05 20:36:59 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.IntroductionProxyMethodBuilder.index">
             <summary>
@@ -2853,7 +3218,6 @@
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: TargetAopProxyMethodBuilder.cs,v 1.2 2006/09/14 21:05:23 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Aop.Framework.DynamicProxy.TargetAopProxyMethodBuilder.targetSource">
             <summary>
@@ -2874,7 +3238,8 @@
             implemented explicitly; otherwise <see langword="false"/>.
             </param>
             <param name="targetMethods">
-            
+            The dictionary to cache the list of target 
+            <see cref="T:System.Reflection.MethodInfo"/>s.
             </param>
         </member>
         <member name="M:Spring.Aop.Framework.DynamicProxy.TargetAopProxyMethodBuilder.DeclareLocals(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo)">
@@ -2921,7 +3286,6 @@
             <author>Aleksandar Seovic (.NET)</author>
             <author>Rick Evans (.NET)</author>
             <author>Bruno Baia (.NET)</author>
-            <version>$Id: AbstractMethodInvocation.cs,v 1.8 2007/07/05 20:29:21 bbaia Exp $</version>
         </member>
         <member name="T:AopAlliance.Intercept.IMethodInvocation">
             <summary>
@@ -3298,7 +3662,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AdvisedSupport.cs,v 1.35 2007/12/07 17:58:56 bbaia Exp $</version>
             <seealso cref="T:Spring.Aop.Framework.IAopProxy"/>
         </member>
         <member name="F:Spring.Aop.Framework.AdvisedSupport._advisors">
@@ -4154,7 +4517,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AdvisorChainFactoryUtils.cs,v 1.7 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.AdvisorChainFactoryUtils.CalculateInterceptors(Spring.Aop.Framework.IAdvised,System.Object,System.Reflection.MethodInfo,System.Type)">
             <summary>
@@ -4196,7 +4558,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AopConfigException.cs,v 1.4 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.AopConfigException.#ctor">
             <summary>
@@ -4269,7 +4630,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AopContext.cs,v 1.7 2006/09/15 21:25:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.AopContext.PushProxy(System.Object)">
             <summary>
@@ -4348,7 +4708,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: AopUtils.cs,v 1.4 2007/10/10 18:07:38 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.AopUtils.IsAopProxy(System.Object)">
             <summary>
@@ -4477,9 +4836,13 @@
             <seealso cref="T:Spring.Reflection.Dynamic.DynamicMethod"/>
             <author>Aleksandar Seovic</author>
             <author>Bruno Baia</author>
-            <version>$Id: DynamicMethodInvocation.cs,v 1.2 2007/08/08 03:58:14 bbaia Exp $</version>
         </member>
-        <member name="M:Spring.Aop.Framework.DynamicMethodInvocation.#ctor(System.Object,System.Object,System.Reflection.MethodInfo,System.Object[],System.Type,System.Collections.IList)">
+        <member name="F:Spring.Aop.Framework.DynamicMethodInvocation.proxyMethod">
+            <summary>
+            The method invocation that is to be invoked on the proxy.
+            </summary>
+        </member>
+        <member name="M:Spring.Aop.Framework.DynamicMethodInvocation.#ctor(System.Object,System.Object,System.Reflection.MethodInfo,System.Reflection.MethodInfo,System.Object[],System.Type,System.Collections.IList)">
             <summary>
             Creates a new instance of the
             <see cref="T:Spring.Aop.Framework.DynamicMethodInvocation"/> class.
@@ -4487,6 +4850,7 @@
             <param name="proxy">The AOP proxy.</param>
             <param name="target">The target object.</param>
             <param name="method">The target method proxied.</param>
+            <param name="proxyMethod">The method to invoke on proxy.</param>
             <param name="arguments">The target method's arguments.</param>
             <param name="targetType">
             The <see cref="T:System.Type"/> of the target object.</param>
@@ -4541,7 +4905,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: DynamicTargetSourceWrapper.cs,v 1.4 2007/03/16 04:01:17 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.ITargetSourceWrapper">
             <summary>
@@ -4549,7 +4912,6 @@
             interface.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ITargetSourceWrapper.cs,v 1.1 2006/08/10 18:45:52 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.ITargetSourceWrapper.GetTarget">
             <summary>
@@ -4589,7 +4951,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: HashtableCachingAdvisorChainFactory.cs,v 1.9 2007/03/16 04:01:18 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.IAdvisorChainFactory">
             <summary>
@@ -4597,7 +4958,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvisorChainFactory.cs,v 1.8 2006/09/14 21:05:23 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.IAdvisedSupportListener">
             <summary>
@@ -4614,7 +4974,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvisedSupportListener.cs,v 1.5 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.IAdvisedSupportListener.Activated(Spring.Aop.Framework.AdvisedSupport)">
             <summary>
@@ -4712,7 +5071,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.Net)</author>
-            <version>$Id: InterceptorAndDynamicMethodMatcher.cs,v 1.3 2007/03/16 04:01:18 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Framework.ITargetAware">
             <summary>
@@ -4725,7 +5083,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ITargetAware.cs,v 1.3 2006/04/09 07:18:35 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.Framework.ITargetAware.TargetProxy">
             <summary>
@@ -4745,7 +5102,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ProxyFactory.cs,v 1.8 2007/03/16 04:01:19 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.ProxyFactory.#ctor">
             <summary>
@@ -4859,7 +5215,6 @@
             <author>Choy Rim (.NET)</author>
             <author>Mark Pollack (.NET)</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ProxyFactoryObject.cs,v 1.26 2007/08/03 14:38:30 markpollack Exp $</version>
             <seealso cref="P:Spring.Aop.Framework.ProxyFactoryObject.InterceptorNames"/>
             <seealso cref="P:Spring.Aop.Framework.ProxyFactoryObject.ProxyInterfaces"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
@@ -5134,9 +5489,13 @@
             <author>Aleksandar Seovic (.NET)</author>
             <author>Rick Evans (.NET)</author>
             <author>Bruno Baia (.NET)</author>
-            <version>$Id: ReflectiveMethodInvocation.cs,v 1.17 2007/08/02 16:28:30 bbaia Exp $</version>
         </member>
-        <member name="M:Spring.Aop.Framework.ReflectiveMethodInvocation.#ctor(System.Object,System.Object,System.Reflection.MethodInfo,System.Object[],System.Type,System.Collections.IList)">
+        <member name="F:Spring.Aop.Framework.ReflectiveMethodInvocation.proxyMethod">
+            <summary>
+            The method invocation that is to be invoked on the proxy.
+            </summary>
+        </member>
+        <member name="M:Spring.Aop.Framework.ReflectiveMethodInvocation.#ctor(System.Object,System.Object,System.Reflection.MethodInfo,System.Reflection.MethodInfo,System.Object[],System.Type,System.Collections.IList)">
             <summary>
             Creates a new instance of the
             <see cref="T:Spring.Aop.Framework.ReflectiveMethodInvocation"/> class.
@@ -5144,6 +5503,7 @@
             <param name="proxy">The AOP proxy.</param>
             <param name="target">The target object.</param>
             <param name="method">The target method proxied.</param>
+            <param name="proxyMethod">The method to invoke on proxy.</param>
             <param name="arguments">The target method's arguments.</param>
             <param name="targetType">
             The <see cref="T:System.Type"/> of the target object.</param>
@@ -5198,7 +5558,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: StaticTargetSourceWrapper.cs,v 1.3 2007/03/16 04:01:20 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Framework.StaticTargetSourceWrapper.#ctor(Spring.Aop.ITargetSource)">
             <summary>
@@ -5237,7 +5596,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AbstractGenericPointcutAdvisor.cs,v 1.2 2007/08/10 17:39:44 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Aop.Support.AbstractPointcutAdvisor">
             <summary>
@@ -5249,7 +5607,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AbstractPointcutAdvisor.cs,v 1.1 2007/08/10 17:45:44 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Aop.IPointcutAdvisor">
             <summary>
@@ -5265,7 +5622,6 @@
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
             <seealso cref="T:Spring.Aop.IIntroductionAdvisor"/>
-            <version>$Id: IPointcutAdvisor.cs,v 1.3 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.IAdvisor">
             <summary>
@@ -5292,7 +5648,6 @@
             <seealso cref="T:Spring.Aop.IAfterReturningAdvice"/>
             <seealso cref="T:Spring.Aop.IThrowsAdvice"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
-            <version>$Id: IAdvisor.cs,v 1.7 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.IAdvisor.IsPerInstance">
             <summary>
@@ -5434,7 +5789,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack</author>
-            <version>$Id: AbstractObjectFactoryPointcutAdvisor.cs,v 1.2 2007/08/10 17:39:44 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.AbstractObjectFactoryPointcutAdvisor.ToString">
             <summary>
@@ -5526,7 +5880,6 @@
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: StaticMethodMatcherPointcut.cs,v 1.8 2007/05/30 22:35:43 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.Support.StaticMethodMatcher">
             <summary> 
@@ -5535,7 +5888,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: StaticMethodMatcher.cs,v 1.6 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.IMethodMatcher">
             <summary>
@@ -5580,7 +5932,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IMethodMatcher.cs,v 1.9 2006/04/09 07:18:36 markpollack Exp $</version>
             <seealso cref="T:Spring.Aop.TrueMethodMatcher"/>
         </member>
         <member name="M:Spring.Aop.IMethodMatcher.Matches(System.Reflection.MethodInfo,System.Type)">
@@ -5728,7 +6079,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IPointcut.cs,v 1.9 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.IPointcut.TypeFilter">
             <summary>
@@ -5790,7 +6140,6 @@
             <author>Aleksandar Seovic (.NET)</author>
             <seealso cref="T:Spring.Aop.IPointcut"/>
             <seealso cref="F:Spring.Aop.TrueTypeFilter.True"/>
-            <version>$Id: ITypeFilter.cs,v 1.2 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.ITypeFilter.Matches(System.Type)">
             <summary>
@@ -5959,7 +6308,6 @@
             </summary>
             <author>Aleksandar Seovic</author>
             <author>Ronald Wildenberg</author>
-            <version>$Id: AttributeMatchMethodPointcut.cs,v 1.8 2007/05/21 16:43:45 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.AttributeMatchMethodPointcut.#ctor">
             <summary>
@@ -6059,7 +6407,6 @@
             making them an Advisor.
             </summary>
             <author>Bruno Baia</author>
-            <version>$Id: AttributeMatchMethodPointcutAdvisor.cs,v 1.3 2007/03/16 04:01:23 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.AttributeMatchMethodPointcutAdvisor.#ctor">
             <summary>
@@ -6133,7 +6480,6 @@
             </remarks> 
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ComposablePointcut.cs,v 1.7 2007/03/16 04:01:23 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.ComposablePointcut.#ctor">
             <summary>
@@ -6233,7 +6579,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Simon White (.NET)</author>
-            <version>$Id: ControlFlowPointcut.cs,v 1.6 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.ControlFlowPointcut.#ctor(System.Type)">
             <summary>
@@ -6387,7 +6732,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: DefaultIntroductionAdvisor.cs,v 1.11 2007/03/16 04:01:23 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.IIntroductionAdvisor">
             <summary>
@@ -6407,7 +6751,6 @@
             <seealso cref="T:Spring.Aop.IIntroductionInterceptor"/>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IIntroductionAdvisor.cs,v 1.8 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.IIntroductionAdvisor.ValidateInterfaces">
             <summary>
@@ -6598,7 +6941,6 @@
             </remarks>
             <author>Juerge Hoeller</author>
             <author>Mark Pollack</author>
-            <version>$Id: DefaultObjectFactoryPointcutAdvisor.cs,v 1.1 2007/05/30 22:35:43 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.DefaultObjectFactoryPointcutAdvisor.ToString">
             <summary>
@@ -6623,7 +6965,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: DefaultPointcutAdvisor.cs,v 1.8 2007/05/30 22:35:43 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.DefaultPointcutAdvisor.#ctor">
             <summary>
@@ -6676,7 +7017,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: DynamicMethodMatcher.cs,v 1.5 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.DynamicMethodMatcher.#ctor">
             <summary>
@@ -6748,7 +7088,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: DynamicMethodMatcherPointcutAdvisor.cs,v 1.6 2007/03/16 04:01:24 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.DynamicMethodMatcherPointcutAdvisor.#ctor">
             <summary>
@@ -6865,7 +7204,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: MethodMatchers.cs,v 1.7 2007/03/16 04:01:24 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.MethodMatchers.Union(Spring.Aop.IMethodMatcher,Spring.Aop.IMethodMatcher)">
             <summary>
@@ -6922,7 +7260,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: NameMatchMethodPointcut.cs,v 1.9 2007/03/16 04:01:24 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.NameMatchMethodPointcut.Matches(System.Reflection.MethodInfo,System.Type)">
             <summary>
@@ -6991,7 +7328,6 @@
             <author>Juergen Hoeller</author>
             <author>Aleksandar Seovic (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: NameMatchMethodPointcutAdvisor.cs,v 1.5 2007/05/30 22:35:43 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.NameMatchMethodPointcutAdvisor.#ctor">
             <summary>
@@ -7056,7 +7392,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: Pointcuts.cs,v 1.6 2007/03/16 04:01:25 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.Pointcuts.Union(Spring.Aop.IPointcut,Spring.Aop.IPointcut)">
             <summary>
@@ -7193,7 +7528,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: RootTypeFilter.cs,v 1.3 2007/03/16 04:01:25 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.RootTypeFilter.#ctor(System.Type)">
             <summary>
@@ -7327,7 +7661,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.Net)</author>
-            <version>$Id: StaticMethodMatcherPointcutAdvisor.cs,v 1.6 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.StaticMethodMatcherPointcutAdvisor.#ctor">
             <summary>
@@ -7400,7 +7733,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.Net)</author>
-            <version>$Id: TypeFilters.cs,v 1.4 2007/03/16 04:01:25 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.TypeFilters.Union(Spring.Aop.ITypeFilter,Spring.Aop.ITypeFilter)">
             <summary>
@@ -7479,7 +7811,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: UnionPointcut.cs,v 1.8 2007/03/16 04:01:25 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Support.UnionPointcut.#ctor(Spring.Aop.IPointcut,Spring.Aop.IPointcut)">
             <summary>
@@ -7547,7 +7878,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Federico Spinazzi (.NET)</author>
-            <version>$Id: AbstractPoolingTargetSource.cs,v 1.7 2007/03/16 04:01:26 aseovic Exp $</version>
         </member>
         <member name="T:Spring.Aop.Target.AbstractPrototypeTargetSource">
             <summary>
@@ -7565,58 +7895,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Federico Spinazzi (.NET)</author>
-            <version>$Id: AbstractPrototypeTargetSource.cs,v 1.11 2007/07/28 07:32:52 markpollack Exp $</version>
-        </member>
-        <member name="T:Spring.Aop.ITargetSource">
-            <summary>
-            Used to obtain the current "target" of an AOP invocation
-            </summary>
-            <remarks>
-            <p>
-            This target will be invoked via reflection if no around advice chooses
-            to end the interceptor chain itself.
-            </p>
-            <p>
-            If an <see cref="T:Spring.Aop.ITargetSource"/> is <c>"static"</c>, it
-            will always return the same target, allowing optimizations in the AOP
-            framework. Dynamic target sources can support pooling, hot swapping etc.
-            </p>
-            <p>
-            Application developers don't usually need to work with target sources
-            directly: this is an AOP framework interface.
-            </p>
-            </remarks>
-            <author>Rod Johnson</author>
-            <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: ITargetSource.cs,v 1.9 2007/10/10 18:07:38 markpollack Exp $</version>
-        </member>
-        <member name="M:Spring.Aop.ITargetSource.GetTarget">
-            <summary>
-            Returns the target object.
-            </summary>
-            <returns>The target object.</returns>
-            <exception cref="T:System.Exception">
-            If unable to obtain the target object.
-            </exception>
-        </member>
-        <member name="M:Spring.Aop.ITargetSource.ReleaseTarget(System.Object)">
-            <summary>
-            Releases the target object.
-            </summary>
-            <param name="target">The target object to release.</param>
-        </member>
-        <member name="P:Spring.Aop.ITargetSource.TargetType">
-            <summary>
-            The <see cref="T:System.Type"/> of the target object.
-            </summary>
-        </member>
-        <member name="P:Spring.Aop.ITargetSource.IsStatic">
-            <summary>
-            Is the target source static?
-            </summary>
-            <value>
-            <see langword="true"/> if the target source is static.
-            </value>
         </member>
         <member name="M:Spring.Aop.Target.AbstractPrototypeTargetSource.#ctor">
             <summary>
@@ -7728,7 +8006,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: PoolingConfig.cs,v 1.4 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.Target.PoolingConfig.Active">
             <summary>
@@ -7855,7 +8132,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: EmptyTargetSource.cs,v 1.4 2007/10/08 22:04:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.Target.EmptyTargetSource.Empty">
             <summary>
@@ -7952,7 +8228,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.Net)</author>
-            <version>$Id: HotSwappableTargetSource.cs,v 1.6 2007/03/16 04:01:26 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Target.HotSwappableTargetSource.#ctor(System.Object)">
             <summary>
@@ -8043,7 +8318,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Federico Spinazzi (.NET)</author>
-            <version>$Id: IThreadLocalTargetSourceStats.cs,v 1.3 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.Target.IThreadLocalTargetSourceStats.Invocations">
             <summary>
@@ -8083,8 +8357,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Spinazzi Federico (.NET)</author>
-            <version>$Id: PrototypeTargetSource.cs,v 1.3 2006/04/09 07:18:37 markpollack Exp $
-            </version>
         </member>
         <member name="M:Spring.Aop.Target.PrototypeTargetSource.GetTarget">
             <summary>
@@ -8121,8 +8393,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Federico Spinazzi</author>
-            <version>$Id: SimplePoolTargetSource.cs,v 1.9 2007/03/16 04:01:26 aseovic Exp $
-            </version>
         </member>
         <member name="M:Spring.Aop.Target.SimplePoolTargetSource.GetTarget">
             <summary>
@@ -8248,7 +8518,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: SingletonTargetSource.cs,v 1.7 2007/03/16 04:01:26 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aop.Target.SingletonTargetSource.#ctor(System.Object)">
             <summary>
@@ -8347,7 +8616,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Federico Spinazzi (.NET)</author>
-            <version>$Id: ThreadLocalTargetSource.cs,v 1.8 2006/04/09 07:18:37 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.Target.ThreadLocalTargetSource._targetInThread">
             <summary>
@@ -8433,7 +8701,6 @@
             </summary>
             <seealso cref="T:Spring.Aop.IAdvisor"/>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IAdvisors.cs,v 1.1 2007/08/03 14:38:30 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Aop.IAdvisors.Advisors">
             <summary>
@@ -8465,7 +8732,6 @@
             <seealso cref="T:Spring.Aop.IMethodBeforeAdvice"/>
             <seealso cref="T:Spring.Aop.IThrowsAdvice"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
-            <version>$Id: IAfterReturningAdvice.cs,v 1.6 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.IAfterReturningAdvice.AfterReturning(System.Object,System.Reflection.MethodInfo,System.Object[],System.Object)">
             <summary>
@@ -8512,7 +8778,6 @@
             <seealso cref="T:Spring.Aop.IAfterReturningAdvice"/>
             <seealso cref="T:Spring.Aop.IThrowsAdvice"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
-            <version>$Id: IBeforeAdvice.cs,v 1.4 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.IIntroductionInterceptor">
             <summary> 
@@ -8532,7 +8797,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: IIntroductionInterceptor.cs,v 1.3 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.IIntroductionInterceptor.ImplementsInterface(System.Type)">
             <summary>
@@ -8573,7 +8837,6 @@
             <seealso cref="T:Spring.Aop.IAfterReturningAdvice"/>
             <seealso cref="T:Spring.Aop.IThrowsAdvice"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
-            <version>$Id: IMethodBeforeAdvice.cs,v 1.6 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aop.IMethodBeforeAdvice.Before(System.Reflection.MethodInfo,System.Object[],System.Object)">
             <summary>
@@ -8617,7 +8880,6 @@
             <seealso cref="T:Spring.Aop.IMethodBeforeAdvice"/>
             <seealso cref="T:Spring.Aop.IAfterReturningAdvice"/>
             <seealso cref="T:AopAlliance.Intercept.IMethodInterceptor"/>
-            <version>$Id: IThrowsAdvice.cs,v 1.5 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aop.TrueMethodMatcher">
             <summary>
@@ -8626,7 +8888,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: TrueMethodMatcher.cs,v 1.5 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.TrueMethodMatcher.True">
             <summary>
@@ -8791,7 +9052,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Aleksandar Seovic (.NET)</author>
-            <version>$Id: TrueTypeFilter.cs,v 1.4 2006/04/09 07:18:36 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aop.TrueTypeFilter.True">
             <summary>
@@ -8854,7 +9114,6 @@
             Superclass for all AOP infrastructure exceptions.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AspectException.cs,v 1.3 2006/04/09 07:18:33 markpollack Exp $</version>
         </member>
         <member name="M:AopAlliance.Aop.AspectException.#ctor">
             <summary>
@@ -8968,7 +9227,6 @@
             access to common functionality, such as obtaining a cache instance.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: BaseCacheAdvice.cs,v 1.3 2007/04/01 15:04:04 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.BaseCacheAdvice.GetCache(System.String)">
             <summary>
@@ -9034,7 +9292,7 @@
         </member>
         <member name="P:Spring.Aspects.Cache.BaseCacheAdvice.ApplicationContext">
             <summary>
-            Set the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
             object runs in.
             </summary>
         </member>
@@ -9050,7 +9308,6 @@
             <see cref="T:Spring.Aspects.Cache.CacheParameterAdvisor"/>
             <see cref="T:Spring.Aspects.Cache.InvalidateCacheAdvisor"/>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CacheAspect.cs,v 1.2 2007/08/03 14:38:35 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.CacheAspect.#ctor">
             <summary>
@@ -9067,7 +9324,7 @@
         </member>
         <member name="P:Spring.Aspects.Cache.CacheAspect.ApplicationContext">
             <summary>
-            Set the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
             object runs in.
             </summary>
             <remarks>
@@ -9114,7 +9371,6 @@
             </remarks>
             <seealso cref="T:Spring.Caching.CacheParameterAttribute"/>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CacheParameterAdvice.cs,v 1.6 2007/08/24 22:43:46 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.CacheParameterAdvice.AfterReturning(System.Object,System.Reflection.MethodInfo,System.Object[],System.Object)">
             <summary>
@@ -9146,7 +9402,6 @@
             more of their parameters.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CacheParameterAdvisor.cs,v 1.1 2007/02/16 03:12:56 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.CacheParameterAdvisor.#ctor">
             <summary>
@@ -9171,7 +9426,7 @@
         </member>
         <member name="P:Spring.Aspects.Cache.CacheParameterAdvisor.ApplicationContext">
             <summary>
-            Set the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
             object runs in.
             </summary>
             <remarks>
@@ -9214,7 +9469,6 @@
             <seealso cref="T:Spring.Caching.CacheResultAttribute"/>
             <seealso cref="T:Spring.Caching.CacheResultItemsAttribute"/>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CacheResultAdvice.cs,v 1.5 2007/08/24 22:43:46 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.CacheResultAdvice.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
@@ -9282,7 +9536,6 @@
             to all the methods that have <see cref="T:Spring.Caching.CacheResultAttribute"/> defined.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CacheResultAdvisor.cs,v 1.1 2007/02/16 03:13:01 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.CacheResultAdvisor.#ctor">
             <summary>
@@ -9309,7 +9562,7 @@
         </member>
         <member name="P:Spring.Aspects.Cache.CacheResultAdvisor.ApplicationContext">
             <summary>
-            Set the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
             object runs in.
             </summary>
             <remarks>
@@ -9358,7 +9611,6 @@
             </remarks>
             <seealso cref="T:Spring.Caching.InvalidateCacheAttribute"/>
             <author>Aleksandar Seovic</author>
-            <version>$Id: InvalidateCacheAdvice.cs,v 1.4 2007/04/01 15:04:05 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.InvalidateCacheAdvice.AfterReturning(System.Object,System.Reflection.MethodInfo,System.Object[],System.Object)">
             <summary>
@@ -9389,7 +9641,6 @@
             to all the methods that have <see cref="T:Spring.Caching.InvalidateCacheAttribute"/> defined.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: InvalidateCacheAdvisor.cs,v 1.1 2007/02/16 03:13:01 aseovic Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Cache.InvalidateCacheAdvisor.#ctor">
             <summary>
@@ -9398,7 +9649,7 @@
         </member>
         <member name="P:Spring.Aspects.Cache.InvalidateCacheAdvisor.ApplicationContext">
             <summary>
-            Set the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
             object runs in.
             </summary>
             <remarks>
@@ -9464,7 +9715,6 @@
             
             </remarks>
             <author>Mark Pollack</author>
-            <version>$Id: ExceptionHandlerAdvice.cs,v 1.9 2007/10/11 01:29:42 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aspects.AbstractExceptionHandlerAdvice">
              <summary>
@@ -9474,7 +9724,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: AbstractExceptionHandlerAdvice.cs,v 1.1 2007/10/08 22:05:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.AbstractExceptionHandlerAdvice.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
@@ -9556,6 +9805,11 @@
             </summary>
             <value>The regex string to parse advice expressions starting with 'on exception (constraint)' and subclass specific actions.</value>
         </member>
+        <member name="F:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.log">
+            <summary>
+            Log instance available to subclasses
+            </summary>
+        </member>
         <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
             Implement this method to perform extra treatments before and after
@@ -9625,6 +9879,21 @@
             <returns>an instance of an exception handler or null if was not able to correctly parse
             handler string.</returns>
         </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateExceptionHandler(Spring.Aspects.ParsedAdviceExpression)">
+            <summary>
+            Creates the exception handler.
+            </summary>
+            <param name="parsedAdviceExpression">The parsed advice expression.</param>
+            <returns>The exception handler instance</returns>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ParseWrappedExceptionExpression(System.String,System.String)">
+            <summary>
+            Parses the wrapped exception expression.
+            </summary>
+            <param name="action">The action.</param>
+            <param name="handlerString">The handler string.</param>
+            <returns></returns>
+        </member>
         <member name="P:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.OnExceptionNameRegex">
             <summary>
             Gets or sets the Regex string used to parse advice expressions starting with 'on exception name' and exception handling actions.
@@ -9648,21 +9917,18 @@
             Log the exceptions.  Default log nameis "LogExceptionHandler" and log level is Debug 
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: LogExceptionHandler.cs,v 1.5 2007/10/10 18:07:46 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aspects.AbstractExceptionHandler">
             <summary>
             An abstract base class providing all necessary functionality for typical IExceptionHandler implementations.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: AbstractExceptionHandler.cs,v 1.2 2007/10/10 18:07:46 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Aspects.IExceptionHandler">
             <summary>
             Handles a thrown exception providing calling context.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: IExceptionHandler.cs,v 1.1 2007/10/08 22:05:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.IExceptionHandler.CanHandleException(System.Exception,System.Collections.IDictionary)">
             <summary>
@@ -9801,12 +10067,24 @@
             </summary>
             <value>The name of the log.</value>
         </member>
+        <member name="P:Spring.Aspects.Exceptions.LogExceptionHandler.LogLevel">
+            <summary>
+            Gets or sets the log level.
+            </summary>
+            <value>The log level.</value>
+        </member>
+        <member name="P:Spring.Aspects.Exceptions.LogExceptionHandler.LogMessageOnly">
+            <summary>
+            Gets or sets a value indicating whether to log message only, and not pass in the 
+            exception to the logging API
+            </summary>
+            <value><c>true</c> if log message only; otherwise, <c>false</c>.</value>
+        </member>
         <member name="T:Spring.Aspects.Exceptions.ReturnValueExceptionHandler">
             <summary>
             Evaluates the expression for the return value of the method.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: ReturnValueExceptionHandler.cs,v 1.3 2007/10/10 18:07:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Exceptions.ReturnValueExceptionHandler.#ctor">
             <summary>
@@ -9830,7 +10108,6 @@
             Returns a token to indicate that this exception should be swallowed.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: SwallowExceptionHandler.cs,v 1.2 2007/10/02 21:56:53 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Exceptions.SwallowExceptionHandler.#ctor">
             <summary>
@@ -9854,7 +10131,6 @@
             Translates from one exception to another based.  My wrap or replace exception depending on the expression.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: TranslationExceptionHandler.cs,v 1.3 2007/10/10 18:07:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.Exceptions.TranslationExceptionHandler.#ctor">
             <summary>
@@ -9881,7 +10157,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: AbstractLoggingAdvice.cs,v 1.2 2007/12/06 17:17:19 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aspects.Logging.AbstractLoggingAdvice.defaultLogger">
             <summary>
@@ -10028,7 +10303,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: SimpleLoggingAdvice.cs,v 1.5 2007/12/06 17:17:19 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Aspects.Logging.SimpleLoggingAdvice.logUniqueIdentifier">
             <summary>
@@ -10043,6 +10317,11 @@
         <member name="F:Spring.Aspects.Logging.SimpleLoggingAdvice.logMethodArguments">
             <summary>
             Flag to indicate if the method arguments should be in the log message.
+            </summary>
+        </member>
+        <member name="F:Spring.Aspects.Logging.SimpleLoggingAdvice.logReturnValue">
+            <summary>
+            Flag to indicate if the return value should be in the log message.
             </summary>
         </member>
         <member name="F:Spring.Aspects.Logging.SimpleLoggingAdvice.separator">
@@ -10177,6 +10456,12 @@
             </summary>
             <value><c>true</c> if log method arguments]; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:Spring.Aspects.Logging.SimpleLoggingAdvice.LogReturnValue">
+            <summary>
+            Gets or sets a value indicating whether log return value.
+            </summary>
+            <value><c>true</c> if log return value; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:Spring.Aspects.Logging.SimpleLoggingAdvice.Separator">
             <summary>
             Gets or sets the seperator string to use for delmiting log message fields.
@@ -10189,6 +10474,103 @@
             </summary>
             <value>The entry log level.</value>
         </member>
+        <member name="T:Spring.Aspects.Validation.ParameterValidationAdvice">
+            <summary>
+            This advice is typically applied to service-layer methods in order to validate
+            method arguments.
+            </summary>
+            <remarks>
+            <para>Each argument that should be validated has to be marked with one or more
+            <see cref="T:Spring.Validation.ValidatedAttribute"/>s.</para>
+            <para>If the validation fails, this advice will throw <see cref="T:Spring.Validation.ValidationException"/>,
+            thus preventing target method invocation.
+            </para>
+            </remarks>
+            <author>Damjan Tomic</author>
+            <author>Aleksandar Seovic</author>
+        </member>
+        <member name="M:Spring.Aspects.Validation.ParameterValidationAdvice.Before(System.Reflection.MethodInfo,System.Object[],System.Object)">
+            <summary>
+            Intercepts method invocation and validates arguments.
+            </summary>
+            <param name="method">
+            Method invocation.
+            </param>
+            <param name="args">
+            Method arguments.
+            </param>
+            <param name="target">
+            Target object.
+            </param>
+            <exception cref="T:Spring.Validation.ValidationException">
+            If one or more method arguments fail validation.
+            </exception>
+        </member>
+        <member name="P:Spring.Aspects.Validation.ParameterValidationAdvice.ApplicationContext">
+            <summary>
+            Sets the application context to search for validators in.
+            </summary>
+            <value>
+            The application context to search for validators in.
+            </value>
+        </member>
+        <member name="T:Spring.Aspects.Validation.ParameterValidationAdvisor">
+            <summary>
+            Convinience advisor implementation that applies <see cref="T:Spring.Aspects.Validation.ParameterValidationAdvice"/>
+            to all the methods that have <see cref="T:Spring.Validation.ValidatedAttribute"/> defined on one or
+            more of their parameters.
+            </summary>
+            <author>Bruno Baia</author>
+        </member>
+        <member name="M:Spring.Aspects.Validation.ParameterValidationAdvisor.#ctor">
+            <summary>
+            Creates new advisor instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Aspects.Validation.ParameterValidationAdvisor.Matches(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Returns <c>true</c> if any of the parameters of the specified <paramref name="method"/>
+            has <see cref="T:Spring.Validation.ValidatedAttribute"/> applied.
+            </summary>
+            <param name="method">
+            Method to check.
+            </param>
+            <param name="targetType">
+            Type of target object.
+            </param>
+            <returns>
+            <c>true</c> if any of the parameters of the specified <paramref name="method"/>
+            has <see cref="T:Spring.Validation.ValidatedAttribute"/> applied; <c>false</c> otherwise.
+            </returns>
+        </member>
+        <member name="P:Spring.Aspects.Validation.ParameterValidationAdvisor.ApplicationContext">
+            <summary>
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            object runs in.
+            </summary>
+            <remarks>
+            <p>
+            Normally this call will be used to initialize the object.
+            </p>
+            <p>
+            Invoked after population of normal object properties but before an
+            init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked after the setting of any
+            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
+            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
+            property.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Context.ApplicationContextException">
+            In the case of application context initialization errors.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If thrown by any application context methods.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
+        </member>
         <member name="T:Spring.Aspects.ParsedAdviceExpression">
              <summary>
              This class contains the results of parsing an advice expresion of the form
@@ -10200,7 +10582,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: ParsedAdviceExpression.cs,v 1.1 2007/10/08 22:05:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.ParsedAdviceExpression.#ctor(System.String)">
             <summary>
@@ -10254,7 +10635,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: RetryAdvice.cs,v 1.3 2007/10/10 17:10:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.RetryAdvice.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
@@ -10348,7 +10728,6 @@
             
              </remarks>
              <author>Mark Pollack</author>
-             <version>$Id: RetryExceptionHandler.cs,v 1.1 2007/10/10 07:38:17 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Aspects.RetryExceptionHandler.#ctor">
             <summary>
