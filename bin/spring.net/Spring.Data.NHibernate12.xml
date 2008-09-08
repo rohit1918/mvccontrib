@@ -19,7 +19,6 @@
             </remarks>
             <typeparam name="T">The type of result object</typeparam>
             <author>Sree Nivask (.NET)</author>
-            <version>$Id: FindHibernateDelegate.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.Generic.Support.HibernateDaoSupport">
             <summary>
@@ -41,7 +40,6 @@
             </remarks>
             <author>Sree Nivask (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateDaoSupport.cs,v 1.3 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.Generic.Support.HibernateDaoSupport.#ctor">
             <summary>
@@ -170,7 +168,6 @@
             </remarks>
             <typeparam name="T">The type of result object</typeparam>
             <author>Sree Nivask (.NET)</author>
-            <version>$Id: HibernateDelegate.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.Generic.HibernateTemplate">
              <summary>
@@ -207,7 +204,6 @@
              </remarks>
              <author>Sree Nivask (.NET)</author>
              <author>Mark Pollack (.NET)</author>
-             <version>$Id: HibernateTemplate.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.HibernateAccessor">
             <summary>
@@ -219,7 +215,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateAccessor.cs,v 1.6 2007/09/19 22:58:11 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.HibernateAccessor.log">
             <summary>
@@ -562,7 +557,6 @@
             <threadsafety statis="true" instance="true"/>
             <author>Sree Nivask (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IHibernateOperations.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.ICommonHibernateOperations">
             <summary>
@@ -580,7 +574,6 @@
             </remarks> 
             <author>Mark Pollack (.NET)</author>  
             <threadsafety statis="true" instance="true"/> 
-            <version>$Id: ICommonHibernateOperations.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.ICommonHibernateOperations.Clear">
             <summary>
@@ -2048,7 +2041,6 @@
             </remarks>
             
             <author>Sree Nivask (.NET)</author>
-            <version>$Id: IHibernateCallback.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.Generic.IHibernateCallback`1.DoInHibernate(NHibernate.ISession)">
             <summary>
@@ -2107,7 +2099,6 @@
             </remarks>
             <author>Sree Nivask (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IFindHibernateCallback.cs,v 1.2 2007/09/19 22:58:10 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.Generic.IFindHibernateCallback`1.DoInHibernate(NHibernate.ISession)">
             <summary>
@@ -2208,6 +2199,47 @@
             </p>
             </remarks>
         </member>
+        <member name="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException">
+            <summary>
+            Hibernate-specific subclass of ObjectOptimisticLockingFailureException.
+            </summary>
+            <remarks>
+            Converts Hibernate's StaleObjectStateException.
+            </remarks>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(NHibernate.StaleObjectStateException)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
+            </summary>
+            <param name="ex">The StaleObjectStateException.</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(NHibernate.StaleStateException)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
+            </summary>
+            <param name="ex">The StaleStateException.</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of the
+            <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
+            </summary>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+            that holds the serialized object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
+            that contains contextual information about the source or destination.
+            </param>
+        </member>
         <member name="T:Spring.Data.NHibernate.LocalSessionFactoryObject">
              <summary>
               An IFactoryObject that creates a local Hibernate SessionFactory instance.
@@ -2224,7 +2256,6 @@
              </para>
              </remarks>
              <author>Mark Pollack (.NET)</author>
-             <version>$Id: LocalSessionFactoryObject.cs,v 1.8 2007/10/30 15:29:10 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.LocalSessionFactoryObject.hibernateProperties">
             <summary>
@@ -2302,6 +2333,11 @@
             </summary>
             <value>The mapping assemblies.</value>
         </member>
+        <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.ConfigFilenames">
+            <summary>
+            Sets the hibernate configuration files to load, i.e. hibernate.cfg.xml.
+            </summary>
+        </member>
         <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.MappingResources">
             <summary>
             Sets the locations of Spring IResources that contain mapping
@@ -2333,7 +2369,7 @@
         </member>
         <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.DbProvider">
             <summary>
-            Set the DataSource to be used by the SessionFactory.
+            Get or set the DataSource to be used by the SessionFactory.
             </summary>
             <value>The db provider.</value>
             <remarks>
@@ -2364,6 +2400,234 @@
             </summary>
             <value>true</value>
         </member>
+        <member name="T:Spring.Data.NHibernate.SessionFactoryUtils">
+            <summary>
+             Helper class featuring methods for Hibernate Session handling,
+             allowing for reuse of Hibernate Session instances within transactions.
+             Also provides support for exception translation.
+            </summary>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="F:Spring.Data.NHibernate.SessionFactoryUtils.log">
+            <summary>
+            The <see cref="T:Common.Logging.ILog"/> instance for this class. 
+            </summary>
+        </member>
+        <member name="F:Spring.Data.NHibernate.SessionFactoryUtils.SESSION_SYNCHRONIZATION_ORDER">
+            <summary>
+            The ordering value for synchronizaiton this session resources.
+            Set to be lower than ADO.NET synchronization.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.SessionFactoryUtils"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetNewSession(NHibernate.ISessionFactory,NHibernate.IInterceptor)">
+            <summary>
+            Get a new Hibernate Session from the given SessionFactory.
+            Will return a new Session even if there already is a pre-bound
+            Session for the given SessionFactory.
+            </summary>
+            <remarks>
+            Within a transaction, this method will create a new Session
+            that shares the transaction's ADO.NET Connection. More specifically,
+            it will use the same ADO.NET Connection as the pre-bound Hibernate Session.
+            </remarks>
+            <param name="sessionFactory">The session factory to create the session with.</param>
+            <param name="interceptor">The Hibernate entity interceptor, or <code>null</code> if none.</param>
+            <returns>The new session.</returns>
+            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">If could not open Hibernate session</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,NHibernate.IInterceptor,Spring.Data.Support.IAdoExceptionTranslator)">
+            <summary>
+            Get a Hibernate Session for the given SessionFactory. Is aware of and will
+            return any existing corresponding Session bound to the current thread, for
+            example when using HibernateTransactionManager. Will always create a new
+            Session otherwise.
+            </summary>
+            <remarks>
+            Supports setting a Session-level Hibernate entity interceptor that allows
+            to inspect and change property values before writing to and reading from the
+            database. Such an interceptor can also be set at the SessionFactory level
+            (i.e. on LocalSessionFactoryObject), on HibernateTransactionManager, or on
+            HibernateInterceptor/HibernateTemplate.
+            </remarks>
+            <param name="sessionFactory">The session factory to create the
+            session with.</param>
+            <param name="entityInterceptor">Hibernate entity interceptor, or <code>null</code> if none.</param>
+            <param name="adoExceptionTranslator"> AdoExceptionTranslator to use for flushing the
+            Session on transaction synchronization (can be <code>null</code>; only used when actually
+            registering a transaction synchronization).</param>
+            <returns>The Hibernate Session</returns>
+            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">
+            If the session couldn't be created.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            If no thread-bound Session found and allowCreate is false.
+            </exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,System.Boolean)">
+            <summary>
+            Get a Hibernate Session for the given SessionFactory. Is aware of and will
+            return any existing corresponding Session bound to the current thread, for
+            example when using <see cref="T:Spring.Data.NHibernate.HibernateTransactionManager"/>. Will create a new Session
+            otherwise, if allowCreate is true.
+            </summary>
+            <param name="sessionFactory">The session factory to create the session with.</param>
+            <param name="allowCreate">if set to <c>true</c> create a non-transactional Session when no
+            transactional Session can be found for the current thread.</param>
+            <returns>The hibernate session</returns>
+            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">
+            If the session couldn't be created.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            If no thread-bound Session found and allowCreate is false.
+            </exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.DoGetSession(NHibernate.ISessionFactory,System.Boolean)">
+            <summary>
+            Get a Hibernate Session for the given SessionFactory.
+            </summary>
+            <remarks>Is aware of and will return any existing corresponding
+            Session bound to the current thread, for example whenusing
+            <see cref="T:Spring.Data.NHibernate.HibernateTransactionManager"/>.  Will create a new 
+            Session otherwise, if "allowCreate" is true.
+            <p>Throws the orginal HibernateException, in contrast to
+            <see cref="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,System.Boolean)"/>.
+            </p></remarks>
+            <param name="sessionFactory">The session factory.</param>
+            <param name="allowCreate">if set to <c>true</c> [allow create].</param>
+            <returns>The Hibernate Session</returns>
+            <exception cref="T:NHibernate.HibernateException">
+            if the Session couldn't be created
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            If no thread-bound Session found and allowCreate is false.
+            </exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.OpenSession(NHibernate.ISessionFactory,NHibernate.IInterceptor)">
+            <summary>
+            Open a new Session from the factory.
+            </summary>
+            <param name="sessionFactory">The session factory to create the session with.</param>
+            <param name="entityInterceptor">Hibernate entity interceptor, or <code>null</code> if none.</param>
+            <returns>the newly opened session</returns>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.CloseSession(NHibernate.ISession)">
+            <summary>
+            Perform the actual closing of the Hibernate Session
+            catching and logging any cleanup exceptions thrown.
+            </summary>
+            <param name="session">The hibernate session to close</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.IsSessionTransactional(NHibernate.ISession,NHibernate.ISessionFactory)">
+            <summary>
+            Return whether the given Hibernate Session is transactional, that is,
+            bound to the current thread by Spring's transaction facilities.
+            </summary>
+            <param name="session">The hibernate session to check</param>
+            <param name="sessionFactory">The session factory that the session
+            was created with, can be null.</param>
+            <returns>
+            	<c>true</c> if the session transactional; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ConvertHibernateAccessException(NHibernate.HibernateException)">
+            <summary>
+            Convert the given HibernateException to an appropriate exception from the
+            <code>Spring.Dao</code> hierarchy. Note that it is advisable to
+            handle AdoException specifically by using a AdoExceptionTranslator for the
+            underlying ADO.NET exception.
+            </summary>
+            <param name="ex">The Hibernate exception that occured.</param>
+            <returns>DataAccessException instance</returns>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ReleaseSession(NHibernate.ISession,NHibernate.ISessionFactory)">
+            <summary>
+            Close the given Session, created via the given factory,
+            if it is not managed externally (i.e. not bound to the thread).
+            </summary>
+            <param name="session">The hibernate session to close</param>
+            <param name="sessionFactory">The hibernate SessionFactory that
+            the session was created with.</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.CloseSessionOrRegisterDeferredClose(NHibernate.ISession,NHibernate.ISessionFactory)">
+            <summary>
+            Close the given Session or register it for deferred close.
+            </summary>
+            <param name="session">The session.</param>
+            <param name="sessionFactory">The session factory.</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.InitDeferredClose(NHibernate.ISessionFactory)">
+             <summary>
+            Initialize deferred close for the current thread and the given SessionFactory.
+             Sessions will not be actually closed on close calls then, but rather at a
+             processDeferredClose call at a finishing point (like request completion).
+             </summary>
+             <param name="sessionFactory">The session factory.</param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.IsDeferredCloseActive(NHibernate.ISessionFactory)">
+            <summary>
+            Return if deferred close is active for the current thread
+            and the given SessionFactory.</summary>
+            <param name="sessionFactory">The session factory.</param>
+            <returns>
+            	<c>true</c> if [is deferred close active] [the specified session factory]; otherwise, <c>false</c>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">If SessionFactory argument is null.</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ProcessDeferredClose(NHibernate.ISessionFactory)">
+            <summary>
+            Process Sessions that have been registered for deferred close
+            for the given SessionFactory.
+            </summary>
+            <param name="sessionFactory">The session factory.</param>
+            <exception cref="T:System.InvalidOperationException">If there is no session factory associated with the thread.</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ApplyTransactionTimeout(NHibernate.ICriteria,NHibernate.ISessionFactory)">
+            <summary>
+            Applies the current transaction timeout, if any, to the given
+            criteria object
+            </summary>
+            <param name="criteria">The Hibernate Criteria object.</param>
+            <param name="sessionFactory">Hibernate SessionFactory that the Criteria was created for
+            (can be <code>null</code>).</param>
+            <exception cref="T:System.ArgumentNullException">If criteria argument is null.</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ApplyTransactionTimeout(NHibernate.IQuery,NHibernate.ISessionFactory)">
+            <summary>
+            Applies the current transaction timeout, if any, to the given
+            Hibenrate query object.
+            </summary>
+            <param name="query">The Hibernate Query object.</param>
+            <param name="sessionFactory">Hibernate SessionFactory that the Query was created for
+            (can be <code>null</code>).</param>
+            <exception cref="T:System.ArgumentNullException">If query argument is null.</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetDbProvider(NHibernate.ISessionFactory)">
+            <summary>
+            Gets the Spring IDbProvider given the ISessionFactory.
+            </summary>
+            <remarks>The matching is performed by comparing the assembly qualified
+            name string of the hibernate Driver.ConnectionType to those in
+            the DbProviderFactory definitions.  No connections are created
+            in performing this comparison.</remarks>
+            <param name="sessionFactory">The session factory.</param>
+            <returns>The corresponding IDbProvider, null if no mapping was found.</returns>
+            <exception cref="T:System.InvalidOperationException">If DbProviderFactory's ApplicaitonContext is not
+            an instance of IConfigurableApplicaitonContext.</exception>
+        </member>
+        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.NewAdoExceptionTranslator(NHibernate.ISessionFactory)">
+            <summary>
+            Create a IAdoExceptionTranslator from the given SessionFactory.
+            </summary>
+            <remarks>If a corresponding IDbProvider is found, a ErrorcodeExceptionTranslator
+            for the IDbProvider is created.  Otherwise, a FallbackException is created.</remarks>
+            <param name="sessionFactory">The session factory to create the translator for</param>
+            <returns>An IAdoExceptionTranslator</returns>
+        </member>
         <member name="T:Spring.Data.NHibernate.SpringSessionContext">
             <summary>
             Implementation of NHibernates 1.2's ICurrentSessionContext interface
@@ -2378,7 +2642,6 @@
             qualified name of this class as value.</p></remarks>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SpringSessionContext.cs,v 1.2 2007/09/19 22:58:11 markpollack Exp $</version>
             <see cref="M:Spring.Data.NHibernate.SessionFactoryUtils.DoGetSession(NHibernate.ISessionFactory,System.Boolean)"/>
         </member>
         <member name="M:Spring.Data.NHibernate.SpringSessionContext.#ctor(NHibernate.Engine.ISessionFactoryImplementor)">
@@ -2399,7 +2662,6 @@
             NHibnerations actions taken during the transaction lifecycle.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SpringSessionSynchronization.cs,v 1.1 2007/06/01 02:34:12 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.SpringSessionSynchronization.log">
             <summary>
@@ -2585,8 +2847,9 @@
             Gets the configured <see cref="T:NHibernate.IInterceptor"/> instance to be used.
             </summary>
             <remarks>
-            If this property is requested for the first time, <see cref="M:Spring.Data.NHibernate.Support.SessionScopeSettings.ResolveEntityInterceptor"/> is called. 
-            This allows derived classes to override the behaviour of how to obtain the concrete <see cref="T:NHibernate.IInterceptor"/> instance.
+            If the entity interceptor is not set by the constructor, this property calls 
+            <see cref="M:Spring.Data.NHibernate.Support.SessionScopeSettings.ResolveEntityInterceptor"/> to obtain an instance. This allows derived classes to 
+            override the behaviour of how to obtain the concrete <see cref="T:NHibernate.IInterceptor"/> instance.
             </remarks>
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScopeSettings.SessionFactory">
@@ -2677,7 +2940,6 @@
             </para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateDaoSupport.cs,v 1.2 2007/08/28 15:26:37 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.Support.HibernateDaoSupport.#ctor">
             <summary>
@@ -2798,7 +3060,6 @@
             <author>Mark Pollack (.NET)</author>
             <author>Erich Eichinger</author>
             <author>Harald Radi</author>
-            <version>$Id: OpenSessionInViewModule.cs,v 1.6 2007/09/29 21:29:23 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.Support.SessionScope">
             <summary>
@@ -2860,6 +3121,21 @@
             The name of the configuration section to read configuration settings from. 
             See <see cref="T:Spring.Data.NHibernate.Support.ConfigSectionSessionScopeSettings"/> for more info.
             </param>
+            <param name="open">
+            If set to <c>true</c> associate a session with the thread.  If false, another
+            collaborating class will associate the session with the thread, potentially by calling
+            the Open method on this class.
+            </param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.Support.SessionScope.#ctor(System.String,System.Type,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.Support.SessionScope"/> class.
+            </summary>
+            <param name="sectionName">
+            The name of the configuration section to read configuration settings from. 
+            See <see cref="T:Spring.Data.NHibernate.Support.ConfigSectionSessionScopeSettings"/> for more info.
+            </param>
+            <param name="namespaceType">The type, who's full name is used for prefixing appSetting keys</param>
             <param name="open">
             If set to <c>true</c> associate a session with the thread.  If false, another
             collaborating class will associate the session with the thread, potentially by calling
@@ -2942,16 +3218,16 @@
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScope.SingleSession">
             <summary>
-             Set whether to use a single session for each request. Default is "true".
-             If set to false, each data access operation or transaction will use
-             its own session (like without Open Session in View). Each of those
-             sessions will be registered for deferred close, though, actually
-             processed at request completion.
-             </summary>
+            Set whether to use a single session for each request. Default is "true".
+            If set to false, each data access operation or transaction will use
+            its own session (like without Open Session in View). Each of those
+            sessions will be registered for deferred close, though, actually
+            processed at request completion.
+            </summary>
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScope.DefaultFlushMode">
             <summary>
-            Gets or Sets the flushmode to be applied on each newly created session.
+            Gets the flushmode to be applied on each newly created session.
             </summary>
             <remarks>
             This property defaults to <see cref="F:NHibernate.FlushMode.Never"/> to ensure that modifying objects outside the boundaries 
@@ -2998,7 +3274,6 @@
             Note: This is an SPI class, not intended to be used by applications.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SessionHolder.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.SessionHolder.#ctor">
             <summary>
@@ -3187,7 +3462,6 @@
             mapped into the DAO exception heirarchy.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateAdoException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateAdoException.#ctor">
             <summary>
@@ -3252,7 +3526,6 @@
             ObjectDeletedException, and WrongClassException.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateObjectRetrievalFailureException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateObjectRetrievalFailureException.#ctor">
             <summary>
@@ -3297,49 +3570,12 @@
             that contains contextual information about the source or destination.
             </param>
         </member>
-        <member name="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException">
-            <summary>
-            Hibernate-specific subclass of ObjectOptimisticLockingFailureException.
-            </summary>
-            <remarks>
-            Converts Hibernate's StaleObjectStateException.
-            </remarks>
-            <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateOptimisticLockingFailureException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
-            
-        </member>
-        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
-            </summary>
-        </member>
-        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(NHibernate.StaleObjectStateException)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
-            </summary>
-            <param name="ex">The ex.</param>
-        </member>
-        <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Creates a new instance of the
-            <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
-            </summary>
-            <param name="info">
-            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
-            that holds the serialized object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
-            that contains contextual information about the source or destination.
-            </param>
-        </member>
         <member name="T:Spring.Data.NHibernate.HibernateQueryException">
             <summary>
             Hibernate-specific subclass of InvalidDataAccessResourceUsageException,
             thrown on invalid HQL query syntax.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateQueryException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateQueryException.#ctor">
             <summary>
@@ -3379,7 +3615,6 @@
             <code>Spring.Dao</code> exceptions.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateSystemException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateSystemException.#ctor">
             <summary>
@@ -3440,7 +3675,6 @@
              </p>
              </remarks>
              <author>Mark Pollack (.NET)</author>
-             <version>$Id: HibernateTemplate.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.IHibernateOperations">
             <summary>
@@ -3456,7 +3690,6 @@
             </remarks>
             <threadsafety statis="true" instance="true"/> 
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IHibernateOperations.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.IHibernateOperations.DeleteAll(System.Collections.ICollection)">
             <summary>
@@ -4656,7 +4889,6 @@
             some operations on persistent objects.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IHibernateCallback.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.IHibernateCallback.DoInHibernate(NHibernate.ISession)">
             <summary>
@@ -4976,7 +5208,6 @@
             operations within a single transaction.</para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateTransactionManager.cs,v 1.7 2007/11/20 14:39:48 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.HibernateTransactionManager.objectFactory">
             <summary>
@@ -5262,6 +5493,13 @@
             </summary>
             <value>The session factory.</value>
         </member>
+        <member name="P:Spring.Data.NHibernate.HibernateTransactionManager.ResourceFactory">
+            <summary>
+            Gets the resource factory that this transaction manager operates on,
+            For the HibenratePlatformTransactionManager this the SessionFactory
+            </summary>
+            <value>The SessionFactory.</value>
+        </member>
         <member name="P:Spring.Data.NHibernate.HibernateTransactionManager.AutodetectDbProvider">
             <summary>
             Set whether to autodetect a ADO.NET connection used by the Hibernate SessionFactory,
@@ -5294,241 +5532,11 @@
             <value></value>
             <returns>True of the transaction is marked as rollback-only.</returns>
         </member>
-        <member name="T:Spring.Data.NHibernate.SessionFactoryUtils">
-            <summary>
-             Helper class featuring methods for Hibernate Session handling,
-             allowing for reuse of Hibernate Session instances within transactions.
-             Also provides support for exception translation.
-            </summary>
-            <author>Mark Pollack (.NET)</author>
-            <version>$Id: SessionFactoryUtils.cs,v 1.4 2007/11/20 04:03:43 markpollack Exp $</version>
-        </member>
-        <member name="F:Spring.Data.NHibernate.SessionFactoryUtils.log">
-            <summary>
-            The <see cref="T:Common.Logging.ILog"/> instance for this class. 
-            </summary>
-        </member>
-        <member name="F:Spring.Data.NHibernate.SessionFactoryUtils.SESSION_SYNCHRONIZATION_ORDER">
-            <summary>
-            The ordering value for synchronizaiton this session resources.
-            Set to be lower than ADO.NET synchronization.
-            </summary>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.SessionFactoryUtils"/> class.
-            </summary>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetNewSession(NHibernate.ISessionFactory,NHibernate.IInterceptor)">
-            <summary>
-            Get a new Hibernate Session from the given SessionFactory.
-            Will return a new Session even if there already is a pre-bound
-            Session for the given SessionFactory.
-            </summary>
-            <remarks>
-            Within a transaction, this method will create a new Session
-            that shares the transaction's ADO.NET Connection. More specifically,
-            it will use the same ADO.NET Connection as the pre-bound Hibernate Session.
-            </remarks>
-            <param name="sessionFactory">The session factory to create the session with.</param>
-            <param name="interceptor">The Hibernate entity interceptor, or <code>null</code> if none.</param>
-            <returns>The new session.</returns>
-            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">If could not open Hibernate session</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,NHibernate.IInterceptor,Spring.Data.Support.IAdoExceptionTranslator)">
-            <summary>
-            Get a Hibernate Session for the given SessionFactory. Is aware of and will
-            return any existing corresponding Session bound to the current thread, for
-            example when using HibernateTransactionManager. Will always create a new
-            Session otherwise.
-            </summary>
-            <remarks>
-            Supports setting a Session-level Hibernate entity interceptor that allows
-            to inspect and change property values before writing to and reading from the
-            database. Such an interceptor can also be set at the SessionFactory level
-            (i.e. on LocalSessionFactoryObject), on HibernateTransactionManager, or on
-            HibernateInterceptor/HibernateTemplate.
-            </remarks>
-            <param name="sessionFactory">The session factory to create the
-            session with.</param>
-            <param name="entityInterceptor">Hibernate entity interceptor, or <code>null</code> if none.</param>
-            <param name="adoExceptionTranslator"> AdoExceptionTranslator to use for flushing the
-            Session on transaction synchronization (can be <code>null</code>; only used when actually
-            registering a transaction synchronization).</param>
-            <returns>The Hibernate Session</returns>
-            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">
-            If the session couldn't be created.
-            </exception>
-            <exception cref="T:System.InvalidOperationException">
-            If no thread-bound Session found and allowCreate is false.
-            </exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,System.Boolean)">
-            <summary>
-            Get a Hibernate Session for the given SessionFactory. Is aware of and will
-            return any existing corresponding Session bound to the current thread, for
-            example when using <see cref="T:Spring.Data.NHibernate.HibernateTransactionManager"/>. Will create a new Session
-            otherwise, if allowCreate is true.
-            </summary>
-            <param name="sessionFactory">The session factory to create the session with.</param>
-            <param name="allowCreate">if set to <c>true</c> create a non-transactional Session when no
-            transactional Session can be found for the current thread.</param>
-            <returns>The hibernate session</returns>
-            <exception cref="T:Spring.Dao.DataAccessResourceFailureException">
-            If the session couldn't be created.
-            </exception>
-            <exception cref="T:System.InvalidOperationException">
-            If no thread-bound Session found and allowCreate is false.
-            </exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.DoGetSession(NHibernate.ISessionFactory,System.Boolean)">
-            <summary>
-            Get a Hibernate Session for the given SessionFactory.
-            </summary>
-            <remarks>Is aware of and will return any existing corresponding
-            Session bound to the current thread, for example whenusing
-            <see cref="T:Spring.Data.NHibernate.HibernateTransactionManager"/>.  Will create a new 
-            Session otherwise, if "allowCreate" is true.
-            <p>Throws the orginal HibernateException, in contrast to
-            <see cref="M:Spring.Data.NHibernate.SessionFactoryUtils.GetSession(NHibernate.ISessionFactory,System.Boolean)"/>.
-            </p></remarks>
-            <param name="sessionFactory">The session factory.</param>
-            <param name="allowCreate">if set to <c>true</c> [allow create].</param>
-            <returns>The Hibernate Session</returns>
-            <exception cref="T:NHibernate.HibernateException">
-            if the Session couldn't be created
-            </exception>
-            <exception cref="T:System.InvalidOperationException">
-            If no thread-bound Session found and allowCreate is false.
-            </exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.OpenSession(NHibernate.ISessionFactory,NHibernate.IInterceptor)">
-            <summary>
-            Open a new Session from the factory.
-            </summary>
-            <param name="sessionFactory">The session factory to create the session with.</param>
-            <param name="entityInterceptor">Hibernate entity interceptor, or <code>null</code> if none.</param>
-            <returns>the newly opened session</returns>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.CloseSession(NHibernate.ISession)">
-            <summary>
-            Perform the actual closing of the Hibernate Session
-            catching and logging any cleanup exceptions thrown.
-            </summary>
-            <param name="session">The hibernate session to close</param>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.IsSessionTransactional(NHibernate.ISession,NHibernate.ISessionFactory)">
-            <summary>
-            Return whether the given Hibernate Session is transactional, that is,
-            bound to the current thread by Spring's transaction facilities.
-            </summary>
-            <param name="session">The hibernate session to check</param>
-            <param name="sessionFactory">The session factory that the session
-            was created with, can be null.</param>
-            <returns>
-            	<c>true</c> if the session transactional; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ConvertHibernateAccessException(NHibernate.HibernateException)">
-            <summary>
-            Convert the given HibernateException to an appropriate exception from the
-            <code>Spring.Dao</code> hierarchy. Note that it is advisable to
-            handle AdoException specifically by using a AdoExceptionTranslator for the
-            underlying ADO.NET exception.
-            </summary>
-            <param name="ex">The Hibernate exception that occured.</param>
-            <returns>DataAccessException instance</returns>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ReleaseSession(NHibernate.ISession,NHibernate.ISessionFactory)">
-            <summary>
-            Close the given Session, created via the given factory,
-            if it is not managed externally (i.e. not bound to the thread).
-            </summary>
-            <param name="session">The hibernate session to close</param>
-            <param name="sessionFactory">The hibernate SessionFactory that
-            the session was created with.</param>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.CloseSessionOrRegisterDeferredClose(NHibernate.ISession,NHibernate.ISessionFactory)">
-            <summary>
-            Close the given Session or register it for deferred close.
-            </summary>
-            <param name="session">The session.</param>
-            <param name="sessionFactory">The session factory.</param>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.InitDeferredClose(NHibernate.ISessionFactory)">
-             <summary>
-            Initialize deferred close for the current thread and the given SessionFactory.
-             Sessions will not be actually closed on close calls then, but rather at a
-             processDeferredClose call at a finishing point (like request completion).
-             </summary>
-             <param name="sessionFactory">The session factory.</param>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.IsDeferredCloseActive(NHibernate.ISessionFactory)">
-            <summary>
-            Return if deferred close is active for the current thread
-            and the given SessionFactory.</summary>
-            <param name="sessionFactory">The session factory.</param>
-            <returns>
-            	<c>true</c> if [is deferred close active] [the specified session factory]; otherwise, <c>false</c>.
-            </returns>
-            <exception cref="T:System.ArgumentNullException">If SessionFactory argument is null.</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ProcessDeferredClose(NHibernate.ISessionFactory)">
-            <summary>
-            Process Sessions that have been registered for deferred close
-            for the given SessionFactory.
-            </summary>
-            <param name="sessionFactory">The session factory.</param>
-            <exception cref="T:System.InvalidOperationException">If there is no session factory associated with the thread.</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ApplyTransactionTimeout(NHibernate.ICriteria,NHibernate.ISessionFactory)">
-            <summary>
-            Applies the current transaction timeout, if any, to the given
-            criteria object
-            </summary>
-            <param name="criteria">The Hibernate Criteria object.</param>
-            <param name="sessionFactory">Hibernate SessionFactory that the Criteria was created for
-            (can be <code>null</code>).</param>
-            <exception cref="T:System.ArgumentNullException">If criteria argument is null.</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.ApplyTransactionTimeout(NHibernate.IQuery,NHibernate.ISessionFactory)">
-            <summary>
-            Applies the current transaction timeout, if any, to the given
-            Hibenrate query object.
-            </summary>
-            <param name="query">The Hibernate Query object.</param>
-            <param name="sessionFactory">Hibernate SessionFactory that the Query was created for
-            (can be <code>null</code>).</param>
-            <exception cref="T:System.ArgumentNullException">If query argument is null.</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.GetDbProvider(NHibernate.ISessionFactory)">
-            <summary>
-            Gets the Spring IDbProvider given the ISessionFactory.
-            </summary>
-            <remarks>The matching is performed by comparing the assembly qualified
-            name string of the hibernate Driver.ConnectionType to those in
-            the DbProviderFactory definitions.  No connections are created
-            in performing this comparison.</remarks>
-            <param name="sessionFactory">The session factory.</param>
-            <returns>The corresponding IDbProvider, null if no mapping was found.</returns>
-            <exception cref="T:System.InvalidOperationException">If DbProviderFactory's ApplicaitonContext is not
-            an instance of IConfigurableApplicaitonContext.</exception>
-        </member>
-        <member name="M:Spring.Data.NHibernate.SessionFactoryUtils.NewAdoExceptionTranslator(NHibernate.ISessionFactory)">
-            <summary>
-            Create a IAdoExceptionTranslator from the given SessionFactory.
-            </summary>
-            <remarks>If a corresponding IDbProvider is found, a ErrorcodeExceptionTranslator
-            for the IDbProvider is created.  Otherwise, a FallbackException is created.</remarks>
-            <param name="sessionFactory">The session factory to create the translator for</param>
-            <returns>An IAdoExceptionTranslator</returns>
-        </member>
         <member name="T:Spring.Data.NHibernate.TemplateFlushMode">
             <summary>
             Enumeration for the various Hibernate flush modes. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TemplateFlushMode.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.TemplateFlushMode.Never">
             <summary>Never flush is a good strategy for read-only units of work.

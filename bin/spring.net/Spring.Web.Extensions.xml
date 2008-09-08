@@ -11,7 +11,6 @@
             </summary>
             <author>Bruno Baia</author>
             <author>Thomas Broyer</author>
-            <version>$Id: ScriptHandlerFactory.cs,v 1.1 2007/05/31 18:34:55 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Script.Services.ScriptHandlerFactory.#ctor">
             <summary>
