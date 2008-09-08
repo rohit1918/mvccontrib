@@ -241,7 +241,9 @@ namespace MvcContrib.UI.Html
 			}
 
 			ProcessDataSource(dataSource, options.TextField, options.ValueField,
-			                  (count, text, value) => options.AddOption(value.ToString(), text.ToString()));
+				(count, text, value) => options.AddOption(
+					value == null ? string.Empty : value.ToString(), 
+					text == null ? string.Empty : text.ToString()));
 
 			return options.ToString();
 		}

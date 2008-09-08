@@ -519,6 +519,18 @@ namespace MvcContrib.UnitTests.UI.Html
 					"<select name=\"foo\" id=\"foo\"><option value=\"\">test</option><option value=\"0\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void With_data_source_item_having_null_value_the_option_value_is_rendered_as_empty_string()
+			{
+				var dataSource = new List<TestObjectWithNullableValueProperty>
+				{
+					new TestObjectWithNullableValueProperty {Value = null, Text = "Foo"}
+				};
+				var html = _helper.Select("foo", dataSource, "Text", "Value");
+				var expected = "<select name=\"foo\" id=\"foo\"><option value=\"\" selected=\"selected\">Foo</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 		}
 
 		[TestFixture]
@@ -821,6 +833,12 @@ namespace MvcContrib.UnitTests.UI.Html
 			public TestEnum Test { get; set; }
 		}
 		#endregion
+
+		public class TestObjectWithNullableValueProperty
+		{
+			public string Value { get; set; }
+			public string Text { get; set; }
+		}
 
 		public enum TestEnum
 		{
