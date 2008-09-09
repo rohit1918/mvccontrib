@@ -214,6 +214,10 @@ namespace MvcContrib.UI.Html.Grid
 			{
 				Columns.RowStartBlock(item);
 			}
+			else if(Columns.RowStartWithAlternateBlock != null)
+			{
+				Columns.RowStartWithAlternateBlock(item, isAlternate);
+			}
 			else
 			{
 				RenderRowStart(isAlternate);
