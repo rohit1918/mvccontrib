@@ -9,7 +9,7 @@ namespace MvcContrib.Attributes
 	public abstract class AbstractParameterBinderAttribute : CustomModelBinderAttribute, IModelBinder
 	{
 		public AbstractParameterBinderAttribute(string prefix)
-			: this(prefix, RequestStore.Params)
+			: this(prefix, RequestStore.All)
 		{
 		}
 
@@ -42,6 +42,10 @@ namespace MvcContrib.Attributes
 	{
 		QueryString = 1,
 		Form = 2,
-		Params = 3
+		Cookies = 3,
+		ServerVariables = 4,
+		Params = 5,
+		RouteData = 6,
+		All = 7
 	}
 }

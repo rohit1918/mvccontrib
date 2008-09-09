@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Web;
@@ -42,13 +43,35 @@ namespace MvcContrib.UnitTests
 		{
 			var request = mocks.DynamicMock<HttpRequestBase>();
             var browser = mocks.DynamicMock<HttpBrowserCapabilitiesBase>();
+						var form = new NameValueCollection();
+						var queryString = new NameValueCollection();
+						var cookies = new HttpCookieCollection();
+						var serverVariables = new NameValueCollection();
 
-			SetupResult.For(request.Form).Return(new NameValueCollection());
-			SetupResult.For(request.QueryString).Return(new NameValueCollection());
+			SetupResult.For(request.Form).Return(form);
+			SetupResult.For(request.QueryString).Return(queryString);
+			SetupResult.For(request.Cookies).Return(cookies);
+			SetupResult.For(request.ServerVariables).Return(serverVariables);
+			SetupResult.For(request.Params).Do((Func<NameValueCollection>)(() => CreateParams(queryString, form, cookies, serverVariables)));
 		    SetupResult.For(request.Browser).Return(browser);
 
             return request;
 		}
+
+		public static NameValueCollection CreateParams(NameValueCollection queryString, NameValueCollection form, HttpCookieCollection cookies, NameValueCollection serverVariables)
+		{
+			NameValueCollection parms = new NameValueCollection(48);
+			parms.Add(queryString);
+			parms.Add(form);
+			for( var i=0; i<cookies.Count; i++)
+			{
+				var cookie = cookies.Get(i);
+				parms.Add(cookie.Name, cookie.Value);
+			}
+			parms.Add(serverVariables);
+			return parms;
+		}
+
 		public static HttpResponseBase DynamicHttpResponseBase(this MockRepository mocks)
 		{
 			var response = mocks.DynamicMock<HttpResponseBase>();
