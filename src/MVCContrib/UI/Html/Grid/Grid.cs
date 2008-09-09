@@ -18,6 +18,19 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		private const string Default_Css_Class = "grid";
 		private const string Empty_Text_Key = "empty";
+		private const string Pagination_Format_Text_Key = "paginationFormat";
+		private const string Pagination_Single_Format_Text_Key = "paginationSingleFormat";
+		private const string Pagination_First_Text_Key = "first";
+		private const string Pagination_Prev_Text_Key = "prev";
+		private const string Pagination_Next_Text_Key = "next";
+		private const string Pagination_Last_Text_Key = "last";
+
+		private string _paginationFormat = "Showing {0} - {1} of {2} ";
+		private string _paginationSingleFormat = "Showing {0} of {1} ";
+		private string _paginationFirst = "first";
+		private string _paginationPrev = "prev";
+		private string _paginationNext = "next";
+		private string _paginationLast = "last";
 
 		/// <summary>
 		/// Custom HTML attributes.
@@ -83,10 +96,46 @@ namespace MvcContrib.UI.Html.Grid
 				HtmlAttributes["class"] = Default_Css_Class;
 			}
 
-			if(HtmlAttributes.Contains(Empty_Text_Key))
+			if (HtmlAttributes.Contains(Empty_Text_Key))
 			{
 				EmptyMessageText = HtmlAttributes[Empty_Text_Key] as string;
 				HtmlAttributes.Remove(Empty_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Format_Text_Key))
+			{
+				_paginationFormat = HtmlAttributes[Pagination_Format_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Format_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Single_Format_Text_Key))
+			{
+				_paginationSingleFormat = HtmlAttributes[Pagination_Single_Format_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Single_Format_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_First_Text_Key))
+			{
+				_paginationFirst = HtmlAttributes[Pagination_First_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_First_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Prev_Text_Key))
+			{
+				_paginationPrev = HtmlAttributes[Pagination_Prev_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Prev_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Next_Text_Key))
+			{
+				_paginationNext = HtmlAttributes[Pagination_Next_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Next_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Last_Text_Key))
+			{
+				_paginationLast = HtmlAttributes[Pagination_Last_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Last_Text_Key);
 			}
 		}
 
@@ -171,33 +220,33 @@ namespace MvcContrib.UI.Html.Grid
 			builder.Append("<span class='paginationLeft'>");
 			if (pagedList.PageSize == 1)
 			{
-				builder.AppendFormat("Showing {0} of {1} ", pagedList.FirstItem, pagedList.TotalItems);
+				builder.AppendFormat(_paginationSingleFormat, pagedList.FirstItem, pagedList.TotalItems);
 			}
 			else
 			{
-				builder.AppendFormat("Showing {0} - {1} of {2} ", pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
+				builder.AppendFormat(_paginationFormat, pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
 			}
 			builder.Append("</span>");
 			builder.Append("<span class='paginationRight'>");
 
 			if (pagedList.PageNumber == 1)
 			{
-				builder.Append("first");
+				builder.Append(_paginationFirst);
 			}
 			else
 			{
-				builder.Append(CreatePageLink(1, "first"));
+				builder.Append(CreatePageLink(1, _paginationFirst));
 			}
 
 			builder.Append(" | ");
 
 			if (pagedList.HasPreviousPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber - 1, "prev"));
+				builder.Append(CreatePageLink(pagedList.PageNumber - 1, _paginationPrev));
 			}
 			else
 			{
-				builder.Append("prev");
+				builder.Append(_paginationPrev);
 			}
 
 
@@ -205,11 +254,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.HasNextPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber + 1, "next"));
+				builder.Append(CreatePageLink(pagedList.PageNumber + 1, _paginationNext));
 			}
 			else
 			{
-				builder.Append("next");
+				builder.Append(_paginationNext);
 			}
 
 
@@ -219,11 +268,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.PageNumber < lastPage)
 			{
-				builder.Append(CreatePageLink(lastPage, "last"));
+				builder.Append(CreatePageLink(lastPage, _paginationLast));
 			}
 			else
 			{
-				builder.Append("last");
+				builder.Append(_paginationLast);
 			}
 
 

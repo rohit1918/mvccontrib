@@ -305,5 +305,27 @@ namespace MvcContrib.UnitTests.UI.Html
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
+
+		[Test]
+		public void Should_render_localized_pagination()
+		{
+			_people.Add(new Person { Name = "Person2" });
+			_people.Add(new Person { Name = "Person 3" });
+			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 - 2 av 3 </span><span class='paginationRight'>första | föregående | <a href=\"Test.mvc?page=2\">nästa</a> | <a href=\"Test.mvc?page=2\">sista</a></span></div>";
+			_helper.Grid<Person>("pagedPeople", new Hash(paginationFormat => "Visar {0} - {1} av {2} ", first => "första", prev => "föregående", next => "nästa", last => "sista") ,column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().EndsWith(expected));
+		}
+
+		[Test]
+		public void Should_render_localized_pagination_with_different_message_if_pagesize_is_1()
+		{
+			_people.Add(new Person { Name = "Person2" });
+			_people.Add(new Person { Name = "Person 3" });
+			AddToViewData("pagedPeople", _people.AsPagination(1, 1));
+			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 av 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
+			_helper.Grid<Person>("pagedPeople",new Hash(paginationSingleFormat => "Visar {0} av {1} "), column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().EndsWith(expected));
+		}
 	}
 }
