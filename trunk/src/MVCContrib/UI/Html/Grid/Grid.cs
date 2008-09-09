@@ -19,6 +19,7 @@ namespace MvcContrib.UI.Html.Grid
 		private const string Default_Css_Class = "grid";
 		private const string Empty_Text_Key = "empty";
 		private const string Pagination_Format_Text_Key = "paginationFormat";
+		private const string Page_Query_Name_Text_Key = "page";
 		private const string Pagination_Single_Format_Text_Key = "paginationSingleFormat";
 		private const string Pagination_First_Text_Key = "first";
 		private const string Pagination_Prev_Text_Key = "prev";
@@ -31,6 +32,7 @@ namespace MvcContrib.UI.Html.Grid
 		private string _paginationPrev = "prev";
 		private string _paginationNext = "next";
 		private string _paginationLast = "last";
+		private string _pageQueryName = "page";
 
 		/// <summary>
 		/// Custom HTML attributes.
@@ -136,6 +138,12 @@ namespace MvcContrib.UI.Html.Grid
 			{
 				_paginationLast = HtmlAttributes[Pagination_Last_Text_Key] as string;
 				HtmlAttributes.Remove(Pagination_Last_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Page_Query_Name_Text_Key))
+			{
+				_pageQueryName = HtmlAttributes[Page_Query_Name_Text_Key] as string;
+				HtmlAttributes.Remove(Page_Query_Name_Text_Key);
 			}
 		}
 
@@ -292,7 +300,7 @@ namespace MvcContrib.UI.Html.Grid
 		{
 			string queryString = CreateQueryString(Context.Request.QueryString);
 			string filePath = Context.Request.FilePath;
-			return string.Format("<a href=\"{0}?page={1}{2}\">{3}</a>", filePath, pageNumber, queryString, text);
+			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, _pageQueryName, pageNumber, queryString, text);
 		}
 
 		protected virtual string CreateQueryString(NameValueCollection values)
