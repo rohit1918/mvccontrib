@@ -22,15 +22,28 @@ namespace MvcContrib.UnitTests.MetaData
 			_mocks.Replay(context.Request);
 
 			context.Request.QueryString["ids[0]"] = "1";
+			context.Request.QueryString["dupe[0]"] = "1";
+
 			context.Request.Form["ids[1]"] = "2";
+			context.Request.Form["dupe[0]"] = "2";
+
 			context.Request.Cookies.Add(new HttpCookie("ids[2]", "3"));
+			context.Request.Cookies.Add(new HttpCookie("dupe[0]", "3"));
+
 			context.Request.ServerVariables["ids[3]"] = "4";
+			context.Request.ServerVariables["dupe[0]"] = "4";
+
+			var controller = _mocks.DynamicMock<ControllerBase>();
+			controller.TempData = new TempDataDictionary();
+			controller.TempData["ids[4]"] = 5;
+			controller.TempData["dupe[0]"] = 5;
 
 			var routeData = new RouteData();
-			routeData.Values.Add("ids[4]", 5);
+			routeData.Values.Add("ids[5]", 6);
+			routeData.Values.Add("dupe[0]", 6);
 
 			var requestContext = new RequestContext(context, routeData);
-			_controllerContext = new ControllerContext(requestContext, _mocks.DynamicMock<ControllerBase>());
+			_controllerContext = new ControllerContext(requestContext, controller);
 		}
 
 		[Test]
@@ -94,6 +107,17 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
+		public void CanDeserializeFromTempData()
+		{
+			var attr = new DeserializeAttribute("ids", RequestStore.TempData);
+
+			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			Assert.IsNotNull(ids);
+			Assert.AreEqual(1, ids.Length);
+			Assert.AreEqual(5, ids[0]);
+		}
+
+		[Test]
 		public void CanDeserializeFromRouteData()
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.RouteData);
@@ -101,7 +125,7 @@ namespace MvcContrib.UnitTests.MetaData
 			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
-			Assert.AreEqual(5, ids[0]);
+			Assert.AreEqual(6, ids[0]);
 		}
 
 		[Test]
@@ -111,7 +135,26 @@ namespace MvcContrib.UnitTests.MetaData
 
 			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
 			Assert.IsNotNull(ids);
-			Assert.AreEqual(5, ids.Length);
+			Assert.AreEqual(6, ids.Length);
 		}
+
+		[Test]
+		public void Duplicates_Create_CSV_In_QString_Form_Cookies_SvrVars_TempData_RouteData_Order()
+		{
+			var attr = new DeserializeAttribute("dupe", RequestStore.All);
+
+			var dupe = (string[])attr.GetValue(_controllerContext, null, typeof(string[]), null);
+			Assert.IsNotNull(dupe);
+			Assert.AreEqual("1,2,3,4,5,6", dupe[0]);
+		}
+
+		[Test]
+    public void GetBinder_ReturnsInstanceOfDeserializeAttribute()
+    {
+      var binder = new DeserializeAttribute("ids", RequestStore.All);
+      var modelBinder = binder.GetBinder();
+      Assert.IsNotNull(modelBinder);
+      Assert.AreEqual(modelBinder, binder);
+    }
 	}
 }
