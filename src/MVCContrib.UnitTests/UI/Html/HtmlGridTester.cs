@@ -327,5 +327,17 @@ namespace MvcContrib.UnitTests.UI.Html
 			_helper.Grid<Person>("pagedPeople",new Hash(paginationSingleFormat => "Visar {0} av {1} "), column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
+
+		[Test]
+		public void Should_render_pagination_with_custom_page_name()
+		{
+			_people.Add(new Person { Name = "Person2" });
+			_people.Add(new Person { Name = "Person 3" });
+			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?my_page=2\">next</a> | <a href=\"Test.mvc?my_page=2\">last</a></span></div>";
+			_helper.Grid<Person>("pagedPeople", new Hash(page => "my_page"), column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().EndsWith(expected));
+		}
+
 	}
 }
