@@ -318,6 +318,17 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[Test]
+		public void Should_render_custom_row_start_with_alternate_row()
+		{
+			_people.Add(new Person { Name = "Person 2" });
+			_people.Add(new Person { Name = "Person 3" });
+			_helper.Grid<Person>("people", column => { column.For(p => p.Name); }, sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
+
+
+		[Test]
 		public void Should_render_localized_pagination_with_different_message_if_pagesize_is_1()
 		{
 			_people.Add(new Person { Name = "Person2" });
