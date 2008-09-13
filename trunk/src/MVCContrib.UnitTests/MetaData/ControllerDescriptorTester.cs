@@ -227,7 +227,9 @@ namespace MvcContrib.UnitTests.MetaData
 		public void Filters_should_be_ordered_correctly()
 		{
 			var filters = _descriptor.GetMetaData(typeof(MetaDataTestController)).GetAction("BasicAction", null).Filters;
+#pragma warning disable 618,612
 			Assert.That(filters.ActionFilters[0], Is.InstanceOfType(typeof(PostOnlyAttribute)));
+#pragma warning restore 618,612
 			Assert.That(filters.ActionFilters[1], Is.InstanceOfType(typeof(OutputCacheAttribute)));
 		}
 
@@ -370,7 +372,9 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 	}
 
+#pragma warning disable 618,612
 	[Rescue("Test"), PostOnly]
+#pragma warning restore 618,612
 	internal class MetaDataTestController : Controller
 	{
 		public void VoidAction()
