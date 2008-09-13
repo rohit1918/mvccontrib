@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace MvcContrib.Filters
 {
+	[Obsolete("Use MvcContrib.Attributes.AcceptPostAttribute instead.")]
 	public class PostOnlyAttribute : ActionFilterAttribute
 	{
 		public override void OnActionExecuting(ActionExecutingContext filterContext)

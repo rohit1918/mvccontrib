@@ -250,7 +250,9 @@ namespace MvcContrib.UnitTests.MetaData
 				return new EmptyResult();
 			}
 
+#pragma warning disable 618,612
 			[PostOnly]
+#pragma warning restore 618,612
 			public ActionResult PostOnly()
 			{
 				PostOnlyCalled = true;

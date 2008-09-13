@@ -147,6 +147,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AcceptGetAttributeTester.cs" />
+    <Compile Include="AcceptPostAttributeTester.cs" />
     <Compile Include="ActionFilters\LayoutAttributeTester.cs" />
     <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
