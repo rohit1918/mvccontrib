@@ -25,6 +25,11 @@ namespace MvcContrib.UnitTests.UI.Ajax
 			RouteTable.Routes.MapRoute("other", "Test/Route");
 		}
 
+		private TextWriter Writer
+		{
+			get { return _context.HttpContext.Response.Output; }
+		}
+
 		[SetUp]
 		public void Setup()
 		{
@@ -175,6 +180,76 @@ namespace MvcContrib.UnitTests.UI.Ajax
 			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("bar"));
 		}
 
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void Form_should_throw_if_action_name_is_null()
+		{
+			_generator.Form(null, "Foo", new RouteValueDictionary(), new AjaxOptions(), new Dictionary<string, object>());
+		}
+
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void Form_should_throw_if_ajax_options_are_null()
+		{
+			_generator.Form("Index", "Foo", new RouteValueDictionary(), null, new Dictionary<string, object>());
+		}
+
+		[Test]
+		public void Form_should_return_disposable_form()
+		{
+			var form = _generator.Form("Show", "Customers", null, new AjaxOptions(), new Dictionary<string, object>());
+			Assert.That(form, Is.InstanceOfType(typeof(DisposableElement)));
+		}
+
+		[Test]
+		public void Form_overloads_should_delegate_to_final_implementation()
+		{
+			var options = new AjaxOptions()
+			              	{
+			              		Confirm = "confirm",
+			              		HttpMethod = "POST",
+			              		InsertionMode = System.Web.Mvc.Ajax.InsertionMode.InsertAfter,
+			              		LoadingElementId = "loading",
+			              		OnBegin = "begin",
+			              		OnComplete = "complete",
+			              		OnFailure = "failure",
+			              		OnSuccess = "success",
+			              		UpdateTargetId = "update",
+			              		Url = "theUrl"
+			              	};
+
+			AssertForm(options, false, "/home/Index", _generator.Form("Index", options));
+			AssertForm(options, false, "/home/Index/1", _generator.Form("Index", new{id=1}, options));
+			AssertForm(options, true, "/home/Index/1", _generator.Form("Index", new{id=1}, options, new{@class = "foo"}));
+			AssertForm(options, false, "/home/Index/1", _generator.Form("Index", new RouteValueDictionary(new{id=1}), options));
+			AssertForm(options, true, "/home/Index/1", _generator.Form("Index", new RouteValueDictionary(new{id=1}), options, new Hash(@class => "foo")));
+			AssertForm(options, false, "/Foo/Index", _generator.Form("Index", "Foo", options));
+			AssertForm(options, false, "/Foo/Index/1", _generator.Form("Index", "Foo", new{id=1}, options));
+			AssertForm(options, true, "/Foo/Index/1", _generator.Form("Index", "Foo", new{id=1}, options, new{@class = "foo"}));
+			AssertForm(options, false, "/Foo/Index/1", _generator.Form("Index", "Foo", new RouteValueDictionary(new{id=1}), options));
+			AssertForm(options, true, "/Foo/Index/1", _generator.Form("Index", "Foo", new RouteValueDictionary(new{id=1}), options, new Hash(@class => "foo")) );
+		}
+
+		private void AssertForm(AjaxOptions options, bool checkAttributes, string url, IDisposable form)
+		{
+			Assert.That(form, Is.InstanceOfType(typeof(DisposableElement)));
+			var element = ((DisposableElement)form);
+			var tag = element.Tag;
+
+			Assert.That(tag.Attributes["confirm"], Is.EqualTo(options.Confirm));
+			Assert.That(tag.Attributes["method"], Is.EqualTo(options.HttpMethod));
+			Assert.That(tag.Attributes["insertionmode"], Is.EqualTo(options.InsertionMode.ToString()));
+			Assert.That(tag.Attributes["loading"], Is.EqualTo(options.LoadingElementId));
+			Assert.That(tag.Attributes["begin"], Is.EqualTo(options.OnBegin));
+			Assert.That(tag.Attributes["success"], Is.EqualTo(options.OnSuccess));
+			Assert.That(tag.Attributes["complete"], Is.EqualTo(options.OnComplete));
+			Assert.That(tag.Attributes["failure"], Is.EqualTo(options.OnFailure));
+			Assert.That(tag.Attributes["update"], Is.EqualTo(options.UpdateTargetId));
+			Assert.That(tag.Attributes["action"], Is.EqualTo(url));
+
+			if(checkAttributes)
+			{
+				Assert.That(tag.Attributes["class"], Is.EqualTo("foo"));
+			}
+		}
 
 		private class TestAjaxGenerator : AjaxGenerator
 		{
@@ -203,17 +278,25 @@ namespace MvcContrib.UnitTests.UI.Ajax
 				return string.Empty;
 			}
 
-			public override IDisposable Form(string actionName, string controllerName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+			protected override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)
 			{
-				throw new System.NotImplementedException();
+				var tag = new TagBuilder("form");
+				//Build a fake form which can be tested.
+				tag.MergeAttribute("confirm", options.Confirm);
+				tag.MergeAttribute("method", options.HttpMethod);
+				tag.MergeAttribute("insertionmode", options.InsertionMode.ToString());
+				tag.MergeAttribute("loading", options.LoadingElementId);
+				tag.MergeAttribute("begin", options.OnBegin);
+				tag.MergeAttribute("success", options.OnSuccess);
+				tag.MergeAttribute("complete", options.OnComplete);
+				tag.MergeAttribute("failure", options.OnFailure);
+				tag.MergeAttribute("update", options.UpdateTargetId);
+				tag.MergeAttribute("action", url);
+				tag.MergeAttributes(htmlAttributes);
+				return tag;
 			}
 
 			public override bool IsMvcAjaxRequest()
-			{
-				throw new System.NotImplementedException();
-			}
-
-			public override string RouteLink(string linkText, string routeName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
 			{
 				throw new System.NotImplementedException();
 			}
