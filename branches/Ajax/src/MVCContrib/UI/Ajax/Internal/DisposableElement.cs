@@ -10,24 +10,30 @@ namespace MvcContrib.UI.Ajax.Internal
 	/// </summary>
 	public class DisposableElement : IDisposable
 	{
-		private readonly TextWriter _writer;
-		private readonly TagBuilder _tag;
+		/// <summary>
+		/// Output writer
+		/// </summary>
+		public TextWriter Writer { get; protected set; }
+		/// <summary>
+		/// Tag Builder
+		/// </summary>
+		public TagBuilder Tag { get; protected set; }
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="DisposableElement"/> class.
 		/// </summary>
 		/// <param name="writer">Writer to which the output should be written</param>
-		/// <param name="tag">The opening </param>
+		/// <param name="tag">The tag to render</param>
 		public DisposableElement(TextWriter writer, TagBuilder tag)
 		{
-			_writer = writer;
-			_tag = tag;
-			_writer.Write(_tag.ToString(TagRenderMode.StartTag));
+			Writer = writer;
+			Tag = tag;
+			Writer.Write(this.Tag.ToString(TagRenderMode.StartTag));
 		}
 
 		public void Dispose()
 		{
-			_writer.Write(_tag.ToString(TagRenderMode.EndTag));	
+			Writer.Write(Tag.ToString(TagRenderMode.EndTag));	
 		}
 	}
 }

@@ -141,7 +141,23 @@ namespace MvcContrib.UI.Ajax.Internal
 			return Form(actionName, controllerName, valuesDictionary, ajaxOptions, attributesDictionary);
 		}
 
-		public abstract IDisposable Form(string actionName, string controllerName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+		public virtual IDisposable Form(string actionName, string controllerName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+		{
+			if (string.IsNullOrEmpty(actionName)) 
+			{
+				throw new ArgumentNullException("actionName");
+			}
+			
+			if (ajaxOptions == null) 
+			{
+				throw new ArgumentNullException("ajaxOptions");
+			}
+
+			string url = CreateUrl(null, actionName, controllerName, valuesDictionary);
+			var tagBuilder = CreateFormTag(url, ajaxOptions, htmlAttributes);
+
+			return new DisposableElement(AjaxHelper.ViewContext.HttpContext.Response.Output, tagBuilder);
+		}
 
 		#endregion
 
@@ -222,11 +238,27 @@ namespace MvcContrib.UI.Ajax.Internal
 			return RouteLink(linkText, routeName, valuesDictionary, ajaxOptions, htmlAttributesDictionary);
 		}
 
-		public abstract string RouteLink(string linkText, string routeName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+		public string RouteLink(string linkText, string routeName, RouteValueDictionary valuesDictionary, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+		{
+			if (string.IsNullOrEmpty(linkText)) 
+			{
+				throw new ArgumentNullException("linkText");
+			}
+			
+			if (ajaxOptions == null) 
+			{
+				throw new ArgumentNullException("ajaxOptions");
+			}
+
+			string url = CreateUrl(routeName, null, null, valuesDictionary);
+			return CreateLink(linkText, url, ajaxOptions, htmlAttributes);
+		}
 
 		#endregion
 
 		protected abstract string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+
+		protected abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
 
 		public abstract bool IsMvcAjaxRequest();
 
