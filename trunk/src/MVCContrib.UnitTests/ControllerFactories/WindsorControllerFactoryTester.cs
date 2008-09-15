@@ -7,7 +7,7 @@ using MvcContrib.Castle;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-
+using MvcContrib.UnitTests.ControllerFactories;
 namespace MvcContrib.UnitTests.Castle
 {
 	[TestFixture]
@@ -15,7 +15,7 @@ namespace MvcContrib.UnitTests.Castle
 	{
 		private IWindsorContainer _container;
 		private IControllerFactory _factory;
-
+		private RequestContext _context;
 		[SetUp]
 		public void Setup()
 		{
@@ -25,21 +25,33 @@ namespace MvcContrib.UnitTests.Castle
 			_container.AddComponent("simplecontroller", typeof(WindsorSimpleController));
 			_container.AddComponent("StubDependency", typeof(IDependency), typeof(StubDependency));
 			_container.AddComponent("dependencycontroller", typeof(WindsorDependencyController));
+
+			_factory.InitializeWithControllerTypes(typeof(WindsorSimpleController), typeof(WindsorDependencyController));
+
+			var mocks = new MockRepository();
+			_context = new RequestContext(mocks.DynamicHttpContextBase(), new RouteData());
+			mocks.ReplayAll();
 		}
 
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			IController controller = _factory.CreateController(null, "Simple");
+			IController controller = _factory.CreateController(_context, "WindsorSimple");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorSimpleController)));
 		}
 
+		[Test, ExpectedException(typeof(HttpException), ExpectedMessage = " The controller for path '' could not be found or it does not implement IController")]
+		public void Should_throw_http_exception_if_controller_type_does_not_exist()
+		{
+			_factory.CreateController(_context, "DoesNotExist");
+		}
+
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			IController controller = _factory.CreateController(null, "Dependency");
+			IController controller = _factory.CreateController(_context, "WindsorDependency");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorDependencyController)));
