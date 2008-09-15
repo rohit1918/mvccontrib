@@ -42,7 +42,7 @@ namespace MvcContrib.UnitTests.Castle
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorSimpleController)));
 		}
 
-		[Test, ExpectedException(typeof(HttpException), ExpectedMessage = " The controller for path '' could not be found or it does not implement IController")]
+		[Test, ExpectedException(typeof(HttpException), ExpectedMessage = "The controller for path '' could not be found or it does not implement IController.")]
 		public void Should_throw_http_exception_if_controller_type_does_not_exist()
 		{
 			_factory.CreateController(_context, "DoesNotExist");
