@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Web.Mvc;
 
-namespace MvcContrib.UI.Ajax.Internal
+namespace MvcContrib.UI
 {
 	/// <summary>
 	/// Represents an HTML element. When instantiated, the opening tag will be written to the output.

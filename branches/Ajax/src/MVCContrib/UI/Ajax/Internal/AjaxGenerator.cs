@@ -281,7 +281,7 @@ namespace MvcContrib.UI.Ajax.Internal
 				return UrlHelper.RouteUrl(routeName, values);
 			}
 
-			return null;
+			return UrlHelper.RouteUrl(values);
 		}
 
 	}
