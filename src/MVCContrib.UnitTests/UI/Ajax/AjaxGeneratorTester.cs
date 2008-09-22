@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MvcContrib.UI;
 using MvcContrib.UI.Ajax;
 using MvcContrib.UI.Ajax.Internal;
 using NUnit.Framework;
@@ -22,12 +23,7 @@ namespace MvcContrib.UnitTests.UI.Ajax
 		public void TestFixtureSetup()
 		{
 			RouteTable.Routes.MapRoute("default", "{controller}/{action}/{id}", new {id = (string)null});
-			RouteTable.Routes.MapRoute("other", "Test/Route");
-		}
-
-		private TextWriter Writer
-		{
-			get { return _context.HttpContext.Response.Output; }
+			RouteTable.Routes.MapRoute("other", "Test/Route/{id}", new{id=(string)null});
 		}
 
 		[SetUp]
@@ -95,29 +91,6 @@ namespace MvcContrib.UnitTests.UI.Ajax
 		{
 			string url = _generator.CreateUrlPublic(null, "Show", null, new RouteValueDictionary(new { id = 1 }));
 			Assert.That(url, Is.EqualTo("/home/Show/1"));
-		}
-
-		[Test]
-		public void DisposableElement_should_write_start_tag_when_instantiated()
-		{
-			var writer = new StringWriter();
-			var builder = new TagBuilder("form");
-			var element = new DisposableElement(writer, builder);
-
-			Assert.That(writer.ToString(), Is.EqualTo("<form>"));
-		}
-
-		[Test]
-		public void DisposableElement_should_write_end_tag_when_disposed()
-		{
-			var writer = new StringWriter();
-			var builder = new TagBuilder("form");
-			
-			using(new DisposableElement(writer, builder))
-			{
-			}
-
-			Assert.That(writer.ToString(), Is.EqualTo("<form></form>"));
 		}
 
 		[Test]
@@ -226,6 +199,110 @@ namespace MvcContrib.UnitTests.UI.Ajax
 			AssertForm(options, true, "/Foo/Index/1", _generator.Form("Index", "Foo", new{id=1}, options, new{@class = "foo"}));
 			AssertForm(options, false, "/Foo/Index/1", _generator.Form("Index", "Foo", new RouteValueDictionary(new{id=1}), options));
 			AssertForm(options, true, "/Foo/Index/1", _generator.Form("Index", "Foo", new RouteValueDictionary(new{id=1}), options, new Hash(@class => "foo")) );
+		}
+
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void RouteLink_should_throw_if_linktext_is_null()
+		{
+			_generator.RouteLink(null, "Route", new RouteValueDictionary(), new AjaxOptions(), new Dictionary<string, object>());
+		}
+
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void RouteLink_should_throw_if_options_are_null()
+		{
+			_generator.RouteLink("Text", "Route", new RouteValueDictionary(), null, new Dictionary<string, object>());
+		}
+
+		[Test]
+		public void RouteLink_overloads_should_delegate_to_final_implementation()
+		{
+			var options = new AjaxOptions();
+
+			_generator.RouteLink("Link", new {controller = "Home",action="Index"}, options);
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+
+			_generator.RouteLink("Link", new {controller = "Home", action = "Index"}, options, new Hash(@class => "Foo"));
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", new { controller = "Home", action = "Index" }, options, new{@class = "Foo"});
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", new RouteValueDictionary(new {controller = "Home", action = "Index"}), options);
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+
+			_generator.RouteLink("Link", new RouteValueDictionary(new { controller = "Home", action = "Index" }), options, new Hash(@class => "Foo"));
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", new RouteValueDictionary(new { controller = "Home", action = "Index" }), options, new { @class = "Foo" });
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Home/Index"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", options);
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+
+			_generator.RouteLink("Link", "Other", options, new Hash(@class => "Foo"));
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", options, new {@class = "Foo"});
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", new {id = 1}, options);
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+
+			_generator.RouteLink("Link", "Other", new {id = 1}, options, new Hash(@class => "Foo"));
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", new {id = 1}, options, new {@class = "Foo"});
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", new RouteValueDictionary(new { id = 1 }), options);
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+
+			_generator.RouteLink("Link", "Other", new RouteValueDictionary(new { id = 1 }), options, new Hash(@class => "Foo"));
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
+			_generator.RouteLink("Link", "Other", new RouteValueDictionary(new { id = 1 }), options, new { @class = "Foo" });
+			Assert.That(_generator.AjaxOptions, Is.SameAs(options));
+			Assert.That(_generator.TargetUrl, Is.EqualTo("/Test/Route/1"));
+			Assert.That(_generator.LinkText, Is.EqualTo("Link"));
+			Assert.That(_generator.HtmlAttributes["class"], Is.EqualTo("Foo"));
+
 		}
 
 		private void AssertForm(AjaxOptions options, bool checkAttributes, string url, IDisposable form)
