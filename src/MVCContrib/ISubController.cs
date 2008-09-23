@@ -15,4 +15,16 @@ namespace MvcContrib
 		///<returns>System.Action</returns>
 		Action GetResult(ControllerBase parentController);
 	}
+
+	///<summary>
+	/// SubController with typed Model property for parameter passing from a parent controller.
+	///</summary>
+	///<typeparam name="T"></typeparam>
+	public interface ISubController<T> : ISubController
+	{
+		///<summary>
+		/// Gets and sets a model object that matches the generic type.
+		///</summary>
+		T Model { get; set; }
+	}
 }

@@ -16,8 +16,8 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ShouldUseSubControllerActionToViewDataOnIdentification()
 		{
-			Type type = typeof(SubController);
-			object[] attrs = type.GetCustomAttributes(typeof(SubControllerActionToViewDataAttribute), false);
+			Type type = typeof(SubController<object>);
+			object[] attrs = type.GetCustomAttributes(typeof(SubControllerActionToViewDataAttribute), true);
 
 			Assert.That(attrs.Length, Is.EqualTo(1));
 		}
@@ -25,14 +25,14 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void ShouldSubclassController()
 		{
-			Controller controller = new SubController();
+			Controller controller = new SubController<object>();
 			Assert.IsNotNull(controller);
 		}
 
 		[Test]
 		public void ShouldTrimControllerAndSubcontrollerOffTypeNameToGetControllername()
 		{
-			var controller = new SubController();
+			var controller = new SubController<object>();
 			string name = controller.GetControllerName();
 
 			Assert.AreEqual("", name);
@@ -90,11 +90,11 @@ namespace MvcContrib.UnitTests
 		{
 		}
 
-		private class FooingSubController : SubController
+		private class FooingSubController : SubController<object>
 		{
 		}
 
-		private class FooingController : SubController
+		private class FooingController : SubController<object>
 		{
 		}
 	}

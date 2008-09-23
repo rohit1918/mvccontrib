@@ -39,7 +39,28 @@ namespace MvcContrib
 		///<returns></returns>
 		public string GetControllerName()
 		{
-			return GetType().Name.ToLowerInvariant().Replace("subcontroller", "").Replace("controller", "");
+			string typeNameLowered = GetType().Name.ToLowerInvariant();
+			int index = typeNameLowered.IndexOf("subcontroller");
+			if(index == -1)
+			{
+				index = typeNameLowered.IndexOf("controller");
+			}
+
+			if(index == -1)
+			{
+				return typeNameLowered;
+			}
+
+			return typeNameLowered.Substring(0, index);
 		}
+	}
+
+	///<summary>
+	/// SubController with generic Model property.
+	///</summary>
+	///<typeparam name="T"></typeparam>
+	public class SubController<T> : SubController, ISubController<T>
+	{
+		public virtual T Model { get; set; }
 	}
 }
