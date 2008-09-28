@@ -94,6 +94,15 @@ namespace MvcContrib.UnitTests.UI.Ajax
 		}
 
 		[Test]
+		public void CreateLink_should_create_link()
+		{
+string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"bar\">MvcContrib</a>";
+			string actual = _generator.BaseCreateLink("MvcContrib", "www.mvccontrib.org", new AjaxOptions(), new Hash(@class => "foo"));
+		
+			Assert.That(actual, Is.EqualTo(expected));		
+		}
+
+		[Test]
 		public void ActionLink_overloads_should_delegate_to_final_implementation()
 		{
 			var options = new AjaxOptions();
@@ -353,6 +362,16 @@ namespace MvcContrib.UnitTests.UI.Ajax
 				TargetUrl = targetUrl;
 
 				return string.Empty;
+			}
+
+			public string BaseCreateLink(string linkText, string targetUrl, AjaxOptions options, IDictionary<string, object> htmlAttributes)
+			{
+				return base.CreateLink(linkText, targetUrl, options, htmlAttributes);
+			}
+
+			protected override string AjaxOptionsToString(AjaxOptions options)
+			{
+				return "bar";
 			}
 
 			public override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)
