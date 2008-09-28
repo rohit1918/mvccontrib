@@ -47,7 +47,7 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(request.Form).Return(new NameValueCollection());
 			SetupResult.For(request.QueryString).Return(new NameValueCollection());
 		    SetupResult.For(request.Browser).Return(browser);
-
+        	SetupResult.For(request.Headers).Return(new NameValueCollection());
             return request;
 		}
 		public static HttpResponseBase DynamicHttpResponseBase(this MockRepository mocks)

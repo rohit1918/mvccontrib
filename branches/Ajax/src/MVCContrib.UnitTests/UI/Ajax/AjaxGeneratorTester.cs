@@ -340,7 +340,7 @@ namespace MvcContrib.UnitTests.UI.Ajax
 			{
 			}
 
-			protected override string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+			public override string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
 			{
 				LinkText = null;
 				AjaxOptions = null;
@@ -355,7 +355,7 @@ namespace MvcContrib.UnitTests.UI.Ajax
 				return string.Empty;
 			}
 
-			protected override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)
+			public override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)
 			{
 				var tag = new TagBuilder("form");
 				//Build a fake form which can be tested.

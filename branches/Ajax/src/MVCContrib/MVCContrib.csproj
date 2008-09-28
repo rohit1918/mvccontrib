@@ -137,6 +137,7 @@
     <Compile Include="SubController.cs" />
     <Compile Include="UI\Ajax\AjaxOptions.cs" />
     <Compile Include="UI\Ajax\Internal\AjaxGenerator.cs" />
+    <Compile Include="UI\Ajax\Internal\PrototypeAjaxGenerator.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
