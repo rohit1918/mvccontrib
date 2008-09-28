@@ -18,22 +18,9 @@ namespace MvcContrib.UI.Ajax.Internal
 		{
 		}
 
-		/// <summary>
-		/// Creates a hyperlink to the specified URL using Ajax.
-		/// </summary>
-		/// <param name="linkText">The link text</param>
-		/// <param name="targetUrl">The url to link to</param>
-		/// <param name="ajaxOptions">AJAX options</param>
-		/// <param name="htmlAttributes">Additional HTML attributes</param>
-		/// <returns>A string containing the hyperlink</returns>
-		public override string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+		protected override string AjaxOptionsToString(AjaxOptions options)
 		{
-			var tag = new TagBuilder("a") { InnerHtml = HttpUtility.HtmlEncode(linkText) };
-			tag.MergeAttributes(htmlAttributes);
-			tag.MergeAttribute("href", targetUrl);
-			//tag.MergeAttribute("onclick", "foo");
-			throw new NotImplementedException();
-//			return tag.ToString();
+			throw new System.NotImplementedException();
 		}
 
 		public override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)
