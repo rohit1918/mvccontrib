@@ -256,9 +256,17 @@ namespace MvcContrib.UI.Ajax.Internal
 
 		#endregion
 
-		protected abstract string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+		/// <summary>
+		/// Creates a hyperlink to the specified URL using Ajax.
+		/// </summary>
+		/// <param name="linkText">The link text</param>
+		/// <param name="targetUrl">The url to link to</param>
+		/// <param name="ajaxOptions">AJAX options</param>
+		/// <param name="htmlAttributes">Additional HTML attributes</param>
+		/// <returns>A string containing the hyperlink</returns>
+		public abstract string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
 
-		protected abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
+		public abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
 
 		public abstract bool IsMvcAjaxRequest();
 
