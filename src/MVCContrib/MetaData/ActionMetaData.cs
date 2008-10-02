@@ -27,7 +27,7 @@ namespace MvcContrib.MetaData
 		/// <summary>
 		/// The name of the action
 		/// </summary>
-		public string Name
+		public virtual string Name
 		{
 			get { return MethodInfo.Name; }
 		}
@@ -55,7 +55,7 @@ namespace MvcContrib.MetaData
 		/// <returns></returns>
 		public virtual bool IsValidForRequest(string name, ControllerContext context)
 		{
-			return name.Equals(MethodInfo.Name, StringComparison.OrdinalIgnoreCase)
+			return name.Equals(Name, StringComparison.OrdinalIgnoreCase)
 				&& SelectionAttributes.All(attr => attr.IsValidForRequest(context, MethodInfo));
 		}
 	}
@@ -71,22 +71,24 @@ namespace MvcContrib.MetaData
 		/// <param name="methodInfo">The Methodinfo that represents the action method</param>
 		/// <param name="filters">Any filters defined on the action</param>
 		/// <param name="selectionAttributes">Any ActionSelection attributes defined on the action</param>
-		/// <param name="actionNameAttributes">The ActionNameAttributes that supply aliasing info for the action</param>
-		public AliasedActionMetaData(MethodInfo methodInfo, FilterInfo filters, ActionSelectionAttribute[] selectionAttributes, ActionNameAttribute[] actionNameAttributes)
+		/// <param name="actionNameAttribute">The ActionNameAttributes that supply aliasing info for the action</param>
+		public AliasedActionMetaData(MethodInfo methodInfo, FilterInfo filters, ActionSelectionAttribute[] selectionAttributes, ActionNameAttribute actionNameAttribute)
 			: base(methodInfo, selectionAttributes, filters)
 		{
-			this.Aliases = actionNameAttributes;
+			Alias = actionNameAttribute;
 		}
 
 		/// <summary>
 		/// The ActionNameAttribute that supplies aliasing info for the action
 		/// </summary>
-		public ActionNameAttribute[] Aliases { get; private set; }
+		public ActionNameAttribute Alias { get; private set; }
 
-		public override bool IsValidForRequest(string name, ControllerContext context) 
+		public override string Name 
 		{
-			return Aliases.All(attr => attr.IsValidForRequest(context, name, MethodInfo)) 
-				&& SelectionAttributes.All(attr => attr.IsValidForRequest(context, MethodInfo));
+			get 
+			{
+				return Alias.Name;
+			}
 		}
 	}
 }

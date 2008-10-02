@@ -136,9 +136,9 @@ namespace MvcContrib.MetaData
 			var filters = CreateFilterInfo(controllerLevelFilters, GetFilters(actionMethod));
 			var selectors = GetActionSelectionAttributes(actionMethod);
 
-			if(actionNameAttributes.Length > 0)
+			if(actionNameAttributes.Length == 1)
 			{
-				return new AliasedActionMetaData(actionMethod, filters, selectors, actionNameAttributes);
+				return new AliasedActionMetaData(actionMethod, filters, selectors, actionNameAttributes.Single());
 			}
             
 			return new ActionMetaData(actionMethod, selectors, filters);
