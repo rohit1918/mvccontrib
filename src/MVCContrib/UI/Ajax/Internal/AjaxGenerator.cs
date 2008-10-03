@@ -274,7 +274,7 @@ namespace MvcContrib.UI.Ajax.Internal
 			return tag.ToString();
 		}
 
-		protected abstract string AjaxOptionsToString(AjaxOptions options);
+		public abstract string AjaxOptionsToString(AjaxOptions options);
 
 		public abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
 
