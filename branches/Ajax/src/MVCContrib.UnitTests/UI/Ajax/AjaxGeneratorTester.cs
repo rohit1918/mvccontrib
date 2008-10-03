@@ -369,7 +369,7 @@ string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"bar\">
 				return base.CreateLink(linkText, targetUrl, options, htmlAttributes);
 			}
 
-			protected override string AjaxOptionsToString(AjaxOptions options)
+			public override string AjaxOptionsToString(AjaxOptions options)
 			{
 				return "bar";
 			}
