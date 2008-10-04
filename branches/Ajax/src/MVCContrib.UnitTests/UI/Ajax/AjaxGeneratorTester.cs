@@ -6,6 +6,7 @@ using System.Web.Routing;
 using MvcContrib.UI;
 using MvcContrib.UI.Ajax;
 using MvcContrib.UI.Ajax.Internal;
+using MvcContrib.UI.Ajax.JavaScriptElements;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -96,7 +97,7 @@ namespace MvcContrib.UnitTests.UI.Ajax
 		[Test]
 		public void CreateLink_should_create_link()
 		{
-string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"bar\">MvcContrib</a>";
+string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"\">MvcContrib</a>";
 			string actual = _generator.BaseCreateLink("MvcContrib", "www.mvccontrib.org", new AjaxOptions(), new Hash(@class => "foo"));
 		
 			Assert.That(actual, Is.EqualTo(expected));		
@@ -369,9 +370,9 @@ string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"bar\">
 				return base.CreateLink(linkText, targetUrl, options, htmlAttributes);
 			}
 
-			public override string AjaxOptionsToString(AjaxOptions options)
+			public override IJavaScriptElement MakeAjaxOptionsFrameworkSpecific(AjaxOptions options)
 			{
-				return "bar";
+				return MockRepository.GenerateStub<IJavaScriptElement>();
 			}
 
 			public override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)

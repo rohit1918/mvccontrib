@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MvcContrib.UI.Ajax.JavaScriptElements;
 
 namespace MvcContrib.UI.Ajax.Internal
 {
@@ -270,11 +271,11 @@ namespace MvcContrib.UI.Ajax.Internal
 			var tag = new TagBuilder("a") { InnerHtml = HttpUtility.HtmlEncode(linkText) };
 			tag.MergeAttributes(htmlAttributes);
 			tag.MergeAttribute("href", targetUrl);
-			tag.MergeAttribute("onclick", AjaxOptionsToString(ajaxOptions));
+			tag.MergeAttribute("onclick", MakeAjaxOptionsFrameworkSpecific(ajaxOptions).ToJavaScript());
 			return tag.ToString();
 		}
 
-		public abstract string AjaxOptionsToString(AjaxOptions options);
+		public abstract IJavaScriptElement MakeAjaxOptionsFrameworkSpecific(AjaxOptions options);
 
 		public abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
 
