@@ -13,6 +13,8 @@ using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.UI.Ajax
 {
+	using AjaxOptions = System.Web.Mvc.Ajax.AjaxOptions;
+
 	[TestFixture]
 	public class AjaxGeneratorTester
 	{
@@ -92,15 +94,6 @@ namespace MvcContrib.UnitTests.UI.Ajax
 		{
 			string url = _generator.CreateUrlPublic(null, "Show", null, new RouteValueDictionary(new { id = 1 }));
 			Assert.That(url, Is.EqualTo("/home/Show/1"));
-		}
-
-		[Test]
-		public void CreateLink_should_create_link()
-		{
-string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"\">MvcContrib</a>";
-			string actual = _generator.BaseCreateLink("MvcContrib", "www.mvccontrib.org", new AjaxOptions(), new Hash(@class => "foo"));
-		
-			Assert.That(actual, Is.EqualTo(expected));		
 		}
 
 		[Test]
@@ -363,16 +356,6 @@ string expected = "<a class=\"foo\" href=\"www.mvccontrib.org\" onclick=\"\">Mvc
 				TargetUrl = targetUrl;
 
 				return string.Empty;
-			}
-
-			public string BaseCreateLink(string linkText, string targetUrl, AjaxOptions options, IDictionary<string, object> htmlAttributes)
-			{
-				return base.CreateLink(linkText, targetUrl, options, htmlAttributes);
-			}
-
-			public override IJavaScriptElement MakeAjaxOptionsFrameworkSpecific(AjaxOptions options)
-			{
-				return MockRepository.GenerateStub<IJavaScriptElement>();
 			}
 
 			public override TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes)

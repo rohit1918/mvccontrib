@@ -236,7 +236,6 @@
     <Compile Include="UI\Ajax\JavaScriptElements\JavaScriptDictionaryTester.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\AnonymousFunctionTester.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\JavaScriptLiteralTester.cs" />
-    <Compile Include="UI\Ajax\PrototypAjaxOptionsTester.cs" />
     <Compile Include="UI\Ajax\PrototypeAjaxGeneratorTester.cs" />
     <Compile Include="UI\BlockRendererTester.cs" />
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
