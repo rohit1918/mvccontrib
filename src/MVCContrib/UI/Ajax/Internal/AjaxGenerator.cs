@@ -4,9 +4,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.UI.Ajax.JavaScriptElements;
-
 namespace MvcContrib.UI.Ajax.Internal
 {
+	using AjaxOptions = System.Web.Mvc.Ajax.AjaxOptions;
+
 	/// <summary>
 	/// Base class for Ajax functionality
 	/// </summary>
@@ -266,17 +267,8 @@ namespace MvcContrib.UI.Ajax.Internal
 		/// <param name="ajaxOptions">AJAX options</param>
 		/// <param name="htmlAttributes">Additional HTML attributes</param>
 		/// <returns>A string containing the hyperlink</returns>
-		public virtual string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
-		{
-			var tag = new TagBuilder("a") { InnerHtml = HttpUtility.HtmlEncode(linkText) };
-			tag.MergeAttributes(htmlAttributes);
-			tag.MergeAttribute("href", targetUrl);
-			tag.MergeAttribute("onclick", MakeAjaxOptionsFrameworkSpecific(ajaxOptions).ToJavaScript());
-			return tag.ToString();
-		}
-
-		public abstract IJavaScriptElement MakeAjaxOptionsFrameworkSpecific(AjaxOptions options);
-
+		public abstract string CreateLink(string linkText, string targetUrl, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes);
+		
 		public abstract TagBuilder CreateFormTag(string url, AjaxOptions options, IDictionary<string, object> htmlAttributes);
 
 		public abstract bool IsMvcAjaxRequest();

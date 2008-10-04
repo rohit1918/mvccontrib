@@ -137,13 +137,11 @@
     <Compile Include="SubController.cs" />
     <Compile Include="UI\Ajax\AjaxOptions.cs" />
     <Compile Include="UI\Ajax\Internal\AjaxGenerator.cs" />
-    <Compile Include="UI\Ajax\Internal\AjaxOptionsWrapper.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\FunctionCall.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\IJavaScriptElement.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\JavaScriptDictionary.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\AnonymousFunction.cs" />
     <Compile Include="UI\Ajax\Internal\PrototypeAjaxGenerator.cs" />
-    <Compile Include="UI\Ajax\Internal\PrototypeAjaxOptions.cs" />
     <Compile Include="UI\Ajax\JavaScriptElements\JavaScriptLiteral.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
