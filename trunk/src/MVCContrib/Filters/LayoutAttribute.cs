@@ -5,7 +5,10 @@ namespace MvcContrib.Filters
 	/// <summary>
 	/// Decorates a controller class to denote the default layout for all actions on the controller.
 	/// Use:  define a layout at the class level (without an extension) and omit the layout from each return View() call.
-	/// An explicit layout specified in the return View() will override the layout attribute.
+	/// This will override the masterName selection from your individual actions.  To override this attribute at the action level, 
+	/// apply the attribute to that action.
+	/// 
+	/// To specify no layout, use [Layout(null)] or [Layout("")].
 	/// </summary>
 	public class LayoutAttribute : ActionFilterAttribute
 	{
@@ -17,7 +20,7 @@ namespace MvcContrib.Filters
 		/// <summary>
 		/// Creates a LayoutAttribute.
 		/// </summary>
-		/// <param name="layout">The default layotu to use.  Do not specify the extension.</param>
+		/// <param name="layout">The default layout to use.  Do not specify the extension.</param>
 		public LayoutAttribute(string layout)
 		{
 			Layout = layout;
@@ -35,11 +38,8 @@ namespace MvcContrib.Filters
 			var viewResult = filterContext.Result as ViewResult;
 			if(viewResult != null)
 			{
-				bool masterPageExplicitlySet = !string.IsNullOrEmpty(viewResult.MasterName);
-				if(!masterPageExplicitlySet)
-				{
-					viewResult.MasterName = Layout;
-				}
+                //override what the view (might have) set
+			    viewResult.MasterName = Layout;
 			}
 		}
 	}

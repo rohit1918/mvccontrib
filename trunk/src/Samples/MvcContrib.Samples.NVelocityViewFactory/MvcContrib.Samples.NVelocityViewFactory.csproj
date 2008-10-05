@@ -42,14 +42,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
-    </Reference>
-    <Reference Include="MvcContrib.Castle, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.Castle.dll</HintPath>
-    </Reference>
     <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\castle\NVelocity.dll</HintPath>
@@ -104,11 +96,23 @@
     <None Include="Views\Home\about.vm" />
     <None Include="Views\Home\contact.vm" />
     <None Include="Views\Home\index.vm" />
+    <None Include="Views\Home\_ads.vm" />
     <None Include="Views\Masters\site.vm" />
+    <None Include="Views\Shared\header.vm" />
+    <None Include="Views\Shared\footer.vm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MvcContrib.Castle\MvcContrib.Castle.csproj">
+      <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
+      <Name>MvcContrib.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MVCContrib\MVCContrib.csproj">
+      <Project>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</Project>
+      <Name>MVCContrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -2,6 +2,8 @@
 
 <form action="$Url.Action('sendmessage')" method="post">
 
-Name: $html.TextBox('name', $viewdata.Model.companyname) 
+Name: $html.TextBox('name', $viewdata.Model.companyname) <br/>
+Address: $viewdata.Model.AddressLine1 <br/>
+Address: $viewdata.Model.AddressLine2 <br/> 
 
 </form>

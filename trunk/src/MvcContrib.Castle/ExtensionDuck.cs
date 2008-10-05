@@ -69,11 +69,28 @@ namespace MvcContrib.Castle
 				methodInfo = Introspector.GetMethod(extensionType, method, extensionArgs);
 				if(methodInfo != null)
 				{
-					return methodInfo.Invoke(null, extensionArgs);
+				    return InvokerHelper(methodInfo, null, extensionArgs);
 				}
 			}
 
 			return null;
 		}
+
+	    private object InvokerHelper(MethodInfo method, object instance, object[] args)
+	    {
+	        object returnVal = method.Invoke(instance, args);
+
+            //some extension methods will have a void return type because they render directly to response.output
+            //in this case we should return an empty string
+            if(IsVoidMethod(method))
+                return returnVal ?? string.Empty;
+
+	        return returnVal;      	   
+	    }
+
+	    private bool IsVoidMethod(MethodInfo method)
+	    {
+	        return method.ReturnType.Name.Equals("Void", StringComparison.Ordinal);
+	    }
 	}
 }

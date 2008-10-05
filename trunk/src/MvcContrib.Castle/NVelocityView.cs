@@ -37,20 +37,25 @@ namespace MvcContrib.Castle
 		public void Render(ViewContext viewContext, TextWriter writer)
 		{
 			_viewContext = viewContext;
+            VelocityContext context = CreateContext();
+
+
 			bool hasLayout = _masterTemplate != null;
+            if(hasLayout)
+            {
+                //Native NVelocity support for master/child template using #parse. No need to buffer the child template to a Stringwriter
+                //which bypasses the response output... and will therefore cause any void child helper extension method
+                //calls to fail to render in the correct location. #parse($childContent) must appear in the master template
+                //See google group discussion thread: 
+                //http://groups.google.com/group/mvccontrib-discuss/browse_thread/thread/0fc84d69db708322?hl=en 
 
-			TextWriter writerToUse = hasLayout ? new StringWriter() : writer;
-
-			VelocityContext context = CreateContext();
-
-			_viewTemplate.Merge(context, writerToUse);
-
-			if(hasLayout)
-			{
-				context.Put("childContent", (writerToUse as StringWriter).GetStringBuilder().ToString());
-
-				_masterTemplate.Merge(context, writer);
-			}
+                context.Put("childContent", _viewTemplate.Name);
+                _masterTemplate.Merge(context, writer);
+            }
+            else
+            {
+                _viewTemplate.Merge(context, writer);
+            }            
 		}
 
 		private VelocityContext CreateContext()
