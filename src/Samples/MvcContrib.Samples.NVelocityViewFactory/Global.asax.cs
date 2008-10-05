@@ -3,9 +3,8 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Castle.Core;
 using Castle.Windsor;
-using MvcContrib.ControllerFactories;
+using MvcContrib.Binders;
 using MvcContrib.Castle;
 
 namespace MvcContrib.Samples.NVelocityViewFactory
@@ -40,6 +39,8 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 		{
 			if (_container == null)
 			{
+                ModelBinders.DefaultBinder = new SubControllerBinder();
+
 				_container = new WindsorContainer();
 
 				// Add our singleton NVelocityViewFactory
@@ -54,7 +55,13 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 
 		protected virtual void AddRoutes()
 		{
-			RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+            //For IIS6
+            //RouteTable.Routes.Add(new Route("{controller}.mvc/{action}/{id}", new MvcRouteHandler())
+            //{
+            //    Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
+            //});
+            
+            RouteTable.Routes.Add(new Route("{controller}/{action}/{id}", new MvcRouteHandler())
 			{
 				Defaults = new RouteValueDictionary(new { action = "Index", id = "" }),
 			});

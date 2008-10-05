@@ -12,7 +12,8 @@ namespace MvcContrib.Castle
 	        		typeof(ButtonsAndLinkExtensions),                    
 					typeof(FormExtensions), 
                     typeof(ImageExtensions), 
-                    typeof(LinkExtensions),                     
+                    typeof(LinkExtensions),    
+                    typeof(ViewExtensions)
 			};
 
 	    public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)
