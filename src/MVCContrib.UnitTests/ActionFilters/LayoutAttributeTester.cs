@@ -33,14 +33,14 @@ namespace MvcContrib.UnitTests.ActionFilters
 		}
 
 		[Test]
-		public void Should_NOT_set_layout_to_view_results_that_explicitly_set_layout()
+		public void Should_override_layout_to_view_results_that_explicitly_set_layout()
 		{
 			var result = new ViewResult {MasterName = "explicit"};
 			var context = new ResultExecutingContext(_controllerContext, result);
 			var layoutAttribute = new LayoutAttribute("test");
 			layoutAttribute.OnResultExecuting(context);
 
-			Assert.That(result.MasterName, Is.EqualTo("explicit"));
+			Assert.That(result.MasterName, Is.EqualTo("test"));
 		}
 	}
 }
