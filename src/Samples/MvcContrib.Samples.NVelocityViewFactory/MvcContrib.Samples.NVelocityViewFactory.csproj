@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
     <Content Include="Default.aspx" />
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\WidgetSubController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -100,6 +102,7 @@
     <None Include="Views\Masters\site.vm" />
     <None Include="Views\Shared\header.vm" />
     <None Include="Views\Shared\footer.vm" />
+    <None Include="Views\Main\index.vm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MvcContrib.Castle\MvcContrib.Castle.csproj">
