@@ -128,7 +128,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				_dependencyResolver.Expect(r => r.DisposeImplementation(controller));
 
 				IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
-				factory.DisposeController(controller);
+				factory.ReleaseController(controller);
 			}
 
 			[Test]
@@ -140,7 +140,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				_dependencyResolver.Expect(r => r.DisposeImplementation(controller));
 
 				IControllerFactory factory = new IoCControllerFactory();
-				factory.DisposeController(controller);
+				factory.ReleaseController(controller);
 			}
 
 			[Test]
@@ -149,7 +149,7 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 				var controller = new DisposableIocTestController();
 
 				IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
-				factory.DisposeController(controller);
+				factory.ReleaseController(controller);
 
 				Assert.IsTrue(controller.IsDisposed);
 			}

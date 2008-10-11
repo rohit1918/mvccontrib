@@ -67,7 +67,7 @@ namespace MvcContrib.UnitTests.SparkViewEngine
 			Assert.IsNotNull(results.View);
 
 			var writer = new StringWriter();
-			results.View.Render(new ViewContext(_context, "list", null, null), writer);
+			results.View.Render(new ViewContext(_context, results.View, null, null), writer);
 
 			var clippedOutput = writer.ToString().Replace(" ", "").Replace("\t", "").Replace("\r\n", "");
 			Assert.AreEqual("<div><p>begin</p><p>Listing</p><p>end</p></div>", clippedOutput);

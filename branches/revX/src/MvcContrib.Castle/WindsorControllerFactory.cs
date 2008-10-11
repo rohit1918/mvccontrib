@@ -36,7 +36,7 @@ namespace MvcContrib.Castle
 			return (IController)_container.Resolve(controllerType);
 		}
 		
-		public override void DisposeController(IController controller)
+		public  void DisposeController(IController controller)
 		{
 			var disposable = controller as IDisposable;
 

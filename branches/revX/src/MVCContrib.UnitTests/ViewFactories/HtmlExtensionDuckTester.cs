@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
@@ -33,10 +34,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		                                                          );
 			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
-			_mocks.ReplayAll();
-			var viewContext = new ViewContext(controllerContext, "index",new ViewDataDictionary(), new TempDataDictionary());
 
-			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
+			_mocks.ReplayAll();
+            var viewPage = new ViewPage();
+            var viewContext = new ViewContext(controllerContext, null,new ViewDataDictionary(), new TempDataDictionary());
+
+		    
+		    _htmlHelper = new HtmlHelper(viewContext, viewPage);
 			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper) {Introspector = new Introspector(new Logger())};
 		}
 

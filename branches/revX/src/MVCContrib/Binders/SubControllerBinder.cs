@@ -9,7 +9,8 @@ namespace MvcContrib.Binders
 	///</summary>
 	public class SubControllerBinder : DefaultModelBinder
 	{
-		protected override object ConvertType(CultureInfo culture, object value, Type destinationType)
+        
+		protected  object ConvertType(CultureInfo culture, object value, Type destinationType)
 		{
 			if (typeof (ISubController).IsAssignableFrom(destinationType))
 			{
@@ -21,8 +22,8 @@ namespace MvcContrib.Binders
 
 				return instance;
 			}
-
-			return base.ConvertType(culture, value, destinationType);
+		    return null;
+			//return base.ConvertType(culture, value, destinationType);
 		}
 
 		///<summary>

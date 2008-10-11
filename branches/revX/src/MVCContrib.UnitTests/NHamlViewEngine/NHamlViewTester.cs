@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.ReplayAll();
 
-			_viewContext = new ViewContext(controllerContext, "Index", new ViewDataDictionary(), new TempDataDictionary());
+			_viewContext = new ViewContext(controllerContext, null, new ViewDataDictionary(), new TempDataDictionary());
 		}
 
 		[Test]

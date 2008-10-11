@@ -17,8 +17,8 @@ namespace MvcContrib.UnitTests.Binders
 		{
 			var binder = new SubControllerBinder();
 
-			object value = binder.GetValue(GetControllerContext(), "foo",
-					typeof(FooController), new ModelStateDictionary());
+		    object value = binder.BindModel(null);
+                //binder.GetValue(GetControllerContext(), "foo",typeof(FooController), new ModelStateDictionary());
 
 			Assert.That(value, Is.InstanceOfType(typeof(FooController)));
 		}
@@ -28,8 +28,9 @@ namespace MvcContrib.UnitTests.Binders
 		{
 			var binder = new SubControllerBinder();
 
-			object value = binder.GetValue(GetControllerContext(), "foo",
-					typeof(string), new ModelStateDictionary());
+            object value = binder.BindModel(null);
+            //object value = binder.GetValue(GetControllerContext(), "foo",
+            //        typeof(string), new ModelStateDictionary());
 
 			Assert.That(value, Is.EqualTo("bar"));
 		}

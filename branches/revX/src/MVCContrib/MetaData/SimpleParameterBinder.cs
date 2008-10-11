@@ -26,5 +26,14 @@ namespace MvcContrib.MetaData
 			var convertible = new DefaultConvertible(value);
 			return convertible.ToType(modelType, CultureInfo.CurrentCulture);
 		}
-	}
+
+        #region IModelBinder Members
+
+        public ModelBinderResult BindModel(ModelBindingContext bindingContext)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

@@ -27,7 +27,7 @@ using Rhino.Mocks;
 			var requestContext = new RequestContext(httpContext, new RouteData());
             var controller = _mocks.StrictMock<ControllerBase>();
 			_mocks.Replay(controller);
-			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
+			_viewContext = new ViewContext(httpContext, new RouteData(), controller, null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
 			var viewEngine = new BooViewEngine
 			                 	{

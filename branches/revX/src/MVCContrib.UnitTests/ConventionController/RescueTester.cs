@@ -193,10 +193,15 @@ namespace MvcContrib.UnitTests.ConventionController
 			{
 				if(CustomViews.Contains(viewName))
 				{
-					return new ViewEngineResult(MockRepository.GenerateStub<IView>());
+					return new ViewEngineResult(MockRepository.GenerateStub<IView>(),this);
 				}
 				return new ViewEngineResult(new List<string>());
 			}
+
+		    public void ReleaseView(ControllerContext controllerContext, IView view)
+		    {
+		        throw new System.NotImplementedException();
+		    }
 		}
 
 		[Rescue("TestRescue")]

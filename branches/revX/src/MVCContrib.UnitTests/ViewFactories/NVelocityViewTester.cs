@@ -50,7 +50,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			var viewContext = new ViewContext(_controllerContext, "view", new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, null, new ViewDataDictionary(), null);
 
 			var view = _factory.FindView(_controllerContext, "view", null).View;
 
@@ -64,7 +64,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			var viewContext = new ViewContext(_controllerContext, "view", new ViewDataDictionary(), null);
+			var viewContext = new ViewContext(_controllerContext, null, new ViewDataDictionary(), null);
 
 			var view = _factory.FindView(_controllerContext, "view", "master").View;
 
@@ -80,7 +80,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			var viewData = new ViewDataDictionary();
 			viewData["test"] = "test";
-			var viewContext = new ViewContext(_controllerContext,"view", viewData, null);
+			var viewContext = new ViewContext(_controllerContext,null, viewData, null);
 
 			var view = _factory.FindView(_controllerContext, "view", null).View;
 
