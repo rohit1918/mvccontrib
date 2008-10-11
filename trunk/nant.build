@@ -114,6 +114,12 @@
 				<include name="**/*.brail" />
 			</fileset>
 		</copy>
+
+		<copy todir="${build.dir}/SparkViewEngine">
+			<fileset basedir="${solution.dir}/MvcContrib.UnitTests/SparkViewEngine">
+				<include name="**/*.spark" />
+			</fileset>
+		</copy>
 		
 	</target>
 
@@ -191,6 +197,7 @@
 				<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
 				<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="80" />
 				<moduleThreshold moduleName="MvcContrib.BrailViewEngine.DLL" satisfactoryCoverage="75" />
+				<moduleThreshold moduleName="MvcContrib.SparkViewEngine.DLL" satisfactoryCoverage="90" />
 			</moduleThresholds>
 
 		</ncoverexplorer>
