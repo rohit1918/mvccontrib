@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Ninject", "MvcCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.NHamlViewEngine", "MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj", "{9B885FC4-45C0-4526-9253-A799238EDD66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.SparkViewEngine", "MvcContrib.SparkViewEngine\MvcContrib.SparkViewEngine.csproj", "{56202292-9363-4DED-99DD-824A111EE18D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{9B885FC4-45C0-4526-9253-A799238EDD66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B885FC4-45C0-4526-9253-A799238EDD66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B885FC4-45C0-4526-9253-A799238EDD66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56202292-9363-4DED-99DD-824A111EE18D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56202292-9363-4DED-99DD-824A111EE18D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56202292-9363-4DED-99DD-824A111EE18D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56202292-9363-4DED-99DD-824A111EE18D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
