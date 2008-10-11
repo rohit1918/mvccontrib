@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="MvcContrib.Samples.ObjectBuilderControllerFactory.Global" Language="C#" %>
