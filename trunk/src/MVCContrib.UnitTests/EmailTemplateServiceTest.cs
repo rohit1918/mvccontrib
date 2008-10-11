@@ -250,6 +250,13 @@ namespace MvcContrib.UnitTests
 		}
 
 		[Test]
+		public void CanProcessReplyToHeader()
+		{
+			MailMessage message = CanProcessMessageHeaders("Reply-To", "test@test.com");
+			Assert.AreEqual("test@test.com", message.ReplyTo.Address);
+		}
+
+		[Test]
 		public void CanProcessGenericHeader()
 		{
 			MailMessage message = CanProcessMessageHeaders("X-Spam", "no");
@@ -286,6 +293,14 @@ namespace MvcContrib.UnitTests
 			MailMessage message = CanProcessMessageHeaders("bcc", "test@test.com (John Doe)");
 			Assert.AreEqual("test@test.com", message.Bcc[0].Address);
 			Assert.AreEqual("John Doe", message.Bcc[0].DisplayName);
+		}
+
+		[Test]
+		public void CanProcessReplyToHeaderWithDisplayName()
+		{
+			MailMessage message = CanProcessMessageHeaders("Reply-To", "test@test.com (John Doe)");
+			Assert.AreEqual("test@test.com", message.ReplyTo.Address);
+			Assert.AreEqual("John Doe", message.ReplyTo.DisplayName);
 		}
 
 		#endregion

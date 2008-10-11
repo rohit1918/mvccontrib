@@ -13,7 +13,7 @@ namespace MvcContrib.Services
 	/// </remarks>
 	public class EmailTemplateService : IEmailTemplateService
 	{
-		private static readonly String HeaderPattern = @"[ \t]*(?<header>(to|from|cc|bcc|subject|X-\w+)):[ \t]*(?<value>(.)+)(\r*\n*)?";
+		private static readonly String HeaderPattern = @"[ \t]*(?<header>(to|from|cc|bcc|subject|reply-to|X-\w+)):[ \t]*(?<value>(.)+)(\r*\n*)?";
 
 		private static readonly Regex HeaderRegEx = new Regex(HeaderPattern, RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -66,6 +66,10 @@ namespace MvcContrib.Services
 
 				case "from":
 					message.From = BuildMailAddress(value);
+					break;
+
+				case "reply-to":
+					message.ReplyTo = BuildMailAddress(value);
 					break;
 
 				default:
