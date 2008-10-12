@@ -93,8 +93,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void ShouldRenderView()
 		{
 			string expected = "Master Template View Template";
-			var context = new ViewContext(_controllerContext, null, null, null);
-			_factory.FindView(_controllerContext, "view", "master").View.Render(context, _output);
+
+		    var view = _factory.FindView(_controllerContext, "view", "master").View;
+            var context = new ViewContext(_controllerContext, view, null, null);
+            view.Render(context, _output);
 			string output = _output.ToString();
 			Assert.AreEqual(expected, output);
 		}

@@ -43,10 +43,10 @@ namespace MvcContrib.UnitTests
 
 			var controller = _mocks.Stub<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
-
+		    var view = _mocks.DynamicMock<IView>();
 			_mocks.Replay(httpContext);
 
-			return new ViewContext(controllerContext, null, new ViewDataDictionary(), new TempDataDictionary());
+			return new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
 		}
 
 		private void WriteToStream(Stream stream, string content)
@@ -198,11 +198,11 @@ namespace MvcContrib.UnitTests
 				SetupResult.For(_responseMock.Output).Return(writer);
 
 				var fakeView = _mocks.DynamicMock<IView>();
-				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(
+				fakeView.Expect(x => x.Render(_viewContext, writer)).IgnoreArguments().Do(
 					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
 
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView,_viewEngineMock));
+                //Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
+                //    new ViewEngineResult(fakeView,_viewEngineMock));
 			}
 
 			MailMessage message;
