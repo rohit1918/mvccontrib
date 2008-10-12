@@ -34,10 +34,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 		                                                          );
 			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
-
+		    var view = _mocks.DynamicMock<IView>();
 			_mocks.ReplayAll();
             var viewPage = new ViewPage();
-            var viewContext = new ViewContext(controllerContext, null,new ViewDataDictionary(), new TempDataDictionary());
+            var viewContext = new ViewContext(controllerContext, view,new ViewDataDictionary(), new TempDataDictionary());
 
 		    
 		    _htmlHelper = new HtmlHelper(viewContext, viewPage);
