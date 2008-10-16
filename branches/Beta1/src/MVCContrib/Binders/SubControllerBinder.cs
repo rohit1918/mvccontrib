@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Web.Mvc;
 
 namespace MvcContrib.Binders
@@ -7,24 +6,24 @@ namespace MvcContrib.Binders
 	///<summary>
 	/// Binder that creates SubControllers that are needed for an action method
 	///</summary>
-	public class SubControllerBinder : DefaultModelBinder, IValueProvider
+	public class SubControllerBinder : DefaultModelBinder
 	{
-        
-		protected  object ConvertType(CultureInfo culture, object value, Type destinationType)
+		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
 		{
-			if (typeof (ISubController).IsAssignableFrom(destinationType))
+			if(typeof(ISubController).IsAssignableFrom(bindingContext.ModelType))
 			{
-				object instance = CreateSubController(destinationType);
-				if (instance == null)
+				object instance = CreateSubController(bindingContext.ModelType);
+				if(instance == null)
 				{
-					throw new InvalidOperationException(destinationType + " not created properly.");
+					throw new InvalidOperationException(bindingContext.ModelType + " not created properly.");
 				}
 
-				return instance;
+				return new ModelBinderResult(instance);
 			}
-		    return null;
-			//return base.ConvertType(culture, value, destinationType);
+
+			return base.BindModel(bindingContext);
 		}
+
 
 		///<summary>
 		/// Creates the subcontroller given its type.  Override this method to wire into an IoC container
@@ -35,10 +34,5 @@ namespace MvcContrib.Binders
 		{
 			return Activator.CreateInstance(destinationType, true);
 		}
-
-	    public ValueProviderResult GetValue(string name)
-	    {
-	        throw new System.NotImplementedException();
-	    }
 	}
 }
