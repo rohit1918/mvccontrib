@@ -14,21 +14,17 @@ namespace MvcContrib.Castle
 		/// <summary>
 		/// Looks for a parameter with the specified name in the Request and the RouteData and converts it to the specified type.
 		/// </summary>
-		/// <param name="modelType">Type to which the value should be converted.</param>
-		/// <param name="modelName">Name of the parameter to search for</param>
-		/// <param name="controllerContext">Controller Context</param>
-		/// <param name="modelState"></param>
 		/// <returns>The converted object, or the default value for the type.</returns>
-		public object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState)
+	    public ModelBinderResult BindModel(ModelBindingContext bindingContext)
 		{
-			string value = controllerContext.HttpContext.Request[modelName];
+			string value = bindingContext.HttpContext.Request[bindingContext.ModelName];
 
 			//Route data should be a higher priority than Request.
-			if (controllerContext.RouteData.Values.ContainsKey(modelName)) {
-				object routeValue = controllerContext.RouteData.Values[modelName];
+			if (bindingContext.RouteData.Values.ContainsKey(bindingContext.ModelName)) {
+				object routeValue = bindingContext.RouteData.Values[bindingContext.ModelName];
 				if (routeValue != null) {
-					if (modelType.IsAssignableFrom(routeValue.GetType())) {
-						return routeValue;
+					if (bindingContext.ModelType.IsAssignableFrom(routeValue.GetType())) {
+						return new ModelBinderResult(routeValue);
 					}
 					else {
 						value = routeValue.ToString();
@@ -41,22 +37,17 @@ namespace MvcContrib.Castle
 
 			try {
 				bool success;
-				result = converter.Convert(modelType, value, out success);
+				result = converter.Convert(bindingContext.ModelType, value, out success);
 			}
 			catch (BindingException) {
 			}
 
 			//If the binding failed then value types should be set to their default value. 
-			if (result == null && modelType.IsValueType) {
-				return Activator.CreateInstance(modelType);
+			if (result == null && bindingContext.ModelType.IsValueType) {
+				return new ModelBinderResult(Activator.CreateInstance(bindingContext.ModelType));
 			}
 
-			return result;
+			return new ModelBinderResult(result);
 		}
-
-	    public ModelBinderResult BindModel(ModelBindingContext bindingContext)
-	    {
-	        throw new System.NotImplementedException();
-	    }
 	}
 }
