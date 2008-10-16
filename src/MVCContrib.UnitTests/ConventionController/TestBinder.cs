@@ -11,8 +11,9 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 		}
 
-		public override object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState) {
-			((TestController)controllerContext.Controller).BinderFilterOrdering += "Binder";
+		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
+		{
+			((TestController)bindingContext.Controller).BinderFilterOrdering += "Binder";
 			return null;
 		}
 	}

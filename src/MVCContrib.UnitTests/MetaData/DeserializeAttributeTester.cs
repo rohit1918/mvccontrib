@@ -1,4 +1,5 @@
-using System.Web;
+//TODO: Beta 1 - Jeremy to investigate if DeserializeAttribute is still needed
+/*using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Attributes;
@@ -157,4 +158,4 @@ namespace MvcContrib.UnitTests.MetaData
       Assert.AreEqual(modelBinder, binder);
     }
 	}
-}
+}*/

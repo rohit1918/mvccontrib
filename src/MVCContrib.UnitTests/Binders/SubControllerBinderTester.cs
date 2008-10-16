@@ -10,7 +10,7 @@ using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.Binders
 {
-    [TestFixture,Ignore("Major changes to the binding in Beta will require refactoring of this approach")]
+    [TestFixture]
     public class SubControllerBinderTester
     {
         private static ControllerContext GetControllerContext()
@@ -39,11 +39,10 @@ namespace MvcContrib.UnitTests.Binders
             var binder = new SubControllerBinder();
 
             var bindingContext = new ModelBindingContext(GetControllerContext(),
-                                                         binder,
+                                                         MockRepository.GenerateStub<IValueProvider>(),
                                                          typeof(FooController), "foo", null, new ModelStateDictionary(),
                                                          predicate);
-            object value = binder.BindModel(bindingContext);
-            //binder.GetValue(GetControllerContext(), "foo",typeof(FooController), new ModelStateDictionary());
+            object value = binder.BindModel(bindingContext).Value;
 
             Assert.That(value, Is.InstanceOfType(typeof(FooController)));
         }
@@ -61,10 +60,9 @@ namespace MvcContrib.UnitTests.Binders
         public void ShouldDeferToDefaultBinderIfNotSubcontroller()
         {
             var binder = new SubControllerBinder();
-
-            object value = binder.BindModel(null);
-            //object value = binder.GetValue(GetControllerContext(), "foo",
-            //        typeof(string), new ModelStateDictionary());
+        	var controllercontext = GetControllerContext();
+        	var context = new ModelBindingContext(controllercontext, new DefaultValueProvider(controllercontext), typeof(string), "foo", null, new ModelStateDictionary(), null);
+            object value = binder.BindModel(context).Value;
 
             Assert.That(value, Is.EqualTo("bar"));
         }
