@@ -39,19 +39,18 @@ namespace MvcContrib.Castle
         }
 
 		/// <summary>
-		/// Performs the binding.
+		/// Binds the model object using a castle IDataBinder
 		/// </summary>
-		/// <param name="controllerContext"></param>
-		/// <param name="modelName"></param>
-		/// <param name="modelType"></param>
-		/// <param name="modelState"></param>
-		/// <returns></returns>
-		public override object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState)
+		/// <param name="bindingContext">The current binding context</param>
+		/// <returns>A ModelBinderResult containing the bound object</returns>
+		public override ModelBinderResult BindModel(ModelBindingContext bindingContext) 
 		{
-			IDataBinder binder = LocateBinder(controllerContext);
-			object instance = binder.BindObject(modelType, Prefix ?? modelName, Exclude, null, new TreeBuilder().BuildSourceNode(controllerContext.HttpContext.Request.Form));
-			return instance;
+			IDataBinder binder = LocateBinder(bindingContext);
+			string modelName = Prefix ?? bindingContext.ModelName;
+			object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(bindingContext.HttpContext.Request.Form));
+			return new ModelBinderResult(instance);
 		}
+
 
 		/// <summary>
 		/// Finds the binder to use. If the controller implements ICastleBindingContainer then its binder is used. Otherwise, a new DataBinder is created.
