@@ -50,9 +50,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			var viewContext = new ViewContext(_controllerContext, null, new ViewDataDictionary(), null);
 
 			var view = _factory.FindView(_controllerContext, "view", null).View;
+            var viewContext = new ViewContext(_controllerContext, view, new ViewDataDictionary(), null);
 
 			_mocks.ReplayAll();
 
@@ -64,11 +64,12 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			var viewContext = new ViewContext(_controllerContext, null, new ViewDataDictionary(), null);
 
 			var view = _factory.FindView(_controllerContext, "view", "master").View;
 
-			_mocks.ReplayAll();
+            var viewContext = new ViewContext(_controllerContext, view, new ViewDataDictionary(), null);
+            
+            _mocks.ReplayAll();
 
 			view.Render(viewContext, _output);
 
@@ -80,9 +81,9 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			var viewData = new ViewDataDictionary();
 			viewData["test"] = "test";
-			var viewContext = new ViewContext(_controllerContext,null, viewData, null);
 
 			var view = _factory.FindView(_controllerContext, "view", null).View;
+            var viewContext = new ViewContext(_controllerContext, view, viewData, null);
 
 			_mocks.ReplayAll();
 

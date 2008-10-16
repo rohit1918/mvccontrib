@@ -14,8 +14,7 @@ using Rhino.Mocks;
 	public class BrailViewFactoryTester
 	{
 		private BrailViewFactory _viewFactory;
-		private ViewContext _viewContext;
-		private MockRepository _mocks;
+	    private MockRepository _mocks;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
 
@@ -27,7 +26,6 @@ using Rhino.Mocks;
 			var requestContext = new RequestContext(httpContext, new RouteData());
             var controller = _mocks.StrictMock<ControllerBase>();
 			_mocks.Replay(controller);
-			_viewContext = new ViewContext(httpContext, new RouteData(), controller, null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
 			var viewEngine = new BooViewEngine
 			                 	{
