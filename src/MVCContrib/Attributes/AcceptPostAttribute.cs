@@ -6,7 +6,7 @@ namespace MvcContrib.Attributes
 	/// <summary>
 	/// Ensures that an action is not executed unless it is accessed through an HTTP POST.
 	/// </summary>
-	public class AcceptPostAttribute : ActionSelectionAttribute
+	public class AcceptPostAttribute :   ActionMethodSelectorAttribute
 	{
 		private readonly AcceptVerbsAttribute _innerAttribute = new AcceptVerbsAttribute("POST");
 

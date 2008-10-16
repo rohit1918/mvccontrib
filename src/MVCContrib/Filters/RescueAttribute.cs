@@ -160,7 +160,8 @@ namespace MvcContrib.Filters {
 		/// <param name="controllerContext">The current controllercpontext.</param>
 		/// <returns>A ViewContext object.</returns>
 		protected virtual ViewContext CreateViewContext(Exception exception, ControllerContext controllerContext) {
-			return new ViewContext(controllerContext, ViewName, new ViewDataDictionary(exception), controllerContext.Controller.TempData);
+			//todo  determin how to call into the view engine to locate a view. changed from string viewname to IView
+            return new ViewContext(controllerContext, null, new ViewDataDictionary(exception), controllerContext.Controller.TempData);
 		}
 
 		/// <summary>

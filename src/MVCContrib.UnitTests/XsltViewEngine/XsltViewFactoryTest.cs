@@ -92,13 +92,13 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 
 			var routeData = new RouteData();
 
-            var viewContext = new ViewContext(HttpContext, routeData, _fakeController, "MyView", new ViewDataDictionary(new object()),
-                                                      new TempDataDictionary());
 
             XsltViewFactory viewFactory = new XsltViewFactory(_viewSourceLoader);
 
             var view = viewFactory.CreateView("MyController/MyView.xslt", null, new ControllerContext(HttpContext, routeData, _fakeController));
 
+            var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, new ViewDataDictionary(new object()),
+                                                      new TempDataDictionary());
             view.Render(viewContext, Response.Output);
 
 			Assert.Fail("Fix me");

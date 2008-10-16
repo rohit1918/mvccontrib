@@ -246,7 +246,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[0], new FilterInfo());
+			var actionMetaData = new ActionMetaData(method, new ActionMethodSelectorAttribute[0], new FilterInfo());
 			Assert.IsFalse(actionMetaData.IsValidForRequest("Foo", null));
 		}
 
@@ -255,7 +255,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[] {new AcceptVerbsAttribute("POST")}, new FilterInfo());
+			var actionMetaData = new ActionMetaData(method, new ActionMethodSelectorAttribute[] {new AcceptVerbsAttribute("POST")}, new FilterInfo());
 			var ctx = CreateContext("GET");
 
 			bool result = actionMetaData.IsValidForRequest("BasicAction", ctx);
@@ -268,7 +268,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST") }, new FilterInfo());
+			var actionMetaData = new ActionMetaData(method, new ActionMethodSelectorAttribute[] { new AcceptVerbsAttribute("POST") }, new FilterInfo());
 			var ctx = CreateContext("POST");
 
 			bool result = actionMetaData.IsValidForRequest("BasicAction", ctx);
@@ -281,7 +281,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new ActionMetaData(method, new ActionSelectionAttribute[0], new FilterInfo());
+            var actionMetaData = new ActionMetaData(method, new ActionMethodSelectorAttribute[0], new FilterInfo());
 
 			bool result = actionMetaData.IsValidForRequest("BasicAction", null);
 
@@ -293,7 +293,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[0], new ActionNameAttribute("Foo") );
+            var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionMethodSelectorAttribute[0], new ActionNameAttribute("Foo"));
 
 			bool result = actionMetaData.IsValidForRequest("Bar", null);
 			Assert.IsFalse(result);
@@ -304,7 +304,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST")  }, new ActionNameAttribute("Foo"));
+            var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionMethodSelectorAttribute[] { new AcceptVerbsAttribute("POST") }, new ActionNameAttribute("Foo"));
 
 			bool result = actionMetaData.IsValidForRequest("Bar", CreateContext("GET"));
 			Assert.IsFalse(result);
@@ -316,7 +316,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[] { new AcceptVerbsAttribute("POST") },  new ActionNameAttribute("Foo") );
+            var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionMethodSelectorAttribute[] { new AcceptVerbsAttribute("POST") }, new ActionNameAttribute("Foo"));
 
 			bool result = actionMetaData.IsValidForRequest("Foo", CreateContext("POST"));
 			Assert.IsTrue(result);
@@ -327,7 +327,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var type = typeof(MetaDataTestController);
 			var method = type.GetMethod("BasicAction");
-			var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionSelectionAttribute[0], new ActionNameAttribute("Foo") );
+            var actionMetaData = new AliasedActionMetaData(method, new FilterInfo(), new ActionMethodSelectorAttribute[0], new ActionNameAttribute("Foo"));
 
 			bool result = actionMetaData.IsValidForRequest("Foo", CreateContext("POST"));
 			Assert.IsTrue(result);
@@ -356,7 +356,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 	}
 
-	internal class InvalidTestSelectionAttribute : ActionSelectionAttribute
+	internal class InvalidTestSelectionAttribute : ActionMethodSelectorAttribute
 	{
 		public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
 		{
@@ -364,7 +364,7 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 	}
 
-	internal class ValidTestSelectionAttribute : ActionSelectionAttribute
+    internal class ValidTestSelectionAttribute : ActionMethodSelectorAttribute
 	{
 		public override bool IsValidForRequest(ControllerContext controllerContext, MethodInfo methodInfo)
 		{

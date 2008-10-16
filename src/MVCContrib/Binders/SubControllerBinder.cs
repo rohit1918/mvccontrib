@@ -7,9 +7,10 @@ namespace MvcContrib.Binders
 	///<summary>
 	/// Binder that creates SubControllers that are needed for an action method
 	///</summary>
-	public class SubControllerBinder : DefaultModelBinder
+	public class SubControllerBinder : DefaultModelBinder, IValueProvider
 	{
-		protected override object ConvertType(CultureInfo culture, object value, Type destinationType)
+        
+		protected  object ConvertType(CultureInfo culture, object value, Type destinationType)
 		{
 			if (typeof (ISubController).IsAssignableFrom(destinationType))
 			{
@@ -21,8 +22,8 @@ namespace MvcContrib.Binders
 
 				return instance;
 			}
-
-			return base.ConvertType(culture, value, destinationType);
+		    return null;
+			//return base.ConvertType(culture, value, destinationType);
 		}
 
 		///<summary>
@@ -34,5 +35,10 @@ namespace MvcContrib.Binders
 		{
 			return Activator.CreateInstance(destinationType, true);
 		}
+
+	    public ValueProviderResult GetValue(string name)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

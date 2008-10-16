@@ -59,6 +59,11 @@ namespace MvcContrib.Spring
 	    	}
 	    }
 
+	    public void ReleaseController(IController controller)
+	    {
+	        throw new System.NotImplementedException();
+	    }
+
 	    public void DisposeController(IController controller)
 	    {
 	    	var disposable = controller as IDisposable;

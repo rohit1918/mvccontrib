@@ -121,6 +121,10 @@ namespace MvcContrib.Attributes
 		}
 
 		public abstract object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState);
+	    public ModelBinderResult BindModel(ModelBindingContext bindingContext)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 
 	public enum RequestStore

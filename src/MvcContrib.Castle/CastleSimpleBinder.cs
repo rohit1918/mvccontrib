@@ -53,5 +53,10 @@ namespace MvcContrib.Castle
 
 			return result;
 		}
+
+	    public ModelBinderResult BindModel(ModelBindingContext bindingContext)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

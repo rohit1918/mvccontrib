@@ -144,9 +144,9 @@ namespace MvcContrib.MetaData
 			return new ActionMetaData(actionMethod, selectors, filters);
 		}
 
-		protected virtual ActionSelectionAttribute[] GetActionSelectionAttributes(ICustomAttributeProvider provider)
+        protected virtual ActionMethodSelectorAttribute[] GetActionSelectionAttributes(ICustomAttributeProvider provider)
 		{
-			return (ActionSelectionAttribute[])provider.GetCustomAttributes(typeof(ActionSelectionAttribute), true);
+            return (ActionMethodSelectorAttribute[])provider.GetCustomAttributes(typeof(ActionMethodSelectorAttribute), true);
 		}
 
 		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)

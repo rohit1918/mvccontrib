@@ -117,10 +117,15 @@ namespace MvcContrib.NHamlViewEngine
 
 			INHamlView view = compiledView.CreateView();
 
-			return new ViewEngineResult(view);
+			return new ViewEngineResult(view,this);
 		}
 
-		#endregion
+	    public void ReleaseView(ControllerContext controllerContext, IView view)
+	    {
+	        throw new System.NotImplementedException();
+	    }
+
+	    #endregion
 
 		private static void LoadConfiguration()
 		{

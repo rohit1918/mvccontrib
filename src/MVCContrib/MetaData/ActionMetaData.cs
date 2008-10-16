@@ -17,7 +17,7 @@ namespace MvcContrib.MetaData
 		/// <param name="methodInfo">The MethodInfo that represents the action method</param>
 		/// <param name="selectionAttributes">Any ActionSelection attributes defined on the action</param>
 		/// <param name="filters">Any filters defined on the action</param>
-		public ActionMetaData(MethodInfo methodInfo, ActionSelectionAttribute[] selectionAttributes, FilterInfo filters)
+        public ActionMetaData(MethodInfo methodInfo, ActionMethodSelectorAttribute[] selectionAttributes, FilterInfo filters)
 		{
 			MethodInfo = methodInfo;
 			SelectionAttributes = selectionAttributes;
@@ -40,7 +40,7 @@ namespace MvcContrib.MetaData
 		/// <summary>
 		/// Any ActionSelection attributes that were defined on the action
 		/// </summary>
-		public ActionSelectionAttribute[] SelectionAttributes { get; private set; }
+        public ActionMethodSelectorAttribute[] SelectionAttributes { get; private set; }
 
 		/// <summary>
 		/// The filters defined for this action.
@@ -72,7 +72,7 @@ namespace MvcContrib.MetaData
 		/// <param name="filters">Any filters defined on the action</param>
 		/// <param name="selectionAttributes">Any ActionSelection attributes defined on the action</param>
 		/// <param name="actionNameAttribute">The ActionNameAttributes that supply aliasing info for the action</param>
-		public AliasedActionMetaData(MethodInfo methodInfo, FilterInfo filters, ActionSelectionAttribute[] selectionAttributes, ActionNameAttribute actionNameAttribute)
+        public AliasedActionMetaData(MethodInfo methodInfo, FilterInfo filters, ActionMethodSelectorAttribute[] selectionAttributes, ActionNameAttribute actionNameAttribute)
 			: base(methodInfo, selectionAttributes, filters)
 		{
 			Alias = actionNameAttribute;

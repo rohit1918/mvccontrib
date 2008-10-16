@@ -84,13 +84,16 @@ namespace MvcContrib.UnitTests.ConventionController
 			_invoker = new TestActionInvoker();
             _invoker.SetContext(_context);
 
+            
 			Assert.That(_invoker.FindActionMetaData("Unknown"), Is.Null);
 		}
 
 		[Test]
 		public void Should_set_selectedaction()
 		{
+		    _invoker.ControllerContext.Controller.ValueProvider = MockRepository.GenerateMock<IValueProvider>();
 			Assert.That(_invoker.SelectedAction, Is.Null);
+            
 			_invoker.InvokeAction(_context, "BasicAction");
 			Assert.That(_invoker.SelectedAction, Is.Not.Null);
 			Assert.That(_invoker.SelectedAction.Name, Is.EqualTo("BasicAction"));
@@ -98,6 +101,7 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		private class TestActionInvoker : ConventionControllerActionInvoker
 		{
+            
 			public void SetContext(ControllerContext ctx)
 			{
 				ControllerContext = ctx;

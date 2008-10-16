@@ -12,7 +12,12 @@ namespace MvcContrib.Ninject
             return NinjectKernel.Kernel.Get<IController>(
                 With.Parameters.ContextVariable("controllerName", controllerName));
         }
- 
+
+        public void ReleaseController(IController controller)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void DisposeController(IController controller)
         {
             var disposable = controller as IDisposable;
