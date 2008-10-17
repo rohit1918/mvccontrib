@@ -34,7 +34,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			_mocks = new MockRepository();
 			_context = _mocks.DynamicHttpContextBase();
 			SetupResult.For(_context.Request.FilePath).Return("Test.mvc");
-			_viewContext = new ViewContext(_context, new RouteData(), _mocks.DynamicMock<ControllerBase>(), "index", new ViewDataDictionary(), null);
+		    var view = _mocks.DynamicMock<IView>();
+            _viewContext = new ViewContext(_context, new RouteData(), _mocks.DynamicMock<ControllerBase>(), view, new ViewDataDictionary(), null);
 			_helper = new HtmlHelper(_viewContext, new ViewPage());
 			_people = new List<Person>
 			              	{

@@ -72,7 +72,7 @@ namespace MvcContrib.UnitTests.Castle
 		public void ShouldDisposeOfController()
 		{
 			var controller = new WindsorDisposableController();
-			_factory.DisposeController(controller);
+			_factory.ReleaseController(controller);
 			Assert.That(controller.IsDisposed);
 		}
 
@@ -83,7 +83,7 @@ namespace MvcContrib.UnitTests.Castle
 			var controller = new WindsorSimpleController();
 			var factory = new WindsorControllerFactory(mockContainer);
 
-			factory.DisposeController(controller);
+			factory.ReleaseController(controller);
 
 			mockContainer.AssertWasCalled(c => c.Release(controller));
 		}

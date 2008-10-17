@@ -5,7 +5,7 @@ using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using Rhino.Mocks;
-
+using System.Web.Mvc.Html;
 namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture, Category("NVelocityViewEngine")]
@@ -29,9 +29,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 			var requestContext = new RequestContext(httpContext, new RouteData());
 			var controller = _mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
+		    var view = _mocks.DynamicMock<IView>();
 			_mocks.ReplayAll();
 			var viewContext =
-				new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
+				new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
 
 			_htmlHelper = new NVelocityHtmlHelper(viewContext, new ViewPage());
 		}

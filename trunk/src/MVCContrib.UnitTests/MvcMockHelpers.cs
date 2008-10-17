@@ -101,11 +101,12 @@ namespace MvcContrib.UnitTests
         {
             var httpContext = DynamicHttpContextBase(mocks);
             var controller = mocks.DynamicMock<ControllerBase>();
+            var view = mocks.DynamicMock<IView>();
             mocks.Replay(controller);
 
             var controllerContext = new ControllerContext(httpContext, new RouteData(), controller);            
             
-            return new ViewContext(controllerContext, viewName, new ViewDataDictionary(), new TempDataDictionary());
+            return new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
         }
 	}
 }

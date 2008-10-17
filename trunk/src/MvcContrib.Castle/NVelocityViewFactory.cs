@@ -119,7 +119,12 @@ namespace MvcContrib.Castle
 
 			var view = new NVelocityView(viewTemplate, masterTemplate);
 
-			return new ViewEngineResult(view);
+			return new ViewEngineResult(view,this);
 		}
+
+	    public void ReleaseView(ControllerContext controllerContext, IView view)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

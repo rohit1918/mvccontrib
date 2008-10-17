@@ -10,7 +10,7 @@ namespace MvcContrib.UnitTests
 	[TestFixture]
 	public class AcceptGetAttributeTester
 	{
-		protected ActionSelectionAttribute _attribute;
+        protected ActionMethodSelectorAttribute _attribute;
 		private MockRepository _mocks;
 
 		[SetUp]

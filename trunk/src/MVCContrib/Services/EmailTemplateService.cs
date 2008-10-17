@@ -150,7 +150,8 @@ namespace MvcContrib.Services
 				filter = new MemoryStream();
 				response.Filter = filter;
 
-				var view = _viewEngine.FindView(viewContext.Controller.ControllerContext, viewContext.ViewName, null).View;
+			    var view = viewContext.View;
+                    //= _viewEngine.FindView(viewContext.Controller.ControllerContext, viewContext., null).View;
 				view.Render(viewContext, viewContext. HttpContext. Response.Output);
 
 				response.Flush(); //flush content to our filter

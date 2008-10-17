@@ -22,8 +22,9 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		private Controller _controller;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
+	    private ControllerContext controllerContext;
 
-		[SetUp]
+	    [SetUp]
 		public void SetUp()
 		{
 			_output = new StringWriter();
@@ -38,8 +39,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
             _controller = _mocks.StrictMock<Controller>();
 			_mocks.Replay(_controller);
 			
-			var controllerContext = new ControllerContext(requestContext, _controller);
-			_viewContext = new ViewContext(controllerContext, "index", new ViewDataDictionary(), null);
+			controllerContext = new ControllerContext(requestContext, _controller);
+//			_viewContext = new ViewContext(controllerContext, null, new ViewDataDictionary(), null);
 
 			_viewEngine = new BooViewEngine
 			              	{
@@ -132,7 +133,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		{
 			_mocks.ReplayAll();
 			BrailBase view = _viewEngine.Process("view", "/Master");
-			view.Render(_viewContext, _httpContext.Response.Output);
+            _viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary(), null);             
+            view.Render(_viewContext, _httpContext.Response.Output);
 			Assert.IsNotNull(view.ViewContext);
 			Assert.AreEqual(view.ViewContext, view.Layout.ViewContext);
 		}
@@ -155,7 +157,8 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		private string GetViewOutput(string viewName, string masterName)
 		{
 			BrailBase view = _viewEngine.Process(viewName, masterName);
-			view.Render(_viewContext, _httpContext.Response.Output);
+            _viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary(), null); 
+            view.Render(_viewContext, _httpContext.Response.Output);
 			return _httpContext.Response.Output.ToString();
 		}
 	}

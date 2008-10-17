@@ -6,7 +6,7 @@ namespace MvcContrib.Attributes
 	/// <summary>
 	/// Ensures that an action is not executed unless it is accessed through an HTTP GET.
 	/// </summary>
-	public class AcceptGetAttribute : ActionSelectionAttribute
+    public class AcceptGetAttribute : ActionMethodSelectorAttribute
 	{
 		private readonly AcceptVerbsAttribute _innerAttribute = new AcceptVerbsAttribute("GET");
 

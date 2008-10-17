@@ -45,7 +45,7 @@ namespace MvcContrib.ControllerFactories
 				throw new Exception(string.Format("Could not find a type for the controller name '{0}'", controllerName));
 		}
 
-		public override void DisposeController(IController controller)
+        public override void ReleaseController(IController controller)
 		{
 			var disposable = controller as IDisposable;
 
