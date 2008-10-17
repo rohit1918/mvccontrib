@@ -31,14 +31,14 @@ namespace MvcContrib.UnitTests.UI.Html
 				var response = _mocks.DynamicMock<HttpResponseBase>();
 				var session = _mocks.DynamicMock<HttpSessionStateBase>();
 				var controller = _mocks.DynamicMock<ControllerBase>();
-
+			    var view = _mocks.DynamicMock<IView>();
 				SetupResult.For(httpContext.Response).Return(response);
 				SetupResult.For(httpContext.Session).Return(session);
 				SetupResult.For(response.Filter).PropertyBehavior();
 				SetupResult.For(response.ContentEncoding).Return(Encoding.UTF8);
 
 				_mocks.ReplayAll();
-				_context = new ViewContext(httpContext,new RouteData(), controller, "index", new ViewDataDictionary(), new TempDataDictionary());
+				_context = new ViewContext(httpContext,new RouteData(), controller, view, new ViewDataDictionary(), new TempDataDictionary());
 				_helper = _mocks.DynamicMock<IFormHelper>();
 				SetupResult.For(_helper.ViewContext).Return(_context);
 				_mocks.Replay(_helper);

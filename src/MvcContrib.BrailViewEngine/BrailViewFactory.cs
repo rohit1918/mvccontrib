@@ -53,7 +53,12 @@ namespace MvcContrib.ViewFactories
 
 			IView view = _viewEngine.Process(fullViewName, masterName);
 
-			return new ViewEngineResult(view);
+			return new ViewEngineResult(view,this);
 		}
+
+	    public void ReleaseView(ControllerContext controllerContext, IView view)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

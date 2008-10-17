@@ -20,8 +20,9 @@ namespace MvcContrib.UnitTests
 
 		private ViewContext _viewContext;
 		private EmailTemplateService _service;
+	    private IView _view;
 
-		private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
+	    private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
 
 		[SetUp]
 		public void Setup()
@@ -43,10 +44,10 @@ namespace MvcContrib.UnitTests
 
 			var controller = _mocks.Stub<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
-
+		    _view = _mocks.DynamicMock<IView>();
 			_mocks.Replay(httpContext);
 
-			return new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
+			return new ViewContext(controllerContext, _view, new ViewDataDictionary(), new TempDataDictionary());
 		}
 
 		private void WriteToStream(Stream stream, string content)
@@ -71,12 +72,12 @@ namespace MvcContrib.UnitTests
 				Expect.Call(_responseMock.ContentEncoding).Return(Encoding.UTF8);
 				Expect.Call(() => _responseMock.Flush()).Repeat.Twice();
 
-				var fakeView = _mocks.DynamicMock<IView>();
-				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(
+				
+				_view.Expect(x => x.Render(_viewContext, writer)).Do(
 					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
 
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView));
+                //Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
+                //    new ViewEngineResult(fakeView, _viewEngineMock));
 			}
 
 			MailMessage message;
@@ -102,12 +103,9 @@ namespace MvcContrib.UnitTests
 				TextWriter writer = new StringWriter();
 				SetupResult.For(_responseMock.Output).Return(writer);
 
-				var fakeView = _mocks.DynamicMock<IView>();
-				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(
+                _view.Expect(x => x.Render(_viewContext, writer)).Do(
 					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
 
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView));
 			}
 
 			MailMessage message;
@@ -130,9 +128,7 @@ namespace MvcContrib.UnitTests
 				SetupResult.For(_responseMock.Filter).PropertyBehavior();
 				SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
 
-				var fakeView = _mocks.DynamicMock<IView>();
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView));
+                _view = _mocks.DynamicMock<IView>();
 			}
 
 			_responseMock.Filter = streamStub;
@@ -158,11 +154,8 @@ namespace MvcContrib.UnitTests
 				TextWriter writer = new StringWriter();
 				SetupResult.For(_responseMock.Output).Return(writer);
 
-				var fakeView = _mocks.DynamicMock<IView>();
-				fakeView.Expect(x => x.Render(_viewContext, writer)).Throw(new Exception());
+                _view.Expect(x => x.Render(_viewContext, writer)).Throw(new Exception());
 
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView));
 			}
 
 			_responseMock.Filter = streamStub;
@@ -197,12 +190,11 @@ namespace MvcContrib.UnitTests
 				var writer = new StringWriter();
 				SetupResult.For(_responseMock.Output).Return(writer);
 
-				var fakeView = _mocks.DynamicMock<IView>();
-				fakeView.Expect(x => x.Render(_viewContext, writer)).Do(
+				_view.Expect(x => x.Render(_viewContext, writer)).IgnoreArguments().Do(
 					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
 
-				Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-					new ViewEngineResult(fakeView));
+                //Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
+                //    new ViewEngineResult(fakeView,_viewEngineMock));
 			}
 
 			MailMessage message;

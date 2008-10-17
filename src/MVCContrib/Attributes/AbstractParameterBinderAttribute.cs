@@ -45,35 +45,35 @@ namespace MvcContrib.Attributes
 			return this;
 		}
 
-		public virtual NameValueCollection GetStore(ControllerContext controllerContext)
+		public virtual NameValueCollection GetStore(ModelBindingContext context)
 		{
 			NameValueCollection store = null;
 
 			switch (RequestStore)
 			{
 				case RequestStore.QueryString:
-					store = controllerContext.HttpContext.Request.QueryString;
+					store = context.HttpContext.Request.QueryString;
 					break;
 				case RequestStore.Form:
-					store = controllerContext.HttpContext.Request.Form;
+					store = context.HttpContext.Request.Form;
 					break;
 				case RequestStore.Cookies:
-					store = CreateStoreFromCookies(controllerContext.HttpContext.Request.Cookies);
+					store = CreateStoreFromCookies(context.HttpContext.Request.Cookies);
 					break;
 				case RequestStore.ServerVariables:
-					store = controllerContext.HttpContext.Request.ServerVariables;
+					store = context.HttpContext.Request.ServerVariables;
 					break;
 				case RequestStore.Params:
-					store = controllerContext.HttpContext.Request.Params;
+					store = context.HttpContext.Request.Params;
 					break;
 				case RequestStore.TempData:
-					store = CreateStoreFromDictionary(controllerContext.Controller.TempData);
+					store = CreateStoreFromDictionary(context.Controller.TempData);
 					break;
 				case RequestStore.RouteData:
-					store = CreateStoreFromDictionary(controllerContext.RouteData.Values);
+					store = CreateStoreFromDictionary(context.RouteData.Values);
 					break;
 				case RequestStore.All:
-					store = CreateStoreFromAll(controllerContext.HttpContext.Request.Params, controllerContext.Controller.TempData, controllerContext.RouteData);
+					store = CreateStoreFromAll(context.HttpContext.Request.Params, context.Controller.TempData, context.RouteData);
 					break;
 			}
 
@@ -120,7 +120,7 @@ namespace MvcContrib.Attributes
 			return store;
 		}
 
-		public abstract object GetValue(ControllerContext controllerContext, string modelName, Type modelType, ModelStateDictionary modelState);
+		public abstract ModelBinderResult BindModel(ModelBindingContext bindingContext);
 	}
 
 	public enum RequestStore

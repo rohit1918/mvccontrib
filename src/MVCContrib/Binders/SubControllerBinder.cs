@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Web.Mvc;
 
 namespace MvcContrib.Binders
@@ -9,21 +8,22 @@ namespace MvcContrib.Binders
 	///</summary>
 	public class SubControllerBinder : DefaultModelBinder
 	{
-		protected override object ConvertType(CultureInfo culture, object value, Type destinationType)
+		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
 		{
-			if (typeof (ISubController).IsAssignableFrom(destinationType))
+			if(typeof(ISubController).IsAssignableFrom(bindingContext.ModelType))
 			{
-				object instance = CreateSubController(destinationType);
-				if (instance == null)
+				object instance = CreateSubController(bindingContext.ModelType);
+				if(instance == null)
 				{
-					throw new InvalidOperationException(destinationType + " not created properly.");
+					throw new InvalidOperationException(bindingContext.ModelType + " not created properly.");
 				}
 
-				return instance;
+				return new ModelBinderResult(instance);
 			}
 
-			return base.ConvertType(culture, value, destinationType);
+			return base.BindModel(bindingContext);
 		}
+
 
 		///<summary>
 		/// Creates the subcontroller given its type.  Override this method to wire into an IoC container

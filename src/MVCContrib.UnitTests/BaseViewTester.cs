@@ -33,10 +33,10 @@ namespace MvcContrib.UnitTests
 			var requestContext = new RequestContext(httpContext, new RouteData());
 			var controller = mocks.DynamicMock<ControllerBase>();
 			var controllerContext = new ControllerContext(requestContext, controller);
-
+		    var view = mocks.DynamicMock<IView>();
 			mocks.ReplayAll();
 
-			_viewContext = new ViewContext(controllerContext, "index", new ViewDataDictionary(), new TempDataDictionary());
+			_viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -46,6 +47,11 @@ namespace MvcContrib.UnitTests.MetaData
 			_controllerContext = new ControllerContext(requestContext, controller);
 		}
 
+		private ModelBindingContext CreateContext(Type type)
+		{
+			return new ModelBindingContext(_controllerContext, MockRepository.GenerateStub<IValueProvider>(), type, null, null, new ModelStateDictionary(), null);
+		}
+
 		[Test]
 		public void CanCreateAttribute()
 		{
@@ -57,7 +63,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.QueryString);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(1, ids[0]);
@@ -68,7 +74,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.Form);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(2, ids[0]);
@@ -79,7 +85,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.Cookies);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(3, ids[0]);
@@ -90,7 +96,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.ServerVariables);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;	
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(4, ids[0]);
@@ -101,7 +107,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.Params);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(4, ids.Length);
 		}
@@ -111,7 +117,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.TempData);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;	
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(5, ids[0]);
@@ -122,7 +128,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.RouteData);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(1, ids.Length);
 			Assert.AreEqual(6, ids[0]);
@@ -133,7 +139,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("ids", RequestStore.All);
 
-			var ids = (int[])attr.GetValue(_controllerContext, null, typeof(int[]), null);
+			var ids = (int[])attr.BindModel(CreateContext(typeof(int[]))).Value;
 			Assert.IsNotNull(ids);
 			Assert.AreEqual(6, ids.Length);
 		}
@@ -143,7 +149,7 @@ namespace MvcContrib.UnitTests.MetaData
 		{
 			var attr = new DeserializeAttribute("dupe", RequestStore.All);
 
-			var dupe = (string[])attr.GetValue(_controllerContext, null, typeof(string[]), null);
+			var dupe = (string[])attr.BindModel(CreateContext(typeof(string[]))).Value;
 			Assert.IsNotNull(dupe);
 			Assert.AreEqual("1,2,3,4,5,6", dupe[0]);
 		}
