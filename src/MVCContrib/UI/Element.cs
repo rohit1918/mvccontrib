@@ -1,9 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
 using System.Linq;
 
 namespace MvcContrib.UI
@@ -16,8 +11,8 @@ namespace MvcContrib.UI
         private string _innerText;
         private string _tag;
 		private DomQuery _selector;
-        private bool _escapeInnerText = false;
-        protected MvcContrib.UI.IHtmlAttributes _attributes;
+        private bool _escapeInnerText;
+        protected IHtmlAttributes _attributes;
 
         public Element()
             : this("div", Hash.Empty)
@@ -31,7 +26,8 @@ namespace MvcContrib.UI
 
         public Element(string tag, IDictionary attributes)
         {
-            _tag = tag.ToLower();
+        	_escapeInnerText = false;
+        	_tag = tag.ToLower();
             _attributes = new HtmlAttributes(attributes);
         }
 

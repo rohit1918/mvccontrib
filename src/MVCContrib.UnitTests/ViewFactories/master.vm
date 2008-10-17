@@ -1,1 +1,1 @@
-﻿Master Template $childContent
+﻿Master Template #parse($childContent)

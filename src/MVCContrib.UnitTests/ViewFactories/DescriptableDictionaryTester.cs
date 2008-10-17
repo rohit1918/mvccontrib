@@ -13,11 +13,11 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void Creates_One_Property_For_Each_Dictionary_Entry()
 		{
-			Hashtable hash = new Hashtable();
+			var hash = new Hashtable();
 			hash["Prop1"] = 1;
 			hash["Prop2"] = "a";
 
-			DescriptableDictionary dict = new DescriptableDictionary(hash);
+			var dict = new DescriptableDictionary(hash);
 
 			PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(dict);
 			Assert.AreEqual(2, properties.Count);
@@ -28,15 +28,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void ForCoverage()
 		{
-			Hashtable hash = new Hashtable();
+			var hash = new Hashtable();
 			hash["Prop1"] = 1;
-			DescriptableDictionary dict = new DescriptableDictionary(hash);
+			var dict = new DescriptableDictionary(hash);
 			PropertyDescriptor property = TypeDescriptor.GetProperties(dict)[0];
 
 			property.CanResetValue(null);
-			object o = property.ComponentType;
-			o = property.IsReadOnly;
-			o = property.PropertyType;
+			var componentType = property.ComponentType;
+			var isReadOnly = property.IsReadOnly;
+			var propertyType = property.PropertyType;
 			property.ResetValue(null);
 			property.SetValue(null, null);
 			property.ShouldSerializeValue(null);

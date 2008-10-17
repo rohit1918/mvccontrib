@@ -1,5 +1,3 @@
-using MvcContrib;
-using MvcContrib.UI;
 using MvcContrib.UI.Tags;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -22,16 +20,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Link element = new Link();
+				var element = new Link();
 				Assert.That(element.Tag, Is.EqualTo("a"));
 			}
 
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Link element = new Link();
-				element.Href = "http://foo";
-				Assert.That(element.Href, Is.EqualTo("http://foo"));
+				var element = new Link {Href = "http://foo"};
+			    Assert.That(element.Href, Is.EqualTo("http://foo"));
 				element.Target = "_main";
 				Assert.That(element.Target, Is.EqualTo("_main"));
 			}
@@ -39,18 +36,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Href_It_Sticks()
 			{
-				Link element = new Link("http://foo");
+				var element = new Link("http://foo");
 				Assert.That(element.Href, Is.EqualTo("http://foo"));
 			}
 
 			[Test]
 			public void When_Creating_element_With_Href_and_Dictionary_It_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Link element = new Link("http://foo", hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Link("http://foo", hash);
 				Assert.That(element.Href, Is.EqualTo("http://foo"));
 				Assert.That(element.Tag == "a");
 				Assert.That(element.Attributes.Count == 4);
@@ -64,16 +58,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Image img = new Image();
+				var img = new Image();
 				Assert.That(img.Tag, Is.EqualTo("img"));
 			}
 
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Image img = new Image();
-				img.Src = "http://foo.gif";
-				Assert.That(img.Src, Is.EqualTo("http://foo.gif"));
+				var img = new Image {Src = "http://foo.gif"};
+			    Assert.That(img.Src, Is.EqualTo("http://foo.gif"));
 				img.Alt = "A Penguin";
 				Assert.That(img.Alt, Is.EqualTo("A Penguin"));
 				Assert.That(img.Height == 0);
@@ -87,7 +80,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Int_Properties_Work_Right()
 			{
-				Image img = new Image();
+				var img = new Image();
 				Assert.That(img.Height == 0);
 				Assert.That(img.Width == 0);
 				Assert.That(img["width"] == null);
@@ -116,18 +109,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_Image_With_Src_It_Sticks()
 			{
-				Image img = new Image("http://foo.gif");
+				var img = new Image("http://foo.gif");
 				Assert.That(img.Src, Is.EqualTo("http://foo.gif"));
 			}
 
 			[Test]
 			public void When_Creating_Image_With_Src_And_Dictionary_It_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Image element = new Image("http://foo.gif", hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Image("http://foo.gif", hash);
 				Assert.That(element.Src, Is.EqualTo("http://foo.gif"));
 				Assert.That(element.Tag == "img");
 				Assert.That(element.Attributes.Count == 4);
@@ -141,7 +131,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Input element = new Input("button", Hash.Empty);
+				var element = new Input("button", Hash.Empty);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("button"));
 			}
@@ -149,9 +139,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Input element = new Input("button", Hash.Empty);
-				element.Value = "Value Sticks";
-				Assert.That(element.Value.ToString() == "Value Sticks");
+				var element = new Input("button", Hash.Empty) {Value = "Value Sticks"};
+			    Assert.That(element.Value.ToString() == "Value Sticks");
 				element.Name = "Name Sticks";
 				Assert.That(element.Name == "Name Sticks");
 				element.OnBlur = "OnBlur Sticks";
@@ -169,7 +158,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Bool_Properties_Work_Right()
 			{
-				Input element = new Input("button", Hash.Empty);
+				var element = new Input("button", Hash.Empty);
 				Assert.That(element.Disabled == false);
 				Assert.That(element.ReadOnly == false);
 				Assert.That(element["disabled"] == null);
@@ -198,11 +187,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Stics()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Input element = new Input("button", hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Input("button", hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("button"));
 				Assert.That(element.Attributes.Count == 4);
@@ -212,7 +198,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_label_is_in_attributes_it_should_be_removed()
 			{
-				CheckBoxField field = new CheckBoxField(new Hash(label => "Foo"));
+				var field = new CheckBoxField(new Hash(label => "Foo"));
 				Assert.That(field.Label, Is.EqualTo("Foo"));
 				Assert.That(field.Attributes.ContainsKey("label"), Is.False);
 			}
@@ -220,16 +206,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_label_specified_manually_it_should_stick()
 			{
-				CheckBoxField field = new CheckBoxField();
-				field.Label = "Foo";
-				Assert.That(field.Label, Is.EqualTo("Foo"));
+				var field = new CheckBoxField {Label = "Foo"};
+			    Assert.That(field.Label, Is.EqualTo("Foo"));
 			}
 
 			[Test]
 			public void ToString_should_render_label()
 			{
 				string expected = "<input id=\"foo\" type=\"checkbox\"/><label for=\"foo\">Bar</label>";
-				CheckBoxField field = new CheckBoxField(new Hash(id => "foo", label => "Bar"));
+				var field = new CheckBoxField(new Hash(id => "foo", label => "Bar"));
 				string html = field.ToString();
 				Assert.That(html, Is.EqualTo(expected));
 			}
@@ -238,7 +223,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void ToString_should_not_render_label_with_no_id()
 			{
 				string expected = "<input type=\"checkbox\"/>";
-				CheckBoxField field = new CheckBoxField(new Hash(label => "Bar"));
+				var field = new CheckBoxField(new Hash(label => "Bar"));
 				string html = field.ToString();
 				Assert.That(html, Is.EqualTo(expected));
 			}
@@ -250,7 +235,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				TextBox element = new TextBox();
+				var element = new TextBox();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("text"));
 			}
@@ -258,7 +243,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Int_Properties_Work_Right()
 			{
-				TextBox element = new TextBox();
+				var element = new TextBox();
 				Assert.That(element.MaxLength == 0);
 				Assert.That(element.Size == 0);
 				Assert.That(element["maxlength"] == null);
@@ -288,11 +273,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				TextBox element = new TextBox(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new TextBox(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("text"));
 				Assert.That(element.Attributes.Count == 4);
@@ -306,7 +288,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Password element = new Password();
+				var element = new Password();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("password"));
 			}
@@ -314,7 +296,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Int_Properties_Work_Right()
 			{
-				Password element = new Password();
+				var element = new Password();
 				Assert.That(element.MaxLength == 0);
 				Assert.That(element.Size == 0);
 				Assert.That(element["maxlength"] == null);
@@ -344,11 +326,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Password element = new Password(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Password(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("password"));
 				Assert.That(element.Attributes.Count == 4);
@@ -362,16 +341,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				TextArea element = new TextArea();
+				var element = new TextArea();
 				Assert.That(element.Tag, Is.EqualTo("textarea"));
 			}
 
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				TextArea element = new TextArea();
-				element.Value = "Value&Sticks";
-				Assert.That(element.Value.ToString() == "Value&Sticks");
+				var element = new TextArea {Value = "Value&Sticks"};
+			    Assert.That(element.Value.ToString() == "Value&Sticks");
 				Assert.That(element.InnerText == "Value&Sticks");
 				Assert.That(element.ToString(), Is.EqualTo("<textarea >Value&amp;Sticks</textarea>"));
 				element.Value = null;
@@ -392,7 +370,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Bool_Properties_Work_Right()
 			{
-				TextArea element = new TextArea();
+				var element = new TextArea();
 				Assert.That(element.Disabled == false);
 				Assert.That(element.ReadOnly == false);
 				Assert.That(element["disabled"] == null);
@@ -421,7 +399,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Int_Properties_Work_Right()
 			{
-				TextArea element = new TextArea();
+				var element = new TextArea();
 				Assert.That(element.Rows == 0);
 				Assert.That(element.Cols == 0);
 				Assert.That(element["rows"] == null);
@@ -450,11 +428,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				TextArea element = new TextArea(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new TextArea(hash);
 				Assert.That(element.Tag, Is.EqualTo("textarea"));
 				Assert.That(element.Attributes.Count == 3);
 				Assert.That(element["Key1"] == "Val1");
@@ -467,7 +442,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				InputButton element = new InputButton();
+				var element = new InputButton();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("button"));
 			}
@@ -475,11 +450,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				InputButton element = new InputButton(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new InputButton(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 4);
 				Assert.That(element["Key1"] == "Val1");
@@ -492,7 +464,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				InputImage element = new InputImage();
+				var element = new InputImage();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("image"));
 			}
@@ -500,9 +472,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				InputImage element = new InputImage();
-				element.Src = "Src Sticks";
-				Assert.That(element.Src == "Src Sticks");
+				var element = new InputImage {Src = "Src Sticks"};
+			    Assert.That(element.Src == "Src Sticks");
 				element.Alt = "Alt Sticks";
 				Assert.That(element.Alt == "Alt Sticks");
 			}
@@ -510,7 +481,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Src_It_Sticks()
 			{
-				InputImage element = new InputImage("http://image.foo.jpg");
+				var element = new InputImage("http://image.foo.jpg");
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("image"));
 				Assert.That(element.Src == "http://image.foo.jpg");
@@ -519,11 +490,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				InputImage element = new InputImage(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new InputImage(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 4);
 				Assert.That(element["Key1"] == "Val1");
@@ -531,11 +499,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Src_And_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				InputImage element = new InputImage("http://image.foo.jpg", hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new InputImage("http://image.foo.jpg", hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 5);
 				Assert.That(element["Key1"] == "Val1");
@@ -549,7 +514,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				HiddenField element = new HiddenField();
+				var element = new HiddenField();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("hidden"));
 			}
@@ -557,11 +522,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				HiddenField element = new HiddenField(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new HiddenField(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 4);
 				Assert.That(element["Key1"] == "Val1");
@@ -574,16 +536,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Form element = new Form();
+				var element = new Form();
 				Assert.That(element.Tag, Is.EqualTo("form"));
 			}
 
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Form element = new Form();
-				element.Action = "action sticks";
-				Assert.That(element.Action, Is.EqualTo("action sticks"));
+				var element = new Form {Action = "action sticks"};
+			    Assert.That(element.Action, Is.EqualTo("action sticks"));
 				element.OnSubmit = "OnSubmit sticks";
 				Assert.That(element.OnSubmit, Is.EqualTo("OnSubmit sticks"));
 				element.OnReset = "OnReset sticks";
@@ -601,7 +562,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				Assert.That(element["enctype"] == null);
 				element.IsMultiPart = true;
 
-				Assert.That(element.IsMultiPart == true);
+				Assert.That(element.IsMultiPart);
 				Assert.That(element["enctype"] == "multipart/form-data");
 
 				element.IsMultiPart = false;
@@ -614,7 +575,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Action_Sticks()
 			{
-				Form element = new Form("http://aURL");
+				var element = new Form("http://aURL");
 				Assert.That(element.Tag, Is.EqualTo("form"));
 				Assert.That(element.Action == "http://aURL");
 			}
@@ -622,7 +583,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Action_And_Method_Sticks()
 			{
-				Form element = new Form("http://aURL", Form.FORM_METHOD.POST);
+				var element = new Form("http://aURL", Form.FORM_METHOD.POST);
 				Assert.That(element.Tag, Is.EqualTo("form"));
 				Assert.That(element.Action == "http://aURL");
 				Assert.That(element.Method == Form.FORM_METHOD.POST);
@@ -631,11 +592,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Action_Method_And_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Form element = new Form("http://aURL", Form.FORM_METHOD.GET, hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Form("http://aURL", Form.FORM_METHOD.GET, hash);
 				Assert.That(element.Tag, Is.EqualTo("form"));
 				Assert.That(element.Attributes.Count == 5);
 				Assert.That(element["Key1"] == "Val1");
@@ -648,7 +606,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				CheckBoxField element = new CheckBoxField();
+				var element = new CheckBoxField();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("checkbox"));
 			}
@@ -656,7 +614,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				CheckBoxField element = new CheckBoxField();
+				var element = new CheckBoxField();
 				Assert.That(element.Checked == null);
 				element.Checked = true;
 				Assert.That(element.Checked == true);
@@ -669,11 +627,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				CheckBoxField element = new CheckBoxField(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new CheckBoxField(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 4);
 				Assert.That(element["Key1"] == "Val1");
@@ -686,7 +641,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				RadioField element = new RadioField();
+				var element = new RadioField();
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Type, Is.EqualTo("radio"));
 			}
@@ -694,7 +649,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				RadioField element = new RadioField();
+				var element = new RadioField();
 				Assert.That(element.Checked == null);
 				element.Checked = true;
 				Assert.That(element.Checked == true);
@@ -707,11 +662,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Dictionary_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				RadioField element = new RadioField(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new RadioField(hash);
 				Assert.That(element.Tag, Is.EqualTo("input"));
 				Assert.That(element.Attributes.Count == 4);
 				Assert.That(element["Key1"] == "Val1");
@@ -725,22 +677,21 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Option element = new Option();
+				var element = new Option();
 				Assert.That(element.Tag, Is.EqualTo("option"));
 			}
 
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Option element = new Option();
-				element.Value = "Value Sticks";
-				Assert.That(element.Value == "Value Sticks");
+				var element = new Option {Value = "Value Sticks"};
+			    Assert.That(element.Value == "Value Sticks");
 			}
 
 			[Test]
 			public void Bool_Properties_Work_Right()
 			{
-				Option element = new Option();
+				var element = new Option();
 				Assert.That(element.Disabled == false);
 				Assert.That(element.Selected == false);
 				Assert.That(element["disabled"] == null);
@@ -769,11 +720,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void When_Creating_element_With_Href_It_Sticks()
 			{
-				Hash hash = new Hash();
-				hash.Add("Key1", "Val1");
-				hash.Add("Key2", "Val2");
-				hash.Add("Key3", "Val3");
-				Option element = new Option(hash);
+				var hash = new Hash {{"Key1", "Val1"}, {"Key2", "Val2"}, {"Key3", "Val3"}};
+			    var element = new Option(hash);
 				Assert.That(element.Tag, Is.EqualTo("option"));
 				Assert.That(element.Attributes.Count == 3);
 				Assert.That(element["Key1"] == "Val1");
@@ -786,18 +734,16 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Tag_Is_Correct()
 			{
-				Select element = new Select();
+				var element = new Select();
 				Assert.That(element.Tag, Is.EqualTo("select"));
 			}
 
 			[Test]
 			public void Create_Select_With_Options()
 			{
-				Select element = new Select();
-				Option opt = new Option();
-				opt.InnerText = "text";
-				opt.Value = "value";
-				element.Options.Add(opt);
+				var element = new Select();
+				var opt = new Option {InnerText = "text", Value = "value"};
+			    element.Options.Add(opt);
 				element.AddOption("value2", "text2");
 				element.FirstOptionValue = "FirstValue";
 				element.FirstOption = "FirstText";
@@ -808,7 +754,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Create_Select_With_Multiple_Options_Selected()
 			{
-				Select element = new Select();
+				var element = new Select();
 				element.AddOption("value1", "text1");
 				element.AddOption("value2", "text2");
 				element.FirstOptionValue = "FirstValue";
@@ -820,7 +766,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Create_Select_Null_Value_Selects_Empty_String_Option()
 			{
-				Select element = new Select();
+				var element = new Select();
 				element.AddOption("value1", "text1");
 				element.AddOption("value2", "text2");
 				element.FirstOptionValue = "";
@@ -832,10 +778,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Create_Select_With_Selected_Value_From_Complex_Object()
 			{
-				var element = new Select();
-				element.ValueField = "Id";
-				element.TextField = "Name";
-				var person1 = new FormHelperTester.Person("Hillary", 1);
+				var element = new Select {ValueField = "Id", TextField = "Name"};
+			    var person1 = new FormHelperTester.Person("Hillary", 1);
 				var person2 = new FormHelperTester.Person("Barak", 2);
 				var person3 = new FormHelperTester.Person("John", 3);
 				element.AddOption(person1.Id.ToString(), person1.Name);
@@ -848,10 +792,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Create_Select_With_Mutliple_Selected_Values_From_Complex_Object()
 			{
-				var element = new Select();
-				element.ValueField = "Id";
-				element.TextField = "Name";
-				var person1 = new FormHelperTester.Person("Hillary", 1);
+				var element = new Select {ValueField = "Id", TextField = "Name"};
+			    var person1 = new FormHelperTester.Person("Hillary", 1);
 				var person2 = new FormHelperTester.Person("Barak", 2);
 				var person3 = new FormHelperTester.Person("John", 3);
 				element.AddOption(person1.Id.ToString(), person1.Name);
@@ -864,9 +806,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Properties_Stick_When_Set()
 			{
-				Select element = new Select();
-				element.OnBlur = "OnBlur Sticks";
-				Assert.That(element.OnBlur == "OnBlur Sticks");
+				var element = new Select {OnBlur = "OnBlur Sticks"};
+			    Assert.That(element.OnBlur == "OnBlur Sticks");
 				element.OnChange = "OnChange Sticks";
 				Assert.That(element.OnChange == "OnChange Sticks");
 				element.OnFocus = "OnFocus Sticks";
@@ -882,7 +823,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Int_Properties_Work_Right()
 			{
-				Select element = new Select();
+				var element = new Select();
 				Assert.That(element.Size == 0);
 				Assert.That(element["maxlength"] == null);
 
@@ -901,7 +842,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Bool_Properties_Work_Right()
 			{
-				Select element = new Select();
+				var element = new Select();
 				Assert.That(element.Disabled == false);
 				Assert.That(element.Multiple == false);
 				Assert.That(element["disabled"] == null);

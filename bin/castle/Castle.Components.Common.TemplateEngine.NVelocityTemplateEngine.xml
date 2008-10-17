@@ -23,16 +23,6 @@
             </summary>
             <param name="templateDir"></param>
         </member>
-        <member name="F:Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.NVelocityTemplateEngine.AssemblyName">
-            <summary>
-            Gets or sets the assembly name. This
-            forces NVelocityTemplateEngine to use an assembly resource loader
-            instead of File resource loader (which is the default) 
-            </summary>
-            <remarks>
-            The property is obsolete, please use the AddResourceAssembly function.
-            </remarks>
-        </member>
         <member name="M:Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.NVelocityTemplateEngine.AddResourceAssembly(System.String)">
             <summary>
             Add an assembly to the resource collection.
@@ -77,6 +67,16 @@
             <param name="inputTemplate">The input template.</param>
             <returns></returns>
         </member>
+        <member name="P:Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.NVelocityTemplateEngine.AssemblyName">
+            <summary>
+            Gets or sets the assembly name. This
+            forces NVelocityTemplateEngine to use an assembly resource loader
+            instead of File resource loader (which is the default) 
+            </summary>
+            <remarks>
+            The property is obsolete, please use the AddResourceAssembly function.
+            </remarks>
+        </member>
         <member name="P:Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.NVelocityTemplateEngine.TemplateDir">
             <summary>
             Gets or sets the template directory
@@ -86,6 +86,12 @@
             <summary>
             Enable/Disable caching. Default is <c>true</c>
             </summary>
+        </member>
+        <member name="P:Castle.Components.Common.TemplateEngine.NVelocityTemplateEngine.NVelocityTemplateEngine.Log">
+            <summary>
+            Gets or sets the logger.
+            </summary>
+            <value>The log.</value>
         </member>
     </members>
 </doc>

@@ -14,13 +14,14 @@
 
 // MODIFICATIONS HAVE BEEN MADE TO THIS FILE
 
+using MvcContrib.UI.Html;
+
 namespace MvcContrib.BrailViewEngine
 {
 	using System;
 	using System.Collections;
 	using System.IO;
 	using System.Web;
-	using System.Collections.Generic;
 	using System.Text;
 	using System.Web.Mvc;
 
@@ -29,7 +30,7 @@ namespace MvcContrib.BrailViewEngine
 	/// support all the behind the scenes magic such as variable to PropertyBag trasnlation, 
 	/// resources usage, etc. 
 	/// </summary>
-	public abstract class BrailBase : IViewDataContainer
+	public abstract class BrailBase : IView, IViewDataContainer
 	{
 		protected IController __controller;
 		protected ViewContext __viewContext;
@@ -67,22 +68,13 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		/// <param name="viewEngine">The view engine.</param>
 		/// <param name="output">The output.</param>
-		/// <param name="context">The context.</param>
-		/// <param name="__controller">The controller.</param>
-		/// <param name="__controllerContext">The __controller context.</param>
-		public BrailBase(BooViewEngine viewEngine, TextWriter output)
+		public BrailBase(BooViewEngine viewEngine)
 //		(BooViewEngine viewEngine, TextWriter output, IEngineContext context, IController __controller, IControllerContext __controllerContext)
 		{
 			this.viewEngine = viewEngine;
-			outputStream = output;
 		}
 
-		private BrailBase _layout;
-		public BrailBase Layout
-		{
-			get { return _layout; }
-			set { _layout = value; }
-		}
+		public BrailBase Layout { get; set; }
 
 		/// <summary>
 		///The path of the script, this is filled by AddBrailBaseClassStep
@@ -176,7 +168,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public ViewDataDictionary ViewData
 		{
-			get { return this.ViewContext.ViewData; }
+			get { return ViewContext.ViewData; }
 			set { throw new NotSupportedException(); }
 		}
 
@@ -216,13 +208,13 @@ namespace MvcContrib.BrailViewEngine
 		public void OutputSubView(string subviewName, TextWriter writer, IDictionary parameters)
 		{
 			string subViewFileName = GetSubViewFilename(subviewName);
-			BrailBase subView = viewEngine.GetCompiledScriptInstance(subViewFileName, writer);
+			BrailBase subView = viewEngine.GetCompiledScriptInstance(subViewFileName);
 			subView.SetParent(this);
 			foreach(DictionaryEntry entry in parameters)
 			{
 				subView.properties[entry.Key] = entry.Value;
 			}
-			subView.RenderView(__viewContext);
+			subView.Render(__viewContext, writer);
 			foreach(DictionaryEntry entry in subView.Properties)
 			{
 				if (subView.Properties.Contains(entry.Key + ".@bubbleUp") == false)
@@ -422,6 +414,7 @@ namespace MvcContrib.BrailViewEngine
 
 			properties["html"] = new HtmlHelper(viewContext, this);
 			properties["url"] = new UrlHelper(viewContext);
+			properties["form"] = new FormHelper() { ViewContext = viewContext };
 
 //			if (controllerContext.Resources != null)
 //			{
@@ -433,7 +426,7 @@ namespace MvcContrib.BrailViewEngine
 
 			if (myContext != null && myContext.Request.QueryString != null)
 			{
-				foreach(string key in myContext.Request.QueryString.AllKeys)
+				foreach(var key in myContext.Request.QueryString.AllKeys)
 				{
 					if (key == null) continue;
 					properties[key] = myContext.Request.QueryString[key];
@@ -442,7 +435,7 @@ namespace MvcContrib.BrailViewEngine
 
 			if (myContext != null && myContext.Request.Form != null)
 			{
-				foreach(string key in myContext.Request.Form.AllKeys)
+				foreach(var key in myContext.Request.Form.AllKeys)
 				{
 					if (key == null) continue;
 					properties[key] = myContext.Request.Form[key];
@@ -451,13 +444,13 @@ namespace MvcContrib.BrailViewEngine
 
 			if (viewContext.TempData != null)
 			{
-				foreach (KeyValuePair<string, object> entry in viewContext.TempData)
+				foreach (var entry in viewContext.TempData)
 				{
 					properties[entry.Key] = entry.Value;
 				}
 			}
 
-			foreach (KeyValuePair<string, object> entry in viewContext.ViewData)
+			foreach (var entry in viewContext.ViewData)
 			{
 				properties[entry.Key] = entry.Value;
 			}
@@ -533,10 +526,19 @@ namespace MvcContrib.BrailViewEngine
 //
 //		#endregion
 
-		public void RenderView(ViewContext viewContext)
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
 			__controller = viewContext.Controller;
 			__viewContext = viewContext;
+
+			if( Layout != null )
+			{
+				Layout.ChildOutput = outputStream = new StringWriter();
+			}
+			else
+			{
+				outputStream = writer;
+			}
 
 			InitProperties(__viewContext);
 
@@ -552,10 +554,9 @@ namespace MvcContrib.BrailViewEngine
 			if (Layout != null)
 			{
 				Layout.SetParent(this);
-				Layout.ViewContext = viewContext;
 				try
 				{
-					Layout.Run();
+					Layout.Render(__viewContext, writer);
 				}
 				catch (Exception e)
 				{
@@ -566,7 +567,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private void HandleException(string templateName, BrailBase view, Exception e)
 		{
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			sb.Append("Exception on RenderView: ").AppendLine(templateName);
 			sb.Append("Last accessed variable: ").Append(view.LastVariableAccessed);
 			string msg = sb.ToString();

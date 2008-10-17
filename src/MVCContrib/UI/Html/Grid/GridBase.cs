@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Collections.Generic;
 using System.IO;
@@ -66,7 +65,7 @@ namespace MvcContrib.UI.Html.Grid
 				RenderEmpty();
 			}
 
-			RenderGridEnd();
+			RenderGridEnd(! headerRendered);
 		}
 
 		/// <summary>
@@ -215,6 +214,10 @@ namespace MvcContrib.UI.Html.Grid
 			{
 				Columns.RowStartBlock(item);
 			}
+			else if(Columns.RowStartWithAlternateBlock != null)
+			{
+				Columns.RowStartWithAlternateBlock(item, isAlternate);
+			}
 			else
 			{
 				RenderRowStart(isAlternate);
@@ -248,7 +251,7 @@ namespace MvcContrib.UI.Html.Grid
 		protected abstract void RenderHeadStart();
 		protected abstract void RenderHeadEnd();
 		protected abstract void RenderGridStart();
-		protected abstract void RenderGridEnd();
+		protected abstract void RenderGridEnd(bool isEmpty);
 		protected abstract void RenderEmpty();
 	}
 }

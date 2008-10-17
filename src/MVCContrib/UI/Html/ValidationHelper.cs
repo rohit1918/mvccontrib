@@ -39,12 +39,12 @@ namespace MvcContrib.UI.Html
 
 		public string ValidatorRegistrationScripts()
 		{
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] != null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] != null)
 			{
 				throw new InvalidOperationException("You cannot register the validation scripts more than 1 time.");
 			}
 
-			StringBuilder output = new StringBuilder();
+			var output = new StringBuilder();
 			if (string.IsNullOrEmpty(_webValidationUrl))
 			{
 				lock (_webValidationUrlLock)
@@ -54,7 +54,15 @@ namespace MvcContrib.UI.Html
 						Type loaderType = typeof(AssemblyResourceLoader);
 						Assembly systemWebAssembly = Assembly.GetAssembly(loaderType);
 						MethodInfo webResourceUrlMethod = loaderType.GetMethod("GetWebResourceUrlInternal", BindingFlags.NonPublic | BindingFlags.Static);
-						_webValidationUrl = this.ViewContext.HttpContext.Request.ApplicationPath + (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
+
+						string applicatonPath = ViewContext.HttpContext.Request.ApplicationPath;
+
+						if(!applicatonPath.EndsWith("/"))
+						{
+							applicatonPath += "/";
+						}
+
+						_webValidationUrl = applicatonPath + (string)webResourceUrlMethod.Invoke(null, new object[] { systemWebAssembly, "WebUIValidation.js", false });
 					}
 				}
 			}
@@ -77,25 +85,25 @@ namespace MvcContrib.UI.Html
 			output.AppendLine("//]]>");
 			output.AppendLine("</script>");
 
-			this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] = true;
+			ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] = true;
 
 			return output.ToString();
 		}
 
 		public string ValidatorInitializationScripts()
 		{
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
 			{
 				throw new InvalidOperationException("You must register the validation scripts before initializing.");
 			}
 
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_INITIALIZED_CACHE_KEY] != null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_INITIALIZED_CACHE_KEY] != null)
 			{
 				throw new InvalidOperationException("You cannot render the validation scripts more than 1 time.");
 			}
 
-			StringBuilder outputValidatorArray = new StringBuilder();
-			StringBuilder outputValidators = new StringBuilder();
+			var outputValidatorArray = new StringBuilder();
+			var outputValidators = new StringBuilder();
 			bool firstValidator = true;
 
 			outputValidatorArray.AppendLine("<script type=\"text/javascript\">");
@@ -105,11 +113,11 @@ namespace MvcContrib.UI.Html
 			outputValidators.AppendLine("<script type=\"text/javascript\">");
 			outputValidators.AppendLine("//<![CDATA[");
 
-			List<IValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
+			var validators = ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
 
 			if (validators != null)
 			{
-				foreach (IValidator validator in validators)
+				foreach (var validator in validators)
 				{
 					if (!firstValidator)
 					{
@@ -150,23 +158,23 @@ namespace MvcContrib.UI.Html
 			outputValidatorArray.AppendLine("//]]>");
 			outputValidatorArray.AppendLine("</script>");
 
-			this.ViewContext.HttpContext.Items[VALIDATOR_INITIALIZED_CACHE_KEY] = true;
-			return outputValidatorArray.ToString() + "\r\n" + outputValidators.ToString();
+			ViewContext.HttpContext.Items[VALIDATOR_INITIALIZED_CACHE_KEY] = true;
+			return outputValidatorArray + "\r\n" + outputValidators;
 		}
 
 		private void ValidateAndAddValidator(IValidator newValidator)
 		{
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
 			{
 				throw new InvalidOperationException("You must register the validation scripts before adding a validator.");
 			}
 
-			List<IValidator> validators = this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
+			var validators = ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] as List<IValidator>;
 
 			if (validators == null)
 			{
 				validators = new List<IValidator>();
-				this.ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] = validators;
+				ViewContext.HttpContext.Items[VALIDATOR_CACHE_KEY] = validators;
 			}
 
 			if (validators.SingleOrDefault(v => string.Compare(v.Id, newValidator.Id, StringComparison.OrdinalIgnoreCase) == 0) != null)
@@ -179,64 +187,62 @@ namespace MvcContrib.UI.Html
 
 		public virtual string RequiredValidator(string name, string referenceName, string text)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, IDictionary attributes)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text, validationGroup);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup, IDictionary attributes)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text, validationGroup);
-			validator.InitialValue = initialValue;
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup) {InitialValue = initialValue};
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public virtual string RequiredValidator(string name, string referenceName, string text, string validationGroup, string initialValue, IDictionary attributes)
 		{
-			RequiredValidator validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes);
-			validator.InitialValue = initialValue;
-			this.ValidateAndAddValidator(validator);
+			var validator = new RequiredValidator(name, referenceName, text, validationGroup, attributes)
+			                	{InitialValue = initialValue};
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public IDictionary<string, object> FormValidation()
 		{
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
 			{
 				throw new InvalidOperationException("You must register the validation scripts before setting up form validation.");
 			}
 
-			Dictionary<string, object> values = new Dictionary<string, object>();
-			values.Add("onsubmit", "javascript:return WebForm_OnSubmit();");
+			var values = new Dictionary<string, object> {{"onsubmit", "javascript:return WebForm_OnSubmit();"}};
 
 			return values;
 		}
 
 		public IDictionary<string, object> FormValidation(string validationGroup)
 		{
-			if (this.ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
+			if (ViewContext.HttpContext.Items[VALIDATOR_REGISTERED_CACHE_KEY] == null)
 			{
 				throw new InvalidOperationException("You must register the validation scripts before setting up form validation.");
 			}
@@ -246,121 +252,121 @@ namespace MvcContrib.UI.Html
 				return FormValidation();
 			}
 
-			Dictionary<string, object> values = new Dictionary<string, object>();
-			values.Add("onsubmit", "javascript:return WebForm_OnSubmitGroup('" + validationGroup + "');");
+			var values = new Dictionary<string, object>
+			             	{{"onsubmit", "javascript:return WebForm_OnSubmitGroup('" + validationGroup + "');"}};
 
 			return values;
 		}
 
 		public string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text)
 		{
-			RegularExpressionValidator validator = new RegularExpressionValidator(name, referenceName, validationExpression, text);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RegularExpressionValidator(name, referenceName, validationExpression, text);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, IDictionary attributes)
 		{
-			RegularExpressionValidator validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, string validationGroup)
 		{
-			RegularExpressionValidator validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, validationGroup);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, validationGroup);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RegularExpressionValidator(string name, string referenceName, string validationExpression, string text, string validationGroup, IDictionary attributes)
 		{
-			RegularExpressionValidator validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, validationGroup, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RegularExpressionValidator(name, referenceName, validationExpression, text, validationGroup, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text)
 		{
-			CompareValidator validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, IDictionary attributes)
 		{
-			CompareValidator validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, string validationGroup)
 		{
-			CompareValidator validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, validationGroup);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, validationGroup);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CompareValidator(string name, string referenceName, string compareReferenceName, System.Web.UI.WebControls.ValidationDataType type, System.Web.UI.WebControls.ValidationCompareOperator operatorType, string text, string validationGroup, IDictionary attributes)
 		{
-			CompareValidator validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, validationGroup, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CompareValidator(name, referenceName, compareReferenceName, type, operatorType, text, validationGroup, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text)
 		{
-			RangeValidator validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, IDictionary attributes)
 		{
-			RangeValidator validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, string validationGroup)
 		{
-			RangeValidator validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, validationGroup);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, validationGroup);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string RangeValidator(string name, string referenceName, string minimumValue, string maximumValue, System.Web.UI.WebControls.ValidationDataType type, string text, string validationGroup, IDictionary attributes)
 		{
-			RangeValidator validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, validationGroup, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new RangeValidator(name, referenceName, minimumValue, maximumValue, type, text, validationGroup, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CustomValidator(string name, string referenceName, string clientValidationFunction, string text)
 		{
-			CustomValidator validator = new CustomValidator(name, referenceName, clientValidationFunction, text);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CustomValidator(name, referenceName, clientValidationFunction, text);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, IDictionary attributes)
 		{
-			CustomValidator validator = new CustomValidator(name, referenceName, clientValidationFunction, text, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CustomValidator(name, referenceName, clientValidationFunction, text, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup)
 		{
-			CustomValidator validator = new CustomValidator(name, referenceName, clientValidationFunction, text, validationGroup);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CustomValidator(name, referenceName, clientValidationFunction, text, validationGroup);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
 		public string CustomValidator(string name, string referenceName, string clientValidationFunction, string text, string validationGroup, IDictionary attributes)
 		{
-			CustomValidator validator = new CustomValidator(name, referenceName, clientValidationFunction, text, validationGroup, attributes);
-			this.ValidateAndAddValidator(validator);
+			var validator = new CustomValidator(name, referenceName, clientValidationFunction, text, validationGroup, attributes);
+			ValidateAndAddValidator(validator);
 			return validator.ToString();
 		}
 
@@ -371,12 +377,12 @@ namespace MvcContrib.UI.Html
 
 		public string ElementValidation(ICollection<IValidator> validators, string referenceName)
 		{
-			StringBuilder output = new StringBuilder();
-			foreach (IValidator validator in validators)
+			var output = new StringBuilder();
+			foreach (var validator in validators)
 			{
 				if (string.IsNullOrEmpty(referenceName) || validator.ReferenceId == referenceName)
 				{
-					this.ValidateAndAddValidator(validator);
+					ValidateAndAddValidator(validator);
 					output.AppendLine(validator.ToString());
 				}
 			}

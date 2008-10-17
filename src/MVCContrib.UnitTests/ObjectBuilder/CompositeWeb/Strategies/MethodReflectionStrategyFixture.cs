@@ -46,7 +46,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			MockBuilderContext context = CreateContext();
 
-			MockDependingObjectDerived depending =
+			var depending =
 				(MockDependingObjectDerived)context.HeadOfChain.BuildUp(context, typeof(MockDependingObjectDerived), null, null);
 
 			Assert.IsNotNull(depending);
@@ -58,7 +58,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			MockBuilderContext context = CreateContext();
 
-			MockRequiresNewObjectDerived depending =
+			var depending =
 				(MockRequiresNewObjectDerived)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObjectDerived), null, null);
 
 			Assert.IsNotNull(depending);
@@ -80,15 +80,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void CreateNewAttributeAlwaysCreatesNewObject()
 		{
-			MockBuilderContext context;
+			var context1 = CreateContext();
+			var depending1 =
+				(MockRequiresNewObject)context1.HeadOfChain.BuildUp(context1, typeof(MockRequiresNewObject), null, null);
 
-			context = CreateContext();
-			MockRequiresNewObject depending1 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
-
-			context = CreateContext();
-			MockRequiresNewObject depending2 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+			var context2 = CreateContext();
+			var depending2 =
+				(MockRequiresNewObject)context2.HeadOfChain.BuildUp(context2, typeof(MockRequiresNewObject), null, null);
 
 			Assert.IsNotNull(depending1);
 			Assert.IsNotNull(depending2);
@@ -100,21 +98,20 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void NamedAndUnnamedObjectsInLocatorDontGetUsedForCreateNew()
 		{
-			MockBuilderContext context;
-			object unnamed = new object();
-			object named = new object();
+			var unnamed = new object();
+			var named = new object();
 
-			context = CreateContext();
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
-			MockRequiresNewObject depending1 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+			var context1 = CreateContext();
+			context1.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
+			context1.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
+			var depending1 =
+				(MockRequiresNewObject)context1.HeadOfChain.BuildUp(context1, typeof(MockRequiresNewObject), null, null);
 
-			context = CreateContext();
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
-			context.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
-			MockRequiresNewObject depending2 =
-				(MockRequiresNewObject)context.HeadOfChain.BuildUp(context, typeof(MockRequiresNewObject), null, null);
+			var context2 = CreateContext();
+			context2.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), null), unnamed);
+			context2.Locator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), named);
+			var depending2 =
+				(MockRequiresNewObject)context2.HeadOfChain.BuildUp(context2, typeof(MockRequiresNewObject), null, null);
 
 			Assert.IsFalse(depending1.Foo == unnamed);
 			Assert.IsFalse(depending1.Foo == unnamed);
@@ -129,7 +126,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			// Mode 2, with an existing object
 			MockBuilderContext context = CreateContext();
-			object dependent = new object();
+			var dependent = new object();
 			context.InnerLocator.Add(new DependencyResolutionLocatorKey(typeof(object), null), dependent);
 
 			object depending = context.HeadOfChain.BuildUp(context, typeof(MockDependingObject), null, null);
@@ -143,15 +140,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void InjectionCreatingNewUnnamedObjectWillOnlyCreateOnce()
 		{
 			// Mode 2, both flavors
-			MockBuilderContext context;
+			var context1 = CreateContext();
+			var depending1 =
+				(MockDependingObject)context1.HeadOfChain.BuildUp(context1, typeof(MockDependingObject), null, null);
 
-			context = CreateContext();
-			MockDependingObject depending1 =
-				(MockDependingObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingObject), null, null);
-
-			context = CreateContext(context.Locator);
-			MockDependingObject depending2 =
-				(MockDependingObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingObject), null, null);
+			var context2 = CreateContext(context1.Locator);
+			var depending2 =
+				(MockDependingObject)context2.HeadOfChain.BuildUp(context2, typeof(MockDependingObject), null, null);
 
 			Assert.AreSame(depending1.InjectedObject, depending2.InjectedObject);
 		}
@@ -175,7 +170,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// Mode 2, explicit type
 			MockBuilderContext context = CreateContext();
 
-			MockDependsOnIFoo depending = (MockDependsOnIFoo)context.HeadOfChain.BuildUp(
+			var depending = (MockDependsOnIFoo)context.HeadOfChain.BuildUp(
 			                                                 	context, typeof(MockDependsOnIFoo), null, null);
 
 			Assert.IsNotNull(depending);
@@ -189,7 +184,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			// Mode 3, with an existing object
 			MockBuilderContext context = CreateContext();
-			object dependent = new object();
+			var dependent = new object();
 			context.InnerLocator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), dependent);
 
 			object depending = context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
@@ -203,15 +198,13 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void InjectionCreatingNewNamedObjectWillOnlyCreateOnce()
 		{
 			// Mode 3, both flavors
-			MockBuilderContext context;
+			var context1 = CreateContext();
+			var depending1 =
+				(MockDependingNamedObject)context1.HeadOfChain.BuildUp(context1, typeof(MockDependingNamedObject), null, null);
 
-			context = CreateContext();
-			MockDependingNamedObject depending1 =
-				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
-
-			context = CreateContext(context.Locator);
-			MockDependingNamedObject depending2 =
-				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
+			var context2 = CreateContext(context1.Locator);
+			var depending2 =
+				(MockDependingNamedObject)context2.HeadOfChain.BuildUp(context2, typeof(MockDependingNamedObject), null, null);
 
 			Assert.AreSame(depending1.InjectedObject, depending2.InjectedObject);
 		}
@@ -222,7 +215,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// Mode 3, no existing object
 			MockBuilderContext context = CreateContext();
 
-			MockDependingNamedObject depending =
+			var depending =
 				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
 
 			Assert.IsNotNull(depending);
@@ -235,7 +228,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// Mode 3, explicit type
 			MockBuilderContext context = CreateContext();
 
-			MockDependsOnNamedIFoo depending =
+			var depending =
 				(MockDependsOnNamedIFoo)context.HeadOfChain.BuildUp(context, typeof(MockDependsOnNamedIFoo), null, null);
 
 			Assert.IsNotNull(depending);
@@ -248,10 +241,10 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		public void NamedAndUnnamedObjectsDontCollide()
 		{
 			MockBuilderContext context = CreateContext();
-			object dependent = new object();
+			var dependent = new object();
 			context.InnerLocator.Add(new DependencyResolutionLocatorKey(typeof(object), null), dependent);
 
-			MockDependingNamedObject depending =
+			var depending =
 				(MockDependingNamedObject)context.HeadOfChain.BuildUp(context, typeof(MockDependingNamedObject), null, null);
 
 			Assert.IsFalse(ReferenceEquals(dependent, depending.InjectedObject));
@@ -265,7 +258,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// Mode 4, no object provided
 			MockBuilderContext context = CreateContext();
 
-			MockOptionalDependingObject depending =
+			var depending =
 				(MockOptionalDependingObject)context.HeadOfChain.BuildUp(context, typeof(MockOptionalDependingObject), null, null);
 
 			Assert.IsNotNull(depending);
@@ -277,7 +270,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			// Mode 4, with an existing object
 			MockBuilderContext context = CreateContext();
-			object dependent = new object();
+			var dependent = new object();
 			context.InnerLocator.Add(new DependencyResolutionLocatorKey(typeof(object), null), dependent);
 
 			object depending = context.HeadOfChain.BuildUp(context, typeof(MockOptionalDependingObject), null, null);
@@ -295,7 +288,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// Mode 5, no object provided
 			MockBuilderContext context = CreateContext();
 
-			MockOptionalDependingObjectWithName depending =
+			var depending =
 				(MockOptionalDependingObjectWithName)
 				context.HeadOfChain.BuildUp(context, typeof(MockOptionalDependingObjectWithName), null, null);
 
@@ -308,7 +301,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		{
 			// Mode 5, with an existing object
 			MockBuilderContext context = CreateContext();
-			object dependent = new object();
+			var dependent = new object();
 			context.InnerLocator.Add(new DependencyResolutionLocatorKey(typeof(object), "Foo"), dependent);
 
 			object depending = context.HeadOfChain.BuildUp(context, typeof(MockOptionalDependingObjectWithName), null, null);
@@ -343,7 +336,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void CanSearchDependencyUp()
 		{
-			Locator parent = new Locator();
+			var parent = new Locator();
 			// We're having a problem with this test intermittently failing.
 			// Since the locator is a weak referencing container, our current
 			// theory is that the GC is collecting this dependency before
@@ -351,7 +344,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 			// the object alive until after the test completes.
 			object intValue = 25;
 			parent.Add(new DependencyResolutionLocatorKey(typeof(int), null), intValue);
-			Locator child = new Locator(parent);
+			var child = new Locator(parent);
 			MockBuilderContext context = CreateContext(child);
 
 			GC.Collect();
@@ -363,10 +356,10 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[ExpectedException(typeof(DependencyMissingException))]
 		public void LocalSearchFailsIfDependencyIsOnlyUpstream()
 		{
-			Locator parent = new Locator();
+			var parent = new Locator();
 			object parentValue = 25;
 			parent.Add(new DependencyResolutionLocatorKey(typeof(int), null), parentValue);
-			Locator child = new Locator(parent);
+			var child = new Locator(parent);
 			MockBuilderContext context = CreateContext(child);
 
 			context.HeadOfChain.BuildUp(context, typeof(SearchLocalMockObject), null, null);
@@ -376,15 +369,14 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void LocalSearchGetsLocalIfDependencyIsAlsoUpstream()
 		{
-			Locator parent = new Locator();
+			var parent = new Locator();
 			object parentValue = 25;
 			object childValue = 15;
 			parent.Add(new DependencyResolutionLocatorKey(typeof(int), null), parentValue);
-			Locator child = new Locator(parent);
-			child.Add(new DependencyResolutionLocatorKey(typeof(int), null), childValue);
-			MockBuilderContext context = CreateContext(child);
+			var child = new Locator(parent) {{new DependencyResolutionLocatorKey(typeof(int), null), childValue}};
+		    MockBuilderContext context = CreateContext(child);
 
-			SearchLocalMockObject obj =
+			var obj =
 				(SearchLocalMockObject)context.HeadOfChain.BuildUp(context, typeof(SearchLocalMockObject), null, null);
 
 			Assert.AreEqual(15, obj.Value);
@@ -395,7 +387,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 		[Test]
 		public void RelectionStrategyCacheMethodReflectionInfo()
 		{
-			MockMethodReflectionStrategy mockReflectionStrategy = new MockMethodReflectionStrategy();
+			var mockReflectionStrategy = new MockMethodReflectionStrategy();
 
 			MockBuilderContext context1 = CreateContext(mockReflectionStrategy);
 			MockBuilderContext context2 = CreateContext(mockReflectionStrategy);
@@ -419,7 +411,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 
 		private MockBuilderContext CreateContext(IReadWriteLocator locator)
 		{
-			MockBuilderContext result = new MockBuilderContext(locator);
+			var result = new MockBuilderContext(locator);
 			result.InnerChain.Add(new SingletonStrategy());
 			result.InnerChain.Add(new MethodReflectionStrategy());
 			result.InnerChain.Add(new CreationStrategy());
@@ -431,7 +423,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 
 		private MockBuilderContext CreateContext(MockMethodReflectionStrategy mockReflectionStrategy)
 		{
-			MockBuilderContext context = new MockBuilderContext(new Locator());
+			var context = new MockBuilderContext(new Locator());
 			context.InnerChain.Add(new SingletonStrategy());
 			context.InnerChain.Add(mockReflectionStrategy);
 			context.InnerChain.Add(new CreationStrategy());
@@ -442,8 +434,14 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder.Strategies
 
 		public class MockMethodReflectionStrategy : MethodReflectionStrategy
 		{
-			public int MemberRequiresProcessingCalledCount = 0;
-			public int GetMembersCalledCount = 0;
+			public int MemberRequiresProcessingCalledCount;
+			public int GetMembersCalledCount;
+
+			public MockMethodReflectionStrategy()
+			{
+				GetMembersCalledCount = 0;
+				MemberRequiresProcessingCalledCount = 0;
+			}
 
 			protected override IEnumerable<IReflectionMemberInfo<MethodInfo>> GetMembers(IBuilderContext context,
 			                                                                             Type typeToBuild, object existing,

@@ -67,7 +67,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		[SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.SerializationFormatter)]
 		private static object BuildUpNewObject(IBuilderContext context, Type typeToBuild, object existing, string idToBuild)
 		{
-			ICreationPolicy policy = context.Policies.Get<ICreationPolicy>(typeToBuild, idToBuild);
+			var policy = context.Policies.Get<ICreationPolicy>(typeToBuild, idToBuild);
 
 			if(policy == null)
 			{
@@ -98,11 +98,11 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		{
 			if(context.Locator != null)
 			{
-				ILifetimeContainer lifetime = context.Locator.Get<ILifetimeContainer>(typeof(ILifetimeContainer), SearchMode.Local);
+				var lifetime = context.Locator.Get<ILifetimeContainer>(typeof(ILifetimeContainer), SearchMode.Local);
 
 				if(lifetime != null)
 				{
-					ISingletonPolicy singletonPolicy = context.Policies.Get<ISingletonPolicy>(typeToBuild, idToBuild);
+					var singletonPolicy = context.Policies.Get<ISingletonPolicy>(typeToBuild, idToBuild);
 
 					if(singletonPolicy != null && singletonPolicy.IsSingleton)
 					{
@@ -134,7 +134,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 
 			object[] parms = policy.GetParameters(context, type, id, constructor);
 
-			MethodBase method = (MethodBase)constructor;
+			var method = (MethodBase)constructor;
 			ValidateMethodParameters(method, parms, existing.GetType());
 			method.Invoke(existing, parms);
 		}
@@ -152,8 +152,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		{
 			if(!assignee.IsAssignableFrom(providedType))
 				throw new IncompatibleTypesException(string.Format(CultureInfo.CurrentCulture,
-				                                                   "The provided type {0} is not compatible with {1}.", assignee,
-				                                                   providedType, classBeingBuilt));
+                                                                   "The provided type {0} is not compatible with {1}. ClassBeingBuilt.FullName = '{2}'.", assignee, providedType, classBeingBuilt.FullName));
 		}
 	}
 }

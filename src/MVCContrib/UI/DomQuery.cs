@@ -12,14 +12,13 @@ namespace MvcContrib.UI
 		private readonly bool _hasOnlyIds;
 		private readonly IEnumerable<string> _ids;
 		private readonly bool _isSimple;
-		private bool _isSingle;
 
 		public DomQuery(string query, string id)
 		{
 			_query = query;
 			_hasOnlyIds = true;
 			_isSimple = true;
-			_ids = new string[] {id};
+			_ids = new[] {id};
 			IsSingle = true;
 		}
 		public DomQuery(string query, bool hasOnlyIds, IEnumerable<string> ids)
@@ -67,11 +66,7 @@ namespace MvcContrib.UI
 			get { return _ids; }
 		}
 
-		public bool IsSingle
-		{
-			get { return _isSingle; }
-			set { _isSingle = value; }
-		}
+		public bool IsSingle { get; set; }
 
 		/// <summary>The query string.</summary>
 		/// <returns>The CSS Selector query string.</returns>

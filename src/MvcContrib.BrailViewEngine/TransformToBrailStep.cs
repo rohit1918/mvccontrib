@@ -41,22 +41,21 @@ namespace MvcContrib.BrailViewEngine
 
 		public override void Run()
 		{
-			foreach(Module module in CompileUnit.Modules)
+			foreach(var module in CompileUnit.Modules)
 			{
 				foreach(string name in options.NamespacesToImport)
 				{
 					module.Imports.Add(new Import(module.LexicalInfo, name));
 				}
 
-				ClassDefinition macro = new ClassDefinition();
-				macro.Name = GetViewTypeName(module.FullName);
+				var macro = new ClassDefinition {Name = GetViewTypeName(module.FullName)};
 				macro.BaseTypes.Add(new SimpleTypeReference(options.BaseType));
 
 				AddConstructor(macro);
 				ScriptDirectoryProperty(macro, module);
 				AddRunMethod(macro, module);
 
-				foreach(TypeMember member in module.Members)
+				foreach(var member in module.Members)
 				{
 					macro.Members.Add(member);
 				}
@@ -76,9 +75,11 @@ namespace MvcContrib.BrailViewEngine
 		// this is used to calculate relative paths when loading subviews.
 		private void ScriptDirectoryProperty(ClassDefinition macro, Module module)
 		{
-			Property p = new Property("ScriptDirectory");
-			p.Modifiers = TypeMemberModifiers.Override;
-			p.Getter = new Method("getScriptDirectory");
+			var p = new Property("ScriptDirectory")
+			        	{
+			        		Modifiers = TypeMemberModifiers.Override,
+			        		Getter = new Method("getScriptDirectory")
+			        	};
 			p.Getter.Body.Add(
 				new ReturnStatement(
 					new StringLiteralExpression(
@@ -91,9 +92,7 @@ namespace MvcContrib.BrailViewEngine
 		// this is where all the global code from the script goes
 		private void AddRunMethod(ClassDefinition macro, Module module)
 		{
-			Method method = new Method("Run");
-			method.Modifiers = TypeMemberModifiers.Override;
-			method.Body = module.Globals;
+			var method = new Method("Run") {Modifiers = TypeMemberModifiers.Override, Body = module.Globals};
 			module.Globals = new Block();
 			macro.Members.Add(method);
 		}
@@ -101,15 +100,15 @@ namespace MvcContrib.BrailViewEngine
 		// create a constructor that delegate to the base class
 		private void AddConstructor(ClassDefinition macro)
 		{
-			Constructor ctor = new Constructor(macro.LexicalInfo);
+			var ctor = new Constructor(macro.LexicalInfo);
 
 			ctor.Parameters.Add(
 				new ParameterDeclaration("viewEngine",
 				                         new SimpleTypeReference("MvcContrib.BrailViewEngine.BooViewEngine"))); // TODO: Update Reference
 
-			ctor.Parameters.Add(
-				new ParameterDeclaration("output",
-				                         new SimpleTypeReference("System.IO.TextWriter")));
+//			ctor.Parameters.Add(
+//				new ParameterDeclaration("output",
+//				                         new SimpleTypeReference("System.IO.TextWriter")));
 //			ctor.Parameters.Add(
 //				new ParameterDeclaration("context",
 //				                         new SimpleTypeReference("Castle.MonoRail.Framework.IEngineContext")));
@@ -123,9 +122,9 @@ namespace MvcContrib.BrailViewEngine
 //										 new SimpleTypeReference("Castle.MonoRail.Framework.IControllerContext")));
 
 
-			MethodInvocationExpression mie = new MethodInvocationExpression(new SuperLiteralExpression());
+			var mie = new MethodInvocationExpression(new SuperLiteralExpression());
 			mie.Arguments.Add(AstUtil.CreateReferenceExpression("viewEngine"));
-			mie.Arguments.Add(AstUtil.CreateReferenceExpression("output"));
+//			mie.Arguments.Add(AstUtil.CreateReferenceExpression("output"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("context"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("__controller"));
 //			mie.Arguments.Add(AstUtil.CreateReferenceExpression("__controllerContext"));

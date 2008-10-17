@@ -17,8 +17,8 @@ namespace MvcContrib.UI.Tags
         public Script(IDictionary attributes)
             : base("script", attributes)
 		{
-			if (!this.Attributes.Contains(ATTR_TYPE))
-                this.Attributes[ATTR_TYPE] = "text/javascript";
+			if (!Attributes.Contains(ATTR_TYPE))
+                Attributes[ATTR_TYPE] = "text/javascript";
             EscapeInnerText = true;
 		}
 

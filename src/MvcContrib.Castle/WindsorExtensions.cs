@@ -1,8 +1,12 @@
+using System.Linq;
 using Castle.Core;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using System.Web.Mvc;
 using System;
 using System.Reflection;
+using MvcContrib.MetaData;
+
 namespace MvcContrib.Castle
 {
 	public static class WindsorExtensions
@@ -15,11 +19,11 @@ namespace MvcContrib.Castle
 		
 		public static IWindsorContainer RegisterControllers(this IWindsorContainer container, params Type[] controllerTypes)
 		{
-			foreach(Type type in controllerTypes)
+			foreach(var type in controllerTypes)
 			{
-				if(MvcContrib.ControllerFactories.DefaultControllerFactory.IsController(type))
+				if(ControllerDescriptor.IsController(type))
 				{
-					container.AddComponentWithLifestyle(type.Name.ToLower(), type, LifestyleType.Transient);
+					container.AddComponentLifeStyle(type.Name.ToLower(), type, LifestyleType.Transient);
 				}
 			}
 
@@ -28,7 +32,7 @@ namespace MvcContrib.Castle
 
 		public static IWindsorContainer RegisterControllers(this IWindsorContainer container, params Assembly[] assemblies)
 		{
-			foreach(Assembly assembly in assemblies)
+			foreach(var assembly in assemblies)
 			{
 				container.RegisterControllers(assembly.GetExportedTypes());
 			}

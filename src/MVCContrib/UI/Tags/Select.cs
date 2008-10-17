@@ -17,11 +17,7 @@ namespace MvcContrib.UI.Tags
 		private const string SIZE = "size";
 
 		private readonly List<Option> _options = new List<Option>();
-		private string _textField;
-		private string _valueField;
 		private readonly List<string> _selectedValues = new List<string>();
-		private string _firstOption;
-		private string _firstOptionValue;
 
 		public Select(IDictionary attributes)
 			: base("select", attributes)
@@ -120,8 +116,7 @@ namespace MvcContrib.UI.Tags
 
 		public void AddOption(string optionValue, string innerText)
 		{
-			Option option = new Option(new Hash(value => optionValue));
-			option.InnerText = innerText;
+			var option = new Option(new Hash(value => optionValue)) {InnerText = innerText};
 			_options.Add(option);
 		}
 
@@ -130,34 +125,18 @@ namespace MvcContrib.UI.Tags
 			get { return _options; }
 		}
 
-		public string TextField
-		{
-			get { return _textField; }
-			set { _textField = value; }
-		}
+		public string TextField { get; set; }
 
-		public string ValueField
-		{
-			get { return _valueField; }
-			set { _valueField = value; }
-		}
+		public string ValueField { get; set; }
 
 		public IList<string> SelectedValues
 		{
 			get { return _selectedValues.AsReadOnly(); }
 		}
 
-		public string FirstOption
-		{
-			get { return _firstOption; }
-			set { _firstOption = value; }
-		}
+		public string FirstOption { get; set; }
 
-		public string FirstOptionValue
-		{
-			get { return _firstOptionValue; }
-			set { _firstOptionValue = value; }
-		}
+		public string FirstOptionValue { get; set; }
 
 		public override string ToString()
 		{
@@ -167,13 +146,11 @@ namespace MvcContrib.UI.Tags
 
 		protected virtual string OptionsToString()
 		{
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
 
 			if (FirstOption != null)
 			{
-				Option option = new Option();
-				option.Value = FirstOptionValue;
-				option.InnerText = FirstOption;
+				var option = new Option {Value = FirstOptionValue, InnerText = FirstOption};
 
 				if (SelectedValues.Contains(option.Value))
 				{
@@ -183,7 +160,7 @@ namespace MvcContrib.UI.Tags
 				builder.Append(option.ToString());
 			}
 
-			foreach (Option option in _options)
+			foreach (var option in _options)
 			{
 				if (SelectedValues.Contains(option.Value))
 				{
@@ -209,13 +186,13 @@ namespace MvcContrib.UI.Tags
 				if (typeof(ICollection).IsAssignableFrom(values.GetType()))
 				{
 					var collection = (ICollection)values;
-					if (!string.IsNullOrEmpty(_valueField) && collection.Count > 0)
+					if (!string.IsNullOrEmpty(ValueField) && collection.Count > 0)
 					{
 						var enumerator = collection.GetEnumerator();
 						if (enumerator.MoveNext())
 						{
 							var type = enumerator.Current.GetType();
-							prop = type.GetProperty(_valueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+							prop = type.GetProperty(ValueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
 						}
 					}
 					foreach (var item in collection)
@@ -225,10 +202,10 @@ namespace MvcContrib.UI.Tags
 				}
 				else
 				{
-					if (!string.IsNullOrEmpty(_valueField))
+					if (!string.IsNullOrEmpty(ValueField))
 					{
 						var type = values.GetType();
-						prop = type.GetProperty(_valueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+						prop = type.GetProperty(ValueField, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
 					}
 					_selectedValues.Add(ConvertValue(values, prop));
 				}

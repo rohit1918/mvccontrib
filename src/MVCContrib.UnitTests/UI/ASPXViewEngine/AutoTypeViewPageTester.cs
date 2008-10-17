@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using MvcContrib.UI.ASPXViewEngine;
 using System.Web.Mvc;
-using System.Collections;
 
 namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 {
@@ -22,7 +18,7 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_Null()
 		{
-			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
+			var viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 			viewPage.SetViewData(null);
 			Assert.IsNull(viewPage.ViewData.Model);
 		}
@@ -30,8 +26,8 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_Correct_Type_Without_Conversion()
 		{
-			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
-			TestViewData data = new TestViewData();
+			var viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
+			var data = new TestViewData();
 			viewPage.SetViewData(new ViewDataDictionary(data));
 			Assert.AreSame(data, viewPage.ViewData.Model, "ViewData was not set without conversion");
 		}
@@ -39,10 +35,10 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_IDictionary()
 		{
-			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
+			var viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 
 			var data = new ViewDataDictionary();
-			Uri uriValue = new Uri("http://www.google.com/");
+			var uriValue = new Uri("http://www.google.com/");
 			data["StringValue"] = "hello";
 			data["BoolValue"] = true;
 			data["UriValue"] = uriValue;
@@ -57,9 +53,9 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_Anonymous_Type()
 		{
-			AutoTypeViewPageTestingSubclass<TestViewData> viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
+			var viewPage = new AutoTypeViewPageTestingSubclass<TestViewData>();
 
-			Uri uriValue = new Uri("http://www.google.com/");
+			var uriValue = new Uri("http://www.google.com/");
 			viewPage.SetViewData(new ViewDataDictionary(new
 			{
 				StringValue = "nice",

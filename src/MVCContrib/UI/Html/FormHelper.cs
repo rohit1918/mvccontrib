@@ -3,13 +3,8 @@ using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.UI.Tags;
 using System;
-using System.Web;
 using MvcContrib.Services;
-using System.Web.Handlers;
-using System.Text;
-using MvcContrib.UI.Tags.Validators;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MvcContrib.UI.Html
 {
@@ -41,8 +36,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string TextField(string name, IDictionary attributes)
 		{
-			TextBox options = new TextBox(attributes);
-			options.Name = name;
+			var options = new TextBox(attributes) {Name = name};
 			return TextField(options);
 		}
 
@@ -64,8 +58,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string PasswordField(string name, IDictionary attributes)
 		{
-			Password options = new Password(attributes);
-			options.Name = name;
+			var options = new Password(attributes) {Name = name};
 			return PasswordField(options);
 		}
 
@@ -87,8 +80,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string HiddenField(string name, IDictionary attributes)
 		{
-			HiddenField options = new HiddenField(attributes);
-			options.Name = name;
+			var options = new HiddenField(attributes) {Name = name};
 			return HiddenField(options);
 		}
 
@@ -110,8 +102,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string CheckBoxField(string name, IDictionary attributes)
 		{
-			CheckBoxField options = new CheckBoxField(attributes);
-			options.Name = name;
+			var options = new CheckBoxField(attributes) {Name = name};
 			return CheckBoxField(options);
 		}
 
@@ -131,13 +122,12 @@ namespace MvcContrib.UI.Html
 				options.Checked = isChecked;
 			}
 
-			HiddenField hidden = new HiddenField();
-			hidden.Value = "false";
+			var hidden = new HiddenField {Value = "false"};
 			if (!string.IsNullOrEmpty(options.Id))
 				hidden.Id = options.Id + "H";
 			hidden.Name = options.Name;
 
-			return options.ToString() + hidden.ToString();
+			return string.Concat(options, hidden);
 		}
 
 		public virtual string TextArea(string name)
@@ -147,8 +137,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string TextArea(string name, IDictionary attributes)
 		{
-			TextArea options = new TextArea(attributes);
-			options.Name = name;
+			var options = new TextArea(attributes) {Name = name};
 			return TextArea(options);
 		}
 
@@ -172,14 +161,13 @@ namespace MvcContrib.UI.Html
 
 		public virtual string Submit(string value)
 		{
-			SubmitButton button = new SubmitButton();
-			button.Value = value;
+			var button = new SubmitButton {Value = value};
 			return Submit(button);
 		}
 
 		public virtual string Submit(string value, IDictionary attributes)
 		{
-			SubmitButton button = new SubmitButton(attributes);
+			var button = new SubmitButton(attributes);
 
 			if (button.Value == null)
 				button.Value = value;
@@ -194,15 +182,13 @@ namespace MvcContrib.UI.Html
 
 		public virtual string ImageButton(string src, string alt)
 		{
-			InputImage options = new InputImage(src);
-			options.Alt = alt;
+			var options = new InputImage(src) {Alt = alt};
 			return options.ToString();
 		}
 
 		public virtual string ImageButton(string src, string alt, IDictionary attributes)
 		{
-			InputImage options = new InputImage(src, attributes);
-			options.Alt = alt;
+			var options = new InputImage(src, attributes) {Alt = alt};
 			return options.ToString();
 		}
 
@@ -254,10 +240,10 @@ namespace MvcContrib.UI.Html
 				options.SetSelectedValues(value);
 			}
 
-			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
-			{
-				options.AddOption(value.ToString(), text.ToString());
-			});
+			ProcessDataSource(dataSource, options.TextField, options.ValueField,
+				(count, text, value) => options.AddOption(
+					value == null ? string.Empty : value.ToString(), 
+					text == null ? string.Empty : text.ToString()));
 
 			return options.ToString();
 		}
@@ -294,9 +280,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual string RadioField(string name, object value, IDictionary attributes)
 		{
-			RadioField options = new RadioField(attributes);
-			options.Name = name;
-			options.Value = value;
+			var options = new RadioField(attributes) {Name = name, Value = value};
 			return RadioField(options);
 		}
 
@@ -331,10 +315,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual CheckBoxList CheckBoxList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
-			CheckBoxList list = new CheckBoxList(attributes);
-			list.Name = name;
-			list.TextField = textField;
-			list.ValueField = valueField;
+			var list = new CheckBoxList(attributes) {Name = name, TextField = textField, ValueField = valueField};
 			return CheckBoxList(dataSource, list);
 		}
 
@@ -342,9 +323,7 @@ namespace MvcContrib.UI.Html
 		{
 			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
 			{
-				CheckBoxField field = new CheckBoxField();
-				field.Name = options.Name;
-				field.Label = text.ToString();
+				var field = new CheckBoxField {Name = options.Name, Label = text.ToString()};
 				field.Id = field.Name + "-" + count;
 				field.Value = value;
 
@@ -361,10 +340,7 @@ namespace MvcContrib.UI.Html
 
 		public virtual RadioList RadioList(string name, object dataSource, string textField, string valueField, IDictionary attributes)
 		{
-			RadioList list = new RadioList(attributes);
-			list.Name = name;
-			list.TextField = textField;
-			list.ValueField = valueField;
+			var list = new RadioList(attributes) {Name = name, TextField = textField, ValueField = valueField};
 			return RadioList(dataSource, list);
 		}
 
@@ -372,9 +348,7 @@ namespace MvcContrib.UI.Html
 		{
 			ProcessDataSource(dataSource, options.TextField, options.ValueField, delegate(int count, object text, object value)
 			{
-				RadioField field = new RadioField();
-				field.Name = options.Name;
-				field.Label = text.ToString();
+				var field = new RadioField {Name = options.Name, Label = text.ToString()};
 				field.Id = field.Name + "-" + count;
 				field.Value = value;
 
@@ -396,7 +370,7 @@ namespace MvcContrib.UI.Html
 			}
 			else
 			{
-				IEnumerable ds = dataSource as IEnumerable;
+				var ds = dataSource as IEnumerable;
 
 				PropertyInfo textProperty = null;
 				PropertyInfo valueProperty = null;
@@ -417,7 +391,7 @@ namespace MvcContrib.UI.Html
 				{
 					int count = 0;
 
-					foreach (object item in ds)
+					foreach (var item in ds)
 					{
 						object value = valueProperty.GetValue(item, null);
 						object text = textProperty.GetValue(item, null);
@@ -444,7 +418,7 @@ namespace MvcContrib.UI.Html
 				item = (T)raw;
 			}
 
-			SmartForm<T> form = new SmartForm<T>(viewDataKey, url, block, this, item, attributes);
+			var form = new SmartForm<T>(viewDataKey, url, block, this, item, attributes);
 			ViewContext.HttpContext.Response.Output.Write(form.ToString());
 		}
 
@@ -455,7 +429,7 @@ namespace MvcContrib.UI.Html
 
 		public void For<T>(T dataItem, string url, IDictionary attributes, Action<SmartForm<T>> block)
 		{
-			SmartForm<T> form = new SmartForm<T>(url, block, this, dataItem, attributes);
+			var form = new SmartForm<T>(url, block, this, dataItem, attributes);
 			ViewContext.HttpContext.Response.Output.Write(form.ToString());
 		}
 

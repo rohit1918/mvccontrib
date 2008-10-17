@@ -97,9 +97,9 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder
 		private IBuilderContext MakeContext(IBuilderStrategyChain chain,
 		                                    IReadWriteLocator locator, params PolicyList[] transientPolicies)
 		{
-			PolicyList policies = new PolicyList(_policies);
+			var policies = new PolicyList(_policies);
 
-			foreach(PolicyList policyList in transientPolicies)
+			foreach(var policyList in transientPolicies)
 				policies.AddPolicies(policyList);
 
 			return new BuilderContext(chain, locator, policies);
@@ -119,7 +119,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder
 			if(typeof(TItem).IsValueType == false && item == null)
 				throw new ArgumentNullException("item");
 
-			return DoTearDown<TItem>(locator, item);
+			return DoTearDown(locator, item);
 		}
 
 		private TItem DoTearDown<TItem>(IReadWriteLocator locator, TItem item)
@@ -129,7 +129,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder
 
 			IBuilderContext context = MakeContext(chain, locator);
 
-			TItem result = (TItem)chain.Head.TearDown(context, item);
+			var result = (TItem)chain.Head.TearDown(context, item);
 			return result;
 		}
 	}

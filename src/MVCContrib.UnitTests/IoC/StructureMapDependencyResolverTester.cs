@@ -1,11 +1,5 @@
-using System;
-using System.Web.Mvc;
-using MvcContrib.ControllerFactories;
-using MvcContrib.Interfaces;
 using MvcContrib.StructureMap;
-using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using StructureMap;
 
 namespace MvcContrib.UnitTests.IoC

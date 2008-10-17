@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 
 namespace MvcContrib.UI
 {
@@ -18,14 +15,9 @@ namespace MvcContrib.UI
 		private const string ON_KEY_DOWN = "onkeydown";
 		private const string ON_KEY_UP = "onkeyup";
 
-        private bool _useInlineScripts;
-        public virtual bool UseInlineScripts
-        {
-            get { return _useInlineScripts; }
-            set { _useInlineScripts = value; }
-        }
+		public virtual bool UseInlineScripts { get; set; }
 
-        public ScriptableElement()
+		public ScriptableElement()
             : base("Button", Hash.Empty)
         {
         }

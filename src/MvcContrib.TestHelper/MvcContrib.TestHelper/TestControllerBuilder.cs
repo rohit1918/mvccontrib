@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.ControllerFactories;
+using MvcContrib.Services;
 using Rhino.Mocks;
 
 namespace MvcContrib.TestHelper
@@ -30,15 +30,8 @@ namespace MvcContrib.TestHelper
 			RouteData = new RouteData();
 			_mocks = new MockRepository();
 			Session = new MockSession();
-			IControllerFactory = new IoCControllerFactory();
 			SetupHttpContext();
 		}
-
-		/// <summary>
-		/// Gets the IControllerFactory that will be used to create controllers with CreateController, by default IoCControllerFactory
-		/// </summary>
-		/// <value>The IControllerFactory</value>
-		public IControllerFactory IControllerFactory { get; protected set; }
 
 		/// <summary>
 		/// Gets the HttpContext that built controllers will have set internally when created with InitializeController
@@ -94,6 +87,12 @@ namespace MvcContrib.TestHelper
 		/// <value>The PathInfo string</value>
 		public string PathInfo { get; set; }
 
+		/// <summary>
+		/// Gets or sets the RawUrl string that built controllers will have set internally when created with InitializeController
+		/// </summary>
+		/// <value>The RawUrl string</value>
+		public string RawUrl { get; set; }
+
 		protected void SetupHttpContext()
 		{
 			HttpContext = _mocks.DynamicMock<HttpContextBase>();
@@ -115,16 +114,18 @@ namespace MvcContrib.TestHelper
 			Func<NameValueCollection> paramsFunc = () => new NameValueCollection {QueryString, Form};
 			SetupResult.For(request.Params).Do(paramsFunc);
 
-			SetupResult.For(request.AppRelativeCurrentExecutionFilePath).Return(AppRelativeCurrentExecutionFilePath);
-			SetupResult.For(request.ApplicationPath).Return(ApplicationPath);
-			SetupResult.For(request.PathInfo).Return(PathInfo);
+			SetupResult.For(request.AppRelativeCurrentExecutionFilePath).Do(
+				(Func<string>)(() => AppRelativeCurrentExecutionFilePath));
+			SetupResult.For(request.ApplicationPath).Do((Func<string>)(() => ApplicationPath));
+			SetupResult.For(request.PathInfo).Do((Func<string>)(() => PathInfo));
+			SetupResult.For(request.RawUrl).Do((Func<string>)(() => RawUrl));
+			SetupResult.For(HttpContext.User).PropertyBehavior();
 
 			_mocks.Replay(HttpContext);
 			_mocks.Replay(request);
 			_mocks.Replay(response);
 
-			//TempDataDictionary = new TempDataDictionary(HttpContext);
-            TempDataDictionary = new TempDataDictionary();
+			TempDataDictionary = new TempDataDictionary();
 		}
 
 		/// <summary>
@@ -159,9 +160,9 @@ namespace MvcContrib.TestHelper
 		/// <returns>A new controller of the specified type</returns>
 		public T CreateIoCController<T>() where T : Controller
 		{
-			var controller = (Controller)IControllerFactory.CreateController(null, typeof(T).Name);
+			var controller = DependencyResolver.GetImplementationOf<T>();
 			InitializeController(controller);
-			return controller as T;
+			return controller;
 		}
 	}
 }

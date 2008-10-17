@@ -1,10 +1,10 @@
 using System.IO;
+using NUnit.Framework;
+using Rhino.Mocks;
+using MvcContrib.BrailViewEngine;
 
 namespace MvcContrib.UnitTests.BrailViewEngine
 {
-	using NUnit.Framework;
-	using Rhino.Mocks;
-	using MvcContrib.BrailViewEngine;
 
 	[TestFixture]
 	[Category("BrailViewEngine")]
@@ -12,18 +12,19 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 	{
 		private MockRepository _mocks;
 		private BrailBase _view;
-
+	    private BooViewEngine _viewEngine;
 		[SetUp]
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			_view = _mocks.CreateMock<BrailBase>(null, null);
+		    _viewEngine = _mocks.DynamicMock<BooViewEngine>();
+            _view = _mocks.StrictMock<BrailBase>(_viewEngine);
 		}
 
 		[Test]
 		public void ForCoverage()
 		{
-			DslProvider provider = new DslProvider(_view);
+			var provider = new DslProvider(_view);
 			provider.Register(new HtmlExtension(new StringWriter()));
 			provider.QuackGet("Dsl", null);
 			provider.QuackGet("NotThere", null);

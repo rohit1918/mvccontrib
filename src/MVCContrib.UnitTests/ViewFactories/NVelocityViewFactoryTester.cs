@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
-using NVelocity.Runtime;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ViewFactories
@@ -30,17 +30,17 @@ namespace MvcContrib.UnitTests.ViewFactories
 			IDictionary properties = new Hashtable();
 			properties["resource.loader"] = "assembly";
 			properties["assembly.resource.loader.class"] = "NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader, NVelocity";
-			properties["assembly.resource.loader.assembly"] = "MVCContrib.UnitTests";
+			properties["assembly.resource.loader.assembly"] = new List<string>() {"MVCContrib.UnitTests"};
 			properties["master.folder"] = viewPath;
 			_factory = new NVelocityViewFactory(properties);
 
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var response = _mocks.DynamicMock<HttpResponseBase>();
 			SetupResult.For(httpContext.Response).Return(response);
 			SetupResult.For(response.Output).Return(_output);
 
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<ControllerBase>();
 			
 			_mocks.ReplayAll();
 
@@ -51,51 +51,52 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void WillAcceptNullProperties()
 		{
-			NVelocityViewFactory factory = new NVelocityViewFactory();
-			factory = new NVelocityViewFactory(null);
+			new NVelocityViewFactory();
+			new NVelocityViewFactory(null);
 		}
 
 		[Test]
 		public void LoadValidView()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", string.Empty, null, null);
-			NVelocityView view = _factory.CreateView(context);
+			NVelocityView view = (NVelocityView)_factory.FindView(_controllerContext, "view", null).View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 		}
 
-		[Test]
+		[Test] //TODO: Preview 5 This should not throw according to the new view engine rules.
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidViewThrows()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "nonExistant", string.Empty, null, null);
-			_factory.CreateView(context);
+			//var context = new ViewContext(_controllerContext, "nonExistant", null, null);
+			_factory.FindView(_controllerContext, "nonExistant", null);
 		}
 
 		[Test]
 		public void LoadValidViewWithMaster()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
-			NVelocityView view = _factory.CreateView(context);
+			//var context = new ViewContext(_controllerContext, "view", null, null);
+			NVelocityView view = (NVelocityView)_factory.FindView(_controllerContext, "view", "master").View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 			Assert.IsNotNull(view.MasterTemplate);
 		}
 
-		[Test]
+		[Test] //TODO: Preview 5 This should not throw according to the new view engine rules.
 		[ExpectedException(typeof(InvalidOperationException))]
 		public void InvalidMasterThrows()
 		{
-			ViewContext context = new ViewContext(_controllerContext, "view", "nonExistant", null, null);
-			_factory.CreateView(context);
+			//var context = new ViewContext(_controllerContext, "view", null, null);
+			_factory.FindView(_controllerContext, "view", "nonExistant");
 		}
 
 		[Test]
 		public void ShouldRenderView()
 		{
 			string expected = "Master Template View Template";
-			ViewContext context = new ViewContext(_controllerContext, "view", "master", null, null);
-			_factory.RenderView(context);
+
+		    var view = _factory.FindView(_controllerContext, "view", "master").View;
+            var context = new ViewContext(_controllerContext, view, null, null);
+            view.Render(context, _output);
 			string output = _output.ToString();
 			Assert.AreEqual(expected, output);
 		}

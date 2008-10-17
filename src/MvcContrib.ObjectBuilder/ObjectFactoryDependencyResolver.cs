@@ -1,6 +1,5 @@
 using System;
 using MvcContrib.Interfaces;
-using MvcContrib.ObjectBuilder;
 
 namespace MvcContrib.ObjectBuilder
 {

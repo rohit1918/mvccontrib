@@ -9,12 +9,13 @@ namespace MvcContrib.UI.Html.Grid
 	/// Constructs GridColumn objects representing the columns to be rendered in a grid.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, INestedGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>> where T : class
+	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>> where T : class
 	{
 		
 		private readonly List<GridColumn<T>> columns = new List<GridColumn<T>>(); //Final collection of columns to render
 		private GridColumn<T> currentColumn; //The column currently being parsed
 		public Action<T> RowStartBlock { get; set; }
+		public Action<T, bool> RowStartWithAlternateBlock { get; set; }
 		public Action<T> RowEndBlock { get; set; }
 
 		public INestedGridColumnBuilder<T> Formatted(string format)
@@ -93,6 +94,11 @@ namespace MvcContrib.UI.Html.Grid
 		public void RowStart(Action<T> block)
 		{
 			RowStartBlock = block;
+		}
+
+		public void RowStart(Action<T, bool> block)
+		{
+			RowStartWithAlternateBlock = block;
 		}
 
 		public void RowEnd(Action<T> block)

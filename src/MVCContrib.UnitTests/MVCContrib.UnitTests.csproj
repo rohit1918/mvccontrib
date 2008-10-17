@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0B8EC0CE-1AC1-4ACF-A380-A588E5E1E9CF}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -93,9 +93,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\NVelocity.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.3.0.906, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+    <Reference Include="Rhino.Mocks, Version=3.5.0.2, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\rhinomocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Spark, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7f8549eed921a12c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\spark\Bin\Spark.dll</HintPath>
+    </Reference>
+    <Reference Include="Spark.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\spark\Bin\Spark.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Core, Version=1.1.0.2, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,6 +118,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -127,11 +136,13 @@
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\AspNetMvc\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\AspNetMvc\System.Web.Routing.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -145,21 +156,27 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AcceptGetAttributeTester.cs" />
+    <Compile Include="AcceptPostAttributeTester.cs" />
     <Compile Include="ActionFilters\LayoutAttributeTester.cs" />
     <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
+    <Compile Include="Binders\SubControllerBinderTester.cs" />
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
+    <Compile Include="ControllerExtensionsTester.cs" />
+    <Compile Include="ControllerFactories\ControllerFactoryTestExtension.cs" />
     <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
-    <Compile Include="ControllerFactories\DefaultControllerFactoryTester.cs" />
+    <Compile Include="ConventionController\AnotherTestController.cs" />
     <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
     <Compile Include="ConventionController\ConventionControllerTester.cs" />
-    <Compile Include="ConventionController\ConventionRescueTester.cs" />
     <Compile Include="ConventionController\CustomActionResult.cs" />
     <Compile Include="ConventionController\DefaultActionController.cs" />
     <Compile Include="ConventionController\TestBinder.cs" />
     <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="ConventionController\TestFilter.cs" />
+    <Compile Include="EnumerableExtensionTests.cs" />
+    <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -199,20 +216,11 @@
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
     <Compile Include="MetaData\FilterTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
-    <Compile Include="MetaData\SimpleParameterBinderTester.cs" />
     <Compile Include="ActionResults\XmlActionResultTester.cs" />
-    <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NHamlViewEngine\NHamlControllerFactoryTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NHamlViewEngine\NHamlViewTester.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="MvcRouteTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs" />
+    <Compile Include="NHamlViewEngine\NHamlViewTester.cs" />
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\ConstructorReflectionStrategyFixture.cs" />
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\CreationStrategyFixture.cs" />
     <Compile Include="ObjectBuilder\CompositeWeb\Strategies\MethodReflectionStrategyFixture.cs" />
@@ -228,6 +236,9 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
+    <Compile Include="SparkViewEngine\SparkViewFactoryTester.cs" />
+    <Compile Include="SparkViewEngine\ViewSourceLoaderAdapterTester.cs" />
+    <Compile Include="SubControllerTester.cs" />
     <Compile Include="TestHelper\ActionResultHelperTester.cs" />
     <Compile Include="TestHelper\ControllerBuilderTests.cs" />
     <Compile Include="TestHelper\SessionTests.cs" />
@@ -245,6 +256,7 @@
     <Compile Include="UI\Html\FormHelperTester.cs" />
     <Compile Include="UI\Html\GridColumnBuilderTester.cs" />
     <Compile Include="UI\Html\HtmlGridTester.cs" />
+    <Compile Include="UI\Html\HtmlHelperTests.cs" />
     <Compile Include="UI\Html\InputElementListTester.cs" />
     <Compile Include="UI\Html\ScriptElementTester.cs" />
     <Compile Include="UI\Html\SmartFormTester.cs" />
@@ -291,6 +303,10 @@
     <ProjectReference Include="..\MvcContrib.ObjectBuilder\MvcContrib.ObjectBuilder.csproj">
       <Project>{25482A84-38C4-470B-A8B8-5412226FDEEF}</Project>
       <Name>MvcContrib.ObjectBuilder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.SparkViewEngine\MvcContrib.SparkViewEngine.csproj">
+      <Project>{56202292-9363-4DED-99DD-824A111EE18D}</Project>
+      <Name>MvcContrib.SparkViewEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Spring\MvcContrib.Spring.csproj">
       <Project>{5CE100F1-E229-43A2-9564-90C4B90558C6}</Project>
@@ -377,8 +393,18 @@
     <None Include="NHamlViewEngine\Views\Shared\specificMaster.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SparkViewEngine\Views\Home\List.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SparkViewEngine\Views\Layouts\Application.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SparkViewEngine\Views\Shared\SparkPartial.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Configuration\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

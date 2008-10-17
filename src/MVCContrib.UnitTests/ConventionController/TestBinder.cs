@@ -1,14 +1,19 @@
 using System;
 using System.Web.Mvc;
+using MvcContrib.Attributes;
 using MvcContrib.MetaData;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
-	public class TestBinder : Attribute, IParameterBinder
+	public class TestBinder : AbstractParameterBinderAttribute
 	{
-		public object Bind(Type targetType, string paramName, ControllerContext context)
+		public TestBinder() : base(null)
 		{
-			((TestController)context.Controller).BinderFilterOrdering += "Binder";
+		}
+
+		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
+		{
+			((TestController)bindingContext.Controller).BinderFilterOrdering += "Binder";
 			return null;
 		}
 	}

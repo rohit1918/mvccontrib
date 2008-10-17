@@ -12,6 +12,8 @@ using System.Collections;
 
 namespace MvcContrib.UnitTests.UI.Html
 {
+	#pragma warning disable 618,612
+
 	[TestFixture]
 	public class SmartFormTester
 	{
@@ -25,18 +27,18 @@ namespace MvcContrib.UnitTests.UI.Html
 			public virtual void Setup()
 			{
 				_mocks = new MockRepository();
-				HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-				HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
-				HttpSessionStateBase session = _mocks.DynamicMock<HttpSessionStateBase>();
-				IController controller = _mocks.DynamicMock<IController>();
-
+				var httpContext = _mocks.DynamicMock<HttpContextBase>();
+				var response = _mocks.DynamicMock<HttpResponseBase>();
+				var session = _mocks.DynamicMock<HttpSessionStateBase>();
+				var controller = _mocks.DynamicMock<ControllerBase>();
+			    var view = _mocks.DynamicMock<IView>();
 				SetupResult.For(httpContext.Response).Return(response);
 				SetupResult.For(httpContext.Session).Return(session);
 				SetupResult.For(response.Filter).PropertyBehavior();
 				SetupResult.For(response.ContentEncoding).Return(Encoding.UTF8);
 
 				_mocks.ReplayAll();
-				_context = new ViewContext(httpContext,new RouteData(), controller, "index", "", new ViewDataDictionary(), new TempDataDictionary());
+				_context = new ViewContext(httpContext,new RouteData(), controller, view, new ViewDataDictionary(), new TempDataDictionary());
 				_helper = _mocks.DynamicMock<IFormHelper>();
 				SetupResult.For(_helper.ViewContext).Return(_context);
 				_mocks.Replay(_helper);
@@ -49,30 +51,30 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_Item_should_match_ctor_argument()
 			{
-				object obj = new object();
+				var obj = new object();
 				 
-				SmartForm<object> form = new SmartForm<object>("test", delegate { }, _helper, obj, Hash.Empty);
+				var form = new SmartForm<object>("test", delegate { }, _helper, obj, Hash.Empty);
 				Assert.That(form.Item, Is.SameAs(obj));
 			}
 
 			[Test]
 			public void Then_Method_should_default_to_post()
 			{
-				SmartForm<object> form = new SmartForm<object>("test", delegate { }, _helper, new object(), Hash.Empty);
-				Assert.That(form.Method, Is.EqualTo(MvcContrib.UI.Tags.Form.FORM_METHOD.POST));
+				var form = new SmartForm<object>("test", delegate { }, _helper, new object(), Hash.Empty);
+				Assert.That(form.Method, Is.EqualTo(Form.FORM_METHOD.POST));
 			}
 
 			[Test]
 			public void Then_Action_should_match_ctor_argument()
 			{
-				SmartForm<object> form = new SmartForm<object>("test", delegate { }, _helper, new object(), Hash.Empty);
+				var form = new SmartForm<object>("test", delegate { }, _helper, new object(), Hash.Empty);
 				Assert.That(form.Action, Is.EqualTo("test"));
 			}
 
 			[Test]
 			public void Then_FormHelper_should_match_ctor_argument()
 			{
-				SmartForm<object> form = new SmartForm<object>("test", delegate  { }, _helper, new object(), Hash.Empty);
+				var form = new SmartForm<object>("test", delegate  { }, _helper, new object(), Hash.Empty);
 				Assert.That(form.FormHelper, Is.SameAs(_helper));
 			}
 		}
@@ -90,7 +92,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_Inner_contents_should_be_rendered_correctly()
 			{
-				SmartForm<object> form = new SmartForm<object>("test", f => FakeWrite("Test"), _helper, new object(),Hash.Empty);
+				var form = new SmartForm<object>("test", f => FakeWrite("Test"), _helper, new object(),Hash.Empty);
 				string expected = "<form method=\"post\" action=\"test\">Test</form>";
 				Assert.That(form.ToString(), Is.EqualTo(expected));
 			}
@@ -114,20 +116,20 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_they_should_be_delegated_to_the_underlying_FormHelper()
 			{
-				TextBox tb = new TextBox();
+				var tb = new TextBox();
 				IDictionary hash = Hash.Empty;
-				Password pw = new Password();
-				HiddenField hidden = new HiddenField();
-				CheckBoxField checkbox = new CheckBoxField();
-				TextArea textArea = new TextArea();
-				SubmitButton submit = new SubmitButton(); 
-				object fakeDataItem = new object();
-				Select select = new Select();
-				RadioField radio = new RadioField();
+				var pw = new Password();
+				var hidden = new HiddenField();
+				var checkbox = new CheckBoxField();
+				var textArea = new TextArea();
+				var submit = new SubmitButton(); 
+				var fakeDataItem = new object();
+				var select = new Select();
+				var radio = new RadioField();
 
 				using(_mocks.Record())
 				{
-					IDataBinder binder = _mocks.DynamicMock<IDataBinder>();
+					var binder = _mocks.DynamicMock<IDataBinder>();
 					SetupResult.For(binder.NestedBindingScope(null)).IgnoreArguments().Return(_mocks.DynamicMock<IDisposable>());
 					SetupResult.For(_helper.Binder).Return(binder);
 
@@ -163,7 +165,6 @@ namespace MvcContrib.UnitTests.UI.Html
 					Expect.Call(_helper.RadioField("Role", null)).Return(null);
 					Expect.Call(_helper.RadioField("Role", null, hash)).Return(null);
 					Expect.Call(_helper.RadioField(radio)).Return(null);
-
 				}
 				using(_mocks.Playback())
 				{
@@ -207,11 +208,11 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				_form = new SmartForm<object>("person", "test", delegate { }, _helper, new object(), Hash.Empty);
 				IDictionary hash = Hash.Empty;
-				object fakeDataItem = new object();
+				var fakeDataItem = new object();
 
 				using (_mocks.Record())
 				{
-					IDataBinder binder = _mocks.DynamicMock<IDataBinder>();
+					var binder = _mocks.DynamicMock<IDataBinder>();
 					SetupResult.For(binder.NestedBindingScope(null)).IgnoreArguments().Return(_mocks.DynamicMock<IDisposable>());
 					SetupResult.For(_helper.Binder).Return(binder);
 
@@ -271,4 +272,5 @@ namespace MvcContrib.UnitTests.UI.Html
 			}
 		}
 	}
+	#pragma warning restore 618,612
 }

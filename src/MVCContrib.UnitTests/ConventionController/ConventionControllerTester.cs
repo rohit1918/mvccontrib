@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Specialized;
-using System.Reflection;
 using System.Web.Mvc;
-using System.Web.Routing;
 using MvcContrib.ActionResults;
-using MvcContrib.MetaData;
-using MvcContrib.UnitTests.ConventionController;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using System.Web;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
@@ -17,12 +10,10 @@ namespace MvcContrib.UnitTests.ConventionController
 	public class ConventionControllerTester
 	{
 		private TestController _controller;
-		private MockRepository _mocks;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mocks = new MockRepository();
 			_controller = new TestController();
 		}
 
@@ -39,6 +30,40 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			var result = _controller.BinaryResult() as BinaryResult;
 			Assert.That(result, Is.Not.Null);
+		}
+
+		[Test]
+		public void Expression_based_redirect_to_action_should_redirect_correctly_to_same_controller()
+		{
+			var redirectToRouteResult = _controller.RedirectActionOnSameController();
+
+			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("Test"));
+			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("BasicAction"));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Expression_based_redirect_to_action_should_redirect_correctly_to_another_controller()
+		{
+			var redirectToRouteResult = _controller.RedirectActionOnAnotherController();
+
+			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("AnotherTest"));
+			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("SomeAction"));
+			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(2));
+		}
+
+		[Test]
+		public void When_a_conventioncontroller_is_instantiated_then_the_invoker_should_be_a_ConventionControllerActionInvoker()
+		{
+			Assert.That(_controller.ActionInvoker, Is.InstanceOfType(typeof(ConventionControllerActionInvoker)));
+		}
+
+		[Test]
+		public void When_a_custom_actioninvoker_is_specified_in_the_constructor_then_the_ActionInvoker_property_should_be_set()
+		{
+			var invoker = MockRepository.GenerateStub<IActionInvoker>();
+			_controller = new TestController(invoker);
+			Assert.That(_controller.ActionInvoker, Is.SameAs(invoker));
 		}
 	}
 }

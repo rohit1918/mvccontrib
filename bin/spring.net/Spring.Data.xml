@@ -10,7 +10,6 @@
             Useful with any data access technology.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DataAccessUtils.cs,v 1.1 2006/12/02 20:50:21 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.Support.Generic.DataAccessUtils.#ctor">
             <summary>
@@ -26,7 +25,6 @@
              AdoDaoSupport, HibernateDaoSupport, etc.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DaoSupport.cs,v 1.3 2006/11/13 07:04:45 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Dao.Support.DaoSupport.log">
             <summary>
@@ -64,7 +62,6 @@
             Useful with any data access technology.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DataAccessUtils.cs,v 1.3 2006/12/02 07:35:23 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.Support.DataAccessUtils.#ctor">
             <summary>
@@ -84,7 +81,22 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: CannotAcquireLockException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
+        </member>
+        <member name="T:Spring.Dao.PessimisticLockingFailureException">
+            <summary> 
+            Exception thrown on a pessimistic locking violation.
+            </summary>
+            <remarks>
+            <para>Serves as a superclass for more specific exceptions, like 
+            CannotAcquireLockException and DeadlockLoserDataAccessException
+            </para>
+            <para>
+            This exception will be thrown either by O/R mapping tools or by custom DAO
+            implementations.
+            </para>
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Mark Pollack (.NET)</author>
         </member>
         <member name="T:Spring.Dao.ConcurrencyFailureException">
             <summary> 
@@ -100,7 +112,6 @@
             </remarks>
             <author>Thomas Risberg</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ConcurrencyFailureException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Dao.DataAccessException">
             <summary>
@@ -191,6 +202,47 @@
             that contains contextual information about the source or destination.
             </param>
         </member>
+        <member name="M:Spring.Dao.PessimisticLockingFailureException.#ctor">
+            <summary>
+            Creates a new instance of the
+            <see cref="T:Spring.Dao.PessimisticLockingFailureException"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Dao.PessimisticLockingFailureException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the
+            <see cref="T:Spring.Dao.PessimisticLockingFailureException"/> class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Dao.PessimisticLockingFailureException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the
+            <see cref="T:Spring.Dao.PessimisticLockingFailureException"/> class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="rootCause">
+            The root exception (from the underlying data access API, such as ADO.NET).
+            </param>
+        </member>
+        <member name="M:Spring.Dao.PessimisticLockingFailureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of the
+            <see cref="T:Spring.Dao.CannotAcquireLockException"/> class.
+            </summary>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+            that holds the serialized object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
+            that contains contextual information about the source or destination.
+            </param>
+        </member>
         <member name="M:Spring.Dao.CannotAcquireLockException.#ctor">
             <summary>
             Creates a new instance of the
@@ -245,7 +297,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: CannotSerializeTransactionException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.CannotSerializeTransactionException.#ctor">
             <summary>
@@ -306,7 +357,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: CleanupFailureDataAccessException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.CleanupFailureDataAccessException.#ctor">
             <summary>
@@ -356,7 +406,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: DataAccessResourceFailureException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.DataAccessResourceFailureException.#ctor">
             <summary>
@@ -412,7 +461,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: DataIntegrityViolationException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.DataIntegrityViolationException.#ctor">
             <summary>
@@ -468,7 +516,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: DataRetrievalFailureException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.DataRetrievalFailureException.#ctor">
             <summary>
@@ -518,7 +565,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: DeadlockLoserDataAccessException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.DeadlockLoserDataAccessException.#ctor">
             <summary>
@@ -568,7 +614,6 @@
             </summary>
             <author>Mark Pollack (.NET)</author>
             <author>Juergen Hoeller</author>
-            <version>$Id: EmptyResultDataAccessException.cs,v 1.2 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Dao.IncorrectResultSizeDataAccessException">
             <summary> 
@@ -577,7 +622,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: IncorrectResultSizeDataAccessException.cs,v 1.6 2007/11/20 04:03:48 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Dao.InvalidDataAccessApiUsageException">
             <summary> 
@@ -592,7 +636,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: InvalidDataAccessApiUsageException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.InvalidDataAccessApiUsageException.#ctor">
             <summary>
@@ -777,7 +820,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: IncorrectUpdateSemanticsDataAccessException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Dao.InvalidDataAccessResourceUsageException">
             <summary> 
@@ -791,7 +833,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: InvalidDataAccessResourceUsageException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.InvalidDataAccessResourceUsageException.#ctor">
             <summary>
@@ -888,7 +929,6 @@
              Provides information about the persistent class and the identifier. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ObjectOptimisticLockingFailureException.cs,v 1.1 2006/12/13 18:40:11 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Dao.OptimisticLockingFailureException">
             <summary> 
@@ -902,7 +942,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: OptimisticLockingFailureException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.OptimisticLockingFailureException.#ctor">
             <summary>
@@ -997,7 +1036,6 @@
             Provides information about the persistent class and the identifier.  
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ObjectRetrievalFailureException.cs,v 1.1 2006/12/13 18:40:11 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.ObjectRetrievalFailureException.#ctor">
             <summary>
@@ -1053,7 +1091,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: PermissionDeniedDataAccessException.cs,v 1.1 2006/06/12 10:39:19 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.PermissionDeniedDataAccessException.#ctor">
             <summary>
@@ -1104,7 +1141,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TypeMismatchDataAccessException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.TypeMismatchDataAccessException.#ctor">
             <summary>
@@ -1155,7 +1191,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: UncategorizedDataAccessException.cs,v 1.5 2006/05/18 21:37:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Dao.UncategorizedDataAccessException.#ctor">
             <summary>
@@ -1203,7 +1238,6 @@
             Provides database metdata information.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DbMetadata.cs,v 1.13 2007/11/21 18:01:45 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Common.IDbMetadata">
             <summary>
@@ -1212,7 +1246,6 @@
             </summary>
             
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbMetadata.cs,v 1.8 2007/11/21 18:01:45 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Data.Common.IDbMetadata.ProductName">
             <summary>
@@ -1513,17 +1546,15 @@
         </member>
         <member name="T:Spring.Data.Common.DbParameter">
             <summary>
-            TODO: 
+            A parameter class used by <see cref="T:Spring.Data.Common.DbParametersBuilder"/>
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DbParameter.cs,v 1.5 2006/12/03 08:25:46 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Common.IDbParameter">
             <summary>
             A parameter interface used by <see cref="T:Spring.Data.Common.IDbParametersBuilder"/>
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbParameter.cs,v 1.6 2006/12/02 07:35:23 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Common.DbParameter.#ctor">
             <summary>
@@ -1539,7 +1570,6 @@
             parameters.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DbParameters.cs,v 1.14 2007/12/06 22:34:56 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Common.IDbParameters.Contains(System.String)">
             <summary>
@@ -1636,7 +1666,6 @@
             <remarks>This builder is stateful, you must create a new one for each collection
             of parameters you would like to create.</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DbParametersBuilder.cs,v 1.2 2007/05/01 00:37:10 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Common.IDbParametersBuilder">
             <summary>
@@ -1647,7 +1676,6 @@
             itself keeps track of the collection.</remarks>
             
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbParametersBuilder.cs,v 1.1 2006/12/02 07:38:15 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Common.IDbParametersBuilder.Create">
             <summary>
@@ -1877,7 +1905,6 @@
              TODO: Add error codes to provider.
              </remarks>
              <author>Mark Pollack (.NET)</author>
-             <version>$Id: DbProviderFactory.cs,v 1.12 2007/08/16 20:38:43 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.Common.DbProviderFactory.log">
             <summary>
@@ -1965,17 +1992,6 @@
             Validates the properties.
             </summary>
         </member>
-        <member name="P:Spring.Data.Common.DbProviderFactoryObject.ObjectType">
-            <summary>
-            Return the type of <see cref="T:Spring.Data.Common.IDbProvider"/>
-            </summary>
-        </member>
-        <member name="P:Spring.Data.Common.DbProviderFactoryObject.IsSingleton">
-            <summary>
-            Returns true, as the the object managed by this factory is a singleton.
-            </summary>
-            <value></value>
-        </member>
         <member name="P:Spring.Data.Common.DbProviderFactoryObject.Provider">
             <summary>
             Gets or sets the name of the database provider.
@@ -1988,6 +2004,150 @@
             </summary>
             <value>The connection string.</value>
         </member>
+        <member name="P:Spring.Data.Common.DbProviderFactoryObject.ObjectType">
+            <summary>
+            Return the type of <see cref="T:Spring.Data.Common.IDbProvider"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Data.Common.DbProviderFactoryObject.IsSingleton">
+            <summary>
+            Returns true, as the the object managed by this factory is a singleton.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Spring.Data.Common.DelegatingDbProvider">
+            <summary>
+            IDbProvider implementation that delegates all calls to a given target
+            IDbProvider
+            </summary>
+            <author>Mark Pollack</author>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.Common.DelegatingDbProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.#ctor(Spring.Data.Common.IDbProvider)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.Common.DelegatingDbProvider"/> class.
+            </summary>
+            <param name="targetDbProvider">The target db provider.</param>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateCommand">
+            <summary>
+            Returns a new command object for executing SQL statments/Stored Procedures
+            against the database.
+            </summary>
+            <returns>An new <see cref="T:System.Data.IDbCommand"/></returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateCommandBuilder">
+            <summary>
+            Returns a new instance of the providers CommandBuilder class.
+            </summary>
+            <remarks>In .NET 1.1 there was no common base class or interface
+            for command builders, hence the return signature is object to
+            be portable (but more loosely typed) across .NET 1.1/2.0</remarks>
+            <returns>A new Command Builder</returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateConnection">
+            <summary>
+            Returns a new connection object to communicate with the database.
+            </summary>
+            <returns>A new <see cref="T:System.Data.IDbConnection"/></returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateDataAdapter">
+            <summary>
+            Returns a new adapter objects for use with offline DataSets.
+            </summary>
+            <returns>A new <see cref="T:System.Data.IDbDataAdapter"/></returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateParameter">
+            <summary>
+            Returns a new parameter object for binding values to parameter
+            placeholders in SQL statements or Stored Procedure variables.
+            </summary> 
+            <returns>A new <see cref="T:System.Data.IDbDataParameter"/></returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateParameterName(System.String)">
+            <summary>
+            Creates the name of the parameter in the format appropriate to use inside IDbCommand.CommandText.
+            </summary>
+            <remarks>In most cases this adds the parameter prefix to the name passed into this method.</remarks>
+            <param name="name">The unformatted name of the parameter.</param>
+            <returns>The parameter name formatted foran IDbCommand.CommandText.</returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.CreateParameterNameForCollection(System.String)">
+            <summary>
+            Creates the name ofthe parameter in the format appropriate for an IDataParameter, i.e. to be
+            part of a IDataParameterCollection.
+            </summary>
+            <param name="name">The unformatted name of the parameter.</param>
+            <returns>The parameter name formatted for an IDataParameter</returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.ExtractError(System.Exception)">
+            <summary>
+            Extracts the provider specific error code as a string.
+            </summary>
+            <param name="e">The data access exception.</param>
+            <returns>The provider specific error code</returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.IsDataAccessException(System.Exception)">
+            <summary>
+            Determines whether the provided exception is in fact related
+            to database access.  This can be provider dependent in .NET 1.1 since
+            there isn't a common base class for ADO.NET exceptions.
+            </summary>
+            <param name="e">The exception thrown when performing data access 
+            operations.</param>
+            <returns>
+            	<c>true</c> if is a valid data access exception for the specified 
+            exception; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Spring.Data.Common.DelegatingDbProvider.AfterPropertiesSet">
+            <summary>
+            Invoked by an <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
+            after it has injected all of an object's dependencies.
+            </summary>
+            <remarks>
+            <p>
+            This method allows the object instance to perform the kind of
+            initialization only possible when all of it's dependencies have
+            been injected (set), and to throw an appropriate exception in the
+            event of misconfiguration.
+            </p>
+            <p>
+            Please do consult the class level documentation for the
+            <see cref="T:Spring.Objects.Factory.IObjectFactory"/> interface for a
+            description of exactly <i>when</i> this method is invoked. In
+            particular, it is worth noting that the
+            <see cref="T:Spring.Objects.Factory.IObjectFactoryAware"/>
+            and <see cref="T:Spring.Context.IApplicationContextAware"/>
+            callbacks will have been invoked <i>prior</i> to this method being
+            called.
+            </p>
+            </remarks>
+            <exception cref="T:System.Exception">
+            In the event of misconfiguration (such as the failure to set a
+            required property) or if initialization fails.
+            </exception>
+        </member>
+        <member name="P:Spring.Data.Common.DelegatingDbProvider.TargetDbProvider">
+            <summary>
+            Gets or sets the target IDbProvider that this IDbProvider should delegate to
+            </summary>
+            <value>The target db provider.</value>
+        </member>
+        <member name="P:Spring.Data.Common.DelegatingDbProvider.DbMetadata">
+            <summary>
+            Return metadata information about the database provider
+            </summary>
+        </member>
+        <member name="P:Spring.Data.Common.DelegatingDbProvider.ConnectionString">
+            <summary>
+            Connection string used to create connections.
+            </summary>
+        </member>
         <member name="T:Spring.Data.Common.ErrorCodes">
             <summary>
             Holds ADO.NET error codes for a particular provider. 
@@ -1998,7 +2158,6 @@
             ErrorCodes instances for various providers.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ErrorCodes.cs,v 1.1 2007/08/01 18:53:06 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.Common.ErrorCodes.log">
             <summary>
@@ -2018,16 +2177,21 @@
             <remarks>
             The name of which DbProvider to use, as provided to the IDictionary property TargetDbProviders
             is "dbProviderName".  Once the target dbprovider name is known, set the name via a call to
-            <code>LogicalThreadContext.SetData("dbProviderName", "database1ProviderName")</code>. The value
+            <code>LogicalThreadContext.SetData(MultiDelegatingDbProvider.CURRENT_DBPROVIDER_SLOTNAME, "database1ProviderName")</code>. The value
             "database1ProviderName" must match a key in the provided TargetDbProviders dictionary.
             </remarks>
             <author>Mark Pollack</author>
-            <version>$Id: MultiDelegatingDbProvider.cs,v 1.3 2007/12/07 08:09:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.MultiDelegatingDbProvider.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Data.MultiDelegatingDbProvider"/> class.
             </summary>
+        </member>
+        <member name="M:Spring.Data.MultiDelegatingDbProvider.#ctor(System.Collections.IDictionary)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.MultiDelegatingDbProvider"/> class.
+            </summary>
+            <param name="targetDbProviders">The target db providers.</param>
         </member>
         <member name="M:Spring.Data.MultiDelegatingDbProvider.AfterPropertiesSet">
             <summary>
@@ -2126,6 +2290,12 @@
             </summary>
             <returns>The corresonding IDbProvider.</returns>
         </member>
+        <member name="P:Spring.Data.MultiDelegatingDbProvider.DefaultDbProvider">
+            <summary>
+            Sets the default IDbProvider. This will be returned if no DbProvider is found in thread local storage.
+            </summary>
+            <value>The default db provider.</value>
+        </member>
         <member name="P:Spring.Data.MultiDelegatingDbProvider.TargetDbProviders">
             <summary>
             Sets the target db providers.
@@ -2144,12 +2314,70 @@
             </summary>
             <value></value>
         </member>
+        <member name="P:Spring.Data.MultiDelegatingDbProvider.CurrentDbProviderName">
+            <summary>
+            Convenience method to sets the name of the DbProvider that will be used for the
+            the current thread's procesing.
+            </summary>
+            <value>The name of the DbProvider to use for the current threads processing.</value>
+        </member>
+        <member name="T:Spring.Data.Common.UserCredentialsDbProvider">
+            <summary>
+            An adapter for a target IDbProvider, applying the specified user credentials
+            to the connection string for every GetConnection call.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.Common.UserCredentialsDbProvider.SetCredentialsForCurrentThread(System.String,System.String)">
+            <summary>
+            Sets the user credentials for current thread.  The given username and password
+            strings will be added to the connection string for all subsequent GetConnection
+            requests.  This will override any statically specified user credentials, that is,
+            set by the properties Username nad Password.
+            </summary>
+            <param name="user">The username part of the connection string.</param>
+            <param name="pass">The password part of the connection string.</param>
+        </member>
+        <member name="M:Spring.Data.Common.UserCredentialsDbProvider.RemoveCredentialsFromCurrentThread">
+            <summary>
+            Removes the user credentials from current thread.  Use statically specified 
+            credentials afterwards.
+            </summary>
+        </member>
+        <member name="M:Spring.Data.Common.UserCredentialsDbProvider.CreateConnection">
+            <summary>
+            Returns a new connection object to communicate with the database.
+            Determine if there are currently thread-bound credentials, using them if
+            available, falling back to the statically specified username and password
+            (i.e. values of the properties 'Username' and 'Password') otherwise.  
+            The username and password will be concatenated on the connection string
+            using string in the Separator property
+            </summary>
+            <returns>A new <see cref="T:System.Data.IDbConnection"/></returns>
+        </member>
+        <member name="P:Spring.Data.Common.UserCredentialsDbProvider.Username">
+            <summary>
+            Sets the username string that will be appended to the connection string.
+            </summary>
+            <value>The username.</value>
+        </member>
+        <member name="P:Spring.Data.Common.UserCredentialsDbProvider.Password">
+            <summary>
+            Sets the password string that will be appended to the connection string.
+            </summary>
+            <value>The password.</value>
+        </member>
+        <member name="P:Spring.Data.Common.UserCredentialsDbProvider.Separator">
+            <summary>
+            Sets the separator used to separate elements of the connection string.  Default is ';'.
+            </summary>
+            
+            <value>The separator used to separate elements in the connection string.</value>
+        </member>
         <member name="T:Spring.Data.Config.DatabaseNamespaceParser">
             <summary>
             Implementation of the custom configuration parser for database definitions.
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: DatabaseNamespaceParser.cs,v 1.3 2007/08/08 00:34:33 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Data.Config.DatabaseNamespaceParser.#ctor">
             <summary>
@@ -2355,7 +2583,6 @@
             interface.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoPlatformTransactionManager.cs,v 1.7 2007/11/30 18:42:11 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Support.AbstractPlatformTransactionManager">
             <summary>
@@ -2407,7 +2634,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: IPlatformTransactionManager.cs,v 1.10 2007/08/01 18:53:05 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.IPlatformTransactionManager.GetTransaction(Spring.Transaction.ITransactionDefinition)">
             <summary>
@@ -2634,6 +2860,29 @@
             </p>
             </remarks>
         </member>
+        <member name="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.RegisterAfterCompletionWithExistingTransaction(System.Object,System.Collections.IList)">
+            <summary>
+            Register the given list of transaction synchronizations with the existing transaction.
+            </summary>
+            <remarks>
+            Invoked when the control of the Spring transaction manager and thus all Spring
+            transaction synchronizations end, without the transaction being completed yet. This
+            is for example the case when participating in an existing System.Transactions or
+            EnterpriseServices transaction invoked via their APIs.
+            <para>
+            The default implementation simply invokes the <code>AfterCompletion</code> methods
+            immediately, passing in TransactionSynchronizationStatus.Unknown. 
+            This is the best we can do if there's no chance to determine the actual 
+            outcome of the outer transaction.
+            </para>
+            </remarks>
+            <param name="transaction">The transaction transaction object returned by <code>DoGetTransaction</code>.</param>
+            <param name="synchronizations">The lList of TransactionSynchronization objects.</param>
+            <exception cref="T:Spring.Transaction.TransactionException">In case of errors</exception>
+            <seealso cref="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.InvokeAfterCompletion(System.Collections.IList,Spring.Transaction.Support.TransactionSynchronizationStatus)"/>
+            <seealso cref="M:Spring.Transaction.Support.ITransactionSynchronization.AfterCompletion(Spring.Transaction.Support.TransactionSynchronizationStatus)"/>
+            <seealso cref="F:Spring.Transaction.Support.TransactionSynchronizationStatus.Unknown"/>
+        </member>
         <member name="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.DoCleanupAfterCompletion(System.Object)">
             <summary>
             Cleanup resources after transaction completion.
@@ -2643,18 +2892,18 @@
             <see cref="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.DoGetTransaction"/>.
             </param>
             <remarks>
-            <p>
+            <para>
             Called after <see cref="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.DoCommit(Spring.Transaction.Support.DefaultTransactionStatus)"/>
             and
             <see cref="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.DoRollback(Spring.Transaction.Support.DefaultTransactionStatus)"/>
             execution on any outcome.
-            </p>
-            <p>
+            </para>
+            <para>
             Should not throw any exceptions but just issue warnings on errors.
-            </p>
-            <p>
+            </para>
+            <para>
             Default implementation does nothing.
-            </p>
+            </para>
             </remarks>
         </member>
         <member name="M:Spring.Transaction.Support.AbstractPlatformTransactionManager.GetTransaction(Spring.Transaction.ITransactionDefinition)">
@@ -2857,6 +3106,29 @@
             underlying transaction infrastructure's default timeout.</remarks>
             <value>The default timeout.</value>
         </member>
+        <member name="T:Spring.Transaction.Support.IResourceTransactionManager">
+            <summary>
+            Extension of the <see cref="T:Spring.Transaction.IPlatformTransactionManager"/> 
+            interface, indicating a native resource transaction manager, operating on a single
+            target resource. Such transaction managers differ from DTC based transaction managers in
+            that they do not use transaction enlistment for an open number of resources but
+            rather focus on leveraging the native power and simplicity of a single target resource.
+            </summary>
+            <para>
+            This interface is mainly used for abstract introspection of a transaction manager,
+            giving clients a hint on what kind of transaction manager they have been given
+            and on what concrete resource the transaction manager is operating on.
+            </para>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack</author>
+        </member>
+        <member name="P:Spring.Transaction.Support.IResourceTransactionManager.ResourceFactory">
+            <summary>
+            Gets the resource factory that this transaction manager operates on,
+            e.g. a IDbProvider or a Hibernate ISessionFactory.
+            </summary>
+            <value>The resource factory.</value>
+        </member>
         <member name="M:Spring.Data.Core.AdoPlatformTransactionManager.DoGetTransaction">
             <summary>
             Return the current transaction object.
@@ -2986,6 +3258,13 @@
             If DbProvider is null.
             </exception>
         </member>
+        <member name="P:Spring.Data.Core.AdoPlatformTransactionManager.ResourceFactory">
+            <summary>
+            Gets the resource factory that this transaction manager operates on,
+            For the AdoPlatformTransactionManager this is the DbProvider
+            </summary>
+            <value>The DbProvider.</value>
+        </member>
         <member name="T:Spring.Data.Core.AdoPlatformTransactionManager.DbProviderTransactionObject">
             <summary>
             DbProvider transaction (state) object, representing a ConnectionHolder.
@@ -3004,7 +3283,6 @@
             Can contain a ConnectionHolder object.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoTransactionObjectSupport.cs,v 1.7 2007/11/28 05:54:47 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.ISavepointManager">
             <summary>
@@ -3021,7 +3299,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ISavepointManager.cs,v 1.5 2006/05/17 17:48:25 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Transaction.ISavepointManager.CreateSavepoint(System.String)">
             <summary>
@@ -3097,7 +3374,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ISmartTransactionObject.cs,v 1.6 2007/08/29 03:42:20 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Transaction.Support.ISmartTransactionObject.RollbackOnly">
             <summary>
@@ -3194,14 +3470,12 @@
             It simplifies the use of ADO.NET and helps to avoid commons errors.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoTemplate.cs,v 1.8 2007/12/06 06:21:25 markpollack Exp $</version>   
         </member>
         <member name="T:Spring.Data.IAdoOperations">
             <summary>
             Interface that defines ADO.NET related database operations.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IAdoOperations.cs,v 1.24 2007/12/04 06:52:19 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.ICommonAdoOperations.ExecuteScalar(System.Data.CommandType,System.String)">
             <summary>
@@ -4059,7 +4333,6 @@
             method.
             </remarks>    
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDataAdapterCallback.cs,v 1.3 2007/12/04 06:49:17 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IDataAdapterCallback.DoInDataAdapter(System.Data.IDbDataAdapter)">
             <summary>
@@ -4131,7 +4404,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: RowMapperResultSetExtractor.cs,v 1.1 2007/08/03 19:51:11 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.IResultSetExtractor">
             <summary>
@@ -4177,7 +4449,6 @@
             functionality which is available on Win 2003 and Win XP SP2.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ServiceDomainPlatformTransactionManager.cs,v 1.6 2007/12/04 19:43:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Core.ServiceDomainPlatformTransactionManager.#ctor">
             <summary>
@@ -4216,7 +4487,6 @@
             TransactionManager that uses TransactionScope provided by System.Transactions.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TxScopeTransactionManager.cs,v 1.5 2007/12/04 19:43:16 markpollack Exp $</version>    
         </member>
         <member name="M:Spring.Data.Core.TxScopeTransactionManager.#ctor">
             <summary>
@@ -4308,14 +4578,12 @@
             It simplifies the use of ADO.NET and helps to avoid commons errors.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoTemplate.cs,v 1.19 2007/12/07 22:56:22 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Generic.IAdoOperations">
             <summary>
             Interface that defines ADO.NET related database operations using generics
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IAdoOperations.cs,v 1.9 2007/12/04 06:48:21 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Generic.IAdoOperations.Execute``1(Spring.Data.Generic.ICommandCallback{``0})">
             <summary>
@@ -4834,7 +5102,6 @@
             method.
             </remarks>    
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDataAdapterCallback.cs,v 1.1 2007/12/04 06:48:21 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Generic.IDataAdapterCallback`1.DoInDataAdapter(System.Data.IDbDataAdapter)">
             <summary>
@@ -4868,7 +5135,6 @@
             <returns>The object returned from processing with the
             provided DbCommand </returns>
             <author>Mark Pollack</author>
-            <version>$Id: IDbCommandDelegate.cs,v 1.1 2007/06/27 21:41:57 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Generic.IResultSetExtractor`1">
             <summary>
@@ -4921,7 +5187,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IRowMapper.cs,v 1.4 2007/06/28 18:48:18 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Generic.IRowMapper`1.MapRow(System.Data.IDataReader,System.Int32)">
             <summary>
@@ -4939,7 +5204,6 @@
             such as StoredProcedure.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: NamedResultSetProcessor.cs,v 1.2 2007/07/25 13:32:31 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Data.Generic.NamedResultSetProcessor`1.#ctor(System.String,Spring.Data.IRowCallback)">
             <summary>
@@ -5008,7 +5272,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: RowMapperResultSetExtractor.cs,v 1.4 2007/08/03 19:51:10 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Generic.RowMapperResultSetExtractor`1.#ctor(Spring.Data.Generic.IRowMapper{`0})">
             <summary>
@@ -5036,7 +5299,6 @@
             
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoOperation.cs,v 1.2 2007/07/25 13:32:39 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Data.Objects.AbstractAdoOperation">
             <summary>
@@ -5044,7 +5306,6 @@
             generic implementations of "AdoOperation" subclasses.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AbstractAdoOperation.cs,v 1.1 2007/07/24 21:01:11 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.Objects.AbstractAdoOperation.compiled">
             <summary>
@@ -5204,7 +5465,6 @@
             for one result set within the same class.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoQuery.cs,v 1.3 2007/07/25 13:32:39 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.Generic.AdoQuery.#ctor">
             <summary>
@@ -5264,7 +5524,6 @@
             contextual information, subclass this instead of MappingSqlQueryWithContext.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: MappingAdoQuery.cs,v 1.2 2007/07/25 13:32:39 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Data.Objects.Generic.MappingAdoQueryWithContext">
             <summary>
@@ -5278,7 +5537,6 @@
             the subclass MappingAdoQuery.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: MappingAdoQueryWithContext.cs,v 1.2 2007/07/25 13:32:39 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.Generic.MappingAdoQueryWithContext.#ctor">
             <summary>
@@ -5295,7 +5553,6 @@
             A superclass for object based abstractions of RDBMS stored procedures. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: StoredProcedure.cs,v 1.3 2007/07/25 13:32:39 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.Generic.StoredProcedure.#ctor">
             <summary>
@@ -5316,7 +5573,6 @@
             </summary>
             <author>Mark Pollack (.NET)</author>
             <remarks>The default CommandType is CommandType.Text</remarks>
-            <version>$Id: AdoNonQuery.cs,v 1.3 2007/07/25 08:25:20 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Objects.AdoOperation">
             <summary>
@@ -5332,7 +5588,6 @@
             
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoOperation.cs,v 1.14 2007/12/07 08:09:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.AdoOperation.#ctor">
             <summary>
@@ -5410,7 +5665,6 @@
             for one result set within the same class.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoQuery.cs,v 1.7 2007/07/25 08:25:20 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.AdoQuery.#ctor">
             <summary>
@@ -5423,7 +5677,6 @@
             </summary>
             <remarks>The default CommandType is CommandType.Text</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AdoScalar.cs,v 1.3 2007/07/25 08:25:20 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.AdoScalar.#ctor">
             <summary>
@@ -5447,12 +5700,11 @@
             object.
             </summary>
             <remarks>
-            Simplifies MappingSqlQueryWithContext API by dropping parameters and
+            Simplifies MappingAdoQueryWithContext API by dropping parameters and
             context. Most subclasses won't care about parameters. If you don't use
             contextual information, subclass this instead of MappingSqlQueryWithContext.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: MappingAdoQuery.cs,v 1.4 2007/07/17 04:33:44 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Objects.MappingAdoQueryWithContext">
             <summary>
@@ -5466,7 +5718,6 @@
             the subclass MappingAdoQuery.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: MappingAdoQueryWithContext.cs,v 1.3 2007/07/17 04:33:44 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.MappingAdoQueryWithContext.#ctor">
             <summary>
@@ -5492,7 +5743,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IRowMapper.cs,v 1.6 2007/06/28 18:48:19 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IRowMapper.MapRow(System.Data.IDataReader,System.Int32)">
             <summary>
@@ -5514,7 +5764,6 @@
             A superclass for object based abstractions of RDBMS stored procedures. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: StoredProcedure.cs,v 1.9 2007/07/25 08:25:20 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Objects.StoredProcedure.#ctor">
             <summary>
@@ -5567,7 +5816,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ResourceHolderSupport.cs,v 1.9 2007/01/30 20:12:29 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.ResourceHolderSupport.Clear">
             <summary>
@@ -5667,7 +5915,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionSynchronizationAdapter.cs,v 1.7 2006/12/06 00:02:25 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Support.ITransactionSynchronization">
             <summary>
@@ -5679,7 +5926,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ITransactionSynchronization.cs,v 1.7 2006/11/24 05:57:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.ITransactionSynchronization.Suspend">
             <summary>
@@ -6039,7 +6285,6 @@
             </summary>
             <remarks>Introduced for purposes of unit testing.</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id $</version> 
         </member>
         <member name="T:Spring.Data.Support.IServiceDomainAdapter">
             <summary>
@@ -6048,7 +6293,6 @@
             </summary>
             <remarks>Introduced for purposes of unit testing.</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id $</version> 
         </member>
         <member name="M:Spring.Data.Support.IServiceDomainAdapter.Enter(Spring.Data.Support.SimpleServiceConfig)">
             <summary>
@@ -6132,7 +6376,6 @@
             necessary state and operations to TxScopeTransactionManager.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DefaultTransactionScopeAdapter.cs,v 1.1 2007/11/30 18:38:47 markpollack Exp $</version> 
         </member>
         <member name="T:Spring.Data.Support.ITransactionScopeAdapter">
             <summary>
@@ -6141,7 +6384,6 @@
             </summary>
             <remarks>Introduced for purposes of unit testing.</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ITransactionScopeAdapter.cs,v 1.1 2007/11/30 18:38:47 markpollack Exp $</version> 
         </member>
         <member name="M:Spring.Data.Support.ITransactionScopeAdapter.CreateTransactionScope(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions,System.Transactions.EnterpriseServicesInteropOption)">
             <summary>
@@ -6219,7 +6461,6 @@
             which defines error code mappings for various providers.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ErrorCodeExceptionTranslator.cs,v 1.11 2007/12/06 20:14:30 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.Support.IAdoExceptionTranslator">
             <summary>
@@ -6235,7 +6476,6 @@
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack</author> 
-            <version>$Id: IAdoExceptionTranslator.cs,v 1.2 2006/11/29 07:18:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Support.IAdoExceptionTranslator.Translate(System.String,System.String,System.Exception)">
             <summary>
@@ -6356,7 +6596,6 @@
             "primary" implementation of IAdoExceptionTranslator, i.e. AdoExceptionTranslator.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: FallbackExceptionTranslator.cs,v 1.6 2007/01/01 22:22:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Support.FallbackExceptionTranslator.#ctor">
             <summary>
@@ -6383,7 +6622,6 @@
             such as StoredProcedure.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: NamedResultSetProcessor.cs,v 1.3 2006/11/29 07:18:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Support.NamedResultSetProcessor.#ctor(System.String,Spring.Data.IRowCallback)">
             <summary>
@@ -6416,7 +6654,6 @@
             </summary>
             <remarks>IDataRecord methods are virtual.</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: NullMappingDataReader.cs,v 1.2 2006/10/08 04:56:06 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.IDataReaderWrapper">
             <summary>
@@ -6429,7 +6666,6 @@
             See <see cref="T:Spring.Data.Support.NullMappingDataReader"/> as an example.
              </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDataReaderWrapper.cs,v 1.2 2007/10/30 15:24:44 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Data.IDataReaderWrapper.WrappedReader">
             <summary>
@@ -6502,7 +6738,6 @@
             Miscellaneous utility methods for manipulating parameter objects. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ParameterUtils.cs,v 1.12 2007/10/11 04:41:00 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.Support.ParameterUtils.log">
             <summary>
@@ -6534,7 +6769,6 @@
             </summary>
             <remarks>We don't use it for navigating since this could lead to unpredictable consequences.</remarks>
             <author>Mark Pollack</author>
-            <version>$Id: RowCallbackResultSetExtractor.cs,v 1.1 2007/07/25 08:27:08 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.Support.RowCallbackResultSetExtractor.#ctor(Spring.Data.IRowCallback)">
             <summary>
@@ -6566,7 +6800,6 @@
             </summary>
             <remarks>This is done to enhance testability of the transaction manager since ServiceConfig does not override Equals or Hashcode</remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id $</version> 
         </member>
         <member name="T:Spring.Data.Support.TypedDataSetUtils">
              <summary>
@@ -6606,6 +6839,15 @@
              
              </remarks>
         </member>
+        <member name="M:Spring.Data.Support.TypedDataSetUtils.ApplyConnectionAndTx(System.Object,Spring.Data.Common.IDbProvider)">
+            <summary>
+            Applies the connection and tx to the provided typed dataset.  The connection and transaction
+            used are taken from the Spring's current transactional context.  See ConnectionUtils.GetConnectionTxPair
+            for more information
+            </summary>
+            <param name="typedDataSetAdapter">The typed data set adapter.</param>
+            <param name="dbProvider">The db provider.</param>
+        </member>
         <member name="M:Spring.Data.Support.TypedDataSetUtils.ApplyConnectionAndTx(System.Object,System.Data.IDbCommand)">
             <summary>
             Applies the connection and tx to the provided typed dataset.
@@ -6621,7 +6863,6 @@
             Exception thrown when SQL specified is invalid.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: BadSqlGrammarException.cs,v 1.3 2006/11/29 07:18:45 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.BadSqlGrammarException.sql">
             <summary>
@@ -6683,7 +6924,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: CannotGetAdoConnectionException.cs,v 1.1 2006/11/24 05:57:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.CannotGetAdoConnectionException.#ctor">
             <summary>
@@ -6751,7 +6991,6 @@
             The CommandType and CommandText will have already been supplied.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ICommandSetter.cs,v 1.5 2006/12/02 07:35:23 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.IDataAdapterSetter">
             <summary>
@@ -6776,7 +7015,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDataAdapterSetter.cs,v 1.3 2006/11/29 07:18:45 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.IDataSetFillLifecycleProcessor">
             <summary>
@@ -6796,7 +7034,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDataSetFillLifecycleProcessor.cs,v 1.3 2006/11/29 07:18:45 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IDataSetFillLifecycleProcessor.BeforeFill(System.Data.DataSet,System.Data.ITableMappingCollection)">
             <summary>
@@ -6822,7 +7059,6 @@
             any necessary parameters. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbCommandCreator.cs,v 1.6 2007/08/06 20:13:39 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IDbCommandCreator.CreateDbCommand(Spring.Data.Common.IDbProvider)">
             <summary>
@@ -6839,7 +7075,6 @@
             set of parameter declarations.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbCommandCreatorFactory.cs,v 1.11 2007/08/06 20:13:39 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IDbCommandCreatorFactory.#ctor(Spring.Data.Common.IDbProvider,System.Data.CommandType,System.String,Spring.Data.Common.IDbParameters)">
             <summary>
@@ -6858,7 +7093,6 @@
             the Spring.Data.Objects namespace.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IDbDataAdapterCreator.cs,v 1.3 2007/12/07 08:09:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.IDbDataAdapterCreator.CreateDataAdapter">
             <summary>
@@ -6871,7 +7105,6 @@
             Exception thrown when a result set has been accessed in an invalid fashion.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: InvalidResultSetAccessException.cs,v 1.2 2007/12/07 08:09:52 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.InvalidResultSetAccessException.sql">
             <summary>
@@ -6990,7 +7223,6 @@
             one of our generic data access exceptions. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: UncategorizedAdoException.cs,v 1.4 2006/11/29 07:18:46 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.UncategorizedAdoException.sql">
             <summary>
@@ -7113,7 +7345,6 @@
             <author>Juergen Hoeller</author>
             <author>Adrian Colyer</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TxAdviceObjectDefinitionParser.cs,v 1.2 2007/06/18 10:31:19 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Config.TxNamespaceParser">
             <summary>
@@ -7141,7 +7372,6 @@
             This is a utility class to help in parsing the transaction namespace
             </summary>
             <author>Mark Pollack</author>
-            <version>$Id: TxNamespaceUtils.cs,v 1.2 2007/12/07 08:10:03 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.Config.TxNamespaceUtils.TRANSACTION_MANAGER_ATTRIBUTE">
             <summary>
@@ -7197,7 +7427,6 @@
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AbstractFallbackTransactionAttributeSource.cs,v 1.8 2007/09/20 12:31:01 bbaia Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Interceptor.ITransactionAttributeSource">
             <summary>
@@ -7212,7 +7441,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ITransactionAttributeSource.cs,v 1.7 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.ITransactionAttributeSource.ReturnTransactionAttribute(System.Reflection.MethodInfo,System.Type)">
             <summary>
@@ -7318,7 +7546,6 @@
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: AttributesTransactionAttributeSource.cs,v 1.6 2007/08/08 20:59:50 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.AttributesTransactionAttributeSource.#ctor">
             <summary>
@@ -7355,7 +7582,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: DefaultTransactionAttribute.cs,v 1.8 2007/10/21 18:16:38 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Support.DefaultTransactionDefinition">
             <summary>
@@ -7371,7 +7597,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DefaultTransactionDefinition.cs,v 1.15 2007/12/07 08:10:03 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.ITransactionDefinition">
             <summary>
@@ -7391,7 +7616,6 @@
             </remarks>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ITransactionDefinition.cs,v 1.9 2007/12/07 08:10:03 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Transaction.ITransactionDefinition.PropagationBehavior">
             <summary>
@@ -7633,7 +7857,6 @@
             specification to <see cref="T:Spring.Transaction.ITransactionDefinition"/>.
             </summary>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: ITransactionAttribute.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.ITransactionAttribute.RollbackOn(System.Exception)">
             <summary>
@@ -7714,7 +7937,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DefaultTransactionAttributeSourceAdvisor.cs,v 1.1 2007/01/04 05:11:17 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.DefaultTransactionAttributeSourceAdvisor.#ctor(Spring.Transaction.Interceptor.ITransactionAttributeSource,AopAlliance.Aop.IAdvice)">
             <summary>
@@ -7861,7 +8083,6 @@
             </remarks>
             <author>Colin Sampaleanu</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: MatchAlwaysTransactionAttributeSource.cs,v 1.6 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.MatchAlwaysTransactionAttributeSource.#ctor">
             <summary>
@@ -7885,6 +8106,33 @@
             null if the method is non-transactional.
             </returns>
         </member>
+        <member name="M:Spring.Transaction.Interceptor.MatchAlwaysTransactionAttributeSource.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>.</param>
+            <returns>
+            true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Spring.Transaction.Interceptor.MatchAlwaysTransactionAttributeSource.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. <see cref="M:System.Object.GetHashCode"></see> is suitable for use in hashing algorithms and data structures like a hash table.
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="M:Spring.Transaction.Interceptor.MatchAlwaysTransactionAttributeSource.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </summary>
+            
+            <returns>
+            A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
         <member name="P:Spring.Transaction.Interceptor.MatchAlwaysTransactionAttributeSource.TransactionAttribute">
             <summary>
             Allows a transaction attribute to be specified, using the <see cref="T:System.String"/>
@@ -7899,7 +8147,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: MethodMapTransactionAttributeSource.cs,v 1.11 2007/09/20 12:31:01 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.MethodMapTransactionAttributeSource.#ctor">
             <summary>
@@ -7969,18 +8216,18 @@
         </member>
         <member name="P:Spring.Transaction.Interceptor.MethodMapTransactionAttributeSource.MethodMap">
             <summary>
-            Set a name/attribute map, consisting of "FQCN.method" method names
-            (e.g. "com.mycompany.mycode.MyClass.myMethod") and TransactionAttribute
-            instances.
+            Set a name/attribute map, consisting of "FQCN.method, AssemblyName" method names
+            (e.g. "MyNameSpace.MyClass.MyMethod, MyAssembly") and ITransactionAttribute
+            instances (or Strings to be converted to <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> instances).
             </summary>
             <remarks>
             <p>
             The key values of the supplied <see cref="T:System.Collections.IDictionary"/>
             must adhere to the following form:<br/>
-            <code>FQCN.methodName</code>.
+            <code>FQCN.methodName, Assembly</code>.
             </p>
             <example>
-            <code>ExampleNamespace.ExampleClass.MyMethod</code>
+            <code>MyNameSpace.MyClass.MyMethod, MyAssembly</code>
             </example>
             </remarks>
         </member>
@@ -7991,7 +8238,16 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: NameMatchTransactionAttributeSource.cs,v 1.7 2006/09/08 21:23:39 markpollack Exp $</version>
+        </member>
+        <member name="F:Spring.Transaction.Interceptor.NameMatchTransactionAttributeSource.log">
+            <summary>
+            Logger available to subclasses, static for optimal serialization
+            </summary>
+        </member>
+        <member name="F:Spring.Transaction.Interceptor.NameMatchTransactionAttributeSource.nameMap">
+            <summary>
+            Keys are method names; values are ITransactionAttributes
+            </summary>
         </member>
         <member name="M:Spring.Transaction.Interceptor.NameMatchTransactionAttributeSource.#ctor">
             <summary>
@@ -8055,8 +8311,21 @@
         <member name="P:Spring.Transaction.Interceptor.NameMatchTransactionAttributeSource.NameMap">
             <summary>
             Set a name/attribute map, consisting of method names (e.g. "MyMethod") and
-            <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> instances.
+            <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> instances
+            (or Strings to be converted to ITransactionAttribute instances).
             </summary>
+        </member>
+        <member name="P:Spring.Transaction.Interceptor.NameMatchTransactionAttributeSource.NameProperties">
+            <summary>
+            Parses the given properties into a name/attribute map.
+            </summary>
+            <remarks>
+            Expects method names as keys and string attributes definitions as values,
+            parsable into <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> 
+            instances via 
+            <see cref="T:Spring.Transaction.Interceptor.TransactionAttributeEditor"/>.
+            </remarks>
+            <value>The properties of the transaction.</value>
         </member>
         <member name="T:Spring.Transaction.Interceptor.NoRollbackRuleAttribute">
             <summary>
@@ -8065,7 +8334,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: NoRollbackRuleAttribute.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.Interceptor.RollbackRuleAttribute">
             <summary>
@@ -8079,7 +8347,6 @@
             </p>
             </remarks>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: RollbackRuleAttribute.cs,v 1.6 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.Interceptor.RollbackRuleAttribute.RollbackOnSystemExceptions">
             <summary>
@@ -8219,7 +8486,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: RuleBasedTransactionAttribute.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.RuleBasedTransactionAttribute.#ctor(Spring.Transaction.TransactionPropagation,System.Collections.IList)">
             <summary>
@@ -8303,7 +8569,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionAspectSupport.cs,v 1.14 2007/12/07 08:10:03 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.Interceptor.TransactionAspectSupport.CURRENT_TRANSACTIONINFO_SLOTNAME">
             <summary>
@@ -8562,7 +8827,6 @@
             </para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionAttribute.cs,v 1.8 2007/12/07 07:30:48 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionAttribute.#ctor">
             <summary>
@@ -8642,6 +8906,48 @@
             </summary>
             <value>The enterprise services interop option.</value>
         </member>
+        <member name="T:Spring.Transaction.Interceptor.TransactionAttributeConverter">
+            <summary>
+            Type converter for <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> 
+            objects.
+            </summary>
+            <remarks>
+            Takes <see cref="T:System.String"/>s of the form
+            <p><code>PROPAGATION_NAME,ISOLATION_NAME,readOnly,timeout_NNNN,+Exception1,-Exception2</code></p>
+            <p>where only propagation code is required. For example:</p>
+            <p><code>PROPAGATION_MANDATORY,ISOLATION_DEFAULT</code></p>
+            <p>
+            The tokens can be in <strong>any</strong> order. Propagation and isolation codes
+            must use the names of the values in the <see cref="T:Spring.Transaction.TransactionPropagation"/>
+            enumeration. Timeout values are in seconds. If no timeout is specified, the transaction
+            manager will apply a default timeout specific to the particular transaction manager.
+            </p>
+            <p>
+            A "+" before an exception name substring indicates that transactions should commit even
+            if this exception is thrown; a "-" that they should roll back.
+            </p>
+            </remarks>
+            <author>Mark Pollack</author>
+        </member>
+        <member name="M:Spring.Transaction.Interceptor.TransactionAttributeConverter.CanConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Type)">
+            <summary>
+            Returns whether this converter can convert an object of the given type to an ITransactionAttribute, using the specified context.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"></see> that provides a format context.</param>
+            <param name="sourceType">A <see cref="T:System.Type"></see> that represents the type you want to convert from.</param>
+            <returns>
+            true if this converter can perform the conversion; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:Spring.Transaction.Interceptor.TransactionAttributeConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+            <summary>
+            Converts from string to ITransactionAttribute
+            </summary>
+            <param name="context">The context.</param>
+            <param name="culture">The culture.</param>
+            <param name="val">The string value to convert</param>
+            <returns>An ITransactionAttribute instance</returns>
+        </member>
         <member name="T:Spring.Transaction.Interceptor.TransactionAttributeEditor">
             <summary>
             Type converter for <see cref="T:Spring.Transaction.Interceptor.ITransactionAttribute"/> 
@@ -8666,7 +8972,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionAttributeEditor.cs,v 1.7 2007/12/07 07:30:48 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionAttributeEditor.SetAsText(System.String)">
             <summary>
@@ -8698,7 +9003,6 @@
             </remarks>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionAttributeSourceAdvisor.cs,v 1.11 2007/12/07 08:10:03 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionAttributeSourceAdvisor.#ctor">
             <summary>
@@ -8770,7 +9074,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionAttributeSourceEditor.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionAttributeSourceEditor.#ctor">
             <summary>
@@ -8835,7 +9138,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionInterceptor.cs,v 1.12 2007/09/07 04:46:53 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionInterceptor.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
@@ -8878,7 +9180,6 @@
             <author>Dmitriy Kopylenko</author>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionProxyFactoryObject.cs,v 1.7 2007/08/01 17:56:16 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Interceptor.TransactionProxyFactoryObject.#ctor">
             <summary>
@@ -9054,7 +9355,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: DefaultTransactionStatus.cs,v 1.14 2007/12/06 06:23:33 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.ITransactionStatus">
             <summary>
@@ -9076,7 +9376,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ITransactionStatus.cs,v 1.11 2007/08/01 18:53:05 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Transaction.ITransactionStatus.IsNewTransaction">
             <summary>
@@ -9283,7 +9582,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: ITransactionCallback.cs,v 1.4 2007/08/01 23:32:39 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.ITransactionCallback.DoInTransaction(Spring.Transaction.ITransactionStatus)">
             <summary>
@@ -9303,7 +9601,6 @@
             </remarks>
             <author>Juergen Hoeller</author>
             <author>Mark Pollac (.NET)</author>
-            <version>$Id: ITransactionOperations.cs,v 1.1 2007/08/01 18:53:14 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.ITransactionOperations.Execute(Spring.Transaction.Support.TransactionDelegate)">
             <summary>
@@ -9342,7 +9639,6 @@
             i.e. without the need for a return statement.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionCallbackWithoutResult.cs,v 1.3 2006/06/21 14:07:30 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.TransactionCallbackWithoutResult.DoInTransactionWithoutResult(Spring.Transaction.ITransactionStatus)">
             <summary>
@@ -9423,7 +9719,6 @@
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TransactionSynchronizationManager.cs,v 1.18 2007/09/07 02:47:00 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.TransactionSynchronizationManager.HasResource(System.Object)">
             <summary>
@@ -9574,17 +9869,17 @@
         </member>
         <member name="P:Spring.Transaction.Support.TransactionSynchronizationManager.CurrentTransactionIsolationLevel">
             <summary>
-            Gets or sets the current transaction isolation level.
+            Gets or sets the current transaction isolation level, if any.
             </summary>
             <remarks>Called by the transaction manager on transaction begin and on cleanup.</remarks>
-            <value>The current transaction isolation level.</value>
+            <value>The current transaction isolation level.  If no current transaction is 
+            active, retrun IsolationLevel.Unspecified</value>
         </member>
         <member name="T:Spring.Transaction.Support.TransactionSynchronizationState">
             <summary>
             Enumeration containing the state of transaction synchronization.
             </summary>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionSynchronizationState.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.Support.TransactionSynchronizationState.Always">
             <summary>
@@ -9611,7 +9906,6 @@
             Enumeration of status values when synchronizing transactions.
             </summary>
             <author>Griffin Caprio</author>
-            <version>$Id: TransactionSynchronizationStatus.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.Support.TransactionSynchronizationStatus.Committed">
             <summary>
@@ -9660,7 +9954,6 @@
             <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author> 
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionTemplate.cs,v 1.13 2007/08/01 18:53:14 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.Support.TransactionTemplate.#ctor">
             <summary>
@@ -9757,7 +10050,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: CannotCreateTransactionException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.TransactionException">
             <summary>
@@ -9765,7 +10057,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionException.cs,v 1.7 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.TransactionException.#ctor">
             <summary>
@@ -9853,7 +10144,6 @@
             <author>Rod Johnson</author>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: HeuristicCompletionException.cs,v 1.6 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.HeuristicCompletionException._outcomeState">
             <summary>
@@ -9954,7 +10244,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: IllegalTransactionStateException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.IllegalTransactionStateException.#ctor">
             <summary>
@@ -10005,7 +10294,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: InvalidIsolationLevelException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Transaction.TransactionUsageException">
             <summary> 
@@ -10014,7 +10302,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionUsageException.cs,v 1.6 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.TransactionUsageException.#ctor">
             <summary>
@@ -10105,7 +10392,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: InvalidTimeoutException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.InvalidTimeoutException._timeout">
             <summary>
@@ -10190,7 +10476,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: NestedTransactionNotSupportedException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.NestedTransactionNotSupportedException.#ctor">
             <summary>
@@ -10241,7 +10526,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: NoTransactionException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.NoTransactionException.#ctor">
             <summary>
@@ -10289,7 +10573,6 @@
             Represents a transaction's current state.
             </summary>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionOutcomeState.cs,v 1.4 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.TransactionOutcomeState.Unknown">
             <summary>
@@ -10317,7 +10600,6 @@
             transaction propagation settings.
             </summary>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionPropagation.cs,v 1.7 2007/05/29 20:00:33 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Transaction.TransactionPropagation.Required">
             <summary>
@@ -10398,7 +10680,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionSuspensionNotSupportedException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.TransactionSuspensionNotSupportedException.#ctor">
             <summary>
@@ -10448,7 +10729,6 @@
             </summary>
             <author>Juergen Hoeller</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: TransactionSystemException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.TransactionSystemException.#ctor">
             <summary>
@@ -10542,7 +10822,6 @@
             </summary>
             <author>Rod Johnson</author>
             <author>Griffin Caprio (.NET)</author>
-            <version>$Id: UnexpectedRollbackException.cs,v 1.5 2006/05/18 21:37:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Transaction.UnexpectedRollbackException.#ctor">
             <summary>

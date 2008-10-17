@@ -23,7 +23,7 @@ namespace MvcContrib.BrailViewEngine
 
 	public class HtmlExtension : IDslLanguageExtension
 	{
-		private readonly TextWriter _output = null;
+		private readonly TextWriter _output;
 
 		public HtmlExtension(TextWriter output)
 		{
@@ -63,7 +63,7 @@ namespace MvcContrib.BrailViewEngine
 		{
 			Output.Write("<{0}", tag);
 
-			List<string> attributeValues = new List<string>();
+			var attributeValues = new List<string>();
 
 			if (null != attributes)
 			{

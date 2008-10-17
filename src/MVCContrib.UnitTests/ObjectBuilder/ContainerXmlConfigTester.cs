@@ -2,27 +2,18 @@
 using Microsoft.Practices.ObjectBuilder;
 using MvcContrib.ObjectBuilder.Configuration;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ObjectBuilder
 {
 	[TestFixture, Category("ObjectBuilderFactory")]
 	public class ContainerXmlConfigTester
 	{
-		private MockRepository _mocks;
-
-		[SetUp]
-		public void Setup()
-		{
-			_mocks = new MockRepository();
-		}
-
 		[Test]
 		public void ValidXmlTest()
 		{
 			IBuilder<BuilderStage> builder = new BuilderBase<BuilderStage>();
 
-			ContainerXmlConfig config = new ContainerXmlConfig(validConfig);
+			var config = new ContainerXmlConfig(validConfig);
 			config.ApplyConfiguration(builder);
 
 			Assert.AreEqual(8, builder.Policies.Count);
@@ -34,7 +25,7 @@ namespace MvcContrib.UnitTests.ObjectBuilder
 		{
 			IBuilder<BuilderStage> builder = new BuilderBase<BuilderStage>();
 
-			ContainerXmlConfig config = new ContainerXmlConfig(invalidTypeConfig);
+			var config = new ContainerXmlConfig(invalidTypeConfig);
 			config.ApplyConfiguration(builder);
 		}
 

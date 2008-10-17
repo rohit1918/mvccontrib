@@ -20,7 +20,6 @@
             </remarks>
             <author>Aleksandar Seovic</author>
             <author>Erich Eichinger</author>
-            <version>$Id: AspNetCache.cs,v 1.6 2007/09/14 18:26:26 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Caching.AspNetCache.#ctor">
             <summary>
@@ -165,7 +164,6 @@
             
              </summary>
              <author>Erich Eichinger</author>
-             <version>$Id: HttpApplicationConfigurer.cs,v 1.2 2007/07/29 19:39:42 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Context.Support.HttpApplicationConfigurer.s_applicationDefinition">
             <summary>
@@ -311,14 +309,13 @@
             as default Context-Type.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: WebContextHandler.cs,v 1.7 2007/07/26 14:43:33 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Context.Support.WebContextHandler.GetContextName(System.Object,System.Xml.XmlElement)">
             <summary>
             Gets the context name from the given <see cref="T:System.Web.Configuration.HttpConfigurationContext"/>
             </summary>
         </member>
-        <member name="M:Spring.Context.Support.WebContextHandler.CreateChildContexts(Spring.Context.IApplicationContext,System.Object,System.Xml.XmlNodeList)">
+        <member name="M:Spring.Context.Support.WebContextHandler.CreateChildContexts(Spring.Context.IApplicationContext,System.Object,System.Xml.XmlNode[])">
             <summary>
             Throws a configuration exception, if child contexts are specified.
             </summary>
@@ -347,7 +344,6 @@
             Provides various support for proper handling requests.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: WebSupportModule.cs,v 1.15 2007/08/08 17:48:19 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Context.Support.WebSupportModule.#cctor">
             <summary>
@@ -381,7 +377,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebResource.cs,v 1.13 2007/08/08 17:49:48 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Core.IO.WebResource.#ctor(System.String)">
             <summary>
@@ -552,8 +547,11 @@
             <summary>
             Binds agroup of HTTP request multi-valued items to the data model.
             </summary>
+            <remarks>
+            Due to the fact, that browsers don't send the values of unchecked checkboxes, you 
+            can't use <see cref="T:Spring.DataBinding.HttpRequestListBindingContainer"/> for binding to checkboxes.
+            </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: HttpRequestBindingContainer.cs,v 1.4 2007/08/16 05:42:33 markpollack Exp $</version>
         </member>
         <member name="M:Spring.DataBinding.HttpRequestListBindingContainer.#ctor(System.String,System.String,System.Type)">
             <summary>
@@ -594,7 +592,7 @@
             Added <see cref="T:Spring.DataBinding.SimpleExpressionBinding"/> instance.
             </returns>
         </member>
-        <member name="M:Spring.DataBinding.HttpRequestListBindingContainer.BindSourceToTarget(System.Object,System.Object,Spring.Validation.ValidationErrors,System.Collections.IDictionary)">
+        <member name="M:Spring.DataBinding.HttpRequestListBindingContainer.BindSourceToTarget(System.Object,System.Object,Spring.Validation.IValidationErrors,System.Collections.IDictionary)">
             <summary>
             Binds source object to target object.
             </summary>
@@ -611,7 +609,7 @@
             Variables that should be used during expression evaluation.
             </param>
         </member>
-        <member name="M:Spring.DataBinding.HttpRequestListBindingContainer.BindTargetToSource(System.Object,System.Object,Spring.Validation.ValidationErrors,System.Collections.IDictionary)">
+        <member name="M:Spring.DataBinding.HttpRequestListBindingContainer.BindTargetToSource(System.Object,System.Object,Spring.Validation.IValidationErrors,System.Collections.IDictionary)">
             <summary>
             Binds target object to source object.
             </summary>
@@ -696,14 +694,12 @@
             Culture resolver that uses cookie to store culture information.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: CookieCultureResolver.cs,v 1.4 2007/08/25 14:26:35 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Globalization.Resolvers.DefaultWebCultureResolver">
             <summary>
             Default culture resolver for web applications. Contains some common utility methods for web culture resolvers.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: DefaultWebCultureResolver.cs,v 1.5 2007/08/25 14:26:35 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Globalization.Resolvers.DefaultWebCultureResolver.GetDefaultLocale">
             <summary>
@@ -776,7 +772,6 @@
             the web browser.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: RequestCultureResolver.cs,v 1.4 2007/08/25 14:26:35 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Globalization.Resolvers.RequestCultureResolver.ResolveCulture">
             <summary>
@@ -798,7 +793,6 @@
             Culture resolver that uses HTTP session to store culture information.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: SessionCultureResolver.cs,v 1.3 2007/08/25 14:26:35 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Globalization.Resolvers.SessionCultureResolver.ResolveCulture">
             <summary>
@@ -827,7 +821,6 @@
             Resource cache implementation that uses ASP.NET <see cref="T:System.Web.Caching.Cache"/> to cache resources.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AspNetResourceCache.cs,v 1.6 2007/08/03 06:08:59 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Globalization.AspNetResourceCache.GetResources(System.String)">
             <summary>
@@ -854,14 +847,12 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ChildWebObjectDefinition.cs,v 1.3 2007/08/01 23:10:46 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Objects.Factory.Support.IWebObjectDefinition">
             <summary>
             Defines additional members web object definitions need to implement.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: IWebObjectDefinition.cs,v 1.2 2007/03/26 14:58:38 oakinger Exp $</version>
         </member>
         <member name="P:Spring.Objects.Factory.Support.IWebObjectDefinition.Scope">
             <summary>
@@ -960,7 +951,6 @@
             The possible object scope values.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ObjectScope.cs,v 1.1 2007/02/17 06:57:44 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Objects.Factory.Support.ObjectScope.Application">
             <summary>
@@ -995,7 +985,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: RootWebObjectDefinition.cs,v 1.4 2007/08/01 23:10:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Objects.Factory.Support.RootWebObjectDefinition.#ctor(System.Type,Spring.Objects.Factory.Config.ConstructorArgumentValues,Spring.Objects.MutablePropertyValues)">
             <summary>
@@ -1115,7 +1104,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebInstantiationStrategy.cs,v 1.3 2007/08/01 23:10:46 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Objects.Factory.Support.WebInstantiationStrategy.#ctor">
             <summary>
@@ -1155,7 +1143,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebObjectDefinitionFactory.cs,v 1.8 2007/07/31 18:19:06 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectDefinitionFactory.CreateObjectDefinition(System.String,System.String,System.AppDomain)">
             <summary>
@@ -1187,11 +1174,16 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebObjectFactory.cs,v 1.7 2007/08/02 20:49:50 oakinger Exp $</version>
         </member>
         <member name="F:Spring.Objects.Factory.Support.WebObjectFactory.contextPath">
             <summary>
             Holds the virtual path this factory has been created from.
+            </summary>
+        </member>
+        <member name="F:Spring.Objects.Factory.Support.WebObjectFactory.createObjectDictionary">
+            <summary>
+            Holds the handler reference for creating an object dictionary
+            matching this factory's case-sensitivity
             </summary>
         </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.EnsureEventHandlersRegistered">
@@ -1219,6 +1211,11 @@
             The parent object factory.
             </param>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateObjectDictionary">
+            <summary>
+            Creates a dictionary matching this factory's case sensitivity behaviour.
+            </summary>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateRootObjectDefinition(Spring.Objects.Factory.Config.IObjectDefinition)">
             <summary>
             Creates the root object definition.
@@ -1237,6 +1234,14 @@
             <param name="objectName">Object name to look for.</param>
             <returns>Cached object if found, null otherwise.</returns>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.GetScopedSingleton(System.String,System.Collections.IDictionary)">
+            <summary>
+            Looks up an <paramref name="objectName"/> in the specified cache dictionary.
+            </summary>
+            <param name="objectName">the name to lookup.</param>
+            <param name="scopedSingletonCache">the cache dictionary to search</param>
+            <returns>the found instance. null otherwise</returns>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateAndCacheSingletonInstance(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[])">
             <summary>
             Creates a singleton instance for the specified object name and definition.
@@ -1252,24 +1257,64 @@
             </param>
             <returns>The created object instance.</returns>
         </member>
-        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.GetObjectKey(System.String)">
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateAndCacheScopedSingletonInstance(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Collections.IDictionary)">
             <summary>
-            Creates hopefully unique key for the scope based on object name.
+            Creates a singleton instance for the specified object name and definition 
+            and caches the instance in the specified dictionary
             </summary>
-            <param name="name">Object name.</param>
-            <returns>Generated key.</returns>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.ConfigureObject(System.Object,System.String)">
-            <summary>
-            Injects dependencies into the supplied <paramref name="target"/> instance
-            using the named object definition.
-            </summary>
-            <param name="target">
-            The object instance that is to be so configured.
+            <param name="objectName">
+            The object name (will be used as the key in the singleton cache key).
             </param>
+            <param name="objectDefinition">The object definition.</param>
+            <param name="arguments">
+            The arguments to use if creating a prototype using explicit arguments to
+            a static factory method. It is invalid to use a non-null arguments value
+            in any other case.
+            </param>
+            <param name="scopedSingletonCache">the dictionary to be used for caching singleton instances</param>
+            <returns>The created object instance.</returns>
+            <remarks>
+            If the object is successfully created, <paramref name="scopedSingletonCache"/> 
+            contains the cached instance with the key <paramref name="objectName"/>.
+            </remarks>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.AddEagerlyCachedSingleton(System.String,Spring.Objects.Factory.Config.IObjectDefinition,System.Object)">
+            <summary>
+            Add the created, but yet unpopulated singleton to the singleton cache
+            to be able to resolve circular references
+            </summary>
+            <param name="objectName">the name of the object to add to the cache.</param>
+            <param name="objectDefinition">the definition used to create and populated the object.</param>
+            <param name="rawSingletonInstance">the raw object instance.</param>
+            <remarks>
+            Derived classes may override this method to select the right cache based on the object definition.
+            </remarks>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.RemoveEagerlyCachedSingleton(System.String,Spring.Objects.Factory.Config.IObjectDefinition)">
+            <summary>
+            Remove the specified singleton from the singleton cache that has 
+            been added before by a call to <see cref="M:Spring.Objects.Factory.Support.WebObjectFactory.AddEagerlyCachedSingleton(System.String,Spring.Objects.Factory.Config.IObjectDefinition,System.Object)"/>
+            </summary>
+            <param name="objectName">the name of the object to remove from the cache.</param>
+            <param name="objectDefinition">the definition used to create and populated the object.</param>
+            <remarks>
+            Derived classes may override this method to select the right cache based on the object definition.
+            </remarks>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.ConfigureObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,Spring.Objects.IObjectWrapper)">
+            <summary>
+            Configures object instance by injecting dependencies, satisfying Spring lifecycle
+            interfaces and applying object post-processors.
+            </summary>
             <param name="name">
             The name of the object definition expressing the dependencies that are to
             be injected into the supplied <parameref name="target"/> instance.
+            </param>
+            <param name="definition">
+            An object definition that should be used to configure object.
+            </param>
+            <param name="wrapper">
+            A wrapped object instance that is to be so configured.
             </param>
             <seealso cref="M:Spring.Objects.Factory.IObjectFactory.ConfigureObject(System.Object,System.String)"/>
         </member>
@@ -1281,6 +1326,16 @@
         <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.OnEndSession(System.Web.SessionState.HttpSessionState,System.Web.Caching.CacheItemRemovedReason)">
             <summary>
             Disposes all 'session'-scoped objects at the end of a session
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateCaseInsensitiveDictionary">
+            <summary>
+            Creates a case insensitive hashtable instance
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectFactory.CreateCaseSensitiveDictionary">
+            <summary>
+            Creates a case sensitive hashtable instance
             </summary>
         </member>
         <member name="P:Spring.Objects.Factory.Support.WebObjectFactory.Context">
@@ -1303,7 +1358,6 @@
             Miscellaneous utility methods to support web functionality within Spring.Objects
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebObjectUtils.cs,v 1.2 2007/12/03 16:11:31 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectUtils.#ctor">
             <summary>
@@ -1364,6 +1418,19 @@
             ASPX <paramref name="pageUrl"/> not actually existing).
             </exception>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectUtils.GetCompiledPageType(System.String)">
+            <summary>
+            Calls the underlying ASP.NET infrastructure to obtain the compiled page type 
+            relative to the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>.
+            </summary>
+            <param name="pageUrl">
+            The filename of the ASPX page relative to the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>
+            </param>
+            <returns>
+            The <see cref="T:System.Type"/> of the ASPX page
+            referred to by the supplied <paramref name="pageUrl"/>.
+            </returns>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectUtils.GetControlType(System.String)">
             <summary>
             Gets the controls type from a given filename
@@ -1382,7 +1449,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebObjectsNamespaceParser.cs,v 1.1 2007/08/07 23:22:30 markpollack Exp $</version>
             <see cref="T:Spring.Objects.Factory.Xml.ObjectsNamespaceParser"/>
         </member>
         <member name="M:Spring.Objects.Factory.Xml.WebObjectsNamespaceParser.#ctor">
@@ -1391,14 +1457,14 @@
             <see cref="T:Spring.Objects.Factory.Xml.WebObjectsNamespaceParser"/> class.
             </summary>
         </member>
-        <member name="M:Spring.Objects.Factory.Xml.WebObjectsNamespaceParser.ParseObjectDefinition(System.Xml.XmlElement,System.String,Spring.Objects.Factory.Xml.ObjectDefinitionParserHelper)">
+        <member name="M:Spring.Objects.Factory.Xml.WebObjectsNamespaceParser.ParseObjectDefinitionElement(System.Xml.XmlElement,System.String,Spring.Objects.Factory.Xml.ParserContext)">
             <summary>
             Parses an object definition and set various web related properties
             if the definition is an <see cref="T:Spring.Objects.Factory.Support.RootWebObjectDefinition"/>.
             </summary>
             <param name="element">The object definition element.</param>
             <param name="id">The id / name of the object definition.</param>
-            <param name="parserHelper">the parser helper</param>
+            <param name="parserContext">the parser helper</param>
             <returns>The object (definition).</returns>
             <remarks>
             	<p>
@@ -1449,7 +1515,6 @@
             Implements <see cref="T:Spring.Threading.IThreadStorage"/> by using <see cref="T:System.Web.HttpContext"/>.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: HttpContextStorage.cs,v 1.1 2007/02/02 21:31:25 oakinger Exp $</version>  
         </member>
         <member name="M:Spring.Threading.HttpContextStorage.GetData(System.String)">
             <summary>
@@ -1481,7 +1546,6 @@
             and <see cref="T:System.Web.HttpContext">System.Web.HttpContext</see> to store data.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: HybridContextStorage.cs,v 1.1 2007/02/02 21:31:25 oakinger Exp $</version>  
         </member>
         <member name="M:Spring.Threading.HybridContextStorage.GetData(System.String)">
             <summary>
@@ -1508,7 +1572,6 @@
             Helper class for easier access to reflected Control members.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ControlAccessor.cs,v 1.1 2006/11/27 19:13:13 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Util.ControlAccessor.#ctor(System.Web.UI.Control)">
             <summary>
@@ -1520,12 +1583,6 @@
             <summary>
             Returns the underlying ControlCollection instance.
             </summary>
-        </member>
-        <member name="M:Spring.Util.ControlAccessor.CreateControlCollection">
-            <summary>
-            Calls target's <see cref="M:System.Web.UI.Control.CreateControlCollection"/>
-            </summary>
-            <returns></returns>
         </member>
         <member name="P:Spring.Util.ControlAccessor.Controls">
             <summary>
@@ -1540,11 +1597,15 @@
             Helper class for easier access to reflected ControlCollection members.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ControlCollectionAccessor.cs,v 1.1 2006/11/27 19:13:13 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Util.ControlCollectionAccessor.GetTarget">
             <summary>
             Returns the underlying ControlCollection instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ControlCollectionAccessor.GetTargetType">
+            <summary>
+            Returns the type of the underlying ControlCollection instance.
             </summary>
         </member>
         <member name="M:Spring.Util.ControlCollectionAccessor.#ctor(System.Web.UI.ControlCollection)">
@@ -1577,7 +1638,6 @@
             </code>
             </example>
             <author>Erich Eichinger</author>
-            <version>$Id: HttpContextSwitch.cs,v 1.1 2007/08/01 23:10:51 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Util.HttpContextSwitch.#ctor(System.String)">
             <summary>
@@ -1588,6 +1648,51 @@
         <member name="M:Spring.Util.HttpContextSwitch.Dispose">
             <summary>
             Restores original path if necessary
+            </summary>
+        </member>
+        <member name="T:Spring.Util.ISessionState">
+            <summary>
+            Abstracts HttpSession
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ISessionState.Abandon">
+            <summary>
+            <see cref="M:System.Web.SessionState.HttpSessionState.Abandon"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.IsCookieless">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.IsCookieless"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.IsNewSession">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.IsNewSession"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.LCID">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.LCID"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.Mode">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.Mode"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.SessionID">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.SessionID"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.CodePage">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.CodePage"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ISessionState.CookieMode">
+            <summary>
+            <see cref="P:System.Web.SessionState.HttpSessionState.CookieMode"/>
             </summary>
         </member>
         <member name="T:Spring.Util.IVirtualEnvironment">
@@ -1602,12 +1707,20 @@
         </member>
         <member name="P:Spring.Util.IVirtualEnvironment.ApplicationVirtualPath">
             <summary>
-            The virtual (rooted) path of the current Application
+            The virtual (rooted) path of the current Application with trailing slash
             </summary>
+            <remarks>
+            For the site rooted applications, "/" will be returned, for all others "/..someappdir../"
+            </remarks>
         </member>
         <member name="P:Spring.Util.IVirtualEnvironment.CurrentVirtualPath">
             <summary>
-            The virtual (rooted) path of the current Request
+            The virtual (rooted) path of the current Request including <see cref="P:System.Web.HttpRequest.PathInfo"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.IVirtualEnvironment.CurrentVirtualFilePath">
+            <summary>
+            The virtual (rooted) path of the current Request without trailing <see cref="P:System.Web.HttpRequest.PathInfo"/>
             </summary>
         </member>
         <member name="P:Spring.Util.IVirtualEnvironment.CurrentExecutionFilePath">
@@ -1620,6 +1733,16 @@
             whereas CurrentVirtualPath returns the original script path.
             </remarks>
         </member>
+        <member name="P:Spring.Util.IVirtualEnvironment.Session">
+            <summary>
+            Returns the current Session's variable dictionary
+            </summary>
+        </member>
+        <member name="P:Spring.Util.IVirtualEnvironment.RequestVariables">
+            <summary>
+            Returns the current Request's variable dictionary
+            </summary>
+        </member>
         <member name="T:Spring.Util.VirtualEnvironment">
             <summary>
             Provides platform independent access to HttpRuntime methods
@@ -1628,7 +1751,6 @@
             For e.g. testing purposes, the default environment implementation may be replaced using <see cref="M:Spring.Util.VirtualEnvironment.SetInstance(Spring.Util.IVirtualEnvironment)"/>.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: VirtualEnvironment.cs,v 1.4 2007/08/02 20:49:59 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Util.VirtualEnvironment.SetInstance(Spring.Util.IVirtualEnvironment)">
             <summary>
@@ -1669,12 +1791,17 @@
         </member>
         <member name="P:Spring.Util.VirtualEnvironment.ApplicationVirtualPath">
             <summary>
-            The virtual (rooted) path of the current Application
+            The virtual (rooted) path of the current Application containing a leading '/' as well as a trailing '/'
             </summary>
         </member>
         <member name="P:Spring.Util.VirtualEnvironment.CurrentVirtualPath">
             <summary>
-            The virtual (rooted) path of the current Request
+            The virtual (rooted) path of the current Request including <see cref="P:System.Web.HttpRequest.PathInfo"/>
+            </summary>
+        </member>
+        <member name="P:Spring.Util.VirtualEnvironment.CurrentVirtualFilePath">
+            <summary>
+            The virtual (rooted) path of the current Request without trailing <see cref="P:System.Web.HttpRequest.PathInfo"/>
             </summary>
         </member>
         <member name="P:Spring.Util.VirtualEnvironment.CurrentExecutionFilePath">
@@ -1722,7 +1849,6 @@
             Miscellaneous web utility methods.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebUtils.cs,v 1.31 2007/11/28 23:26:00 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Util.WebUtils.#ctor">
             <summary>
@@ -1782,7 +1908,7 @@
             <remarks>
             <p>
             If relative path starts with '/' (forward slash), no concatenation will occur
-            and it will be assumes that the relative path specified is indeed the absolute path
+            and it will be assumed that the relative path specified is indeed the absolute path
             and will be returned verbatim.</p>
             <p>
             Otherwise, relative path will be appended to the application path, while making sure that 
@@ -1803,6 +1929,25 @@
             If relativePath starts with '~', rootPath is ignored and '~' resolves to the current AppDomain's application virtual path<br/>
             If relativePath start with '/', rootPath is ignored and relativePath is returned as-is.
             </remarks>
+        </member>
+        <member name="M:Spring.Util.WebUtils.GetAppRelativePath(System.String)">
+            <summary>
+            Gets the application-relative virtual path portion of the given absolute URL.
+            </summary>
+            <param name="url">the absolute url</param>
+            <returns>the url relative to the current application's virtual path</returns>
+        </member>
+        <member name="M:Spring.Util.WebUtils.GetRelativePath(System.String,System.String)">
+            <summary>
+            Gets the virtual path portion of the given absolute URL 
+            relative to the given base path.
+            </summary>
+            <remarks>
+            Base path comparison is done case insensitive.
+            </remarks>
+            <param name="basePath">the absolute base path</param>
+            <param name="url">the absolute url</param>
+            <returns>the url relative to the given basePath</returns>
         </member>
         <member name="T:Spring.Web.Process.IProcess">
             <summary>
@@ -1857,7 +2002,6 @@
             that want to be aware of the <see cref="T:Spring.Web.Process.IProcess"/> they belong to. 
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: IProcessAware.cs,v 1.2 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Web.Process.IProcessAware.Process">
             <summary>
@@ -1869,7 +2013,6 @@
             Singleton that keeps track of all active process instances.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ProcessManager.cs,v 1.2 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Process.ProcessManager.#ctor">
             <summary>
@@ -1900,7 +2043,6 @@
             A spring configurable version of <see cref="T:System.Web.Security.SqlMembershipProvider"/>
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ConfigurableSqlMembershipProvider.cs,v 1.1 2007/07/26 14:43:56 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.Providers.IMembershipProvider">
             <summary>
@@ -2282,7 +2424,6 @@
             
              </summary>
              <author>Erich Eichinger</author>
-             <version>$Id: ConfigurableSqlProfileProvider.cs,v 1.1 2007/07/26 14:43:56 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.Providers.IProfileProvider">
             <summary>
@@ -2497,7 +2638,6 @@
             A spring-configurable version of <see cref="T:System.Web.Security.SqlRoleProvider"/>
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ConfigurableSqlRoleProvider.cs,v 1.1 2007/07/26 14:43:56 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.Providers.IRoleProvider">
             <summary>
@@ -2688,7 +2828,6 @@
             A spring-configurable version of <see cref="T:System.Web.Security.SqlRoleProvider"/>
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ConfigurableXmlSiteMapProvider.cs,v 1.1 2007/07/26 14:43:56 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.Providers.ISiteMapProvider">
             <summary>
@@ -2958,7 +3097,6 @@
             </p>    
             </remarks>
             <author>Damjan Tomic</author>
-            <version>$Id: MembershipProviderAdapter.cs,v 1.1 2007/07/26 14:43:56 oakinger Exp $</version>
         </member>
         <member name="F:Spring.Web.Providers.MembershipProviderAdapter.wrappedProvider">
             <summary>
@@ -3914,7 +4052,21 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebServiceExporter.cs,v 1.29 2007/12/07 20:26:12 bbaia Exp $</version>
+        </member>
+        <member name="F:Spring.Web.Services.WebServiceExporter.objectName">
+            <summary>
+            The name of the object in the factory.
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Services.WebServiceExporter.objectFactory">
+            <summary>
+            The owning factory.
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Services.WebServiceExporter.proxyType">
+            <summary>
+            The generated web service wrapper type.
+            </summary>
         </member>
         <member name="M:Spring.Web.Services.WebServiceExporter.#ctor">
             <summary>
@@ -3948,6 +4100,25 @@
             In the event of misconfiguration (such as failure to set an essential
             property) or if initialization fails.
             </exception>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.ValidateConfiguration">
+            <summary>
+            Validates the configuration.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.GenerateProxy">
+            <summary>
+            Generates the web service wrapper type.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Services.WebServiceExporter.WsiProfile">
+            <summary>
+            Gets or Sets the Web Services Interoperability (WSI) specification 
+            to which the Web Service claims to conform.
+            </summary>
+            <remarks>
+            Default is <see cref="F:System.Web.Services.WsiProfiles.BasicProfile1_1"/>
+            </remarks>
         </member>
         <member name="P:Spring.Web.Services.WebServiceExporter.WebServiceBaseType">
             <summary>
@@ -4094,7 +4265,6 @@
             to find web service object in the Spring context.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: WebServiceHandlerFactory.cs,v 1.11 2006/10/24 03:31:29 bbaia Exp $</version>
         </member>
         <member name="M:Spring.Web.Services.WebServiceHandlerFactory.System#Web#IHttpHandlerFactory#GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
             <summary>
@@ -4118,7 +4288,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AbstractHandlerFactory.cs,v 1.4 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.AbstractHandlerFactory.#ctor">
             <summary>
@@ -4160,12 +4329,45 @@
             The <see cref="T:System.Web.IHttpHandler"/> object to release.
             </param>
         </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.FindWebObjectDefinition(System.String,Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
+            <summary>
+            DO NOT USE - this is subject to change!
+            </summary>
+            <param name="appRelativeVirtualPath"></param>
+            <param name="objectFactory"></param>
+            <returns>
+            This method requires registrars to follow the convention of registering web object definitions using their
+            application relative urls (~/mypath/mypage.aspx). 
+            </returns>
+            <remarks>
+            Resolve an object definition by url.
+            </remarks>
+        </member>
+        <member name="T:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition">
+            <summary>
+            DO NOT USE - this is subject to change!
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.#ctor(System.String,Spring.Objects.Factory.Config.IObjectDefinition)">
+            <summary>
+            DO NOT USE
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.Name">
+            <summary>
+            DO NOT USE
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.ObjectDefinition">
+            <summary>
+            DO NOT USE
+            </summary>
+        </member>
         <member name="T:Spring.Web.Support.AbstractProcessHandler">
             <summary>
             An abstract base class that defines common behavior for different process implementations.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AbstractProcessHandler.cs,v 1.1 2007/08/03 08:31:25 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.Support.ISharedStateAware">
             <summary>
@@ -4300,8 +4502,32 @@
         </member>
         <member name="P:Spring.Web.Support.AbstractProcessHandler.ApplicationContext">
             <summary>
-            Gets or sets the application context.
+            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            object runs in.
             </summary>
+            <value></value>
+            <remarks>
+            <p>
+            Normally this call will be used to initialize the object.
+            </p>
+            <p>
+            Invoked after population of normal object properties but before an
+            init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked after the setting of any
+            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
+            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
+            property.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Context.ApplicationContextException">
+            In the case of application context initialization errors.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If thrown by any application context methods.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
         </member>
         <member name="T:Spring.Web.Support.ContextMonitor">
             <summary>
@@ -4314,7 +4540,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ContextMonitor.cs,v 1.3 2007/07/29 19:39:48 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.ContextMonitor.#ctor">
             <summary>
@@ -4339,11 +4564,15 @@
             Support Class providing a method to ensure a control has been intercepted
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: ControlInterceptor.cs,v 1.1 2007/08/01 23:11:00 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Web.Support.ControlInterceptor.s_availableInterceptionStrategies">
             <summary>
             Holds all available interception strategies
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Support.ControlInterceptor.s_noopInterceptionStrategy">
+            <summary>
+            The last resort interception strategy...
             </summary>
         </member>
         <member name="F:Spring.Web.Support.ControlInterceptor.s_cachedInterceptionStrategies">
@@ -4361,7 +4590,6 @@
             Any concrete interception strategy must implement this interface
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: IInterceptionStrategy.cs,v 1.1 2007/08/01 23:11:00 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.IInterceptionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Util.ControlAccessor,Spring.Util.ControlCollectionAccessor)">
             <summary>
@@ -4377,7 +4605,6 @@
             This strategy replaces the original collection's owner with an intercepting proxy
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: InterceptControlCollectionOwnerStrategy.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Web.Support.InterceptControlCollectionStrategy">
             <summary>
@@ -4385,7 +4612,6 @@
             dynamically implementing ISupportsWebDependencyInjection on this type
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: InterceptControlCollectionStrategy.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Web.Support.InterceptControlCollectionStrategy.s_collectionMethods">
             <summary>
@@ -4396,6 +4622,16 @@
             <summary>
             Holds a table of already known intercepted ControlCollection types
             </summary>
+        </member>
+        <member name="M:Spring.Web.Support.InterceptControlCollectionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Util.ControlAccessor,Spring.Util.ControlCollectionAccessor)">
+            <summary>
+            Intercepts the given <see cref="T:System.Web.UI.ControlCollection"/> by dynamically deriving 
+            the original type and let it implement <see cref="T:Spring.Web.Support.ISupportsWebDependencyInjection"/>.
+            </summary>
+            <param name="defaultApplicationContext">the ApplicationContext to be set on the collection instance.</param>
+            <param name="ctlAccessor">a wrapper around the owner control instance.</param>
+            <param name="ctlColAccessor">a wrapper around the collection instance.</param>
+            <returns><value>true</value>, if interception was successful.  <value>false</value> otherwise</returns>
         </member>
         <member name="T:Spring.Web.Support.InterceptControlCollectionStrategy.InjectDependenciesCallbackHandler">
             <summary>
@@ -4466,7 +4702,6 @@
             </code>
             </example>
             <author>Erich Eichinger</author>
-            <version>$Id: ISupportsWebDependencyInjection.cs,v 1.2 2007/08/01 23:11:00 markpollack Exp $</version>
         </member>
         <member name="P:Spring.Web.Support.ISupportsWebDependencyInjection.DefaultApplicationContext">
             <summary>
@@ -4478,7 +4713,6 @@
             Represents a MIME media type as defined by http://www.iana.org/assignments/media-types/
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: MimeMediaType.cs,v 1.1 2007/11/28 23:26:10 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.MimeMediaType.Parse(System.String)">
             <summary>
@@ -4633,8 +4867,8 @@
             </summary>
             <remarks>
             <para>
-            This handler factory uses page name from the URL, without the extension,
-            to find handler object in the Spring context. This means that the target object 
+            This handler factory uses the page name from the URL, without the extension,
+            to find the handler object in the Spring context. This means that the target object 
             definition doesn't need to resolve to an .aspx page -- it can be any valid 
             object that implements <see cref="T:System.Web.IHttpHandler"/> interface.
             </para>
@@ -4652,7 +4886,6 @@
             </para>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: PageHandlerFactory.cs,v 1.33 2007/08/23 08:27:08 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.PageHandlerFactory.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
             <summary>
@@ -4666,7 +4899,7 @@
             <param name="physicalPath">Translated server path for the page</param>
             <returns>Instance of the IHttpHandler object that should be used to process request.</returns>
         </member>
-        <member name="T:Spring.Web.Support.PageHandler">
+        <member name="T:Spring.Web.Support.PageHandlerWrapper">
             <summary>
             Wrapper for handlers that do not require <see cref="T:System.Web.SessionState.HttpSessionState"/>.
             </summary>
@@ -4677,67 +4910,55 @@
             override non-virtual methods from the base Page class.
             </remarks>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandler"/> class.
+            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandlerWrapper"/> class.
             </summary>
             <param name="appContext">Application context instance to retrieve page from.</param>
             <param name="pageName">Name of the page object to execute.</param>
             <param name="url">Requested page URL.</param>
             <param name="path">Translated server path for the page.</param>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.#ctor(Spring.Context.IApplicationContext,System.String)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandler"/> class.
+            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandlerWrapper"/> class.
             </summary>
             <param name="appContext">Application context instance to retrieve page from.</param>
             <param name="pageName">Name of the page object to execute.</param>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)">
-            <summary>
-            Creates instance of the page and delegates call to it.
-            </summary>
-            <param name="context">HttpContext of the current page request.</param>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandler.CreatePageInstance">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.CreatePageInstance">
             <summary>
             Creates a page instance corresponding to this handler's url.
             </summary>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.GetOrCreateProcessHandler(System.Web.HttpContext)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.GetOrCreateProcessHandler(System.Web.HttpContext)">
             <summary>
             Gets or - if not found - creates a process handler instance.
             </summary>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.ApplyDependencyInjection(System.Web.IHttpHandler)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.ApplyDependencyInjection(System.Web.IHttpHandler)">
             <summary>
             Apply dependency injection stuff on the handler.
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.ApplySharedState(System.Web.IHttpHandler)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.ApplySharedState(System.Web.IHttpHandler)">
             <summary>
-            Applies <see cref="P:Spring.Web.Support.PageHandler.HandlerState"/> to the given handler if applicable.
+            Applies <see cref="P:Spring.Web.Support.PageHandlerWrapper.HandlerState"/> to the given handler if applicable.
             </summary>
         </member>
-        <member name="M:Spring.Web.Support.PageHandler.CheckIfPageWasRecompiled(System.Web.IHttpHandler)">
+        <member name="M:Spring.Web.Support.PageHandlerWrapper.CheckIfPageWasRecompiled(System.Web.IHttpHandler)">
             <summary>
             Checks, if page has been recompiled. Creates/discards handlerState if necessary.
             </summary>
             <param name="handler"></param>
         </member>
-        <member name="P:Spring.Web.Support.PageHandler.SyncRoot">
+        <member name="P:Spring.Web.Support.PageHandlerWrapper.SyncRoot">
             <summary>
             Use for sync access to this PageHandler instance.
             </summary>
         </member>
-        <member name="P:Spring.Web.Support.PageHandler.System#Web#IHttpHandler#IsReusable">
-            <summary>
-            Returns true because this wrapper handler can be reused.
-            Actual page is instantiated at the beginning of the ProcessRequest method.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.PageHandler.HandlerState">
+        <member name="P:Spring.Web.Support.PageHandlerWrapper.HandlerState">
             <summary>
             Gets <see cref="T:System.Collections.IDictionary"/> that contains handler state. 
             </summary>
@@ -4747,7 +4968,13 @@
             <see cref="T:Spring.Web.Support.ISharedStateAware"/> interface.
             </remarks>
         </member>
-        <member name="T:Spring.Web.Support.SessionAwarePageHandler">
+        <member name="P:Spring.Web.Support.PageHandlerWrapper.System#Web#IHttpHandler#IsReusable">
+            <summary>
+            Returns true because this wrapper handler can be reused.
+            Actual page is instantiated at the beginning of the ProcessRequest method.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.SessionAwarePageHandlerWrapper">
             <summary>
             Wrapper for handlers that require <see cref="T:System.Web.SessionState.HttpSessionState"/>.
             </summary>
@@ -4756,18 +4983,18 @@
             in order to be able to access session state.
             </remarks>
         </member>
-        <member name="M:Spring.Web.Support.SessionAwarePageHandler.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
+        <member name="M:Spring.Web.Support.SessionAwarePageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandler"/> class.
+            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandlerWrapper"/> class.
             </summary>
             <param name="appContext">Application context instance to retrieve page from.</param>
             <param name="pageName">Name of the page object to execute.</param>
             <param name="url">Requested page URL.</param>
             <param name="path">Translated server path for the page.</param>
         </member>
-        <member name="M:Spring.Web.Support.SessionAwarePageHandler.#ctor(Spring.Context.IApplicationContext,System.String)">
+        <member name="M:Spring.Web.Support.SessionAwarePageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandler"/> class.
+            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandlerWrapper"/> class.
             </summary>
             <param name="appContext">Application context instance to retrieve page from.</param>
             <param name="pageName">Name of the page object to execute.</param>
@@ -4814,7 +5041,6 @@
             </example>
             <author>Aleksandar Seovic</author>
             <author>Matan Shapira</author>
-            <version>$Id: Result.cs,v 1.12 2007/04/19 07:48:59 oakinger Exp $</version>
         </member>
         <member name="F:Spring.Web.Support.Result.DefaultResultMode">
             <summary>
@@ -4979,7 +5205,6 @@
             The various result modes.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ResultMode.cs,v 1.3 2007/04/19 07:49:01 oakinger Exp $</version>
             <seealso cref="T:Spring.Web.Support.Result"/>
         </member>
         <member name="F:Spring.Web.Support.ResultMode.Transfer">
@@ -5029,7 +5254,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Script.cs,v 1.4 2007/11/28 23:26:10 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.Script.#ctor(System.String)">
             <summary>
@@ -5064,7 +5288,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Script.cs,v 1.4 2007/11/28 23:26:10 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.ScriptBlock.#ctor(System.String,System.String)">
             <summary>
@@ -5096,7 +5319,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Script.cs,v 1.4 2007/11/28 23:26:10 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.ScriptFile.#ctor(System.String,System.String)">
             <summary>
@@ -5128,7 +5350,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Script.cs,v 1.4 2007/11/28 23:26:10 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.ScriptEvent.#ctor(System.String,System.String,System.String,System.String)">
             <summary>
@@ -5165,7 +5386,12 @@
             Resource cache implementation that uses Spring.NET page/handler state to cache resources.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: SharedStateResourceCache.cs,v 1.1 2007/08/03 08:31:25 oakinger Exp $</version>
+        </member>
+        <member name="M:Spring.Web.Support.SharedStateResourceCache.#ctor(Spring.Web.Support.ISharedStateAware)">
+            <summary>
+            Creates a new cache instance and attaches it to the given <see cref="F:Spring.Web.Support.SharedStateResourceCache.sharedStateHolder"/>
+            </summary>
+            <param name="sharedStateHolder">the holder of the shared state dictionary to be used for caching.</param>
         </member>
         <member name="M:Spring.Web.Support.SharedStateResourceCache.GetResources(System.String)">
             <summary>
@@ -5186,7 +5412,6 @@
             This MethodBuilder emits a Callback-call before calling the base method
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: SupportsWebDependencyInjectionMethodBuilder.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.SupportsWebDependencyInjectionMethodBuilder.#ctor(System.Reflection.Emit.TypeBuilder,Spring.Proxy.IProxyTypeGenerator,System.Reflection.FieldInfo,System.Reflection.MethodInfo)">
             <summary>
@@ -5211,7 +5436,6 @@
             Wraps a Control to make it DI aware
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: SupportsWebDependencyInjectionOwnerProxy.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.SupportsWebDependencyInjectionOwnerProxy.#ctor(Spring.Context.IApplicationContext,System.Web.UI.Control)">
             <summary>
@@ -5238,7 +5462,6 @@
             This TypeBuilder dynamically implements the <see cref="T:Spring.Web.Support.ISupportsWebDependencyInjection"/> contract on a given type.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: SupportsWebDependencyInjectionTypeBuilder.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.Support.SupportsWebDependencyInjectionTypeBuilder.#ctor(System.Type,System.Reflection.MethodInfo[],System.Reflection.MethodInfo)">
             <summary>
@@ -5277,14 +5500,9 @@
             </returns>
         </member>
         <member name="T:Spring.Web.Support.WebDependencyInjectionUtils">
-             <summary>
-             This is 
-             </summary>
-             <remarks>
-            
-             </remarks>
-             <author>Mark Pollack</author>
-             <version>$Id: WebDependencyInjectionUtils.cs,v 1.1 2007/08/01 23:11:01 markpollack Exp $</version>
+            <summary>
+            Utilities for dependency injection in the web tier.
+            </summary>
         </member>
         <member name="M:Spring.Web.Support.WebDependencyInjectionUtils.InjectDependenciesRecursive(Spring.Context.IApplicationContext,System.Web.UI.Control)">
             <summary>
@@ -5306,7 +5524,6 @@
             but are unfortunately not accessible from <see cref="T:System.Web.UI.WebControls.BaseValidator"/>
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: AbstractBaseValidator.cs,v 1.1 2007/07/31 10:40:58 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.AbstractBaseValidator.RegisterClientScriptBlock(System.Type,System.String,System.String)">
             <summary>
@@ -5328,6 +5545,60 @@
             Is "XHTML 1.0 Transitional" rendering allowed?
             </summary>
         </member>
+        <member name="T:Spring.Web.UI.Controls.AbstractValidationControl">
+            <summary>
+            Provides common functionality to all validation renderer controls.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.AbstractValidationControl.CreateValidationErrorsRenderer">
+            <summary>
+            Create the default <see cref="T:Spring.Web.UI.Validation.IValidationErrorsRenderer"/> 
+            for this ValidationControl if none is configured.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.AbstractValidationControl.ResolveErrorMessages">
+            <summary>
+            Resolves the <see cref="P:Spring.Web.UI.Controls.AbstractValidationControl.ValidationContainer"/>'s list of validation errors to a list
+            of <see cref="T:System.String"/> elements containing the error messages to be rendered.
+            </summary>
+            <returns>a list containing <see cref="T:System.String"/> elements</returns>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.AbstractValidationControl.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders error messages using the specified <see cref="P:Spring.Web.UI.Controls.AbstractValidationControl.Renderer"/>.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.AbstractValidationControl.Provider">
+            <summary>
+            Gets or sets the provider.
+            </summary>
+            <value>The provider.</value>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.AbstractValidationControl.Renderer">
+            <summary>
+            Gets or sets the validation errors renderer to use. 
+            </summary>
+            <remarks>
+            If not explicitly specified, defaults to <see cref="T:Spring.Web.UI.Validation.SpanValidationErrorsRenderer"/>.
+            </remarks>
+            <value>The validation errors renderer to use.</value>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.AbstractValidationControl.MessageSource">
+            <summary>
+            Gets the MessageSource to be used for resolve error messages
+            </summary>
+            <remarks>
+            By default, returns <see cref="P:Spring.Web.UI.Controls.AbstractValidationControl.ValidationContainer"/>'s MessageSource.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.AbstractValidationControl.ValidationContainer">
+            <summary>
+            Gets the <see cref="T:Spring.Web.UI.IValidationContainer"/>, who's <see cref="P:Spring.Web.UI.IValidationContainer.ValidationErrors"/> 
+            shall be rendered by this control.
+            </summary>
+        </member>
         <member name="T:Spring.Web.UI.Controls.Calendar">
             <summary>
             Displays a pop-up DHTML calendar.
@@ -5340,7 +5611,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Calendar.cs,v 1.13 2007/12/07 21:06:35 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.Calendar.OnPreRender(System.EventArgs)">
             <summary>
@@ -5429,7 +5699,6 @@
             When using Spring.Web's DataBinding, you should use this control for easier binding declaration.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: CheckBoxList.cs,v 1.1 2007/08/02 19:49:22 oakinger Exp $</version>
         </member>
         <member name="P:Spring.Web.UI.Controls.CheckBoxList.SelectedValues">
             <summary>
@@ -5441,7 +5710,6 @@
             This validator allows for validating a CheckBox's "Checked" state.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: CheckBoxValidator.cs,v 1.1 2007/07/31 10:40:59 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.RequiredCheckBoxValidator.ControlPropertiesValid">
             <summary>
@@ -5478,7 +5746,6 @@
             within the master page
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Content.cs,v 1.6 2007/07/24 13:33:27 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.Controls.ContentPlaceHolder">
             <summary>
@@ -5491,7 +5758,6 @@
             by defining matching <see cref="T:Spring.Web.UI.Controls.Content"/> control.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ContentPlaceholder.cs,v 1.6 2006/09/08 06:21:31 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.Controls.ContentReplacer">
             <summary>
@@ -5514,7 +5780,6 @@
             </para>
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: ContentReplacer.cs,v 1.3 2007/07/24 13:33:27 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.ContentReplacer.OnPreRender(System.EventArgs)">
             <summary>
@@ -5563,7 +5828,55 @@
             to a model by adding an attribute "BindingTarget"
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: DataBindingPanel.cs,v 1.10 2007/12/03 16:11:31 oakinger Exp $</version>
+        </member>
+        <member name="T:Spring.Web.UI.Controls.Panel">
+            <summary>
+            This panel provides the same features as <see cref="T:System.Web.UI.WebControls.Panel"/>, but provides additional means with regards to Spring.
+            </summary>
+            <remarks>
+            In some cases, automatic dependency injection can cause performance problems. In this case,you can use a Panel for finer-grained control
+            over which controls are to be injected or not.
+            </remarks>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.Render(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Overridden to suppress rendering this control's tag
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.OnPreInitRecursive(System.EventArgs)">
+            <summary>
+            This method is invoked right before InitRecursive() is called for this Panel and
+            ensures, that dependencies get injected on child controls before their Init event is raised.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.AddedControl(System.Web.UI.Control,System.Int32)">
+            <summary>
+            Injects dependencies into control before adding it.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.CreateControlCollection">
+            <summary>
+            Overridden to automatically aquire a reference to 
+            root application context to use for DI.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.Panel.SuppressDependencyInjection">
+            <summary>
+            This flag controls, whether DI on child controls will be done or not
+            </summary>
+            <remarks>By default, DI will be done</remarks>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.Panel.RenderContainerTag">
+            <summary>
+            This flag controls, whether this Panel's tag will be rendered.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.Panel.Spring#Web#Support#ISupportsWebDependencyInjection#DefaultApplicationContext">
+            <summary>
+            Sets / Gets the ApplicationContext instance used to configure this control
+            </summary>
         </member>
         <member name="M:Spring.Web.UI.Controls.DataBindingPanel.OnInit(System.EventArgs)">
             <summary>
@@ -5610,13 +5923,16 @@
             <summary>
             Probe for bindingType of know controls
             </summary>
-            <param name="wc"></param>
-            <returns></returns>
+            <param name="wc">the control, who's bindingType is to be determined</param>
+            <returns>null, if standard binding is to be used or the fully qualified typename of the binding implementation</returns>
         </member>
         <member name="M:Spring.Web.UI.Controls.DataBindingPanel.AutoProbeSourceProperty(System.Web.UI.Control)">
             <summary>
             Probes for a few know controls and their properties.
             </summary>
+            <returns>
+            The 'BindingSource' expression to be used for binding this control.
+            </returns>
         </member>
         <member name="T:Spring.Web.UI.Controls.Form">
             <summary>
@@ -5628,7 +5944,6 @@
             and also <a href="http://opensource.atlassian.com/projects/spring/browse/SPRNET-560">JIRA SPRNET-560</a> for more info.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: Form.cs,v 1.1 2007/07/24 14:32:58 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.Form.RenderAttributes(System.Web.UI.HtmlTextWriter)">
             <summary>
@@ -5685,7 +6000,6 @@
             </example>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Head.cs,v 1.8 2007/11/28 23:26:19 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.Head.Render(System.Web.UI.HtmlTextWriter)">
             <summary>
@@ -5716,7 +6030,6 @@
             in order to render dynamicaly registered head scripts and stylesheets.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: LocalizedImage.cs,v 1.4 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.LocalizedImage.OnPreRender(System.EventArgs)">
             <summary>
@@ -5744,7 +6057,6 @@
             This control alows radio buttons to be data-bound to a data model of the page.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: RadioButtonGroup.cs,v 1.5 2007/03/16 22:38:55 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.RadioButtonGroup.AddedControl(System.Web.UI.Control,System.Int32)">
             <summary>
@@ -5809,7 +6121,6 @@
             Provides information about a command raised from a <see cref="T:Spring.Web.UI.Controls.TabContainer"/>
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: TabCommandEventArgs.cs,v 1.1 2007/07/24 13:33:27 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.TabCommandEventArgs.#ctor(System.String,System.Int32)">
             <summary>
@@ -5830,7 +6141,6 @@
             <param name="sender">The source of the event.</param>
             <param name="e">A <see cref="T:Spring.Web.UI.Controls.TabCommandEventArgs"/> that contains the event data.</param>
             <author>Erich Eichinger</author>
-            <version>$Id: TabCommandEventHandler.cs,v 1.1 2007/07/24 13:33:28 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.Controls.TabContainer">
             <summary>
@@ -5841,7 +6151,6 @@
             render tabs. Override <see cref="M:Spring.Web.UI.Controls.TabContainer.CreateTab(Spring.Web.UI.Controls.TabularMultiView,Spring.Web.UI.Controls.TabularView,System.Int32)"/> to change this behaviour.
             </remarks>
             <author>Erich Eichinger</author>
-            <version>$Id: TabContainer.cs,v 1.1 2007/07/24 13:33:28 oakinger Exp $</version>
         </member>
         <member name="F:Spring.Web.UI.Controls.TabContainer.SelectTabCommandName">
             <summary>
@@ -5890,7 +6199,6 @@
             the user with content arranged in tabular form.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: TabularMultiView.cs,v 1.1 2007/07/24 13:33:28 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.TabularMultiView.#ctor">
             <summary>
@@ -5972,7 +6280,6 @@
             Represents a control that acts as a container for a group of controls within a <see cref="T:Spring.Web.UI.Controls.TabularMultiView"/> control. 
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: TabularView.cs,v 1.2 2007/07/24 14:32:58 oakinger Exp $</version>
         </member>
         <member name="P:Spring.Web.UI.Controls.TabularView.Active">
             <summary>
@@ -5994,7 +6301,6 @@
             Holds the collection of <see cref="T:Spring.Web.UI.Controls.TabularView"/> controls in a <see cref="T:Spring.Web.UI.Controls.TabularMultiView"/>.
             </summary>
             <author>Erich Eichinger</author>
-            <version>$Id: TabularViewCollection.cs,v 1.1 2007/07/24 13:33:28 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Controls.TabularViewCollection.#ctor(System.Web.UI.Control)">
             <summary>
@@ -6022,35 +6328,13 @@
             This control should be used to display field-level validation errors.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ValidationError.cs,v 1.8 2007/08/02 19:19:42 markpollack Exp $</version>
+            <author>Jonathan Allenby</author>
         </member>
-        <member name="M:Spring.Web.UI.Controls.ValidationError.Render(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Spring.Web.UI.Controls.ValidationError.CreateValidationErrorsRenderer">
             <summary>
-            Renders control. 
+            Create the default <see cref="T:Spring.Web.UI.Validation.SpanValidationErrorsRenderer"/> 
+            for this ValidationControl if none is configured.
             </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationError.Provider">
-            <summary>
-            Gets or sets the provider.
-            </summary>
-            <value>The provider.</value>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationError.Renderer">
-            <summary>
-            Gets or sets the validation errors renderer to use. 
-            </summary>
-            <remarks>
-            If not explicitly specified, defaults to <see cref="T:Spring.Web.UI.Validation.SpanValidationErrorsRenderer"/>.
-            </remarks>
-            <value>The validation errors renderer to use.</value>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationError.Page">
-            <summary>
-            Gets a reference to the <see cref="T:Spring.Web.UI.Page"/> instance that contains the
-            server control.
-            </summary>
-            <value></value>
         </member>
         <member name="T:Spring.Web.UI.Controls.ValidationSummary">
             <summary>
@@ -6058,42 +6342,19 @@
             to display validation errors identified by the Spring.NET validation framework.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: ValidationSummary.cs,v 1.8 2007/08/02 19:19:42 markpollack Exp $</version>
+            <author>Jonathan Allenby</author>
         </member>
-        <member name="M:Spring.Web.UI.Controls.ValidationSummary.Render(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Spring.Web.UI.Controls.ValidationSummary.CreateValidationErrorsRenderer">
             <summary>
-            Renders control. 
+            Create the default <see cref="T:Spring.Web.UI.Validation.DivValidationErrorsRenderer"/> 
+            for this ValidationControl if none is configured.
             </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationSummary.Provider">
-            <summary>
-            Gets or sets the provider.
-            </summary>
-            <value>The provider.</value>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationSummary.Renderer">
-            <summary>
-            Gets or sets the validation errors renderer to use. 
-            </summary>
-            <remarks>
-            If not explicitly specified, defaults to <see cref="T:Spring.Web.UI.Validation.DivValidationErrorsRenderer"/>.
-            </remarks>
-            <value>The validation errors renderer to use.</value>
-        </member>
-        <member name="P:Spring.Web.UI.Controls.ValidationSummary.Page">
-            <summary>
-            Gets a reference to the <see cref="T:Spring.Web.UI.Page"/> instance that contains the
-            server control.
-            </summary>
-            <value></value>
         </member>
         <member name="T:Spring.Web.UI.Validation.AbstractValidationErrorsRenderer">
             <summary>
             This class provides common members for all validation errors renderers.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AbstractValidationErrorsRenderer.cs,v 1.1 2007/08/02 19:50:28 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.Validation.IValidationErrorsRenderer">
             <summary>
@@ -6112,7 +6373,6 @@
             </para>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: IValidationErrorsRenderer.cs,v 1.1 2007/08/02 19:50:28 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Validation.IValidationErrorsRenderer.RenderErrors(Spring.Web.UI.Page,System.Web.UI.HtmlTextWriter,System.Collections.IList)">
             <summary>
@@ -6150,7 +6410,6 @@
             control.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: DivValidationErrorsRenderer.cs,v 1.1 2007/08/02 19:50:28 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Validation.DivValidationErrorsRenderer.RenderErrors(Spring.Web.UI.Page,System.Web.UI.HtmlTextWriter,System.Collections.IList)">
             <summary>
@@ -6172,7 +6431,6 @@
             </para>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: IconValidationErrorsRenderer.cs,v 1.1 2007/08/02 19:50:28 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Validation.IconValidationErrorsRenderer.RenderErrors(Spring.Web.UI.Page,System.Web.UI.HtmlTextWriter,System.Collections.IList)">
             <summary>
@@ -6206,7 +6464,6 @@
             <see cref="T:Spring.Web.UI.Controls.ValidationError"/> control.
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: SpanValidationErrorsRenderer.cs,v 1.1 2007/08/02 19:50:28 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.Validation.SpanValidationErrorsRenderer.RenderErrors(Spring.Web.UI.Page,System.Web.UI.HtmlTextWriter,System.Collections.IList)">
             <summary>
@@ -6234,7 +6491,6 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: AbstractWizard.cs,v 1.7 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.Page">
             <summary>
@@ -6257,7 +6513,24 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: Page.cs,v 1.85 2007/11/28 23:26:10 oakinger Exp $</version>
+        </member>
+        <member name="T:Spring.Web.UI.IValidationContainer">
+            <summary>
+            Abstracts access to properties required for 
+            handling validation and error rendering
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="P:Spring.Web.UI.IValidationContainer.MessageSource">
+            <summary>
+            Gets the MessageSource to be used for 
+            resolving error ids into messages
+            </summary>
+        </member>
+        <member name="P:Spring.Web.UI.IValidationContainer.ValidationErrors">
+            <summary>
+            Gets the list of validation errors kept by this container.
+            </summary>
         </member>
         <member name="M:Spring.Web.UI.Page.OnPreInit(System.EventArgs)">
             <summary>
@@ -6553,6 +6826,32 @@
             </summary>
             <param name="resultName">Result name.</param>
         </member>
+        <member name="M:Spring.Web.UI.Page.SetResult(System.String,System.Object)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="M:Spring.Web.UI.Page.GetResultUrl(System.String)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <returns>A redirect url string.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.Page.GetResultUrl(System.String,System.Object)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result</param>
+            <returns>A redirect url string.</returns>
+        </member>
         <member name="M:Spring.Web.UI.Page.Validate(System.Object,Spring.Validation.IValidator[])">
             <summary>
             Evaluates specified validators and returns <c>True</c> if all of them are valid.
@@ -6847,8 +7146,32 @@
         </member>
         <member name="P:Spring.Web.UI.Page.ApplicationContext">
             <summary>
-            Gets or sets Spring application context of the page.
+            Gets or sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            object runs in.
             </summary>
+            <value></value>
+            <remarks>
+            <p>
+            Normally this call will be used to initialize the object.
+            </p>
+            <p>
+            Invoked after population of normal object properties but before an
+            init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked after the setting of any
+            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
+            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
+            property.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Context.ApplicationContextException">
+            In the case of application context initialization errors.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If thrown by any application context methods.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
         </member>
         <member name="P:Spring.Web.UI.Page.Localizer">
             <summary>
@@ -6963,14 +7286,12 @@
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
-            <version>$Id: DialogAttribute.cs,v 1.3 2006/05/18 21:37:52 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Web.UI.MasterPage">
             <summary>
             Spring.NET Master Page implementation for ASP.NET 2.0
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: MasterPage.cs,v 1.13 2007/08/01 23:11:01 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.MasterPage.OnInit(System.EventArgs)">
             <summary>
@@ -7065,6 +7386,42 @@
             <param name="name">Resource name.</param>
             <returns>Resource object.</returns>
         </member>
+        <member name="M:Spring.Web.UI.MasterPage.Validate(System.Object,Spring.Validation.IValidator[])">
+            <summary>
+            Evaluates specified validators and returns <c>True</c> if all of them are valid.
+            </summary>
+            <remarks>
+            <p>
+            Each validator can itself represent a collection of other validators if it is
+            an instance of <see cref="T:Spring.Validation.ValidatorGroup"/> or one of its derived types.
+            </p>
+            <p>
+            Please see the Validation Framework section in the documentation for more info.
+            </p>
+            </remarks>
+            <param name="validationContext">Object to validate.</param>
+            <param name="validators">Validators to evaluate.</param>
+            <returns>
+            <c>True</c> if all of the specified validators are valid, <c>False</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.CreateValidatorParameters">
+            <summary>
+            Creates the validator parameters.
+            </summary>
+            <remarks>
+            <para>
+            This method can be overriden if you want to pass additional parameters
+            to the validation framework, but you should make sure that you call
+            this base implementation in order to add page, session, application,
+            request, response and context to the variables collection.
+            </para>
+            </remarks>
+            <returns>
+            Dictionary containing parameters that should be passed to
+            the data validation framework.
+            </returns>
+        </member>
         <member name="M:Spring.Web.UI.MasterPage.AddedControl(System.Web.UI.Control,System.Int32)">
             <summary>
             Injects dependencies before adding the control.
@@ -7090,8 +7447,32 @@
         </member>
         <member name="P:Spring.Web.UI.MasterPage.ApplicationContext">
             <summary>
-            Gets or sets Spring application context.
+            Gets or sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            object runs in.
             </summary>
+            <value></value>
+            <remarks>
+            <p>
+            Normally this call will be used to initialize the object.
+            </p>
+            <p>
+            Invoked after population of normal object properties but before an
+            init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked after the setting of any
+            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
+            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
+            property.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Context.ApplicationContextException">
+            In the case of application context initialization errors.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If thrown by any application context methods.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
         </member>
         <member name="P:Spring.Web.UI.MasterPage.Localizer">
             <summary>
@@ -7110,6 +7491,12 @@
             Gets or sets user's culture
             </summary>
         </member>
+        <member name="P:Spring.Web.UI.MasterPage.ValidationErrors">
+            <summary>
+            Gets the validation errors container.
+            </summary>
+            <value>The validation errors container.</value>
+        </member>
         <member name="P:Spring.Web.UI.MasterPage.Page">
             <summary>
             Overrides Page property to return <see cref="T:Spring.Web.UI.Page"/> 
@@ -7126,7 +7513,6 @@
             Extends standard .Net user control by adding data binding and localization functionality.
             </summary>
             <author>Aleksandar Seovic</author>
-            <version>$Id: UserControl.cs,v 1.49 2007/08/23 08:27:08 oakinger Exp $</version>
         </member>
         <member name="M:Spring.Web.UI.UserControl.OnInit(System.EventArgs)">
             <summary>
@@ -7207,6 +7593,54 @@
             Returns the specified <see langword="UserControl"/> object, with dependencies injected.
             </returns>
         </member>
+        <member name="M:Spring.Web.UI.UserControl.InitializeModel">
+            <summary>
+            Initializes data model when the page is first loaded.
+            </summary>
+            <remarks>
+            This method should be overriden by the developer
+            in order to initialize data model for the page.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.LoadModelFromPersistenceMedium">
+            <summary>
+            Retrieves data model from a persistence store.
+            </summary>
+            <remarks>
+            The default implementation uses <see cref="P:System.Web.UI.Page.Session"/> to store and retrieve
+            the model for the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.SaveModelToPersistenceMedium(System.Object)">
+            <summary>
+            Saves data model to a persistence store.
+            </summary>
+            <remarks>
+            The default implementation uses <see cref="P:System.Web.UI.Page.Session"/> to store and retrieve
+            the model for the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.LoadModel(System.Object)">
+            <summary>
+            Loads the saved data model on postback.
+            </summary>
+            <remarks>
+            This method should be overriden by the developer
+            in order to load data model for the page.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.SaveModel">
+            <summary>
+            Returns a model object that should be saved.
+            </summary>
+            <remarks>
+            This method should be overriden by the developer
+            in order to save data model for the page.
+            </remarks>
+            <returns>
+            A model object that should be saved.
+            </returns>
+        </member>
         <member name="M:Spring.Web.UI.UserControl.SetController(System.Object)">
             <summary>
             <para>Stores the controller to be returned by <see cref="P:Spring.Web.UI.UserControl.Controller"/> property.</para>
@@ -7238,6 +7672,55 @@
             <returns>
             <para>The controller for this control.</para>
             <para>If no controller is set, a reference to the control itself is returned.</para>
+            </returns>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.SetResult(System.String)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="resultName">Result name.</param>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.SetResult(System.String,System.Object)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="resultName">Result name.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.Validate(System.Object,Spring.Validation.IValidator[])">
+            <summary>
+            Evaluates specified validators and returns <c>True</c> if all of them are valid.
+            </summary>
+            <remarks>
+            <p>
+            Each validator can itself represent a collection of other validators if it is
+            an instance of <see cref="T:Spring.Validation.ValidatorGroup"/> or one of its derived types.
+            </p>
+            <p>
+            Please see the Validation Framework section in the documentation for more info.
+            </p>
+            </remarks>
+            <param name="validationContext">Object to validate.</param>
+            <param name="validators">Validators to evaluate.</param>
+            <returns>
+            <c>True</c> if all of the specified validators are valid, <c>False</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.CreateValidatorParameters">
+            <summary>
+            Creates the validator parameters.
+            </summary>
+            <remarks>
+            <para>
+            This method can be overriden if you want to pass additional parameters
+            to the validation framework, but you should make sure that you call
+            this base implementation in order to add page, session, application,
+            request, response and context to the variables collection.
+            </para>
+            </remarks>
+            <returns>
+            Dictionary containing parameters that should be passed to
+            the data validation framework.
             </returns>
         </member>
         <member name="M:Spring.Web.UI.UserControl.InitializeDataBindings">
@@ -7388,6 +7871,17 @@
             all instances of this control.
             </summary>
         </member>
+        <member name="P:Spring.Web.UI.UserControl.Results">
+            <summary>
+            Gets or sets map of result names to target URLs
+            </summary>
+        </member>
+        <member name="P:Spring.Web.UI.UserControl.ValidationErrors">
+            <summary>
+            Gets the validation errors container.
+            </summary>
+            <value>The validation errors container.</value>
+        </member>
         <member name="P:Spring.Web.UI.UserControl.BindingManager">
             <summary>
             Gets the binding manager for this control.
@@ -7413,8 +7907,32 @@
         </member>
         <member name="P:Spring.Web.UI.UserControl.ApplicationContext">
             <summary>
-            Gets or sets Spring application context of the page.
+            Gets or sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
+            object runs in.
             </summary>
+            <value></value>
+            <remarks>
+            <p>
+            Normally this call will be used to initialize the object.
+            </p>
+            <p>
+            Invoked after population of normal object properties but before an
+            init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked after the setting of any
+            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
+            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
+            property.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Context.ApplicationContextException">
+            In the case of application context initialization errors.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If thrown by any application context methods.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
         </member>
         <member name="P:Spring.Web.UI.UserControl.Localizer">
             <summary>

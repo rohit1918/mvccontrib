@@ -14,7 +14,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	public class XsltViewTest : ViewTestBase
 	{
 		private const string controller = "MyController";
-		private const string view = "MyView";
+		private const string viewName = "MyView";
 		private Controller _fakeController;
 
 		private IViewSourceLoader _viewSourceLoader;
@@ -22,20 +22,20 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public override void SetUp()
 		{
 			base.SetUp();
-			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
+			_viewSourceLoader = mockRepository.StrictMock<IViewSourceLoader>();
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
-			_fakeController = mockRepository.CreateMock<Controller>();
+            _fakeController = mockRepository.StrictMock<Controller>();
 			mockRepository.Replay(_fakeController);
 		}
 
 		[Test]
 		public void RenderViewTest()
 		{
-			XsltViewData vData = new XsltViewData();
+			var vData = new XsltViewData();
 			string expectedSnippet = "<Root><MyElementID>1</MyElementID></Root>";
-			XslDataSource dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
+			var dataSource = new XslDataSource(new MockXslDataSource(expectedSnippet));
 			vData.DataSources.Add(dataSource);
 			vData.Messages.Add(new Message(MessageType.Info, "This is a message"));
 			vData.Messages.Add(new Message(MessageType.Info, "This is a message for a control", "controlID"));
@@ -52,17 +52,22 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message", "controlId4"));
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message"));
 
-			RouteData routeData = new RouteData();
+			var routeData = new RouteData();
 			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(vData), 
-			                                          new TempDataDictionary());
+		    _fakeController.ViewData.Model = vData;
 
-			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
-			viewFactory.RenderView(viewContext);
+            var viewFactory = new XsltViewFactory(_viewSourceLoader);
+            var view = viewFactory.CreateView("MyController/MyView.xslt", null, new ControllerContext(HttpContext, routeData, _fakeController));
+            
+            var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, new ViewDataDictionary(vData),
+                                                      new TempDataDictionary());
+            
 
-			string actual = Response.Output.ToString().Replace("\r\n", "");
+			view.Render(viewContext, Response.Output);
+            
+            string actual = Response.Output.ToString().Replace("\r\n", "");
 
 			XmlDocument xDoc = LoadXmlDocument("ViewTest.xml");
 

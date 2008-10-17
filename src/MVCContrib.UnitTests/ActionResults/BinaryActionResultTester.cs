@@ -1,4 +1,3 @@
-using System.Collections.Specialized;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.ActionResults;
@@ -24,7 +23,7 @@ namespace MvcContrib.UnitTests.ActionResults
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<IController>());
+			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<ControllerBase>());
 			target = new BinaryResult(content, contentType, asAttachment, filename);
 		}
 

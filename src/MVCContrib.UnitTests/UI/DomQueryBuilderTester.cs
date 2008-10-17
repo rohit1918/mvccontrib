@@ -19,8 +19,8 @@ namespace MvcContrib.UnitTests.UI
 		[Test]
 		public void When_No_Id_AddToList_Does_Nothing()
 		{
-			DomQueryBuilder dq = new DomQueryBuilder();
-			DomQuery emptyQuery = new DomQuery("",true,new string[]{});
+			var dq = new DomQueryBuilder();
+			var emptyQuery = new DomQuery("",true,new string[]{});
 			Assert.That(dq.ToDomQuery().ToString(), Is.EqualTo(emptyQuery.ToString()));
 		}
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Routing;
+﻿using System.Web.Routing;
 using System.Web;
 
 namespace MvcContrib.Routing
@@ -18,7 +17,7 @@ namespace MvcContrib.Routing
 
 		public void ProcessRequest(HttpContext context)
 		{
-			ProcessRequest(new HttpContextWrapper2(context), RouteTable.Routes);
+			ProcessRequest(new HttpContextWrapper(context), RouteTable.Routes);
 		}
 
 		public void ProcessRequest(HttpContextBase context, RouteCollection routeTable)
@@ -67,14 +66,14 @@ namespace MvcContrib.Routing
 </html>";
 			string routeDataRows = string.Empty;
 
-			RouteData routeData = this.RequestContext.RouteData;
+			RouteData routeData = RequestContext.RouteData;
 			RouteValueDictionary routeValues = routeData.Values;
 			RouteBase matchedRouteBase = routeData.Route;
 
 			string routes = string.Empty;
 			using (routeTable.GetReadLock())
 			{
-				foreach (RouteBase routeBase in routeTable)
+				foreach (var routeBase in routeTable)
 				{
 					bool matchesCurrentRequest = (routeBase.GetRouteData(RequestContext.HttpContext) != null);
 					string matchText = string.Format(@"<span class=""{0}"">{0}</span>", matchesCurrentRequest);
@@ -83,7 +82,7 @@ namespace MvcContrib.Routing
 					string constraints = "n/a";
 					string dataTokens = "n/a";
 
-					Route route = routeBase as Route;
+					var route = routeBase as Route;
 					if (route != null)
 					{
 						url = route.Url;
@@ -92,7 +91,7 @@ namespace MvcContrib.Routing
 						dataTokens = FormatRouteValueDictionary(route.DataTokens);
 					}
 
-					routes += string.Format(@"<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{3}</td></tr>"
+					routes += string.Format(@"<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>"
 							, matchText
 							, url
 							, defaults
@@ -105,12 +104,12 @@ namespace MvcContrib.Routing
 
 			if (!(matchedRouteBase is DebugRoute))
 			{
-				foreach (string key in routeValues.Keys)
+				foreach (var key in routeValues.Keys)
 				{
 					routeDataRows += string.Format("\t<tr><td>{0}</td><td>{1}&nbsp;</td></tr>", key, routeValues[key]);
 				}
 
-				Route matchedRoute = matchedRouteBase as Route;
+				var matchedRoute = matchedRouteBase as Route;
 
 				if (matchedRoute != null)
 					matchedRouteUrl = matchedRoute.Url;
@@ -132,7 +131,7 @@ namespace MvcContrib.Routing
 				return "(null)";
 
 			string display = string.Empty;
-			foreach (string key in values.Keys)
+			foreach (var key in values.Keys)
 				display += string.Format("{0} = {1}, ", key, values[key]);
 			if (display.EndsWith(", "))
 				display = display.Substring(0, display.Length - 2);

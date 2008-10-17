@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Specialized;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.UnitTests.XsltViewEngine.Helpers;
 using MvcContrib.ViewFactories;
-using MvcContrib.XsltViewEngine;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -24,11 +22,11 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		public override void SetUp()
 		{
 			base.SetUp();
-			_viewSourceLoader = mockRepository.CreateMock<IViewSourceLoader>();
+            _viewSourceLoader = mockRepository.StrictMock<IViewSourceLoader>();
 			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
 			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
 			mockRepository.Replay(_viewSourceLoader);
-			_fakeController = mockRepository.CreateMock<Controller>();
+            _fakeController = mockRepository.StrictMock<Controller>();
 			mockRepository.Replay(_fakeController);
 		}
 
@@ -91,14 +89,19 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		[Test, ExpectedException(typeof(ArgumentException))]
 		public void ThrowExceptionWhenDataTypeIsInvalid()
 		{
-			RouteData routeData = new RouteData();
-			ViewContext viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, string.Empty, new ViewDataDictionary(new object()), 
-			                                          new TempDataDictionary());
-				// new ControllerContext(HttpContext, routeData, new Controller());
 
-			IViewEngine viewFactory = new XsltViewFactory(_viewSourceLoader);
+			var routeData = new RouteData();
 
-			viewFactory.RenderView(viewContext);
+
+            XsltViewFactory viewFactory = new XsltViewFactory(_viewSourceLoader);
+
+            var view = viewFactory.CreateView("MyController/MyView.xslt", null, new ControllerContext(HttpContext, routeData, _fakeController));
+
+            var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, new ViewDataDictionary(new object()),
+                                                      new TempDataDictionary());
+            view.Render(viewContext, Response.Output);
+
+			Assert.Fail("Fix me");
 		}
 	}
 }

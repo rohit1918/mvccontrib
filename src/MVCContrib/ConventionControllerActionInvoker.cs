@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using MvcContrib.Interfaces;
 using MvcContrib.MetaData;
 
 namespace MvcContrib
@@ -52,41 +52,22 @@ namespace MvcContrib
 			set { _controllerDescriptor = value; }
 		}
 
-
-		/// <summary>
-		/// Creates a new instance of the ConventionControllerActionInvoker class.
-		/// </summary>
-		/// <param name="controllerContext">The controller context for use with the current request.</param>
-		public ConventionControllerActionInvoker(ControllerContext controllerContext) : base(controllerContext)
+		protected override MethodInfo FindActionMethod(string actionName) 
 		{
-		}
-
-		protected override ActionResult InvokeActionMethod(MethodInfo methodInfo, IDictionary<string, object> parameters)
-		{
-			//Bind parameters here to ensure that filters have finished executing.
-			PerformBinding(parameters); 
-			return base.InvokeActionMethod(methodInfo, parameters);
-		}
-
-		protected virtual void PerformBinding(IDictionary<string, object> values)
-		{
-			foreach (var parameter in SelectedAction.Parameters)
+			if (string.IsNullOrEmpty(actionName)) 
 			{
-				values[parameter.ParameterInfo.Name] = parameter.Bind(ControllerContext);
+				throw new ArgumentNullException("actionName");
 			}
-		}
 
-		//Override the built in parameter binding. The default binding for MVC happens before filters are invoked. 
-		//Our parameter binding takes place in the PerformBinding method, which happens as part of InvokeActionMethod.
-		//This is done so that filters can pre-process the parameter values if necessary.
-		protected override IDictionary<string, object> GetParameterValues(MethodInfo methodInfo, IDictionary<string, object> values)
-		{
-			return values ?? new Dictionary<string, object>();
-		}
+			var action = FindActionMetaData(actionName);
+			
+			if(action != null)
+			{
+				SelectedAction = action;
+				return action.MethodInfo;
+			}
 
-		protected override MethodInfo FindActionMethod(string actionName, IDictionary<string, object> values) {
-			SelectedAction = FindActionMetaData(actionName);
-			return SelectedAction == null ? null : SelectedAction.MethodInfo;
+			return null;
 		}
 
 		/// <summary>
@@ -96,27 +77,14 @@ namespace MvcContrib
 		/// <returns>ActionMetaData or null if no action can be found with the specified name.</returns>
 		public virtual ActionMetaData FindActionMetaData(string actionName)
 		{
-			var actions = MetaData.GetActions(actionName);
+			var action = MetaData.GetAction(actionName, ControllerContext);
 
-			if(actions == null || actions.Count == 0)
+			if(action == null && MetaData.DefaultAction != null)
 			{
-				//No matching action found - see if there is a "catch all" action.
-				if(MetaData.DefaultAction != null)
-				{
-					return MetaData.DefaultAction;
-				}
-				else
-				{
-					return null;
-				}
+				action = MetaData.DefaultAction;
 			}
 
-			if(actions.Count > 1)
-			{
-				throw new InvalidOperationException(string.Format("More than one action with name '{0}' found", actionName));
-			}
-
-			return actions[0];
+			return action;
 		}
 	}
 }

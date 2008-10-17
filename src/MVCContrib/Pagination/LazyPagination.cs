@@ -17,7 +17,7 @@ namespace MvcContrib.Pagination
 		/// Default page size.
 		/// </summary>
 		public const int DefaultPageSize = 20;
-		private IList<T> results = null;
+		private IList<T> results;
 		private int totalItems;
 		public int PageSize { get; private set; }
 		/// <summary>

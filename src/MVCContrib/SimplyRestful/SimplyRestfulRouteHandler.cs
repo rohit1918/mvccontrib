@@ -31,7 +31,7 @@ namespace MvcContrib.SimplyRestful
 
 		public SimplyRestfulRouteHandler(IRestfulActionResolver actionResolver)
 		{
-			this._actionResolver = actionResolver;
+			_actionResolver = actionResolver;
 		}
 
 		protected override IHttpHandler GetHttpHandler(RequestContext requestContext)
@@ -150,7 +150,7 @@ namespace MvcContrib.SimplyRestful
 			{
 				return "";
 			}
-			return path.Trim().Trim(new char[]{'/'});
+			return path.Trim().Trim(new[]{'/'});
 		}
 
 		/// <summary>Builds a Default object for a route.</summary>

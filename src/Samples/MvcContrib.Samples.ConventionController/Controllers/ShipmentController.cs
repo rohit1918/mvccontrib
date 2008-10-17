@@ -78,12 +78,7 @@ namespace MvcContrib.Samples.Controllers
 			                   		new Dimension{Height=2,Length=1,Units=UnitOfMeasure.English},
 									new Dimension{Height=6,Length=8,Units=UnitOfMeasure.Metric},
 								};
-			return new XmlResult(dims);
-		}
-
-		protected bool OnError(string actionName, MethodInfo methodInfo, Exception exception)
-		{
-			return false;
+			return Xml(dims);
 		}
 	}
 }

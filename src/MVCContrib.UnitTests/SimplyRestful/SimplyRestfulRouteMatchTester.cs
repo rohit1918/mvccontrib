@@ -1,6 +1,5 @@
 using System.Collections.Specialized;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.SimplyRestful;
 using NUnit.Framework;
@@ -307,9 +306,8 @@ namespace MvcContrib.UnitTests.SimplyRestful
 				
 				if(!string.IsNullOrEmpty(formMethod))
 				{
-					NameValueCollection form = new NameValueCollection();
-					form.Add("_method", formMethod);
-					SetupResult.For(httpRequest.Form).Return(form);
+					var form = new NameValueCollection {{"_method", formMethod}};
+				    SetupResult.For(httpRequest.Form).Return(form);
 				}
 			}
 		}

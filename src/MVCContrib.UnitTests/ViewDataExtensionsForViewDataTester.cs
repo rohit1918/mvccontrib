@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Mail;
 using System.Security.Policy;
 using System.Security.Principal;
@@ -59,11 +58,9 @@ namespace MvcContrib.UnitTests
         [Test]
         public void ShouldManageMoreThanOneObjectPerType()
         {
-        	var viewData = new ViewDataDictionary();
-            viewData.Add("key1", new Url("/1"));
-            viewData.Add("key2", new Url("/2"));
+        	var viewData = new ViewDataDictionary {{"key1", new Url("/1")}, {"key2", new Url("/2")}};
 
-            Assert.That(viewData.Get<Url>("key1").Value, Is.EqualTo("/1"));
+        	Assert.That(viewData.Get<Url>("key1").Value, Is.EqualTo("/1"));
             Assert.That(viewData.Get<Url>("key2").Value, Is.EqualTo("/2"));
         }
 
@@ -85,9 +82,8 @@ namespace MvcContrib.UnitTests
 
             Assert.That(viewData.GetOrDefault("some_date", defaultDate), Is.EqualTo(defaultDate));
 
-            var viewData2 = new ViewDataDictionary();
-        	viewData2.Add("some_date", theDate);
-            Assert.That(viewData2.GetOrDefault("some_date", defaultDate), Is.EqualTo(theDate));
+            var viewData2 = new ViewDataDictionary {{"some_date", theDate}};
+        	Assert.That(viewData2.GetOrDefault("some_date", defaultDate), Is.EqualTo(theDate));
         }
 
         [Test]
@@ -117,10 +113,8 @@ namespace MvcContrib.UnitTests
         [Test]
         public void ShouldInitializeWithKeys()
         {
-			var viewData = new ViewDataDictionary();
-            viewData.Add("key1", 2);
-            viewData.Add("key2", 3);
-            Assert.That(viewData.Contains("key1"));
+			var viewData = new ViewDataDictionary {{"key1", 2}, {"key2", 3}};
+        	Assert.That(viewData.Contains("key1"));
             Assert.That(viewData.Contains("key2"));
         }
     }

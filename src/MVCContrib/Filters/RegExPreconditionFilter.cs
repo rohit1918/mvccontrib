@@ -57,7 +57,7 @@ namespace MvcContrib.Filters
 				case ParamType.Request:
 
 					return executingContext.HttpContext.Request.Params[_paramName] == null
-					   || !Regex.IsMatch(executingContext.HttpContext.Request.Params[_paramName].ToString(), _regExPattern);
+					   || !Regex.IsMatch(executingContext.HttpContext.Request.Params[_paramName], _regExPattern);
 
 				default:
 

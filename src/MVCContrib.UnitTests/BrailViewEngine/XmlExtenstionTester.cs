@@ -2,11 +2,10 @@ using System.Collections;
 using System.IO;
 using Boo.Lang;
 using MvcContrib.BrailViewEngine;
+using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.BrailViewEngine
 {
-	using NUnit.Framework;
-	using Rhino.Mocks;
 
 	[TestFixture]
 	[Category("BrailViewEngine")]

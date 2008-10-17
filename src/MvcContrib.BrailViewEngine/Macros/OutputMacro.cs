@@ -31,7 +31,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static void UnescapeInitialAndClosingDoubleQuotes(MacroStatement macro)
 		{
-			StringLiteralExpression value = macro.Arguments[0] as StringLiteralExpression;
+			var value = macro.Arguments[0] as StringLiteralExpression;
 			if (value == null) return;
 			value.Value = BrailPreProcessor.UnescapeInitialAndClosingDoubleQuotes(value.Value);
 		}

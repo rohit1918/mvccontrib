@@ -1,9 +1,6 @@
-﻿using System;
-using MvcContrib.Interfaces;
-using NUnit.Framework;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using MvcContrib.Unity;
-using MvcContrib.Services;
+using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.IoC
 {
@@ -12,15 +9,6 @@ namespace MvcContrib.UnitTests.IoC
 		[TestFixture]
 		public class WhenAValidTypeIsPassed : WhenAValidTypeIsPassedBase
 		{
-			[Test]
-			public void ForCoverage()
-			{
-				IUnityContainer container = new UnityDependencyResolver().Container;
-			}
-			public override void TearDown()
-			{
-
-			}
 			public override void Setup()
 			{
 				IUnityContainer container = new UnityContainer()
@@ -31,6 +19,15 @@ namespace MvcContrib.UnitTests.IoC
 				_dependencyResolver = new UnityDependencyResolver(container);
 			}
 
+			[Test]
+			public void ForCoverage()
+			{
+				IUnityContainer container = new UnityDependencyResolver().Container;
+			}
+
+			public override void TearDown()
+			{
+			}
 		}
 	}
 }

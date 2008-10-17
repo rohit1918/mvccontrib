@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30428</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -45,6 +45,7 @@
       <HintPath>..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -86,20 +87,27 @@
     <Compile Include="ActionResults\BinaryResult.cs" />
     <Compile Include="ActionResults\XmlResult.cs" />
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
+    <Compile Include="Attributes\AcceptGetAttribute.cs" />
+    <Compile Include="Attributes\AcceptPostAttribute.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
-    <Compile Include="Attributes\LayoutAttribute.cs" />
-    <Compile Include="Attributes\RescueAttribute.cs" />
+    <Compile Include="Binders\SubControllerBinder.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Filters\LayoutAttribute.cs" />
+    <Compile Include="Filters\RescueAttribute.cs" />
+    <Compile Include="ControllerExtensions.cs" />
     <Compile Include="ConventionControllerActionInvoker.cs" />
-    <Compile Include="ControllerFactories\DefaultControllerFactory.cs" />
     <Compile Include="ConventionController.cs" />
     <Compile Include="Filters\PreconditionFilter.cs" />
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />
+    <Compile Include="Filters\SubControllerActionToViewDataAttribute.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
+    <Compile Include="ISubController.cs" />
+    <Compile Include="MetaData\CachedControllerDescriptor.cs" />
     <Compile Include="Pagination\IPagination.cs" />
     <Compile Include="Pagination\LazyPagination.cs" />
     <Compile Include="Pagination\PaginationHelper.cs" />
@@ -111,16 +119,14 @@
     <Compile Include="Routing\DebugHttpHandler.cs" />
     <Compile Include="Routing\DebugRoute.cs" />
     <Compile Include="Routing\DebugRouteHandler.cs" />
+    <Compile Include="Routing\MvcRoute.cs" />
     <Compile Include="Routing\RouteDebugger.cs" />
     <Compile Include="Services\EmailTemplateService.cs" />
     <Compile Include="MetaData\ActionMetaData.cs" />
-    <Compile Include="MetaData\ActionParameterMetaData.cs" />
     <Compile Include="MetaData\ControllerDescriptor.cs" />
     <Compile Include="MetaData\IControllerDescriptor.cs" />
-    <Compile Include="MetaData\SimpleParameterBinder.cs" />
     <Compile Include="MetaData\DefaultConvertible.cs" />
     <Compile Include="MetaData\ControllerMetaData.cs" />
-    <Compile Include="MetaData\IParameterBinder.cs" />
     <Compile Include="MetaData\NameValueDeserializer.cs" />
     <Compile Include="Services\DependencyResolver.cs" />
     <Compile Include="Services\IEmailTemplateService.cs" />
@@ -130,6 +136,7 @@
     <Compile Include="SimplyRestful\RestfulGetAction.cs" />
     <Compile Include="SimplyRestful\RestfulPostAction.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandler.cs" />
+    <Compile Include="SubController.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -204,6 +211,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

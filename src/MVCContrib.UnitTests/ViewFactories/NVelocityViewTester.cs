@@ -26,22 +26,22 @@ namespace MvcContrib.UnitTests.ViewFactories
 			IDictionary properties = new Hashtable();
 			properties["resource.loader"] = "assembly";
 			properties["assembly.resource.loader.class"] = "NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader, NVelocity";
-			properties["assembly.resource.loader.assembly"] = "MVCContrib.UnitTests";
+			properties["assembly.resource.loader.assembly"] = new List<string> {"MVCContrib.UnitTests"};
 			properties["master.folder"] = viewPath;
 			_factory = new NVelocityViewFactory(properties);
 
 			_output = new StringWriter();
 
 			_mocks = new MockRepository();
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
-			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			var httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			Expect.Call(httpContext.Session).Repeat.Any().Return(httpSessionState);
 			Expect.Call(httpContext.Response).Repeat.Any().Return(httpResponse);
 			Expect.Call(httpResponse.Output).Repeat.Any().Return(_output);
 
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.DynamicMock<IController>();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+			var controller = _mocks.DynamicMock<ControllerBase>();
 
 			_controllerContext = new ControllerContext(requestContext, controller);
 			_controllerContext.RouteData.Values.Add("controller", viewPath);
@@ -50,13 +50,13 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderView()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", null, new ViewDataDictionary(), null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", null).View;
+            var viewContext = new ViewContext(_controllerContext, view, new ViewDataDictionary(), null);
 
 			_mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("View Template", _output.ToString());
 		}
@@ -64,13 +64,14 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithMaster()
 		{
-			ViewContext viewContext = new ViewContext(_controllerContext, "view", "master", new ViewDataDictionary(), null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", "master").View;
 
-			_mocks.ReplayAll();
+            var viewContext = new ViewContext(_controllerContext, view, new ViewDataDictionary(), null);
+            
+            _mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("Master Template View Template", _output.ToString());
 		}
@@ -78,15 +79,15 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void CanRenderViewWithViewData()
 		{
-			ViewDataDictionary viewData = new ViewDataDictionary();
+			var viewData = new ViewDataDictionary();
 			viewData["test"] = "test";
-			ViewContext viewContext = new ViewContext(_controllerContext,"view", null, viewData, null);
 
-			var view = _factory.CreateView(viewContext);
+			var view = _factory.FindView(_controllerContext, "view", null).View;
+            var viewContext = new ViewContext(_controllerContext, view, viewData, null);
 
 			_mocks.ReplayAll();
 
-			view.RenderView();
+			view.Render(viewContext, _output);
 
 			Assert.AreEqual("View Template test", _output.ToString());
 		}

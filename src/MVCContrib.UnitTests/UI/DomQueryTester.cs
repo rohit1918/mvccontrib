@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.UI
 			public void Implicit_Cast_To_String_Works()
 			{
 
-				DomQuery query = new DomQuery("#goose", "goose");
+				var query = new DomQuery("#goose", "goose");
 				string squery = query;
 				Assert.That(squery,Is.EqualTo("#goose"));
 
@@ -51,7 +51,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void With_A_SingleID()
 			{
-				DomQuery query = new DomQuery("#goose", "goose");
+				var query = new DomQuery("#goose", "goose");
 				Assert.That(query.HasOnlyIds, Is.True);
 				Assert.That(query.IsSingle, Is.True);
 				Assert.That(query.Ids.First(), Is.EqualTo("goose"));
@@ -61,7 +61,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test]
 			public void With_A_Bunch_Of_Ids()
 			{
-				DomQuery query = new DomQuery("#goose, #chicken, #duck", true, new string[] { "goose", "chicken", "duck" });
+				var query = new DomQuery("#goose, #chicken, #duck", true, new[] { "goose", "chicken", "duck" });
 				Assert.That(query.HasOnlyIds, Is.True);
 				Assert.That(query.IsSimple, Is.False);
 				Assert.That(query.Ids.First(), Is.EqualTo("goose"));
@@ -71,7 +71,7 @@ namespace MvcContrib.UnitTests.UI
 			[Test, ExpectedException(typeof(InvalidOperationException))]
 			public void With_A_Bunch_Of_Ids_Throws_When_Trying_To_Get_One_Id()
 			{
-				DomQuery query = new DomQuery("#goose, #chicken, #duck", true, new string[] { "goose", "chicken", "duck" });
+				var query = new DomQuery("#goose, #chicken, #duck", true, new[] { "goose", "chicken", "duck" });
 				string id = query.Id;
 				Assert.Fail("Should not be able to get a single id when domquery has a bunch of ids");
 			}

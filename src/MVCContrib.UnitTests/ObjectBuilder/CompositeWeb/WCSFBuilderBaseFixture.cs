@@ -30,7 +30,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>();
 			Locator locator = CreateLocator();
 
-			MockStrategy strategy = new MockStrategy();
+			var strategy = new MockStrategy();
 			builder.Strategies.Add(strategy, BuilderStage.PreCreation);
 
 			builder.BuildUp<object>(locator, null, null);
@@ -44,14 +44,14 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>();
 			Locator locator = CreateLocator();
 
-			MockStrategy strategy = new MockStrategy();
+			var strategy = new MockStrategy();
 
 			builder.Strategies.Add(new MockStrategy("Creation "), BuilderStage.Creation);
 			builder.Strategies.Add(new MockStrategy("PostInitialization "), BuilderStage.PostInitialization);
 			builder.Strategies.Add(new MockStrategy("PreCreation "), BuilderStage.PreCreation);
 			builder.Strategies.Add(new MockStrategy("Initialization "), BuilderStage.Initialization);
 
-			string s = builder.BuildUp<string>(locator, null, null);
+			var s = builder.BuildUp<string>(locator, null, null);
 
 			Assert.AreEqual("PreCreation Creation Initialization PostInitialization ", s);
 		}
@@ -62,7 +62,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>();
 			Locator locator = CreateLocator();
 
-			MockStrategy strategy = new MockStrategy();
+			var strategy = new MockStrategy();
 
 			builder.Strategies.Add(new MockStrategy("Creation "), BuilderStage.Creation);
 			builder.Strategies.Add(new MockStrategy("PostInitialization "), BuilderStage.PostInitialization);
@@ -97,7 +97,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 		[Test]
 		public void CanInitializeBuilderBaseWithConfigurator()
 		{
-			MockConfigurator config = new MockConfigurator();
+			var config = new MockConfigurator();
 
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>(config);
 
@@ -110,7 +110,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>();
 			Locator locator = null;
 
-			MockStrategy strategy = new MockStrategy();
+			var strategy = new MockStrategy();
 			builder.Strategies.Add(strategy, BuilderStage.PreCreation);
 
 			builder.BuildUp<object>(locator, null, null);
@@ -122,7 +122,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 			IBuilder<BuilderStage> builder = new WCSFBuilderBase<BuilderStage>();
 			Locator locator = null;
 
-			MockStrategy strategy = new MockStrategy();
+			var strategy = new MockStrategy();
 			builder.Strategies.Add(strategy, BuilderStage.PreCreation);
 
 			builder.TearDown<object>(locator, "");
@@ -132,15 +132,15 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 
 		private Locator CreateLocator()
 		{
-			Locator locator = new Locator();
-			LifetimeContainer lifetime = new LifetimeContainer();
+			var locator = new Locator();
+			var lifetime = new LifetimeContainer();
 			locator.Add(typeof(ILifetimeContainer), lifetime);
 			return locator;
 		}
 
 		private class MockConfigurator : IBuilderConfigurator<BuilderStage>
 		{
-			public bool WasCalled = false;
+			public bool WasCalled;
 
 			public void ApplyConfiguration(IBuilder<BuilderStage> builder)
 			{
@@ -151,7 +151,7 @@ namespace Microsoft.Practices.CompositeWeb.Tests.ObjectBuilder
 		private class MockStrategy : BuilderStrategy
 		{
 			public string StringValue;
-			public bool BuildWasRun = false;
+			public bool BuildWasRun;
 			public bool UnbuildWasRun = false;
 
 			public MockStrategy()

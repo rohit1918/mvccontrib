@@ -36,11 +36,13 @@ namespace MvcContrib.BrailViewEngine
 
 		public override Statement Expand(MacroStatement macro)
 		{
-			Block codeBlock = new Block();
+			var codeBlock = new Block();
 
 			// MvcContrib.BrailViewEngine.DslProvider(BrailBase)
-			MethodInvocationExpression newDslWrapper = new MethodInvocationExpression();
-			newDslWrapper.Target = AstUtil.CreateReferenceExpression("MvcContrib.BrailViewEngine.DslProvider");
+			var newDslWrapper = new MethodInvocationExpression
+			                    	{
+			                    		Target = AstUtil.CreateReferenceExpression("MvcContrib.BrailViewEngine.DslProvider")
+			                    	};
 			newDslWrapper.Arguments.Add(new SelfLiteralExpression());
 
 			// dsl = MvcContrib.BrailViewEngine.DslPRovider(BrailBase)
@@ -51,12 +53,16 @@ namespace MvcContrib.BrailViewEngine
 			{
 				string language = LookupLanguageExtension(macro.Arguments[0].ToString());
 				// LanguageExtension(OutputStream)
-				MethodInvocationExpression newLanguage = new MethodInvocationExpression();
-				newLanguage.Target = AstUtil.CreateReferenceExpression(language);
+				var newLanguage = new MethodInvocationExpression
+				                  	{
+				                  		Target = AstUtil.CreateReferenceExpression(language)
+				                  	};
 				newLanguage.Arguments.Add(AstUtil.CreateReferenceExpression("OutputStream"));
 
-				MethodInvocationExpression registerLanguage = new MethodInvocationExpression();
-				registerLanguage.Target = AstUtil.CreateReferenceExpression("dsl.Register");
+				var registerLanguage = new MethodInvocationExpression
+				                       	{
+				                       		Target = AstUtil.CreateReferenceExpression("dsl.Register")
+				                       	};
 				registerLanguage.Arguments.Add(newLanguage);
 
 				// dsl.Register(LanguageExtension(OutputStream))
@@ -65,7 +71,7 @@ namespace MvcContrib.BrailViewEngine
 
 			// rewrite the remaining code to invoke methods on
 			// the dsl reference
-			Block macroBlock = macro.Block;
+			var macroBlock = macro.Block;
 			(new NameExpander(dslReference)).Visit(macroBlock);
 			codeBlock.Add(macroBlock);
 			// dsl.Flush();
@@ -80,7 +86,7 @@ namespace MvcContrib.BrailViewEngine
 				throw new Exception(string.Format("Language '{0}' is not implemented", language));
 			}
 
-			Type languageExtension = (Type) languages[language];
+			var languageExtension = (Type) languages[language];
 			return string.Format("{0}{1}{2}", languageExtension.Namespace, Type.Delimiter, languageExtension.Name);
 		}
 
@@ -88,9 +94,9 @@ namespace MvcContrib.BrailViewEngine
 
 		private class NameExpander : DepthFirstTransformer
 		{
-			private readonly ReferenceExpression _reference = null;
-			private readonly IDictionary<string, Node> _skippedReferences = null;
-			private readonly IDictionary<string, Type> _splitNamespaces = null;
+			private readonly ReferenceExpression _reference;
+			private readonly IDictionary<string, Node> _skippedReferences;
+			private readonly IDictionary<string, Type> _splitNamespaces;
 
 			public NameExpander(ReferenceExpression reference)
 			{
@@ -100,12 +106,12 @@ namespace MvcContrib.BrailViewEngine
 
 				RecordReferenceTypesToSkip(typeof(BrailBase).Assembly);
 
-				foreach(AssemblyName asn in typeof(BrailBase).Assembly.GetReferencedAssemblies())
+				foreach(var asn in typeof(BrailBase).Assembly.GetReferencedAssemblies())
 				{
 					RecordReferenceTypesToSkip(Assembly.Load(asn));
 				}
 
-				foreach(MethodInfo method in typeof(BrailBase).GetMethods())
+				foreach(var method in typeof(BrailBase).GetMethods())
 				{
 					if (!_skippedReferences.ContainsKey(method.Name))
 					{
@@ -116,7 +122,7 @@ namespace MvcContrib.BrailViewEngine
 
 			private void RecordReferenceTypesToSkip(Assembly asm)
 			{
-				foreach(Type type in asm.GetExportedTypes())
+				foreach(var type in asm.GetExportedTypes())
 				{
 					SplitTypeNameAndRecordReferenceToSkip(type);
 
@@ -136,13 +142,13 @@ namespace MvcContrib.BrailViewEngine
 
 			private void SplitTypeNameAndRecordReferenceToSkip(Type type)
 			{
-				List<string> nsPieces = new List<string>();
+				var nsPieces = new List<string>();
 
 				if (type.Namespace != null && !_splitNamespaces.ContainsKey(type.Namespace))
 				{
 					nsPieces.Clear();
 
-					foreach(string nsPart in type.Namespace.Split(Type.Delimiter))
+					foreach(var nsPart in type.Namespace.Split(Type.Delimiter))
 					{
 						nsPieces.Add(nsPart);
 						string nsItem = string.Join(new string(Type.Delimiter, 1), nsPieces.ToArray());
@@ -184,9 +190,7 @@ namespace MvcContrib.BrailViewEngine
 					return;
 				}
 
-				MemberReferenceExpression mre = new MemberReferenceExpression(node.LexicalInfo);
-				mre.Name = node.Name;
-				mre.Target = _reference.CloneNode();
+				var mre = new MemberReferenceExpression(node.LexicalInfo) {Name = node.Name, Target = _reference.CloneNode()};
 
 				ReplaceCurrentNode(mre);
 			}

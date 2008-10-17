@@ -1,10 +1,12 @@
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Components.Binder;
-using NUnit.Framework;
-using Rhino.Mocks;
 using MvcContrib.Castle;
+using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
+
 namespace MvcContrib.UnitTests.MetaData
 {
 	[TestFixture]
@@ -17,10 +19,10 @@ namespace MvcContrib.UnitTests.MetaData
 		public void Setup()
 		{
 			_mocks = new MockRepository();
-			_context = CreateContext(_mocks.DynamicMock<IController>());
+			_context = CreateControllerContext(_mocks.DynamicMock<ControllerBase>());
 		}
 
-		private ControllerContext CreateContext(IController controller)
+		private ControllerContext CreateControllerContext(ControllerBase controller)
 		{
 			var context = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), controller);
 			_mocks.ReplayAll();
@@ -34,9 +36,9 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute();
-			object value = binder.Bind(typeof(Customer), "cust", _context);
+			object value = binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
 			var customer = value as Customer;
-			
+
 			Assert.That(customer, Is.Not.Null);
 			Assert.That(customer.Name, Is.EqualTo("Jeremy"));
 			Assert.That(customer.Id, Is.EqualTo(5));
@@ -49,7 +51,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute("cust");
-			object value = binder.Bind(typeof(Customer), "Foo", _context);
+			object value = binder.BindModel(CreateContext("Foo", typeof(Customer))).Value;
 			var customer = value as Customer;
 
 			Assert.That(customer, Is.Not.Null);
@@ -58,13 +60,14 @@ namespace MvcContrib.UnitTests.MetaData
 		}
 
 		[Test]
-		public void When_the_controller_implements_ICastleBindingContainer_then_the_binder_should_be_made_accessible_to_the_controller()
+		public void
+			When_the_controller_implements_ICastleBindingContainer_then_the_binder_should_be_made_accessible_to_the_controller()
 		{
 			var controller = new CastleBindableController();
-			_context = CreateContext(controller);
+			_context = CreateControllerContext(controller);
 
 			var binder = new CastleBindAttribute();
-			binder.Bind(typeof(Customer), "cust", _context);
+			binder.BindModel(CreateContext("cust", typeof(Customer)));
 
 			Assert.That(controller.Binder, Is.Not.Null);
 		}
@@ -75,14 +78,27 @@ namespace MvcContrib.UnitTests.MetaData
 			var castleBinder = new DataBinder();
 			var controller = new CastleBindableController {Binder = castleBinder};
 
-			_context = CreateContext(controller);
+			_context = CreateControllerContext(controller);
 			_context.HttpContext.Request.Form["cust.Id"] = "Fail";
 
 			var binder = new CastleBindAttribute();
-			binder.Bind(typeof(Customer), "cust", _context);
-			
+			binder.BindModel(CreateContext("cust", typeof(Customer)));
+
 			Assert.That(controller.Binder, Is.SameAs(castleBinder));
 			Assert.That(castleBinder.ErrorList["Id"], Is.Not.Null);
+		}
+
+		private ModelBindingContext CreateContext(string name, Type type)
+		{
+			return new ModelBindingContext(
+				_context,
+				MockRepository.GenerateStub<IValueProvider>(),
+				type,
+				name,
+				null, 
+				new ModelStateDictionary(),
+				null 
+			);
 		}
 
 		public class Customer

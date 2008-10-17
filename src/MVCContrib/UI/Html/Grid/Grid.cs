@@ -18,6 +18,21 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		private const string Default_Css_Class = "grid";
 		private const string Empty_Text_Key = "empty";
+		private const string Pagination_Format_Text_Key = "paginationFormat";
+		private const string Page_Query_Name_Text_Key = "page";
+		private const string Pagination_Single_Format_Text_Key = "paginationSingleFormat";
+		private const string Pagination_First_Text_Key = "first";
+		private const string Pagination_Prev_Text_Key = "prev";
+		private const string Pagination_Next_Text_Key = "next";
+		private const string Pagination_Last_Text_Key = "last";
+
+		private string _paginationFormat = "Showing {0} - {1} of {2} ";
+		private string _paginationSingleFormat = "Showing {0} of {1} ";
+		private string _paginationFirst = "first";
+		private string _paginationPrev = "prev";
+		private string _paginationNext = "next";
+		private string _paginationLast = "last";
+		private string _pageQueryName = "page";
 
 		/// <summary>
 		/// Custom HTML attributes.
@@ -83,10 +98,52 @@ namespace MvcContrib.UI.Html.Grid
 				HtmlAttributes["class"] = Default_Css_Class;
 			}
 
-			if(HtmlAttributes.Contains(Empty_Text_Key))
+			if (HtmlAttributes.Contains(Empty_Text_Key))
 			{
 				EmptyMessageText = HtmlAttributes[Empty_Text_Key] as string;
 				HtmlAttributes.Remove(Empty_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Format_Text_Key))
+			{
+				_paginationFormat = HtmlAttributes[Pagination_Format_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Format_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Single_Format_Text_Key))
+			{
+				_paginationSingleFormat = HtmlAttributes[Pagination_Single_Format_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Single_Format_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_First_Text_Key))
+			{
+				_paginationFirst = HtmlAttributes[Pagination_First_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_First_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Prev_Text_Key))
+			{
+				_paginationPrev = HtmlAttributes[Pagination_Prev_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Prev_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Next_Text_Key))
+			{
+				_paginationNext = HtmlAttributes[Pagination_Next_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Next_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Pagination_Last_Text_Key))
+			{
+				_paginationLast = HtmlAttributes[Pagination_Last_Text_Key] as string;
+				HtmlAttributes.Remove(Pagination_Last_Text_Key);
+			}
+
+			if (HtmlAttributes.Contains(Page_Query_Name_Text_Key))
+			{
+				_pageQueryName = HtmlAttributes[Page_Query_Name_Text_Key] as string;
+				HtmlAttributes.Remove(Page_Query_Name_Text_Key);
 			}
 		}
 
@@ -146,13 +203,16 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText(string.Format("<table{0}>", attrs));
 		}
 
-		protected override void RenderGridEnd()
+		protected override void RenderGridEnd(bool isEmpty)
 		{
 			RenderText("</table>");
-			var pagination = Items as IPagination;
-			if (pagination != null)
+			
+			if(!isEmpty)
 			{
-				RenderPagination(pagination);
+				var pagination = Items as IPagination;
+				if (pagination != null) {
+					RenderPagination(pagination);
+				}	
 			}
 		}
 
@@ -168,33 +228,33 @@ namespace MvcContrib.UI.Html.Grid
 			builder.Append("<span class='paginationLeft'>");
 			if (pagedList.PageSize == 1)
 			{
-				builder.AppendFormat("Showing {0} of {1} ", pagedList.FirstItem, pagedList.TotalItems);
+				builder.AppendFormat(_paginationSingleFormat, pagedList.FirstItem, pagedList.TotalItems);
 			}
 			else
 			{
-				builder.AppendFormat("Showing {0} - {1} of {2} ", pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
+				builder.AppendFormat(_paginationFormat, pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
 			}
 			builder.Append("</span>");
 			builder.Append("<span class='paginationRight'>");
 
 			if (pagedList.PageNumber == 1)
 			{
-				builder.Append("first");
+				builder.Append(_paginationFirst);
 			}
 			else
 			{
-				builder.Append(CreatePageLink(1, "first"));
+				builder.Append(CreatePageLink(1, _paginationFirst));
 			}
 
 			builder.Append(" | ");
 
 			if (pagedList.HasPreviousPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber - 1, "prev"));
+				builder.Append(CreatePageLink(pagedList.PageNumber - 1, _paginationPrev));
 			}
 			else
 			{
-				builder.Append("prev");
+				builder.Append(_paginationPrev);
 			}
 
 
@@ -202,11 +262,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.HasNextPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber + 1, "next"));
+				builder.Append(CreatePageLink(pagedList.PageNumber + 1, _paginationNext));
 			}
 			else
 			{
-				builder.Append("next");
+				builder.Append(_paginationNext);
 			}
 
 
@@ -216,11 +276,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.PageNumber < lastPage)
 			{
-				builder.Append(CreatePageLink(lastPage, "last"));
+				builder.Append(CreatePageLink(lastPage, _paginationLast));
 			}
 			else
 			{
-				builder.Append("last");
+				builder.Append(_paginationLast);
 			}
 
 
@@ -240,7 +300,7 @@ namespace MvcContrib.UI.Html.Grid
 		{
 			string queryString = CreateQueryString(Context.Request.QueryString);
 			string filePath = Context.Request.FilePath;
-			return string.Format("<a href=\"{0}?page={1}{2}\">{3}</a>", filePath, pageNumber, queryString, text);
+			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, _pageQueryName, pageNumber, queryString, text);
 		}
 
 		protected virtual string CreateQueryString(NameValueCollection values)
@@ -254,7 +314,7 @@ namespace MvcContrib.UI.Html.Grid
 					continue;
 				}
 
-				foreach(string value in values.GetValues(key))
+				foreach(var value in values.GetValues(key))
 				{
 					builder.AppendFormat("&amp;{0}={1}", key, value);
 				}

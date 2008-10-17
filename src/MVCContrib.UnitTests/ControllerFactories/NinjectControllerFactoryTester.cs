@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.Ninject;
 using Ninject.Conditions;
 using Ninject.Core;
@@ -20,7 +21,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
         [Test]
         public void ShouldGetNinjaControllerFromNinjectControllerFactoryWhenControllerNameIsNinja()
         {
-            NinjectControllerFactory factory = new NinjectControllerFactory();
+            var factory = new NinjectControllerFactory();
 
             IController ninjaController = factory.CreateController(null, "Ninja");
 
@@ -31,8 +32,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
         [Test]
         public void NinjectControllerFacotryShouldDisposeController()
         {
-            NinjectControllerFactory factory = new NinjectControllerFactory();
-            DisposableNinjaController disposableController = new DisposableNinjaController();
+            var factory = new NinjectControllerFactory();
+            var disposableController = new DisposableNinjaController();
             factory.DisposeController(disposableController);
             Assert.That(disposableController.IsDisposed);
         }
@@ -48,21 +49,21 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
         private class NinjaController : IController
         {
-            public void Execute(ControllerContext controllerContext)
+            public void Execute(RequestContext controllerContext)
             {
-                throw new System.NotImplementedException();
+                throw new NotImplementedException();
             }
         }
 
         private class DisposableNinjaController : IDisposable, IController
         {
-            public bool IsDisposed = false;
+            public bool IsDisposed;
             public void Dispose()
             {
                 IsDisposed = true;
             }
 
-            public void Execute(ControllerContext controllerContext)
+            public void Execute(RequestContext controllerContext)
             {
                 throw new NotImplementedException();
             }
