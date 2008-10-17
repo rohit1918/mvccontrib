@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -24,29 +22,31 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		private Controller _controller;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
+	    private ControllerContext controllerContext;
 
-		[SetUp]
+	    [SetUp]
 		public void SetUp()
 		{
 			_output = new StringWriter();
 			_mocks = new MockRepository();
 			_httpContext = _mocks.DynamicMock<HttpContextBase>(); //new TestHttpContext();
-			HttpResponseBase response = _mocks.DynamicMock<HttpResponseBase>();
+			var response = _mocks.DynamicMock<HttpResponseBase>();
 			SetupResult.For(response.Output).Return(_output);
 			SetupResult.For(_httpContext.Request).Return(_mocks.DynamicMock<HttpRequestBase>());
 			SetupResult.For(_httpContext.Response).Return(response);
 //			SetupResult.For(_httpContext.Session).Return(_mocks.DynamicMock<HttpSessionStateBase>());
-			RequestContext requestContext = new RequestContext(_httpContext, new RouteData());
-			_controller = _mocks.CreateMock<Controller>();
+			var requestContext = new RequestContext(_httpContext, new RouteData());
+            _controller = _mocks.StrictMock<Controller>();
 			_mocks.Replay(_controller);
 			
-			ControllerContext controllerContext = new ControllerContext(requestContext, _controller);
-			_viewContext = new ViewContext(controllerContext, "index", "", new ViewDataDictionary(), 
-				                null);
+			controllerContext = new ControllerContext(requestContext, _controller);
+//			_viewContext = new ViewContext(controllerContext, null, new ViewDataDictionary(), null);
 
-			_viewEngine = new BooViewEngine();
-			_viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			_viewEngine.Options = new BooViewEngineOptions();
+			_viewEngine = new BooViewEngine
+			              	{
+			              		ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY),
+			              		Options = new BooViewEngineOptions()
+			              	};
 			_viewEngine.Initialize();
 			_mocks.Replay(_httpContext);
 			
@@ -132,8 +132,9 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		public void Layout_And_View_Should_Have_ViewContext()
 		{
 			_mocks.ReplayAll();
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", "/Master");
-			view.RenderView(_viewContext);
+			BrailBase view = _viewEngine.Process("view", "/Master");
+            _viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary(), null);             
+            view.Render(_viewContext, _httpContext.Response.Output);
 			Assert.IsNotNull(view.ViewContext);
 			Assert.AreEqual(view.ViewContext, view.Layout.ViewContext);
 		}
@@ -144,7 +145,7 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 			_mocks.ReplayAll();
 			_viewEngine.Options.AssembliesToReference.Add(System.Reflection.Assembly.Load("MVCContrib.UnitTests"));
 			_viewEngine.Options.BaseType = "MvcContrib.UnitTests.BrailViewEngine.TestBrailBase";
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, "view", null);
+			BrailBase view = _viewEngine.Process("view", null);
 			Assert.IsInstanceOfType(typeof(TestBrailBase), view);
 		}
 
@@ -155,15 +156,16 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 
 		private string GetViewOutput(string viewName, string masterName)
 		{
-			BrailBase view = _viewEngine.Process(_httpContext.Response.Output, viewName, masterName);
-			view.RenderView(_viewContext);
+			BrailBase view = _viewEngine.Process(viewName, masterName);
+            _viewContext = new ViewContext(controllerContext, view, new ViewDataDictionary(), null); 
+            view.Render(_viewContext, _httpContext.Response.Output);
 			return _httpContext.Response.Output.ToString();
 		}
 	}
 
 	public abstract class TestBrailBase : BrailBase
 	{
-		protected TestBrailBase(BooViewEngine viewEngine, TextWriter output) : base(viewEngine, output)
+		protected TestBrailBase(BooViewEngine viewEngine) : base(viewEngine)
 		{
 		}
 	}

@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using MvcContrib.UI.ASPXViewEngine;
 using System.Web.Mvc;
-using System.Collections;
 
 
 namespace MvcContrib.UnitTests.UI.ASPXViewEngine
@@ -23,8 +19,8 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_Correct_Type_Without_Conversion()
 		{
-			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
-			TestViewData data = new TestViewData();
+			var viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
+			var data = new TestViewData();
 			viewPage.SetViewData(new ViewDataDictionary(data));
 			Assert.AreSame(data, viewPage.ViewData.Model, "ViewData was not set without conversion");
 		}
@@ -32,10 +28,10 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_IDictionary()
 		{
-			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
+			var viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 
 			var data = new ViewDataDictionary();
-			Uri uriValue = new Uri("http://www.google.com/");
+			var uriValue = new Uri("http://www.google.com/");
 			data["StringValue"] = "hello";
 			data["BoolValue"] = true;
 			data["UriValue"] = uriValue;
@@ -50,9 +46,9 @@ namespace MvcContrib.UnitTests.UI.ASPXViewEngine
 		[Test]
 		public void Accepts_Anonymous_Type()
 		{
-			AutoTypeViewUserControlTestingSubclass<TestViewData> viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
+			var viewPage = new AutoTypeViewUserControlTestingSubclass<TestViewData>();
 
-			Uri uriValue = new Uri("http://www.google.com/");
+			var uriValue = new Uri("http://www.google.com/");
 			viewPage.SetViewData(new ViewDataDictionary(new
 			{
 				StringValue = "nice",

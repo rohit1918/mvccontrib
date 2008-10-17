@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
 using MvcContrib.Castle;
 using NUnit.Framework;
@@ -22,39 +22,40 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			HttpContextBase httpContext = _mocks.DynamicMock<HttpContextBase>();
-			HttpResponseBase httpResponse = _mocks.DynamicMock<HttpResponseBase>();
-			HttpSessionStateBase httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
+			var httpContext = _mocks.DynamicMock<HttpContextBase>();
+			var httpResponse = _mocks.DynamicMock<HttpResponseBase>();
+			var httpSessionState = _mocks.DynamicMock<HttpSessionStateBase>();
 			SetupResult.For(httpContext.Session).Return(httpSessionState);
 			SetupResult.For(httpContext.Response).Return(httpResponse);
-		    RouteData routeData = new RouteData();
+		    var routeData = new RouteData();
 		    routeData.Values["controller"] = "testcontroller";
-		    RequestContext requestContext = new RequestContext(httpContext,
+		    var requestContext = new RequestContext(httpContext,
 		                                                       routeData
 		                                                          );
-			IController controller = _mocks.DynamicMock<IController>();
-			ControllerContext controllerContext = new ControllerContext(requestContext, controller);
+			var controller = _mocks.DynamicMock<ControllerBase>();
+			var controllerContext = new ControllerContext(requestContext, controller);
+		    var view = _mocks.DynamicMock<IView>();
 			_mocks.ReplayAll();
-			ViewContext viewContext = new ViewContext(controllerContext, "index","",new ViewDataDictionary(), new TempDataDictionary());
+            var viewPage = new ViewPage();
+            var viewContext = new ViewContext(controllerContext, view,new ViewDataDictionary(), new TempDataDictionary());
 
-			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
-			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper);
-
-			_htmlHelperDuck.Introspector = new Introspector(new Logger());
+		    
+		    _htmlHelper = new HtmlHelper(viewContext, viewPage);
+			_htmlHelperDuck = new HtmlExtensionDuck(_htmlHelper) {Introspector = new Introspector(new Logger())};
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Depends_On_HtmlHelper()
 		{
-			new HtmlExtensionDuck((HtmlHelper)null);
+			new HtmlExtensionDuck(null);
 		}
 
 		[Test]
 		public void Invokes_Methods_On_HtmlHelper()
 		{
 			string expected = _htmlHelper.ActionLink("linkText", "actionName");
-			string actual = _htmlHelperDuck.Invoke("ActionLink", new object[] {"linkText", "actionName"}) as string;
+			var actual = _htmlHelperDuck.Invoke("ActionLink", new object[] {"linkText", "actionName"}) as string;
 
 			Assert.AreEqual(expected, actual); 
 		}
@@ -63,7 +64,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void Invokes_Methods_On_HtmlHelper_Extension_Classes()
 		{
 		    string expected = _htmlHelper.TextBox("htmlName");
-			string actual = _htmlHelperDuck.Invoke("TextBox", new object[] {"htmlName"}) as string;
+			var actual = _htmlHelperDuck.Invoke("TextBox", new object[] {"htmlName"}) as string;
 
 			Assert.AreEqual(expected, actual); 
 		}

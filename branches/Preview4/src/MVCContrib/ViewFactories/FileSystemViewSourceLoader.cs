@@ -1,3 +1,19 @@
+// Copyright 2004-2008 Castle Project - http://www.castleproject.org/
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//This file adapted and modified from the original
+
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -59,7 +75,7 @@ namespace MvcContrib.ViewFactories
 		{
 			if( ViewRootDirectory == null ) return new string[0];
 
-			DirectoryInfo directory = new DirectoryInfo(Path.Combine(ViewRootDirectory, directoryName));
+			var directory = new DirectoryInfo(Path.Combine(ViewRootDirectory, directoryName));
 
 			if (directory.Exists)
 			{
@@ -102,13 +118,15 @@ namespace MvcContrib.ViewFactories
 		{
 			if (Directory.Exists(ViewRootDirectory))
 			{
-				_viewRootDirectoryWatcher = new FileSystemWatcher(ViewRootDirectory);
-				_viewRootDirectoryWatcher.IncludeSubdirectories = true;
+				_viewRootDirectoryWatcher = new FileSystemWatcher(ViewRootDirectory)
+				                            	{
+				                            		IncludeSubdirectories = true,
+				                            		EnableRaisingEvents = true
+				                            	};
 				_viewRootDirectoryWatcher.Changed += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Created += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Deleted += OnViewRootDirectoryChanged;
 				_viewRootDirectoryWatcher.Renamed += OnViewRootDirectoryChanged;
-				_viewRootDirectoryWatcher.EnableRaisingEvents = true;
 			}
 		}
 
@@ -128,7 +146,7 @@ namespace MvcContrib.ViewFactories
 
 		protected virtual void OnViewRootDirectoryChanged(object sender, FileSystemEventArgs e)
 		{
-			FileSystemEventHandler handler = (FileSystemEventHandler)_events[ViewRootDirectoryChangedEvent];
+			var handler = (FileSystemEventHandler)_events[ViewRootDirectoryChangedEvent];
 			if (handler != null)
 			{
 				handler(this, e);

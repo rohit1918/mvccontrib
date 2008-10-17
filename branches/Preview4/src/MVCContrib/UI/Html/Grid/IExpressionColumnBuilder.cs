@@ -1,4 +1,3 @@
-using MvcContrib.UI.Html.Grid;
 
 namespace MvcContrib.UI.Html.Grid
 {

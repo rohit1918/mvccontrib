@@ -43,7 +43,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		public ActionResult Create()
 		{
 			Product product = new Product();
-			BindingHelperExtensions.UpdateFrom(product, Request.Form);
+			UpdateModel(product, Request.Form.AllKeys);
 
 			northwind.AddProduct(product);
 			northwind.SubmitChanges();
@@ -73,7 +73,7 @@ namespace MvcContrib.Samples.NHamlViewEngine.Controllers
 		public ActionResult Update(int id)
 		{
 			Product product = northwind.GetProductById(id);
-			BindingHelperExtensions.UpdateFrom(product, Request.Form);
+			UpdateModel(product, Request.Form.AllKeys);
 
 			northwind.SubmitChanges();
 

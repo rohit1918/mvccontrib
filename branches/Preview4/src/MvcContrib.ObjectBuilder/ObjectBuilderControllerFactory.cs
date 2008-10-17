@@ -1,14 +1,12 @@
 using System;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.ObjectBuilder;
-using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
 namespace MvcContrib.ObjectBuilder
 {
     public class ObjectBuilderControllerFactory : DefaultControllerFactory
     {
-        protected override IController CreateController(RequestContext context, string controllerName)
+        public override IController CreateController(RequestContext context, string controllerName)
         {
             Type type = base.GetControllerType(controllerName);
 
@@ -28,7 +26,7 @@ namespace MvcContrib.ObjectBuilder
                 throw new ArgumentNullException("context");
             }
 
-            IDependencyContainerAccessor dependencyContainerAccessor = context.HttpContext.ApplicationInstance as IDependencyContainerAccessor;
+            var dependencyContainerAccessor = context.HttpContext.ApplicationInstance as IDependencyContainerAccessor;
             if (dependencyContainerAccessor == null)
             {
                 throw new InvalidOperationException(

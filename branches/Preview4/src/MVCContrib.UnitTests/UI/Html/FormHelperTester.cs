@@ -1,15 +1,11 @@
 using System.Web.Mvc;
 using MvcContrib.UI.Html;
 using MvcContrib.UI.Tags;
-using MvcContrib.UI.Tags.Validators;
 using NUnit.Framework;
-using MvcContrib.UnitTests;
-using MvcContrib;
 using NUnit.Framework.SyntaxHelpers;
 using System.Collections;
 using System.Collections.Generic;
 using Rhino.Mocks;
-using System.Web;
 using MvcContrib.Interfaces;
 using System.Linq;
 using MvcContrib.Services;
@@ -26,15 +22,12 @@ namespace MvcContrib.UnitTests.UI.Html
 			protected override void Setup()
 			{
 				base.Setup();
-				_helper = new FormHelper();
-				_helper.ViewContext = _viewContext;
+				_helper = new FormHelper {ViewContext = _viewContext};
 			}
 
 			protected List<Person> BuildPeople()
 			{
-				List<Person> people = new List<Person>();
-				people.Add(new Person("Jeremy", 1));
-				people.Add(new Person("Josh", 2));
+				var people = new List<Person> {new Person("Jeremy", 1), new Person("Josh", 2)};
 
 				return people;
 			}
@@ -76,7 +69,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void The_FormHelper_in_HttpContext_Items_should_be_returned()
 			{
-				FormHelper helper = new FormHelper();
+				var helper = new FormHelper();
 				_viewContext.HttpContext.Items.Add(FormHelper.CACHE_KEY, helper);
 				Assert.That(FormHelper.GetInstance(_viewContext), Is.EqualTo(helper));
 			}
@@ -93,10 +86,10 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_the_formhelper_should_be_created_using_the_dependencyresolver()
 			{
-				FormHelper helper = new FormHelper();
+				var helper = new FormHelper();
 				using (mocks.Record())
 				{
-					IDependencyResolver resolver = mocks.DynamicMock<IDependencyResolver>();
+					var resolver = mocks.DynamicMock<IDependencyResolver>();
 					DependencyResolver.InitializeWith(resolver);
 					Expect.Call(resolver.GetImplementationOf<IFormHelper>()).Return(helper);
 				}
@@ -136,8 +129,8 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_a_FormHelper_should_be_created()
 			{
-				HtmlHelper helper = new HtmlHelper(_viewContext, new ViewPage());
-				IFormHelper formHelper = HtmlHelperExtensions.Form(helper);
+				var helper = new HtmlHelper(_viewContext, new ViewPage());
+				IFormHelper formHelper = HtmlHelperExtensions.FormHelper(helper);
 				Assert.IsNotNull(formHelper);
 			}
 		}
@@ -149,10 +142,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				TextBox textField = new TextBox();
-				textField.Name = "foo";
-				textField.Class = "bar";
-				textField.Value = "A Value";
+				var textField = new TextBox {Name = "foo", Class = "bar", Value = "A Value"};
 
 				string html = _helper.TextField(textField);
 				string expected = "<input type=\"text\" name=\"foo\" class=\"bar\" value=\"A Value\" id=\"foo\"/>";
@@ -201,10 +191,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				Password textField = new Password();
-				textField.Name = "foo";
-				textField.Class = "bar";
-				textField.Value = "A Value";
+				var textField = new Password {Name = "foo", Class = "bar", Value = "A Value"};
 
 				string html = _helper.PasswordField(textField);
 				string expected = "<input type=\"password\" name=\"foo\" class=\"bar\" value=\"A Value\" id=\"foo\"/>";
@@ -253,10 +240,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				HiddenField hiddenField = new HiddenField();
-				hiddenField.Name = "foo";
-				hiddenField.Class = "bar";
-				hiddenField.Value = "A Value";
+				var hiddenField = new HiddenField {Name = "foo", Class = "bar", Value = "A Value"};
 
 				string html = _helper.HiddenField(hiddenField);
 				string expected = "<input type=\"hidden\" name=\"foo\" class=\"bar\" value=\"A Value\" id=\"foo\"/>";
@@ -304,10 +288,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				TextArea textArea = new TextArea();
-				textArea.Name = "foo";
-				textArea.Class = "bar";
-				textArea.InnerText = "A Value";
+				var textArea = new TextArea {Name = "foo", Class = "bar", InnerText = "A Value"};
 
 				string html = _helper.TextArea(textArea);
 				string expected = "<textarea name=\"foo\" class=\"bar\" id=\"foo\">A Value</textarea>";
@@ -355,10 +336,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				SubmitButton button = new SubmitButton();
-				button.Name = "foo";
-				button.Class = "bar";
-				button.Value = "A Value";
+				var button = new SubmitButton {Name = "foo", Class = "bar", Value = "A Value"};
 
 				string html = _helper.Submit(button);
 				string expected = "<input type=\"submit\" name=\"foo\" class=\"bar\" value=\"A Value\"/>";
@@ -397,11 +375,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				InputImage button = new InputImage();
-				button.Name = "foo";
-				button.Src = "foo.gif";
-				button.Class = "bar";
-				button.Alt = "A Value";
+				var button = new InputImage {Name = "foo", Src = "foo.gif", Class = "bar", Alt = "A Value"};
 
 				string html = _helper.ImageButton(button);
 				string expected = "<input type=\"image\" name=\"foo\" src=\"foo.gif\" class=\"bar\" alt=\"A Value\"/>";
@@ -432,11 +406,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				Select select = new Select();
-				select.Name = "foo";
-				select.Class = "bar";
-				select.TextField = "Name";
-				select.ValueField = "Id";
+				var select = new Select {Name = "foo", Class = "bar", TextField = "Name", ValueField = "Id"};
 
 				string html = _helper.Select(BuildPeople(), select);
 				string expected =
@@ -509,7 +479,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_generic_enum_parameter_and_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("enumArray", new TestEnum[] { TestEnum.One, TestEnum.Two });
+				((IDictionary)_viewContext.ViewData).Add("enumArray", new[] { TestEnum.One, TestEnum.Two });
 				var html = _helper.Select<TestEnum>("enumArray");
 				var expected = "<select name=\"enumArray\" id=\"enumArray\"><option value=\"0\" selected=\"selected\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -549,6 +519,18 @@ namespace MvcContrib.UnitTests.UI.Html
 					"<select name=\"foo\" id=\"foo\"><option value=\"\">test</option><option value=\"0\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
 			}
+
+			[Test]
+			public void With_data_source_item_having_null_value_the_option_value_is_rendered_as_empty_string()
+			{
+				var dataSource = new List<TestObjectWithNullableValueProperty>
+				{
+					new TestObjectWithNullableValueProperty {Value = null, Text = "Foo"}
+				};
+				var html = _helper.Select("foo", dataSource, "Text", "Value");
+				var expected = "<select name=\"foo\" id=\"foo\"><option value=\"\" selected=\"selected\">Foo</option></select>";
+				Assert.That(html, Is.EqualTo(expected));
+			}
 		}
 
 		[TestFixture]
@@ -557,9 +539,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				CheckBoxField checkBox = new CheckBoxField();
-				checkBox.Name = "foo";
-				checkBox.Class = "bar";
+				var checkBox = new CheckBoxField {Name = "foo", Class = "bar"};
 
 				string html = _helper.CheckBoxField(checkBox);
 				string expected = "<input type=\"checkbox\" name=\"foo\" class=\"bar\" id=\"foo\" value=\"true\"/><input type=\"hidden\" value=\"false\" id=\"fooH\" name=\"foo\"/>";
@@ -632,11 +612,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_the_correct_html_is_generated()
 			{
-				RadioField radioField = new RadioField();
-				radioField.Id = "foo";
-				radioField.Name = "foo";
-				radioField.Class = "bar";
-				radioField.Value = "A Value";
+				var radioField = new RadioField {Id = "foo", Name = "foo", Class = "bar", Value = "A Value"};
 
 				string html = _helper.RadioField(radioField);
 				string expected = "<input type=\"radio\" id=\"foo\" name=\"foo\" class=\"bar\" value=\"A Value\"/>";
@@ -647,9 +623,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_value_is_not_null_then_the_autogenerated_id_should_end_with_value()
 			{
-				RadioField field = new RadioField();
-				field.Value = "bar";
-				field.Name = "foo";
+				var field = new RadioField {Value = "bar", Name = "foo"};
 
 				string html = _helper.RadioField(field);
 				string expected = "<input type=\"radio\" value=\"bar\" name=\"foo\" id=\"foo-bar\"/>";
@@ -660,9 +634,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_value_contains_a_space_then_the_autogenerated_id_should_remove_the_space()
 			{
-				RadioField field = new RadioField();
-				field.Value = "A value";
-				field.Name = "foo";
+				var field = new RadioField {Value = "A value", Name = "foo"};
 
 				string html = _helper.RadioField(field);
 				string expected = "<input type=\"radio\" value=\"A value\" name=\"foo\" id=\"foo-Avalue\"/>";
@@ -727,10 +699,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				CheckBoxList list = new CheckBoxList();
-				list.Name = "foo";
-				list.TextField = "Name";
-				list.ValueField = "Id";
+				var list = new CheckBoxList {Name = "foo", TextField = "Name", ValueField = "Id"};
 
 
 				CheckBoxList output = _helper.CheckBoxList(BuildPeople(), list);
@@ -771,10 +740,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_strongly_typed_options_then_correct_html_should_be_generated()
 			{
-				RadioList list = new RadioList();
-				list.Name = "foo";
-				list.TextField = "Name";
-				list.ValueField = "Id";
+				var list = new RadioList {Name = "foo", TextField = "Name", ValueField = "Id"};
 
 
 				RadioList output = _helper.RadioList(BuildPeople(), list);
@@ -814,7 +780,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				public void Form_tag_should_be_written_to_output_stream()
 				{
 					string expected = "<form method=\"post\" action=\"/home/index\"></form>";
-					_helper.For<object>(new object(), "/home/index", delegate { });
+					_helper.For(new object(), "/home/index", delegate { });
 					Assert.That(_output.ToString(), Is.EqualTo(expected));
 				}
 
@@ -822,7 +788,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				public void With_method_of_POST_in_the_attributes_the_correct_html_should_be_generated()
 				{
 					string expected = "<form method=\"post\" action=\"/home/index\"></form>";
-					_helper.For<object>(new object(), "/home/index", new Hash(method => "post"), delegate { });
+					_helper.For(new object(), "/home/index", new Hash(method => "post"), delegate { });
 					Assert.That(_output.ToString(), Is.EqualTo(expected));
 				}
 
@@ -830,28 +796,22 @@ namespace MvcContrib.UnitTests.UI.Html
 				public void With_method_of_GET_in_the_attributes_the_correct_html_should_be_generated()
 				{
 					string expected = "<form method=\"get\" action=\"/home/index\"></form>";
-					_helper.For<object>(new object(), "/home/index", new Hash(method => "get"), delegate { });
+					_helper.For(new object(), "/home/index", new Hash(method => "get"), delegate { });
 					Assert.That(_output.ToString(), Is.EqualTo(expected));
 				}
 
 				[Test]
 				public void With_string_key_and_item_is_in_viewdata_then_item_should_be_extracted_from_viewdata()
 				{
-					Person p = new Person("Jeremy", 1);
+					var p = new Person("Jeremy", 1);
 					((IDictionary)_viewContext.ViewData).Add("person", p);
-					_helper.For<Person>("person", "/home/index", Hash.Empty, f =>
-					{
-						Assert.That(f.Item.Name, Is.EqualTo("Jeremy"));
-					});
+					_helper.For<Person>("person", "/home/index", Hash.Empty, f => Assert.That(f.Item.Name, Is.EqualTo("Jeremy")));
 				}
 
 				[Test]
 				public void With_string_key_and_item_is_not_in_viewdata_then_form_item_should_be_null()
 				{
-					_helper.For<Person>("person", "/home/index", Hash.Empty, f =>
-					{
-						Assert.That(f.Item, Is.Null);
-					});
+					_helper.For<Person>("person", "/home/index", Hash.Empty, f => Assert.That(f.Item, Is.Null));
 				}
 			}
 		}
@@ -860,35 +820,25 @@ namespace MvcContrib.UnitTests.UI.Html
 		#region Person test object
 		public class Person
 		{
-			private string _name;
-			private int _id;
-			private TestEnum _testEnum;
-
 			public Person(string name, int id)
 			{
-				_name = name;
-				_id = id;
+				Name = name;
+				Id = id;
 			}
 
-			public string Name
-			{
-				get { return _name; }
-				set { _name = value; }
-			}
+			public string Name { get; set; }
 
-			public int Id
-			{
-				get { return _id; }
-				set { _id = value; }
-			}
+			public int Id { get; set; }
 
-			public TestEnum Test
-			{
-				get { return _testEnum;  }
-				set { _testEnum = value; }
-			}
+			public TestEnum Test { get; set; }
 		}
 		#endregion
+
+		public class TestObjectWithNullableValueProperty
+		{
+			public string Value { get; set; }
+			public string Text { get; set; }
+		}
 
 		public enum TestEnum
 		{

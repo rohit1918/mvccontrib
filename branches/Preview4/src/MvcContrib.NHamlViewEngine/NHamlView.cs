@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Security.Permissions;
 using System.Web;
 using System.Web.Mvc;
@@ -24,15 +25,16 @@ namespace MvcContrib.NHamlViewEngine
 			_compiledView = (ICompiledView)this;
 		}
 
-		public void RenderView(ViewContext context)
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
-			_viewContext = context;
+			_viewContext = viewContext;
+			_viewData = new ViewDataDictionary<TViewData>(viewContext.ViewData);
 
 			_ajax = new AjaxHelper(_viewContext);
 			_html = new HtmlHelper(_viewContext, this);
 			_url = new UrlHelper(_viewContext);
 
-			context.HttpContext.Response.Output.Write(_compiledView.Render());
+			writer.Write(_compiledView.Render());
 		}
 
 		public AjaxHelper Ajax
@@ -68,9 +70,5 @@ namespace MvcContrib.NHamlViewEngine
 			get { return _viewData.Model; }
 		}
 
-		public void SetViewData(ViewDataDictionary viewData)
-		{
-			_viewData = new ViewDataDictionary<TViewData>(viewData);
-		}
 	}
 }

@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
-using MvcContrib.Filters;
-using MvcContrib.Interfaces;
 
 namespace MvcContrib.MetaData
 {
+	/// <summary>
+	/// Responsible for populating ControllerMetaData classes. 
+	/// </summary>
 	public class ControllerDescriptor : IControllerDescriptor
 	{
+		/// <summary>
+		/// Gets metadata for a specified controller instance.
+		/// </summary>
+		/// <param name="controller">The controller to get metadata for.</param>
+		/// <returns>A ControllerMetaData object</returns>
 		public ControllerMetaData GetMetaData(IController controller)
 		{
 			if( controller == null )
@@ -20,6 +27,11 @@ namespace MvcContrib.MetaData
 			return GetMetaData(controller.GetType());
 		}
 
+		/// <summary>
+		/// Gets metadata for a specified controller type.
+		/// </summary>
+		/// <param name="controllerType">The controller type to get metadata for.</param>
+		/// <returns>A ControllerMetaData object.</returns>
 		public ControllerMetaData GetMetaData(Type controllerType)
 		{
 			if( controllerType == null )
@@ -27,28 +39,21 @@ namespace MvcContrib.MetaData
 				throw new ArgumentNullException("controllerType");
 			}
 
-			ControllerMetaData metaData = CreateControllerMetaData(controllerType);
+//			var metaData = CreateControllerMetaData(controllerType);
 
-			MethodInfo[] actionMethods = metaData.ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance);
-			foreach (MethodInfo actionMethod in actionMethods)
+			var controllerFilters = GetFilters(controllerType);
+			var actionMethods = GetActionMethods(controllerType);
+			var actions = actionMethods.Select(method => CreateActionMetaData(method, controllerFilters)).ToArray();
+			var defaultAction = FindDefaultAction(actions, controllerType);
+
+			return CreateControllerMetaData(controllerType, actions, defaultAction);
+
+
+			/*foreach (var actionMethod in actionMethods)
 			{
-				if (actionMethod.DeclaringType == typeof(object) 
-					|| actionMethod.DeclaringType == typeof(Controller)
-					|| ! IsValidAction(actionMethod) 
-					|| actionMethod.IsSpecialName)
-				{
-					continue;
-				}
-
 				ActionMetaData actionMetaData = CreateActionMetaData(metaData, actionMethod);
-
-				ParameterInfo[] actionMethodParameters = actionMethod.GetParameters();
-				foreach (ParameterInfo actionMethodParameter in actionMethodParameters)
-				{
-					ActionParameterMetaData parameterMetaData = CreateParameterMetaData(metaData, actionMetaData, actionMethodParameter);
-					parameterMetaData.ParameterBinder = GetParameterBinder(parameterMetaData);
-					actionMetaData.Parameters.Add(parameterMetaData);
-				}
+				
+				actionMetaData.Filters = CreateFilterInfo(controllerFilters, GetFilters(actionMethod), actionMetaData);
 
 				if (IsDefaultAction(actionMetaData))
 				{
@@ -66,126 +71,111 @@ namespace MvcContrib.MetaData
 				metaData.Actions.Add(actionMetaData);
 			}
 
-			return metaData;
+			return metaData;*/
+
+
 		}
 
-		protected virtual bool IsProperty(MethodInfo method)
+		protected virtual ActionMetaData FindDefaultAction(ActionMetaData[] actions, Type controllerType)
 		{
-			if(method.IsSpecialName)
+			var defaultActions = actions.Where(x => x.MethodInfo.IsDefined(typeof(DefaultActionAttribute), false)).ToArray();
+			
+			if(defaultActions.Length == 0)
 			{
-				return true;
-			}
-			return false;
-		}
-
-		protected virtual bool IsDefaultAction(ActionMetaData actionMetaData)
-		{
-			object[] attributes = actionMetaData.MethodInfo.GetCustomAttributes(typeof(DefaultActionAttribute), false);
-
-			if(attributes.Length > 0)
-			{
-				return true;
-			}
-			return false;
-		}
-
-		protected virtual bool IsValidAction(MethodInfo actionMethod)
-		{
-			object[] attributes = actionMethod.GetCustomAttributes(typeof(NonActionAttribute), false);
-
-			if(attributes.Length > 0)
-			{
-				return false;
+				return null;
 			}
 
-			return true;
-		}
-
-		protected virtual ControllerMetaData CreateControllerMetaData(Type controllerType)
-		{
-			return new ControllerMetaData(controllerType);
-		}
-
-		protected virtual ActionMetaData CreateActionMetaData(ControllerMetaData containingMetaData, MethodInfo actionMethod)
-		{
-			return new ActionMetaData(actionMethod);
-		}
-
-		protected virtual ActionParameterMetaData CreateParameterMetaData(ControllerMetaData controllerMetaData, ActionMetaData actionMetaData, ParameterInfo parameter)
-		{
-			return new ActionParameterMetaData(parameter);
-		}
-
-		protected virtual IParameterBinder GetParameterBinder(ActionParameterMetaData parameterMetaData)
-		{
-			object[] attributes = parameterMetaData.ParameterInfo.GetCustomAttributes(typeof(IParameterBinder), false);
-
-			if( attributes != null && attributes.Length > 0 )
+			if(defaultActions.Length > 1)
 			{
-				return attributes[0] as IParameterBinder;
-			}
-			else if(parameterMetaData.IsValid)
-			{
-				return new SimpleParameterBinder();
+				throw new InvalidOperationException(string.Format("Multiple DefaultAction attributes were found on controller '{0}'. A controller can only have 1 DefaultAction specified.", controllerType.Name));
 			}
 
-			return null;
-		}
-	}
-
-	public class CachedControllerDescriptor : IControllerDescriptor
-	{
-		private readonly IControllerDescriptor _inner;
-		private static readonly Dictionary<Type, ControllerMetaData> _cachedMetaData = new Dictionary<Type, ControllerMetaData>();
-		private static readonly object _syncRoot = new object();
-
-		public CachedControllerDescriptor()
-			: this(new ControllerDescriptor())
-		{
+			return defaultActions.First();
 		}
 
-		public CachedControllerDescriptor(IControllerDescriptor inner)
+		protected virtual MethodInfo[] GetActionMethods(Type controllerType)
 		{
-			if( inner == null )
-			{
-				throw new ArgumentNullException("inner");
-			}
-
-			_inner = inner;
-		}
-		
-		public ControllerMetaData GetMetaData(Type controllerType)
-		{
-			if( controllerType == null )
-			{
-				throw new ArgumentNullException("controllerType");
-			}
-
-			ControllerMetaData metaData;
-			if (!_cachedMetaData.TryGetValue(controllerType, out metaData))
-			{
-				lock (_syncRoot)
-				{
-					if (!_cachedMetaData.TryGetValue(controllerType, out metaData))
-					{
-						metaData = _inner.GetMetaData(controllerType);
-						_cachedMetaData.Add(controllerType, metaData);
-					}
-				}
-			}
-
-			return metaData;
+			return controllerType
+					.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance)
+					.Where(IsValidAction).ToArray();
 		}
 
-		public ControllerMetaData GetMetaData(IController controller)
+		/// <summary>
+		/// Checks to see whether a MethodInfo is considered a valid action method.
+		/// </summary>
+		/// <param name="method">The method to check</param>
+		/// <returns>True if the action is valid, otherwise false</returns>
+		public static bool IsValidAction(MethodInfo method)
 		{
-			if( controller == null )
-			{
-				throw new ArgumentNullException("controller");
-			}
+			bool isValid =
+				!method.IsSpecialName
+				&& !method.GetBaseDefinition().DeclaringType.IsAssignableFrom(typeof(Controller))
+				&& !Attribute.IsDefined(method, typeof(NonActionAttribute));
 
-			Type controllerType = controller.GetType();
-			return GetMetaData(controllerType);
+			return isValid;
+		}
+
+		/// <summary>
+		/// Checks whether a MethodInfo object is decorated by an ActionNameAttribute 
+		/// </summary>
+		/// <param name="method">The MethodInfo object to check</param>
+		/// <returns>True if the method has an ActionNameAttribute, otherwise false.</returns>
+		public static bool IsAliasedMethod(MethodInfo method)
+		{
+			return method.IsDefined(typeof(ActionNameAttribute), true);
+		}
+
+		protected virtual ControllerMetaData CreateControllerMetaData(Type controllerType, ActionMetaData[] actions, ActionMetaData defaultAction)
+		{
+			return new ControllerMetaData(controllerType, actions, defaultAction);
+		}
+
+		protected virtual ActionMetaData CreateActionMetaData(MethodInfo actionMethod, FilterAttribute[] controllerLevelFilters)
+		{
+			var actionNameAttributes = (ActionNameAttribute[])actionMethod.GetCustomAttributes(typeof(ActionNameAttribute), true);
+			var filters = CreateFilterInfo(controllerLevelFilters, GetFilters(actionMethod));
+			var selectors = GetActionSelectionAttributes(actionMethod);
+
+			if(actionNameAttributes.Length == 1)
+			{
+				return new AliasedActionMetaData(actionMethod, filters, selectors, actionNameAttributes.Single());
+			}
+            
+			return new ActionMetaData(actionMethod, selectors, filters);
+		}
+
+        protected virtual ActionMethodSelectorAttribute[] GetActionSelectionAttributes(ICustomAttributeProvider provider)
+		{
+            return (ActionMethodSelectorAttribute[])provider.GetCustomAttributes(typeof(ActionMethodSelectorAttribute), true);
+		}
+
+		protected virtual FilterAttribute[] GetFilters(ICustomAttributeProvider attributeProvider)
+		{
+			return (FilterAttribute[])attributeProvider.GetCustomAttributes(typeof(FilterAttribute), true);
+		}
+
+		protected virtual FilterInfo CreateFilterInfo(FilterAttribute[] controllerFilters, FilterAttribute[] actionFilters) 
+		{
+			var filters = controllerFilters.Concat(actionFilters).OrderBy(f => f.Order).ToList();
+
+			var filterInfo = new FilterInfo 
+			{
+				ActionFilters = filters.OfType<IActionFilter>().ToList(),
+				AuthorizationFilters = filters.OfType<IAuthorizationFilter>().ToList(),
+				ExceptionFilters = filters.OfType<IExceptionFilter>().ToList(),
+				ResultFilters = filters.OfType<IResultFilter>().ToList()
+			};
+
+			return filterInfo;
+		}
+
+		public static bool IsController(Type type) 
+		{
+			return
+				type.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
+				&& type != typeof(IController)
+				&& type != typeof(Controller)
+				&& typeof(IController).IsAssignableFrom(type);
 		}
 	}
 }

@@ -13,11 +13,13 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void Should_rewrite_routes()
 		{
-			var routes = new RouteCollection();
-			routes.Add(new Route("{controller}/{action}/{id}", null, new MvcRouteHandler()));
-			routes.Add(new Route("{controller}/{action}", null, new MvcRouteHandler()));
+			var routes = new RouteCollection
+			                 {
+			                     new Route("{controller}/{action}/{id}", null, new MvcRouteHandler()),
+			                     new Route("{controller}/{action}", null, new MvcRouteHandler())
+			                 };
 
-			RouteDebugger.RewriteRoutesForTesting(routes);
+		    RouteDebugger.RewriteRoutesForTesting(routes);
 
 			foreach (Route route in routes)
 			{
@@ -37,10 +39,9 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void Should_not_add_debug_route_if_already_added()
 		{
-			var routes = new RouteCollection();
-			routes.Add(DebugRoute.Singleton);
+			var routes = new RouteCollection {DebugRoute.Singleton};
 
-			RouteDebugger.RewriteRoutesForTesting(routes);
+		    RouteDebugger.RewriteRoutesForTesting(routes);
 			Assert.That(routes.Count, Is.EqualTo(1));
 		}
 
@@ -106,11 +107,14 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(context.Request.AppRelativeCurrentExecutionFilePath).Return("~/Home/");
 			SetupResult.For(context.Request.PathInfo).Return("Index");
 
-			var routes = new RouteCollection();
-			routes.Add(new Route("{controller}/{action}/{id}", null, new MvcRouteHandler()));
-			routes.Add(new Route("{controller}/{action}", null, new MvcRouteHandler()));
-			routes.Add(new Route("{controller}/{action}", new RouteValueDictionary(new Hash(Controller => "Home")), new MvcRouteHandler()));
-			RouteDebugger.RewriteRoutesForTesting(routes);
+			var routes = new RouteCollection
+			                 {
+			                     new Route("{controller}/{action}/{id}", null, new MvcRouteHandler()),
+			                     new Route("{controller}/{action}", null, new MvcRouteHandler()),
+			                     new Route("{controller}/{action}", new RouteValueDictionary(new Hash(Controller => "Home")),
+			                               new MvcRouteHandler())
+			                 };
+		    RouteDebugger.RewriteRoutesForTesting(routes);
 
 			mocks.ReplayAll();
 			var routeData = new RouteData(routes[0], new DebugRouteHandler());

@@ -43,8 +43,7 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 			new AssemblyConfigurationElement("Name").Name = "Name";
 			new NamespaceConfigurationElement("Name").Name = "Name";
 
-			var ncc = new NamespacesConfigurationCollection();
-			ncc.Add(new NamespaceConfigurationElement("Name"));
+			var ncc = new NamespacesConfigurationCollection {new NamespaceConfigurationElement("Name")};
 			var nce = ncc["Name"];
 			ncc.IndexOf(nce);
 			ncc.Remove(nce);

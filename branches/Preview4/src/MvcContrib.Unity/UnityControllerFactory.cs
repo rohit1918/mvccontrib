@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Practices.Unity;
-using MvcContrib.Unity;
-using DefaultControllerFactory=MvcContrib.ControllerFactories.DefaultControllerFactory;
 
 namespace MvcContrib.Unity
 {
     public class UnityControllerFactory : DefaultControllerFactory
     {
-        protected override IController CreateController(RequestContext context, string controllerName)
+        public override IController CreateController(RequestContext context, string controllerName)
         {
             Type type = GetControllerType(controllerName);
 
@@ -30,7 +27,7 @@ namespace MvcContrib.Unity
                 throw new ArgumentNullException("context");
             }
 
-            IUnityContainerAccessor unityContainerAccessor = context.HttpContext.ApplicationInstance as IUnityContainerAccessor;
+            var unityContainerAccessor = context.HttpContext.ApplicationInstance as IUnityContainerAccessor;
             if (unityContainerAccessor == null)
             {
                 throw new InvalidOperationException(

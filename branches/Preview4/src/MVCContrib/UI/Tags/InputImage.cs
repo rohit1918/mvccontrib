@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 
 namespace MvcContrib.UI.Tags
 {
@@ -13,14 +10,14 @@ namespace MvcContrib.UI.Tags
 		public InputImage(string src)
 			: this(Hash.Empty)
 		{
-			this.Src = src;
+			Src = src;
 		}
 
 
 		public InputImage(string src, IDictionary attributes)
 			: this(attributes)
 		{
-			this.Src = src;
+			Src = src;
 		}
 
 		public InputImage(IDictionary attributes) : base("image", attributes)

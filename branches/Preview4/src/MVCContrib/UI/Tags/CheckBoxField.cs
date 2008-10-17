@@ -18,7 +18,7 @@ namespace MvcContrib.UI.Tags
 		{
 			get {  
 				if (_checkSet!= null)
-					return (bool?)(NullGet(CHECKED) == CHECKED);
+					return NullGet(CHECKED) == CHECKED;
 				else 
 					return null;}
 			set

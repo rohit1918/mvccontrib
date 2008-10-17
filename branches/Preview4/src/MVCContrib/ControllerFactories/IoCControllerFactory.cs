@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.Interfaces;
@@ -9,7 +8,7 @@ namespace MvcContrib.ControllerFactories
 {
 	public class IoCControllerFactory : DefaultControllerFactory
 	{
-		private IDependencyResolver resolver = null;
+		private IDependencyResolver resolver;
 
 		public IoCControllerFactory(IDependencyResolver resolver)
 		{
@@ -22,7 +21,7 @@ namespace MvcContrib.ControllerFactories
 		{
 		}
 
-		protected override IController CreateController(RequestContext context, string controllerName)
+		public override IController CreateController(RequestContext context, string controllerName)
 		{
 			if(controllerName == null)
 			{
@@ -46,7 +45,7 @@ namespace MvcContrib.ControllerFactories
 				throw new Exception(string.Format("Could not find a type for the controller name '{0}'", controllerName));
 		}
 
-		protected override void DisposeController(IController controller)
+        public override void ReleaseController(IController controller)
 		{
 			var disposable = controller as IDisposable;
 

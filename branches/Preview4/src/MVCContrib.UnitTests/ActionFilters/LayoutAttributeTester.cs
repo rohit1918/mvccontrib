@@ -1,7 +1,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.Attributes;
+using MvcContrib.Filters;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -12,15 +12,13 @@ namespace MvcContrib.UnitTests.ActionFilters
 	public class LayoutAttributeTester
 	{
 		private MockRepository _mocks;
-		private Controller _controller;
 		private ControllerContext _controllerContext;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			_controller = _mocks.PartialMock<Controller>();
-			_controllerContext = new ControllerContext(_mocks.DynamicMock<HttpContextBase>(), new RouteData(), _controller);
+			_controllerContext = new ControllerContext(_mocks.DynamicMock<HttpContextBase>(), new RouteData(), _mocks.PartialMock<Controller>());
 		}
 
 		[Test]
@@ -35,14 +33,14 @@ namespace MvcContrib.UnitTests.ActionFilters
 		}
 
 		[Test]
-		public void Should_NOT_set_layout_to_view_results_that_explicitly_set_layout()
+		public void Should_override_layout_to_view_results_that_explicitly_set_layout()
 		{
 			var result = new ViewResult {MasterName = "explicit"};
 			var context = new ResultExecutingContext(_controllerContext, result);
 			var layoutAttribute = new LayoutAttribute("test");
 			layoutAttribute.OnResultExecuting(context);
 
-			Assert.That(result.MasterName, Is.EqualTo("explicit"));
+			Assert.That(result.MasterName, Is.EqualTo("test"));
 		}
 	}
 }

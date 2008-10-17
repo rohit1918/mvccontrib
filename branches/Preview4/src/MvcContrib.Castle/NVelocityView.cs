@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using NVelocity;
 
 namespace MvcContrib.Castle
 {
-	public class NVelocityView : IViewDataContainer
+	public class NVelocityView : IViewDataContainer, IView
 	{
-		private readonly ViewContext _viewContext;
+		private ViewContext _viewContext;
 		private readonly Template _masterTemplate;
 		private readonly Template _viewTemplate;
 
-		public NVelocityView(Template viewTemplate, Template masterTemplate, ViewContext viewContext)
+		public NVelocityView(Template viewTemplate, Template masterTemplate)
 		{
 			_viewTemplate = viewTemplate;
 			_masterTemplate = masterTemplate;
-			_viewContext = viewContext;
 		}
 
 		public Template ViewTemplate
@@ -36,48 +34,55 @@ namespace MvcContrib.Castle
 			set { throw new NotSupportedException(); }
 		}
 
-		public void RenderView()
+		public void Render(ViewContext viewContext, TextWriter writer)
 		{
+			_viewContext = viewContext;
+            VelocityContext context = CreateContext();
+
+
 			bool hasLayout = _masterTemplate != null;
-			TextWriter writer = hasLayout ? new StringWriter() : _viewContext.HttpContext.Response.Output;
+            if(hasLayout)
+            {
+                //Native NVelocity support for master/child template using #parse. No need to buffer the child template to a Stringwriter
+                //which bypasses the response output... and will therefore cause any void child helper extension method
+                //calls to fail to render in the correct location. #parse($childContent) must appear in the master template
+                //See google group discussion thread: 
+                //http://groups.google.com/group/mvccontrib-discuss/browse_thread/thread/0fc84d69db708322?hl=en 
 
-			VelocityContext context = CreateContext(_viewContext);
-
-			_viewTemplate.Merge(context, writer);
-
-			if(hasLayout)
-			{
-				context.Put("childContent", (writer as StringWriter).GetStringBuilder().ToString());
-
-				_masterTemplate.Merge(context, _viewContext.HttpContext.Response.Output);
-			}
+                context.Put("childContent", _viewTemplate.Name);
+                _masterTemplate.Merge(context, writer);
+            }
+            else
+            {
+                _viewTemplate.Merge(context, writer);
+            }            
 		}
 
-		private VelocityContext CreateContext(ViewContext context)
+		private VelocityContext CreateContext()
 		{
-			Hashtable entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			if (context.ViewData != null)
+			var entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
+			if (_viewContext.ViewData != null)
 			{
-				foreach(var pair in context.ViewData)
+				foreach(var pair in _viewContext.ViewData)
 				{
 					entries[pair.Key] = pair.Value;
 				}
 			}
 			entries["viewdata"] = _viewContext.ViewData;
 
-			entries["routedata"] = context.RouteData;
+			entries["routedata"] = _viewContext.RouteData;
 			entries["controller"] = _viewContext.Controller;
 			entries["httpcontext"] = _viewContext.HttpContext;
 
-			CreateAndAddHelpers(entries, context);
+			CreateAndAddHelpers(entries);
 
 			return new VelocityContext(entries);
 		}
 
-		private void CreateAndAddHelpers(Hashtable entries, ViewContext context)
+		private void CreateAndAddHelpers(Hashtable entries)
 		{
-			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(context, this);
-			entries["url"] = entries["urlhelper"] = new UrlHelper(context);
+			entries["html"] = entries["htmlhelper"] = new HtmlExtensionDuck(_viewContext, this);
+			entries["url"] = entries["urlhelper"] = new UrlHelper(_viewContext);
 		}
 	}
 }

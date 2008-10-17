@@ -12,11 +12,11 @@ namespace MvcContrib.UnitTests.BrailViewEngine
 		[Test]
 		public void ForCoverage()
 		{
-			Block block = new Block();
-			ReturnStatement statement = new ReturnStatement(new StringLiteralExpression("literal"));
+			var block = new Block();
+			var statement = new ReturnStatement(new StringLiteralExpression("literal"));
 			block.Statements.Add(statement);
 
-			ReturnValueVisitor visitor = new ReturnValueVisitor();
+			var visitor = new ReturnValueVisitor();
 			bool found = visitor.Found;
 			visitor.OnReturnStatement(statement);
 		}

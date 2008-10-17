@@ -11,7 +11,7 @@ namespace MvcContrib.Spring
 	/// </summary>
 	public class SpringControllerFactory : IControllerFactory
 	{
-		private static IObjectFactory _objectFactory = null;
+		private static IObjectFactory _objectFactory;
 
 		/// <summary>
 		/// Configures the controller factory to use the 
@@ -59,9 +59,14 @@ namespace MvcContrib.Spring
 	    	}
 	    }
 
+	    public void ReleaseController(IController controller)
+	    {
+	        throw new System.NotImplementedException();
+	    }
+
 	    public void DisposeController(IController controller)
 	    {
-	    	IDisposable disposable = controller as IDisposable;
+	    	var disposable = controller as IDisposable;
 
 			if(disposable != null)
 			{

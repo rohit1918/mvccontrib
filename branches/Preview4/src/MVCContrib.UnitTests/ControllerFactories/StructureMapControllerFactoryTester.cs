@@ -1,5 +1,6 @@
 using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.StructureMap;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -31,6 +32,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnTheController()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
+				factory.InitializeWithControllerTypes(typeof(StructureMapSimpleController), typeof(StructureMapDependencyController));
 				IController controller = factory.CreateController(null, "StructureMapSimple");
 
 				Assert.That(controller, Is.Not.Null);
@@ -41,12 +43,14 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			public void ShouldReturnControllerWithDependencies()
 			{
 				IControllerFactory factory = new StructureMapControllerFactory();
+				factory.InitializeWithControllerTypes(typeof(StructureMapSimpleController), typeof(StructureMapDependencyController));
+
 				IController controller = factory.CreateController(null, "StructureMapDependency");
 
 				Assert.That(controller, Is.Not.Null);
 				Assert.That(controller, Is.AssignableFrom(typeof(StructureMapDependencyController)));
 
-				StructureMapDependencyController dependencyController = (StructureMapDependencyController)controller;
+				var dependencyController = (StructureMapDependencyController)controller;
 				Assert.That(dependencyController._dependency, Is.Not.Null);
 				Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 			}
@@ -60,7 +64,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 					_dependency = dependency;
 				}
 
-				public void Execute(ControllerContext controllerContext)
+				public void Execute(RequestContext controllerContext)
 				{
 					throw new NotImplementedException();
 				}
@@ -77,7 +81,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 
 	    public class StructureMapSimpleController : IController
 	    {
-	        public void Execute(ControllerContext controllerContext)
+	        public void Execute(RequestContext controllerContext)
 	        {
 	            throw new NotImplementedException();
 	        }

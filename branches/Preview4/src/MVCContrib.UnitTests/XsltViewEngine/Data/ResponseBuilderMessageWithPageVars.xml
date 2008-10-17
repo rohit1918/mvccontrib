@@ -12,7 +12,7 @@
     </Request>
     <Response>
         <ServicePoints></ServicePoints>
-        <Page Name="MyPage" Uri="http://mysite.com/mycontroller/mypage">
+        <Page Uri="http://mysite.com/mycontroller/mypage">
             <PageVars>
                 <myPageVar>pageVar</myPageVar>
             </PageVars>

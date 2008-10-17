@@ -41,7 +41,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		                                                                               Type typeToBuild, object existing,
 		                                                                               string idToBuild)
 		{
-			foreach(PropertyInfo propInfo in typeToBuild.GetProperties())
+			foreach(var propInfo in typeToBuild.GetProperties())
 				yield return new PropertyReflectionMemberInfo(propInfo);
 		}
 
@@ -52,7 +52,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 		                                              IReflectionMemberInfo<PropertyInfo> member,
 		                                              IEnumerable<IParameter> parameters)
 		{
-			PropertySetterPolicy result =
+			var result =
 				context.Policies.Get<IPropertySetterPolicy>(typeToBuild, idToBuild) as PropertySetterPolicy;
 
 			if(result == null)
@@ -61,7 +61,7 @@ namespace Microsoft.Practices.CompositeWeb.ObjectBuilder.Strategies
 				context.Policies.Set<IPropertySetterPolicy>(result, typeToBuild, idToBuild);
 			}
 
-			foreach(IParameter parameter in parameters)
+			foreach(var parameter in parameters)
 				if(!result.Properties.ContainsKey(member.Name))
 					result.Properties.Add(member.Name, new PropertySetterInfo(member.MemberInfo, parameter));
 		}

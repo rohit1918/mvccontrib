@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web;
-using System.Web.Routing;
+﻿using System.Web.Routing;
 
 namespace MvcContrib.Routing
 {
@@ -18,9 +16,9 @@ namespace MvcContrib.Routing
 			using (routes.GetReadLock())
 			{
 				bool foundDebugRoute = false;
-				foreach (RouteBase routeBase in routes)
+				foreach (var routeBase in routes)
 				{
-					Route route = routeBase as Route;
+					var route = routeBase as Route;
 					if (route != null)
 					{
 						route.RouteHandler = new DebugRouteHandler();

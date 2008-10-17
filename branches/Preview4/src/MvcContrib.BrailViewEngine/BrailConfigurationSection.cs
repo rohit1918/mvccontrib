@@ -27,7 +27,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public object Create(object parent, object configContext, XmlNode section)
 		{
-			BooViewEngineOptions options = new BooViewEngineOptions();
+			var options = new BooViewEngineOptions();
 			if (section.Attributes["batch"] != null)
 				options.BatchCompile = bool.Parse(section.Attributes["batch"].Value);
 			if (section.Attributes["saveToDisk"] != null)

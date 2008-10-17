@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Collections;
-using System.Reflection;
 using System.Web.Mvc;
 
 namespace MvcContrib.UI.ASPXViewEngine
@@ -32,8 +29,8 @@ namespace MvcContrib.UI.ASPXViewEngine
 				}
 
 				// Construct a T object, taking values from suppliedProps where available
-				T result = Activator.CreateInstance<T>();
-				foreach (PropertyInfo allowedProp in typeof(T).GetProperties())
+				var result = Activator.CreateInstance<T>();
+				foreach (var allowedProp in typeof(T).GetProperties())
 					if (suppliedProps.Contains(allowedProp.Name))
 						allowedProp.SetValue(result, suppliedProps[allowedProp.Name], null);
 

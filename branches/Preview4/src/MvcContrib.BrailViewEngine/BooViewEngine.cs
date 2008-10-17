@@ -29,7 +29,7 @@ namespace MvcContrib.BrailViewEngine
 	using System.Web.Mvc;
 	using System.Runtime.CompilerServices;
 	using Boo.Lang.Runtime;
-	using MvcContrib.ViewFactories;
+	using ViewFactories;
 	using Boo.Lang.Compiler;
 	using Boo.Lang.Compiler.IO;
 	using Boo.Lang.Compiler.Pipelines;
@@ -141,7 +141,7 @@ namespace MvcContrib.BrailViewEngine
 			{
 				if( assembly.GetCustomAttributes(typeof(ExtensionAttribute), true).Length > 0 )
 				{
-					foreach( Type type in assembly.GetTypes() )
+					foreach( var type in assembly.GetTypes() )
 					{
 						foreach(string nmespace in options.NamespacesToImport)
 						{
@@ -162,18 +162,14 @@ namespace MvcContrib.BrailViewEngine
 		// Process a template name and output the results to the user
 		// This may throw if an error occured and the user is not local (which would 
 		// cause the yellow screen of death)
-		public virtual BrailBase Process(TextWriter output, string viewName, string masterName)
+		public virtual BrailBase Process(string viewName, string masterName)
 //		(String templateName, TextWriter output, IEngineContext context, IController controller, IControllerContext controllerContext)
 		{
 			Log("Starting to process request for {0}", viewName);
 			string file = viewName + ViewFileExtension;
-			BrailBase view;
-			// Output may be the layout's child output if a layout exists
-			// or the context.Response.Output if the layout is null
-			LayoutViewOutput layoutViewOutput = GetOutput(output, masterName);
 			// Will compile on first time, then save the assembly on the cache.
-			view = GetCompiledScriptInstance(file, layoutViewOutput.Output);
-			view.Layout = layoutViewOutput.Layout;
+			BrailBase view = GetCompiledScriptInstance(file);
+			view.Layout = GetOutput(masterName);
 
 			return view;
 
@@ -212,7 +208,7 @@ namespace MvcContrib.BrailViewEngine
 //			throw new NotImplementedException();
 //		}
 
-		public virtual BrailBase ProcessPartial(TextWriter output, string viewName)
+		public virtual BrailBase ProcessPartial(string viewName)
 //		(string partialName, TextWriter output, IEngineContext context, IController controller, IControllerContext controllerContext)
 		{
 			Log("Generating partial for {0}", viewName);
@@ -220,7 +216,7 @@ namespace MvcContrib.BrailViewEngine
 			try
 			{
 				string file = ResolveTemplateName(viewName, ViewFileExtension);
-				BrailBase view = GetCompiledScriptInstance(file, output);
+				BrailBase view = GetCompiledScriptInstance(file);
 				return view;
 			}
 			catch(Exception ex)
@@ -273,25 +269,25 @@ namespace MvcContrib.BrailViewEngine
 //				throw new MonoRailException("Error generating JS. Template: " + templateName, ex);
 //			}
 //		}
-
-		/// <summary>
-		/// Wraps the specified content in the layout using the
-		/// context to output the result.
-		/// </summary>
-		/// <param name="contents"></param>
-		/// <param name="context"></param>
-		/// <param name="controller"></param>
-		/// <param name="controllerContext"></param>
-		public virtual void RenderStaticWithinLayout(String contents, string masterName, ControllerContext controllerContext)
-		{
-			LayoutViewOutput layoutViewOutput = GetOutput(controllerContext.HttpContext.Response.Output, masterName);
-			layoutViewOutput.Output.Write(contents);
-			// here we don't need to pass parameters from the layout to the view, 
-			if (layoutViewOutput.Layout != null)
-			{
-				layoutViewOutput.Layout.Run();
-			}
-		}
+//
+//		/// <summary>
+//		/// Wraps the specified content in the layout using the
+//		/// context to output the result.
+//		/// </summary>
+//		/// <param name="contents"></param>
+//		/// <param name="context"></param>
+//		/// <param name="controller"></param>
+//		/// <param name="controllerContext"></param>
+//		public virtual void RenderStaticWithinLayout(String contents, string masterName, ControllerContext controllerContext)
+//		{
+//			LayoutViewOutput layoutViewOutput = GetOutput(masterName);
+//			layoutViewOutput.Output.Write(contents);
+//			// here we don't need to pass parameters from the layout to the view, 
+//			if (layoutViewOutput.Layout != null)
+//			{
+//				layoutViewOutput.Layout.Run();
+//			}
+//		}
 
 		private void OnViewChanged(object sender, FileSystemEventArgs e)
 		{
@@ -382,7 +378,7 @@ namespace MvcContrib.BrailViewEngine
 		// Check if a layout has been defined. If it was, then the layout would be created
 		// and will take over the output, otherwise, the context.Reposne.Output is used, 
 		// and layout is null
-		private LayoutViewOutput GetOutput(TextWriter output, string masterName)
+		private BrailBase GetOutput(string masterName)
 		{
 			BrailBase layout = null;
 			if (!string.IsNullOrEmpty(masterName))
@@ -393,10 +389,9 @@ namespace MvcContrib.BrailViewEngine
 					layoutTemplate = "layouts\\" + layoutTemplate;
 				}
 				string layoutFilename = layoutTemplate + ViewFileExtension;
-				layout = GetCompiledScriptInstance(layoutFilename, output);
-				output = layout.ChildOutput = new StringWriter();
+				layout = GetCompiledScriptInstance(layoutFilename);
 			}
-			return new LayoutViewOutput(output, layout);
+			return layout;
 		}
 
 		/// <summary>
@@ -408,7 +403,7 @@ namespace MvcContrib.BrailViewEngine
 		/// version is compiled.
 		/// Finally, an instance is created and returned	
 		/// </summary>
-		public BrailBase GetCompiledScriptInstance(string file, TextWriter output)
+		public BrailBase GetCompiledScriptInstance(string file)
 //		(string file, TextWriter output, IEngineContext context, IController controller, IControllerContext controllerContext)
 		{
 			bool batch = options.BatchCompile;
@@ -428,7 +423,7 @@ namespace MvcContrib.BrailViewEngine
 				if (type != null)
 				{
 					Log("Got compiled instance of {0} from cache", filename);
-					return CreateBrailBase(output, type);
+					return CreateBrailBase(type);
 				}
 				// if file is in compilations and the type is null,
 				// this means that we need to recompile. Since this usually means that 
@@ -445,15 +440,15 @@ namespace MvcContrib.BrailViewEngine
 				throw new Exception("Could not find a view with path " + filename);
 			}
 
-			return CreateBrailBase(output, type);
+			return CreateBrailBase(type);
 		}
 
-		private BrailBase CreateBrailBase(TextWriter output, Type type)
+		private BrailBase CreateBrailBase(Type type)
 //		(IEngineContext context, IController controller, IControllerContext controllerContext,TextWriter output, Type type)
 		{
 			ConstructorInfo constructor = (ConstructorInfo) constructors[type];
-			BrailBase self = (BrailBase) FormatterServices.GetUninitializedObject(type);
-			constructor.Invoke(self, new object[] { this , output } ); //, context, controller, controllerContext});
+			var self = (BrailBase) FormatterServices.GetUninitializedObject(type);
+			constructor.Invoke(self, new object[] { this } ); //, context, controller, controllerContext});
 			return self;
 		}
 
@@ -478,18 +473,15 @@ namespace MvcContrib.BrailViewEngine
 				return CompileScript(filename, false);
 			}
 			Type type;
-			foreach(ICompilerInput input in inputs2FileName.Keys)
+			foreach(var input in inputs2FileName.Keys)
 			{
 				string viewName = Path.GetFileNameWithoutExtension(input.Name);
 				string typeName = TransformToBrailStep.GetViewTypeName(viewName);
 				type = result.Context.GeneratedAssembly.GetType(typeName);
 				Log("Adding {0} to the cache", type.FullName);
 				compilations[inputs2FileName[input]] = type;
-				constructors[type] = type.GetConstructor(new Type[]
-																								 {
-																									 typeof(BooViewEngine),
-																								 	 typeof(TextWriter)
-																								 });
+				constructors[type] = type.GetConstructor(new[] { typeof(BooViewEngine) });
+//																								  	 typeof(TextWriter)																				 
 //				                                         		typeof(IEngineContext),
 //				                                         		typeof(IController),
 //				                                         		typeof(IControllerContext)
@@ -504,8 +496,8 @@ namespace MvcContrib.BrailViewEngine
 		{
 			string errors = result.Context.Errors.ToString(true);
 			Log("Failed to compile {0} because {1}", filename, errors);
-			StringBuilder code = new StringBuilder();
-			foreach(ICompilerInput input in inputs2FileName.Keys)
+			var code = new StringBuilder();
+			foreach(var input in inputs2FileName.Keys)
 			{
 				code.AppendLine()
 					.Append(result.Processor.GetInputCode(input))
@@ -522,7 +514,7 @@ namespace MvcContrib.BrailViewEngine
 		// Otherwise, it would return just the single file
 		private IDictionary<ICompilerInput, string> GetInput(string filename, bool batch)
 		{
-			Dictionary<ICompilerInput, string> input2FileName = new Dictionary<ICompilerInput, string>();
+			var input2FileName = new Dictionary<ICompilerInput, string>();
 			if (batch == false)
 			{
 				input2FileName.Add(CreateInput(filename), filename);
@@ -531,7 +523,7 @@ namespace MvcContrib.BrailViewEngine
 			// use the System.IO.Path to get the folder name even though
 			// we are using the ViewSourceLoader to load the actual file
 			string directory = Path.GetDirectoryName(filename);
-			foreach(string file in ViewSourceLoader.ListViews(directory))
+			foreach(var file in ViewSourceLoader.ListViews(directory))
 			{
 				ICompilerInput input = CreateInput(file);
 				input2FileName.Add(input, file);
@@ -551,7 +543,7 @@ namespace MvcContrib.BrailViewEngine
 			// when to dispose of the stream. 
 			// It is not expected that this will be a big problem, the string
 			// will go away after the compile is done with them.
-			using(StreamReader stream = new StreamReader(viewSrc.OpenViewStream()))
+			using(var stream = new StreamReader(viewSrc.OpenViewStream()))
 			{
 				return new StringInput(name, stream.ReadToEnd());
 			}
@@ -585,7 +577,7 @@ namespace MvcContrib.BrailViewEngine
 			if (common != null)
 				compiler.Parameters.References.Add(common);
 			// pre procsssor needs to run before the parser
-			BrailPreProcessor processor = new BrailPreProcessor(this);
+			var processor = new BrailPreProcessor(this);
 			compiler.Parameters.Pipeline.Insert(0, processor);
 			// inserting the add class step after the parser
 			compiler.Parameters.Pipeline.Insert(2, new TransformToBrailStep(options));
@@ -642,7 +634,7 @@ namespace MvcContrib.BrailViewEngine
 		// common setup for the compiler
 		private static BooCompiler SetupCompiler(IEnumerable<ICompilerInput> files)
 		{
-			BooCompiler compiler = new BooCompiler();
+			var compiler = new BooCompiler();
 			compiler.Parameters.Ducky = true;
 			compiler.Parameters.Debug = options.Debug;
 			if (options.SaveToDisk)
@@ -652,7 +644,7 @@ namespace MvcContrib.BrailViewEngine
 			// replace the normal parser with white space agnostic one.
 			compiler.Parameters.Pipeline.RemoveAt(0);
 			compiler.Parameters.Pipeline.Insert(0, new WSABooParsingStep());
-			foreach(ICompilerInput file in files)
+			foreach(var file in files)
 			{
 				compiler.Parameters.Input.Add(file);
 			}

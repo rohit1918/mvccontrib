@@ -1,4 +1,3 @@
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml;
@@ -6,7 +5,6 @@ using MvcContrib.ActionResults;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using System.IO;
 
 namespace MvcContrib.UnitTests.ActionResults
 {
@@ -20,7 +18,7 @@ namespace MvcContrib.UnitTests.ActionResults
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<IController>());
+			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), new RouteData(), _mocks.DynamicMock<ControllerBase>());
 			_mocks.ReplayAll();
 		}
 
@@ -35,7 +33,7 @@ namespace MvcContrib.UnitTests.ActionResults
 		[Test]
 		public void Should_set_content_type()
 		{
-			XmlResult result = new XmlResult(new int[] {2, 3, 4});
+			var result = new XmlResult(new[] {2, 3, 4});
 			result.ExecuteResult(_controllerContext);
 			Assert.AreEqual("text/xml", _controllerContext.HttpContext.Response.ContentType);
 		}
@@ -43,10 +41,10 @@ namespace MvcContrib.UnitTests.ActionResults
 		[Test]
 		public void Should_serialise_xml()
 		{
-			XmlResult result = new XmlResult(new Person {Id = 5, Name = "Jeremy"});
+			var result = new XmlResult(new Person {Id = 5, Name = "Jeremy"});
 			result.ExecuteResult(_controllerContext);
 
-			XmlDocument doc = new XmlDocument();
+			var doc = new XmlDocument();
 			doc.LoadXml(_controllerContext.HttpContext.Response.Output.ToString());
 			Assert.That(doc.SelectSingleNode("/Person/Name").InnerText, Is.EqualTo("Jeremy"));
 			Assert.That(doc.SelectSingleNode("/Person/Id").InnerText, Is.EqualTo("5"));

@@ -40,9 +40,7 @@ namespace MvcContrib.BrailViewEngine
 
 		private static IDictionary CreateSeparators()
 		{
-			Hashtable seperators = new Hashtable();
-			seperators.Add("<?brail", "?>");
-			seperators.Add("<%", "%>");
+			var seperators = new Hashtable {{"<?brail", "?>"}, {"<%", "%>"}};
 			return seperators;
 		}
 
@@ -53,7 +51,7 @@ namespace MvcContrib.BrailViewEngine
 
 		public override void Run()
 		{
-			ArrayList processed = new ArrayList();
+			var processed = new ArrayList();
 			foreach(ICompilerInput input in Parameters.Input)
 			{
 				//if input.Name.Contains("empty"):
@@ -64,7 +62,7 @@ namespace MvcContrib.BrailViewEngine
 					if (booViewEngine.ConditionalPreProcessingOnly(input.Name) == false ||
 					    ShouldPreProcess(code))
 						code = Booify(code);
-					StringInput newInput = new StringInput(input.Name, code);
+					var newInput = new StringInput(input.Name, code);
 					inputToCode.Add(input, code);
 					processed.Add(newInput);
 				}
@@ -92,13 +90,12 @@ namespace MvcContrib.BrailViewEngine
 			{
 				return "output string.Empty\r\n";
 			}
-			StringWriter buffer = new StringWriter();
+			var buffer = new StringWriter();
 			int index = 0;
 			int lastIndex = 0;
-			string start, end;
 			DictionaryEntry seperators = GetSeperators(code);
-			start = seperators.Key.ToString();
-			end = seperators.Value.ToString();
+			string start = seperators.Key.ToString();
+			string end = seperators.Value.ToString();
 
 			while(index != -1)
 			{
@@ -145,7 +142,7 @@ namespace MvcContrib.BrailViewEngine
 			}
 
 			int start = 0;
-			foreach(ExpressionPosition position in expressions)
+			foreach(var position in expressions)
 			{
 				string text = code.Substring(start, position.Start - start);
 				OutputText(buffer, text);
@@ -189,7 +186,7 @@ namespace MvcContrib.BrailViewEngine
 		/// </summary>
 		private static IList<ExpressionPosition> GetExpressionsPositions(string code)
 		{
-			List<ExpressionPosition> bracesPositions = new List<ExpressionPosition>();
+			var bracesPositions = new List<ExpressionPosition>();
 			bool prevCharWasDollar = false;
 			bool prevCharWasBang = false;
 			for(int index = 0; index < code.Length; index++)
@@ -214,7 +211,7 @@ namespace MvcContrib.BrailViewEngine
 				prevCharWasDollar = code[index] == '$' && !prevCharWasDollar;
 				prevCharWasBang = code[index] == '!' && !prevCharWasBang;
 			}
-			bracesPositions.RemoveAll(delegate(ExpressionPosition obj) { return !obj.PrevCharWasDollarOrBang; });
+			bracesPositions.RemoveAll(obj => !obj.PrevCharWasDollarOrBang);
 			return bracesPositions;
 		}
 
@@ -233,14 +230,15 @@ namespace MvcContrib.BrailViewEngine
 			string start = null, end = null;
 			foreach(DictionaryEntry entry in separators)
 			{
-				if (code.IndexOf(entry.Key as string, 0) != -1)
+				string key = (string)entry.Key;
+				if (code.IndexOf(key, 0) != -1)
 				{
-					if (start != null && code.IndexOf(entry.Key as string) != -1)
+					if (start != null && code.IndexOf(key) != -1)
 						continue; //handle a shorthanded seperator.
 					// handle long seperator
-					if (start != null && entry.Key.ToString().IndexOf(start as string) == -1)
+					if (start != null && entry.Key.ToString().IndexOf(start) == -1)
 					{
-						throw new Exception("Can't mix seperators in one file. Found both " + start + " and " + entry.Key);
+						throw new Exception(string.Format("Can't mix seperators in one file. Found both {0} and {1}", start, entry.Key));
 					}
 					start = entry.Key.ToString();
 					end = entry.Value.ToString();
@@ -274,12 +272,11 @@ namespace MvcContrib.BrailViewEngine
 			private readonly bool prevCharWasDollarOrBang;
 			private readonly bool shouldEscape;
 			private readonly int start;
-			private int end;
 
 			public ExpressionPosition(int start, int end, bool prevCharWasDollarOrBang, bool shouldEscape)
 			{
 				this.start = start;
-				this.end = end;
+				End = end;
 				this.prevCharWasDollarOrBang = prevCharWasDollarOrBang;
 				this.shouldEscape = shouldEscape;
 			}
@@ -289,11 +286,7 @@ namespace MvcContrib.BrailViewEngine
 				get { return start; }
 			}
 
-			public int End
-			{
-				get { return end; }
-				set { end = value; }
-			}
+			public int End { get; set; }
 
 			public bool PrevCharWasDollarOrBang
 			{

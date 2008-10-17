@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Mvc;
-
+using System.Web.Mvc.Html;
 namespace MvcContrib.Castle
 {
 	public class NVelocityHtmlHelper : HtmlHelper
@@ -24,14 +24,14 @@ namespace MvcContrib.Castle
         //    return this.SubmitButton(id, buttonText, (object)new DescriptableDictionary(htmlAttributes));
         //}
 
-		public string TextBox(string htmlName, IDictionary htmlAttributes)
+        public string TextBox(string htmlName, IDictionary htmlAttributes)
 		{
 			return TextBox(htmlName, string.Empty, htmlAttributes);
 		}
 
 		public string TextBox(string htmlName, string value, IDictionary htmlAttributes)
 		{
-			return this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
+			return  this.TextBox(htmlName, value, MakeGeneric(htmlAttributes));
 		}
 
         //public string Mailto(string emailAddress, string linkText, IDictionary htmlAttributes)
@@ -64,7 +64,7 @@ namespace MvcContrib.Castle
 		//TODO: Make MvcContrib.Hash do this.
 		private static IDictionary<string, object> MakeGeneric(IDictionary source)
 		{
-			Dictionary<string, object> toReturn = new Dictionary<string, object>();
+			var toReturn = new Dictionary<string, object>();
 			foreach(DictionaryEntry entry in source)
 			{
 				toReturn.Add(entry.Key.ToString(), entry.Value);

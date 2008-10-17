@@ -1,10 +1,10 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Web.Mvc;
+
 namespace MvcContrib.UI.Html.Grid
 {
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Web.Mvc;
 
 	/// <summary>
 	/// Extension methods on the HtmlHelper for creating Grid instances.
@@ -13,7 +13,7 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, Action<IRootGridColumnBuilder<T>> columns) where T : class
 		{
-			Grid<T>(helper, viewDataKey, null, columns, null);
+			Grid(helper, viewDataKey, null, columns, null);
 		}
 
 		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
@@ -41,7 +41,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, Action<IRootGridColumnBuilder<T>> columns) where T : class
 		{
-			Grid<T>(helper, dataSource, null, columns, null);
+			Grid(helper, dataSource, null, columns, null);
 		}
 
 		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class 

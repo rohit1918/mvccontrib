@@ -4,6 +4,7 @@ using MvcContrib.UI.Tags;
 
 namespace MvcContrib.UI.Html
 {
+	#pragma warning disable 618,612
 	public class SmartForm<T> : Form
 	{
 		private readonly T _item;
@@ -56,7 +57,7 @@ namespace MvcContrib.UI.Html
 
 		public override string ToString()
 		{
-			BlockRenderer renderer = new BlockRenderer(_helper.ViewContext.HttpContext);
+			var renderer = new BlockRenderer(_helper.ViewContext.HttpContext);
 			InnerText = renderer.Capture(() => _block(this) );
 			return base.ToString();
 		}
@@ -77,6 +78,7 @@ namespace MvcContrib.UI.Html
 
 			using(_helper.Binder.NestedBindingScope(Item))
 			{
+
 				return _helper.TextField(name);						
 			}
 		}
@@ -287,4 +289,5 @@ namespace MvcContrib.UI.Html
 			}
 		}
 	}
+	#pragma warning restore 618,612
 }

@@ -37,7 +37,7 @@ namespace MvcContrib.UnitTests.IoC
 		[Test]
 		public void ShouldReturnTheSimpleDependencyAndCastToAnInterface()
 		{
-			IDependency depedency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(SimpleDependency));
+			var depedency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(SimpleDependency));
 
 			Assert.That(depedency, Is.Not.Null);
 			Assert.That(depedency, Is.AssignableFrom(typeof(SimpleDependency)));
@@ -46,12 +46,12 @@ namespace MvcContrib.UnitTests.IoC
 		[Test]
 		public void ShouldReturnNestedDependencyAndCastToAnInterface()
 		{
-			IDependency dependency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(NestedDependency));
+			var dependency = _dependencyResolver.GetImplementationOf<IDependency>(typeof(NestedDependency));
 
 			Assert.That(dependency, Is.Not.Null);
 			Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
 
-			INestedDependency nestedDependency = (INestedDependency)dependency;
+			var nestedDependency = (INestedDependency)dependency;
 			Assert.That(nestedDependency.Dependency, Is.Not.Null);
 			Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
 		}
@@ -73,7 +73,7 @@ namespace MvcContrib.UnitTests.IoC
 			Assert.That(dependency, Is.Not.Null);
 			Assert.That(dependency, Is.AssignableFrom(typeof(NestedDependency)));
 
-			INestedDependency nestedDependency = (INestedDependency)dependency;
+			var nestedDependency = (INestedDependency)dependency;
 			Assert.That(nestedDependency.Dependency, Is.Not.Null);
 			Assert.That(nestedDependency.Dependency, Is.AssignableFrom(typeof(SimpleDependency)));
 		}
@@ -81,7 +81,7 @@ namespace MvcContrib.UnitTests.IoC
 		[Test]
 		public void Should_Return_Null_If_Not_Found_In_Container()
 		{
-			IAppDomainSetup dependency = _dependencyResolver.GetImplementationOf<IAppDomainSetup>();
+			var dependency = _dependencyResolver.GetImplementationOf<IAppDomainSetup>();
 			Assert.That(dependency, Is.Null);
 		}
 

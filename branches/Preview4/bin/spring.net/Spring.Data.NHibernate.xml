@@ -81,8 +81,9 @@
             Gets the configured <see cref="T:NHibernate.IInterceptor"/> instance to be used.
             </summary>
             <remarks>
-            If this property is requested for the first time, <see cref="M:Spring.Data.NHibernate.Support.SessionScopeSettings.ResolveEntityInterceptor"/> is called. 
-            This allows derived classes to override the behaviour of how to obtain the concrete <see cref="T:NHibernate.IInterceptor"/> instance.
+            If the entity interceptor is not set by the constructor, this property calls 
+            <see cref="M:Spring.Data.NHibernate.Support.SessionScopeSettings.ResolveEntityInterceptor"/> to obtain an instance. This allows derived classes to 
+            override the behaviour of how to obtain the concrete <see cref="T:NHibernate.IInterceptor"/> instance.
             </remarks>
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScopeSettings.SessionFactory">
@@ -173,7 +174,6 @@
             </para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateDaoSupport.cs,v 1.2 2007/08/28 15:26:37 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.Support.HibernateDaoSupport.#ctor">
             <summary>
@@ -294,7 +294,6 @@
             <author>Mark Pollack (.NET)</author>
             <author>Erich Eichinger</author>
             <author>Harald Radi</author>
-            <version>$Id: OpenSessionInViewModule.cs,v 1.6 2007/09/29 21:29:23 oakinger Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.Support.SessionScope">
             <summary>
@@ -356,6 +355,21 @@
             The name of the configuration section to read configuration settings from. 
             See <see cref="T:Spring.Data.NHibernate.Support.ConfigSectionSessionScopeSettings"/> for more info.
             </param>
+            <param name="open">
+            If set to <c>true</c> associate a session with the thread.  If false, another
+            collaborating class will associate the session with the thread, potentially by calling
+            the Open method on this class.
+            </param>
+        </member>
+        <member name="M:Spring.Data.NHibernate.Support.SessionScope.#ctor(System.String,System.Type,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.Support.SessionScope"/> class.
+            </summary>
+            <param name="sectionName">
+            The name of the configuration section to read configuration settings from. 
+            See <see cref="T:Spring.Data.NHibernate.Support.ConfigSectionSessionScopeSettings"/> for more info.
+            </param>
+            <param name="namespaceType">The type, who's full name is used for prefixing appSetting keys</param>
             <param name="open">
             If set to <c>true</c> associate a session with the thread.  If false, another
             collaborating class will associate the session with the thread, potentially by calling
@@ -438,16 +452,16 @@
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScope.SingleSession">
             <summary>
-             Set whether to use a single session for each request. Default is "true".
-             If set to false, each data access operation or transaction will use
-             its own session (like without Open Session in View). Each of those
-             sessions will be registered for deferred close, though, actually
-             processed at request completion.
-             </summary>
+            Set whether to use a single session for each request. Default is "true".
+            If set to false, each data access operation or transaction will use
+            its own session (like without Open Session in View). Each of those
+            sessions will be registered for deferred close, though, actually
+            processed at request completion.
+            </summary>
         </member>
         <member name="P:Spring.Data.NHibernate.Support.SessionScope.DefaultFlushMode">
             <summary>
-            Gets or Sets the flushmode to be applied on each newly created session.
+            Gets the flushmode to be applied on each newly created session.
             </summary>
             <remarks>
             This property defaults to <see cref="F:NHibernate.FlushMode.Never"/> to ensure that modifying objects outside the boundaries 
@@ -494,7 +508,6 @@
             Note: This is an SPI class, not intended to be used by applications.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SessionHolder.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.SessionHolder.#ctor">
             <summary>
@@ -686,7 +699,6 @@
             </p>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateAccessor.cs,v 1.5 2007/08/07 18:55:41 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.HibernateAccessor.log">
             <summary>
@@ -1018,7 +1030,6 @@
             mapped into the DAO exception heirarchy.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateAdoException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateAdoException.#ctor">
             <summary>
@@ -1083,7 +1094,6 @@
             ObjectDeletedException, and WrongClassException.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateObjectRetrievalFailureException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateObjectRetrievalFailureException.#ctor">
             <summary>
@@ -1135,9 +1145,8 @@
             <remarks>
             Converts Hibernate's StaleObjectStateException.
             </remarks>
+            <author>Juergen Hoeller</author>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateOptimisticLockingFailureException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
-            
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor">
             <summary>
@@ -1148,7 +1157,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException"/> class.
             </summary>
-            <param name="ex">The ex.</param>
+            <param name="ex">The StaleObjectStateException.</param>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateOptimisticLockingFailureException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
@@ -1170,7 +1179,6 @@
             thrown on invalid HQL query syntax.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateQueryException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateQueryException.#ctor">
             <summary>
@@ -1210,7 +1218,6 @@
             <code>Spring.Dao</code> exceptions.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateSystemException.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.HibernateSystemException.#ctor">
             <summary>
@@ -1271,7 +1278,6 @@
              </p>
              </remarks>
              <author>Mark Pollack (.NET)</author>
-             <version>$Id: HibernateTemplate.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.IHibernateOperations">
             <summary>
@@ -1287,7 +1293,6 @@
             </remarks>
             <threadsafety statis="true" instance="true"/> 
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IHibernateOperations.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="T:Spring.Data.NHibernate.ICommonHibernateOperations">
             <summary>
@@ -1305,7 +1310,6 @@
             </remarks> 
             <author>Mark Pollack (.NET)</author>  
             <threadsafety statis="true" instance="true"/> 
-            <version>$Id: ICommonHibernateOperations.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.ICommonHibernateOperations.Clear">
             <summary>
@@ -2682,7 +2686,6 @@
             some operations on persistent objects.
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: IHibernateCallback.cs,v 1.2 2007/09/19 22:58:22 markpollack Exp $</version>
         </member>
         <member name="M:Spring.Data.NHibernate.IHibernateCallback.DoInHibernate(NHibernate.ISession)">
             <summary>
@@ -3002,7 +3005,6 @@
             operations within a single transaction.</para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: HibernateTransactionManager.cs,v 1.7 2007/11/20 14:39:48 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.HibernateTransactionManager.objectFactory">
             <summary>
@@ -3288,6 +3290,13 @@
             </summary>
             <value>The session factory.</value>
         </member>
+        <member name="P:Spring.Data.NHibernate.HibernateTransactionManager.ResourceFactory">
+            <summary>
+            Gets the resource factory that this transaction manager operates on,
+            For the HibenratePlatformTransactionManager this the SessionFactory
+            </summary>
+            <value>The SessionFactory.</value>
+        </member>
         <member name="P:Spring.Data.NHibernate.HibernateTransactionManager.AutodetectDbProvider">
             <summary>
             Set whether to autodetect a ADO.NET connection used by the Hibernate SessionFactory,
@@ -3322,7 +3331,7 @@
         </member>
         <member name="T:Spring.Data.NHibernate.LocalSessionFactoryObject">
             <summary>
-             An IFactoryObject that creates a local Hibernate SessionFactory instance.
+            An IFactoryObject that creates a local Hibernate SessionFactory instance.
             Behaves like a SessionFactory instance when used as bean reference,
             e.g. for HibernateTemplate's "SessionFactory" property.
             </summary>
@@ -3336,7 +3345,6 @@
             </para>
             </remarks>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: LocalSessionFactoryObject.cs,v 1.3 2007/08/08 17:47:37 bbaia Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.LocalSessionFactoryObject.hibernateProperties">
             <summary>
@@ -3411,6 +3419,11 @@
             </summary>
             <value>The mapping assemblies.</value>
         </member>
+        <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.ConfigFilenames">
+            <summary>
+            Sets the hibernate configuration files to load, i.e. hibernate.cfg.xml.
+            </summary>
+        </member>
         <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.MappingResources">
             <summary>
             Sets the locations of Spring IResources that contain mapping
@@ -3442,7 +3455,7 @@
         </member>
         <member name="P:Spring.Data.NHibernate.LocalSessionFactoryObject.DbProvider">
             <summary>
-            Set the DataSource to be used by the SessionFactory.
+            Get or set the DataSource to be used by the SessionFactory.
             </summary>
             <value>The db provider.</value>
             <remarks>
@@ -3472,7 +3485,6 @@
              Also provides support for exception translation.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SessionFactoryUtils.cs,v 1.4 2007/11/20 04:03:43 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.SessionFactoryUtils.log">
             <summary>
@@ -3699,7 +3711,6 @@
             NHibnerations actions taken during the transaction lifecycle.
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: SpringSessionSynchronization.cs,v 1.2 2007/08/29 03:42:06 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.SpringSessionSynchronization.log">
             <summary>
@@ -3813,7 +3824,6 @@
             Enumeration for the various Hibernate flush modes. 
             </summary>
             <author>Mark Pollack (.NET)</author>
-            <version>$Id: TemplateFlushMode.cs,v 1.1 2007/05/31 20:25:13 markpollack Exp $</version>
         </member>
         <member name="F:Spring.Data.NHibernate.TemplateFlushMode.Never">
             <summary>Never flush is a good strategy for read-only units of work.

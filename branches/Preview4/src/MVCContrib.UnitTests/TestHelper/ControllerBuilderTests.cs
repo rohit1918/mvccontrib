@@ -1,4 +1,5 @@
-﻿using System.Web.Routing;
+﻿using System.Security.Principal;
+using System.Web.Routing;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
 using MvcContrib.TestHelper;
@@ -15,10 +16,17 @@ namespace MvcContrib.UnitTests.TestHelper
 	[TestFixture]
 	public class ControllerBuilderTests
 	{
+		private TestControllerBuilder builder;
+
+		[SetUp]
+		public void Setup()
+		{
+			builder = new TestControllerBuilder();
+		}
+
 		[Test]
 		public void CanSpecifyFormVariables()
 		{
-			var builder = new TestControllerBuilder();
 			builder.Form["Variable"] = "Value";
 			var controller = new TestHelperController();
 			builder.InitializeController(controller);
@@ -28,7 +36,6 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test]
 		public void CanSpecifyRouteData()
 		{
-			var builder = new TestControllerBuilder();
 			var rd = new RouteData();
 			rd.Values["Variable"] = "Value";
 			builder.RouteData = rd;
@@ -41,26 +48,59 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test]
 		public void CanSpecifyQueryString()
 		{
-			var handler = new TestControllerBuilder();
-			handler.QueryString["Variable"] = "Value";
+			builder.QueryString["Variable"] = "Value";
 			var testController = new TestHelperController();
-			handler.InitializeController(testController);
+			builder.InitializeController(testController);
 			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
+		}
+
+		[Test]
+		public void CanSpecifyAppRelativeCurrentExecutionFilePath()
+		{
+			builder.AppRelativeCurrentExecutionFilePath = "someUrl";
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			Assert.AreEqual("someUrl", testController.Request.AppRelativeCurrentExecutionFilePath);
+		}
+
+		[Test]
+		public void CanSpecifyApplicationPath()
+		{
+			builder.ApplicationPath = "someUrl";
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			Assert.AreEqual("someUrl", testController.Request.ApplicationPath);
+		}
+
+		[Test]
+		public void CanSpecifyPathInfol()
+		{
+			builder.PathInfo = "someUrl";
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			Assert.AreEqual("someUrl", testController.Request.PathInfo);
+		}
+
+		[Test]
+		public void CanSpecifyRawUrl()
+		{
+			builder.RawUrl = "someUrl";
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			Assert.AreEqual("someUrl", testController.Request.RawUrl);
 		}
 
 		[Test]
 		public void CanCreateControllerWithNoArgs()
 		{
-			var handler = new TestControllerBuilder();
-			handler.QueryString["Variable"] = "Value";
-			var testController = handler.CreateController<TestHelperController>();
+			builder.QueryString["Variable"] = "Value";
+			var testController = builder.CreateController<TestHelperController>();
 			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 		}
 
 		[Test]
 		public void When_params_is_invoked_it_should_return_a_combination_of_form_and_querystring()
 		{
-			var builder = new TestControllerBuilder();
 			builder.QueryString["foo"] = "bar";
 			builder.Form["baz"] = "blah";
 			var testController = new TestHelperController();
@@ -72,9 +112,8 @@ namespace MvcContrib.UnitTests.TestHelper
 		[Test]
 		public void CanCreateControllerWithArgs()
 		{
-			var handler = new TestControllerBuilder();
-			handler.QueryString["Variable"] = "Value";
-			var testController = handler.CreateController<TestHelperWithArgsController>(new TestService());
+			builder.QueryString["Variable"] = "Value";
+			var testController = builder.CreateController<TestHelperWithArgsController>(new TestService());
 			Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 			Assert.AreEqual("Moo", testController.ReturnMooFromService());
 		}
@@ -92,12 +131,23 @@ namespace MvcContrib.UnitTests.TestHelper
 			}
 			using(mocks.Playback())
 			{
-				var handler = new TestControllerBuilder();
-				handler.QueryString["Variable"] = "Value";
-				var testController = handler.CreateIoCController<TestHelperWithArgsController>();
+				builder.QueryString["Variable"] = "Value";
+				var testController = builder.CreateIoCController<TestHelperWithArgsController>();
 				Assert.AreEqual("Value", testController.Request.QueryString["Variable"]);
 				Assert.AreEqual("Moo", testController.ReturnMooFromService());
 			}
+		}
+
+		[Test]
+		public void UserShouldBeMocked()
+		{
+			var mocks = new MockRepository();
+			var user = mocks.DynamicMock<IPrincipal>();
+
+			var controller = builder.CreateController<TestHelperController>();
+			controller.ControllerContext.HttpContext.User = user;
+
+			Assert.AreSame(user, controller.User);
 		}
 	}
 }

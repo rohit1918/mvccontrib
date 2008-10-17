@@ -20,7 +20,7 @@ namespace MvcContrib.Castle
 
 		public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			PropertyDescriptor[] properties = new PropertyDescriptor[Count];
+			var properties = new PropertyDescriptor[Count];
 
 			int i = 0;
 			foreach(DictionaryEntry entry in this)

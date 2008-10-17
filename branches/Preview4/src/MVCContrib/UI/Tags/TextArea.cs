@@ -24,14 +24,14 @@ namespace MvcContrib.UI.Tags
 		{
 			get
 			{
-				return this.InnerText;
+				return InnerText;
 			}
 			set
 			{
 				if (value != null)
-					this.InnerText = value.ToString();
+					InnerText = value.ToString();
 				else
-					this.InnerText = null;
+					InnerText = null;
 			}
 		}
 

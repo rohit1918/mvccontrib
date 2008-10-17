@@ -43,7 +43,7 @@ namespace MvcContrib.ActionResults
 		{
 			if (_objectToSerialize != null)
 			{
-				XmlSerializer xs = new XmlSerializer(_objectToSerialize.GetType());
+				var xs = new XmlSerializer(_objectToSerialize.GetType());
 				context.HttpContext.Response.ContentType = "text/xml";
 				xs.Serialize(context.HttpContext.Response.Output, _objectToSerialize);
 			}

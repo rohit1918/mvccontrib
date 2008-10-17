@@ -7,48 +7,56 @@ using MvcContrib.Castle;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-
+using MvcContrib.UnitTests.ControllerFactories;
 namespace MvcContrib.UnitTests.Castle
 {
 	[TestFixture]
 	public class WindsorControllerFactoryTester
 	{
-		private MockRepository _mocks;
 		private IWindsorContainer _container;
-
+		private IControllerFactory _factory;
+		private RequestContext _context;
 		[SetUp]
 		public void Setup()
 		{
-			_mocks = new MockRepository();
-
 			_container = new WindsorContainer();
+			_factory = new WindsorControllerFactory(_container);
+
 			_container.AddComponent("simplecontroller", typeof(WindsorSimpleController));
 			_container.AddComponent("StubDependency", typeof(IDependency), typeof(StubDependency));
 			_container.AddComponent("dependencycontroller", typeof(WindsorDependencyController));
+
+			_factory.InitializeWithControllerTypes(typeof(WindsorSimpleController), typeof(WindsorDependencyController));
+
+			var mocks = new MockRepository();
+			_context = new RequestContext(mocks.DynamicHttpContextBase(), new RouteData());
+			mocks.ReplayAll();
 		}
 
 		[Test]
 		public void ShouldReturnTheController()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
-
-			IController controller = factory.CreateController(null, "Simple");
+			IController controller = _factory.CreateController(_context, "WindsorSimple");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorSimpleController)));
 		}
 
+		[Test, ExpectedException(typeof(HttpException), ExpectedMessage = "The controller for path '' could not be found or it does not implement IController.")]
+		public void Should_throw_http_exception_if_controller_type_does_not_exist()
+		{
+			_factory.CreateController(_context, "DoesNotExist");
+		}
+
 		[Test]
 		public void ShouldReturnControllerWithDependencies()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
-
-			IController controller = factory.CreateController(null, "Dependency");
+			IController controller = _factory.CreateController(_context, "WindsorDependency");
 
 			Assert.That(controller, Is.Not.Null);
 			Assert.That(controller, Is.AssignableFrom(typeof(WindsorDependencyController)));
 
-			WindsorDependencyController dependencyController = (WindsorDependencyController)controller;
+			var dependencyController = (WindsorDependencyController)controller;
 			Assert.That(dependencyController._dependency, Is.Not.Null);
 			Assert.That(dependencyController._dependency, Is.AssignableFrom(typeof(StubDependency)));
 		}
@@ -63,37 +71,38 @@ namespace MvcContrib.UnitTests.Castle
 		[Test]
 		public void ShouldDisposeOfController()
 		{
-			IControllerFactory factory = new WindsorControllerFactory(_container);
-			WindsorDisposableController controller = new WindsorDisposableController();
-			factory.DisposeController(controller);
+			var controller = new WindsorDisposableController();
+			_factory.ReleaseController(controller);
 			Assert.That(controller.IsDisposed);
 		}
 
 		[Test]
 		public void ShouldReleaseController()
 		{
-			var mockContainer = _mocks.DynamicMock<IWindsorContainer>();
+			var mockContainer = MockRepository.GenerateStub<IWindsorContainer>();
 			var controller = new WindsorSimpleController();
-			using(_mocks.Record())
-			{
-				Expect.Call(() => mockContainer.Release(controller));
-			}
-			using(_mocks.Playback())
-			{
-				var factory = new WindsorControllerFactory(mockContainer);
-				factory.DisposeController(controller);
-			}
+			var factory = new WindsorControllerFactory(mockContainer);
+
+			factory.ReleaseController(controller);
+
+			mockContainer.AssertWasCalled(c => c.Release(controller));
 		}
 
 		public class WindsorDisposableController : IDisposable, IController
 		{
-			public bool IsDisposed = false;
+			public bool IsDisposed;
+
+			public WindsorDisposableController()
+			{
+				IsDisposed = false;
+			}
+
 			public void Dispose()
 			{
 				IsDisposed = true;
 			}
 
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 			}
 		}
@@ -115,7 +124,7 @@ namespace MvcContrib.UnitTests.Castle
 
 		public class WindsorSimpleController : IController
 		{
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 				throw new NotImplementedException();
 			}
@@ -130,7 +139,7 @@ namespace MvcContrib.UnitTests.Castle
 				_dependency = dependency;
 			}
 
-			public void Execute(ControllerContext controllerContext)
+			public void Execute(RequestContext controllerContext)
 			{
 				throw new NotImplementedException();
 			}

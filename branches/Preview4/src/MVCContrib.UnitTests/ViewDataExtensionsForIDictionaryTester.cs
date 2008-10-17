@@ -70,11 +70,9 @@ namespace MvcContrib.UnitTests
         [Test]
         public void ShouldManageMoreThanOneObjectPerType()
         {
-            var bag = new Dictionary<string, object>();
-            bag.Add("key1", new Url("/1"));
-            bag.Add("key2", new Url("/2"));
+            var bag = new Dictionary<string, object> {{"key1", new Url("/1")}, {"key2", new Url("/2")}};
 
-            Assert.That(bag.Get<Url>("key1").Value, Is.EqualTo("/1"));
+        	Assert.That(bag.Get<Url>("key1").Value, Is.EqualTo("/1"));
             Assert.That(bag.Get<Url>("key2").Value, Is.EqualTo("/2"));
         }
 
@@ -164,10 +162,8 @@ namespace MvcContrib.UnitTests
         [Test]
         public void ShouldInitializeWithKeys()
         {
-            var bag = new Dictionary<string, object>();
-            bag.Add("key1", 2);
-            bag.Add("key2", 3);
-            Assert.That(bag.ContainsKey("key1"));
+            var bag = new Dictionary<string, object> {{"key1", 2}, {"key2", 3}};
+        	Assert.That(bag.ContainsKey("key1"));
             Assert.That(bag.ContainsKey("key2"));
         }
     }

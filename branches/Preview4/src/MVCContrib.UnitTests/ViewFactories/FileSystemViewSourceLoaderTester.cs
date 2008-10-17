@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Web.UI.WebControls;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
 
@@ -11,7 +10,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void HasView_ReturnsFalse_For_Non_Existing_Views()
 		{
-			FileSystemViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader("C:\\");
+			var viewSourceLoader = new FileSystemViewSourceLoader("C:\\");
 
 			Assert.IsFalse(viewSourceLoader.HasView("D:\\MyLovelyView"));
 		}
@@ -19,7 +18,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void GetViewSource_ReturnsNull_For_Non_Existing_Views()
 		{
-			FileSystemViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader();
+			var viewSourceLoader = new FileSystemViewSourceLoader();
 
 			if (viewSourceLoader.ViewRootDirectory == null)
 			{
@@ -32,7 +31,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void ListViews_Returns_Empty_Array_For_Invalid_Directory()
 		{
-			FileSystemViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader();
+			var viewSourceLoader = new FileSystemViewSourceLoader();
 
 			if (viewSourceLoader.ViewRootDirectory == null)
 			{
@@ -48,7 +47,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void Can_Add_And_Remove_Listeners()
 		{
-			FileSystemViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader("C:\\");
+			var viewSourceLoader = new FileSystemViewSourceLoader("C:\\");
 
 			FileSystemEventHandler handler = delegate { };
 

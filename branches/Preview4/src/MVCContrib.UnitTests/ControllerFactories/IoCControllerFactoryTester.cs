@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcContrib.ControllerFactories;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
-using MvcContrib.UnitTests.ControllerFactories;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
@@ -17,34 +18,32 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 		{
 			private IDependencyResolver _dependencyResolver;
 
+			protected override void BeforeEachSpec()
+			{
+				_dependencyResolver = _mocks.StrictMock<IDependencyResolver>();
+
+				_dependencyResolver.Expect(r => r.GetImplementationOf(typeof(IocTestController)))
+					.Return(new IocTestController());
+
+				_dependencyResolver.Replay();
+
+				DependencyResolver.InitializeWith(_dependencyResolver);
+			}
+
 			[Test]
 			public void Should_call_into_the_static_resolver_to_create_a_controller()
 			{
-				using (Record())
-				{
-					Expect.Call(_dependencyResolver.GetImplementationOf(typeof(IocTestController))).Return(
-						new IocTestController() as IController);
-				}
+				IControllerFactory controllerFactory = new IoCControllerFactory();
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
 
-				IController controller;
+				IController controller = controllerFactory.CreateController(null, "IocTest");
 
-				using (Playback())
-				{
-					IControllerFactory controllerFactory = new IoCControllerFactory();
-					controller = controllerFactory.CreateController(null, "IocTest");
-				}
-
-				Assert.That(controller.GetType().Equals(typeof(IocTestController)));
-			}
-
-			protected override void BeforeEachSpec()
-			{
-				_dependencyResolver = _mocks.CreateMock<IDependencyResolver>();
-				DependencyResolver.InitializeWith(_dependencyResolver);
+				Assert.That(controller, Is.TypeOf(typeof(IocTestController)));
 			}
 
 			protected override void AfterEachSpec()
 			{
+				_dependencyResolver.VerifyAllExpectations();
 				_dependencyResolver = null;
 				DependencyResolver.InitializeWith(null);
 			}
@@ -55,28 +54,31 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 		{
 			private IDependencyResolver _dependencyResolver;
 
-			[Test]
-			public void Should_call_into_the_resolver_to_create_a_controller()
+			protected override void BeforeEachSpec()
 			{
-				using (Record())
-				{
-					Expect.Call(_dependencyResolver.GetImplementationOf<IController>(typeof(IocTestController))).Return(
-						new IocTestController() as IController);
-				}
-
-				IController controller;
-
-				using (Playback())
-				{
-					IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
-					controller = controllerFactory.CreateController(null, "IocTest");
-				}
-
-				Assert.That(controller.GetType().Equals(typeof(IocTestController)));
+				_dependencyResolver = _mocks.StrictMock<IDependencyResolver>();
+				DependencyResolver.InitializeWith(_dependencyResolver);
 			}
 
 			[Test]
-			[ExpectedException(typeof(System.ArgumentNullException))]
+			public void Should_call_into_the_resolver_to_create_a_controller()
+			{
+				_dependencyResolver.Expect(r => r.GetImplementationOf<IController>(typeof(IocTestController)))
+					.Return(new IocTestController());
+
+				_dependencyResolver.Replay();
+
+				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
+
+				IController controller = controllerFactory.CreateController(null, "IocTest");
+
+				Assert.That(controller, Is.TypeOf(typeof(IocTestController)));
+				_dependencyResolver.VerifyAllExpectations();
+			}
+
+			[Test]
+			[ExpectedException(typeof(ArgumentNullException))]
 			public void Should_throw_an_argument_null_exception_when_the_resolver_is_null()
 			{
 				IControllerFactory controllerFactory = new IoCControllerFactory(null);
@@ -90,17 +92,15 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			}
 
 
-			[Test, ExpectedException(typeof(Exception), ExpectedMessage = "Could not find a type for the controller name 'DoesNotExist'")]
+			[Test,
+			 ExpectedException(typeof(Exception),
+			 	ExpectedMessage = "Could not find a type for the controller name 'DoesNotExist'")]
 			public void Should_throw_if_controller_type_cannot_be_resolved()
 			{
 				IControllerFactory controllerFactory = new IoCControllerFactory(_dependencyResolver);
-				controllerFactory.CreateController(null, "DoesNotExist");
-			}
+				controllerFactory.InitializeWithControllerTypes(typeof(IocTestController));
 
-			protected override void BeforeEachSpec()
-			{
-				_dependencyResolver = _mocks.CreateMock<IDependencyResolver>();
-				DependencyResolver.InitializeWith(_dependencyResolver);
+				controllerFactory.CreateController(null, "DoesNotExist");
 			}
 
 			protected override void AfterEachSpec()
@@ -115,19 +115,20 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 		{
 			private IDependencyResolver _dependencyResolver;
 
+			protected override void BeforeEachSpec()
+			{
+				_dependencyResolver = MockRepository.GenerateMock<IDependencyResolver>();
+			}
+
 			[Test]
 			public void Then_ReleaseImplementation_should_be_called_on_the_specified_resolver()
 			{
 				var controller = new IocTestController();
-				using(Record())
-				{
-					Expect.Call(() => _dependencyResolver.DisposeImplementation(controller));
-				}
-				using(Playback())
-				{
-					IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
-					factory.DisposeController(controller);
-				}
+
+				_dependencyResolver.Expect(r => r.DisposeImplementation(controller));
+
+				IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
+				factory.ReleaseController(controller);
 			}
 
 			[Test]
@@ -135,15 +136,11 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			{
 				DependencyResolver.InitializeWith(_dependencyResolver);
 				var controller = new IocTestController();
-				using (Record())
-				{
-					Expect.Call(() => _dependencyResolver.DisposeImplementation(controller));
-				}
-				using (Playback())
-				{
-					IControllerFactory factory = new IoCControllerFactory();
-					factory.DisposeController(controller);
-				}
+
+				_dependencyResolver.Expect(r => r.DisposeImplementation(controller));
+
+				IControllerFactory factory = new IoCControllerFactory();
+				factory.ReleaseController(controller);
 			}
 
 			[Test]
@@ -151,48 +148,32 @@ namespace MvcContrib.UnitTests.ControllerFactories.IoCControllerFactoryTester
 			{
 				var controller = new DisposableIocTestController();
 
-				using(Record())
-				{
-				}
-
-				using (Playback())
-				{
-					IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
-					factory.DisposeController(controller);
-				}
+				IControllerFactory factory = new IoCControllerFactory(_dependencyResolver);
+				factory.ReleaseController(controller);
 
 				Assert.IsTrue(controller.IsDisposed);
 			}
 
 			protected override void AfterEachSpec()
 			{
-				
-			}
-
-			protected override void BeforeEachSpec()
-			{
-				_dependencyResolver = base._mocks.DynamicMock<IDependencyResolver>();	
+				_dependencyResolver.VerifyAllExpectations();
 			}
 		}
 	}
 
 	public class IocTestController : IController
 	{
-		#region IController Members
-
-		public void Execute(ControllerContext controllerContext)
+		public void Execute(RequestContext controllerContext)
 		{
 			throw new NotImplementedException();
 		}
-
-		#endregion
 	}
 
 	public class DisposableIocTestController : IController, IDisposable
 	{
 		public bool IsDisposed;
 
-		public void Execute(ControllerContext controllerContext)
+		public void Execute(RequestContext controllerContext)
 		{
 			throw new NotImplementedException();
 		}

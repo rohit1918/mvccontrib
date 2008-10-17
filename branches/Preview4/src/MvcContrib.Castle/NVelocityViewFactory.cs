@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Configuration;
 using System.IO;
 using System.Web.Mvc;
 using Commons.Collections;
-using MvcContrib.Castle;
 using NVelocity;
 using NVelocity.App;
 using NVelocity.Runtime;
@@ -22,17 +22,19 @@ namespace MvcContrib.Castle
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.RESOURCE_LOADER, "file");
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, targetViewFolder);
 			DEFAULT_PROPERTIES.Add("master.folder", "masters");
+
+		    AddHtmlExtensionsFromConfig();
 		}
 
-		public NVelocityViewFactory() : this(DEFAULT_PROPERTIES)
+	    public NVelocityViewFactory() : this(DEFAULT_PROPERTIES)
 		{
 		}
 
-		public NVelocityViewFactory(IDictionary properties)
+	    public NVelocityViewFactory(IDictionary properties)
 		{
 			if( properties == null ) properties = DEFAULT_PROPERTIES;
 
-			ExtendedProperties props = new ExtendedProperties();
+			var props = new ExtendedProperties();
 			foreach(string key in properties.Keys)
 			{
 				props.AddProperty(key, properties[key]);
@@ -44,7 +46,21 @@ namespace MvcContrib.Castle
 			_engine.Init(props);
 		}
 
-		private Template ResolveMasterTemplate(string masterName)
+	    private static void AddHtmlExtensionsFromConfig()
+	    {
+	        var section = ConfigurationManager.GetSection("nvelocity");
+            if (section == null)
+                return;
+
+	        var config = (NVelocityConfiguration)section;
+            
+            foreach(var t in  config.HtmlExtensionTypes)
+            {
+                HtmlExtensionDuck.AddExtension(t);
+            }
+	    }
+
+	    private Template ResolveMasterTemplate(string masterName)
 		{
 			Template masterTemplate = null;
 
@@ -86,22 +102,29 @@ namespace MvcContrib.Castle
 			return _engine.GetTemplate(targetView);
 		}
 
-		public void RenderView(ViewContext viewContext)
+		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
 		{
-			CreateView(viewContext).RenderView();
+			//TODO: Preview 5: Does this method need any custom logic?
+			return FindView(controllerContext, partialViewName, null);
 		}
 
-		public NVelocityView CreateView(ViewContext viewContext)
-	    {
-			string controllerName = (string)viewContext.RouteData.Values["controller"];
+		//TODO: Preview 5: Instead of throwing exceptions if the view cannot be found, return a ViewEngineResult with SearchedLocations populated.
+		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+		{
+			var controllerName = (string)controllerContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
 
-			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewContext.ViewName);
-			Template masterTemplate = ResolveMasterTemplate(viewContext.MasterName);
+			Template viewTemplate = ResolveViewTemplate(controllerFolder, viewName);
+			Template masterTemplate = ResolveMasterTemplate(masterName);
 
-	    	NVelocityView view = new NVelocityView(viewTemplate, masterTemplate, viewContext);
+			var view = new NVelocityView(viewTemplate, masterTemplate);
 
-			return view;
+			return new ViewEngineResult(view,this);
+		}
+
+	    public void ReleaseView(ControllerContext controllerContext, IView view)
+	    {
+	        throw new System.NotImplementedException();
 	    }
 	}
 }

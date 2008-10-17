@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Web;
@@ -15,51 +14,51 @@ namespace MvcContrib.UI.Tags.Validators
 		public BaseValidator(string id, string referenceId, string text)
 			: base("span")
 		{
-			this.Id = id;
-			this.ReferenceId = referenceId;
-			this.InnerText = text;
-			this.NullSet("style", "display:none;color:red;");
+			Id = id;
+			ReferenceId = referenceId;
+			InnerText = text;
+			NullSet("style", "display:none;color:red;");
 		}
 
 		public BaseValidator(string id, string referenceId, string text, IDictionary attributes)
 			: base("span", attributes)
 		{
-			this.Id = id;
-			this.ReferenceId = referenceId;
-			this.InnerText = text;
-			this.NullSet("style", "display:none;color:red;");
+			Id = id;
+			ReferenceId = referenceId;
+			InnerText = text;
+			NullSet("style", "display:none;color:red;");
 		}
 
 		public BaseValidator(string id, string referenceId, string text, string validationGroup)
 			: base("span")
 		{
-			this.Id = id;
-			this.ReferenceId = referenceId;
-			this.ValidationGroup = validationGroup;
-			this.InnerText = text;
-			this.NullSet("style", "display:none;color:red;");
+			Id = id;
+			ReferenceId = referenceId;
+			ValidationGroup = validationGroup;
+			InnerText = text;
+			NullSet("style", "display:none;color:red;");
 		}
 
 		public BaseValidator(string id, string referenceId, string text, string validationGroup, IDictionary attributes)
 			: base("span", attributes)
 		{
-			this.Id = id;
-			this.ReferenceId = referenceId;
-			this.ValidationGroup = validationGroup;
-			this.InnerText = text;
-			this.NullSet("style", "display:none;color:red;");
+			Id = id;
+			ReferenceId = referenceId;
+			ValidationGroup = validationGroup;
+			InnerText = text;
+			NullSet("style", "display:none;color:red;");
 		}
 
 		public string ReferenceId
 		{
 			get
 			{
-				return this.NullExpandoGet("controltovalidate");
+				return NullExpandoGet("controltovalidate");
 			}
 
 			set
 			{
-				this.NullExpandoSet("controltovalidate", value);
+				NullExpandoSet("controltovalidate", value);
 			}
 		}
 
@@ -67,12 +66,12 @@ namespace MvcContrib.UI.Tags.Validators
 		{
 			get
 			{
-				return this.NullExpandoGet("errormessage");
+				return NullExpandoGet("errormessage");
 			}
 
 			set
 			{
-				this.NullExpandoSet("errormessage", value);
+				NullExpandoSet("errormessage", value);
 			}
 		}
 
@@ -80,12 +79,12 @@ namespace MvcContrib.UI.Tags.Validators
 		{
 			get
 			{
-				return this.NullExpandoGet("validationGroup");
+				return NullExpandoGet("validationGroup");
 			}
 
 			set
 			{
-				this.NullExpandoSet("validationGroup", value);
+				NullExpandoSet("validationGroup", value);
 			}
 		}
 
@@ -98,35 +97,35 @@ namespace MvcContrib.UI.Tags.Validators
 		{
 			get
 			{
-				return this.isValid;
+				return isValid;
 			}
 
 			protected set
 			{
-				this.isValid = value;
+				isValid = value;
 				if (!value)
-					this.NullSet("style", "color:red;");
+					NullSet("style", "color:red;");
 			}
 		}
 
 		public virtual void RenderClientHookup(StringBuilder output)
 		{
-			string name = this.Id.Replace('.', '_');
+			string name = Id.Replace('.', '_');
 
-			this.NullExpandoSet("evaluationfunction", this.ValidationFunction);
-			this.NullExpandoSet("display", "Dynamic");
+			NullExpandoSet("evaluationfunction", ValidationFunction);
+			NullExpandoSet("display", "Dynamic");
 
 			// field declaration
 			output.Append("var ");
 			output.Append(name);
 			output.Append(" = document.all ? document.all[\"");
-			output.Append(this.Id);
+			output.Append(Id);
 			output.Append("\"] : document.getElementById(\"");
-			output.Append(this.Id);
+			output.Append(Id);
 			output.Append("\");");
 			output.AppendLine();
 
-			Dictionary<string, string>.Enumerator en = this._expandoAttributes.GetEnumerator();
+			Dictionary<string, string>.Enumerator en = _expandoAttributes.GetEnumerator();
 			while (en.MoveNext())
 			{
 				output.Append(name);
@@ -147,7 +146,7 @@ namespace MvcContrib.UI.Tags.Validators
 		public static bool Validate(HttpRequestBase request, ICollection<IValidator> validators)
 		{
 			bool valid = true;
-			foreach (IValidator validator in validators)
+			foreach (var validator in validators)
 			{
 				bool tempValid = validator.Validate(request);
 				if (valid && !tempValid)
@@ -159,9 +158,9 @@ namespace MvcContrib.UI.Tags.Validators
 
 		protected string NullExpandoGet(string key)
 		{
-			if (this._expandoAttributes.ContainsKey(key))
+			if (_expandoAttributes.ContainsKey(key))
 			{
-				return this._expandoAttributes[key];
+				return _expandoAttributes[key];
 			}
 
 			return null;
@@ -169,7 +168,7 @@ namespace MvcContrib.UI.Tags.Validators
 
 		protected void NullExpandoSet(string key, string value)
 		{
-			this._expandoAttributes[key] = value;
+			_expandoAttributes[key] = value;
 		}
 	}
 }

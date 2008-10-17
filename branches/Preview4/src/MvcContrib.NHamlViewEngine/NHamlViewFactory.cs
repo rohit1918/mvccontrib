@@ -21,9 +21,8 @@ namespace MvcContrib.NHamlViewEngine
 	[AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 	public class NHamlViewFactory : IViewEngine
 	{
-		private static readonly Dictionary<string, CompiledView> _viewCache = new Dictionary<string, CompiledView>();
-
 		private static readonly TemplateCompiler _templateCompiler = new TemplateCompiler();
+		private static readonly Dictionary<string, CompiledView> _viewCache = new Dictionary<string, CompiledView>();
 
 		private static bool _production;
 
@@ -41,7 +40,7 @@ namespace MvcContrib.NHamlViewEngine
 			_templateCompiler.AddReference(typeof(UserControl).Assembly.Location);
 			_templateCompiler.AddReference(typeof(RouteValueDictionary).Assembly.Location);
 			_templateCompiler.AddReference(typeof(DataContext).Assembly.Location);
-			_templateCompiler.AddReference(typeof(TextInputExtensions).Assembly.Location);
+			_templateCompiler.AddReference(typeof(IView).Assembly.Location);
 
 			LoadConfiguration();
 		}
@@ -58,9 +57,79 @@ namespace MvcContrib.NHamlViewEngine
 			_viewSourceLoader = viewSourceLoader;
 		}
 
+		#region IViewEngine Members
+
+		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
+		{
+			return FindView(controllerContext, partialViewName, null);
+		}
+
+		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
+		{
+			var controller = (string)controllerContext.RouteData.Values["controller"];
+			string viewKey = controller + "/" + viewName;
+
+			CompiledView compiledView;
+
+			if(!_viewCache.TryGetValue(viewKey, out compiledView))
+			{
+				lock(_viewCache)
+				{
+					if(!_viewCache.TryGetValue(viewKey, out compiledView))
+					{
+						string viewPath = viewKey;
+
+						if(!Path.HasExtension(viewPath))
+						{
+							viewPath = string.Concat(viewPath, ".haml");
+						}
+
+						if(!_viewSourceLoader.HasView(viewPath))
+						{
+							return new ViewEngineResult(new[] {viewPath});
+						}
+
+						IViewSource viewSource = _viewSourceLoader.GetViewSource(viewPath);
+
+						Invariant.IsNotNull(viewSource);
+
+						IViewSource layoutSource = FindLayout("Shared", masterName, controller);
+
+						string layoutPath = null;
+
+						if(layoutSource != null)
+						{
+							layoutPath = layoutSource.FullName;
+						}
+
+						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
+						                                controllerContext.Controller.ViewData);
+
+						_viewCache.Add(viewKey, compiledView);
+					}
+				}
+			}
+
+			if(!_production)
+			{
+				compiledView.RecompileIfNecessary(controllerContext.Controller.ViewData);
+			}
+
+			INHamlView view = compiledView.CreateView();
+
+			return new ViewEngineResult(view,this);
+		}
+
+	    public void ReleaseView(ControllerContext controllerContext, IView view)
+	    {
+	        throw new System.NotImplementedException();
+	    }
+
+	    #endregion
+
 		private static void LoadConfiguration()
 		{
-			var section = NHamlViewEngineSection.Read();
+			NHamlViewEngineSection section = NHamlViewEngineSection.Read();
 
 			if(section != null)
 			{
@@ -82,7 +151,7 @@ namespace MvcContrib.NHamlViewEngine
 		{
 			if(!string.IsNullOrEmpty(masterName))
 			{
-				var requestedPath = mastersFolder + "\\" + masterName + ".haml";
+				string requestedPath = mastersFolder + "\\" + masterName + ".haml";
 
 				if(_viewSourceLoader.HasView(requestedPath))
 				{
@@ -94,14 +163,14 @@ namespace MvcContrib.NHamlViewEngine
 				                                                  masterName));
 			}
 
-			var controllerPath = mastersFolder + "\\" + controller + ".haml";
+			string controllerPath = mastersFolder + "\\" + controller + ".haml";
 
 			if(_viewSourceLoader.HasView(controllerPath))
 			{
 				return _viewSourceLoader.GetViewSource(controllerPath);
 			}
 
-			var applicationPath = mastersFolder + "\\application.haml";
+			string applicationPath = mastersFolder + "\\application.haml";
 
 			if(_viewSourceLoader.HasView(applicationPath))
 			{
@@ -117,66 +186,6 @@ namespace MvcContrib.NHamlViewEngine
 			{
 				_viewCache.Clear();
 			}
-		}
-
-		public void RenderView(ViewContext viewContext)
-		{
-			var controller = (string)viewContext.RouteData.Values["controller"];
-			var viewKey = controller + "/" + viewContext.ViewName;
-
-			CompiledView compiledView;
-
-			if(!_viewCache.TryGetValue(viewKey, out compiledView))
-			{
-				lock(_viewCache)
-				{
-					if(!_viewCache.TryGetValue(viewKey, out compiledView))
-					{
-						var viewPath = viewKey;
-
-						if(!Path.HasExtension(viewPath))
-						{
-							viewPath = string.Concat(viewPath, ".haml");
-						}
-
-						if(!_viewSourceLoader.HasView(viewPath))
-						{
-							throw new InvalidOperationException(
-								string.Format(CultureInfo.CurrentCulture,
-								              "Couldn't find the template with name {0}.",
-								              viewPath));
-						}
-
-						var viewSource = _viewSourceLoader.GetViewSource(viewPath);
-
-						Invariant.IsNotNull(viewSource);
-
-						var layoutSource = FindLayout("Shared", viewContext.MasterName, controller);
-
-						string layoutPath = null;
-
-						if(layoutSource != null)
-						{
-							layoutPath = layoutSource.FullName;
-						}
-
-						compiledView = new CompiledView(_templateCompiler, viewSource.FullName, layoutPath,
-						                                viewContext.ViewData);
-
-						_viewCache.Add(viewKey, compiledView);
-					}
-				}
-			}
-
-			if(!_production)
-			{
-				compiledView.RecompileIfNecessary(viewContext.ViewData);
-			}
-
-			var view = compiledView.CreateView();
-
-			view.SetViewData(viewContext.ViewData);
-			view.RenderView(viewContext);
 		}
 	}
 }

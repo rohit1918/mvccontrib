@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using MvcContrib;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -10,6 +9,7 @@ namespace MvcContrib.UnitTests
 	[TestFixture]
 	public class HashTester
 	{
+
 		[TestFixture]
 		public class When_Empty
 		{
@@ -203,6 +203,35 @@ namespace MvcContrib.UnitTests
 				IDictionary<string, string> hash = new Hash<string>(id => "goose", @class => "chicken");
 				Assert.That(hash["id"], Is.EqualTo("goose"));
 				Assert.That(hash["class"], Is.EqualTo("chicken"));
+			}
+		}
+
+		[TestFixture]
+		public class When_the_ConvertObjectToCaseSensitiveDictionary_method_is_called
+		{
+			[Test]
+			public void Then_a_dictionary_should_be_created_containing_the_properties_of_the_object()
+			{
+				var dict = DictionaryExtensions.AnonymousObjectToCaseSensitiveDictionary(new {Foo = "Bar", Baz = 1});
+				Assert.That(dict.Count, Is.EqualTo(2));
+				Assert.That(dict["Foo"], Is.EqualTo("Bar"));
+				Assert.That(dict["Baz"], Is.EqualTo(1));
+			}
+
+			[Test]
+			public void Then_the_dictionary_that_is_created_should_be_case_sensitive()
+			{
+				var dict = DictionaryExtensions.AnonymousObjectToCaseSensitiveDictionary(new {Foo = "Bar"});
+				Assert.That(dict.ContainsKey("Foo"));
+				Assert.That(! dict.ContainsKey("foo"));
+			}
+
+			[Test]
+			public void And_the_object_is_null_then_an_empty_dictionary_should_be_returned()
+			{
+				var dict = DictionaryExtensions.AnonymousObjectToCaseSensitiveDictionary(null);
+				Assert.That(dict, Is.Not.Null);
+				Assert.That(dict.Count, Is.EqualTo(0));
 			}
 		}
 	}

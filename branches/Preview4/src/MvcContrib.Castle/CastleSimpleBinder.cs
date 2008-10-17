@@ -8,48 +8,46 @@ namespace MvcContrib.Castle
 	/// <summary>
 	/// Simple IParameterBinder implementation that uses Castle's DefaultConverter.
 	/// </summary>
-	public class CastleSimpleBinder : IParameterBinder
+	public class CastleSimpleBinder : IModelBinder
 	{
+		
 		/// <summary>
 		/// Looks for a parameter with the specified name in the Request and the RouteData and converts it to the specified type.
 		/// </summary>
-		/// <param name="targetType">Type to which the value should be converted.</param>
-		/// <param name="paramName">Name of the parameter to search for</param>
-		/// <param name="context">Controller Context</param>
 		/// <returns>The converted object, or the default value for the type.</returns>
-		public object Bind(Type targetType, string paramName, ControllerContext context)
+	    public ModelBinderResult BindModel(ModelBindingContext bindingContext)
 		{
-			string value = context.HttpContext.Request[paramName];
+			string value = bindingContext.HttpContext.Request[bindingContext.ModelName];
 
 			//Route data should be a higher priority than Request.
-			if(context.RouteData.Values.ContainsKey(paramName))
-			{
-				object routeValue = context.RouteData.Values[paramName];
-				if(routeValue != null)
-				{
-					value = routeValue.ToString();
+			if (bindingContext.RouteData.Values.ContainsKey(bindingContext.ModelName)) {
+				object routeValue = bindingContext.RouteData.Values[bindingContext.ModelName];
+				if (routeValue != null) {
+					if (bindingContext.ModelType.IsAssignableFrom(routeValue.GetType())) {
+						return new ModelBinderResult(routeValue);
+					}
+					else {
+						value = routeValue.ToString();
+					}
 				}
 			}
 
 			var converter = new DefaultConverter();
 			object result = null;
 
-			try
-			{
+			try {
 				bool success;
-				result = converter.Convert(targetType, value, out success);
+				result = converter.Convert(bindingContext.ModelType, value, out success);
 			}
-			catch(BindingException)
-			{
+			catch (BindingException) {
 			}
 
 			//If the binding failed then value types should be set to their default value. 
-			if(result == null && targetType.IsValueType)
-			{
-				return Activator.CreateInstance(targetType);
+			if (result == null && bindingContext.ModelType.IsValueType) {
+				return new ModelBinderResult(Activator.CreateInstance(bindingContext.ModelType));
 			}
 
-			return result;
+			return new ModelBinderResult(result);
 		}
 	}
 }

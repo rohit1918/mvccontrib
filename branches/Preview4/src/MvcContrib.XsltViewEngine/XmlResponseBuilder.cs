@@ -76,7 +76,7 @@ namespace MvcContrib.XsltViewEngine
 		/// <returns></returns>
 		public XmlElement CreateNewNode(string sNode, string sText, params string[] sAttributes)
 		{
-			XmlElement xmlelem = null;
+			XmlElement xmlelem;
 
 			try
 			{
@@ -131,7 +131,7 @@ namespace MvcContrib.XsltViewEngine
 		/// <param name="xml">The XML.</param>
 		public void AppendDataSourceToResponse(string xml)
 		{
-			XmlDocument xmlDoc = new XmlDocument();
+			var xmlDoc = new XmlDocument();
 			xmlDoc.LoadXml(xml);
 
 			AppendDataSourceToResponse(xmlDoc.DocumentElement);
@@ -143,7 +143,7 @@ namespace MvcContrib.XsltViewEngine
 		/// <param name="xml">The XML.</param>
 		public void AppendDataSourceToResponse(XmlReader xml)
 		{
-			XmlDocument xmlDoc = new XmlDocument();
+			var xmlDoc = new XmlDocument();
 			xmlDoc.Load(xml);
 
 			AppendDataSourceToResponse(xmlDoc.DocumentElement);
@@ -199,11 +199,11 @@ namespace MvcContrib.XsltViewEngine
 		{
 			if(Response.SelectSingleNode("Page") == null)
 			{
-				Response.AppendChild(CreateNewNode("Page", "", "Name", pageName, "Uri", pageUri));
+				Response.AppendChild(CreateNewNode("Page", "", "Uri", pageUri));
 
 				XmlNode pageVarsNode = Response.SelectSingleNode("Page").AppendChild(CreateNewNode("PageVars", ""));
 
-				foreach(KeyValuePair<string, string> pair in pageVars)
+				foreach(var pair in pageVars)
 				{
 					pageVarsNode.AppendChild(CreateNewNode(pair.Key, pair.Value));
 				}
@@ -243,7 +243,7 @@ namespace MvcContrib.XsltViewEngine
 				foreach(string var in httpContext.Request.Form)
 				{
 					xmlRequest.AppendChild(
-						CreateNewNode("Params", "", "Key", var, "Value", httpContext.Request.Form[var].ToString()));
+						CreateNewNode("Params", "", "Key", var, "Value", httpContext.Request.Form[var]));
 				}
 				RequestFileUploads();
 			}
@@ -253,7 +253,7 @@ namespace MvcContrib.XsltViewEngine
 				foreach(string var in httpContext.Request.QueryString)
 				{
 					xmlRequest.AppendChild(
-						CreateNewNode("Params", "", "Key", var, "Value", httpContext.Request.QueryString[var].ToString()));
+						CreateNewNode("Params", "", "Key", var, "Value", httpContext.Request.QueryString[var]));
 				}
 			}
 		}

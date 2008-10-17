@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace MvcContrib
 {
@@ -37,7 +37,7 @@ namespace MvcContrib
 		{
 			if (hash != null)
 			{
-				foreach (Func<object, TValue> func in hash)
+				foreach (var func in hash)
 				{
 					Add(func.Method.GetParameters()[0].Name, func(null));
 				}
@@ -64,7 +64,7 @@ namespace MvcContrib
 				return dict;
 			}
 
-			foreach (Func<object, T> func in hash)
+			foreach (var func in hash)
 			{
 				dict.Add(func.Method.GetParameters()[0].Name, func(null));
 			}
@@ -82,12 +82,32 @@ namespace MvcContrib
 				return dict;
 			}
 
-			foreach (Func<object, object> func in hash)
+			foreach (var func in hash)
 			{
 				dict.Add(func.Method.GetParameters()[0].Name, func(null));
 			}
 
 			return dict;
+		}
+
+		/// <summary>
+		/// Takes an anonymous object and converts it to a <see cref="Dictionary{String,Object}"/>
+		/// </summary>
+		/// <param name="objectToConvert">The object to convert</param>
+		/// <returns>A generic dictionary</returns>
+		public static Dictionary<string, object> AnonymousObjectToCaseSensitiveDictionary(object objectToConvert) 
+		{
+			var dictionary = new Dictionary<string, object>(StringComparer.Ordinal);
+
+			if (objectToConvert != null) 
+			{
+				foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(objectToConvert)) 
+				{
+					dictionary[property.Name] = property.GetValue(objectToConvert);
+				}
+			}
+
+			return dictionary;
 		}
 	}
 }

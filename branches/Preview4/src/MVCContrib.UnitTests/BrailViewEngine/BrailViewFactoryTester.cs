@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.IO;
-using System.Threading;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.BrailViewEngine;
@@ -17,8 +14,7 @@ using Rhino.Mocks;
 	public class BrailViewFactoryTester
 	{
 		private BrailViewFactory _viewFactory;
-		private ViewContext _viewContext;
-		private MockRepository _mocks;
+	    private MockRepository _mocks;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
 
@@ -26,15 +22,16 @@ using Rhino.Mocks;
 		public void SetUp()
 		{
 			_mocks = new MockRepository();
-			TestHttpContext httpContext = new TestHttpContext();
-			RequestContext requestContext = new RequestContext(httpContext, new RouteData());
-			IController controller = _mocks.CreateMock<IController>();
+			var httpContext = new TestHttpContext();
+			var requestContext = new RequestContext(httpContext, new RouteData());
+            var controller = _mocks.StrictMock<ControllerBase>();
 			_mocks.Replay(controller);
-			_viewContext = new ViewContext(httpContext, new RouteData(), controller, "view", null, new ViewDataDictionary(new object()), null);  //new ControllerContext(requestContext, controller);
 
-			BooViewEngine viewEngine = new BooViewEngine();
-			viewEngine.ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
-			viewEngine.Options = new BooViewEngineOptions();
+			var viewEngine = new BooViewEngine
+			                 	{
+			                 		ViewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY),
+			                 		Options = new BooViewEngineOptions()
+			                 	};
 			viewEngine.Initialize();
 
 			_viewFactory = new BrailViewFactory(viewEngine);
@@ -44,7 +41,7 @@ using Rhino.Mocks;
 		[Test]
 		public void Can_Create_Default_ViewFactory()
 		{
-			BrailViewFactory viewFactory = new BrailViewFactory();
+			var viewFactory = new BrailViewFactory();
 			Assert.IsNotNull(viewFactory.ViewEngine);
 		}
 

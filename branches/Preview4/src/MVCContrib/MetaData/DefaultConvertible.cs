@@ -6,7 +6,7 @@ namespace MvcContrib
 {
 	public class DefaultConvertible : IConvertible
 	{
-		private static readonly Type[] ConvertTypes = new Type[]
+		private static readonly Type[] ConvertTypes = new[]
 			{
 				typeof(bool),
 				typeof(char),				// 1
@@ -41,8 +41,15 @@ namespace MvcContrib
 
 		public bool ToBoolean(IFormatProvider provider)
 		{
+			string value = _value;
+
+			if(value != null && value.Contains(","))
+			{
+				value = value.Remove(value.IndexOf(','));
+			}
+
 			bool oValue;
-			if(bool.TryParse(_value, out oValue))
+			if(bool.TryParse(value, out oValue))
 			{
 				return oValue;
 			}
