@@ -6,7 +6,7 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
-namespace MvcContrib.UnitTests.ActionFilters
+namespace MvcContrib.UnitTests.Filters
 {
 	[TestFixture]
 	public class LayoutAttributeTester
