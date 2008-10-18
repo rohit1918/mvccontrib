@@ -94,6 +94,7 @@
     <Compile Include="Binders\SubControllerBinder.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\LayoutAttribute.cs" />
+    <Compile Include="Filters\ModelStateToTempDataAttribute.cs" />
     <Compile Include="Filters\RescueAttribute.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="ConventionControllerActionInvoker.cs" />
