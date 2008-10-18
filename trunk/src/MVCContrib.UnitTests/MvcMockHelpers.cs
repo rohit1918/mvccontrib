@@ -12,6 +12,14 @@ namespace MvcContrib.UnitTests
 {
 	public static class MvcMockHelpers
 	{
+		public static HttpContextBase DynamicHttpContextBase()
+		{
+			var mocks = new MockRepository();
+			var context = mocks.DynamicHttpContextBase();
+			mocks.ReplayAll();
+			return context;
+		}
+
 		public static HttpContextBase DynamicHttpContextBase(this MockRepository mocks)
 		{
 			return mocks.DynamicHttpContextBase
@@ -108,5 +116,12 @@ namespace MvcContrib.UnitTests
             
             return new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
         }
+
+		public static TController SetupControllerContext<TController>(this TController controller)  where TController : Controller
+		{
+			var controllerContext = new ControllerContext(DynamicHttpContextBase(), new RouteData(), controller);
+			controller.ControllerContext = controllerContext;
+			return controller;
+		}
 	}
 }

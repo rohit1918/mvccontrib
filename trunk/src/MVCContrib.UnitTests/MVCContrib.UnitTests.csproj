@@ -176,6 +176,7 @@
     <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="ConventionController\TestFilter.cs" />
     <Compile Include="EnumerableExtensionTests.cs" />
+    <Compile Include="Filters\ModelStateToTempDataAttributeTests.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
