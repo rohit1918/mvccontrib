@@ -10,7 +10,7 @@ using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.SparkViewEngine
 {
-	[TestFixture,Ignore("new version of spark is needed")]
+	[TestFixture]
 	[Category("SparkViewEngine")]
 	public class SparkViewFactoryTester
 	{
