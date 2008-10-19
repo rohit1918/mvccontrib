@@ -18,6 +18,7 @@ namespace MvcContrib.TestHelper
 	{
 		protected MockRepository _mocks;
 		protected TempDataDictionary _tempData;
+        protected System.Web.Caching.Cache _cache;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TestControllerBuilder"/> class.
@@ -99,11 +100,13 @@ namespace MvcContrib.TestHelper
 			var request = _mocks.DynamicMock<HttpRequestBase>();
 			var response = _mocks.DynamicMock<HttpResponseBase>();
 			var server = _mocks.DynamicMock<HttpServerUtilityBase>();
+			_cache = HttpRuntime.Cache;
 
 			SetupResult.For(HttpContext.Request).Return(request);
 			SetupResult.For(HttpContext.Response).Return(response);
 			SetupResult.For(HttpContext.Session).Return(Session);
 			SetupResult.For(HttpContext.Server).Return(server);
+			SetupResult.For(HttpContext.Cache).Return(_cache);
 
 			QueryString = new NameValueCollection();
 			SetupResult.For(request.QueryString).Return(QueryString);
