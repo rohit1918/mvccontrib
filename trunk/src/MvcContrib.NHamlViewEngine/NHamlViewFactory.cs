@@ -34,6 +34,7 @@ namespace MvcContrib.NHamlViewEngine
 			_templateCompiler.AddUsing("System.Web");
 			_templateCompiler.AddUsing("System.Web.Mvc");
 			_templateCompiler.AddUsing("System.Web.Routing");
+			_templateCompiler.AddUsing("System.Web.Mvc.Html");
 			_templateCompiler.AddUsing("MvcContrib.NHamlViewEngine");
 
 			_templateCompiler.ViewBaseType = typeof(NHamlView<>);
