@@ -1,4 +1,6 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
+using System.Web.Caching;
 using System.Web.Routing;
 using MvcContrib.Interfaces;
 using MvcContrib.Services;
@@ -148,6 +150,33 @@ namespace MvcContrib.UnitTests.TestHelper
 			controller.ControllerContext.HttpContext.User = user;
 
 			Assert.AreSame(user, controller.User);
+		}
+
+		[Test]
+		public void CacheIsAvailable()
+		{
+			var builder = new TestControllerBuilder();
+
+			Assert.IsNotNull(builder.HttpContext.Cache);
+
+			var controller = new TestHelperController();
+			builder.InitializeController(controller);
+
+			Assert.IsNotNull(controller.HttpContext.Cache);
+
+			string testKey = "TestKey";
+			string testValue = "TestValue";
+
+			controller.HttpContext.Cache.Add(testKey,
+			                                 testValue,
+			                                 null,
+			                                 DateTime.Now.AddSeconds(1),
+			                                 Cache.NoSlidingExpiration,
+			                                 CacheItemPriority.Normal,
+			                                 null);
+
+			Assert.AreEqual(testValue,
+			                controller.HttpContext.Cache[testKey]);
 		}
 	}
 }
