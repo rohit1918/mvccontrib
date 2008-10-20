@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Samples.NVelocityViewFactory", "MvcContrib.Samples.NVelocityViewFactory.csproj", "{852ABBD2-9B55-4B95-974F-1559A16DB599}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCContrib", "..\..\MVCContrib\MVCContrib.csproj", "{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcContrib.Castle", "..\..\MvcContrib.Castle\MvcContrib.Castle.csproj", "{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852ABBD2-9B55-4B95-974F-1559A16DB599}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
