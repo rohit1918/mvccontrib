@@ -12,18 +12,19 @@ namespace MvcContrib.UnitTests.ControllerFactories
     [TestFixture]
     public class NinjectControllerFactoryTester
     {
+		private IControllerFactory _factory;
+
         [SetUp]
         public void SetUp()
         {
             NinjectKernel.Initialize(new TestModule());
+			_factory = new NinjectControllerFactory();
         }
 
         [Test]
         public void ShouldGetNinjaControllerFromNinjectControllerFactoryWhenControllerNameIsNinja()
         {
-            var factory = new NinjectControllerFactory();
-
-            IController ninjaController = factory.CreateController(null, "Ninja");
+            IController ninjaController = _factory.CreateController(null, "Ninja");
 
             Assert.That(ninjaController, Is.Not.Null);
             Assert.That(ninjaController, Is.AssignableFrom(typeof(NinjaController)));
@@ -32,9 +33,8 @@ namespace MvcContrib.UnitTests.ControllerFactories
         [Test]
         public void NinjectControllerFacotryShouldDisposeController()
         {
-            var factory = new NinjectControllerFactory();
             var disposableController = new DisposableNinjaController();
-            factory.ReleaseController(disposableController);
+            _factory.ReleaseController(disposableController);
             Assert.That(disposableController.IsDisposed);
         }
 
