@@ -189,7 +189,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			{
 				var factory = new SpringControllerFactory();
 				var controller = new SpringDisposableController();
-				factory.DisposeController(controller);
+				factory.ReleaseController(controller);
 				Assert.That(controller.IsDisposed);
 			
 			}
