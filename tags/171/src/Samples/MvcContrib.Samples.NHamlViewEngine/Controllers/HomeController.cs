@@ -1,0 +1,19 @@
+﻿using System.Web.Mvc;
+
+namespace MvcContrib.Samples.NHamlViewEngine.Controllers
+{
+	public class HomeController : Controller
+	{
+		
+		public ActionResult Index()
+		{
+			return View("Index");
+		}
+
+		
+		public ActionResult About()
+		{
+			return View("About");
+		}
+	}
+}
