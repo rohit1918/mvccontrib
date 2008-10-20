@@ -34,7 +34,7 @@ namespace MvcContrib.UnitTests.ControllerFactories
         {
             var factory = new NinjectControllerFactory();
             var disposableController = new DisposableNinjaController();
-            factory.DisposeController(disposableController);
+            factory.ReleaseController(disposableController);
             Assert.That(disposableController.IsDisposed);
         }
 
