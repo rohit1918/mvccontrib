@@ -103,6 +103,7 @@
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttribute.cs" />
+    <Compile Include="Filters\TempDataToViewData.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="Interfaces\IDependencyResolver.cs" />
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
