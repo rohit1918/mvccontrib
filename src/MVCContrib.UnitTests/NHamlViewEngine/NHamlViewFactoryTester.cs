@@ -159,5 +159,18 @@ namespace MvcContrib.UnitTests.NHamlViewEngine
 
 			_mocks.VerifyAll();
 		}
+
+		[Test]
+		public void ReleaseView_should_not_throw()
+		{
+			IViewSourceLoader viewSourceLoader = new FileSystemViewSourceLoader(VIEW_ROOT_DIRECTORY);
+			var viewFactory = new NHamlViewFactory(viewSourceLoader);
+
+			_mocks.ReplayAll();
+
+			var viewResult = viewFactory.FindView(_controllerContext, "index", null);
+
+			viewFactory.ReleaseView(_controllerContext, viewResult.View);
+		}
 	}
 }

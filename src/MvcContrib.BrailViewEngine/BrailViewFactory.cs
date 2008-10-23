@@ -58,7 +58,6 @@ namespace MvcContrib.ViewFactories
 
 	    public void ReleaseView(ControllerContext controllerContext, IView view)
 	    {
-	        throw new System.NotImplementedException();
 	    }
 	}
 }

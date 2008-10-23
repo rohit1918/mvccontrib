@@ -40,6 +40,7 @@ namespace MvcContrib.BrailViewEngine
 			NamespacesToImport.Add("MvcContrib.UI.Html");
 			NamespacesToImport.Add("MvcContrib.BrailViewEngine");
 			NamespacesToImport.Add("System.Web.Mvc");
+			namespacesToImport.Add("System.Web.Mvc.Html");
 		}
 
 		public bool Debug { get; set; }
