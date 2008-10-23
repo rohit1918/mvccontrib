@@ -13,7 +13,7 @@ using Rhino.Mocks;
 	[Category("BrailViewEngine")]
 	public class BrailViewFactoryTester
 	{
-		private BrailViewFactory _viewFactory;
+		private IViewEngine _viewEngine;
 	    private MockRepository _mocks;
 
 		private static readonly string VIEW_ROOT_DIRECTORY = @"BrailViewEngine\Views";
@@ -34,7 +34,7 @@ using Rhino.Mocks;
 			                 	};
 			viewEngine.Initialize();
 
-			_viewFactory = new BrailViewFactory(viewEngine);
+			_viewEngine = new BrailViewFactory(viewEngine);
 			_mocks.ReplayAll();
 		}
 
@@ -58,6 +58,12 @@ using Rhino.Mocks;
 		public void Depends_On_BooViewEngine()
 		{
 			new BrailViewFactory(null);
+		}
+
+		[Test]
+		public void ReleaseView_should_not_throw()
+		{
+			_viewEngine.ReleaseView(null, null);
 		}
 	}
 }

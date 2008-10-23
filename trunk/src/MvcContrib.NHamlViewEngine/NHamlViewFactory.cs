@@ -123,7 +123,6 @@ namespace MvcContrib.NHamlViewEngine
 
 	    public void ReleaseView(ControllerContext controllerContext, IView view)
 	    {
-	        throw new System.NotImplementedException();
 	    }
 
 	    #endregion

@@ -124,7 +124,6 @@ namespace MvcContrib.Castle
 
 	    public void ReleaseView(ControllerContext controllerContext, IView view)
 	    {
-	        throw new System.NotImplementedException();
 	    }
 	}
 }

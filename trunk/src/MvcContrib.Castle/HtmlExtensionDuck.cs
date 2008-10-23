@@ -16,7 +16,10 @@ namespace MvcContrib.Castle
                     typeof(ViewExtensions),
                     typeof(System.Web.Mvc.Html.LinkExtensions),    
                     typeof(System.Web.Mvc.Html.InputExtensions),
-                    typeof(System.Web.Mvc.Html.FormExtensions)
+                    typeof(System.Web.Mvc.Html.FormExtensions),
+					typeof(System.Web.Mvc.Html.SelectExtensions),
+					typeof(System.Web.Mvc.Html.TextAreaExtensions),
+					typeof(System.Web.Mvc.Html.ValidationExtensions)
 			};
 
 	    public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)

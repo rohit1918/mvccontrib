@@ -6,9 +6,9 @@
 </head>
 <body>
 
-    ${Html.ActionLink('Index','Index')}
-    ${Html.ActionLink('About', 'About')}
-    ${Html.ActionLink('Contact', 'Contact')}
+    ${html.ActionLink('Index','Index')}
+    ${html.ActionLink('About', 'About')}
+    ${html.ActionLink('Contact', 'Contact')}
 
     <div>
         ${childOutput}

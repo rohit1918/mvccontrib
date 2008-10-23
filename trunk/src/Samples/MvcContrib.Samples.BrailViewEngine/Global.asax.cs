@@ -56,7 +56,7 @@ namespace MvcContrib.Samples
                 {
                     if(typeof(IController).IsAssignableFrom(type))
                     {
-                        _container.AddComponentWithLifestyle(type.Name.ToLower(), type, LifestyleType.Transient);
+                        _container.AddComponentLifeStyle(type.Name.ToLower(), type, LifestyleType.Transient);
                     }
                 }
             }
