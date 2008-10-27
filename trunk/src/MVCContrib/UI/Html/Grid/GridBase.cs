@@ -80,16 +80,16 @@ namespace MvcContrib.UI.Html.Grid
 
 				foreach(var column in Columns)
 				{
+					//Column condition has been specified. Continue to the next column if the condition fails.
+					if (column.ColumnCondition != null && !column.ColumnCondition()) 
+					{
+						continue;
+					}
+
 					//A custom item section has been specified - render it and continue to the next iteration.
 					if(column.Name != null && column.CustomRenderer != null)
 					{
 						column.CustomRenderer(item);
-						continue;
-					}
-
-					//Column condition has been specified. Continue to the next column if the condition fails.
-					if(column.ColumnCondition != null && !column.ColumnCondition())
-					{
 						continue;
 					}
 
