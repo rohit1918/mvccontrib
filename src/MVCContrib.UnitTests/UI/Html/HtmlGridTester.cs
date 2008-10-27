@@ -184,6 +184,14 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[Test]
+		public void When_a_custom_renderer_is_specified_then_column_condition_should_still_be_checked()
+		{
+			_helper.Grid<Person>("people", column => column.For("Custom").Do(x => Writer.Write("<td>Foo</td>")).ColumnCondition(() => false));
+			string expected = "<table class=\"grid\"><thead><tr></tr></thead><tr class=\"gridrow\"></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
+
+		[Test]
 		public void Should_encode()
 		{
 			AddToViewData("people2", new List<Person> { new Person { Name = "Jeremy&" } });
