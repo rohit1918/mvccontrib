@@ -218,9 +218,6 @@
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="ActionResults\XmlActionResultTester.cs" />
     <Compile Include="MvcRouteTester.cs" />
-    <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs" />
-    <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs" />
-    <Compile Include="NHamlViewEngine\NHamlViewTester.cs" />
     <Compile Include="ConventionController\RescueTester.cs" />
     <Compile Include="PaginationTester.cs" />
     <Compile Include="RouteDebuggerTester.cs" />
@@ -283,10 +280,6 @@
     <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
       <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
       <Name>MvcContrib.Castle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcContrib.NHamlViewEngine\MvcContrib.NHamlViewEngine.csproj">
-      <Project>{9B885FC4-45C0-4526-9253-A799238EDD66}</Project>
-      <Name>MvcContrib.NHamlViewEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
       <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
@@ -361,24 +354,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="BrailViewEngine\Views\view.brail">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlApplication\index.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlController\custom.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\NHamlController\index.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\application.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\NHamlController.haml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NHamlViewEngine\Views\Shared\specificMaster.haml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SparkViewEngine\Views\Home\List.spark">
