@@ -185,7 +185,6 @@
     <Compile Include="IoC\INestedDependency.cs" />
     <Compile Include="IoC\NestedDependency.cs" />
     <Compile Include="IoC\NinjectDependencyResolverTester.cs" />
-    <Compile Include="IoC\ObjectFactoryDependencyTesterResolver.cs" />
     <Compile Include="IoC\SimpleDependency.cs" />
     <Compile Include="IoC\SpringDependencyResolverTester.cs" />
     <Compile Include="IoC\StructureMapDependencyResolverTester.cs" />
@@ -203,7 +202,6 @@
     <Compile Include="BrailViewEngine\RawAttributeTester.cs" />
     <Compile Include="BrailViewEngine\ReturnValueVisitorTester.cs" />
     <Compile Include="BrailViewEngine\XmlExtenstionTester.cs" />
-    <Compile Include="ControllerFactories\ObjectBuilderControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\SpringControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\StructureMapControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\WindsorControllerFactoryTester.cs" />
@@ -223,14 +221,6 @@
     <Compile Include="NHamlViewEngine\NHamlConfigurationTester.cs" />
     <Compile Include="NHamlViewEngine\NHamlViewFactoryTester.cs" />
     <Compile Include="NHamlViewEngine\NHamlViewTester.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\ConstructorReflectionStrategyFixture.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\CreationStrategyFixture.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\MethodReflectionStrategyFixture.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\Mocks\MockBuilderContext.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\Strategies\PropertyReflectionStrategyFixture.cs" />
-    <Compile Include="ObjectBuilder\CompositeWeb\WCSFBuilderBaseFixture.cs" />
-    <Compile Include="ObjectBuilder\ContainerXmlConfigTester.cs" />
-    <Compile Include="ObjectBuilder\DependencyContainerTester.cs" />
     <Compile Include="ConventionController\RescueTester.cs" />
     <Compile Include="PaginationTester.cs" />
     <Compile Include="RouteDebuggerTester.cs" />
@@ -301,10 +291,6 @@
     <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
       <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
       <Name>MvcContrib.Ninject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcContrib.ObjectBuilder\MvcContrib.ObjectBuilder.csproj">
-      <Project>{25482A84-38C4-470B-A8B8-5412226FDEEF}</Project>
-      <Name>MvcContrib.ObjectBuilder</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.SparkViewEngine\MvcContrib.SparkViewEngine.csproj">
       <Project>{56202292-9363-4DED-99DD-824A111EE18D}</Project>
