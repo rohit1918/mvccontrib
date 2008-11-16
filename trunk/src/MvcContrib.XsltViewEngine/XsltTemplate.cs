@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Web.Hosting;
 using System.Xml;
 using MvcContrib.ViewFactories;
 using Mvp.Xml.Common.Xsl;
@@ -8,40 +9,28 @@ namespace MvcContrib.XsltViewEngine
 {
 	public class XsltTemplate
 	{
-		private readonly MvpXslTransform _transform;
-        public string ViewUrl { get; private set; }
-		public XsltTemplate(IViewSourceLoader viewSourceLoader,string viewPath)
+		public MvpXslTransform XslTransformer { get; private set; }
+
+		public XsltTemplate(VirtualPathProvider virtualPathProvider, string viewPath)
 		{
 
-			if( viewSourceLoader == null )
+			if( virtualPathProvider == null )
 			{
-				throw new ArgumentNullException("viewSourceLoader");
+				throw new ArgumentNullException("virtualPathProvider");
 			}
 
-			if( !viewSourceLoader.HasView(viewPath) )
-			{
-				throw new InvalidOperationException(string.Format("Couldn't find the template with name {0}.", viewPath));
-			}
-		    ViewUrl = viewPath;
-
-			IViewSource viewSource = viewSourceLoader.GetViewSource(viewPath);
-
-			_transform = new MvpXslTransform();
+			XslTransformer = new MvpXslTransform();
 
 			var settings = new XmlReaderSettings {ProhibitDtd = false};
 
-			using(var viewSourceStream = viewSource.OpenViewStream())
+			using(var viewSourceStream = virtualPathProvider.GetFile(viewPath).Open())
 			{
 				using (var xmlReader = XmlReader.Create(viewSourceStream, settings))
 				{
-					_transform.Load(xmlReader);
+					XslTransformer.Load(xmlReader);
 				}
 			}
 		}
 
-		public MvpXslTransform XslTransformer
-		{
-			get { return _transform; }
-		}
 	}
 }
