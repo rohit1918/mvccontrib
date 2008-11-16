@@ -48,41 +48,23 @@ namespace MvcContrib.XsltViewEngine
 				else
 					construct.AddMessage(message.Content, message.MessageType.ToString().ToUpperInvariant(), message.ControlID);
 			});
-
-			construct.AppendPage("", viewTemplate.ViewUrl, viewData.PageVars);
 		}
 
-		#region IView Members
-
-        public void RenderView(ViewContext viewContext, TextWriter writer)
-		{
-			this.viewContext = viewContext;
-
-			var args = new XsltArgumentList();
-			args.AddExtensionObject("urn:HtmlHelper", new HtmlHelper(viewContext, this));
-            
-			args.AddParam("AjaxProScriptReferences", "", ajaxDeclaration);
-
-			var sb = new StringBuilder();
-
-            xslTransformer.Transform(new XmlInput(construct.Message.CreateNavigator()), args,
-				                         new XmlOutput(writer));
-		}
-
-		#endregion
-
-
-
-
-
-
-        #region IView Members
 
         public void Render(ViewContext viewContext, TextWriter writer)
         {
-            RenderView(viewContext, writer);
+			this.viewContext = viewContext;
+
+			string url = viewContext.HttpContext.Request.Url.ToString();
+			construct.AppendPage("", url, viewData.PageVars);
+
+			var args = new XsltArgumentList();
+			args.AddExtensionObject("urn:HtmlHelper", new HtmlHelper(viewContext, this));
+
+			args.AddParam("AjaxProScriptReferences", "", ajaxDeclaration);
+
+			xslTransformer.Transform(new XmlInput(construct.Message.CreateNavigator()), args, new XmlOutput(writer));
         }
 
-        #endregion
     }
 }

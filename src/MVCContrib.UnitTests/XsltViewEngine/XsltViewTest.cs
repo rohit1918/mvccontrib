@@ -1,3 +1,4 @@
+using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml;
@@ -13,21 +14,17 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 	[TestFixture, Category("XsltViewEngine")]
 	public class XsltViewTest : ViewTestBase
 	{
-		private const string controller = "MyController";
-		private const string viewName = "MyView";
-		private Controller _fakeController;
-
-		private IViewSourceLoader _viewSourceLoader;
+		private VirtualPathProvider virtualPathProvider;
+		private ControllerContext _context;
 
 		public override void SetUp()
 		{
 			base.SetUp();
-			_viewSourceLoader = mockRepository.StrictMock<IViewSourceLoader>();
-			SetupResult.For(_viewSourceLoader.HasView("MyController/MyView.xslt")).Return(true);
-			SetupResult.For(_viewSourceLoader.GetViewSource("MyController/MyView.xslt")).Return(new XsltViewSource());
-			mockRepository.Replay(_viewSourceLoader);
-            _fakeController = mockRepository.StrictMock<Controller>();
-			mockRepository.Replay(_fakeController);
+			var routeData = new RouteData();
+			routeData.Values["controller"] = "MyController";
+			virtualPathProvider = new XsltTestVirtualPathProvider();
+			_context = new ControllerContext(HttpContext, routeData, MockRepository.GenerateStub<ControllerBase>());
+			mockRepository.ReplayAll();
 		}
 
 		[Test]
@@ -52,20 +49,19 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message", "controlId4"));
 			vData.Messages.Add(new AlertHtmlMessage("This is an alert html message"));
 
-			var routeData = new RouteData();
-			routeData.Values["controller"] = controller;
 			Request.QueryString["myQueryString"] = "myQueryStringValue";
 
-		    _fakeController.ViewData.Model = vData;
+		    _context.Controller.ViewData.Model = vData;
 
-            var viewFactory = new XsltViewFactory(_viewSourceLoader);
-            var view = viewFactory.CreateView("MyController/MyView.xslt", null, new ControllerContext(HttpContext, routeData, _fakeController));
-            
-            var viewContext = new ViewContext(HttpContext, routeData, _fakeController, view, new ViewDataDictionary(vData),
-                                                      new TempDataDictionary());
+            var viewFactory = new XsltViewFactory(virtualPathProvider);
+			var viewResult = viewFactory.FindView(_context, "MyView", null);
+
+			Assert.IsNotNull(viewResult.View);
+
+            var viewContext = new ViewContext(_context, viewResult.View, new ViewDataDictionary(vData), new TempDataDictionary());
             
 
-			view.Render(viewContext, Response.Output);
+			viewResult.View.Render(viewContext, Response.Output);
             
             string actual = Response.Output.ToString().Replace("\r\n", "");
 

@@ -264,6 +264,7 @@
     <Compile Include="ViewFactories\NVelocityHtmlHelperTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewFactoryTester.cs" />
     <Compile Include="ViewFactories\NVelocityViewTester.cs" />
+    <Compile Include="XsltViewEngine\XsltTestVirtualPathProvider.cs" />
     <Compile Include="XsltViewEngine\Helpers\ControllerTestBase.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="XsltViewEngine\Helpers\ViewTestBase.cs" />

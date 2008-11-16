@@ -27,6 +27,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 			SetupResult.For(Request.RequestType).Do(new Func<string>(() => HttpMethodToReturn)); //.Return("GET");
 			SetupResult.For(Request.HttpMethod).Do(new Func<string>(() => HttpMethodToReturn));
 			SetupResult.For(Request.PhysicalApplicationPath).Return("http://testing/mycontroller/test");
+			SetupResult.For(Request.Url).Return(new Uri("http://testing/mycontroller/test"));
 			mockRepository.Replay(Request);
 			SetupResult.For(Request.Browser.EcmaScriptVersion).Do(new Func<Version>(() => EcmaScriptVersionToReturn));
 			SetupResult.For(Request.Browser.Browser).Return("Firefox 2.0.11");
@@ -86,26 +87,6 @@ namespace MvcContrib.UnitTests.XsltViewEngine.Helpers
 			public string Name { get; set; }
 
 			#endregion
-		}
-	}
-
-	public class XsltViewSource : IViewSource
-	{
-		public Stream OpenViewStream()
-		{
-			string xsltViewPath = "MvcContrib.UnitTests.XsltViewEngine.Data.Views.MyController.MyView.xslt";
-
-			return Assembly.GetExecutingAssembly().GetManifestResourceStream(xsltViewPath);
-		}
-
-		public string FullName
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public long LastModified
-		{
-			get { throw new NotImplementedException(); }
 		}
 	}
 }
