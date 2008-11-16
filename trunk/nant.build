@@ -235,6 +235,24 @@
 				<include name="/**/bin/${project.config}/mvccontrib**" />
 			</fileset>
 		</copy>
+		
+		<mkdir dir="${build.base}/release/Bin/referenceDLLs" />
+		
+		<copy todir="${build.base}/release/Bin/referenceDLLs" flatten="false">
+			<fileset basedir="bin">
+				<include name="AspnetMvc/*.dll" />
+				<include name="Boo/*.dll" />
+				<include name="Castle/*.dll" />
+				<include name="mvpxml/*.dll" />
+				<include name="ninject/*.dll" />
+				<include name="spark/*.dll" />
+				<include name="spring.net/*.dll" />
+				<include name="structuremap/*.dll" />
+				<include name="unity/*.dll" />
+			</fileset>
+		</copy>
+		
+		
 
 		<mkdir dir="${build.base}/release/Samples" />
 		<copy todir="${build.base}/release/Samples" >
