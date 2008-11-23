@@ -53,6 +53,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.MicroKernel.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.Services.Transaction, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\castle\Castle.Services.Transaction.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
@@ -178,6 +182,7 @@
     <Compile Include="ConventionController\TestFilter.cs" />
     <Compile Include="EnumerableExtensionTests.cs" />
     <Compile Include="Filters\ModelStateToTempDataAttributeTests.cs" />
+    <Compile Include="Filters\MvcTransactionAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
     <Compile Include="HashTester.cs" />
