@@ -60,6 +60,17 @@ namespace MvcContrib.UI.Html.Grid
 			return this;
 		}
 
+		/// <summary>
+		/// Applies the specified attributes to the header of the current column.
+		/// </summary>
+		/// <param name="attributes"></param>
+		/// <returns></returns>
+		public INestedGridColumnBuilder<T> HeaderAttributes(IDictionary attributes)
+		{
+			currentColumn.HeaderAttributes = attributes;
+			return this;
+		}
+
 		public IExpressionColumnBuilder<T> For(Expression<Func<T, object>> expression)
 		{
 			currentColumn = new GridColumn<T>

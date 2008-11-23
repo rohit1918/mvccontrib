@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace MvcContrib.UI.Html.Grid
@@ -70,6 +72,11 @@ namespace MvcContrib.UI.Html.Grid
 		/// Whether to HTML-Encode the output (default is true).
 		/// </summary>
 		public bool Encode { get; set; }
+
+		/// <summary>
+		/// The attributs to apply to the header of the column.
+		/// </summary>
+		public IDictionary HeaderAttributes { get; set; }
 
 		/// <summary>
 		/// Replaces pascal casing with spaces. For example "CustomerId" would become "Customer Id".

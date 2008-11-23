@@ -124,6 +124,13 @@ namespace MvcContrib.UnitTests.UI.Html
 			((System.Collections.IEnumerable)_builder).GetEnumerator();
 		}
 
+		[Test]
+		public void Calling_HeaderAttributes_should_set_attributes_for_column()
+		{
+			_builder.For("test").HeaderAttributes(new Hash(style => "width: 100px"));
+			Assert.That(_builder[0].HeaderAttributes["style"], Is.EqualTo("width: 100px"));
+		}
+
 		private class Person
 		{
 			public int Id { get; set; }
