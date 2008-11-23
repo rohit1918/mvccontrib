@@ -152,9 +152,13 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText("</th>");
 		}
 
-		protected override void RenderHeaderCellStart()
+		protected override void RenderHeaderCellStart(GridColumn<T> column)
 		{
-			RenderText("<th>");
+			string attrs = BuildHtmlAttributes(column.HeaderAttributes);
+			if (attrs.Length > 0)
+				attrs = " " + attrs;
+
+			RenderText(string.Format("<th{0}>", attrs));
 		}
 
 		protected override void RenderRowStart(bool isAlternate)
@@ -196,7 +200,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected override void RenderGridStart()
 		{
-			string attrs = BuildHtmlAttributes();
+			string attrs = BuildHtmlAttributes(this.HtmlAttributes);
 			if (attrs.Length > 0)
 				attrs = " " + attrs;
 
@@ -330,25 +334,25 @@ namespace MvcContrib.UI.Html.Grid
 
 
 		/// <summary>
-		/// Converts the HtmlAttributes dictionary of key-value pairs into a string of HTML attributes. 
+		/// Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
 		/// </summary>
 		/// <returns></returns>
-		private string BuildHtmlAttributes()
+		private static string BuildHtmlAttributes(IDictionary attributes)
 		{
-			if (HtmlAttributes.Count == 0)
+			if (attributes == null || attributes.Count == 0)
 			{
 				return string.Empty;
 			}
 
-			var attributes = new StringBuilder();
+			var attributeSB = new StringBuilder();
 
-			foreach (DictionaryEntry entry in HtmlAttributes)
+			foreach (DictionaryEntry entry in attributes)
 			{
-				attributes.AppendFormat("{0}=\"{1}\"", entry.Key, entry.Value);
-				attributes.Append(' ');
+				attributeSB.AppendFormat("{0}=\"{1}\"", entry.Key, entry.Value);
+				attributeSB.Append(' ');
 			}
 
-			return attributes.ToString().Trim();
+			return attributeSB.ToString().Trim();
 		}
 	}
 }

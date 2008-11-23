@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -37,5 +38,11 @@ namespace MvcContrib.UI.Html.Grid
 		/// <param name="block">Delegate to invoke to perform the rendering.</param>
 		/// <returns></returns>
 		INestedGridColumnBuilder<T> Header(Action block);
+		/// <summary>
+		/// Applies the specified attributes to the header.
+		/// </summary>
+		/// <param name="attributes">A dictionary containing HTML attributes</param>
+		/// <returns></returns>
+		INestedGridColumnBuilder<T> HeaderAttributes(IDictionary attributes);
 	}
 }

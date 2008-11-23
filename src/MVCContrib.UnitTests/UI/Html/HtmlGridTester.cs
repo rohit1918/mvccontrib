@@ -359,5 +359,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
+		[Test]
+		public void Should_render_header_attributes()
+		{
+			_people.Add(new Person { Name = "Person 2" });
+			_people.Add(new Person { Name = "Person 3" });
+			_helper.Grid<Person>("people", column => column.For(p => p.Name).HeaderAttributes(new Hash(style=>"width:100%")), sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
+			Assert.That(Writer.ToString(), Is.EqualTo(expected));
+		}
+
 	}
 }
