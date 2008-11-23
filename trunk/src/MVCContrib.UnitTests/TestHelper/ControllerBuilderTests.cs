@@ -93,6 +93,15 @@ namespace MvcContrib.UnitTests.TestHelper
 		}
 
 		[Test]
+		public void When_response_status_is_set_it_should_persist()
+		{
+			var testController = new TestHelperController();
+			builder.InitializeController(testController);
+			testController.HttpContext.Response.Status = "404 Not Found";
+			Assert.AreEqual("404 Not Found", testController.HttpContext.Response.Status);
+		}
+
+		[Test]
 		public void CanCreateControllerWithNoArgs()
 		{
 			builder.QueryString["Variable"] = "Value";
