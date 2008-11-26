@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.Samples.FormHelper.Models;
 using MvcContrib.Pagination;
+using System.Linq;
 namespace MvcContrib.Samples.FormHelper.Controllers
 {
 	public class HomeController : ConventionController
@@ -43,7 +44,7 @@ namespace MvcContrib.Samples.FormHelper.Controllers
 				people.Add(new Person {Id = i, Name = "Person " + i, Gender = i%2 == 0 ? Gender.Male : Gender.Female, RoleId=2 }); 
 			}
 
-			ViewData["people"] = people.AsPagination(page.GetValueOrDefault(1), 10);
+			ViewData["people"] = people.AsQueryable().AsPagination(page.GetValueOrDefault(1), 10);
 			return View();
 		}
 	}
