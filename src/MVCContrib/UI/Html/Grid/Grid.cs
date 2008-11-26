@@ -25,6 +25,8 @@ namespace MvcContrib.UI.Html.Grid
 		private const string Pagination_Prev_Text_Key = "prev";
 		private const string Pagination_Next_Text_Key = "next";
 		private const string Pagination_Last_Text_Key = "last";
+		private const string Sort_Query_Column_Name = "sort";
+		private const string Sort_Query_Direction_Name = "sdir";
 
 		private string _paginationFormat = "Showing {0} - {1} of {2} ";
 		private string _paginationSingleFormat = "Showing {0} of {1} ";
@@ -33,6 +35,8 @@ namespace MvcContrib.UI.Html.Grid
 		private string _paginationNext = "next";
 		private string _paginationLast = "last";
 		private string _pageQueryName = "page";
+		private string _sortQueryColName = "sort";
+		private string _sortQueryDirName = "sdir";
 
 		/// <summary>
 		/// Custom HTML attributes.
@@ -145,10 +149,38 @@ namespace MvcContrib.UI.Html.Grid
 				_pageQueryName = HtmlAttributes[Page_Query_Name_Text_Key] as string;
 				HtmlAttributes.Remove(Page_Query_Name_Text_Key);
 			}
+
+			if (HtmlAttributes.Contains(Sort_Query_Column_Name))
+			{
+				_sortQueryColName = HtmlAttributes[Sort_Query_Column_Name] as string;
+				HtmlAttributes.Remove(Sort_Query_Column_Name);
+			}
+
+			if (HtmlAttributes.Contains(Sort_Query_Direction_Name))
+			{
+				_sortQueryDirName = HtmlAttributes[Sort_Query_Direction_Name] as string;
+				HtmlAttributes.Remove(Sort_Query_Direction_Name);
+			}
+
+			var pagination = Items as IPagination;
+			if (pagination != null)
+			{
+				if(!string.IsNullOrEmpty(pagination.QueryKey))
+				{
+					_pageQueryName += "_" + pagination.QueryKey;
+					_sortQueryColName += "_" + pagination.QueryKey;
+					_sortQueryDirName += "_" + pagination.QueryKey;
+				}
+			}
 		}
 
-		protected override void RenderHeaderCellEnd()
+		protected override void RenderHeaderCellEnd(GridColumn<T> column)
 		{
+			var sortable = Items as ISortable;
+			if (sortable != null && column.DoNotSort == false)
+			{
+				RenderText("</a>");
+			} 
 			RenderText("</th>");
 		}
 
@@ -158,8 +190,31 @@ namespace MvcContrib.UI.Html.Grid
 			if (attrs.Length > 0)
 				attrs = " " + attrs;
 
-			RenderText(string.Format("<th{0}>", attrs));
+			var sortable = Items as ISortable;
+			if (sortable != null && column.DoNotSort == false)
+			{
+				bool selectedColumn = sortable.SortColumn == column.DataMemberName;
+				string cssClass = "sortable";
+				if (selectedColumn)
+					cssClass += " sortable_selected " + (sortable.SortDescending ? "sortable_selected_desc" : "sortable_selected_asc");
+				RenderText(string.Format("<th{0} class=\"" + cssClass + "\">", attrs)); 
+				bool dir = selectedColumn ? !sortable.SortDescending : false;
+				string href = CreateSortHref(column.DataMemberName, dir);
+				RenderText("<a href=\"" + href + "\">");
+			}
+			else
+			{
+				RenderText(string.Format("<th{0}>", attrs));
+			}
 		}
+
+		protected virtual string CreateSortHref(string column, bool dir)
+		{
+			string queryString = CreateQueryString(Context.Request.QueryString, _pageQueryName, _sortQueryColName, _sortQueryDirName);
+			string filePath = Context.Request.FilePath;
+			return string.Format("{0}?{1}={2}&amp;{3}={4}{5}", filePath, _sortQueryColName, column, _sortQueryDirName, dir, queryString);
+		}
+
 
 		protected override void RenderRowStart(bool isAlternate)
 		{
@@ -200,7 +255,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected override void RenderGridStart()
 		{
-			string attrs = BuildHtmlAttributes(this.HtmlAttributes);
+			string attrs = BuildHtmlAttributes(HtmlAttributes);
 			if (attrs.Length > 0)
 				attrs = " " + attrs;
 
@@ -302,18 +357,19 @@ namespace MvcContrib.UI.Html.Grid
 		/// <returns></returns>
 		protected virtual string CreatePageLink(int pageNumber, string text)
 		{
-			string queryString = CreateQueryString(Context.Request.QueryString);
+			string queryString = CreateQueryString(Context.Request.QueryString, _pageQueryName);
 			string filePath = Context.Request.FilePath;
 			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, _pageQueryName, pageNumber, queryString, text);
 		}
 
-		protected virtual string CreateQueryString(NameValueCollection values)
+
+		protected virtual string CreateQueryString(NameValueCollection values, params string [] exclude)
 		{
 			var builder = new StringBuilder();
 
 			foreach(string key in values.Keys)
 			{
-				if(key == "page") //Don't re-add any existing 'page' variable to the querystring - this will be handled in CreatePageLink.
+				if(exclude.Contains(key)) //these variables are excluded
 				{
 					continue;
 				}

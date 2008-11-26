@@ -186,11 +186,9 @@ namespace MvcContrib.UI.Html.Grid
 						continue;
 					}
 
-					RenderHeaderCellStart(column);				
-
+					RenderHeaderCellStart(column);
 					RenderText(column.Name);
-
-					RenderHeaderCellEnd();
+					RenderHeaderCellEnd(column);
 				}
 			}
 
@@ -241,7 +239,7 @@ namespace MvcContrib.UI.Html.Grid
 			}
 		}
 
-		protected abstract void RenderHeaderCellEnd();
+		protected abstract void RenderHeaderCellEnd(GridColumn<T> column);
 		protected abstract void RenderHeaderCellStart(GridColumn<T> column);
 		protected abstract void RenderRowStart(bool isAlternate);
 		protected abstract void RenderRowEnd();

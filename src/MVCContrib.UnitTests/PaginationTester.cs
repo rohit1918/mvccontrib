@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using MvcContrib.UI.Html.Grid;
 using NUnit.Framework;
 using System.Collections.Generic;
 using MvcContrib.Pagination;
@@ -37,13 +38,25 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void Should_execute_query()
 		{
-			var strings = new List<string> { "First", "Second", "Third", "Fourth" };
+			var strings = new List<string> { "First", "Second", "Third", "Fourth" }.AsQueryable();
 			var pagination = strings.AsPagination(1, 2);
 			Assert.That(pagination.TotalItems, Is.EqualTo(4));
 			Assert.That(pagination.TotalPages, Is.EqualTo(2));
 			Assert.That(pagination.PageNumber, Is.EqualTo(1));
 			Assert.That(pagination.Count(), Is.EqualTo(2)); 
 		}
+
+		[Test]
+		public void Should_create_pagination_from_grid_params()
+		{
+			var strings = new List<string> { "First", "Second", "Third", "Fourth" };
+			var pagination = strings.AsPagination(new GridParams { PageNumber = 1, PageSize = 2, TotalItems = 4 });
+			Assert.That(pagination.TotalItems, Is.EqualTo(4));
+			Assert.That(pagination.TotalPages, Is.EqualTo(2));
+			Assert.That(pagination.PageNumber, Is.EqualTo(1));
+			Assert.That(pagination.Count(), Is.EqualTo(4));
+		}
+
 
 		[Test]
 		public void FirstItem_should_return_index_of_first_item_in_current_page()
@@ -56,7 +69,7 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void LastItem_should_return_index_of_last_item_in_current_page()
 		{
-			var strings = new List<string> { "First", "Second", "Third", "Fourth" };
+			var strings = new List<string> { "First", "Second", "Third", "Fourth" }.AsQueryable();
 			var pagination = strings.AsPagination(1, 2);
 			Assert.That(pagination.LastItem, Is.EqualTo(2));
 		}
