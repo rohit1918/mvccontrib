@@ -30,6 +30,13 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 		[Test]
+		public void Should_keep_original_name_in_DataMemberName()
+		{
+			_builder.For(p => p.DateOfBirth);
+			Assert.That(_builder[0].DataMemberName, Is.EqualTo("DateOfBirth"));
+		}
+
+		[Test]
 		public void Should_identify_column_name_from_expression_and_not_split_pascal_casing()
 		{
 			_builder.For(p => p.DateOfBirth).DoNotSplit();
@@ -66,6 +73,16 @@ namespace MvcContrib.UnitTests.UI.Html
 
 			Assert.That(_builder[0].Encode, Is.EqualTo(true));
 			Assert.That(_builder[1].Encode, Is.EqualTo(false));
+		}
+
+		[Test]
+		public void Calling_DoNotSort_should_set_DoNotSort_to_true()
+		{
+			_builder.For(p => p.Name);
+			_builder.For(p => p.Name).DoNotSort();
+
+			Assert.That(_builder[0].DoNotSort, Is.EqualTo(false));
+			Assert.That(_builder[1].DoNotSort, Is.EqualTo(true));
 		}
 
 		[Test]

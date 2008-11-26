@@ -18,14 +18,17 @@ namespace MvcContrib.UI.Html.Grid
 		{
 			Name = string.Empty;
 			Encode = true;
+			DoNotSort = false;
 		}
 
 		/// <summary>
 		/// Delegate that will be invoked on each item in the in the datasource in order to obtain the current item's value.
 		/// </summary>
-		public Func<T, object> ColumnDelegate {get; set; }
+		public Func<T, object> ColumnDelegate { get; set; }
 
 		private string _name;
+		private string _dataMemberName;
+
 
 		/// <summary>
 		/// Name of the column
@@ -44,6 +47,17 @@ namespace MvcContrib.UI.Html.Grid
 			set { _name = value; }
 		}
 
+		///<summary>
+		/// The name of the datamember in the delegate supplied to generate this column. Used for column sorting.
+		///</summary>
+		public string DataMemberName
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(_dataMemberName) ? _dataMemberName : _name;
+			}
+			set { _dataMemberName = value; }
+		}
 		/// <summary>
 		/// Custom format for the cell output.
 		/// </summary>
@@ -72,6 +86,11 @@ namespace MvcContrib.UI.Html.Grid
 		/// Whether to HTML-Encode the output (default is true).
 		/// </summary>
 		public bool Encode { get; set; }
+
+		/// <summary>
+		/// Whether this column can be sorted (default true for ISortable collections)
+		/// </summary>
+		public bool DoNotSort { get; set; }
 
 		/// <summary>
 		/// The attributs to apply to the header of the column.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -255,7 +256,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(1, 2));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=2\">last</a></span></div>";
 			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -266,7 +267,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(2, 2));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(2, 2));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1\">first</a> | <a href=\"Test.mvc?page=1\">prev</a> | next | last</span></div>";
 			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -278,7 +279,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
 			_context.Request.QueryString.Add("a", "b");
-			AddToViewData("pagedPeople", _people.AsPagination(2, 2));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(2, 2));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1&amp;a=b\">first</a> | <a href=\"Test.mvc?page=1&amp;a=b\">prev</a> | next | last</span></div>";
 			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -289,7 +290,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 1));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(1, 1));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
 			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -320,7 +321,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(1, 2));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 - 2 av 3 </span><span class='paginationRight'>första | föregående | <a href=\"Test.mvc?page=2\">nästa</a> | <a href=\"Test.mvc?page=2\">sista</a></span></div>";
 			_helper.Grid<Person>("pagedPeople", new Hash(paginationFormat => "Visar {0} - {1} av {2} ", first => "första", prev => "föregående", next => "nästa", last => "sista") ,column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -353,7 +354,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(1, 2));
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?my_page=2\">next</a> | <a href=\"Test.mvc?my_page=2\">last</a></span></div>";
 			_helper.Grid<Person>("pagedPeople", new Hash(page => "my_page"), column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -368,6 +369,69 @@ namespace MvcContrib.UnitTests.UI.Html
 			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
+
+		[Test]
+		public void Should_render_with_pagination_with_grid_arams()
+		{
+			var gridParams = new GridParams();
+			gridParams.PageNumber = 1;
+			gridParams.PageSize = 2;
+			_people.Add(new Person { Name = "Person2" });
+			_people.Add(new Person { Name = "Person 3" });
+			AddToViewData("pagedPeople", _people.AsQueryable().AsPagination(gridParams));
+			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=2\">last</a></span></div>";
+			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().EndsWith(expected));
+		}
+
+
+		[Test]
+		public void Should_render_sortable_when_asSortable()
+		{
+			AddToViewData("people_sortable", _people.AsSortable(1, null, false));
+			string expected = "<table class=\"grid\"><thead><tr><th class=\"sortable\"><a href=\"Test.mvc?sort=Name&amp;sdir=False\">Name</a></th></tr></thead>";
+			_helper.Grid<Person>("people_sortable", column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().StartsWith(expected));
+		}
+
+		[Test]
+		public void Should_render_normally_when_DoNotSort_sortable_when_asSortable()
+		{
+			AddToViewData("people_sortable", _people.AsSortable(1, null, false));
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead>";
+			_helper.Grid<Person>("people_sortable", column => column.For(p => p.Name).DoNotSort());
+			Assert.That(Writer.ToString().StartsWith(expected));
+		}
+
+		[Test]
+		public void Should_change_css_class_when_selected()
+		{
+			AddToViewData("people_sortable", _people.AsSortable(1, "Name", false));
+			string expected = "<table class=\"grid\"><thead><tr><th class=\"sortable sortable_selected sortable_selected_asc\"><a href=\"Test.mvc?sort=Name&amp;sdir=True\">Name</a></th></tr></thead>";
+			_helper.Grid<Person>("people_sortable", column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().StartsWith(expected));
+		}
+
+		[Test]
+		public void Should_render_sortable_with_custom_sort_name()
+		{
+			AddToViewData("people_sortable", _people.AsQueryable().AsSortable(1, null, false));
+			string expected = "<table class=\"grid\"><thead><tr><th class=\"sortable\"><a href=\"Test.mvc?custom_sort=Name&amp;custom_sdir=False\">Name</a></th></tr></thead>";
+			_helper.Grid<Person>("people_sortable", new Hash(sort => "custom_sort", sdir => "custom_sdir"), column => column.For(p => p.Name)); 
+			Assert.That(Writer.ToString().StartsWith(expected));
+		}
+
+		[Test]
+		public void Should_render_sortable_with_query_key()
+		{
+			var gridParams = new GridParams();
+			gridParams.QueryKey = "asdf";
+			AddToViewData("people_sortable", _people.AsSortable(gridParams));
+			string expected = "<table class=\"grid\"><thead><tr><th class=\"sortable\"><a href=\"Test.mvc?sort_asdf=Name&amp;sdir_asdf=False\">Name</a></th></tr></thead>";
+			_helper.Grid<Person>("people_sortable", column => column.For(p => p.Name));
+			Assert.That(Writer.ToString().StartsWith(expected));
+		}
+
 
 	}
 }
