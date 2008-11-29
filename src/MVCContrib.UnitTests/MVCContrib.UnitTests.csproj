@@ -232,7 +232,6 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
-    <Compile Include="SortableTester.cs" />
     <Compile Include="SparkViewEngine\SparkViewFactoryTester.cs" />
     <Compile Include="SparkViewEngine\ViewSourceLoaderAdapterTester.cs" />
     <Compile Include="SubControllerTester.cs" />
@@ -253,7 +252,6 @@
     <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
     <Compile Include="UI\Html\FormHelperTester.cs" />
     <Compile Include="UI\Html\GridColumnBuilderTester.cs" />
-    <Compile Include="UI\Html\GridParamsBinderTester.cs" />
     <Compile Include="UI\Html\HtmlGridTester.cs" />
     <Compile Include="UI\Html\HtmlHelperTests.cs" />
     <Compile Include="UI\Html\InputElementListTester.cs" />

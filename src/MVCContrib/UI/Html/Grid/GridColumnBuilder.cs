@@ -71,12 +71,6 @@ namespace MvcContrib.UI.Html.Grid
 			return this;
 		}
 
-		public INestedGridColumnBuilder<T> DoNotSort()
-		{
-			currentColumn.DoNotSort = true;
-			return this;
-		}
-
 		public IExpressionColumnBuilder<T> For(Expression<Func<T, object>> expression)
 		{
 			currentColumn = new GridColumn<T>
@@ -89,13 +83,12 @@ namespace MvcContrib.UI.Html.Grid
 			return this;
 		}
 
-		public INestedGridColumnBuilder<T> For(Expression<Func<T, object>> expression, string name)
+		public INestedGridColumnBuilder<T> For(Func<T, object> func, string name)
 		{
 			currentColumn = new GridColumn<T>
 			                	{
 			                		Name = name,
-									DataMemberName = ExpressionToName(expression),
-									ColumnDelegate = expression.Compile(),
+			                		ColumnDelegate = func,
 			                		DoNotSplit = true
 			                	};
 			columns.Add(currentColumn);

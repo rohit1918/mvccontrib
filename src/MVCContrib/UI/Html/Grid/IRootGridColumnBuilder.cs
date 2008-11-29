@@ -18,10 +18,10 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// Uses a lambda expression to specify which property the column should be rendered for.
 		/// </summary>
-		/// <param name="expression">Lambda expression for the property.</param>
+		/// <param name="func">Lambda expression for the property.</param>
 		/// <param name="name">Custom column heading.</param>
 		/// <returns>A Column builder.</returns>
-		INestedGridColumnBuilder<T> For(Expression<Func<T, object>> expression, string name);
+		INestedGridColumnBuilder<T> For(Func<T, object> func, string name);
 		/// <summary>
 		/// Specifies a string representation of a property name for which a column should be created. 
 		/// Using this approach will resort to using reflection to obtain the property value.
