@@ -44,10 +44,5 @@ namespace MvcContrib.UI.Html.Grid
 		/// <param name="attributes">A dictionary containing HTML attributes</param>
 		/// <returns></returns>
 		INestedGridColumnBuilder<T> HeaderAttributes(IDictionary attributes);
-		/// <summary>
-		/// By default, all columns allow sorting if the collection is ISortable, use to turn off sorting for this column
-		/// </summary>
-		/// <returns></returns>
-		INestedGridColumnBuilder<T> DoNotSort();
 	}
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace MvcContrib.Pagination
 {
@@ -41,11 +40,6 @@ namespace MvcContrib.Pagination
 		/// Whether there are pages after the current page.
 		/// </summary>
 		bool HasNextPage { get; }
-
-		///<summary>
-		/// A uniqie key for query string parameters for this grid
-		///</summary>
-		string QueryKey { get; }
 	}
 
 

@@ -2,59 +2,48 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using MvcContrib.UI.Html.Grid;
 
 namespace MvcContrib.Pagination
 {
 	/// <summary>
-	/// Uses a collection of objects, assuming that the paging has already occurred
+	/// Executes an IQueryable in order to created a paged set of objects.
+	/// The query is not executed until the LazyPagination is enumerated or one of its properties is invoked.
+	/// The results of the query are cached.
 	/// </summary>
 	/// <typeparam name="T">Type of objects in the collection.</typeparam>
-	public class EnumerablePagination<T> : IPagination<T>
+	public class LazyPagination<T> : IPagination<T>
 	{
 		/// <summary>
 		/// Default page size.
 		/// </summary>
 		public const int DefaultPageSize = 20;
-		protected IList<T> results;
-		protected int totalItems;
-
+		private IList<T> results;
+		private int totalItems;
+		public int PageSize { get; private set; }
 		/// <summary>
 		/// The query to execute.
 		/// </summary>
-		public IEnumerable<T> Collection { get; protected set; }
-		public int PageNumber { get; protected set; }
-		public int PageSize { get; protected set; }
+		public IQueryable<T> Query { get; private set; }
+		public int PageNumber { get; private set; }
+
+
 		/// <summary>
-		/// Creates a new instance of the <see cref="QueryablePagination{T}"/> class.
+		/// Creates a new instance of the <see cref="LazyPagination{T}"/> class.
 		/// </summary>
-		/// <param name="collection">The collection of items.</param>
+		/// <param name="query">The query to page.</param>
 		/// <param name="pageNumber">The current page number.</param>
 		/// <param name="pageSize">Number of items per page.</param>
-		public EnumerablePagination(IEnumerable<T> collection, int pageNumber, int pageSize)
+		public LazyPagination(IQueryable<T> query, int pageNumber, int pageSize)
 		{
 			PageNumber = pageNumber;
 			PageSize = pageSize;
-			Collection = collection;
-			totalItems = collection.Count();
-		}
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="QueryablePagination{T}"/> class.
-		/// </summary>
-		/// <param name="collection">The collection of items.</param>
-		/// <param name="gridParams">An initialized GridParams from the request</param>
-		public EnumerablePagination(IEnumerable<T> collection, GridParams gridParams)
-			: this(collection, gridParams.PageNumber, gridParams.PageSize)
-		{
-			QueryKey = gridParams.QueryKey;
-			if (gridParams.TotalItems != null)
-				totalItems = gridParams.TotalItems.Value;
+			Query = query;
 		}
 
 		IEnumerator<T> IEnumerable<T>.GetEnumerator()
 		{
 			TryExecuteQuery();
+
 			foreach (var item in results)
 			{
 				yield return item;
@@ -62,11 +51,26 @@ namespace MvcContrib.Pagination
 		}
 
 		/// <summary>
-		/// Does nothing for the collection pagination class, used for the queryable pagination
+		/// Executes the query if it has not already been executed.
 		/// </summary>
-		protected virtual void TryExecuteQuery()
+		protected void TryExecuteQuery()
 		{
-			results = Collection.ToList();
+			//Results is not null, means query has already been executed.
+			if (results != null)
+				return;
+
+			totalItems = Query.Count();
+			results = ExecuteQuery();
+		}
+
+		/// <summary>
+		/// Calls Queryable.Skip/Take to perform the pagination.
+		/// </summary>
+		/// <returns>The paged set of results.</returns>
+		protected virtual IList<T> ExecuteQuery()
+		{
+			int numberToSkip = (PageNumber - 1) * PageSize;
+			return Query.Skip(numberToSkip).Take(PageSize).ToList();
 		}
 
 		public IEnumerator GetEnumerator()
@@ -114,12 +118,6 @@ namespace MvcContrib.Pagination
 		{
 			get { return PageNumber < TotalPages; }
 		}
-
-		public virtual string QueryKey
-		{
-			get;
-			protected set;
-		}
-
 	}
+
 }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -110,14 +110,8 @@
     <Compile Include="Filters\PostOnlyAttribute.cs" />
     <Compile Include="ISubController.cs" />
     <Compile Include="MetaData\CachedControllerDescriptor.cs" />
-    <Compile Include="Pagination\EnumerableSortable.cs" />
-    <Compile Include="Pagination\QueryablePagination.cs" />
-    <Compile Include="Pagination\QueryableSortable.cs" />
-    <Compile Include="Pagination\SortableHelper.cs" />
-    <Compile Include="UI\Html\Grid\GridParams.cs" />
     <Compile Include="Pagination\IPagination.cs" />
-    <Compile Include="Pagination\ISortable.cs" />
-    <Compile Include="Pagination\EnumerablePagination.cs" />
+    <Compile Include="Pagination\LazyPagination.cs" />
     <Compile Include="Pagination\PaginationHelper.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -167,7 +161,6 @@
     <Compile Include="UI\Html\Grid\GridColumnBuilder.cs" />
     <Compile Include="UI\Html\Grid\GridHelper.cs" />
     <Compile Include="UI\Html\Grid\Grid.cs" />
-    <Compile Include="UI\Html\Grid\GridParamsBinder.cs" />
     <Compile Include="UI\Html\Grid\IExpressionColumnBuilder.cs" />
     <Compile Include="UI\Html\Grid\IGridSections.cs" />
     <Compile Include="UI\Html\Grid\INestedGridColumnBuilder.cs" />
