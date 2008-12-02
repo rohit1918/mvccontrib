@@ -91,6 +91,12 @@
             </summary>
             <returns>Description that shows this is a cached MessageConsumer</returns>
         </member>
+        <member name="P:Spring.Messaging.Nms.Connections.CachedMessageConsumer.Target">
+            <summary>
+            Gets the target MessageConsumer, the consumer we are 'wrapping'
+            </summary>
+            <value>The target MessageConsumer.</value>
+        </member>
         <member name="E:Spring.Messaging.Nms.Connections.CachedMessageConsumer.Listener">
             <summary>
             Register for message events. 
@@ -205,7 +211,7 @@
         </member>
         <member name="P:Spring.Messaging.Nms.Connections.CachedMessageProducer.Target">
             <summary>
-            Gets the target MessageProducer, the procder we are 'wrapping'
+            Gets the target MessageProducer, the producer we are 'wrapping'
             </summary>
             <value>The target MessageProducer.</value>
         </member>
@@ -503,6 +509,12 @@
             Gets the target, for testing purposes.
             </summary>
             <value>The target.</value>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Connections.CachedSession.RequestTimeout">
+            <summary>
+            Gets or sets the request timeout.
+            </summary>
+            <value>The request timeout.</value>
         </member>
         <member name="P:Spring.Messaging.Nms.Connections.CachedSession.Transacted">
             <summary>
@@ -2987,7 +2999,7 @@
             <para>The default implementation first checks the JMS Reply-To
             Destination of the supplied request; if that is not <code>null</code>
             it is returned; if it is <code>null</code>, then the configured
-            <see cref="M:Spring.Messaging.Nms.Listener.Adapter.MessageListenerAdapter.ResolveDefaultResponseDestination(Apache.NMS.ISession)"/> default response destination}
+            <see cref="P:Spring.Messaging.Nms.Listener.Adapter.MessageListenerAdapter.DefaultResponseDestination"/> default response destination
             is returned; if this too is <code>null</code>, then an
             <see cref="T:Apache.NMS.InvalidDestinationException"/>is thrown.
             </para>
@@ -3652,6 +3664,7 @@
             MessageConsumer.Listener method to create concurrent
             MessageConsumers for the specified listeners.
             </summary>
+            <author>Mark Pollack</author>
         </member>
         <member name="F:Spring.Messaging.Nms.Listener.SimpleMessageListenerContainer.DEFAULT_RECOVERY_INTERVAL">
             <summary>
@@ -3813,6 +3826,32 @@
             </returns>
             <throws>MessageConversionException in case of conversion failure </throws>
         </member>
+        <member name="T:Spring.Messaging.Nms.Support.Converter.ITypeMapper">
+            <summary>
+            Provides a layer of indirection when adding the 'type' of the object as a message property.
+            </summary>
+            <author>Mark Pollack</author>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.ITypeMapper.FromType(System.Type)">
+            <summary>
+            Convert from a type to a string.
+            </summary>
+            <param name="typeOfObjectToConvert">The type of object to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.ITypeMapper.ToType(System.String)">
+            <summary>
+            Convert from a string to a type
+            </summary>
+            <param name="typeId">The type id.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.ITypeMapper.TypeIdFieldName">
+            <summary>
+            Gets the name of the field in the message that has type information..
+            </summary>
+            <value>The name of the type id field.</value>
+        </member>
         <member name="T:Spring.Messaging.Nms.Support.Converter.MessageConversionException">
             <summary> Thrown by IMessageConverter implementations when the conversion
             of an object to/from a Message fails.
@@ -3904,7 +3943,7 @@
             </returns>
             <throws>  NMSException if thrown by NMS methods </throws>
         </member>
-        <member name="M:Spring.Messaging.Nms.Support.Converter.SimpleMessageConverter.CreateMessageForSerializable(System.Runtime.Serialization.ISerializable,Apache.NMS.ISession)">
+        <member name="M:Spring.Messaging.Nms.Support.Converter.SimpleMessageConverter.CreateMessageForSerializable(System.Object,Apache.NMS.ISession)">
             <summary> Create a NMS IObjectMessage for the given Serializable object.</summary>
             <param name="objectToSend">the Serializable object to convert
             </param>
@@ -3944,6 +3983,124 @@
             </summary>
             <param name="message">The message to convert.</param>
             <returns>The resulting serializable object.</returns>
+        </member>
+        <member name="T:Spring.Messaging.Nms.Support.Converter.TypeMapper">
+            <summary>
+            Provides a layer of indirection when adding the 'type' of the object as a message property.
+            </summary>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.TypeMapper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Messaging.Nms.Support.Converter.TypeMapper"/> [ERROR: invalid expression DeclaringTypeKind].
+            </summary>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.TypeMapper.FromType(System.Type)">
+            <summary>
+            Convert from a type to a string.
+            </summary>
+            <param name="typeOfObjectToConvert">The type of object to convert.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.TypeMapper.ToType(System.String)">
+            <summary>
+            Convert from a string to a type
+            </summary>
+            <param name="typeId">The type id.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.TypeMapper.AfterPropertiesSet">
+            <summary>
+            Afters the properties set.
+            </summary>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.TypeMapper.IdTypeMapping">
+            <summary>
+            Gets or sets the id type mapping.
+            </summary>
+            <value>The id type mapping.</value>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.TypeMapper.TypeIdFieldName">
+            <summary>
+            Gets the name of the field in the message that has type information..
+            </summary>
+            <value>The name of the type id field.</value>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.TypeMapper.DefaultHashtableClass">
+            <summary>
+            Sets the default hashtable class.
+            </summary>
+            <value>The default hashtable class.</value>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.TypeMapper.DefaultNamespace">
+            <summary>
+            Gets or sets the default namespace.
+            </summary>
+            <value>The default namespace.</value>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.TypeMapper.DefaultAssemblyName">
+            <summary>
+            Gets or sets the default name of the assembly.
+            </summary>
+            <value>The default name of the assembly.</value>
+        </member>
+        <member name="T:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter">
+            <summary>
+            Convert an object via XML serialization for sending via an ITextMessage
+            </summary>
+            <author>Mark Pollack</author>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.ToMessage(System.Object,Apache.NMS.ISession)">
+            <summary>
+            Convert a .NET object to a NMS Message using the supplied session
+            to create the message object.
+            </summary>
+            <param name="objectToConvert">the object to convert</param>
+            <param name="session">the Session to use for creating a NMS Message</param>
+            <returns>the NMS Message</returns>
+            <throws>NMSException if thrown by NMS API methods </throws>
+            <throws>MessageConversionException in case of conversion failure </throws>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.GetXmlString(System.Object)">
+            <summary>
+            Gets the XML string for an object
+            </summary>
+            <param name="objectToConvert">The object to convert.</param>
+            <returns>XML string</returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.FromMessage(Apache.NMS.IMessage)">
+            <summary>
+            Convert from a NMS Message to a .NET object.
+            </summary>
+            <param name="messageToConvert">the message to convert</param>
+            <returns>the converted .NET object</returns>
+            <throws>MessageConversionException in case of conversion failure </throws>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.GetTargetType(Apache.NMS.ITextMessage)">
+            <summary>
+            Gets the type of the target given the message.
+            </summary>
+            <param name="message">The message.</param>
+            <returns>Type of the target</returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.UTF8ByteArrayToString(System.Byte[])">
+            <summary>
+            Converts a byte array to a UTF8 string.
+            </summary>
+            <param name="characters">The characters.</param>
+            <returns>UTF8 string</returns>
+        </member>
+        <member name="M:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.StringToUTF8ByteArray(System.String)">
+            <summary>
+            Converts a UTF8 string to a byte array
+            </summary>
+            <param name="xmlString">The p XML string.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Spring.Messaging.Nms.Support.Converter.XmlMessageConverter.TypeMapper">
+            <summary>
+            Sets the type mapper.
+            </summary>
+            <value>The type mapper.</value>
         </member>
         <member name="T:Spring.Messaging.Nms.Support.Destinations.DynamicDestinationResolver">
              <summary> Simple DestinationResolver implementation resolving destination names

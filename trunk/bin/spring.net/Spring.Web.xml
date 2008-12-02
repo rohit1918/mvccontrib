@@ -345,6 +345,11 @@
             </summary>
             <author>Erich Eichinger</author>
         </member>
+        <member name="F:Spring.Context.Support.WebSupportModule.CURRENTHANDLER_OBJECTDEFINITION">
+            <summary>
+            Identifies the Objectdefinition used for the current IHttpHandler instance in TLS
+            </summary>
+        </member>
         <member name="M:Spring.Context.Support.WebSupportModule.#cctor">
             <summary>
             For webapplications always
@@ -360,9 +365,50 @@
             Registers this module for all events required by the Spring.Web framework
             </summary>
         </member>
+        <member name="M:Spring.Context.Support.WebSupportModule.OnConfigureHandler(System.Object,System.EventArgs)">
+            <summary>
+             Configures the current IHttpHandler as specified by <see cref="T:Spring.Web.Support.PageHandlerFactory"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Context.Support.WebSupportModule.ConfigureHandler(System.Web.HttpContext,System.Web.IHttpHandler,Spring.Context.IConfigurableApplicationContext,System.String,System.Boolean)">
+            <summary>
+            Configures the specified handler instance using the object definition <paramref name="name"/>.
+            </summary>
+            <remarks>
+            TODO
+            </remarks>
+            <param name="context"></param>
+            <param name="handler"></param>
+            <param name="applicationContext"></param>
+            <param name="name"></param>
+            <param name="isContainerManaged"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Context.Support.WebSupportModule.SetCurrentHandlerConfiguration(Spring.Context.IConfigurableApplicationContext,System.String,System.Boolean)">
+            <summary>
+             TODO
+            </summary>
+            <param name="applicationContext"></param>
+            <param name="name"></param>
+            <param name="isContainerManaged"></param>
+        </member>
+        <member name="M:Spring.Context.Support.WebSupportModule.ConfigureHandlerNow(System.Web.IHttpHandler,Spring.Context.IConfigurableApplicationContext,System.String,System.Boolean)">
+            <summary>
+             TODO
+            </summary>
+            <param name="handler"></param>
+            <param name="applicationContext"></param>
+            <param name="name"></param>
+            <param name="isContainerManaged"></param>
+        </member>
         <member name="M:Spring.Context.Support.WebSupportModule.Dispose">
             <summary>
             Disposes this instance
+            </summary>
+        </member>
+        <member name="T:Spring.Context.Support.WebSupportModule.HandlerConfigurationMetaData">
+            <summary>
+            Holds the handler configuration information.
             </summary>
         </member>
         <member name="T:Spring.Core.IO.WebResource">
@@ -1386,6 +1432,14 @@
             ASPX <paramref name="pageUrl"/> not actually existing).
             </exception>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.WebObjectUtils.CreateHandler(System.Web.HttpContext,System.String)">
+            <summary>
+            Creates the raw handler instance without any exception handling
+            </summary>
+            <param name="ctx"></param>
+            <param name="pageUrl"></param>
+            <returns></returns>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.WebObjectUtils.GetPageType(System.String)">
             <summary>
             Returns the <see cref="T:System.Type"/> of the ASPX page
@@ -1566,58 +1620,6 @@
             Empties a data slot with the specified name.
             </summary>
             <param name="name">The name of the data slot to empty.</param>
-        </member>
-        <member name="T:Spring.Util.ControlAccessor">
-            <summary>
-            Helper class for easier access to reflected Control members.
-            </summary>
-            <author>Erich Eichinger</author>
-        </member>
-        <member name="M:Spring.Util.ControlAccessor.#ctor(System.Web.UI.Control)">
-            <summary>
-            Instantiates a new Accessor.
-            </summary>
-            <param name="control"></param>
-        </member>
-        <member name="M:Spring.Util.ControlAccessor.GetTarget">
-            <summary>
-            Returns the underlying ControlCollection instance.
-            </summary>
-        </member>
-        <member name="P:Spring.Util.ControlAccessor.Controls">
-            <summary>
-            Gets or sets the ControlCollection of the target without accessing the target's <see cref="P:System.Web.UI.Control.Controls"/> property.
-            </summary>
-            <remarks>
-            If the underlying collection is null, it is automatically created.
-            </remarks>
-        </member>
-        <member name="T:Spring.Util.ControlCollectionAccessor">
-            <summary>
-            Helper class for easier access to reflected ControlCollection members.
-            </summary>
-            <author>Erich Eichinger</author>
-        </member>
-        <member name="M:Spring.Util.ControlCollectionAccessor.GetTarget">
-            <summary>
-            Returns the underlying ControlCollection instance.
-            </summary>
-        </member>
-        <member name="M:Spring.Util.ControlCollectionAccessor.GetTargetType">
-            <summary>
-            Returns the type of the underlying ControlCollection instance.
-            </summary>
-        </member>
-        <member name="M:Spring.Util.ControlCollectionAccessor.#ctor(System.Web.UI.ControlCollection)">
-            <summary>
-            Creates a new Accessor for a given <see cref="T:System.Web.UI.ControlCollection"/>.
-            </summary>
-            <param name="controls">The <see cref="T:System.Web.UI.ControlCollection"/> to be accessed</param>
-        </member>
-        <member name="P:Spring.Util.ControlCollectionAccessor.Owner">
-            <summary>
-            Gets or sets the owner of the underlying ControlCollection.
-            </summary>
         </member>
         <member name="T:Spring.Util.HttpContextSwitch">
             <summary>
@@ -1949,94 +1951,26 @@
             <param name="url">the absolute url</param>
             <returns>the url relative to the given basePath</returns>
         </member>
-        <member name="T:Spring.Web.Process.IProcess">
+        <member name="M:Spring.Util.WebUtils.GetLogicalParent(System.Web.UI.Control)">
             <summary>
-            An interface that different process implementations need to support.
+             Returns the 'logical' parent of the specified control. Technically when dealing with masterpages and control hierarchy,
+             the order goes controls-&gt;masterpage-&gt;page. But one often wants the more logical order controls-&gt;page-&gt;masterpage.
             </summary>
+            <param name="control">the control, who's parent is to be determined.</param>
+            <returns>the logical parent or <c>null</c> if the top of the hierarchy is reached.</returns>
+             <exception cref="T:System.ArgumentNullException">if <paramref name="control"/> is <c>null</c></exception>
         </member>
-        <member name="M:Spring.Web.Process.IProcess.Start(System.String)">
+        <member name="M:Spring.Util.WebUtils.UrlEncode(System.String)">
             <summary>
-            Starts the process.
+            Encode <paramref name="value"/> for use in URLs.
             </summary>
-            <param name="referrerUrl">Referrer URL.</param>
-        </member>
-        <member name="M:Spring.Web.Process.IProcess.SetView(System.String)">
-            <summary>
-            Resolves view for the specified view name.
-            </summary>
-            <param name="viewName">Name of the view to go to.</param>
-        </member>
-        <member name="M:Spring.Web.Process.IProcess.End">
-            <summary>
-            Ends the process.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Process.IProcess.Id">
-            <summary>
-            Unique ID of this process instance.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Process.IProcess.Controller">
-            <summary>
-            Controller for the component.
-            </summary>
+            <param name="value">the text to be encoded.</param>
+            <returns>the url-encoded <paramref name="value"/></returns>
             <remarks>
-            Process controller will be shared by all the views 
-            that belong to this process.
+            This method may be used outside of a current request. If executed within a 
+            request, <see cref="M:System.Web.HttpServerUtility.UrlEncode(System.String)"/> is used.
+            <see cref="M:System.Web.HttpUtility.UrlEncode(System.String)"/> will be used otherwise.
             </remarks>
-        </member>
-        <member name="P:Spring.Web.Process.IProcess.CurrentView">
-            <summary>
-            Gets the name of the current view.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Process.IProcess.ViewChanged">
-            <summary>
-            Gets the the flag that indicates if selected view 
-            has changed during the current request.
-            </summary>
-        </member>
-        <member name="T:Spring.Web.Process.IProcessAware">
-            <summary>
-            Interface that should be implemented by all <see cref="T:System.Web.IHttpHandler"/>s
-            that want to be aware of the <see cref="T:Spring.Web.Process.IProcess"/> they belong to. 
-            </summary>
-            <author>Aleksandar Seovic</author>
-        </member>
-        <member name="P:Spring.Web.Process.IProcessAware.Process">
-            <summary>
-            Gets or sets a process instance.
-            </summary>
-        </member>
-        <member name="T:Spring.Web.Process.ProcessManager">
-            <summary>
-            Singleton that keeps track of all active process instances.
-            </summary>
-            <author>Aleksandar Seovic</author>
-        </member>
-        <member name="M:Spring.Web.Process.ProcessManager.#ctor">
-            <summary>
-            Creates singleton instance.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Process.ProcessManager.RegisterProcess(Spring.Web.Process.IProcess)">
-            <summary>
-            Registers process instance.
-            </summary>
-            <param name="process">Process instance to register.</param>
-        </member>
-        <member name="M:Spring.Web.Process.ProcessManager.GetProcess(System.String)">
-            <summary>
-            Returns process with the specified ID.
-            </summary>
-            <param name="id">Process ID to use for lookup.</param>
-            <returns>Process with the specified ID, or <c>null</c> if process with that ID is not registered.</returns>
-        </member>
-        <member name="M:Spring.Web.Process.ProcessManager.UnregisterProcess(System.String)">
-            <summary>
-            Unregisters process with the specified ID.
-            </summary>
-            <param name="id">ID of the process to unregister.</param>
         </member>
         <member name="T:Spring.Web.Providers.ConfigurableSqlMembershipProvider">
             <summary>
@@ -4053,6 +3987,18 @@
             </remarks>
             <author>Aleksandar Seovic</author>
         </member>
+        <member name="F:Spring.Web.Services.WebServiceExporter.s_activeExporters">
+            <summary>
+            Holds EXPORTER_ID to WebServiceExporter instance mappings.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.GetTarget(System.String)">
+            <summary>
+             Returns the target object instance exported by the WebServiceExporter identified by <see cref="F:Spring.Web.Services.WebServiceExporter.EXPORTER_ID"/>.
+            </summary>
+            <param name="exporterId"></param>
+            <returns></returns>
+        </member>
         <member name="F:Spring.Web.Services.WebServiceExporter.objectName">
             <summary>
             The name of the object in the factory.
@@ -4070,9 +4016,24 @@
         </member>
         <member name="M:Spring.Web.Services.WebServiceExporter.#ctor">
             <summary>
-            Creates a new instance of the
-            <see cref="T:Spring.Web.Services.WebServiceExporter"/> class.
+            Creates a new instance of the <see cref="T:Spring.Web.Services.WebServiceExporter"/> class.
             </summary>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.Finalize">
+            <summary>
+            Cleanup before GC
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.Dispose">
+            <summary>
+            Disconnect the remote object from the registered remoting channels.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.Dispose(System.Boolean)">
+            <summary>
+            Stops exporting the object identified by <see cref="P:Spring.Web.Services.WebServiceExporter.TargetName"/>.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="M:Spring.Web.Services.WebServiceExporter.GetObject">
             <summary>
@@ -4246,13 +4207,23 @@
             Implements constructors for the proxy class.
             </summary>
             <remarks>
-            This implementation generates a constructor 
-            that gets instance of the target object using 
-            <see cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String)"/>.
+            This implementation generates an empty noop default constructor 
             </remarks>
             <param name="builder">
             The <see cref="T:System.Type"/> builder to use.
             </param>
+        </member>
+        <member name="M:Spring.Web.Services.WebServiceExporter.WebServiceProxyTypeBuilder.PushTarget(System.Reflection.Emit.ILGenerator)">
+            <summary>
+            Generates the IL instructions that pushes 
+            the target instance on which calls should be delegated to.
+            </summary>
+            <remarks>
+            This will cause the builder to generate 
+            <c>WebServiceExporter.GetTarget( EXPORTER_ID ).&lt;targetmethod&gt;(..)</c>
+            for each exported method.
+            </remarks>
+            <param name="il">The IL generator to use.</param>
         </member>
         <member name="T:Spring.Web.Services.WebServiceHandlerFactory">
             <summary>
@@ -4289,16 +4260,26 @@
             </remarks>
             <author>Aleksandar Seovic</author>
         </member>
+        <member name="F:Spring.Web.Support.AbstractHandlerFactory._reusableHandlerCache">
+            <summary>
+            Holds all handlers having <see cref="P:System.Web.IHttpHandler.IsReusable"/> == true.
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Support.AbstractHandlerFactory.s_simpleHandlerFactory">
+            <summary>
+            Holds an instance of the instrinsic System.Web.UI.SimpleHandlerFactory
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Support.AbstractHandlerFactory.Log">
+            <summary>
+            Holds the shared logger for all factories.
+            </summary>
+        </member>
         <member name="M:Spring.Web.Support.AbstractHandlerFactory.#ctor">
             <summary>
             Creates a new instance of the
             <see cref="T:Spring.Web.Support.AbstractHandlerFactory"/> class.
             </summary>
-            <remarks>
-            <p>
-            This is an abstract class and as such provides no public constructors.
-            </p>
-            </remarks>
         </member>
         <member name="M:Spring.Web.Support.AbstractHandlerFactory.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)">
             <summary>
@@ -4312,7 +4293,7 @@
             The HTTP method of the request.
             </param>
             <param name="url">The request URL.</param>
-            <param name="pathTranslated">
+            <param name="physicalPath">
             The physical path of the requested resource.
             </param>
             <returns>
@@ -4329,6 +4310,45 @@
             The <see cref="T:System.Web.IHttpHandler"/> object to release.
             </param>
         </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.CreateHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            Create a handler instance for the given URL.
+            </summary>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <returns>A handler instance for processing the current request.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.GetCheckedApplicationContext(System.String)">
+            <summary>
+            Get the application context instance corresponding to the given absolute url and checks 
+            it for <see cref="T:Spring.Context.IConfigurableApplicationContext"/> contract and being not null.
+            </summary>
+            <param name="url">the absolute url</param>
+            <exception cref="T:System.ArgumentException">
+            if no context is found
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            if context is not an <see cref="T:Spring.Context.IConfigurableApplicationContext"/>
+            </exception>
+            <returns>teh application context instance corresponding to the given absolute url.</returns>
+            <remarks>
+            Calls <see cref="M:Spring.Web.Support.AbstractHandlerFactory.GetContext(System.String)"/> to obtain a context instance.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.GetContext(System.String)">
+            <summary>
+            Returns the unchecked, raw application context for the given virtual path.
+            </summary>
+            <param name="virtualPath">the virtual path to get the context for.</param>
+            <returns>the context or null.</returns>
+            <remarks>
+            Subclasses may override this method to change the context source. 
+            By default, <see cref="M:Spring.Context.Support.WebApplicationContext.GetContext(System.String)"/> is used for obtaining context instances.
+            </remarks>
+        </member>
         <member name="M:Spring.Web.Support.AbstractHandlerFactory.FindWebObjectDefinition(System.String,Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
             <summary>
             DO NOT USE - this is subject to change!
@@ -4343,191 +4363,42 @@
             Resolve an object definition by url.
             </remarks>
         </member>
+        <member name="M:Spring.Web.Support.AbstractHandlerFactory.ApplyDependencyInjectionInfrastructure(System.Web.IHttpHandler,Spring.Context.IApplicationContext)">
+            <summary>
+            Apply dependency injection stuff on the handler.
+            </summary>
+            <param name="handler">the handler to be intercepted</param>
+            <param name="applicationContext">the context responsible for configuring this handler</param>
+        </member>
+        <member name="P:Spring.Web.Support.AbstractHandlerFactory.SimpleHandlerFactory">
+            <summary>
+            Get the global instance of System.Web.UI.SimpleHandlerFactory
+            </summary>
+            <remarks>
+            This factory is a plaform version agnostic way to instantiate 
+            arbitrary handlers without the need for additional reflection.
+            </remarks>
+        </member>
         <member name="T:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition">
             <summary>
-            DO NOT USE - this is subject to change!
+            Holds a named <see cref="T:Spring.Objects.Factory.Config.IObjectDefinition"/>
             </summary>
+            <author>Erich Eichinger</author>
         </member>
         <member name="M:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.#ctor(System.String,Spring.Objects.Factory.Config.IObjectDefinition)">
             <summary>
-            DO NOT USE
+            Creates a new name/objectdefinition pair.
             </summary>
         </member>
         <member name="P:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.Name">
             <summary>
-            DO NOT USE
+            Get the name of the attached object definition
             </summary>
         </member>
         <member name="P:Spring.Web.Support.AbstractHandlerFactory.NamedObjectDefinition.ObjectDefinition">
             <summary>
-            DO NOT USE
+            Get the <see cref="T:Spring.Objects.Factory.Config.IObjectDefinition"/>.
             </summary>
-        </member>
-        <member name="T:Spring.Web.Support.AbstractProcessHandler">
-            <summary>
-            An abstract base class that defines common behavior for different process implementations.
-            </summary>
-            <author>Aleksandar Seovic</author>
-        </member>
-        <member name="T:Spring.Web.Support.ISharedStateAware">
-            <summary>
-            This interface should be implemented by <see cref="T:System.Web.IHttpHandler"/>s that want to 
-            have access to the shared state for the handler.
-            </summary>
-            <remarks>
-            <p>
-            Shared state is very useful if you have data that needs to be shared by all instances
-            of the same page (or other <see cref="T:System.Web.IHttpHandler"/>). 
-            </p>
-            <p>
-            For example, <see cref="T:Spring.Web.UI.Page"/> class implements this interface, which allows  
-            each page derived from it to cache localizalization resources and parsed data binding 
-            expressions only once and then reuse the cached values, regardless of how many instances 
-            of the page are created.
-            </p>
-            </remarks>
-        </member>
-        <member name="P:Spring.Web.Support.ISharedStateAware.SharedState">
-            <summary>
-            Gets or sets the <see cref="T:System.Collections.IDictionary"/> that should be used
-            to store shared state for the <see cref="T:System.Web.IHttpHandler"/>.
-            </summary>
-            <value>
-            The <see cref="T:System.Collections.IDictionary"/> that should be used
-            to store shared state for the <see cref="T:System.Web.IHttpHandler"/>.
-            </value>
-        </member>
-        <member name="F:Spring.Web.Support.AbstractProcessHandler.ProcessIdParamName">
-            <summary>
-            Parameter name that is used for process ID.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.#ctor">
-            <summary>
-            Creates instance of the process and registers it with the <see cref="T:Spring.Web.Process.ProcessManager"/>.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.Start(System.String)">
-            <summary>
-            Starts the process.
-            </summary>
-            <param name="url">Process URL.</param>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.SetView(System.String)">
-            <summary>
-            Resolves and sets the view for the specified view name.
-            </summary>
-            <param name="viewName">Name of the view to go to.</param>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.End">
-            <summary>
-            Ends the process by unregistering it from the <see cref="T:Spring.Web.Process.ProcessManager"/>. 
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.NavigateToStartView">
-            <summary>
-            Method that needs to be implemented by specific process implementations
-            in order to navigate to the first view in the process.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.NavigateToCurrentView">
-            <summary>
-            Method that needs to be implemented by specific process implementations
-            in order to navigate to the current view.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.AbstractProcessHandler.System#Web#IHttpHandler#ProcessRequest(System.Web.HttpContext)">
-            <summary>
-            Processes the request by delegating to appropriate view, which could be
-            another process.
-            </summary>
-            <param name="context"></param>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.Id">
-            <summary>
-            Unique ID of this component instance.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.Parent">
-            <summary>
-            Gets or sets the parent process.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.SharedState">
-            <summary>
-            Returns a thread-safe dictionary that contains state that is shared by 
-            all views of this component.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.Controller">
-            <summary>
-            Controller for the component.
-            </summary>
-            <remarks>
-            Process controller will be shared by all the views 
-            that belong to this component.
-            </remarks>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.DefaultView">
-            <summary>
-            Default view for the component.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.CurrentView">
-            <summary>
-            Gets the name of the current view.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.ViewChanged">
-            <summary>
-            Gets the the flag that indicates if selected view 
-            has changed during the current request.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.Views">
-            <summary>
-            Gets a map of process views.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.ProcessUrl">
-            <summary>
-            Gets the process URL.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.System#Web#IHttpHandler#IsReusable">
-            <summary>
-            Returns true because this wrapper handler can be reused.
-            Actual page is instantiated at the beginning of the ProcessRequest method.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.AbstractProcessHandler.ApplicationContext">
-            <summary>
-            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
-            object runs in.
-            </summary>
-            <value></value>
-            <remarks>
-            <p>
-            Normally this call will be used to initialize the object.
-            </p>
-            <p>
-            Invoked after population of normal object properties but before an
-            init callback such as
-            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
-            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
-            or a custom init-method. Invoked after the setting of any
-            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
-            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
-            property.
-            </p>
-            </remarks>
-            <exception cref="T:Spring.Context.ApplicationContextException">
-            In the case of application context initialization errors.
-            </exception>
-            <exception cref="T:Spring.Objects.ObjectsException">
-            If thrown by any application context methods.
-            </exception>
-            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
         </member>
         <member name="T:Spring.Web.Support.ContextMonitor">
             <summary>
@@ -4559,6 +4430,58 @@
             </summary>
             <value><c>True</c> if this handler is reusable, <c>False</c> otherwise.</value>
         </member>
+        <member name="T:Spring.Web.Support.ControlAccessor">
+            <summary>
+            Helper class for easier access to reflected Control members.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.ControlAccessor.#ctor(System.Web.UI.Control)">
+            <summary>
+            Instantiates a new Accessor.
+            </summary>
+            <param name="control"></param>
+        </member>
+        <member name="M:Spring.Web.Support.ControlAccessor.GetTarget">
+            <summary>
+            Returns the underlying ControlCollection instance.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.ControlAccessor.Controls">
+            <summary>
+            Gets or sets the ControlCollection of the target without accessing the target's <see cref="P:System.Web.UI.Control.Controls"/> property.
+            </summary>
+            <remarks>
+            If the underlying collection is null, it is automatically created.
+            </remarks>
+        </member>
+        <member name="T:Spring.Web.Support.ControlCollectionAccessor">
+            <summary>
+            Helper class for easier access to reflected ControlCollection members.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.ControlCollectionAccessor.GetTarget">
+            <summary>
+            Returns the underlying ControlCollection instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.ControlCollectionAccessor.GetTargetType">
+            <summary>
+            Returns the type of the underlying ControlCollection instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.ControlCollectionAccessor.#ctor(System.Web.UI.ControlCollection)">
+            <summary>
+            Creates a new Accessor for a given <see cref="T:System.Web.UI.ControlCollection"/>.
+            </summary>
+            <param name="controls">The <see cref="T:System.Web.UI.ControlCollection"/> to be accessed</param>
+        </member>
+        <member name="P:Spring.Web.Support.ControlCollectionAccessor.Owner">
+            <summary>
+            Gets or sets the owner of the underlying ControlCollection.
+            </summary>
+        </member>
         <member name="T:Spring.Web.Support.ControlInterceptor">
             <summary>
             Support Class providing a method to ensure a control has been intercepted
@@ -4580,6 +4503,11 @@
             Holds a control.GetType()->IInterceptionStrategy table.
             </summary>
         </member>
+        <member name="F:Spring.Web.Support.ControlInterceptor.s_knownInterceptionStrategies">
+            <summary>
+            Holds well-known Type/Strategy mappings.
+            </summary>
+        </member>
         <member name="M:Spring.Web.Support.ControlInterceptor.EnsureControlIntercepted(Spring.Context.IApplicationContext,System.Web.UI.Control)">
             <summary>
             Ensures, a control has been intercepted to support Web-DI. If not, the control will be intercepted.
@@ -4591,7 +4519,7 @@
             </summary>
             <author>Erich Eichinger</author>
         </member>
-        <member name="M:Spring.Web.Support.IInterceptionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Util.ControlAccessor,Spring.Util.ControlCollectionAccessor)">
+        <member name="M:Spring.Web.Support.IInterceptionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Web.Support.ControlAccessor,Spring.Web.Support.ControlCollectionAccessor)">
             <summary>
             Any implementation must never throw an exception from this method. 
             Instead <c>false</c> must be returned to indicate interception failure.
@@ -4599,6 +4527,421 @@
             <returns>
             <c>true</c>, if interception succeeded. <c>false</c> otherwise.
             </returns>
+        </member>
+        <member name="T:Spring.Web.Support.DefaultHandlerFactory">
+            <summary>
+            SimpleHandlerFactory is used to wrap any arbitrary <see cref="T:System.Web.IHttpHandlerFactory"/> to make it "Spring-aware".
+            </summary>
+            <remarks>
+            By default, an instance of <see cref="T:System.Web.UI.SimpleHandlerFactory"/> is used as underlying factory.    
+            </remarks>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultHandlerFactory.#ctor">
+            <summary>
+            Creates a new instance, using a <see cref="T:System.Web.UI.SimpleHandlerFactory"/> as underlying factory.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultHandlerFactory.#ctor(System.Type)">
+            <summary>
+            Create a new instance, using an instance of <paramref name="innerFactoryType"/> as underlying factory.
+            </summary>
+            <param name="innerFactoryType">a type that implements <see cref="T:System.Web.IHttpHandlerFactory"/></param>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultHandlerFactory.#ctor(System.Web.IHttpHandlerFactory)">
+            <summary>
+            Create a new instance, using <paramref name="innerFactory"/> as underlying factory.
+            </summary>
+            <param name="innerFactory">the factory to be wrapped.</param>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultHandlerFactory.CreateHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            Create a handler instance for the given URL.
+            </summary>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <returns>A handler instance for processing the current request.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultHandlerFactory.ReleaseHandler(System.Web.IHttpHandler)">
+            <summary>
+            Enables a factory to release an existing
+            <see cref="T:System.Web.IHttpHandler"/> instance.
+            </summary>
+            <param name="handler">
+            The <see cref="T:System.Web.IHttpHandler"/> object to release.
+            </param>
+        </member>
+        <member name="T:Spring.Web.Support.DefaultResultFactory">
+            <summary>
+            This result factory implementation creates <see cref="T:Spring.Web.Support.Result"/> instances from a given string representation.
+            </summary>
+            <remarks>
+            For a larger example illustrating the customization of result processing, <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/>.
+            </remarks>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.IResult"/>
+            <seealso cref="T:Spring.Web.Support.Result"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="T:Spring.Web.Support.IResultFactory">
+            <summary>
+            A result factory is responsible for create an <see cref="T:Spring.Web.Support.IResult"/> instance from a given string representation.
+            </summary>
+            <remarks>
+            For a larger example illustrating the customization of result processing, <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/>.
+            </remarks>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.IResult"/>
+            <seealso cref="T:Spring.Web.Support.Result"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.IResultFactory.CreateResult(System.String,System.String)">
+            <summary>
+            Create an <see cref="T:Spring.Web.Support.IResult"/> instance from the given string representation.
+            </summary>
+            <param name="resultMode">the resultMode that caused triggering this factory.</param>
+            <param name="resultText">the remainder string to be interpreted and converted into an <see cref="T:Spring.Web.Support.IResult"/>.</param>
+            <returns>An <see cref="T:Spring.Web.Support.IResult"/> instance. Must never be null!</returns>
+            <remarks>
+            Note to implementors: This method must never return null. Instead exceptions should be thrown.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultFactory.CreateResult(System.String,System.String)">
+            <summary>
+            Create a new <see cref="T:Spring.Web.Support.Result"/> from the specified <paramref name="resultText"/>.
+            </summary>
+            <param name="resultMode">the result mode.</param>
+            <param name="resultText">the string representation of the result.</param>
+            <returns>the <see cref="T:Spring.Web.Support.Result"/> instance created from <paramref name="resultText"/>.</returns>
+        </member>
+        <member name="T:Spring.Web.Support.DefaultResultWebNavigator">
+            <summary>
+            The default implementation of the <see cref="T:Spring.Web.Support.IResultWebNavigator"/> interface.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.IResultWebNavigator">
+            <summary>
+            Defines the interface, all hierarchical navigators capable of 
+            dealing with <see cref="T:Spring.Web.Support.IResult"/> instances must implement.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.IHierarchicalWebNavigator">
+            <summary>
+            An extension of <see cref="T:Spring.Web.Support.IWebNavigator"/> that must be implemented by 
+            navigators that can be part of a hierarchy.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="T:Spring.Web.Support.IWebNavigator">
+            <summary>
+            Any component capable of navigating and participating in the navigation logic must implement this interface.
+            </summary>
+            <seealso cref="T:Spring.Web.Support.IHierarchicalWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.IResultWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.IWebNavigator.CanNavigateTo(System.String)">
+            <summary>
+            Determines, whether this navigator or one of its parents can 
+            navigate to the destination specified in <paramref name="destination"/>.
+            </summary>
+            <param name="destination">the name of the navigation destination</param>
+            <returns>true, if this navigator can navigate to the destination.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.IWebNavigator.NavigateTo(System.String,System.Object,System.Object)">
+            <summary>
+            Instruct the navigator to navigate to the specified navigation destination.
+            </summary>
+            <param name="destination">the destination to navigate to.</param>
+            <param name="sender">the sender that issued the navigation request.</param>
+            <param name="context">the context to evaluate this navigation request in.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">if this navigator cannot navigate to the specified <paramref name="destination"/> (<see cref="M:Spring.Web.Support.IWebNavigator.CanNavigateTo(System.String)"/>).</exception>
+        </member>
+        <member name="M:Spring.Web.Support.IWebNavigator.GetResultUri(System.String,System.Object,System.Object)">
+            <summary>
+            Creates an uri poiniting to the specified navigation destination.
+            </summary>
+            <param name="destination">the destination to navigate to.</param>
+            <param name="sender">the sender that issued the navigation request.</param>
+            <param name="context">the context to evaluate this navigation request in.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">if this navigator cannot navigate to the specified <paramref name="destination"/> (<see cref="M:Spring.Web.Support.IWebNavigator.CanNavigateTo(System.String)"/>).</exception>
+        </member>
+        <member name="P:Spring.Web.Support.IHierarchicalWebNavigator.ParentNavigator">
+            <summary>
+            If any, get the parent navigator of the current navigator instance. May be null.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.IResultWebNavigator.Results">
+            <summary>
+            Contains the mappings of navigation destination names to <see cref="T:Spring.Web.Support.IResult"/> 
+            instances or their corresponding textual representations.<br/>
+            See <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/> for more information on how textual representations are resolved.
+            </summary>
+            <seealso cref="T:Spring.Web.Support.IWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.IHierarchicalWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultFactory"/>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.#ctor">
+            <summary>
+            Creates and initializes a new instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.#ctor(Spring.Web.Support.IWebNavigator,System.Collections.IDictionary,System.Boolean)">
+            <summary>
+            Creates and initializes a new instance.
+            </summary>
+            <param name="parent">the parent of this instance. May be null.</param>
+            <param name="initialResults">a dictionary of result name to result mappings. May be null.</param>
+            <param name="ignoreCase">sets, how this navigator treats case sensitivity of result names</param>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.CreateResultsDictionary(System.Collections.IDictionary)">
+            <summary>
+            Create the dictionary instance to be used by this navigator component.
+            </summary>
+            <param name="initialResults">a dictionary of intitial result mappings</param>
+            <returns>the dictionary, that will be used by this navigator.</returns>
+            <remarks>
+            Implementors may override this for creating custom dictionaries.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.CanNavigateTo(System.String)">
+            <summary>
+            Determines, whether this navigator or one of its parents can 
+            navigate to the destination specified in <paramref name="destination"/>.
+            </summary>
+            <param name="destination">the name of the navigation destination</param>
+            <returns>true, if this navigator can navigate to the destination.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.NavigateTo(System.String,System.Object,System.Object)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="destination">Name of the result.</param>
+            <param name="sender">the instance that issued this request</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.GetResultUri(System.String,System.Object,System.Object)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="sender">the instance that issued this request</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result</param>
+            <returns>A redirect url string.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.GetResult(System.String)">
+            <summary>
+            Obtain the named result instance from the <see cref="P:Spring.Web.Support.DefaultResultWebNavigator.Results"/> dictionary. If necessary, the actual representation of the result 
+            will be converted to an <see cref="T:Spring.Web.Support.IResult"/> instance by this method.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.HandleUnknownResultType(System.String,System.Object)">
+            <summary>
+            Handle an unknown result object.
+            </summary>
+            <param name="name">the name of the result</param>
+            <param name="val">the result instance obtained from the <see cref="P:Spring.Web.Support.DefaultResultWebNavigator.Results"/> dictionary</param>
+            <remarks>
+            By default, this method throws a <see cref="T:Spring.Core.TypeMismatchException"/>.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.DefaultResultWebNavigator.HandleUnknownDestination(System.String,System.Object,System.Object)">
+            <summary>
+            Handle an unknown destination.
+            </summary>
+            <param name="destination">the destination that could not be resolved.</param>
+            <param name="sender">the sender that issued the request</param>
+            <param name="context">the context to be used for evaluating any dynamic parts of the destination</param>
+            <returns>the uri as being returned from <see cref="M:Spring.Web.Support.DefaultResultWebNavigator.GetResultUri(System.String,System.Object,System.Object)"/></returns>
+            <remarks>
+            By default, this method throws a <see cref="T:System.ArgumentOutOfRangeException"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.Support.DefaultResultWebNavigator.IsCaseSensitive">
+            <summary>
+            Indicates, whether result names are treated case sensitive by this navigator.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.DefaultResultWebNavigator.ParentNavigator">
+            <summary>
+            Get/Set the parent of this navigator.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">if this navigator already has a parent.</exception>
+        </member>
+        <member name="P:Spring.Web.Support.DefaultResultWebNavigator.Results">
+            <summary>
+            Gets or sets map of result names to <see cref="T:Spring.Web.Support.IResult"/> instances or their textual representations. 
+            See <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/> for information on parsing textual <see cref="T:Spring.Web.Support.IResult"/> representations.
+            </summary>
+            <seealso cref="T:Spring.Web.Support.IResult"/>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.IResultFactory"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultFactory"/>
+        </member>
+        <member name="T:Spring.Web.Support.HandlerMap">
+            <summary>
+            Holds a list of url <see cref="T:System.Text.RegularExpressions.Regex"/> expressions and their corresponding names of responsible <see cref="T:System.Web.IHttpHandlerFactory"/> 
+            or <see cref="T:System.Web.IHttpHandler"/> objects managed by the container.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.Add(System.String,System.String)">
+            <summary>
+            Maps the specified url pattern expression to an object name denoting a <see cref="T:System.Web.IHttpHandlerFactory"/> or <see cref="T:System.Web.IHttpHandler"/> object.
+            </summary>
+            <param name="urlPattern">the string pattern (see conform to <see cref="T:System.Text.RegularExpressions.Regex"/> syntax)</param>
+            <param name="handlerObjectName">an object name denoting the spring-managed handler definition</param>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.Add(System.Text.RegularExpressions.Regex,System.String)">
+            <summary>
+            Maps the specified url pattern expression to an object name denoting a <see cref="T:System.Web.IHttpHandlerFactory"/> or <see cref="T:System.Web.IHttpHandler"/> object.
+            </summary>
+            <param name="urlPattern">the url pattern</param>
+            <param name="handlerObjectName">an object name denoting the spring-managed handler definition</param>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.MapPath(System.String)">
+            <summary>
+            Maps the <paramref name="virtualPath"/> to a handler object name by matching against all registered patterns.
+            </summary>
+            <param name="virtualPath">the virtual path</param>
+            <returns>the object name</returns>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Add(System.Object,System.Object)">
+            <summary>
+            Add a new mapping
+            </summary>
+            <param name="key">an url pattern string</param>
+            <param name="value">a handler object name string</param>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.Clear">
+            <summary>
+            Clear the mapping table.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.CopyTo(System.Array,System.Int32)">
+            <summary>
+            Copies all <see cref="T:Spring.Web.Support.HandlerMapEntry"/> entries to the specified array.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Get an enumerator for iterating over the list of registered mappings.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Contains(System.Object)">
+            <summary>
+            Not supported by this implementation.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#GetEnumerator">
+            <summary>
+            Not supported by this implementation.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Remove(System.Object)">
+            <summary>
+            Not supported by this implementation.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Item(System.Object)">
+            <summary>
+            Add or replace a mapping
+            </summary>
+            <remarks>
+            Getter will throw a <see cref="T:System.NotSupportedException"/>!
+            </remarks>
+            <param name="key">an url pattern string</param>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.IsReadOnly">
+            <summary>
+            Always returns false.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.IsFixedSize">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.IDictionary"></see> object has a fixed size.
+            </summary>
+            
+            <returns>
+            true if the <see cref="T:System.Collections.IDictionary"></see> object has a fixed size; otherwise, false.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.Count">
+            <summary>
+            Get the number of registered mappings.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.SyncRoot">
+            <summary>
+            Gets an object that can be used to synchronize access.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.IsSynchronized">
+            <summary>
+            Always returns false.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Keys">
+            <summary>
+            Not supported by this implementation.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMap.System#Collections#IDictionary#Values">
+            <summary>
+            Not supported by this implementation.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.HandlerMapEntry">
+            <summary>
+            Holds pairs of (url pattern, handler object name).
+            </summary>
+            <seealso cref="T:Spring.Web.Support.HandlerMap"/>
+            <seealso cref="T:Spring.Web.Support.MappingHandlerFactory"/>
+            <seealso cref="T:Spring.Web.Support.MappingHandlerFactoryConfigurer"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMapEntry.#ctor(System.String,System.String)">
+            <summary>
+            Create a new instance.
+            </summary>
+            <param name="urlPattern"></param>
+            <param name="handlerObjectName"></param>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMapEntry.#ctor(System.Text.RegularExpressions.Regex,System.String)">
+            <summary>
+             Create a new instance
+            </summary>
+            <param name="urlPattern"></param>
+            <param name="handlerObjectName"></param>
+        </member>
+        <member name="M:Spring.Web.Support.HandlerMapEntry.ToString">
+            <summary>
+            Return a string representation of this entry.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMapEntry.UrlPattern">
+            <summary>
+             Get the url pattern
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.HandlerMapEntry.HandlerObjectName">
+            <summary>
+            Get the handler object name
+            </summary>
         </member>
         <member name="T:Spring.Web.Support.InterceptControlCollectionOwnerStrategy">
             <summary>
@@ -4623,7 +4966,7 @@
             Holds a table of already known intercepted ControlCollection types
             </summary>
         </member>
-        <member name="M:Spring.Web.Support.InterceptControlCollectionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Util.ControlAccessor,Spring.Util.ControlCollectionAccessor)">
+        <member name="M:Spring.Web.Support.InterceptControlCollectionStrategy.Intercept(Spring.Context.IApplicationContext,Spring.Web.Support.ControlAccessor,Spring.Web.Support.ControlCollectionAccessor)">
             <summary>
             Intercepts the given <see cref="T:System.Web.UI.ControlCollection"/> by dynamically deriving 
             the original type and let it implement <see cref="T:Spring.Web.Support.ISupportsWebDependencyInjection"/>.
@@ -4637,6 +4980,41 @@
             <summary>
             Holds a reference to the static(!) callback-method to be used during generation of intercepted ControlCollection-Types
             </summary>
+        </member>
+        <member name="T:Spring.Web.Support.IResult">
+            <summary>
+            An <see cref="T:Spring.Web.Support.IResult"/> encapsulates concrete navigation logic. Usually executing a 
+            result will invoke <see cref="M:System.Web.HttpResponse.Redirect(System.String)"/> or <see cref="M:System.Web.HttpServerUtility.Transfer(System.String,System.Boolean)"/>.
+            </summary>
+            <remarks>
+            For a larger example illustrating the customization of result processing <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/>.
+            </remarks>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.IResult"/>
+            <seealso cref="T:Spring.Web.Support.Result"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <seealso cref="M:Spring.Web.UI.Page.SetResult(System.String,System.Object)"/>
+            <seealso cref="M:Spring.Web.UI.UserControl.SetResult(System.String,System.Object)"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.IResult.Navigate(System.Object)">
+            <summary>
+            Execute the result logic within the given <paramref name="context"/>.
+            </summary>
+            <param name="context">the context to evaluate this request in.</param>
+        </member>
+        <member name="M:Spring.Web.Support.IResult.GetRedirectUri(System.Object)">
+            <summary>
+            Returns an url representation of the result logic within the given <paramref name="context"/>.
+            </summary>
+            <param name="context">the context to evaluate this request in.</param>
+            <returns>the url corresponding to the result instance.</returns>
+            <remarks>
+            The returned url is not necessarily fully qualified nor absolute. Returned urls may be relative to the
+            given context.<br/>
+            To produce a client-usable url, consider applying e.g. <see cref="M:System.Web.UI.Control.ResolveUrl(System.String)"/> or 
+            <see cref="M:System.Web.UI.Control.ResolveClientUrl(System.String)"/> before writing the result url to the response.
+            </remarks>
         </member>
         <member name="T:Spring.Web.Support.ISupportsWebDependencyInjection">
             <summary>
@@ -4706,6 +5084,175 @@
         <member name="P:Spring.Web.Support.ISupportsWebDependencyInjection.DefaultApplicationContext">
             <summary>
             Holds the default <see cref="T:Spring.Context.IApplicationContext"/> instance to be used during injecting a control-tree.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.IWebNavigable">
+            <summary>
+            Any component participating in the navigation infrastructure must implement this interface.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="P:Spring.Web.Support.IWebNavigable.WebNavigator">
+            <summary>
+            Return the <see cref="T:Spring.Web.Support.IWebNavigator"/> associated with this component.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.LocalResourceManager">
+            <summary>
+            This ResourceManager implementation swallows <see cref="T:System.Resources.MissingManifestResourceException"/>s and 
+            simply returns <c>null</c> from <see cref="M:System.Resources.ResourceManager.GetObject(System.String,System.Globalization.CultureInfo)"/> if no resource is found.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.LocalResourceManager.#cctor">
+            <summary>
+            Avoid beforeFieldInit
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.LocalResourceManager.ResourceProviderResourceManager.GetObject(System.String)">
+            <summary>
+            Returns the value of the specified <see cref="T:System.Object"></see> resource.
+            </summary>
+            <returns>
+            The value of the resource localized for the caller's current culture settings. If a match is not possible, null is returned. The resource value can be null.
+            </returns>
+            <param name="name">The name of the resource to get. </param>
+            <exception cref="T:System.ArgumentNullException">The name parameter is null. </exception>
+        </member>
+        <member name="M:Spring.Web.Support.LocalResourceManager.ResourceProviderResourceManager.GetObject(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the value of the <see cref="T:System.Object"></see> resource localized for the specified culture.
+            </summary>
+            <returns>
+            The value of the resource, localized for the specified culture. If a "best match" is not possible, null is returned.
+            </returns>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"></see> object that represents the culture for which the resource is localized. Note that if the resource is not localized for this culture, the lookup will fall back using the culture's <see cref="P:System.Globalization.CultureInfo.Parent"></see> property, stopping after checking in the neutral culture.If this value is null, the <see cref="T:System.Globalization.CultureInfo"></see> is obtained using the culture's <see cref="P:System.Globalization.CultureInfo.CurrentUICulture"></see> property. </param>
+            <param name="name">The name of the resource to get. </param>
+            <exception cref="T:System.ArgumentNullException">The name parameter is null. </exception>
+        </member>
+        <member name="M:Spring.Web.Support.LocalResourceManager.LocalResXAssemblyResourceManager.GetObject(System.String)">
+            <summary>
+            Returns the value of the specified <see cref="T:System.Object"></see> resource.
+            </summary>
+            <returns>
+            The value of the resource localized for the caller's current culture settings. If a match is not possible, null is returned. The resource value can be null.
+            </returns>
+            <param name="name">The name of the resource to get. </param>
+            <exception cref="T:System.ArgumentNullException">The name parameter is null. </exception>
+        </member>
+        <member name="M:Spring.Web.Support.LocalResourceManager.LocalResXAssemblyResourceManager.GetObject(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            Gets the value of the <see cref="T:System.Object"></see> resource localized for the specified culture.
+            </summary>
+            <returns>
+            The value of the resource, localized for the specified culture. If a "best match" is not possible, null is returned.
+            </returns>
+            <param name="culture">The <see cref="T:System.Globalization.CultureInfo"></see> object that represents the culture for which the resource is localized. Note that if the resource is not localized for this culture, the lookup will fall back using the culture's <see cref="P:System.Globalization.CultureInfo.Parent"></see> property, stopping after checking in the neutral culture.If this value is null, the <see cref="T:System.Globalization.CultureInfo"></see> is obtained using the culture's <see cref="P:System.Globalization.CultureInfo.CurrentUICulture"></see> property. </param>
+            <param name="name">The name of the resource to get. </param>
+            <exception cref="T:System.ArgumentNullException">The name parameter is null. </exception>
+        </member>
+        <member name="T:Spring.Web.Support.MappingHandlerFactory">
+            <summary>
+            MappingHandleryFactory allows for full Spring-managed &lt;httpHandlers&gt; configuration. 
+            It uses regular expressions for url matching.
+            </summary>
+            <remarks>
+            <example>
+            The example below shows, how to map all url requests to spring and let
+            <see cref="T:Spring.Web.Support.MappingHandlerFactory"/> resolve urls to container-managed <see cref="T:System.Web.IHttpHandlerFactory"/> or <see cref="T:System.Web.IHttpHandler"/> objects.
+            <code>
+            // web.config
+            
+            &lt;httpHandlers&gt;
+              &lt;!-- map all requests to spring (just for demo - don't do this at home!) --&gt;
+              &lt;add verb="*" path="*.*" type="Spring.Web.Support.MappingHandlerFactory, Spring.Web" /&gt;
+            &lt;/httpHandlers&gt;
+            
+            // spring-objects.config
+            
+            &lt;object type="Spring.Web.Support.MappingHandlerFactoryConfigurer, Spring.Web"&gt;
+              &lt;property name="HandlerMap"&gt;
+            	  &lt;dictionary&gt;
+            	      &lt;entry key="\.ashx$" value="standardHandlerFactory" /&gt;
+            	      &lt;!-- map any request ending with *.whatever to standardHandlerFactory --&gt;
+            	      &lt;entry key="\.whatever$" value="specialHandlerFactory" /&gt;
+            	  &lt;/dictionary&gt;
+              &lt;/property&gt;
+            &lt;/object&gt;
+            
+            &lt;object name="standardHandlerFactory" type="Spring.Web.Support.DefaultHandlerFactory, Spring.Web" /&gt;
+            
+            &lt;object name="specialHandlerFactory" type="MySpecialHandlerFactoryImpl" /&gt;
+            </code>
+            </example>
+            </remarks>
+            <seealso cref="T:System.Web.IHttpHandlerFactory"/>
+            <seealso cref="T:System.Web.IHttpHandler"/>
+            <seealso cref="P:Spring.Web.Support.MappingHandlerFactory.HandlerMap"/>
+            <seealso cref="T:Spring.Web.Support.MappingHandlerFactoryConfigurer"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="F:Spring.Web.Support.MappingHandlerFactory._handlerWithFactoryTable">
+            <summary>
+            Holds the cache of handler/factory pairs handed out by this factory. This is required 
+            for proper handling of <see cref="M:System.Web.IHttpHandlerFactory.ReleaseHandler(System.Web.IHttpHandler)"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.MappingHandlerFactory.CreateHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            Create a handler instance for the given URL. Will try to find a match of <paramref name="rawUrl"/> onto patterns in <see cref="P:Spring.Web.Support.MappingHandlerFactory.HandlerMap"/>. 
+            If a match is found, delegates the call to the matching <see cref="M:System.Web.IHttpHandlerFactory.GetHandler(System.Web.HttpContext,System.String,System.String,System.String)"/> method.
+            </summary>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <returns>A handler instance for processing the current request.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.MappingHandlerFactory.MapHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String,Spring.Web.Support.HandlerMap,System.Collections.IDictionary)">
+            <summary>
+            Obtains a handler by mapping <paramref name="rawUrl"/> to the list of patterns in <paramref name="handlerMappings"/>.
+            </summary>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <param name="handlerMappings"></param>
+            <param name="handlerWithFactoryTable"></param>
+            <returns>A handler instance for processing the current request.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.MappingHandlerFactory.ReleaseHandler(System.Web.IHttpHandler)">
+            <summary>
+            Enables a factory to release an existing
+            <see cref="T:System.Web.IHttpHandler"/> instance.
+            </summary>
+            <param name="handler">
+            The <see cref="T:System.Web.IHttpHandler"/> object to release.
+            </param>
+        </member>
+        <member name="M:Spring.Web.Support.MappingHandlerFactory.ReleaseHandler(System.Web.IHttpHandler,System.Collections.IDictionary)">
+            <summary>
+            Removes the handler from the handler/factory dictionary and releases the handler.
+            </summary>
+            <param name="handler">the handler to be released</param>
+            <param name="_handlerWithFactoryTable">a dictionary containing (<see cref="T:System.Web.IHttpHandler"/>, <see cref="T:System.Web.IHttpHandlerFactory"/>) entries.</param>
+        </member>
+        <member name="P:Spring.Web.Support.MappingHandlerFactory.HandlerMap">
+            <summary>
+            Holds the global list of mappings from url patterns to handler names.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.MappingHandlerFactoryConfigurer">
+            <summary>
+            Configures <see cref="T:Spring.Web.Support.MappingHandlerFactory"/>.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="P:Spring.Web.Support.MappingHandlerFactoryConfigurer.HandlerMap">
+            <summary>
+            Contains mappings of url patterns to handler objects.
             </summary>
         </member>
         <member name="T:Spring.Web.Support.MimeMediaType">
@@ -4879,7 +5426,7 @@
             </para>
             <para>
             In either case, handlers that implement <see cref="T:Spring.Context.IApplicationContextAware"/>
-            and <see cref="T:Spring.Web.Support.ISharedStateAware"/> will be provided with the references
+            and <see cref="T:Spring.Objects.ISharedStateAware"/> will be provided with the references
             to appropriate Spring.NET application context (based on the request URL) 
             and a <see cref="T:System.Collections.IDictionary"/> that should be used to store the information
             that needs to be shared by all instances of the handler.
@@ -4899,105 +5446,16 @@
             <param name="physicalPath">Translated server path for the page</param>
             <returns>Instance of the IHttpHandler object that should be used to process request.</returns>
         </member>
-        <member name="T:Spring.Web.Support.PageHandlerWrapper">
+        <member name="M:Spring.Web.Support.PageHandlerFactory.CreateHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String)">
             <summary>
-            Wrapper for handlers that do not require <see cref="T:System.Web.SessionState.HttpSessionState"/>.
+            Create a handler instance for the given URL.
             </summary>
-            <remarks>
-            NOTE: This class has to extend System.Web.UI.Page instead of simply 
-            implementing IHttpHandler in order for Server.Transfer to work properly.
-            This in turn requires explicit IHttpHandler implementation in order to
-            override non-virtual methods from the base Page class.
-            </remarks>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandlerWrapper"/> class.
-            </summary>
-            <param name="appContext">Application context instance to retrieve page from.</param>
-            <param name="pageName">Name of the page object to execute.</param>
-            <param name="url">Requested page URL.</param>
-            <param name="path">Translated server path for the page.</param>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.PageHandlerWrapper"/> class.
-            </summary>
-            <param name="appContext">Application context instance to retrieve page from.</param>
-            <param name="pageName">Name of the page object to execute.</param>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.CreatePageInstance">
-            <summary>
-            Creates a page instance corresponding to this handler's url.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.GetOrCreateProcessHandler(System.Web.HttpContext)">
-            <summary>
-            Gets or - if not found - creates a process handler instance.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.ApplyDependencyInjection(System.Web.IHttpHandler)">
-            <summary>
-            Apply dependency injection stuff on the handler.
-            </summary>
-            <param name="handler"></param>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.ApplySharedState(System.Web.IHttpHandler)">
-            <summary>
-            Applies <see cref="P:Spring.Web.Support.PageHandlerWrapper.HandlerState"/> to the given handler if applicable.
-            </summary>
-        </member>
-        <member name="M:Spring.Web.Support.PageHandlerWrapper.CheckIfPageWasRecompiled(System.Web.IHttpHandler)">
-            <summary>
-            Checks, if page has been recompiled. Creates/discards handlerState if necessary.
-            </summary>
-            <param name="handler"></param>
-        </member>
-        <member name="P:Spring.Web.Support.PageHandlerWrapper.SyncRoot">
-            <summary>
-            Use for sync access to this PageHandler instance.
-            </summary>
-        </member>
-        <member name="P:Spring.Web.Support.PageHandlerWrapper.HandlerState">
-            <summary>
-            Gets <see cref="T:System.Collections.IDictionary"/> that contains handler state. 
-            </summary>
-            <remarks>
-            This <see cref="T:System.Collections.IDictionary"/> will be assigned to the <c>SharedState</c>
-            property of <see cref="T:System.Web.IHttpHandler"/> instances that implement
-            <see cref="T:Spring.Web.Support.ISharedStateAware"/> interface.
-            </remarks>
-        </member>
-        <member name="P:Spring.Web.Support.PageHandlerWrapper.System#Web#IHttpHandler#IsReusable">
-            <summary>
-            Returns true because this wrapper handler can be reused.
-            Actual page is instantiated at the beginning of the ProcessRequest method.
-            </summary>
-        </member>
-        <member name="T:Spring.Web.Support.SessionAwarePageHandlerWrapper">
-            <summary>
-            Wrapper for handlers that require <see cref="T:System.Web.SessionState.HttpSessionState"/>.
-            </summary>
-            <remarks>
-            Delays page object instantiation until ProcessRequest is called
-            in order to be able to access session state.
-            </remarks>
-        </member>
-        <member name="M:Spring.Web.Support.SessionAwarePageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandlerWrapper"/> class.
-            </summary>
-            <param name="appContext">Application context instance to retrieve page from.</param>
-            <param name="pageName">Name of the page object to execute.</param>
-            <param name="url">Requested page URL.</param>
-            <param name="path">Translated server path for the page.</param>
-        </member>
-        <member name="M:Spring.Web.Support.SessionAwarePageHandlerWrapper.#ctor(Spring.Context.IApplicationContext,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Web.Support.SessionAwarePageHandlerWrapper"/> class.
-            </summary>
-            <param name="appContext">Application context instance to retrieve page from.</param>
-            <param name="pageName">Name of the page object to execute.</param>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <returns>A handler instance for the current request.</returns>
         </member>
         <member name="T:Spring.Web.Support.Result">
             <summary>
@@ -5075,13 +5533,34 @@
             If the supplied <paramref name="result"/> is <see langword="null"/> or
             contains only whitespace character(s).
             </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">if the result mode is unknown.</exception>
+        </member>
+        <member name="M:Spring.Web.Support.Result.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new instance of the <see cref="T:Spring.Web.Support.Result"/> class.
+            </summary>
+            <remarks>
+            <p>
+            See both the class documentation (<see cref="T:Spring.Web.Support.Result"/>)
+            and the reference documentation for the Spring.Web library for a
+            discussion and examples of what values the supplied <paramref name="result"/>
+            can have.
+            </p>
+            </remarks>
+            <param name="resultMode">The desired result mode. May be null to use default mode.</param>
+            <param name="resultText">The result descriptor (without resultMode prefix!).</param>
+            <exception cref="T:System.ArgumentNullException">
+            If the supplied <paramref name="resultText"/> is <see langword="null"/> or
+            contains only whitespace character(s).
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">if the result mode is unknown.</exception>
         </member>
         <member name="M:Spring.Web.Support.Result.Navigate(System.Object)">
             <summary>
             Navigates to the <see cref="P:Spring.Web.Support.Result.TargetPage"/>
             defined by this result.
             </summary>
-            <param name="page">
+            <param name="context">
             The context object for parameter resolution. This is typically
             a <see cref="T:System.Web.UI.Page"/>.
             </param>
@@ -5091,7 +5570,7 @@
             Performs a server-side transfer to the
             <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this result.
             </summary>
-            <param name="page">
+            <param name="context">
             The context object for parameter resolution. This is typically
             a <see cref="T:System.Web.UI.Page"/>.
             </param>
@@ -5102,7 +5581,7 @@
             Resolves transfer parameters and stores them into <see cref="T:System.Collections.IDictionary"/> instance.
             </summary>
             <param name="contextDictionary"></param>
-            <param name="page"></param>
+            <param name="context"></param>
         </member>
         <member name="M:Spring.Web.Support.Result.DoRedirect(System.Object)">
             <summary>
@@ -5110,7 +5589,7 @@
             <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
             result.
             </summary>
-            <param name="page">
+            <param name="context">
             The context object for parameter resolution. This is typically
             a <see cref="T:System.Web.UI.Page"/>.
             </param>
@@ -5122,9 +5601,45 @@
             <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
             result.
             </summary>
-            <param name="page">
+            <param name="context">
             A redirect url string.
             </param>
+        </member>
+        <member name="M:Spring.Web.Support.Result.BuildUrl(System.String,System.Collections.IDictionary)">
+            <summary>
+            Construct the actual url to be executed or returned.
+            </summary>
+            <param name="resolvedPath">the already evaluated <see cref="P:Spring.Web.Support.Result.TargetPage"/></param>
+            <param name="resolvedParameters">the already evaluated parameters.</param>
+            <returns>the url to be returned by <see cref="M:Spring.Web.Support.Result.GetRedirectUri(System.Object)"/></returns>
+        </member>
+        <member name="M:Spring.Web.Support.Result.BuildUrlParameter(System.Text.StringBuilder,System.String,System.String)">
+            <summary>
+            Append the url parameter to the url being constructed.
+            </summary>
+            <param name="url">the <see cref="T:System.Text.StringBuilder"/> containing the url constructed so far.</param>
+            <param name="key">the parameter key</param>
+            <param name="value">the parameter value</param>
+            <returns>the <see cref="T:System.Text.StringBuilder"/> to use for further url construction.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.Result.ResolveValueIfNecessary(System.Object,System.String)">
+            <summary>
+            Evaluates <paramref name="value"/> within <paramref name="context"/> and returns the evaluation result.
+            </summary>
+            <param name="context">the context to be used for evaluation.</param>
+            <param name="value">the string that might need evaluation</param>
+            <returns>the evaluation result. Unodified <paramref name="value"/> if no evalution occured.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.Result.IsSpELRuntimeExpression(System.String)">
+            <summary>
+            Checks, if value is a SpEL expression <c>${expression}</c> or <c>%{expression}</c>.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.Result.ResolveSpELRuntimeExpressionIfNecessary(System.Object,System.String)">
+            <summary>
+            If <paramref name="value"/> is a SpEL expression (<c>${expression}</c> or <c>%{expression}</c>), evaluates
+            the value against <paramref name="context"/>.
+            </summary>
         </member>
         <member name="M:Spring.Web.Support.Result.ExtractAndSetResultMode(System.String)">
             <summary>
@@ -5149,6 +5664,19 @@
             If the supplied <paramref name="result"/> starts with an illegal
             result mode (see <see cref="T:Spring.Web.Support.ResultMode"/>).
             </exception>
+        </member>
+        <member name="M:Spring.Web.Support.Result.SetResultMode(System.String)">
+            <summary>
+            Set the actual <see cref="P:Spring.Web.Support.Result.Mode"/> from the parsed <paramref name="resultMode"/> string.
+            </summary>
+            <param name="resultMode">the parsed result mode</param>
+        </member>
+        <member name="M:Spring.Web.Support.Result.GetResolvedTargetPage(System.Object)">
+            <summary>
+            Resolves dynamic expression contained in <see cref="P:Spring.Web.Support.Result.TargetPage"/> if any by calling <see cref="M:Spring.Web.Support.Result.ResolveValueIfNecessary(System.Object,System.String)"/>.
+            </summary>
+            <param name="context">the context to be used for evaluating the expression</param>
+            <returns>the evaluated expression</returns>
         </member>
         <member name="M:Spring.Web.Support.Result.ParseParameters(System.String)">
             <summary>
@@ -5199,6 +5727,112 @@
             <summary>
             Indicates, if <see cref="M:System.Web.HttpServerUtility.Transfer(System.String,System.Boolean)"/> should be called with preserverForm='true' | 'false'. Only relevant for ResultMode.TransferXXXX modes.
             </summary>
+        </member>
+        <member name="T:Spring.Web.Support.ResultFactoryRegistry">
+            <summary>
+            A result factory is responsible for create an <see cref="T:Spring.Web.Support.IResult"/> instance from a given string representation.
+            </summary>
+            <remarks>
+            <para>
+            Factories get registered with the <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/> for a certain <i>resultMode</i> string. 
+            <see cref="T:Spring.Web.Support.DefaultResultWebNavigator"/> uses <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/> for converting strings into <see cref="T:Spring.Web.Support.IResult"/> instances
+            implementing the corresponding navigation logic.
+            </para>
+            <para>
+            Result string representations are always of the form:<br/>
+            <c>"&lt;resultmode&gt;:&lt;textual result representation&gt;"</c><br/>
+            Calling <see cref="M:Spring.Web.Support.ResultFactoryRegistry.CreateResult(System.String)"/> on the registry will cause the registry to first extract the leading <c>resultmode</c> to obtain 
+            the corresponding <see cref="T:Spring.Web.Support.IResultFactory"/> instance and handle the actual <see cref="T:Spring.Web.Support.IResult"/> instantiation by delegating to 
+            <see cref="M:Spring.Web.Support.IResultFactory.CreateResult(System.String,System.String)"/>.
+            </para>
+            <example>
+            The following example illustrates the usual flow:
+            <code>
+            class MySpecialResultLogic : IResult
+            {
+              ...
+            }
+            
+            class MySpecialResultLogicFactory : IResultFactory
+            {
+               IResult Create( string mode, string expression ) { /* ... convert 'expression' into 
+            MySpecialResultLogic */ }
+            }
+            
+            // register with global factory
+            ResultFactoryRegistry.RegisterResultFactory( "mySpecialMode", new MySpecialResultLogicFactory );
+            
+            // configure your Results
+            &lt;object type="mypage.aspx"&gt;
+               &lt;property name="Results"&gt;
+                  &lt;dictionary&gt;
+                     &lt;entry key="continue" value="mySpecialMode:&lt;some MySpecialResultLogic string representation&gt;" /&gt;
+                  &lt;/dictionary&gt;
+               &lt;/property&gt;
+            
+            // on your page call
+            myPage.SetResult("continue");
+            </code>
+            </example>
+            </remarks>
+            <seealso cref="T:Spring.Web.Support.ResultFactoryRegistry"/>
+            <seealso cref="T:Spring.Web.Support.IResult"/>
+            <seealso cref="T:Spring.Web.Support.Result"/>
+            <seealso cref="T:Spring.Web.Support.DefaultResultWebNavigator"/>
+            <seealso cref="M:Spring.Web.UI.Page.SetResult(System.String,System.Object)"/>
+            <seealso cref="M:Spring.Web.UI.UserControl.SetResult(System.String,System.Object)"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.ResultFactoryRegistry.Reset">
+            <summary>
+            Resets the factory registry to its defaults. Mainly used for unit testing.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.ResultFactoryRegistry.SetDefaultFactory(Spring.Web.Support.IResultFactory)">
+            <summary>
+            Set a new default factory
+            </summary>
+            <param name="resultFactory">the new default factory instance. Must not be null.</param>
+            <returns>the previous default factory.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.ResultFactoryRegistry.RegisterResultMode(System.String,Spring.Web.Support.IResultFactory)">
+            <summary>
+            Registers a <see cref="T:Spring.Web.Support.IResultFactory"/> for the specified <paramref name="resultMode"/>.
+            </summary>
+            <param name="resultMode">the resultMode. Must not be null.</param>
+            <param name="resultFactory">the factory respponsible for handling <paramref name="resultMode"/> results. Must not be null.</param>
+            <returns>the factory previously registered for the specified <paramref name="resultMode"/>, if any.</returns>
+            <remarks>
+            See <see cref="T:Spring.Web.Support.ResultFactoryRegistry"/> overview for more information.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.ResultFactoryRegistry.CreateResult(System.String)">
+            <summary>
+            Creates a result from the specified <paramref name="resultText"/> by extracting the result mode from 
+            the text and delegating to a corresponding <see cref="T:Spring.Web.Support.IResultFactory"/>, if any.
+            </summary>
+            <param name="resultText">the 'resultmode'-prefixed textual representation of the result instance to create.</param>
+            <returns>
+            the <see cref="T:Spring.Web.Support.IResult"/> instance corresponding to the textual <paramref name="resultText"/> represenation,
+            created by the <see cref="T:Spring.Web.Support.IResultFactory"/>
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            if either <paramref name="resultText"/> is null or <see cref="M:Spring.Web.Support.IResultFactory.CreateResult(System.String,System.String)"/> returned null.</exception>
+            <remarks>
+            This method guarantees that the return value will always be non-null.<br/>
+            <paramref name="resultText"/> must always be of the form <c>"&lt;resultmode&gt;:&lt;textual result representation&gt;"</c>. 
+            The <c>resultmode</c> will be extracted and the corresponding <see cref="T:Spring.Web.Support.IResultFactory"/> (previously registered 
+            using <see cref="M:Spring.Web.Support.ResultFactoryRegistry.RegisterResultMode(System.String,Spring.Web.Support.IResultFactory)"/>) is called to actually create the <see cref="T:Spring.Web.Support.IResult"/> instance. If no factory matches 
+            <c>resultmode</c>, the call is handled to the <see cref="P:Spring.Web.Support.ResultFactoryRegistry.DefaultResultFactory"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.Support.ResultFactoryRegistry.DefaultResultFactory">
+            <summary>
+            Returns the current <see cref="T:Spring.Web.Support.IResultFactory"/> set by <see cref="M:Spring.Web.Support.ResultFactoryRegistry.SetDefaultFactory(Spring.Web.Support.IResultFactory)"/>. Will never be null.
+            </summary>
+            <remarks>
+            The default factory is responsible for handling any unknown result modes.
+            </remarks>
         </member>
         <member name="T:Spring.Web.Support.ResultMode">
             <summary>
@@ -5387,7 +6021,7 @@
             </summary>
             <author>Aleksandar Seovic</author>
         </member>
-        <member name="M:Spring.Web.Support.SharedStateResourceCache.#ctor(Spring.Web.Support.ISharedStateAware)">
+        <member name="M:Spring.Web.Support.SharedStateResourceCache.#ctor(Spring.Objects.ISharedStateAware)">
             <summary>
             Creates a new cache instance and attaches it to the given <see cref="F:Spring.Web.Support.SharedStateResourceCache.sharedStateHolder"/>
             </summary>
@@ -5433,7 +6067,7 @@
         </member>
         <member name="T:Spring.Web.Support.SupportsWebDependencyInjectionOwnerProxy">
             <summary>
-            Wraps a Control to make it DI aware
+            Wraps a ControlCollection.Owner control to make it DI aware
             </summary>
             <author>Erich Eichinger</author>
         </member>
@@ -5456,6 +6090,12 @@
             Delegates call to decorated control
             </summary>
             <param name="control"></param>
+        </member>
+        <member name="T:Spring.Web.Support.NamingContainerSupportsWebDependencyInjectionOwnerProxy">
+            <summary>
+            Wraps a ControlCollection.Owner control implementing INamingContainer to make it DI aware
+            </summary>
+            <author>Erich Eichinger</author>
         </member>
         <member name="T:Spring.Web.Support.SupportsWebDependencyInjectionTypeBuilder">
             <summary>
@@ -5517,6 +6157,136 @@
             Aquires an ApplicationContext according to a Control's TemplateSourceDirectory
             </summary>
             <returns>if availabe, the control's IApplicationContext instance - defaultContext otherwise</returns>
+        </member>
+        <member name="T:Spring.Web.Support.WebFormsResultWebNavigator">
+            <summary>
+            An implementation of <see cref="T:Spring.Web.Support.IHierarchicalWebNavigator"/> specific for <see cref="T:System.Web.UI.Control"/>s. 
+            The navigator hierarchy equals the control hierarchy when using a <see cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/>.
+            </summary>
+            <remarks>
+            <para>
+            This implementation supports 2 different navigator hierarchies:
+            <ul>
+            <li>The default hierarchy defined by <see cref="P:Spring.Web.Support.IHierarchicalWebNavigator.ParentNavigator"/></li>
+            <li>The hierarchy defined by a web form's <see cref="P:System.Web.UI.Control.Parent"/> hierarchy.</li>
+            </ul>
+            </para>
+            <para>
+            This implementation always checks the standard hierarchy first and - if a destination cannot be resolved, falls back 
+            to the control hierarchy for resolving a specified navigation destination.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.FindNavigableParent(System.Web.UI.Control,System.Boolean,System.Boolean)">
+            <summary>
+            Finds the next <see cref="T:Spring.Web.Support.IWebNavigator"/> up  the control hierarchy, 
+            starting at the specified <paramref name="control"/>.
+            </summary>
+            <remarks>
+            This method checks both, for controls implementing <see cref="T:Spring.Web.Support.IWebNavigator"/> or <see cref="T:Spring.Web.Support.IWebNavigable"/>. In addition 
+            when MasterPages are used, it interprets the control hierarchy as control-&gt;page-&gt;masterpage. (<see cref="M:Spring.Util.WebUtils.GetLogicalParent(System.Web.UI.Control)"/>).
+            </remarks>
+            <param name="control">the control to start the search with.</param>
+            <param name="includeSelf">include checking the control itself or start search with its parent.</param>
+            <param name="restrictToValidNavigatorsOnly">requires <see cref="T:Spring.Web.Support.IWebNavigable"/>s to hold a valid <see cref="P:Spring.Web.Support.IWebNavigable.WebNavigator"/> instance.</param>
+            <returns>If found, the next <see cref="T:Spring.Web.Support.IWebNavigator"/> or <see cref="T:Spring.Web.Support.IWebNavigable"/>.
+            <c>null</c> otherwise</returns>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.#ctor(System.Web.UI.Control,Spring.Web.Support.IWebNavigator,System.Collections.IDictionary,System.Boolean)">
+            <summary>
+            Creates a new instance of a <see cref="T:Spring.Web.Support.IHierarchicalWebNavigator"/> for the specified control.
+            </summary>
+            <param name="owner">the control to be associated with this navigator.</param>
+            <param name="parent">the direct parent of this navigator</param>
+            <param name="initialResults">a dictionary containing results</param>
+            <param name="ignoreCase">specifies how to handle case for destination names.</param>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.CanNavigateTo(System.String)">
+            <summary>
+            Determines, whether this navigator or one of its parents can 
+            navigate to the destination specified in <paramref name="destination"/>.
+            </summary>
+            <param name="destination">the name of the navigation destination</param>
+            <returns>true, if this navigator can navigate to the destination.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.CheckCanNavigate(System.String,System.Boolean)">
+            <summary>
+            Check, whether this navigator can navigate to the specified <paramref name="destination"/>.
+            </summary>
+            <param name="destination">the destination name to check.</param>
+            <param name="includeControlHierarchy">
+            whether the check shall include the <see cref="P:Spring.Web.Support.WebFormsResultWebNavigator.Owner"/> control hierarchy or
+            the standard <see cref="P:Spring.Web.Support.IHierarchicalWebNavigator.ParentNavigator"/> hierarchy only.
+            </param>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.GetResultUri(System.String,System.Object,System.Object)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="destination">Name of the result.</param>
+            <param name="sender">the instance that issued this request</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result</param>
+            <returns>A redirect url string.</returns>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.NavigateTo(System.String,System.Object,System.Object)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="destination">Name of the result.</param>
+            <param name="sender">the instance that issued this request</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="P:Spring.Web.Support.WebFormsResultWebNavigator.Owner">
+            <summary>
+            The <see cref="T:System.Web.UI.Control"/> that this <see cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/> is associated with.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.Support.WebFormsResultWebNavigator.ParentControlNavigator">
+            <summary>
+            Return the next available <see cref="T:Spring.Web.Support.IWebNavigator"/> within 
+            this <see cref="P:Spring.Web.Support.WebFormsResultWebNavigator.Owner"/> control's parent hierarchy.
+            </summary>
+        </member>
+        <member name="T:Spring.Web.Support.WebFormsResultWebNavigator.NavigableControlInfo">
+            <summary>
+            Holds the result match from <see cref="M:Spring.Web.Support.WebFormsResultWebNavigator.FindNavigableParent(System.Web.UI.Control,System.Boolean,System.Boolean)"/>.
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Support.WebFormsResultWebNavigator.NavigableControlInfo.Control">
+            <summary>
+            The matching control 
+            </summary>
+        </member>
+        <member name="F:Spring.Web.Support.WebFormsResultWebNavigator.NavigableControlInfo.WebNavigator">
+            <summary>
+            The <see cref="T:Spring.Web.Support.IWebNavigator"/> instance associated with the control. May be null.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.Support.WebFormsResultWebNavigator.NavigableControlInfo.#ctor(System.Web.UI.Control)">
+            <summary>
+            Initializes the new match instance.
+            </summary>
+            <param name="control">the matching control. Must not be null!</param>
+        </member>
+        <member name="T:Spring.Web.Support.WebNavigableWebNavigatorAdapter">
+            <summary>
+            Adapts a concrete <see cref="T:Spring.Web.Support.IWebNavigator"/> instance as a <see cref="T:Spring.Web.Support.IWebNavigable"/>.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.Support.WebNavigableWebNavigatorAdapter.#ctor(Spring.Web.Support.IWebNavigator)">
+            <summary>
+            Create a new adapter instance, wrapping the specified <paramref name="resultNavigator"/> 
+            into a <see cref="T:Spring.Web.Support.IWebNavigable"/> interface.
+            </summary>
+            <param name="resultNavigator">the <see cref="T:Spring.Web.Support.IWebNavigator"/> instance to be adapted. May be null.</param>
+        </member>
+        <member name="P:Spring.Web.Support.WebNavigableWebNavigatorAdapter.WebNavigator">
+            <summary>
+            Returns the wrapped <see cref="T:Spring.Web.Support.IWebNavigator"/> that was passed into <see cref="M:Spring.Web.Support.WebNavigableWebNavigatorAdapter.#ctor(Spring.Web.Support.IWebNavigator)"/>.
+            </summary>
         </member>
         <member name="T:Spring.Web.UI.Controls.AbstractBaseValidator">
             <summary>
@@ -5839,11 +6609,22 @@
             </remarks>
             <author>Erich Eichinger</author>
         </member>
-        <member name="M:Spring.Web.UI.Controls.Panel.Render(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Spring.Web.UI.Controls.Panel.OnPreRender(System.EventArgs)">
             <summary>
-            Overridden to suppress rendering this control's tag
+            Overridden to set <see cref="P:System.Web.UI.Control.Visible"/> according to <see cref="P:Spring.Web.UI.Controls.Panel.VisibleIf"/> if necessary.
             </summary>
-            <param name="writer"></param>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the HTML opening tag of the <see cref="T:Spring.Web.UI.Controls.Panel"></see> control to the specified writer.
+            </summary>
+            <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter"></see> that represents the output stream to render HTML content on the client.</param>
+        </member>
+        <member name="M:Spring.Web.UI.Controls.Panel.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the HTML closing tag of the <see cref="T:Spring.Web.UI.Controls.Panel"></see> control to the specified writer.
+            </summary>
+            <param name="writer">An <see cref="T:System.Web.UI.HtmlTextWriter"></see> that represents the output stream to render HTML content on the client.</param>
         </member>
         <member name="M:Spring.Web.UI.Controls.Panel.OnPreInitRecursive(System.EventArgs)">
             <summary>
@@ -5861,6 +6642,15 @@
             Overridden to automatically aquire a reference to 
             root application context to use for DI.
             </summary>
+        </member>
+        <member name="P:Spring.Web.UI.Controls.Panel.VisibleIf">
+            <summary>
+            An optional SpEL expression to control this Panel's <see cref="P:System.Web.UI.Control.Visible"/> state.
+            </summary>
+            <remarks>
+            This panel instance is the context for evaluating the given expression. If no expression is specified, visibility behavior
+            reverts to standard behavior.
+            </remarks>
         </member>
         <member name="P:Spring.Web.UI.Controls.Panel.SuppressDependencyInjection">
             <summary>
@@ -6532,6 +7322,14 @@
             Gets the list of validation errors kept by this container.
             </summary>
         </member>
+        <member name="M:Spring.Web.UI.Page.#ctor">
+            <summary>
+            Creates and initializes the new page instance.
+            </summary>
+            <remarks>
+            Calls <see cref="M:Spring.Web.UI.Page.InitializeNavigationSupport"/>.
+            </remarks>
+        </member>
         <member name="M:Spring.Web.UI.Page.OnPreInit(System.EventArgs)">
             <summary>
             Initializes Spring.NET page internals and raises the PreInit event.
@@ -6636,15 +7434,6 @@
             Returns the specified <see langword="UserControl"/> object, with dependencies injected.
             </returns>
         </member>
-        <member name="M:Spring.Web.UI.Page.InitializeModel">
-            <summary>
-            Initializes data model when the page is first loaded.
-            </summary>
-            <remarks>
-            This method should be overriden by the developer
-            in order to initialize data model for the page.
-            </remarks>
-        </member>
         <member name="M:Spring.Web.UI.Page.LoadModelFromPersistenceMedium">
             <summary>
             Retrieves data model from a persistence store.
@@ -6661,6 +7450,15 @@
             <remarks>
             The default implementation uses <see cref="P:System.Web.UI.Page.Session"/> to store and retrieve
             the model for the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.Page.InitializeModel">
+            <summary>
+            Initializes data model when the page is first loaded.
+            </summary>
+            <remarks>
+            This method should be overriden by the developer
+            in order to initialize data model for the page.
             </remarks>
         </member>
         <member name="M:Spring.Web.UI.Page.LoadModel(System.Object)">
@@ -6705,7 +7503,6 @@
             <returns>
             The controller for this page.
             <list type="bullet">
-            <item>If this page is being part of a process, the process' <see cref="P:Spring.Web.Process.IProcess.Controller"/> is returned.</item>
             <item>If no controller is set, a reference to the page itself is returned.</item>
             </list>
             </returns>
@@ -6819,6 +7616,15 @@
             </summary>
             <param name="key">Script key.</param>
             <returns><c>True</c> if specified head script is registered, <c>False</c> otherwise.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.Page.InitializeNavigationSupport">
+            <summary>
+            Ensure, that <see cref="P:Spring.Web.UI.Page.WebNavigator"/> is set to a valid instance.
+            </summary>
+            <remarks>
+            If <see cref="P:Spring.Web.UI.Page.WebNavigator"/> is not already set, creates and sets a new <see cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/> instance.<br/>
+            Override this method if you don't want to inject a navigator, but need a different default.
+            </remarks>
         </member>
         <member name="M:Spring.Web.UI.Page.SetResult(System.String)">
             <summary>
@@ -7026,10 +7832,14 @@
             controls as necessary.
             </summary>
         </member>
-        <member name="P:Spring.Web.UI.Page.Process">
+        <member name="P:Spring.Web.UI.Page.ModelPersistenceMedium">
             <summary>
-            Gets or sets the process that this page belongs to.
+            Set the <see cref="T:Spring.Web.UI.IModelPersistenceMedium"/> strategy for storing model 
+            instances between requests.
             </summary>
+            <remarks>
+            By default the <see cref="T:Spring.Web.UI.SessionModelPersistenceMedium"/> strategy is used.
+            </remarks>
         </member>
         <member name="P:Spring.Web.UI.Page.Controller">
             <summary>
@@ -7105,10 +7915,47 @@
             </summary>
             <value>The images root.</value>
         </member>
+        <member name="P:Spring.Web.UI.Page.WebNavigator">
+            <summary>
+            Gets/Sets the navigator to be used for handling <see cref="M:Spring.Web.UI.Page.SetResult(System.String,System.Object)"/> calls.
+            </summary>
+        </member>
         <member name="P:Spring.Web.UI.Page.Results">
             <summary>
             Gets or sets map of result names to target URLs
             </summary>
+            <remarks>
+            Using <see cref="P:Spring.Web.UI.Page.Results"/> requires <see cref="P:Spring.Web.UI.Page.WebNavigator"/> to implement <see cref="T:Spring.Web.Support.IResultWebNavigator"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.UI.Page.Args">
+            <summary>
+            A convenience, case-insensitive table that may be used to e.g. pass data into SpEL expressions"/&gt;.
+            </summary>
+            <remarks>
+            By default, e.g. <see cref="M:Spring.Web.UI.Page.SetResult(System.String)"/> passes the control instance into an expression. Using
+            <see cref="P:Spring.Web.UI.Page.Args"/> is an easy way to pass additional parameters into the expression
+            <example>
+            This example shows how to pass an arbitrary value 'age' into a result expression.
+            <code>
+            // config:
+            
+            &lt;property Name="Results"&gt;
+              &lt;dictionary&gt;
+              		&lt;entry key="ok_clicked" value="redirect:~/ShowResult.aspx?age=%{Args['age']}" /&gt;
+              &lt;/dictionary&gt;
+            &lt;/property&gt;
+            
+            // code:
+            
+            void OnOkClicked(object sender, EventArgs e)
+            {
+              Args["result"] = txtAge.Text;
+              SetResult("ok_clicked");
+            }
+            </code>
+            </example>
+            </remarks>
         </member>
         <member name="P:Spring.Web.UI.Page.ValidationErrors">
             <summary>
@@ -7287,11 +8134,38 @@
             </remarks>
             <author>Aleksandar Seovic</author>
         </member>
+        <member name="T:Spring.Web.UI.IModelPersistenceMedium">
+            <summary>
+            Abstracts storage strategy for storing model instances between requests. 
+            All storage providers participating in UI model management must implement this interface.
+            </summary>
+            <seealso cref="T:Spring.Web.UI.SessionModelPersistenceMedium"/>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.UI.IModelPersistenceMedium.LoadFromMedium(System.Web.UI.Control)">
+            <summary>
+            Load the model for the specified control context.
+            </summary>
+            <param name="context">the control context.</param>
+            <returns>the model for the specified control context.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.IModelPersistenceMedium.SaveToMedium(System.Web.UI.Control,System.Object)">
+            <summary>
+            Save the specified model object.
+            </summary>
+            <param name="context">the control context.</param>
+            <param name="modelToSave">the model to save.</param>
+        </member>
         <member name="T:Spring.Web.UI.MasterPage">
             <summary>
             Spring.NET Master Page implementation for ASP.NET 2.0
             </summary>
             <author>Aleksandar Seovic</author>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.#ctor">
+            <summary>
+            Initialize a new MasterPage instance.
+            </summary>
         </member>
         <member name="M:Spring.Web.UI.MasterPage.OnInit(System.EventArgs)">
             <summary>
@@ -7385,6 +8259,47 @@
             </summary>
             <param name="name">Resource name.</param>
             <returns>Resource object.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.InitializeNavigationSupport">
+            <summary>
+            Ensure, that <see cref="P:Spring.Web.UI.MasterPage.WebNavigator"/> is set to a valid instance.
+            </summary>
+            <remarks>
+            If <see cref="P:Spring.Web.UI.MasterPage.WebNavigator"/> is not already set, creates and sets a new <see cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/> instance.<br/>
+            Override this method if you don't want to inject a navigator, but need a different default.
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.SetResult(System.String)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="resultName">Result name.</param>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.SetResult(System.String,System.Object)">
+            <summary>
+            Redirects user to a URL mapped to specified result name.
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.GetResultUrl(System.String)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <returns>A redirect url string.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.MasterPage.GetResultUrl(System.String,System.Object)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result</param>
+            <returns>A redirect url string.</returns>
         </member>
         <member name="M:Spring.Web.UI.MasterPage.Validate(System.Object,Spring.Validation.IValidator[])">
             <summary>
@@ -7491,6 +8406,45 @@
             Gets or sets user's culture
             </summary>
         </member>
+        <member name="P:Spring.Web.UI.MasterPage.WebNavigator">
+            <summary>
+            Gets/Sets the navigator to be used for handling <see cref="M:Spring.Web.UI.MasterPage.SetResult(System.String,System.Object)"/> calls.
+            </summary>
+        </member>
+        <member name="P:Spring.Web.UI.MasterPage.Results">
+            <summary>
+            Gets or sets map of result names to target URLs
+            </summary>
+            <remarks>
+            Using <see cref="P:Spring.Web.UI.MasterPage.Results"/> requires <see cref="P:Spring.Web.UI.MasterPage.WebNavigator"/> to implement <see cref="T:Spring.Web.Support.IResultWebNavigator"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.UI.MasterPage.Args">
+            <summary>
+            A convenience, case-insensitive table that may be used to e.g. pass data into SpEL expressions"/&gt;.
+            </summary>
+            <remarks>
+            By default, e.g. <see cref="M:Spring.Web.UI.MasterPage.SetResult(System.String)"/> passes the control instance into an expression. Using
+            <see cref="P:Spring.Web.UI.MasterPage.Args"/> is an easy way to pass additional parameters into the expression
+            <example>
+            // config:
+            
+            &lt;property Name="Results"&gt;
+              &lt;dictionary&gt;
+              		&lt;entry key="ok_clicked" value="redirect:~/ShowResult.aspx?result=%{Args['result']}" /&gt;
+              &lt;/dictionary&gt;
+            &lt;/property&gt;
+            
+            // code:
+            
+            void OnOkClicked(object sender, EventArgs e)
+            {
+              Args["result"] = txtUserInput.Text;
+              SetResult("ok_clicked");
+            }
+            </example>
+            </remarks>
+        </member>
         <member name="P:Spring.Web.UI.MasterPage.ValidationErrors">
             <summary>
             Gets the validation errors container.
@@ -7508,11 +8462,62 @@
             Holds the default ApplicationContext to be used during DI.
             </summary>
         </member>
+        <member name="T:Spring.Web.UI.SessionModelPersistenceMedium">
+            <summary>
+            <see cref="T:Spring.Web.UI.SessionModelPersistenceMedium"/> implements <see cref="T:System.Web.SessionState.HttpSessionState"/>-based storage for 
+            UI model management.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Web.UI.SessionModelPersistenceMedium.LoadFromMedium(System.Web.UI.Control)">
+            <summary>
+            Load the model for the specified control context.
+            </summary>
+            <remarks>
+            The key used for loading the model from the session dictionary is obtained by calling <see cref="M:Spring.Web.UI.SessionModelPersistenceMedium.GetKey(System.Web.UI.Control)"/>
+            </remarks>
+            <param name="context">the control context.</param>
+            <returns>the model for the specified control context.</returns>
+            <seealso cref="M:Spring.Web.UI.SessionModelPersistenceMedium.GetKey(System.Web.UI.Control)"/>
+        </member>
+        <member name="M:Spring.Web.UI.SessionModelPersistenceMedium.SaveToMedium(System.Web.UI.Control,System.Object)">
+            <summary>
+            Save the specified model object to session.
+            </summary>
+            <remarks>
+            The key used for storing the model into the session dictionary is obtained by calling <see cref="M:Spring.Web.UI.SessionModelPersistenceMedium.GetKey(System.Web.UI.Control)"/>
+            </remarks>
+            <param name="context">the control context.</param>
+            <param name="modelToSave">the model to save.</param>
+            <seealso cref="M:Spring.Web.UI.SessionModelPersistenceMedium.GetKey(System.Web.UI.Control)"/>
+        </member>
+        <member name="M:Spring.Web.UI.SessionModelPersistenceMedium.GetKey(System.Web.UI.Control)">
+            <summary>
+            Create the key to be used for accessing the <see cref="T:System.Web.SessionState.HttpSessionState"/> dictionary.
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Web.UI.SessionModelPersistenceMedium.GetItem(System.Web.UI.Control,System.String)">
+            <summary>
+            Abstracts session access for unit testing.
+            </summary>
+        </member>
+        <member name="M:Spring.Web.UI.SessionModelPersistenceMedium.SetItem(System.Web.UI.Control,System.String,System.Object)">
+            <summary>
+            Abstracts session access for unit testing.
+            </summary>
+        </member>
         <member name="T:Spring.Web.UI.UserControl">
             <summary>
             Extends standard .Net user control by adding data binding and localization functionality.
             </summary>
             <author>Aleksandar Seovic</author>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.#ctor">
+            <summary>
+            Initialize a new UserControl instance.
+            </summary>
         </member>
         <member name="M:Spring.Web.UI.UserControl.OnInit(System.EventArgs)">
             <summary>
@@ -7593,15 +8598,6 @@
             Returns the specified <see langword="UserControl"/> object, with dependencies injected.
             </returns>
         </member>
-        <member name="M:Spring.Web.UI.UserControl.InitializeModel">
-            <summary>
-            Initializes data model when the page is first loaded.
-            </summary>
-            <remarks>
-            This method should be overriden by the developer
-            in order to initialize data model for the page.
-            </remarks>
-        </member>
         <member name="M:Spring.Web.UI.UserControl.LoadModelFromPersistenceMedium">
             <summary>
             Retrieves data model from a persistence store.
@@ -7618,6 +8614,15 @@
             <remarks>
             The default implementation uses <see cref="P:System.Web.UI.Page.Session"/> to store and retrieve
             the model for the current <see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath"/>
+            </remarks>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.InitializeModel">
+            <summary>
+            Initializes data model when the page is first loaded.
+            </summary>
+            <remarks>
+            This method should be overriden by the developer
+            in order to initialize data model for the page.
             </remarks>
         </member>
         <member name="M:Spring.Web.UI.UserControl.LoadModel(System.Object)">
@@ -7674,6 +8679,15 @@
             <para>If no controller is set, a reference to the control itself is returned.</para>
             </returns>
         </member>
+        <member name="M:Spring.Web.UI.UserControl.InitializeNavigationSupport">
+            <summary>
+            Ensure, that <see cref="P:Spring.Web.UI.UserControl.WebNavigator"/> is set to a valid instance.
+            </summary>
+            <remarks>
+            If <see cref="P:Spring.Web.UI.UserControl.WebNavigator"/> is not already set, creates and sets a new <see cref="T:Spring.Web.Support.WebFormsResultWebNavigator"/> instance.<br/>
+            Override this method if you don't want to inject a navigator, but need a different default.
+            </remarks>
+        </member>
         <member name="M:Spring.Web.UI.UserControl.SetResult(System.String)">
             <summary>
             Redirects user to a URL mapped to specified result name.
@@ -7684,8 +8698,27 @@
             <summary>
             Redirects user to a URL mapped to specified result name.
             </summary>
-            <param name="resultName">Result name.</param>
+            <param name="resultName">Name of the result.</param>
             <param name="context">The context to use for evaluating the SpEL expression in the Result.</param>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.GetResultUrl(System.String)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <returns>A redirect url string.</returns>
+        </member>
+        <member name="M:Spring.Web.UI.UserControl.GetResultUrl(System.String,System.Object)">
+            <summary>
+            Returns a redirect url string that points to the 
+            <see cref="P:Spring.Web.Support.Result.TargetPage"/> defined by this
+            result evaluated using this Page for expression 
+            </summary>
+            <param name="resultName">Name of the result.</param>
+            <param name="context">The context to use for evaluating the SpEL expression in the Result</param>
+            <returns>A redirect url string.</returns>
         </member>
         <member name="M:Spring.Web.UI.UserControl.Validate(System.Object,Spring.Validation.IValidator[])">
             <summary>
@@ -7854,6 +8887,15 @@
             controls as necessary.
             </summary>
         </member>
+        <member name="P:Spring.Web.UI.UserControl.ModelPersistenceMedium">
+            <summary>
+            Set the <see cref="T:Spring.Web.UI.IModelPersistenceMedium"/> strategy for storing model 
+            instances between requests.
+            </summary>
+            <remarks>
+            By default the <see cref="T:Spring.Web.UI.SessionModelPersistenceMedium"/> strategy is used.
+            </remarks>
+        </member>
         <member name="P:Spring.Web.UI.UserControl.Controller">
             <summary>
             Gets or sets controller for the control.
@@ -7871,10 +8913,44 @@
             all instances of this control.
             </summary>
         </member>
+        <member name="P:Spring.Web.UI.UserControl.WebNavigator">
+            <summary>
+            Gets/Sets the navigator to be used for handling <see cref="M:Spring.Web.UI.UserControl.SetResult(System.String,System.Object)"/> calls.
+            </summary>
+        </member>
         <member name="P:Spring.Web.UI.UserControl.Results">
             <summary>
             Gets or sets map of result names to target URLs
             </summary>
+            <remarks>
+            Using <see cref="P:Spring.Web.UI.UserControl.Results"/> requires <see cref="P:Spring.Web.UI.UserControl.WebNavigator"/> to implement <see cref="T:Spring.Web.Support.IResultWebNavigator"/>.
+            </remarks>
+        </member>
+        <member name="P:Spring.Web.UI.UserControl.Args">
+            <summary>
+            A convenience, case-insensitive table that may be used to e.g. pass data into SpEL expressions"/&gt;.
+            </summary>
+            <remarks>
+            By default, e.g. <see cref="M:Spring.Web.UI.UserControl.SetResult(System.String)"/> passes the control instance into an expression. Using
+            <see cref="P:Spring.Web.UI.UserControl.Args"/> is an easy way to pass additional parameters into the expression
+            <example>
+            // config:
+            
+            &lt;property Name="Results"&gt;
+              &lt;dictionary&gt;
+              		&lt;entry key="ok_clicked" value="redirect:~/ShowResult.aspx?result=%{Args['result']}" /&gt;
+              &lt;/dictionary&gt;
+            &lt;/property&gt;
+            
+            // code:
+            
+            void OnOkClicked(object sender, EventArgs e)
+            {
+              Args["result"] = txtUserInput.Text;
+              SetResult("ok_clicked");
+            }
+            </example>
+            </remarks>
         </member>
         <member name="P:Spring.Web.UI.UserControl.ValidationErrors">
             <summary>

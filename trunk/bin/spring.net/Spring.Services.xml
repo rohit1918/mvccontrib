@@ -833,15 +833,35 @@
             a given url as a Server Activated Object (SAO).
             </summary>
             <remarks>
-            Object can be exported either as SingleCall or Singleton.
+            Remoting servers exported by <see cref="T:Spring.Remoting.SaoExporter"/> always correspond to <see cref="F:System.Runtime.Remoting.WellKnownObjectMode.Singleton"/>. 
+            Objects can be exported either as SingleCall or Singleton by marking the exported object identified by 
+            <see name="TargetName"/> as either singleton or prototype.
             </remarks>
             <author>Aleksandar Seovic</author>
             <author>Mark Pollack</author>
             <author>Bruno Baia</author>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="F:Spring.Remoting.SaoExporter.s_activeExporters">
+            <summary>
+            Holds EXPORTER_ID to SaoExporter instance mappings.
+            </summary>
+        </member>
+        <member name="M:Spring.Remoting.SaoExporter.GetTarget(System.String)">
+            <summary>
+             Returns the target object instance exported by the SaoExporter identified by <see cref="F:Spring.Remoting.SaoExporter.EXPORTER_ID"/>.
+            </summary>
+            <param name="exporterId"></param>
+            <returns></returns>
         </member>
         <member name="M:Spring.Remoting.SaoExporter.#ctor">
             <summary>
             Creates a new instance of the <see cref="T:Spring.Remoting.SaoExporter"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Remoting.SaoExporter.Finalize">
+            <summary>
+            Cleanup before GC
             </summary>
         </member>
         <member name="M:Spring.Remoting.SaoExporter.AfterPropertiesSet">
@@ -853,6 +873,12 @@
             <summary>
             Disconnect the remote object from the registered remoting channels.
             </summary>
+        </member>
+        <member name="M:Spring.Remoting.SaoExporter.Dispose(System.Boolean)">
+            <summary>
+            Stops exporting the object identified by <see cref="P:Spring.Remoting.SaoExporter.TargetName"/>.
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         </member>
         <member name="P:Spring.Remoting.SaoExporter.TargetName">
             <summary>
@@ -884,35 +910,6 @@
             </remarks>
             <value>The interfaces to export.</value>
         </member>
-        <member name="P:Spring.Remoting.SaoExporter.ApplicationContext">
-            <summary>
-            Sets the <see cref="T:Spring.Context.IApplicationContext"/> that this
-            object runs in.
-            </summary>
-            <value></value>
-            <remarks>
-            <p>
-            Normally this call will be used to initialize the object.
-            </p>
-            <p>
-            Invoked after population of normal object properties but before an
-            init callback such as
-            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
-            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
-            or a custom init-method. Invoked after the setting of any
-            <see cref="T:Spring.Context.IResourceLoaderAware"/>'s
-            <see cref="P:Spring.Context.IResourceLoaderAware.ResourceLoader"/>
-            property.
-            </p>
-            </remarks>
-            <exception cref="T:Spring.Context.ApplicationContextException">
-            In the case of application context initialization errors.
-            </exception>
-            <exception cref="T:Spring.Objects.ObjectsException">
-            If thrown by any application context methods.
-            </exception>
-            <exception cref="T:Spring.Objects.Factory.ObjectInitializationException"/>
-        </member>
         <member name="P:Spring.Remoting.SaoExporter.ObjectFactory">
             <summary>
             Sets object factory to use.
@@ -927,19 +924,13 @@
             The wrapped target object is retrieved by name from the IoC container.
             </remarks>
         </member>
-        <member name="M:Spring.Remoting.SaoExporter.SaoRemoteObjectProxyTypeBuilder.#ctor(System.String,System.String,Spring.Remoting.Support.ILifetime)">
+        <member name="M:Spring.Remoting.SaoExporter.SaoRemoteObjectProxyTypeBuilder.#ctor(Spring.Remoting.SaoExporter)">
             <summary>
             Creates a new instance of the 
             <see cref="T:Spring.Remoting.SaoExporter.SaoRemoteObjectProxyTypeBuilder"/> class.
             </summary>
-            <param name="contextName">
-            The name of the target object definition.
-            </param>
-            <param name="targetObjectName">
-            The name of the application context that this object runs in.
-            </param>
-            <param name="lifetime">
-            The lifetime properties to be applied to the target object.
+            <param name="saoExporter">
+            The exporter to be associated with the proxy.
             </param>
         </member>
         <member name="M:Spring.Remoting.SaoExporter.SaoRemoteObjectProxyTypeBuilder.PushTarget(System.Reflection.Emit.ILGenerator)">

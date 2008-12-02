@@ -4,6 +4,116 @@
         <name>Spring.Data</name>
     </assembly>
     <members>
+        <member name="T:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor">
+            <summary>
+            Spring AOP exception translation aspect for use at Repository or DAO layer level.
+            Translates native persistence exceptions into Spring's DataAccessException hierarchy,
+            based on a given PersistenceExceptionTranslator.
+            </summary>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack  (.NET)</author>
+        </member>
+        <member name="M:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor.#ctor(Spring.Dao.Support.IPersistenceExceptionTranslator,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor"/> class.
+            </summary>
+            <param name="persistenceExceptionTranslator">The persistence exception translator to use.</param>
+            <param name="repositoryAttributeType">Type of the repository attribute to check for.</param>
+        </member>
+        <member name="M:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor.#ctor(Spring.Objects.Factory.IListableObjectFactory,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor"/> class.
+            </summary>
+            <param name="objectFactory">The object factory to obtain all IPersistenceExceptionTranslators from.</param>
+            <param name="repositoryAttributeType">Type of the repository attribute to check for.</param>
+        </member>
+        <member name="P:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor.Advice">
+            <summary>
+            Return the advice part of this aspect.
+            </summary>
+            <value></value>
+            <remarks>
+            	<p>
+            An advice may be an interceptor, a throws advice, before advice,
+            introduction etc.
+            </p>
+            </remarks>
+            <returns>
+            The advice that should apply if the pointcut matches.
+            </returns>
+        </member>
+        <member name="P:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor.Pointcut">
+            <summary>
+            The <see cref="T:Spring.Aop.IPointcut"/> that drives this advisor.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Spring.Dao.Attributes.PersistenceExceptionTranslationPostProcessor">
+            <summary>
+            Object post-processor that automatically applies persistence exception
+            translation to any bean that carries the <see cref="T:Spring.Stereotype.RepositoryAttribute"/>
+            attribute, adding a corresponding <see cref="T:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor"/>
+            to the xposed proxy (either an existing AOP proxy or a newly generated
+            proxy that implements all of the target's interfaces).
+            </summary>
+            <remarks>
+            <para>Translates native resource exceptions to Spring's <see cref="T:Spring.Dao.DataAccessException"/>
+            hierarchy. Autodetects object that implement the <see cref="T:Spring.Dao.Support.IPersistenceExceptionTranslator"/>
+            interface, which are subsequently asked to translate candidate exceptions.
+            </para>
+            <para>All of Spring's applicable resource factories implement the 
+            <code>IPersistenceExceptionTranslator</code> interface out of the box.
+            As a consequence, all that is usually needed to enable automatic exception
+            translation is marking all affected objects (such as DAOs) with the
+            <code>Repository</code> annotation, along with defining this post-processor
+            in the application context.
+            </para>
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+            <seealso cref="T:Spring.Dao.Attributes.PersistenceExceptionTranslationAdvisor"/>
+            <seealso cref="T:Spring.Stereotype.RepositoryAttribute"/>
+            <seealso cref="T:Spring.Dao.DataAccessException"/>
+            <seealso cref="T:Spring.Dao.Support.IPersistenceExceptionTranslator"/>
+        </member>
+        <member name="M:Spring.Dao.Attributes.PersistenceExceptionTranslationPostProcessor.PostProcessBeforeInitialization(System.Object,System.String)">
+            <summary>
+            Just return the passed in object instance
+            </summary>
+            <param name="instance">The new object instance.</param>
+            <param name="name">The name of the object.</param>
+            <returns>
+            The passed in object instance
+            </returns>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            In case of errors.
+            </exception>
+        </member>
+        <member name="M:Spring.Dao.Attributes.PersistenceExceptionTranslationPostProcessor.PostProcessAfterInitialization(System.Object,System.String)">
+            <summary>
+            Add PersistenceExceptionTranslationAdvice to candidate object if it is a match.
+            Create AOP proxy if necessary or add advice to existing advice chain.
+            </summary>
+            <param name="instance">The new object instance.</param>
+            <param name="objectName">The name of the object.</param>
+            <returns>
+            The object instance to use, wrapped with either the original or a wrapped one.
+            </returns>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            In case of errors.
+            </exception>
+        </member>
+        <member name="P:Spring.Dao.Attributes.PersistenceExceptionTranslationPostProcessor.RepositoryAttributeType">
+            <summary>
+            Sets the type of the repository attribute.  The default required attribute type is the 
+            <see cref="T:Spring.Stereotype.RepositoryAttribute"/> attirbute.  This setter property exists so that developers
+            can provide their own (non-Spring-specific) attribute type to indicate that a class has a 
+            repository role.
+            </summary>
+            <value>The desitred type of the repository attribute.</value>
+        </member>
         <member name="T:Spring.Dao.Support.Generic.DataAccessUtils">
             <summary>
             Miscellaneous utility methods for DAO implementations.
@@ -15,6 +125,97 @@
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Dao.Support.Generic.DataAccessUtils"/> class.
             </summary>
+        </member>
+        <member name="T:Spring.Dao.Support.ChainedPersistenceExceptionTranslator">
+            <summary>
+            Implementation of PersistenceExceptionTranslator that supports chaining,
+            allowing the addition of PersistenceExceptionTranslator instances in order.
+            Returns <code>non-null</code> on the first (if any) match.
+            </summary>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="T:Spring.Dao.Support.IPersistenceExceptionTranslator">
+            <summary>
+            Interface implemented by Spring integrations with data access technologies
+            that throw exceptions.
+            </summary>
+            <remarks>
+            This allows consistent usage of combined exception translation functionality,
+            without forcing a single translator to understand every single possible type
+            of exception.
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Dao.Support.IPersistenceExceptionTranslator.TranslateExceptionIfPossible(System.Exception)">
+            <summary>
+            Translate the given exception thrown by a persistence framework to a
+            corresponding exception from Spring's generic DataAccessException hierarchy,
+            if possible.
+            </summary>
+            <remarks>
+            <para>
+            Do not translate exceptions that are not understand by this translator:
+            for example, if coming from another persistence framework, or resulting
+            from user code and unrelated to persistence.
+            </para>
+            <para>
+            Of particular importance is the correct translation to <see cref="T:Spring.Dao.DataIntegrityViolationException"/>
+            for example on constraint violation.  Implementations may use Spring ADO.NET Framework's 
+            sophisticated exception translation to provide further information in the event of SQLException as a root cause.
+            </para>
+            </remarks>
+            <param name="ex">The exception thrown.</param>
+            <returns>the corresponding DataAccessException (or <code>null</code> if the
+            exception could not be translated, as in this case it may result from
+            user code rather than an actual persistence problem)
+            </returns>
+            <seealso cref="T:Spring.Dao.DataIntegrityViolationException"/>
+            <seealso cref="T:Spring.Data.Support.ErrorCodeExceptionTranslator"/>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Dao.Support.ChainedPersistenceExceptionTranslator.AddTranslator(Spring.Dao.Support.IPersistenceExceptionTranslator)">
+            <summary>
+            Adds the translator to the translator list.
+            </summary>
+            <param name="translator">The translator.</param>
+        </member>
+        <member name="M:Spring.Dao.Support.ChainedPersistenceExceptionTranslator.TranslateExceptionIfPossible(System.Exception)">
+            <summary>
+            Translate the given exception thrown by a persistence framework to a
+            corresponding exception from Spring's generic DataAccessException hierarchy,
+            if possible.
+            </summary>
+            <param name="ex">The exception thrown.</param>
+            <returns>
+            the corresponding DataAccessException (or <code>null</code> if the
+            exception could not be translated, as in this case it may result from
+            user code rather than an actual persistence problem)
+            </returns>
+            <remarks>
+            	<para>
+            Do not translate exceptions that are not understand by this translator:
+            for example, if coming from another persistence framework, or resulting
+            from user code and unrelated to persistence.
+            </para>
+            	<para>
+            Of particular importance is the correct translation to <see cref="T:Spring.Dao.DataIntegrityViolationException"/>
+            for example on constraint violation.  Implementations may use Spring ADO.NET Framework's
+            sophisticated exception translation to provide further information in the event of SQLException as a root cause.
+            </para>
+            </remarks>
+            <seealso cref="T:Spring.Dao.DataIntegrityViolationException"/>
+            <seealso cref="T:Spring.Data.Support.ErrorCodeExceptionTranslator"/>
+        </member>
+        <member name="P:Spring.Dao.Support.ChainedPersistenceExceptionTranslator.Translators">
+            <summary>
+            Gets all registered IPersistenceExceptionTranslator as an array.
+            </summary>
+            <value>The IPersistenceExceptionTranslators.</value>
         </member>
         <member name="T:Spring.Dao.Support.DaoSupport">
             <summary>
@@ -67,6 +268,105 @@
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Dao.Support.DataAccessUtils"/> class.
             </summary>
+        </member>
+        <member name="M:Spring.Dao.Support.DataAccessUtils.TranslateIfNecessary(System.Exception,Spring.Dao.Support.IPersistenceExceptionTranslator)">
+            <summary>
+            Return a translated exception if this is appropriate, or null if the exception could
+            not be translated. 
+            </summary>
+            <param name="rawException">The raw exception we may wish to translate.</param>
+            <param name="pet">The PersistenceExceptionTranslator to use to perform the translation.</param>
+            <returns>A translated exception if translation is possible, or or null if the exception could
+            not be translated.</returns>
+        </member>
+        <member name="T:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor">
+            <summary>
+            AOP MethodInterceptor that provides persistence exception translation
+            based on a given PersistenceExceptionTranslator.
+            </summary>
+            <remarks>
+            Delegates to the given <see cref="T:Spring.Dao.Support.IPersistenceExceptionTranslator"/> to translate
+            an Exception thrown into Spring's DataAccessException hierarchy
+            (if appropriate).
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor"/> class.
+            Needs to be configured with a PersistenceExceptionTranslator afterwards.
+            </summary>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.#ctor(Spring.Dao.Support.IPersistenceExceptionTranslator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor"/> class for the
+            given IPersistenceExceptionTranslator
+            </summary>
+            <param name="persistenceExceptionTranslator">The persistence exception translator to use.</param>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.#ctor(Spring.Objects.Factory.IListableObjectFactory)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor"/> class, autodetecting
+            IPersistenceExceptionTranslators in the given object factory.
+            </summary>
+            <param name="objectFactory">The object factory to obtain all IPersistenceExceptionTranslators from.</param>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.AfterPropertiesSet">
+            <summary>
+            Ensures that the property PersistenceExceptionTranslator has been set.
+            Invoked by an <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
+            after it has injected all of an object's dependencies.
+            </summary>
+            <exception cref="T:System.Exception">
+            In the event of misconfiguration (such as the failure to set a
+            required property) or if initialization fails.
+            </exception>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.DetectPersistenceExceptionTranslators(Spring.Objects.Factory.IListableObjectFactory)">
+            <summary>
+            Detects the petsistence exception translators in the given object factory.
+            </summary>
+            <param name="objectFactory">The object factory for obtaining all IPersistenceExceptionTranslators.</param>
+            <returns>A chained IPersistenceExceptionTranslator, combining all PersistenceExceptionTranslators found in the factory
+            </returns>
+            <seealso cref="T:Spring.Dao.Support.ChainedPersistenceExceptionTranslator"/>
+        </member>
+        <member name="M:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.Invoke(AopAlliance.Intercept.IMethodInvocation)">
+            <summary>
+            Return a translated exception if this is appropriate, otherwise rethrow the original exception.
+            </summary>
+            <param name="invocation"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.PersistenceExceptionTranslator">
+            <summary>
+            Sets the persistence exception translator.  The default is to autodetect all IPersistenceExceptionTranslators
+            in the containing object factory, using them in a chain.       
+            </summary>
+            <value>The persistence exception translator.</value>
+        </member>
+        <member name="P:Spring.Dao.Support.PersistenceExceptionTranslationInterceptor.ObjectFactory">
+            <summary>
+            Callback that supplies the owning factory to an object instance.
+            </summary>
+            <value>
+            Owning <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
+            (may not be <see langword="null"/>). The object can immediately
+            call methods on the factory.
+            </value>
+            <remarks>
+            	<p>
+            Invoked after population of normal object properties but before an init
+            callback like <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            method or a custom init-method.
+            </p>
+            </remarks>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            In case of initialization errors.
+            </exception>
         </member>
         <member name="T:Spring.Dao.CannotAcquireLockException">
             <summary> 
@@ -5770,6 +6070,13 @@
             Initializes a new instance of the <see cref="T:Spring.Data.Objects.StoredProcedure"/> class.
             </summary>
         </member>
+        <member name="M:Spring.Data.Objects.StoredProcedure.#ctor(Spring.Data.Common.IDbProvider,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Data.Objects.StoredProcedure"/> class.
+            </summary>
+            <param name="dbProvider">The db provider.</param>
+            <param name="procedureName">Name of the stored procedure.</param>
+        </member>
         <member name="M:Spring.Data.Objects.StoredProcedure.ExecuteScalarByNamedParam(System.Collections.IDictionary)">
             <summary>
             Execute the stored procedure using 'ExecuteScalar'
@@ -9377,6 +9684,20 @@
             <author>Griffin Caprio (.NET)</author>
             <author>Mark Pollack (.NET)</author>
         </member>
+        <member name="M:Spring.Transaction.ITransactionStatus.SetRollbackOnly">
+            <summary>
+            Set the transaction rollback-only. This instructs the transaction manager that the only possible outcome of
+            the transaction may be a rollback, proceeding with the normal application
+            workflow though (i.e. no exception).
+            </summary>
+            <remarks>
+            <p>
+            For transactions managed by a <see cref="T:Spring.Transaction.Support.TransactionTemplate"/> or
+            <see cref="T:Spring.Transaction.Interceptor.TransactionInterceptor"/>.
+            An alternative way to trigger a rollback is throwing an transaction exception.
+            </p>
+            </remarks>
+        </member>
         <member name="P:Spring.Transaction.ITransactionStatus.IsNewTransaction">
             <summary>
             Returns <b>true</b> if the transaction is new, else <b>false</b> if participating
@@ -9385,21 +9706,9 @@
         </member>
         <member name="P:Spring.Transaction.ITransactionStatus.RollbackOnly">
             <summary>
-            Gets / sets if the transaction is rollback-only.
+            Return whether the transaction has been marked as rollback-only, 
+            (either by the application or by the transaction infrastructure).
             </summary>
-            <remarks>
-            <p>
-            This instructs the transaction manager that the only possible outcome of
-            the transaction may be a rollback, proceeding with the normal application
-            workflow though (i.e. no exception).
-            </p>
-            <p>
-            For transactions managed by a
-            <see cref="T:Spring.Transaction.Support.TransactionTemplate"/> or
-            <see cref="T:Spring.Transaction.Interceptor.TransactionInterceptor"/>.
-            An alternative way to trigger a rollback is throwing an transaction exception.
-            </p>
-            </remarks>
         </member>
         <member name="P:Spring.Transaction.ITransactionStatus.Transaction">
             <summary>
@@ -9433,6 +9742,20 @@
             <returns>
             	<c>true</c> if there is an actual transaction active; otherwise, <c>false</c>.
             </returns>
+        </member>
+        <member name="M:Spring.Transaction.Support.DefaultTransactionStatus.SetRollbackOnly">
+            <summary>
+            Set the transaction rollback-only. This instructs the transaction manager that the only possible outcome of
+            the transaction may be a rollback, proceeding with the normal application
+            workflow though (i.e. no exception).
+            </summary>
+            <remarks>
+            	<p>
+            For transactions managed by a <see cref="T:Spring.Transaction.Support.TransactionTemplate"/> or
+            <see cref="T:Spring.Transaction.Interceptor.TransactionInterceptor"/>.
+            An alternative way to trigger a rollback is throwing an transaction exception.
+            </p>
+            </remarks>
         </member>
         <member name="M:Spring.Transaction.Support.DefaultTransactionStatus.CreateSavepoint(System.String)">
             <summary>
