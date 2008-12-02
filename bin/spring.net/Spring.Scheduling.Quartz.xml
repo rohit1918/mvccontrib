@@ -86,8 +86,8 @@
             <seealso cref="P:Quartz.Trigger.JobName"/>
             <seealso cref="P:Quartz.Trigger.JobGroup"/>
             <seealso cref="P:Spring.Scheduling.Quartz.CronTriggerObject.JobDetail"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Triggers"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobDetails"/>
+            <seealso cref="!:SchedulerFactoryObject.Triggers"/>
+            <seealso cref="!:SchedulerFactoryObject.JobDetails"/>
         </member>
         <member name="T:Spring.Scheduling.Quartz.IJobDetailAwareTrigger">
             <summary> 
@@ -107,8 +107,8 @@
             </p>
             </remarks>
             <author>Juergen Hoeller</author>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Triggers"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobDetails"/>
+            <seealso cref="!:SchedulerFactoryObject.Triggers"/>
+            <seealso cref="!:SchedulerFactoryObject.JobDetails"/>
             <seealso cref="P:Quartz.Trigger.JobName"/>
             <seealso cref="P:Quartz.Trigger.JobGroup"/>
         </member>
@@ -676,14 +676,14 @@
             Set the name of the job.
             Default is the object name of this FactoryObject.
             </summary>
-            <seealso cref="P:Quartz.JobDetail.Name"/>
+            <seealso cref="!:JobDetail.Name"/>
         </member>
         <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.Group">
             <summary> 
             Set the group of the job.
             Default is the default group of the Scheduler.
             </summary>
-            <seealso cref="P:Quartz.JobDetail.Group"/>
+            <seealso cref="!:JobDetail.Group"/>
             <seealso cref="F:Quartz.SchedulerConstants.DefaultGroup"/>
         </member>
         <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.Concurrent">
@@ -698,6 +698,12 @@
             </p>
             </summary>
         </member>
+        <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.JobDetail">
+            <summary>
+            Gets the job detail.
+            </summary>
+            <value>The job detail.</value>
+        </member>
         <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.JobListenerNames">
             <summary> 
             Set a list of JobListener names for this job, referring to
@@ -707,7 +713,7 @@
             A JobListener name always refers to the name returned
             by the JobListener implementation.
             </remarks>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobListeners"/>
+            <seealso cref="!:SchedulerFactoryObject.JobListeners"/>
             <seealso cref="P:Quartz.IJobListener.Name"/>
         </member>
         <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.ObjectName">
@@ -721,6 +727,24 @@
             <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
             method or a custom init-method.
             </remarks>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.TargetObjectName">
+             <summary>
+             Set the name of the target object in the Spring object factory.
+             </summary>
+             <remarks>
+             This is an alternative to specifying <see cref="!:TargetObject"/> 
+             allowing for non-singleton objects to be invoked. Note that specified
+             "TargetObject" and <see cref="!:TargetType"/> values will
+             override the corresponding effect of this "targetObjectName" setting
+            (i.e. statically pre-define the object type or even the target object).
+             </remarks>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.ObjectFactory">
+            <summary>
+            Sets the object factory.
+            </summary>
+            <value>The object factory.</value>
         </member>
         <member name="P:Spring.Scheduling.Quartz.MethodInvokingJobDetailFactoryObject.ObjectType">
             <summary>
@@ -853,6 +877,172 @@
             property.
             </remarks>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Spring.Scheduling.Quartz.SchedulerAccessor" -->
+        <member name="M:Spring.Scheduling.Quartz.SchedulerAccessor.RegisterJobsAndTriggers">
+            <summary>
+            Register jobs and triggers (within a transaction, if possible).
+            </summary>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SchedulerAccessor.AddJobToScheduler(Quartz.JobDetail)">
+            <summary>
+            Add the given job to the Scheduler, if it doesn't already exist.
+            Overwrites the job in any case if "overwriteExistingJobs" is set.
+            </summary>
+            <param name="jobDetail">the job to add</param>
+            <returns><code>true</code> if the job was actually added, <code>false</code> if it already existed before</returns>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SchedulerAccessor.AddTriggerToScheduler(Quartz.Trigger)">
+            <summary>
+            Add the given trigger to the Scheduler, if it doesn't already exist.
+            Overwrites the trigger in any case if "overwriteExistingJobs" is set.
+            </summary>
+            <param name="trigger">the trigger to add</param>
+            <returns><code>true</code> if the trigger was actually added, <code>false</code> if it already existed before</returns>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SchedulerAccessor.RegisterListeners">
+            <summary>
+            Register all specified listeners with the Scheduler.
+            </summary>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SchedulerAccessor.GetScheduler">
+            <summary>
+            Template method that determines the Scheduler to operate on.
+            To be implemented by subclasses.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.OverwriteExistingJobs">
+            <summary>
+            Set whether any jobs defined on this SchedulerFactoryObject should overwrite
+            existing job definitions. Default is "false", to not overwrite already
+            registered jobs that have been read in from a persistent job store.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.JobSchedulingDataLocations">
+            <summary>
+            Set the locations of Quartz job definition XML files that follow the
+            "job_scheduling_data_1_5" XSD. Can be specified to automatically
+            register jobs that are defined in such files, possibly in addition
+            to jobs defined directly on this SchedulerFactoryObject.
+            </summary>
+            <seealso cref="T:Quartz.Xml.JobSchedulingDataProcessor"/>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.JobSchedulingDataLocation">
+            <summary> 
+            Set the location of a Quartz job definition XML file that follows the
+            "job_scheduling_data" XSD. Can be specified to automatically
+            register jobs that are defined in such a file, possibly in addition
+            to jobs defined directly on this SchedulerFactoryObject.
+            </summary>
+            <seealso cref="T:Spring.Scheduling.Quartz.ResourceJobSchedulingDataProcessor"/>
+            <seealso cref="T:Quartz.Xml.JobSchedulingDataProcessor"/>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Spring.Scheduling.Quartz.SchedulerAccessor.JobDetails" -->
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.Calendars">
+            <summary>
+            Register a list of Quartz ICalendar objects with the Scheduler
+            that this FactoryObject creates, to be referenced by Triggers.
+            </summary>
+            <value>Map with calendar names as keys as Calendar objects as values</value> 
+            <seealso cref="T:Quartz.ICalendar"/>
+            <seealso cref="P:Quartz.Trigger.CalendarName"/>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:Spring.Scheduling.Quartz.SchedulerAccessor.Triggers" -->
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.SchedulerListeners">
+            <summary>
+            Specify Quartz SchedulerListeners to be registered with the Scheduler.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.GlobalJobListeners">
+            <summary>
+            Specify global Quartz JobListeners to be registered with the Scheduler.
+            Such JobListeners will apply to all Jobs in the Scheduler.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.JobListeners">
+            <summary>
+            Specify named Quartz JobListeners to be registered with the Scheduler.
+            Such JobListeners will only apply to Jobs that explicitly activate
+            them via their name.
+            </summary>
+            <seealso cref="P:Quartz.IJobListener.Name"/>
+            <seealso cref="M:Quartz.JobDetail.AddJobListener(System.String)"/>
+            <seealso cref="!:JobDetailObject.JobListenerNames"/>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.GlobalTriggerListeners">
+            <summary>
+            Specify global Quartz TriggerListeners to be registered with the Scheduler.
+            Such TriggerListeners will apply to all Triggers in the Scheduler.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.TriggerListeners">
+            <summary>
+            Specify named Quartz TriggerListeners to be registered with the Scheduler.
+            Such TriggerListeners will only apply to Triggers that explicitly activate
+            them via their name.
+            </summary>
+            <seealso cref="!:ITriggerListener#getName"/>
+            <seealso cref="!:Trigger#addTriggerListener"/>
+            <seealso cref="!:CronTriggerObject#setTriggerListenerNames"/>
+            <seealso cref="!:SimpleTriggerObject#setTriggerListenerNames"/>    
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.TransactionManager">
+            <summary>
+            Set the transaction manager to be used for registering jobs and triggers
+            that are defined by this SchedulerFactoryObject. Default is none; setting
+            this only makes sense when specifying a DataSource for the Scheduler.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessor.ResourceLoader">
+            <summary>
+            Sets the <see cref="T:Spring.Core.IO.IResourceLoader"/>
+            that this object runs in.
+            </summary>
+            <value></value>
+            <remarks>
+            Invoked <b>after</b> population of normal objects properties but
+            before an init callback such as
+            <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            or a custom init-method. Invoked <b>before</b> setting
+            <see cref="T:Spring.Context.IApplicationContextAware"/>'s
+            <see cref="P:Spring.Context.IApplicationContextAware.ApplicationContext"/>
+            property.
+            </remarks>
+        </member>
+        <member name="T:Spring.Scheduling.Quartz.SchedulerAccessorObject">
+            <summary>
+            Spring class for accessing a Quartz Scheduler, i.e. for registering jobs,
+            triggers and listeners on a given <see cref="T:Quartz.IScheduler"/> instance.
+            </summary>
+            <author>Juergen Hoeller</author>
+            <author>Marko Lahma (.NET)</author>
+            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerAccessorObject.Scheduler"/>
+            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerAccessorObject.SchedulerName"/>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessorObject.SchedulerName">
+            <summary>
+            Specify the Quartz Scheduler to operate on via its scheduler name in the Spring
+            application context or also in the Quartz {@link org.quartz.impl.SchedulerRepository}.
+            </summary>
+            <remarks>
+            Schedulers can be registered in the repository through custom bootstrapping,
+            e.g. via the <see cref="T:Quartz.Impl.StdSchedulerFactory"/> or
+            <see cref="T:Quartz.Impl.DirectSchedulerFactory"/> factory classes.
+            However, in general, it's preferable to use Spring's <see cref="T:Spring.Scheduling.Quartz.SchedulerFactoryObject"/>
+            which includes the job/trigger/listener capabilities of this accessor as well.    
+            </remarks>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessorObject.Scheduler">
+            <summary>
+            Return the Quartz Scheduler instance that this accessor operates on.
+            </summary>
+        </member>
+        <member name="P:Spring.Scheduling.Quartz.SchedulerAccessorObject.ObjectFactory">
+            <summary>
+            Return the Quartz Scheduler instance that this accessor operates on.
+            </summary>
+        </member>
         <member name="T:Spring.Scheduling.Quartz.SchedulerFactoryObject">
             <summary> 
             FactoryObject that sets up a Quartz Scheduler and exposes it for object references.
@@ -906,11 +1096,6 @@
             Property name for thread count in thread pool.
             </summary>
         </member>
-        <member name="F:Spring.Scheduling.Quartz.SchedulerFactoryObject.logger">
-            <summary>
-            Logger for this instance and its sub-class instances.
-            </summary>
-        </member>
         <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Scheduling.Quartz.SchedulerFactoryObject"/> class.
@@ -921,6 +1106,13 @@
             Shut down the Quartz scheduler on object factory Shutdown,
             stopping all scheduled jobs.
             </summary>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.GetScheduler">
+            <summary>
+            Template method that determines the Scheduler to operate on.
+            To be implemented by subclasses.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.GetObject">
             <summary>
@@ -1002,40 +1194,6 @@
             Expose the specified context attributes and/or the current
             IApplicationContext in the Quartz SchedulerContext.
             </summary>
-        </member>
-        <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.RegisterListeners">
-            <summary> 
-            Register all specified listeners with the Scheduler.
-            </summary>
-        </member>
-        <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.RegisterJobsAndTriggers">
-            <summary>
-            Register jobs and triggers (within a transaction, if possible).
-            </summary>
-        </member>
-        <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.AddJobToScheduler(Quartz.JobDetail)">
-            <summary>
-            Add the given job to the Scheduler, if it doesn't already exist.
-            Overwrites the job in any case if "overwriteExistingJobs" is set.
-            </summary>
-            <param name="jobDetail">the job to add</param>
-            <returns>
-            	<code>true</code> if the job was actually added,
-            <code>false</code> if it already existed before
-            </returns>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.OverwriteExistingJobs"/>
-        </member>
-        <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.AddTriggerToScheduler(Quartz.Trigger)">
-            <summary>
-            Add the given trigger to the Scheduler, if it doesn't already exist.
-            Overwrites the trigger in any case if "overwriteExistingJobs" is set.
-            </summary>
-            <param name="trigger">the trigger to add</param>
-            <returns>
-            	<code>true</code> if the trigger was actually added,
-            <code>false</code> if it already existed before
-            </returns>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.OverwriteExistingJobs"/>
         </member>
         <member name="M:Spring.Scheduling.Quartz.SchedulerFactoryObject.StartScheduler(Quartz.IScheduler,System.TimeSpan)">
             <summary>
@@ -1200,113 +1358,7 @@
             <seealso cref="T:Spring.Scheduling.Quartz.AdaptableJobFactory"/>
             <seealso cref="T:Spring.Scheduling.Quartz.SpringObjectJobFactory"/>
         </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.OverwriteExistingJobs">
-            <summary> 
-            Set whether any jobs defined on this SchedulerFactoryObject should overwrite
-            existing job definitions. Default is "false", to not overwrite already
-            registered jobs that have been read in from a persistent job store.
-            </summary>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobSchedulingDataLocation">
-            <summary> 
-            Set the location of a Quartz job definition XML file that follows the
-            "job_scheduling_data" XSD. Can be specified to automatically
-            register jobs that are defined in such a file, possibly in addition
-            to jobs defined directly on this SchedulerFactoryObject.
-            </summary>
-            <seealso cref="T:Spring.Scheduling.Quartz.ResourceJobSchedulingDataProcessor"/>
-            <seealso cref="T:Quartz.Xml.JobSchedulingDataProcessor"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobSchedulingDataLocations">
-            <summary>
-            Set the locations of Quartz job definition XML files that follow the
-            "job_scheduling_data" XSD. Can be specified to automatically
-            register jobs that are defined in such files, possibly in addition
-            to jobs defined directly on this SchedulerFactoryObject.
-            </summary>
-            <value>The job scheduling data locations.</value>
-            <seealso cref="T:Spring.Scheduling.Quartz.ResourceJobSchedulingDataProcessor"/>
-            <seealso cref="T:Quartz.Xml.JobSchedulingDataProcessor"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobDetails">
-            <summary> 
-            Register a list of JobDetail objects with the Scheduler that
-            this FactoryObject creates, to be referenced by Triggers.
-            <p>This is not necessary when a Trigger determines the JobDetail
-            itself: In this case, the JobDetail will be implicitly registered
-            in combination with the Trigger.</p>
-            </summary>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Triggers"/>
-            <seealso cref="T:Quartz.JobDetail"/>
-            <seealso cref="T:Spring.Scheduling.Quartz.JobDetailObject"/>
-            <seealso cref="T:Spring.Scheduling.Quartz.IJobDetailAwareTrigger"/>
-            <seealso cref="P:Quartz.Trigger.JobName"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Calendars">
-            <summary>
-            Register a list of Quartz ICalendar objects with the Scheduler
-            that this FactoryObject creates, to be referenced by Triggers.
-            </summary>
-            <value>The calendars.</value>
-            <seealso cref="T:Quartz.ICalendar"/>
-            <seealso cref="P:Quartz.Trigger.CalendarName"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Triggers">
-            <summary> 
-            Register a list of Trigger objects with the Scheduler that
-            this FactoryObject creates.
-            <p>
-            If the Trigger determines the corresponding JobDetail itself,
-            the job will be automatically registered with the Scheduler.
-            Else, the respective JobDetail needs to be registered via the
-            "jobDetails" property of this FactoryObject.
-            </p>
-            </summary>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobDetails"/>
-            <seealso cref="T:Quartz.JobDetail"/>
-            <seealso cref="T:Spring.Scheduling.Quartz.IJobDetailAwareTrigger"/>
-            <seealso cref="T:Spring.Scheduling.Quartz.CronTriggerObject"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.SchedulerListeners">
-            <summary> 
-            Specify Quartz SchedulerListeners to be registered with the Scheduler.
-            </summary>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.GlobalJobListeners">
-            <summary> 
-            Specify global Quartz JobListeners to be registered with the Scheduler.
-            Such JobListeners will apply to all Jobs in the Scheduler.
-            </summary>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobListeners">
-            <summary>
-            Specify named Quartz JobListeners to be registered with the Scheduler.
-            Such JobListeners will only apply to Jobs that explicitly activate
-            them via their name.
-            </summary>
-            <value>The job listeners.</value>
-            <seealso cref="P:Quartz.IJobListener.Name"/>
-            <seealso cref="M:Quartz.JobDetail.AddJobListener(System.String)"/>
-            <seealso cref="P:Quartz.JobDetail.JobListenerNames"/>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.GlobalTriggerListeners">
-            <summary>
-            Specify global Quartz TriggerListeners to be registered with the Scheduler.
-            Such TriggerListeners will apply to all Triggers in the Scheduler.
-            </summary>
-            <value>The global trigger listeners.</value>
-        </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.TriggerListeners">
-            <summary> 
-            Specify named Quartz TriggerListeners to be registered with the Scheduler.
-            Such TriggerListeners will only apply to Triggers that explicitly activate
-            them via their name.
-            </summary>
-            <seealso cref="P:Quartz.ITriggerListener.Name"/>
-            <seealso cref="M:Quartz.Trigger.AddTriggerListener(System.String)"/>
-            <seealso cref="P:Quartz.Trigger.TriggerListenerNames"/>
-            <seealso cref="P:Quartz.Trigger.TriggerListenerNames"/>
-        </member>
+        <!-- Badly formed XML comment ignored for member "P:Spring.Scheduling.Quartz.SchedulerFactoryObject.ExposeSchedulerInRepository" -->
         <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.AutoStartup">
             <summary> 
             Set whether to automatically start the scheduler after initialization.
@@ -1353,16 +1405,21 @@
             </p>
             </remarks>
             <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.QuartzProperties"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.TransactionManager"/>
             <seealso cref="T:Spring.Scheduling.Quartz.LocalDataSourceJobStore"/>
         </member>
-        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.TransactionManager">
+        <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.ObjectName">
             <summary>
-            Set the transaction manager to be used for registering jobs and triggers
-            that are defined by this SchedulerFactoryObject. Default is none; setting
-             this only makes sense when specifying a DataSource for the Scheduler.
+            Set the name of the object in the object factory that created this object.
             </summary>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.DbProvider"/>
+            <value>The name of the object in the factory.</value>
+            <remarks>
+            	<p>
+            Invoked after population of normal object properties but before an init
+            callback like <see cref="T:Spring.Objects.Factory.IInitializingObject"/>'s
+            <see cref="M:Spring.Objects.Factory.IInitializingObject.AfterPropertiesSet"/>
+            method or a custom init-method.
+            </p>
+            </remarks>
         </member>
         <member name="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Running">
             <summary>
@@ -1520,8 +1577,8 @@
             <seealso cref="P:Quartz.Trigger.JobName"/>
             <seealso cref="P:Quartz.Trigger.JobGroup"/>
             <seealso cref="P:Spring.Scheduling.Quartz.SimpleTriggerObject.JobDetail"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.Triggers"/>
-            <seealso cref="P:Spring.Scheduling.Quartz.SchedulerFactoryObject.JobDetails"/>
+            <seealso cref="!:SchedulerFactoryObject.Triggers"/>
+            <seealso cref="!:SchedulerFactoryObject.JobDetails"/>
             <seealso cref="T:Spring.Scheduling.Quartz.CronTriggerObject"/>
         </member>
         <member name="M:Spring.Scheduling.Quartz.SimpleTriggerObject.#ctor">
@@ -1629,6 +1686,17 @@
             Initializes a new instance of the <see cref="T:Spring.Scheduling.Quartz.SpringDbProviderAdapter"/> class.
             </summary>
             <param name="dbProvider">The Spring db provider.</param>
+        </member>
+        <member name="T:Spring.Scheduling.Quartz.SpringMetadataAdapter">
+            <summary>
+            Helper class to map between Quartz and Spring DB metadata.
+            </summary>
+        </member>
+        <member name="M:Spring.Scheduling.Quartz.SpringMetadataAdapter.#ctor(Spring.Data.Common.IDbMetadata)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Scheduling.Quartz.SpringMetadataAdapter"/> class.
+            </summary>
+            <param name="metadata">The metadata to wrap and adapt.</param>
         </member>
         <member name="T:Spring.Scheduling.Quartz.SpringObjectJobFactory">
             <summary> 

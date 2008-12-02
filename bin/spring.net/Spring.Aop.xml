@@ -1208,7 +1208,7 @@
             Subclasses should override this method to return true if this
             object should not be considered for autoproxying by this post processor.
             Sometimes we need to be able to avoid this happening if it will lead to
-            a circular reference. This implementation returns true.
+            a circular reference. This implementation returns false.
             </summary>
             <param name="objectType">the type of the object</param>
             <param name="objectName">the name of the object</param>
@@ -1473,6 +1473,89 @@
             be apparent to the circular-reference prevention strategy in AbstractObjectFactory.
             </summary>
         </member>
+        <member name="T:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator">
+            <summary>
+            The base class for AutoProxyCreator implementations that mark objects 
+            eligible for proxying based on arbitrary criteria.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator.ShouldSkip(System.Type,System.String)">
+             <summary>
+            Overridden to call <see cref="M:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)"/>.
+             </summary>
+             <param name="objectType">the type of the object</param>
+             <param name="objectName">the name of the object</param>
+             <returns>if remarkable to skip</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator.GetAdvicesAndAdvisorsForObject(System.Type,System.String,Spring.Aop.ITargetSource)">
+            <summary>
+            Override to always return <see cref="F:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS"/>.
+            </summary>
+            <remarks>
+            Whether an object shall be proxied or not is determined by the result of <see cref="M:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)"/>.
+            </remarks>
+            <param name="objType">ingored</param>
+            <param name="name">ignored</param>
+            <param name="customTargetSource">ignored</param>
+            <returns>
+            Always <see cref="F:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS"/> to indicate, that the object shall be proxied.
+            </returns>
+            <seealso cref="F:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS"/>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AbstractFilteringAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)">
+            <summary>
+            Decide, whether the given object is eligible for proxying.
+            </summary>
+            <remarks>
+            Override this method to allow or reject proxying for the given object.
+            </remarks>
+            <param name="objType">the object's type</param>
+            <param name="name">the name of the object</param>
+            <seealso cref="M:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.ShouldSkip(System.Type,System.String)"/>        
+            <returns>whether the given object shall be proxied.</returns>
+        </member>
+        <member name="T:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator">
+            <summary>
+            An AutoProxyCreator, that identifies objects to be proxied by checking <see cref="T:System.Attribute"/>s defined on their type.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)">
+            <summary>
+            Determines, whether the given object shall be proxied by matching <paramref name="objType"/> against <see cref="P:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.AttributeTypes"/>.
+            </summary>
+            <param name="objType">the object's type</param>
+            <param name="name">the name of the object</param>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.IsAnnotatedWithAnyOfAttribute(System.Type,System.Type[],System.Boolean)">
+            <summary>
+            Checks if <paramref name="objectType"/> is annotated with any of the attributes within the given list of <paramref name="attributeTypes"/>.
+            </summary>
+            <param name="objectType">the object's type</param>
+            <param name="attributeTypes">the list of <see cref="T:System.Attribute"/> types to match agains.</param>
+            <param name="checkInherited">whether to check base classes and intefaces for any of the given attributes.</param>
+            <returns><see langword="true"/> if any of the attributes is found</returns>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.IsAnnotatedWithAttribute(System.Type,System.Type,System.Boolean)">
+            <summary>
+            Checks if <paramref name="objectType"/> is annotated with the specified <paramref name="attributeType"/>.
+            </summary>
+            <param name="objectType">the object's type</param>
+            <param name="attributeType">the <see cref="T:System.Attribute"/> type to match agains.</param>
+            <param name="checkInherited">whether to check base classes and intefaces for the specified attribute.</param>
+            <returns><see langword="true"/> if the attributes is found</returns>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.CheckInherited">
+            <summary>
+            Indicates, whether to consider base types for filtering when checking declared attributes. Defaults to <c>false</c>.
+            </summary>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.AttributeAutoProxyCreator.AttributeTypes">
+            <summary>
+            The list of attribute types marking object types as eligible for auto-proxying by this AutoProxyCreator. Must not be <c>null</c>.
+            </summary>
+        </member>
         <member name="T:Spring.Aop.Framework.AutoProxy.DefaultAdvisorAutoProxyCreator">
             <summary>
             ObjectPostProcessor implementation that creates AOP proxies based on all candidate
@@ -1717,7 +1800,7 @@
         </member>
         <member name="T:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator">
             <summary>
-            Object Auto Proxy Creator
+            AutoProxyCreator that identifies objects to proxy via a list of names.
             </summary>
             <remarks>
             <para>
@@ -1734,7 +1817,12 @@
             <author>Juergen Hoeller</author>
             <author>Adhari C Mahendra (.NET)</author>
         </member>
-        <member name="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.GetAdvicesAndAdvisorsForObject(System.Type,System.String,Spring.Aop.ITargetSource)">
+        <member name="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.#ctor">
+            <summary>
+            Initializes a new instance of <see cref="T:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.ObjectNameAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)">
             <summary>
             Identify as object to proxy if the object name is in the configured list of names.
             </summary>
@@ -1759,6 +1847,45 @@
             get wrapped with proxies.
             A name can specify a prefix to match by ending with "*", e.g. "myObject,tx*"
             will match the object named "myObject" and all objects whose name start with "tx".
+            </summary>
+        </member>
+        <member name="T:Spring.Aop.Framework.AutoProxy.PointcutFilteringAutoProxyCreator">
+            <summary>
+            This AutoProxyCreator only proxies objects matching the specified <see cref="T:Spring.Aop.IPointcut"/>.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.PointcutFilteringAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)">
+            <summary>
+            Determines, whether the given object shall be proxied.
+            </summary>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.PointcutFilteringAutoProxyCreator.Pointcut">
+            <summary>
+            Set the pointcut used to filter objects that should automatically get wrapped with proxies.
+            </summary>
+        </member>
+        <member name="T:Spring.Aop.Framework.AutoProxy.TypeNameAutoProxyCreator">
+            <summary>
+            AutoProxyCreator, that identifies objects to proxy by matching their <see cref="P:System.Type.FullName"/> against a list of patterns.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Aop.Framework.AutoProxy.TypeNameAutoProxyCreator.IsEligibleForProxying(System.Type,System.String)">
+            <summary>
+            Decide, whether the given object is eligible for proxying.
+            </summary>
+            <remarks>
+            Override this method to allow or reject proxying for the given object.
+            </remarks>
+            <param name="objType">the object's type</param>
+            <param name="name">the name of the object</param>
+            <seealso cref="M:Spring.Aop.Framework.AutoProxy.AbstractAutoProxyCreator.ShouldSkip(System.Type,System.String)"/>        
+            <returns>whether the given object shall be proxied.</returns>
+        </member>
+        <member name="P:Spring.Aop.Framework.AutoProxy.TypeNameAutoProxyCreator.TypeNames">
+            <summary>
+             The list of patterns to match <see cref="P:System.Type.FullName"/> against. For pattern syntax, see <see cref="T:Spring.Aop.Support.TypeNameTypeFilter"/>
             </summary>
         </member>
         <member name="T:Spring.Aop.Framework.DynamicProxy.AbstractAopProxyMethodBuilder">
@@ -6301,6 +6428,49 @@
             the pointcut matches.
             </remarks>
         </member>
+        <member name="T:Spring.Aop.Support.AttributeMatchingPointcut">
+            <summary>
+            Pointcut that looks for a specific attribute being present on a class or
+            method.
+            </summary>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeMatchingPointcut.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeMatchingPointcut"/> class for the
+            given attribute type.
+            </summary>
+            <param name="attributeType">Type of the attribute to look for at the class level.</param>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeMatchingPointcut.#ctor(System.Type,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeMatchingPointcut"/> class for the
+            given attribute type
+            </summary>
+            <param name="attributeType">Type of the attribute.</param>
+            <param name="checkInherited">if set to <c>true</c> [check inherited].</param>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeMatchingPointcut.#ctor(System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeMatchingPointcut"/> class for the given
+            attribute type
+            </summary>
+            <param name="classAttributeType">The attribute type to look for at the class level.</param>
+            <param name="methodAttributeType">The attribute type to look for at the method attribute.</param>
+        </member>
+        <member name="P:Spring.Aop.Support.AttributeMatchingPointcut.TypeFilter">
+            <summary>
+            The <see cref="T:Spring.Aop.ITypeFilter"/> for this pointcut.
+            </summary>
+            <value>The current <see cref="T:Spring.Aop.ITypeFilter"/>.</value>
+        </member>
+        <member name="P:Spring.Aop.Support.AttributeMatchingPointcut.MethodMatcher">
+            <summary>
+            The <see cref="T:Spring.Aop.IMethodMatcher"/> for this pointcut.
+            </summary>
+            <value>The current <see cref="T:Spring.Aop.IMethodMatcher"/>.</value>
+        </member>
         <member name="T:Spring.Aop.Support.AttributeMatchMethodPointcut">
             <summary> 
             <see cref="T:Spring.Aop.IPointcut"/> implementation that matches methods
@@ -6392,7 +6562,7 @@
         </member>
         <member name="P:Spring.Aop.Support.AttributeMatchMethodPointcut.CheckInterfaces">
             <summary>
-            Is the interfaces attributes of the method to be included in the search for the
+            Is the interfaces attributes of the method to be included in the search for theg 
             <see cref="P:Spring.Aop.Support.AttributeMatchMethodPointcut.Attribute"/>?
             </summary>
             <remarks>
@@ -6456,6 +6626,83 @@
         <member name="P:Spring.Aop.Support.AttributeMatchMethodPointcutAdvisor.Pointcut">
             <summary>
             The <see cref="T:Spring.Aop.IPointcut"/> that drives this advisor.
+            </summary>
+        </member>
+        <member name="T:Spring.Aop.Support.AttributeMethodMatcher">
+            <summary>
+            MethodMatcher that looks for a specific attribute being present on the
+            method (checking both the method on the onviked interface, if any and the corresponding
+            method on the target class
+            </summary>
+            <author>Juergen hoeller</author>
+            <author>Mark Pollack</author>
+            <seealso cref="T:Spring.Aop.Support.AttributeMatchingPointcut"/>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeMethodMatcher.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeMethodMatcher"/> class for the 
+            given atribute type.
+            </summary>
+            <param name="attributeType">Type of the attribute to look for.</param>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeMethodMatcher.Matches(System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            Does the supplied <paramref name="method"/> satisfy this matcher?
+            </summary>
+            <param name="method">The candidate method.</param>
+            <param name="targetType">The target <see cref="T:System.Type"/> (may be <see langword="null"/>,
+            in which case the candidate <see cref="T:System.Type"/> must be taken
+            to be the <paramref name="method"/>'s declaring class).</param>
+            <returns>
+            	<see langword="true"/> if this this method matches statically.
+            </returns>
+            <remarks>
+            	<p>
+            Must be implemented by a derived class in order to specify matching
+            rules.
+            </p>
+            </remarks>
+        </member>
+        <member name="T:Spring.Aop.Support.AttributeTypeFilter">
+            <summary>
+            ITypeFilter that looks for a specific attribute being present on a class
+            </summary>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack  (.NET)</author>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeTypeFilter.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeTypeFilter"/> class for the
+            given attribute type. 
+            </summary>
+            <param name="attributeType">Type of the attribute to look for.</param>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeTypeFilter.#ctor(System.Type,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aop.Support.AttributeTypeFilter"/> class for the
+            given attribute type.
+            </summary>
+            <param name="attributeType">Type of the attribute.</param>
+            <param name="checkInherited">if set to <c>true</c> [check inherited].</param>
+        </member>
+        <member name="M:Spring.Aop.Support.AttributeTypeFilter.Matches(System.Type)">
+            <summary>
+            Should the pointcut apply to the supplied <see cref="T:System.Type"/>?
+            </summary>
+            <param name="type">The candidate <see cref="T:System.Type"/>.</param>
+            <returns>
+            	<see langword="true"/> if the advice should apply to the supplied
+            <paramref name="type"/>
+            </returns>
+        </member>
+        <member name="P:Spring.Aop.Support.AttributeTypeFilter.AttributeType">
+            <summary>
+            The attribute <see cref="T:System.Type"/> for this filter.
+            </summary>
+        </member>
+        <member name="P:Spring.Aop.Support.AttributeTypeFilter.CheckInherited">
+            <summary>
+            Indicates, whether this filter considers base types for filtering.
             </summary>
         </member>
         <member name="T:Spring.Aop.Support.ComposablePointcut">
@@ -7796,6 +8043,39 @@
             <summary>
             Intersection <see cref="T:Spring.Aop.ITypeFilter"/> implementation.
             </summary>
+        </member>
+        <member name="T:Spring.Aop.Support.TypeNameTypeFilter">
+            <summary>
+            Simple <see cref="T:Spring.Aop.ITypeFilter"/> implementation that matches
+            a given <see cref="T:System.Type"/>'s <see cref="P:System.Type.FullName"/> against <see cref="P:Spring.Aop.Support.TypeNameTypeFilter.TypeNamePatterns"/>.
+            For a list of supported pattern syntax see <see cref="M:Spring.Util.PatternMatchUtils.SimpleMatch(System.String[],System.String)"/>.
+            </summary>
+            <author>Erich Eichinger</author>
+            <seealso cref="M:Spring.Util.PatternMatchUtils.SimpleMatch(System.String[],System.String)"/>
+        </member>
+        <member name="M:Spring.Aop.Support.TypeNameTypeFilter.#ctor(System.String[])">
+            <summary>
+            Creates a new instance of <see cref="T:Spring.Aop.Support.TypeNameTypeFilter"/> using a list of given <paramref name="patterns"/>.
+            </summary>
+            <param name="patterns">the list patterns to match typenames against. Must not be <c>null</c>.</param>
+             <seealso cref="M:Spring.Util.PatternMatchUtils.SimpleMatch(System.String[],System.String)"/>
+        </member>
+        <member name="M:Spring.Aop.Support.TypeNameTypeFilter.Matches(System.Type)">
+            <summary>
+            Does the supplied type's <see cref="P:System.Type.FullName"/> match any of the <see cref="P:Spring.Aop.Support.TypeNameTypeFilter.TypeNamePatterns"/>?
+            </summary>
+            <param name="type">
+            The candidate <see cref="T:System.Type"/>.
+            </param>
+            <returns>
+            <see langword="true"/> if the <paramref name="type"/> matches any of the <see cref="P:Spring.Aop.Support.TypeNameTypeFilter.TypeNamePatterns"/>.
+            </returns>
+        </member>
+        <member name="P:Spring.Aop.Support.TypeNameTypeFilter.TypeNamePatterns">
+            <summary>
+             Returns the list of type name patterns for this filter.
+            </summary>
+             <seealso cref="M:Spring.Util.PatternMatchUtils.SimpleMatch(System.String[],System.String)"/>
         </member>
         <member name="T:Spring.Aop.Support.UnionPointcut">
             <summary> 
@@ -9519,7 +9799,7 @@
             Return value for the specified <paramref name="invocation"/>.
             </returns>
         </member>
-        <member name="M:Spring.Aspects.Cache.CacheResultAdvice.CacheResultItems(System.Collections.ICollection,Spring.Caching.CacheResultItemsAttribute[])">
+        <member name="M:Spring.Aspects.Cache.CacheResultAdvice.CacheResultItems(System.Collections.IEnumerable,Spring.Caching.CacheResultItemsAttribute[])">
             <summary>
             Caches each item from the collection returned by target method.
             </summary>
@@ -9810,6 +10090,11 @@
             Log instance available to subclasses
             </summary>
         </member>
+        <member name="F:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.exceptionHandlerTable">
+            <summary>
+            Holds shared handler definition templates
+            </summary>
+        </member>
         <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.Invoke(AopAlliance.Intercept.IMethodInvocation)">
             <summary>
             Implement this method to perform extra treatments before and after
@@ -9886,6 +10171,41 @@
             <param name="parsedAdviceExpression">The parsed advice expression.</param>
             <returns>The exception handler instance</returns>
         </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateExecuteSpelExceptionHandler(Spring.Aspects.ParsedAdviceExpression)">
+            <summary>
+            Creates the execute spel exception handler.
+            </summary>
+            <param name="parsedAdviceExpression">The parsed advice expression.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateReturnValueExceptionHandler(Spring.Aspects.ParsedAdviceExpression)">
+            <summary>
+            Creates the return value exception handler.
+            </summary>
+            <param name="parsedAdviceExpression">The parsed advice expression.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateSwallowExceptionHander(Spring.Aspects.ParsedAdviceExpression)">
+            <summary>
+            Creates the swallow exception hander.
+            </summary>
+            <param name="parsedAdviceExpression">The parsed advice expression.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateTranslationExceptionHandler(System.String[])">
+            <summary>
+            Creates the translation exception handler.
+            </summary>
+            <param name="exceptionNames">The exception names.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.CreateLogExceptionHandler(System.String[])">
+            <summary>
+            Creates the log exception handler.
+            </summary>
+            <param name="exceptionNames">The exception names.</param>
+            <returns>Log exception</returns>
+        </member>
         <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ParseWrappedExceptionExpression(System.String,System.String)">
             <summary>
             Parses the wrapped exception expression.
@@ -9912,11 +10232,55 @@
             </summary>
             <value>The exception handler.</value>
         </member>
-        <member name="T:Spring.Aspects.Exceptions.LogExceptionHandler">
+        <member name="P:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerDictionary">
             <summary>
-            Log the exceptions.  Default log nameis "LogExceptionHandler" and log level is Debug 
+            Gets the exception handler dictionary.  Allows for registration of a specific handler where the key
+            is the action type.  This makes configuration of a custom exception handler easier, for example 
+            LogExceptionHandler, in that only 'user friendly' properties such as LogName, etc., need to be configured
+            and not 'user unfriendly' properties such as ConstraintExpressionText and ActionExpressionText.  
             </summary>
-            <author>Mark Pollack</author>
+            <value>The exception handler dictionary.</value>
+        </member>
+        <member name="T:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerTable">
+            <summary>
+            A specialized dictionary for key value pairs of (string, IExceptionHandler)
+            </summary>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerTable.Add(System.String,Spring.Aspects.IExceptionHandler)">
+            <summary>
+            Adds the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerTable.Add(System.Object,System.Object)">
+            <summary>
+            Adds an element with the specified key and value into the <see cref="T:System.Collections.Hashtable"/>.
+            </summary>
+            <param name="key">The key of the element to add.</param>
+            <param name="value">The value of the element to add. The value can be null.</param>
+            <exception cref="T:System.ArgumentNullException">
+            	<paramref name="key"/> is null. </exception>
+            <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Hashtable"/>. 
+            or key is not a string or value is not an IExceptionHandler.</exception>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Hashtable"/> is read-only.-or- The <see cref="T:System.Collections.Hashtable"/> has a fixed size. </exception>
+        </member>
+        <member name="P:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerTable.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:Spring.Aspects.IExceptionHandler"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:Spring.Aspects.Exceptions.ExceptionHandlerAdvice.ExceptionHandlerTable.Item(System.Object)">
+            <summary>
+            Gets the <see cref="T:System.Object"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="T:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler">
+            <summary>
+            Executes an abribtrary Spring Expression Language (SpEL) expression as an action when handling an exception.
+            </summary>
         </member>
         <member name="T:Spring.Aspects.AbstractExceptionHandler">
             <summary>
@@ -10041,6 +10405,29 @@
             </summary>
             <value><c>true</c> if continue processing; otherwise, <c>false</c>.</value>
         </member>
+        <member name="M:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler.#ctor(System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler"/> class.
+            </summary>
+            <param name="exceptionNames">The exception names.</param>
+        </member>
+        <member name="M:Spring.Aspects.Exceptions.ExecuteSpelExceptionHandler.HandleException(System.Collections.IDictionary)">
+            <summary>
+            Handles the exception.
+            </summary>
+            <returns>The return value from handling the exception, if not rethrown or a new exception is thrown.</returns>
+        </member>
+        <member name="T:Spring.Aspects.Exceptions.LogExceptionHandler">
+            <summary>
+            Log the exceptions.  Default log nameis "LogExceptionHandler" and log level is Debug 
+            </summary>
+            <author>Mark Pollack</author>
+        </member>
         <member name="M:Spring.Aspects.Exceptions.LogExceptionHandler.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Spring.Aspects.Exceptions.LogExceptionHandler"/> class.
@@ -10079,6 +10466,15 @@
             exception to the logging API
             </summary>
             <value><c>true</c> if log message only; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:Spring.Aspects.Exceptions.LogExceptionHandler.ActionExpressionText">
+            <summary>
+            Gets the action translation expression text.  Overridden to add approprate settings to
+            the SpEL expression that does the logging so that it depends on the values of LogLevel and
+            LogMessageOnly.  Those properties must be set to the desired values before calling this method.
+            
+            </summary>
+            <value>The action translation expression.</value>
         </member>
         <member name="T:Spring.Aspects.Exceptions.ReturnValueExceptionHandler">
             <summary>

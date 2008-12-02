@@ -72,6 +72,16 @@
             Spring contexts.
             </summary>
         </member>
+        <member name="M:Spring.Testing.NUnit.AbstractSpringContextTests.#cctor">
+            <summary>
+            Static ctor to avoid "beforeFieldInit" problem.
+            </summary>
+        </member>
+        <member name="M:Spring.Testing.NUnit.AbstractSpringContextTests.ClearContextCache">
+            <summary>
+            Disposes any cached context instance and removes it from cache.
+            </summary>
+        </member>
         <member name="F:Spring.Testing.NUnit.AbstractSpringContextTests.logger">
             <summary>
             Logger available to subclasses.
@@ -224,6 +234,13 @@
             <summary>
             Subclasses can override this method in order to 
             add custom test teardown logic.
+            </summary>
+        </member>
+        <member name="P:Spring.Testing.NUnit.AbstractDependencyInjectionSpringContextTests.RegisterContextWithContextRegistry">
+            <summary>
+            Controls, whether the <see cref="F:Spring.Testing.NUnit.AbstractDependencyInjectionSpringContextTests.applicationContext"/> instance will
+            be registered/unregistered with the global <see cref="T:Spring.Context.Support.ContextRegistry"/> before and after each test.
+            Defaults to <c>true</c>.
             </summary>
         </member>
         <member name="P:Spring.Testing.NUnit.AbstractDependencyInjectionSpringContextTests.PopulateProtectedVariables">

@@ -1741,7 +1741,7 @@
             <param name="element">The object to add to the set.</param>
             <returns>
             <see langword="true"/> is the object was added,
-            <see langword="true"/> if the object was already present.
+            <see langword="false"/> if the object was already present.
             </returns>
         </member>
         <member name="M:Spring.Collections.DictionarySet.AddAll(System.Collections.ICollection)">
@@ -2932,6 +2932,11 @@
         <member name="M:Spring.Collections.SortedSet.#ctor">
             <summary>
             Creates a new set instance based on a sorted tree.
+            </summary>
+        </member>
+        <member name="M:Spring.Collections.SortedSet.#ctor(System.Collections.IComparer)">
+            <summary>
+            Creates a new set instance based on a sorted tree using <param name="comparer"/> for ordering.
             </summary>
         </member>
         <member name="M:Spring.Collections.SortedSet.#ctor(System.Collections.ICollection)">
@@ -4186,6 +4191,41 @@
             <exception cref="T:Spring.Objects.Factory.NoSuchObjectDefinitionException">Ff there is no object with the given name
             </exception>
         </member>
+        <member name="M:Spring.Objects.Factory.IObjectFactory.CreateObject(System.String,System.Type,System.Object[])">
+            <summary>
+            Return an unconfigured(!) instance (possibly shared or independent) of the given object name.
+            </summary>
+            <param name="name">The name of the object to return.</param>
+            <param name="requiredType">
+            The <see cref="T:System.Type"/> the object may match. Can be an interface or
+            superclass of the actual class. For example, if the value is the
+            <see cref="T:System.Object"/> class, this method will succeed whatever the
+            class of the returned instance.
+            </param>
+            <param name="arguments">
+            The arguments to use if creating a prototype using explicit arguments to
+            a <see lang="static"/> factory method. If there is no factory method and the
+            supplied <paramref name="arguments"/> array is not <see lang="null"/>, then
+            match the argument values by type and call the object's constructor.
+            </param>
+            <returns>The unconfigured(!) instance of the object.</returns>
+            <exception cref="T:Spring.Objects.Factory.NoSuchObjectDefinitionException">
+            If there's no such object definition.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If the object could not be created.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectNotOfRequiredTypeException">
+            If the object is not of the required type.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If the supplied <paramref name="name"/> is <see langword="null"/>.
+            </exception>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type,System.Object[])"/>
+            <remarks>
+             This method will only <b>instantiate</b> the requested object. It does <b>NOT</b> inject any dependencies!
+            </remarks>
+        </member>
         <member name="M:Spring.Objects.Factory.IObjectFactory.ConfigureObject(System.Object,System.String)">
             <summary>
             Injects dependencies into the supplied <paramref name="target"/> instance
@@ -4800,6 +4840,24 @@
             The target <see cref="T:System.Type"/> to subscribe to.
             </param>
         </member>
+        <member name="M:Spring.Objects.Events.IEventRegistry.Unsubscribe(System.Object)">
+            <summary>
+            Unsubscribes to <b>all</b> events published, if the subscriber
+            implmenets compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use</param>
+        </member>
+        <member name="M:Spring.Objects.Events.IEventRegistry.Unsubscribe(System.Object,System.Type)">
+            <summary>
+            Unsubscribes to the published events of all objects of a given
+            <see cref="T:System.Type"/>, if the subscriber implements
+            compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use.</param>
+            <param name="targetSourceType">
+            The target <see cref="T:System.Type"/> to unsubscribe from
+            </param>
+        </member>
         <member name="E:Spring.Context.IApplicationContext.ContextEvent">
             <summary>
             Raised in response to an application context event.
@@ -5166,9 +5224,9 @@
             </remarks>
             <exception cref="T:Spring.Objects.ObjectsException">In the case of errors.</exception>
         </member>
-        <member name="M:Spring.Context.Support.AbstractApplicationContext.RegisterObjectPostProcessorChecker(Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
+        <member name="M:Spring.Context.Support.AbstractApplicationContext.RefreshObjectPostProcessorChecker(Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
             <summary>
-            Register an IObjectPostProcessorChecker that logs an info
+            Resets the well-known ObjectPostProcessorChecker that logs an info
             message when an object is created during IObjectPostProcessor
             instantiation, i.e. when an object is not eligible for being
             processed by all IObjectPostProcessors.
@@ -5417,6 +5475,41 @@
             </exception>
             <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetAliases(System.String)"/>
         </member>
+        <member name="M:Spring.Context.Support.AbstractApplicationContext.CreateObject(System.String,System.Type,System.Object[])">
+            <summary>
+            Return an unconfigured(!) instance (possibly shared or independent) of the given object name.
+            </summary>
+            <param name="name">The name of the object to return.</param>
+            <param name="requiredType">
+            The <see cref="T:System.Type"/> the object may match. Can be an interface or
+            superclass of the actual class. For example, if the value is the
+            <see cref="T:System.Object"/> class, this method will succeed whatever the
+            class of the returned instance.
+            </param>
+            <param name="arguments">
+            The arguments to use if creating a prototype using explicit arguments to
+            a <see lang="static"/> factory method. If there is no factory method and the
+            supplied <paramref name="arguments"/> array is not <see lang="null"/>, then
+            match the argument values by type and call the object's constructor.
+            </param>
+            <returns>The unconfigured(!) instance of the object.</returns>
+            <exception cref="T:Spring.Objects.Factory.NoSuchObjectDefinitionException">
+            If there's no such object definition.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If the object could not be created.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectNotOfRequiredTypeException">
+            If the object is not of the required type.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If the supplied <paramref name="name"/> is <see langword="null"/>.
+            </exception>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.CreateObject(System.String,System.Type,System.Object[])"/>
+            <remarks>
+             This method will only <b>instantiate</b> the requested object. It does <b>NOT</b> inject any dependencies!
+            </remarks>
+        </member>
         <member name="M:Spring.Context.Support.AbstractApplicationContext.GetObject(System.String,System.Type)">
             <summary>
             Return an instance (possibly shared or independent) of the given object name.
@@ -5521,7 +5614,7 @@
             <exception cref="T:System.ArgumentNullException">
             If the supplied <paramref name="name"/> is <see langword="null"/>.
             </exception>
-            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type)"/>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type,System.Object[])"/>
         </member>
         <member name="M:Spring.Context.Support.AbstractApplicationContext.IsSingleton(System.String)">
             <summary>
@@ -5873,6 +5966,24 @@
             </param>
             <seealso cref="M:Spring.Objects.Events.IEventRegistry.Subscribe(System.Object,System.Type)"/>
         </member>
+        <member name="M:Spring.Context.Support.AbstractApplicationContext.Unsubscribe(System.Object)">
+            <summary>
+            Unsubscribes to <b>all</b> events published, if the subscriber
+            implmenets compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use</param>
+        </member>
+        <member name="M:Spring.Context.Support.AbstractApplicationContext.Unsubscribe(System.Object,System.Type)">
+            <summary>
+            Unsubscribes to the published events of all objects of a given
+            <see cref="T:System.Type"/>, if the subscriber implements
+            compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use.</param>
+            <param name="targetSourceType">
+            The target <see cref="T:System.Type"/> to unsubscribe from
+            </param>
+        </member>
         <member name="M:Spring.Context.Support.AbstractApplicationContext.PublishEvent(System.Object,Spring.Context.ApplicationEventArgs)">
             <summary>
             Publishes an application context event.
@@ -6106,6 +6217,38 @@
             <exception cref="T:Spring.Objects.ObjectsException">
             In case of errors.
             </exception>
+        </member>
+        <member name="T:Spring.Core.IOrdered">
+            <summary>
+            Interface that can be implemented by objects that should be orderable, e.g. in an
+            <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <remarks>
+            <p>
+            The actual order can be interpreted as prioritization, the first object (with the
+            lowest order value) having the highest priority.
+            </p>
+            </remarks>
+            <author>Juergen Hoeller</author>
+            <author>Aleksandar Seovic (.Net)</author>
+        </member>
+        <member name="P:Spring.Core.IOrdered.Order">
+            <summary>
+            Return the order value of this object, where a higher value means greater in
+            terms of sorting.
+            </summary>
+            <remarks>
+            <p>
+            Normally starting with 0 or 1, with <see cref="F:System.Int32.MaxValue"/> indicating
+            greatest. Same order values will result in arbitrary positions for the affected
+            objects.
+            </p>
+            <p>
+            Higher value can be interpreted as lower priority, consequently the first object
+            has highest priority.
+            </p>
+            </remarks>
+            <returns>The order value.</returns>
         </member>
         <member name="T:Spring.Context.Support.AbstractMessageSource">
             <summary>
@@ -9990,20 +10133,6 @@
             <summary>
             Returns the <see cref="T:System.Uri"/> handle for this resource.
             </summary>
-            <remarks>
-            <p>
-            This, the default implementation, always throws a
-            <see cref="T:System.IO.FileNotFoundException"/>, assuming that the
-            resource cannot be exposed as a <see cref="T:System.Uri"/>.
-            </p>
-            </remarks>
-            <value>
-            The <see cref="T:System.Uri"/> handle for this resource.
-            </value>
-            <exception cref="T:System.IO.FileNotFoundException">
-            This, the default implementation, <b>always</b> throws a
-            <see cref="T:System.IO.FileNotFoundException"/>.
-            </exception>
             <seealso cref="P:Spring.Core.IO.IResource.Uri"/>
         </member>
         <member name="P:Spring.Core.IO.AbstractResource.File">
@@ -10283,6 +10412,12 @@
             A description for this resource.
             </value>
             <seealso cref="P:Spring.Core.IO.IResource.Description"/>
+        </member>
+        <member name="P:Spring.Core.IO.AssemblyResource.Uri">
+            <summary>
+            Returns the <see cref="T:System.Uri"/> handle for this resource.
+            </summary>
+            <seealso cref="P:Spring.Core.IO.IResource.Uri"/>
         </member>
         <member name="T:Spring.Core.IO.ConfigSectionResource">
             <summary>
@@ -10992,6 +11127,11 @@
             does not expose a constructor that takes a single
             <see cref="T:System.String"/> parameter.
             </exception>
+        </member>
+        <member name="T:Spring.Core.IO.ResourceHandlerRegistry.TolerantUriParser">
+            <summary>
+            Allows to create any arbitrary Url format
+            </summary>
         </member>
         <member name="T:Spring.Core.IO.StringResource">
             <summary>
@@ -13676,38 +13816,6 @@
             The name of the offending property.
             </summary>
         </member>
-        <member name="T:Spring.Core.IOrdered">
-            <summary>
-            Interface that can be implemented by objects that should be orderable, e.g. in an
-            <see cref="T:System.Collections.ICollection"/>.
-            </summary>
-            <remarks>
-            <p>
-            The actual order can be interpreted as prioritization, the first object (with the
-            lowest order value) having the highest priority.
-            </p>
-            </remarks>
-            <author>Juergen Hoeller</author>
-            <author>Aleksandar Seovic (.Net)</author>
-        </member>
-        <member name="P:Spring.Core.IOrdered.Order">
-            <summary>
-            Return the order value of this object, where a higher value means greater in
-            terms of sorting.
-            </summary>
-            <remarks>
-            <p>
-            Normally starting with 0 or 1, with <see cref="F:System.Int32.MaxValue"/> indicating
-            greatest. Same order values will result in arbitrary positions for the affected
-            objects.
-            </p>
-            <p>
-            Higher value can be interpreted as lower priority, consequently the first object
-            has highest priority.
-            </p>
-            </remarks>
-            <returns>The order value.</returns>
-        </member>
         <member name="T:Spring.Core.MethodGenericArgumentsCountCriteria">
             <summary>
             Criteria that is satisfied if the number of generic arguments to a given
@@ -14486,6 +14594,17 @@
             -1 if first object is less then second, 1 if it is greater, or 0 if they are equal.
             </returns>
         </member>
+        <member name="M:Spring.Core.OrderComparator.CompareEqualOrder(System.Object,System.Object)">
+            <summary>
+            Handle the case when both objects have equal sort order priority. By default returns 0, 
+            but may be overriden for handling special cases.
+            </summary>
+            <param name="o1">The first object to compare.</param>
+            <param name="o2">The second object to compare.</param>
+            <returns>
+            -1 if first object is less then second, 1 if it is greater, or 0 if they are equal.
+            </returns>
+        </member>
         <member name="T:Spring.Core.PropertyChangeEventArgs">
             <summary>
             Provides additional data for the <c>PropertyChanged</c> event.
@@ -14825,6 +14944,33 @@
             List of error providers message should be added to.
             </param>
         </member>
+        <member name="F:Spring.DataBinding.AbstractBinding.ALL_BINDINGERRORS_PROVIDER">
+            <summary>
+            The name of the always filled error provider
+            </summary>
+        </member>
+        <member name="M:Spring.DataBinding.AbstractBinding.IsValid(Spring.Validation.IValidationErrors)">
+            <summary>
+            Gets or sets a flag specifying whether this binding is valid.
+            </summary>
+            <value>
+                <c>true</c> if this binding evaluated without errors;
+                <c>false</c> otherwise.
+            </value>
+        </member>
+        <member name="M:Spring.DataBinding.AbstractBinding.SetInvalid(Spring.Validation.IValidationErrors)">
+            <summary>
+            Marks this binding's state as invalid for this validationErrors collection. 
+            Returns false if <paramref name="validationErrors"/> is null.
+            </summary>
+            <param name="validationErrors"></param>
+            <returns>false, if validationErrors is null</returns>
+        </member>
+        <member name="M:Spring.DataBinding.AbstractBinding.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"></see> class.
+            </summary>
+        </member>
         <member name="M:Spring.DataBinding.AbstractBinding.BindSourceToTarget(System.Object,System.Object,Spring.Validation.IValidationErrors)">
             <summary>
             Binds source object to target object.
@@ -14899,14 +15045,27 @@
             List of error providers message should be added to.
             </param>
         </member>
-        <member name="P:Spring.DataBinding.AbstractBinding.IsValid">
+        <member name="M:Spring.DataBinding.AbstractBinding.Equals(System.Object)">
             <summary>
-            Gets or sets a flag specifying whether this binding is valid.
+            Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
             </summary>
-            <value>
-                <c>true</c> if this binding evaluated without errors;
-                <c>false</c> otherwise.
-            </value>
+            <returns>
+            true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>. </param><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Spring.DataBinding.AbstractBinding.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. <see cref="M:System.Object.GetHashCode"></see> is suitable for use in hashing algorithms and data structures like a hash table.
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:Spring.DataBinding.AbstractBinding.Id">
+            <summary>
+             Gets the unique ID of this binding instance.
+            </summary>
         </member>
         <member name="P:Spring.DataBinding.AbstractBinding.Direction">
             <summary>
@@ -15335,7 +15494,7 @@
         </member>
         <member name="M:Spring.DataBinding.BaseBindingContainer.SetErrorMessage(System.String,System.String[])">
             <summary>
-            Sets error message that should be displayed in the case 
+            Implemented as a NOOP for containers.
             of a non-fatal binding error.
             </summary>
             <param name="messageId">
@@ -15392,6 +15551,156 @@
         <member name="F:Spring.DataBinding.BindingDirection.Bidirectional">
             <summary>
             Specifies that binding is bidirectional.
+            </summary>
+        </member>
+        <member name="T:Spring.DataBinding.BindingErrorMessage">
+            <summary>
+            Represents an ErrorMessage specific to a binding instance.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="T:Spring.Validation.ErrorMessage">
+            <summary>
+            Represents a single validation error message.
+            </summary>
+            <author>Aleksandar Seovic</author>
+            <author>Goran Milosavljevic</author>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.#ctor(System.String,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Validation.ErrorMessage"/> class.
+            </summary>
+            <param name="id">Error message resource identifier.</param>
+            <param name="parameters">Parameters that should be used for message resolution.</param>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.#ctor(Spring.Validation.ErrorMessage)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Validation.ErrorMessage"/> class copying values from another instance.
+            </summary>
+            <param name="other">Another Error message instance to copy values from.</param>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.GetSchema">
+             <summary>
+             This property is reserved, apply the 
+             <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" />
+             to the class instead. 
+             </summary>
+             <returns>
+             An <see cref="T:System.Xml.Schema.XmlSchema" /> 
+             that describes the XML representation of the object that 
+             is produced by the 
+             <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" />
+             method and consumed by the 
+             <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)" />
+             method.
+             </returns>
+            
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation.
+            </summary>
+            <param name="reader">
+            The <see cref="T:System.Xml.XmlReader"></see> stream 
+            from which the object is deserialized. 
+            </param>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts an object into its XML representation.
+            </summary>
+            <param name="writer">
+            The <see cref="T:System.Xml.XmlWriter"></see> stream 
+            to which the object is serialized. 
+            </param>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.GetMessage(Spring.Context.IMessageSource)">
+            <summary>
+            Resolves the message against specified <see cref="T:Spring.Context.IMessageSource"/>.
+            </summary>
+            <param name="messageSource">Message source to resolve this error message against.</param>
+            <returns>Resolved error message.</returns>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>. </param><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Spring.Validation.ErrorMessage.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. <see cref="M:System.Object.GetHashCode"></see> is suitable for use in hashing algorithms and data structures like a hash table.
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:Spring.Validation.ErrorMessage.Id">
+            <summary>
+            Gets or sets the resource identifier for this message.
+            </summary>
+            <value>The resource identifier for this message.</value>
+        </member>
+        <member name="P:Spring.Validation.ErrorMessage.Parameters">
+            <summary>
+            Gets or sets the message parameters.
+            </summary>
+            <value>The message parameters.</value>   
+        </member>
+        <member name="M:Spring.DataBinding.BindingErrorMessage.#ctor(System.String,System.String,System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Validation.ErrorMessage"/> class.
+            </summary>
+            <param name="bindingId">the id of the binding this error message is associated with</param>
+            <param name="id">the message id</param>
+            <param name="parameters">optional parameters to this message</param>
+        </member>
+        <member name="M:Spring.DataBinding.BindingErrorMessage.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation.
+            </summary>
+            <param name="reader">
+            The <see cref="T:System.Xml.XmlReader"></see> stream 
+            from which the object is deserialized. 
+            </param>
+        </member>
+        <member name="M:Spring.DataBinding.BindingErrorMessage.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts an object into its XML representation.
+            </summary>
+            <param name="writer">
+            The <see cref="T:System.Xml.XmlWriter"></see> stream 
+            to which the object is serialized. 
+            </param>
+        </member>
+        <member name="M:Spring.DataBinding.BindingErrorMessage.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>.
+            </summary>
+            <returns>
+            true if the specified <see cref="T:System.Object"></see> is equal to the current <see cref="T:System.Object"></see>; otherwise, false.
+            </returns>
+            <param name="obj">The <see cref="T:System.Object"></see> to compare with the current <see cref="T:System.Object"></see>. </param><filterpriority>2</filterpriority>
+        </member>
+        <member name="M:Spring.DataBinding.BindingErrorMessage.GetHashCode">
+            <summary>
+            Serves as a hash function for a particular type. <see cref="M:System.Object.GetHashCode"></see> is suitable for use in hashing algorithms and data structures like a hash table.
+            </summary>
+            <returns>
+            A hash code for the current <see cref="T:System.Object"></see>.
+            </returns>
+        </member>
+        <member name="P:Spring.DataBinding.BindingErrorMessage.BindingId">
+            <summary>
+            Get the ID of the binding this message instance relates to.
             </summary>
         </member>
         <member name="T:Spring.DataBinding.IDataBound">
@@ -17841,6 +18150,47 @@
             <param name="evalContext">Current expression evaluation context.</param>
             <returns>Node's value.</returns>
         </member>
+        <member name="T:Spring.Expressions.SyntaxErrorException">
+            <summary>
+            Exception thrown when detecting invalid SpEL syntax
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Expressions.SyntaxErrorException.#ctor(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:Spring.Expressions.SyntaxErrorException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            TODO
+            </summary>
+        </member>
+        <member name="M:Spring.Expressions.SyntaxErrorException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="P:Spring.Expressions.SyntaxErrorException.Line">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Spring.Expressions.SyntaxErrorException.Column">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Spring.Expressions.SyntaxErrorException.Message">
+            <summary>
+            Gets a message that provides details on the syntax error.
+            </summary>
+        </member>
+        <member name="P:Spring.Expressions.SyntaxErrorException.Expression">
+            <summary>
+             The expression that caused the error
+            </summary>
+        </member>
         <member name="T:Spring.Expressions.TernaryNode">
             <summary>
             Represents ternary expression node.
@@ -19069,6 +19419,22 @@
             <param name="sourceType">
             The target <see cref="T:System.Type"/> to subscribe to.
             </param>
+        </member>
+        <member name="M:Spring.Objects.Events.Support.EventRegistry.Unsubscribe(System.Object)">
+            <summary>
+            Unsubscribes to <b>all</b> events published, if the subscriber
+            implmenets compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use</param>
+        </member>
+        <member name="M:Spring.Objects.Events.Support.EventRegistry.Unsubscribe(System.Object,System.Type)">
+            <summary>
+            Unsubscribes to the published events of all objects of a given
+            <see cref="T:System.Type"/>, if the subscriber implements
+            compatible handler methods.
+            </summary>
+            <param name="subscriber">The subscriber to use.</param>
+            <param name="sourceType">The target <see cref="T:System.Type"/> to unsubscribe from</param>
         </member>
         <member name="P:Spring.Objects.Events.Support.EventRegistry.Publishers">
             <summary>
@@ -24217,6 +24583,72 @@
             Always returns the <see cref="T:Spring.Collections.ISet"/> <see cref="T:System.Type"/>.
             </value>
         </member>
+        <member name="T:Spring.Objects.Factory.Config.SharedStateAwareProcessor">
+            <summary>
+            Configure all ISharedStateAware objects, delegating concrete handling to the list of <see cref="P:Spring.Objects.Factory.Config.SharedStateAwareProcessor.SharedStateFactories"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Config.SharedStateAwareProcessor.#ctor">
+            <summary>
+            Creates a new empty instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Config.SharedStateAwareProcessor.#ctor(Spring.Objects.ISharedStateFactory[],System.Int32)">
+            <summary>
+            Creates a new preconfigured instance.
+            </summary>
+            <param name="sharedStateFactories"></param>
+            <param name="order">priority value affecting order of invocation of this processor. See <see cref="T:Spring.Core.IOrdered"/> interface.</param>
+        </member>
+        <member name="M:Spring.Objects.Factory.Config.SharedStateAwareProcessor.PostProcessBeforeInitialization(System.Object,System.String)">
+            <summary>
+            Iterates over configured list of <see cref="T:Spring.Objects.ISharedStateFactory"/>s until 
+            the first provider is found that<br/>
+            a) true == provider.CanProvideState( instance, name )<br/>
+            b) null != provider.GetSharedState( instance, name )<br/>
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Config.SharedStateAwareProcessor.PostProcessAfterInitialization(System.Object,System.String)">
+            <summary>
+            A NoOp for this processor
+            </summary>
+            <param name="instance">
+            The new object instance.
+            </param>
+            <param name="name">
+            The name of the object.
+            </param>
+            <returns>
+            the original <paramref name="instance"/>.
+            </returns>
+        </member>
+        <member name="P:Spring.Objects.Factory.Config.SharedStateAwareProcessor.Order">
+            <summary>
+            Return the order value of this object, where a higher value means greater in
+            terms of sorting.
+            </summary>
+            <remarks>
+            <p>
+            Normally starting with 0 or 1, with <see cref="F:System.Int32.MaxValue"/> indicating
+            greatest. Same order values will result in arbitrary positions for the affected
+            objects.
+            </p>
+            <p>
+            Higher value can be interpreted as lower priority, consequently the first object
+            has highest priority.
+            </p>
+            </remarks>
+            <returns>The order value.</returns>
+        </member>
+        <member name="P:Spring.Objects.Factory.Config.SharedStateAwareProcessor.SharedStateFactories">
+            <summary>
+            Get/Set the (already ordererd!) list of <see cref="T:Spring.Objects.ISharedStateFactory"/> instances.
+            </summary>
+            <remarks>
+            If this list is not set, the containing object factory will automatically 
+            be scanned for <see cref="T:Spring.Objects.ISharedStateFactory"/> instances.
+            </remarks>
+        </member>
         <member name="T:Spring.Objects.Factory.Config.SpecialFolderVariableSource">
             <summary>
             Implementation of <see cref="T:Spring.Objects.Factory.Config.IVariableSource"/> that
@@ -24820,6 +25252,16 @@
             </remarks>
             <author>Mark Pollack</author>
         </member>
+        <member name="F:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.DefaultPlaceholderPrefix">
+            <summary>
+            The default placeholder prefix.
+            </summary>
+        </member>
+        <member name="F:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.DefaultPlaceholderSuffix">
+            <summary>
+            The default placeholder suffix.
+            </summary>
+        </member>
         <member name="M:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.PostProcessObjectFactory(Spring.Objects.Factory.Config.IConfigurableListableObjectFactory)">
             <summary>
             Modify the application context's internal object factory after its
@@ -24862,6 +25304,18 @@
             Sets <see cref="T:Spring.Objects.Factory.Config.IVariableSource"/> that will be used to resolve placeholder names.
             </summary>
             <value>A <see cref="T:Spring.Objects.Factory.Config.IVariableSource"/> instance.</value>
+        </member>
+        <member name="P:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.PlaceholderPrefix">
+            <summary>
+            The placeholder prefix (the default is <c>${</c>).
+            </summary>
+            <seealso cref="F:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.DefaultPlaceholderPrefix"/>
+        </member>
+        <member name="P:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.PlaceholderSuffix">
+            <summary>
+            The placeholder suffix (the default is <c>}</c>)
+            </summary>
+            <seealso cref="F:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.DefaultPlaceholderSuffix"/>
         </member>
         <member name="P:Spring.Objects.Factory.Config.VariablePlaceholderConfigurer.IgnoreUnresolvablePlaceholders">
             <summary>
@@ -25060,39 +25514,7 @@
             In case of errors.
             </exception>
         </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.CreateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[])">
-            <summary>
-            Create an object instance for the given object definition.
-            </summary>
-            <remarks>
-            <p>
-            The object definition will already have been merged with the parent
-            definition in case of a child definition.
-            </p>
-            <p>
-            All the other methods in this class invoke this method, although objects
-            may be cached after being instantiated by this method. All object
-            instantiation within this class is performed by this method.
-            </p>
-            </remarks>
-            <param name="name">The name of the object.</param>
-            <param name="definition">
-            The object definition for the object that is to be instantiated.
-            </param>
-            <param name="arguments">
-            The arguments to use if creating a prototype using explicit arguments to
-            a <see lang="static"/>  factory method. If there is no factory method and the
-            supplied <paramref name="arguments"/> array is not <see lang="null"/>,
-            then match the argument values by type and call the object's constructor.
-            </param>
-            <returns>
-            A new instance of the object.
-            </returns>
-            <exception cref="T:Spring.Objects.ObjectsException">
-            In case of errors.
-            </exception>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.CreateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Boolean)">
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.InstantiateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Boolean,System.Boolean)">
             <summary>
             Create an object instance for the given object definition.
             </summary>
@@ -25108,6 +25530,9 @@
             <param name="allowEagerCaching">
             Whether eager caching of singletons is allowed... typically true for
             singlton objects, but never true for inner object definitions.
+            </param>
+            <param name="suppressConfigure">
+            Create instance only - suppress injecting dependencies yet.
             </param>
             <returns>
             A new instance of the object.
@@ -25698,11 +26123,26 @@
             </summary>
             <see cref="M:Spring.Objects.Factory.IObjectFactory.GetAliases(System.String)"/>.
         </member>
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.CreateObject(System.String,System.Type,System.Object[])">
+            <summary>
+            Return an unconfigured(!) instance (possibly shared or independent) of the given object name.
+            </summary>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.CreateObject(System.String,System.Type,System.Object[])"/>
+            <remarks>
+             This method will only <b>instantiate</b> the requested object. It does <b>NOT</b> inject any dependencies!
+            </remarks>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.GetObject(System.String)">
             <summary>
             Return an instance (possibly shared or independent) of the given object name.
             </summary>
             <see cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String)"/>.
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.GetObject(System.String,System.Type)">
+            <summary>
+            Return an instance (possibly shared or independent) of the given object name.
+            </summary>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type)"/>
         </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.GetObject(System.String,System.Object[])">
             <summary>
@@ -25741,6 +26181,53 @@
             If the supplied <paramref name="name"/> is <see langword="null"/>.
             </exception>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.GetObjectInternal(System.String,System.Type,System.Object[],System.Boolean)">
+            <summary>
+            Return an instance (possibly shared or independent) of the given object name, 
+            optionally injecting dependencies.
+            </summary>
+            <param name="name">The name of the object to return.</param>
+            <param name="requiredType">
+            The <see cref="T:System.Type"/> the object may match. Can be an interface or
+            superclass of the actual class. For example, if the value is the
+            <see cref="T:System.Object"/> class, this method will succeed whatever the
+            class of the returned instance.
+            </param>
+            <param name="arguments">
+            The arguments to use if creating a prototype using explicit arguments to
+            a <see lang="static"/> factory method. If there is no factory method and the
+            supplied <paramref name="arguments"/> array is not <see lang="null"/>, then
+            match the argument values by type and call the object's constructor.
+            </param>
+            <param name="suppressConfigure">whether to inject dependencies or not.</param>
+            <returns>The instance of the object.</returns>
+            <exception cref="T:Spring.Objects.Factory.NoSuchObjectDefinitionException">
+            If there's no such object definition.
+            </exception>
+            <exception cref="T:Spring.Objects.ObjectsException">
+            If the object could not be created.
+            </exception>
+            <exception cref="T:Spring.Objects.Factory.ObjectNotOfRequiredTypeException">
+            If the object is not of the required type.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If the supplied <paramref name="name"/> is <see langword="null"/>.
+            </exception>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.CreateObject(System.String,System.Type,System.Object[])"/>
+            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type,System.Object[])"/>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.EnsureObjectIsOfRequiredType(System.String,System.Object,System.Type)">
+            <summary>
+            Checks, if the passed instance is of the required type.
+            </summary>
+            <param name="name">the name of the object</param>
+            <param name="instance">the actual instance</param>
+            <param name="requiredType">the type contract the given instance must adhere.</param>
+            <returns>the object instance passed in via <paramref name="instance"/>(for more fluent usage)</returns>
+            <exception cref="T:Spring.Objects.Factory.ObjectNotOfRequiredTypeException">
+            if <paramref name="instance"/> is null or not assignable to <paramref name="requiredType"/>.
+            </exception>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.CreateAndCacheSingletonInstance(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[])">
             <summary>
             Creates a singleton instance for the specified object name and definition.
@@ -25756,12 +26243,6 @@
             call the object's constructor.
             </param>
             <returns>The created object instance.</returns>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.GetObject(System.String,System.Type)">
-            <summary>
-            Return an instance (possibly shared or independent) of the given object name.
-            </summary>
-            <seealso cref="M:Spring.Objects.Factory.IObjectFactory.GetObject(System.String,System.Type)"/>
         </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.ConfigureObject(System.Object,System.String)">
             <summary>
@@ -25860,7 +26341,7 @@
         </member>
         <member name="P:Spring.Objects.Factory.Support.AbstractObjectFactory.ObjectPostProcessors">
             <summary>
-            Gets the <see cref="T:System.Collections.IList"/> of
+            Gets the <see cref="T:Spring.Collections.ISet"/> of
             <see cref="T:Spring.Objects.Factory.Config.IObjectPostProcessor"/>s
             that will be applied to objects created by this factory.
             </summary>
@@ -25962,6 +26443,24 @@
             <see cref="M:Spring.Objects.Factory.Support.AbstractObjectFactory.RegisterSingleton(System.String,System.Object)"/>
             <see cref="P:Spring.Objects.Factory.Support.IObjectDefinitionRegistry.ObjectDefinitionCount"/>
             <see cref="P:Spring.Objects.Factory.IListableObjectFactory.ObjectDefinitionCount"/>
+        </member>
+        <member name="T:Spring.Objects.Factory.Support.AbstractObjectFactory.ObjectOrderComparator">
+            <summary>
+            Makes a distinction between sort order and object identity. 
+            This is important when used with <see cref="T:Spring.Collections.ISet"/>, since most
+            implementations assume Order == Identity
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Support.AbstractObjectFactory.ObjectOrderComparator.CompareEqualOrder(System.Object,System.Object)">
+            <summary>
+            Handle the case when both objects have equal sort order priority. By default returns 0, 
+            but may be overriden for handling special cases.
+            </summary>
+            <param name="o1">The first object to compare.</param>
+            <param name="o2">The second object to compare.</param>
+            <returns>
+            -1 if first object is less then second, 1 if it is greater, or 0 if they are equal.
+            </returns>
         </member>
         <member name="F:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.MethodResolutionFlags">
             <summary>
@@ -26213,43 +26712,7 @@
             </remarks>
             <seealso cref="M:Spring.Objects.Factory.Config.IConfigurableObjectFactory.IgnoreDependencyType(System.Type)"/>.
         </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.CreateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[])">
-            <summary>
-            Create an object instance for the given object definition.
-            </summary>
-            <param name="name">The name of the object.</param>
-            <param name="definition">
-            The object definition for the object that is to be instantiated.
-            </param>
-            <param name="arguments">
-            The arguments to use if creating a prototype using explicit arguments to
-            a static factory method. It is invalid to use a non-<see langword="null"/> arguments value
-            in any other case.
-            </param>
-            <returns>
-            A new instance of the object.
-            </returns>
-            <exception cref="T:Spring.Objects.ObjectsException">
-            In case of errors.
-            </exception>
-            <remarks>
-            <p>
-            Delegates to the
-            <see cref="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.CreateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Boolean)"/>
-            method version with the <c>allowEagerCaching</c> parameter set to <b>true</b>.
-            </p>
-            <p>
-            The object definition will already have been merged with the parent
-            definition in case of a child definition.
-            </p>
-            <p>
-            All the other methods in this class invoke this method, although objects
-            may be cached after being instantiated by this method. All object
-            instantiation within this class is performed by this method.
-            </p>
-            </remarks>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.CreateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Boolean)">
+        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.InstantiateObject(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[],System.Boolean,System.Boolean)">
             <summary>
             Create an object instance for the given object definition.
             </summary>
@@ -26265,6 +26728,9 @@
             <param name="allowEagerCaching">
             Whether eager caching of singletons is allowed... typically true for
             singlton objects, but never true for inner object definitions.
+            </param>
+            <param name="suppressConfigure">
+            Suppress injecting dependencies yet.
             </param>
             <returns>
             A new instance of the object.
@@ -26309,7 +26775,7 @@
         </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.CreateObjectInstance(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.Object[])">
             <summary>
-            Creates an <see cref="T:Spring.Objects.IObjectWrapper"/> instance from the <see cref="T:Spring.Objects.Factory.Support.RootObjectDefinition"/> passed in <paramref name="definition"/>
+            Creates an <see cref="T:Spring.Objects.IObjectWrapper"/> instance from the <see cref="T:Spring.Objects.Factory.Support.RootObjectDefinition"/> passed in <paramref name="objectDefinition"/>
             using constructor <paramref name="arguments"/>
             </summary>
             <param name="objectName">The name of the object to create - used for error messages.</param>
@@ -26508,90 +26974,6 @@
             <param name="name">
             The name of the root object (definition) that is itself being destroyed.
             </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.ResolveValueIfNecessary(System.String,Spring.Objects.Factory.Support.RootObjectDefinition,System.String,System.Object)">
-            <summary>
-            Given a property value, return a value, resolving any references to other
-            objects in the factory if necessary.
-            </summary>
-            <remarks>
-            <p>
-            The value could be :
-            <list type="bullet">
-            <item>
-            <p>
-            An <see cref="T:Spring.Objects.Factory.Config.IObjectDefinition"/>,
-            which leads to the creation of a corresponding new object instance.
-            Singleton flags and names of such "inner objects" are always ignored: inner objects
-            are anonymous prototypes.
-            </p>
-            </item>
-            <item>
-            <p>
-            A <see cref="T:Spring.Objects.Factory.Config.RuntimeObjectReference"/>, which must
-            be resolved.
-            </p>
-            </item>
-            <item>
-            <p>
-            An <see cref="T:Spring.Objects.Factory.Support.IManagedCollection"/>. This is a
-            special placeholder collection that may contain
-            <see cref="T:Spring.Objects.Factory.Config.RuntimeObjectReference"/>s or
-            collections that will need to be resolved.
-            </p>
-            </item>
-            <item>
-            <p>
-            An ordinary object or <see langword="null"/>, in which case it's left alone.
-            </p>
-            </item>
-            </list>
-            </p>
-            </remarks>
-            <param name="name">
-            The name of the object that is having the value of one of its properties resolved.
-            </param>
-            <param name="definition">
-            The definition of the named object.
-            </param>
-            <param name="argumentName">
-            The name of the property the value of which is being resolved.
-            </param>
-            <param name="argumentValue">
-            The value of the property that is being resolved.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.ResolveTargetType(Spring.Objects.Factory.Config.TypedStringValue)">
-            <summary>
-            Resolve the target type of the passed <see cref="T:Spring.Objects.Factory.Config.TypedStringValue"/>.
-            </summary>
-            <param name="value">The <see cref="T:Spring.Objects.Factory.Config.TypedStringValue"/> who's target type is to be resolved</param>
-            <returns>The resolved target type, if any. <see lang="null"/> otherwise.</returns>
-        </member>
-        <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.ResolveInnerObjectDefinition(System.String,System.String,System.String,Spring.Objects.Factory.Config.IObjectDefinition,System.Boolean)">
-            <summary>
-            Resolves an inner object definition.
-            </summary>
-            <param name="name">
-            The name of the object that surrounds this inner object definition.
-            </param>
-            <param name="innerObjectName">
-            The name of the inner object definition... note: this is a synthetic
-            name assigned by the factory (since it makes no sense for inner object
-            definitions to have names).
-            </param>
-            <param name="argumentName">
-            The name of the property the value of which is being resolved.
-            </param>
-            <param name="definition">
-            The definition of the inner object that is to be resolved.
-            </param>
-            <param name="singletonOwner">
-            <see langword="true"/> if the owner of the property is a singleton.
-            </param>
-            <returns>
-            The resolved object as defined by the inner object definition.
-            </returns>
         </member>
         <member name="M:Spring.Objects.Factory.Support.AbstractAutowireCapableObjectFactory.ResolveReference(Spring.Objects.Factory.Support.IConfigurableObjectDefinition,System.String,System.String,Spring.Objects.Factory.Config.RuntimeObjectReference)">
             <summary>
@@ -31002,6 +31384,12 @@
             Map from object name to object instance.
             </summary>
         </member>
+        <member name="M:Spring.Objects.Factory.Support.StaticListableObjectFactory.CreateObject(System.String,System.Type,System.Object[])">
+            <summary>
+            This method is not supported by <see cref="T:Spring.Objects.Factory.Support.StaticListableObjectFactory"/>.
+            </summary>
+            <exception cref="T:System.NotSupportedException"/>
+        </member>
         <member name="M:Spring.Objects.Factory.Support.StaticListableObjectFactory.GetObject(System.String)">
             <summary>
             Return an instance of the given object name.
@@ -31738,13 +32126,9 @@
             </summary>
             <param name="root">The root element to start parsing from.</param>
             <param name="helper">The <see cref="T:Spring.Objects.Factory.Xml.ObjectDefinitionParserHelper"/> instance to use.</param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.DefaultObjectDefinitionDocumentReader.ParseDefaultElement(System.Xml.XmlElement,Spring.Objects.Factory.Xml.ObjectDefinitionParserHelper)">
-            <summary>
-            Parses the default element.
-            </summary>
-            <param name="element">The element.</param>
-            <param name="helper">The helper.</param>
+            <exception cref="T:Spring.Objects.Factory.ObjectDefinitionStoreException">
+            in case an error happens during parsing and registering object definitions
+            </exception>
         </member>
         <member name="M:Spring.Objects.Factory.Xml.DefaultObjectDefinitionDocumentReader.ImportObjectDefinitionResource(System.Xml.XmlElement)">
             <summary>
@@ -31911,9 +32295,6 @@
             Attribute that should be used to specify the default namespace
             and schema location for a custom namespace parser.
             </summary>
-            <remarks>
-            If 
-            </remarks>
             <author>Aleksandar Seovic</author>
         </member>
         <member name="M:Spring.Objects.Factory.Xml.NamespaceParserAttribute.#ctor">
@@ -31971,6 +32352,24 @@
         <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.#cctor">
             <summary>
             Creates a new instance of the NamespaceParserRegistry class.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.Reset">
+            <summary>
+            Reset the list of registered parsers to "factory"-setting
+            </summary>
+            <remarks>use for unit tests only</remarks>
+        </member>
+        <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.RegisterWellknownNamespaceParserType(System.String)">
+            <summary>
+            Registers the <see cref="T:Spring.Objects.Factory.Xml.INamespaceParser"/> type for wellknown namespaces
+            </summary>
+            <returns><c>true</c> if the parser could be registered, <c>false</c> otherwise</returns>
+        </member>
+        <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.GetAssemblySchemaLocation(System.Type,System.String)">
+            <summary>
+            Constructs a "assembly://..." qualified schemaLocation url using the given type
+            to obtain the assembly name.
             </summary>
         </member>
         <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.GetParser(System.String)">
@@ -32079,6 +32478,13 @@
             does not have default value defined using <see cref="T:Spring.Objects.Factory.Xml.NamespaceParserAttribute"/>.
             </exception>
         </member>
+        <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.RegisterSchema(System.String,System.String)">
+            <summary>
+            Register a schema as well-known
+            </summary>
+            <param name="namespaceUri"></param>
+            <param name="schemaLocation"></param>
+        </member>
         <member name="M:Spring.Objects.Factory.Xml.NamespaceParserRegistry.GetDefaults(Spring.Objects.Factory.Xml.INamespaceParser)">
             <summary>
             Returns default values for the parser namespace and schema location as 
@@ -32091,6 +32497,11 @@
             A <see cref="T:Spring.Objects.Factory.Xml.NamespaceParserAttribute"/> instance containing
             default values for the parser namsepace and schema location
             </returns>
+        </member>
+        <member name="T:Spring.Objects.Factory.Xml.NamespaceParserRegistry.XmlResourceUrlResolver">
+            <summary>
+            Resolves xml entities by using the <see cref="T:Spring.Core.IO.IResourceLoader"/> infrastructure.
+            </summary>
         </member>
         <member name="T:Spring.Objects.Factory.Xml.NamespaceParserSupport">
             <summary>
@@ -33620,229 +34031,10 @@
             </summary>
             <value>The type of the document reader.</value>
         </member>
-        <member name="T:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException">
+        <member name="T:Spring.Objects.Factory.Xml.XmlObjectDefinitionReader.RetryParseException">
             <summary>
-            XML-specific ObjectDefinitionStoreException subclass that wraps a XmlException, which
-            contains information about the error location.
+            For retrying the parse process
             </summary>
-        </member>
-        <member name="T:Spring.Objects.Factory.ObjectDefinitionStoreException">
-            <summary>
-            Thrown when an <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
-            encounters an internal error, and its definitions are invalid.
-            </summary>
-            <remarks>
-            <p>
-            An example of a situation when this exception would be thrown is
-            in the case of an XML document containing object definitions being
-            malformed.
-            </p>
-            </remarks>
-            <author>Rod Johnson</author>
-            <author>Juergen Hoeller</author>
-            <author>Rick Evans (.NET)</author>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="message">
-            A message about the exception.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.String)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="resourceDescription">
-            The description of the resource that the object definition came from
-            </param>
-            <param name="name">
-            The name of the object that triggered the exception.
-            </param>
-            <param name="message">
-            A message about the exception.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Objects.Factory.ObjectDefinitionStoreException"/> class.
-            </summary>
-            <param name="resourceDescription">
-            The description of the resource that the object definition came from
-            </param>
-            <param name="msg">The detail message (used as exception message as-is)</param>
-            <param name="cause">The root cause. (may be <code>null</code></param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(Spring.Core.IO.IResource,System.String,System.String)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="resourceLocation">
-            The resource location (e.g. an XML object definition file) associated
-            with the offending object definition.
-            </param>
-            <param name="message">
-            A message about the exception.
-            </param>
-            <param name="name">
-            The name of the object that triggered the exception.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(Spring.Core.IO.IResource,System.String,System.String,System.Exception)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="resourceLocation">
-            The resource location (e.g. an XML object definition file) associated
-            with the offending object definition.
-            </param>
-            <param name="message">
-            A message about the exception.
-            </param>
-            <param name="name">
-            The name of the object that triggered the exception.
-            </param>
-            <param name="rootCause">
-            The root exception that is being wrapped.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.String,System.Exception)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="resourceDescription">
-            The description of the resource that the object definition came from
-            </param>
-            <param name="message">
-            A message about the exception.
-            </param>
-            <param name="name">
-            The name of the object that triggered the exception.
-            </param>
-            <param name="rootCause">
-            The root exception that is being wrapped.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.Exception)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="message">
-            A message about the exception.
-            </param>
-            <param name="rootCause">
-            The root exception that is being wrapped.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Creates a new instance of the ObjectDefinitionStoreException class.
-            </summary>
-            <param name="info">
-            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
-            that holds the serialized object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
-            that contains contextual information about the source or destination.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with
-            the data needed to serialize the target object.
-            </summary>
-            <param name="info">
-            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate
-            with data.
-            </param>
-            <param name="context">
-            The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>)
-            for this serialization.
-            </param>
-        </member>
-        <member name="F:Spring.Objects.Factory.ObjectDefinitionStoreException._resourceDescription">
-            <summary>
-            The description of the resource associated with the object
-            </summary>
-        </member>
-        <member name="F:Spring.Objects.Factory.ObjectDefinitionStoreException._objectName">
-            <summary>
-            The name of the object that trigger the exception.
-            </summary>
-        </member>
-        <member name="P:Spring.Objects.Factory.ObjectDefinitionStoreException.ObjectName">
-            <summary>
-            The name of the object that triggered the exception (if any).
-            </summary>
-        </member>
-        <member name="P:Spring.Objects.Factory.ObjectDefinitionStoreException.ResourceDescription">
-            <summary>
-            The description of the resource associated with the object (if any).
-            </summary>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException"/> class.
-            </summary>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.#ctor(System.String)">
-            <summary>
-            Creates a new instance of the XmlObjectDefinitionStoreException class.
-            </summary>
-            <param name="message">
-            A message about the exception.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.#ctor(System.String,System.Exception)">
-            <summary>
-            Creates a new instance of the XmlObjectDefinitionStoreException class.
-            </summary>
-            <param name="message">
-            A message about the exception.
-            </param>
-            <param name="rootCause">
-            The root exception that is being wrapped.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            Creates a new instance of the XmlObjectDefinitionStoreException class.
-            </summary>
-            <param name="info">
-            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
-            that holds the serialized object data about the exception being thrown.
-            </param>
-            <param name="context">
-            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
-            that contains contextual information about the source or destination.
-            </param>
-        </member>
-        <member name="M:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.#ctor(System.String,System.String,System.Xml.XmlException)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException"/> class.
-            </summary>
-            <param name="resourceDescription">The description of the resource that the object definition came from</param>
-            <param name="msg">The detail message (used as exception message as-is).</param>
-            <param name="cause">The XmlException root cause.</param>
-        </member>
-        <member name="P:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.LineNumber">
-            <summary>
-            Gets the line number in the XML resource that failed.
-            </summary>
-            <value>The line number if available (in case of a XmlException); -1 else.</value>
-        </member>
-        <member name="P:Spring.Objects.Factory.Xml.XmlObjectDefinitionStoreException.LinePosition">
-            <summary>
-            Gets the line position in the XML resource that failed.
-            </summary>
-            <value>The line position if available (in case of a XmlException); -1 else.</value>
         </member>
         <member name="T:Spring.Objects.Factory.Xml.XmlObjectFactory">
             <summary>
@@ -34573,6 +34765,167 @@
             The message about the exception.
             </summary>
         </member>
+        <member name="T:Spring.Objects.Factory.ObjectDefinitionStoreException">
+            <summary>
+            Thrown when an <see cref="T:Spring.Objects.Factory.IObjectFactory"/>
+            encounters an internal error, and its definitions are invalid.
+            </summary>
+            <remarks>
+            <p>
+            An example of a situation when this exception would be thrown is
+            in the case of an XML document containing object definitions being
+            malformed.
+            </p>
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Juergen Hoeller</author>
+            <author>Rick Evans (.NET)</author>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="resourceDescription">
+            The description of the resource that the object definition came from
+            </param>
+            <param name="name">
+            The name of the object that triggered the exception.
+            </param>
+            <param name="message">
+            A message about the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Objects.Factory.ObjectDefinitionStoreException"/> class.
+            </summary>
+            <param name="resourceDescription">
+            The description of the resource that the object definition came from
+            </param>
+            <param name="msg">The detail message (used as exception message as-is)</param>
+            <param name="cause">The root cause. (may be <code>null</code></param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(Spring.Core.IO.IResource,System.String,System.String)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="resourceLocation">
+            The resource location (e.g. an XML object definition file) associated
+            with the offending object definition.
+            </param>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="name">
+            The name of the object that triggered the exception.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(Spring.Core.IO.IResource,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="resourceLocation">
+            The resource location (e.g. an XML object definition file) associated
+            with the offending object definition.
+            </param>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="name">
+            The name of the object that triggered the exception.
+            </param>
+            <param name="rootCause">
+            The root exception that is being wrapped.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="resourceDescription">
+            The description of the resource that the object definition came from
+            </param>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="name">
+            The name of the object that triggered the exception.
+            </param>
+            <param name="rootCause">
+            The root exception that is being wrapped.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="message">
+            A message about the exception.
+            </param>
+            <param name="rootCause">
+            The root exception that is being wrapped.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Creates a new instance of the ObjectDefinitionStoreException class.
+            </summary>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/>
+            that holds the serialized object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The <see cref="T:System.Runtime.Serialization.StreamingContext"/>
+            that contains contextual information about the source or destination.
+            </param>
+        </member>
+        <member name="M:Spring.Objects.Factory.ObjectDefinitionStoreException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with
+            the data needed to serialize the target object.
+            </summary>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate
+            with data.
+            </param>
+            <param name="context">
+            The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>)
+            for this serialization.
+            </param>
+        </member>
+        <member name="F:Spring.Objects.Factory.ObjectDefinitionStoreException._resourceDescription">
+            <summary>
+            The description of the resource associated with the object
+            </summary>
+        </member>
+        <member name="F:Spring.Objects.Factory.ObjectDefinitionStoreException._objectName">
+            <summary>
+            The name of the object that trigger the exception.
+            </summary>
+        </member>
+        <member name="P:Spring.Objects.Factory.ObjectDefinitionStoreException.ObjectName">
+            <summary>
+            The name of the object that triggered the exception (if any).
+            </summary>
+        </member>
+        <member name="P:Spring.Objects.Factory.ObjectDefinitionStoreException.ResourceDescription">
+            <summary>
+            The description of the resource associated with the object (if any).
+            </summary>
+        </member>
         <member name="T:Spring.Objects.Factory.ObjectFactoryUtils">
             <summary>
             Convenience methods operating on object factories, returning object instances,
@@ -35292,6 +35645,97 @@
             The name of the event that is being wired up.
             </summary>
         </member>
+        <member name="T:Spring.Objects.Support.AbstractSharedStateFactory">
+            <summary>
+            Convenience base class for <see cref="T:Spring.Objects.ISharedStateFactory"/> implementations.
+            </summary>
+        </member>
+        <member name="T:Spring.Objects.ISharedStateFactory">
+            <summary>
+            Abstracts the state sharing strategy used 
+            by <see cref="T:Spring.Objects.Factory.Config.SharedStateAwareProcessor"/>
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Objects.ISharedStateFactory.CanProvideState(System.Object,System.String)">
+            <summary>
+            Indicate, whether the given instance can be served by this factory
+            </summary>
+            <param name="instance">the instance to serve state</param>
+            <param name="name">the name of the instance</param>
+            <returns>
+            a boolean value indicating, whether state can
+            be served for the given instance or not.
+            </returns>
+        </member>
+        <member name="M:Spring.Objects.ISharedStateFactory.GetSharedStateFor(System.Object,System.String)">
+            <summary>
+            Returns the shared state for the given instance.
+            </summary>
+            <param name="instance">the instance to obtain shared state for.</param>
+            <param name="name">the name of this instance</param>
+            <returns>a dictionary containing shared state for <paramref name="instance"/> or null.</returns>
+        </member>
+        <member name="M:Spring.Objects.Support.AbstractSharedStateFactory.GetSharedStateFor(System.Object,System.String)">
+            <summary>
+            Gets a dictionary acc. to the type of <paramref name="instance"/>.
+            If no dictionary is found, create it according to <see cref="P:Spring.Objects.Support.AbstractSharedStateFactory.CaseSensitiveState"/>
+            </summary>
+            <param name="instance">the instance to obtain shared state for</param>
+            <param name="name">the name of the instance.</param>
+            <returns>
+            A dictionary containing the <paramref name="instance"/>'s state, 
+            or null if no state can be served by this provider.
+            </returns>
+        </member>
+        <member name="M:Spring.Objects.Support.AbstractSharedStateFactory.CreateSharedStateDictionary(System.Object)">
+            <summary>
+            Creates a dictionary to hold the shared state identified by <paramref name="key"/>.
+            </summary>
+            <param name="key">a key to create the dictionary for.</param>
+            <returns>a dictionary according to <paramref name="key"/> and <see cref="P:Spring.Objects.Support.AbstractSharedStateFactory.CaseSensitiveState"/>.</returns>
+        </member>
+        <member name="M:Spring.Objects.Support.AbstractSharedStateFactory.CanProvideState(System.Object,System.String)">
+            <summary>
+            Indicate, whether the given instance will be served by this provider
+            </summary>
+            <param name="instance">the instance to serve state</param>
+            <param name="name">the name of the instance</param>
+            <returns>
+            a boolean value indicating, whether state shall 
+            be resolved for the given instance or not.
+            </returns>
+        </member>
+        <member name="M:Spring.Objects.Support.AbstractSharedStateFactory.GetKey(System.Object,System.String)">
+            <summary>
+            Create the key used for obtaining the state dictionary for <paramref name="instance"/>.
+            </summary>
+            <param name="instance">the instance to create the key for</param>
+            <param name="name">the name of the instance.</param>
+            <returns>
+            the key identifying the state dictionary to be used for <paramref name="instance"/>
+            or null, if this state manager doesn't serve the given instance.
+            </returns>
+            <remarks>
+            <para>
+            Implementations may choose to return null from this method to indicate, 
+            that they won't serve state for the given instance.
+            </para>
+            <para>
+            <b>Note:</b>Keys returned by this method are always treated case-sensitive!
+            </para>
+            </remarks>
+        </member>
+        <member name="P:Spring.Objects.Support.AbstractSharedStateFactory.CaseSensitiveState">
+            <summary>
+            Create shared state dictionaries case-sensitive or case-insensitive?
+            </summary>
+        </member>
+        <member name="P:Spring.Objects.Support.AbstractSharedStateFactory.Order">
+            <summary>
+            A number indicating the priority of this <see cref="T:Spring.Objects.Support.AbstractSharedStateFactory"/> (<see cref="T:Spring.Core.IOrdered"/> for more).
+            </summary>
+        </member>
         <member name="T:Spring.Objects.Support.AbstractWiringEventHandlerValue">
             <summary>
             Base class for all <see cref="T:Spring.Objects.IEventHandlerValue"/>
@@ -35486,6 +35930,53 @@
             <summary>
             The name of the event that is being wired up.
             </summary>
+        </member>
+        <member name="T:Spring.Objects.Support.ByTypeSharedStateFactory">
+            <summary>
+            Serves shared state on a by-type basis.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Support.ByTypeSharedStateFactory.#ctor">
+            <summary>
+            Creates a new instance matching all types by default.
+            </summary>
+        </member>
+        <member name="M:Spring.Objects.Support.ByTypeSharedStateFactory.#ctor(System.Type[])">
+            <summary>
+            Creates a new instance matching only specified list of types.
+            </summary>
+            <param name="typeFilter">the list of types to serve.</param>
+        </member>
+        <member name="M:Spring.Objects.Support.ByTypeSharedStateFactory.CanProvideState(System.Object,System.String)">
+            <summary>
+            Indicate, whether the given instance will be served by this provider
+            </summary>
+            <param name="instance">the instance to serve state</param>
+            <param name="name">the name of the instance</param>
+            <returns>
+            a boolean value indicating, whether state shall 
+            be resolved for the given instance or not.
+            </returns>
+        </member>
+        <member name="M:Spring.Objects.Support.ByTypeSharedStateFactory.GetKey(System.Object,System.String)">
+            <summary>
+            Returns the <see cref="T:System.Type"/> for the given <paramref name="instance"/>.
+            </summary>
+            <param name="instance">the instance to obtain the key for.</param>
+            <param name="name">the name of the instance (ignored by this provider)</param>
+            <returns>instance.GetType() if it matches the <see cref="P:Spring.Objects.Support.ByTypeSharedStateFactory.TypeFilter"/> list. Null otherwise.</returns>
+            <remarks>
+            This method will only be called if <see cref="M:Spring.Objects.Support.ByTypeSharedStateFactory.CanProvideState(System.Object,System.String)"/> returned true previously.
+            </remarks>
+        </member>
+        <member name="P:Spring.Objects.Support.ByTypeSharedStateFactory.TypeFilter">
+            <summary>
+            Limit object types to be served by this state manager.
+            </summary>
+            <remarks>
+            Only objects assignable to one of the types in this list 
+            will be served state by this manager.
+            </remarks>
         </member>
         <member name="T:Spring.Objects.Support.InstanceEventHandlerValue">
             <summary>
@@ -35979,6 +36470,30 @@
             An array of the <see cref="T:Spring.Objects.PropertyValue"/> objects held
             in this object.
             </returns>
+        </member>
+        <member name="T:Spring.Objects.ISharedStateAware">
+            <summary>
+            This interface should be implemented by classes that want to 
+            have access to the shared state.
+            </summary>
+            <remarks>
+            <p>
+            Shared state is very useful if you have data that needs to be shared by all instances
+            of e.g. the same webform (or other <c>IHttpHandler</c>s). 
+            </p>
+            <p>
+            For example, <c>Spring.Web.UI.Page</c> class implements this interface, which allows  
+            each page derived from it to cache localizalization resources and parsed data binding 
+            expressions only once and then reuse the cached values, regardless of how many instances 
+            of the page are created.
+            </p>
+            </remarks>
+        </member>
+        <member name="P:Spring.Objects.ISharedStateAware.SharedState">
+            <summary>
+            Gets or sets the <see cref="T:System.Collections.IDictionary"/> that should be used
+            to store shared state for this instance.
+            </summary>
         </member>
         <member name="T:Spring.Objects.MutablePropertyValues">
             <summary>
@@ -38119,11 +38634,16 @@
             reflection if necessary.
             </remarks>
         </member>
+        <member name="M:Spring.Reflection.Dynamic.SafeConstructor.GetOrCreateDynamicConstructor(System.Reflection.ConstructorInfo)">
+            <summary>
+            Obtains cached constructor info or creates a new entry, if none is found.
+            </summary>
+        </member>
         <member name="M:Spring.Reflection.Dynamic.SafeConstructor.#ctor(System.Reflection.ConstructorInfo)">
             <summary>
             Creates a new instance of the safe constructor wrapper.
             </summary>
-            <param name="constructor">Constructor to wrap.</param>
+            <param name="constructorInfo">Constructor to wrap.</param>
         </member>
         <member name="M:Spring.Reflection.Dynamic.SafeConstructor.Invoke(System.Object[])">
             <summary>
@@ -38146,7 +38666,7 @@
             <summary>
             Creates dynamic constructor instance for the specified <see cref="T:System.Reflection.ConstructorInfo"/>.
             </summary>
-            <param name="constructor">Constructor info to create dynamic constructor for.</param>
+            <param name="constructorInfo">Constructor info to create dynamic constructor for.</param>
             <returns>Dynamic constructor for the specified <see cref="T:System.Reflection.ConstructorInfo"/>.</returns>
         </member>
         <member name="T:Spring.Reflection.Dynamic.IDynamicField">
@@ -38334,13 +38854,13 @@
             <see cref="T:Spring.Reflection.Dynamic.SafeIndexer"/> will attempt to use dynamic
             indexer if possible, but it will fall back to standard
             reflection if necessary.
-            </remarks>
+            </remarks>    
         </member>
         <member name="M:Spring.Reflection.Dynamic.SafeIndexer.#ctor(System.Reflection.PropertyInfo)">
             <summary>
             Creates a new instance of the safe indexer wrapper.
             </summary>
-            <param name="indexer">Indexer to wrap.</param>
+            <param name="indexerInfo">Indexer to wrap.</param>
         </member>
         <member name="M:Spring.Reflection.Dynamic.SafeIndexer.GetValue(System.Object,System.Int32)">
             <summary>
@@ -38437,6 +38957,11 @@
             </summary>
             <author>Aleksandar Seovic</author>
         </member>
+        <member name="M:Spring.Reflection.Dynamic.DynamicIndexer.#ctor">
+            <summary>
+            Prevent instantiation
+            </summary>
+        </member>
         <member name="M:Spring.Reflection.Dynamic.DynamicIndexer.Create(System.Reflection.PropertyInfo)">
             <summary>
             Creates dynamic indexer instance for the specified <see cref="T:System.Reflection.PropertyInfo"/>.
@@ -38473,11 +38998,16 @@
             reflection if necessary.
             </remarks>
         </member>
+        <member name="M:Spring.Reflection.Dynamic.SafeMethod.GetOrCreateDynamicMethod(System.Reflection.MethodInfo)">
+            <summary>
+            Obtains cached property info or creates a new entry, if none is found.
+            </summary>
+        </member>
         <member name="M:Spring.Reflection.Dynamic.SafeMethod.#ctor(System.Reflection.MethodInfo)">
             <summary>
             Creates a new instance of the safe method wrapper.
             </summary>
-            <param name="method">Method to wrap.</param>
+            <param name="methodInfo">Method to wrap.</param>
         </member>
         <member name="M:Spring.Reflection.Dynamic.SafeMethod.Invoke(System.Object,System.Object[])">
             <summary>
@@ -38538,6 +39068,30 @@
             A new property value.
             </param>
         </member>
+        <member name="M:Spring.Reflection.Dynamic.IDynamicProperty.GetValue(System.Object,System.Object[])">
+            <summary>
+            Gets the value of the dynamic property for the specified target object.
+            </summary>
+            <param name="target">
+            Target object to get property value from.
+            </param>
+            <param name="index">Optional index values for indexed properties. This value should be null reference for non-indexed properties.</param>
+            <returns>
+            A property value.
+            </returns>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.IDynamicProperty.SetValue(System.Object,System.Object,System.Object[])">
+            <summary>
+            Gets the value of the dynamic property for the specified target object.
+            </summary>
+            <param name="target">
+            Target object to set property value on.
+            </param>
+            <param name="value">
+            A new property value.
+            </param>
+            <param name="index">Optional index values for indexed properties. This value should be null reference for non-indexed properties.</param>
+        </member>
         <member name="T:Spring.Reflection.Dynamic.SafeProperty">
             <summary>
             Safe wrapper for the dynamic property.
@@ -38570,6 +39124,18 @@
             A property value.
             </returns>
         </member>
+        <member name="M:Spring.Reflection.Dynamic.SafeProperty.GetValue(System.Object,System.Object[])">
+            <summary>
+            Gets the value of the dynamic property for the specified target object.
+            </summary>
+            <param name="target">
+            Target object to get property value from.
+            </param>
+            <param name="index">Optional index values for indexed properties. This value should be null reference for non-indexed properties.</param>
+            <returns>
+            A property value.
+            </returns>
+        </member>
         <member name="M:Spring.Reflection.Dynamic.SafeProperty.SetValue(System.Object,System.Object)">
             <summary>
             Gets the value of the dynamic property for the specified target object.
@@ -38580,6 +39146,18 @@
             <param name="value">
             A new property value.
             </param>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.SafeProperty.SetValue(System.Object,System.Object,System.Object[])">
+            <summary>
+            Gets the value of the dynamic property for the specified target object.
+            </summary>
+            <param name="target">
+            Target object to set property value on.
+            </param>
+            <param name="value">
+            A new property value.
+            </param>
+            <param name="index">Optional index values for indexed properties. This value should be null reference for non-indexed properties.</param>
         </member>
         <member name="P:Spring.Reflection.Dynamic.SafeProperty.PropertyInfo">
             <summary>
@@ -38617,19 +39195,35 @@
             <param name="property">Property info to create dynamic property for.</param>
             <returns>Dynamic property for the specified <see cref="T:System.Reflection.PropertyInfo"/>.</returns>
         </member>
-        <member name="T:Spring.Reflection.Dynamic.GetterDelegate">
+        <member name="T:Spring.Reflection.Dynamic.FieldGetterDelegate">
             <summary>
             Represents a Get method
             </summary>
             <param name="target">the target instance when calling an instance method</param>
             <returns>the value return by the Get method</returns>
         </member>
-        <member name="T:Spring.Reflection.Dynamic.SetterDelegate">
+        <member name="T:Spring.Reflection.Dynamic.FieldSetterDelegate">
             <summary>
             Represents a Set method
             </summary>
             <param name="target">the target instance when calling an instance method</param>
             <param name="value">the value to be set</param>
+        </member>
+        <member name="T:Spring.Reflection.Dynamic.PropertyGetterDelegate">
+            <summary>
+            Represents an Indexer Get method
+            </summary>
+            <param name="target">the target instance when calling an instance method</param>
+            <param name="index"></param>
+            <returns>the value return by the Get method</returns>
+        </member>
+        <member name="T:Spring.Reflection.Dynamic.PropertySetterDelegate">
+            <summary>
+            Represents a Set method
+            </summary>
+            <param name="target">the target instance when calling an instance method</param>
+            <param name="value">the value to be set</param>
+            <param name="index"></param>
         </member>
         <member name="T:Spring.Reflection.Dynamic.FunctionDelegate">
             <summary>
@@ -38638,6 +39232,13 @@
             <param name="target">the target instance when calling an instance method</param>
             <param name="args">arguments to be passed to the method</param>
             <returns>the value return by the method. <value>null</value> when calling a void method</returns>
+        </member>
+        <member name="T:Spring.Reflection.Dynamic.ConstructorDelegate">
+            <summary>
+            Represents a constructor
+            </summary>
+            <param name="args">arguments to be passed to the method</param>
+            <returns>the new object instance</returns>
         </member>
         <member name="T:Spring.Reflection.Dynamic.CreatePropertyCallback">
             <summary>
@@ -38800,12 +39401,47 @@
             will throw an <see cref="T:System.InvalidOperationException"/> when called.
             </remarks>
         </member>
-        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.CreateFunctionDelegate(System.Reflection.MethodInfo)">
+        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.CreateMethod(System.Reflection.MethodInfo)">
             <summary>
             Create a new method delegate for the specified method using <see cref="T:System.Reflection.Emit.DynamicMethod"/>
             </summary>
-            <param name="method">the method to create the delegate for</param>
+            <param name="methodInfo">the method to create the delegate for</param>
             <returns>a delegate that can be used to invoke the method.</returns>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.CreateConstructor(System.Reflection.ConstructorInfo)">
+            <summary>
+             Creates a new delegate for the specified constructor.
+            </summary>
+            <param name="constructorInfo">the constructor to create the delegate for</param>
+            <returns>delegate that can be used to invoke the constructor.</returns>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.EmitInvokeMethod(System.Reflection.Emit.ILGenerator,System.Reflection.MethodInfo,System.Boolean)">
+            <summary>
+            Delegates a Method(object target, params object[] args) call to the actual underlying method.
+            </summary>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.EmitMethodReturn(System.Reflection.Emit.ILGenerator,System.Type)">
+            <summary>
+            Generates code to process return value if necessary.
+            </summary>
+            <param name="il">IL generator to use.</param>
+            <param name="returnValueType">Type of the return value.</param>
+        </member>
+        <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.ConvertValueTypeArgumentIfNecessary(System.Object,System.Type,System.Int32)">
+            <summary>
+            Converts <paramref name="value"/> to an instance of <paramref name="targetType"/> if necessary to 
+            e.g. avoid e.g. double/int cast exceptions.
+            </summary>
+            <remarks>
+            <para>
+            This method mimics the behavior of the compiler that
+            automatically performs casts like int to double in "Math.Sqrt(4)".<br/>
+            See about implicit, widening type conversions on <a href="http://social.msdn.microsoft.com/Search/en-US/?query=type conversion tables">MSDN - Type Conversion Tables</a>
+            </para>
+            <para>
+            Note: <paramref name="targetType"/> is expected to be a value type! 
+            </para>
+            </remarks>
         </member>
         <member name="M:Spring.Reflection.Dynamic.DynamicReflectionManager.EmitThrowInvalidOperationException(System.Reflection.Emit.ILGenerator,System.String)">
             <summary>
@@ -38813,6 +39449,90 @@
             </summary>
             <param name="il">IL generator to use.</param>
             <param name="message">Error message to use.</param>
+        </member>
+        <member name="T:Spring.Stereotype.ComponentAttribute">
+            <summary>
+            Indicates that an annotated class is a "component".
+            Such classes are considered as candidates for future features such 
+            as auto-detection  when using attribute-based configuration and assembly scanning.
+            </summary>
+            <remarks>Other class-level annotations may be considered as identifying
+            a component as well, typically a special kind of component:
+            e.g. the Repository attribute.
+            </remarks>
+            <author>Mark Fisher</author>
+            <author>Mark Pollack (.NET)</author>
+            <seealso cref="T:Spring.Stereotype.RepositoryAttribute"/>
+        </member>
+        <member name="M:Spring.Stereotype.ComponentAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.ComponentAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Stereotype.ComponentAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.ComponentAttribute"/> class.
+            </summary>
+            <param name="name">The name of the component.</param>
+        </member>
+        <member name="P:Spring.Stereotype.ComponentAttribute.Name">
+            <summary>
+            Gets or sets the name of the component
+            </summary>
+            <value>The name of the component.</value>
+        </member>
+        <member name="T:Spring.Stereotype.RepositoryAttribute">
+            <summary>
+            Indicates that an annotated class is a "Repository" (or "DAO").
+            </summary>
+            <remarks>
+            A class with this attribute is eligible for Spring DataAccessException translation.  A class
+            with the Repository attribute is also clarified as to its role in the overall application
+            architecture for the purpose of tools, aspects, etc.
+            <para>
+            This attribute also serves as a specialization of the ComponentAttribute, allowing implementation
+            classes to be autodetected in future releases through assembly scanning.
+            </para>
+            </remarks>
+            <author>Rod Johnson</author>
+            <author>Jueren Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+            <seealso cref="T:Spring.Stereotype.ComponentAttribute"/>   
+        </member>
+        <member name="M:Spring.Stereotype.RepositoryAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.RepositoryAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Stereotype.RepositoryAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.RepositoryAttribute"/> class.
+            </summary>
+            <param name="name">The name of the repository.</param>
+        </member>
+        <member name="T:Spring.Stereotype.ServiceAttribute">
+            <summary>
+            Indicates that an annotated class is a "Service" (e.g. a business service facade).
+            </summary>
+            <remarks>
+            <para>
+            This attribute also serves as a specialization of the ComponentAttribute, allowing implementation
+            classes to be autodetected in future releases through assembly scanning.
+            </para>
+            </remarks>
+            <author>Juergen Hoeller</author>
+            <author>Mark Pollack (.NET)</author>
+        </member>
+        <member name="M:Spring.Stereotype.ServiceAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.ServiceAttribute"/> class.
+            </summary>
+        </member>
+        <member name="M:Spring.Stereotype.ServiceAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Spring.Stereotype.ServiceAttribute"/> class.
+            </summary>
+            <param name="name">The name.</param>
         </member>
         <member name="T:Spring.Threading.CallContextStorage">
             <summary>
@@ -39405,6 +40125,13 @@
             </summary>
             <author>Aleksandar Seovic</author>
         </member>
+        <member name="M:Spring.Util.ArrayUtils.HasElements(System.Collections.ICollection)">
+            <summary>
+            Checks if the given array or collection has elements and none of the elements is null.
+            </summary>
+            <param name="collection">the collection to be checked.</param>
+            <returns>true if the collection has a length and contains only non-null elements.</returns>
+        </member>
         <member name="M:Spring.Util.ArrayUtils.HasLength(System.Collections.ICollection)">
             <summary>
             Checks if the given array or collection is null or has no elements.
@@ -39539,6 +40266,18 @@
             contains no elements.
             </exception>
         </member>
+        <member name="M:Spring.Util.AssertUtils.ArgumentHasElements(System.Collections.ICollection,System.String)">
+            <summary>
+            Checks the value of the supplied <see cref="T:System.Collections.ICollection"/> <paramref name="argument"/> and throws
+            an <see cref="T:System.ArgumentException"/> if it is <see langword="null"/>, contains no elements or only null elements.
+            </summary>
+            <param name="argument">The array or collection to check.</param>
+            <param name="name">The argument name.</param>
+            <exception cref="T:System.ArgumentNullException">
+            If the supplied <paramref name="argument"/> is <see langword="null"/>, 
+            contains no elements or only null elements.
+            </exception>
+        </member>
         <member name="M:Spring.Util.AssertUtils.AssertArgumentType(System.Object,System.String,System.Type,System.String)">
             <summary>
             Checks whether the specified <paramref name="argument"/> can be cast 
@@ -39597,6 +40336,25 @@
             This is a utility class, and as such exposes no public constructors.
             </p>
             </remarks>
+        </member>
+        <member name="T:Spring.Util.AttributeUtils">
+            <summary>
+            General utility methods for working with annotations
+            </summary>
+        </member>
+        <member name="M:Spring.Util.AttributeUtils.FindAttribute(System.Type,System.Type)">
+            <summary>
+            Find a single Attribute of the type 'attributeType' from the supplied class, 
+            traversing it interfaces and super classes if no attribute can be found on the 
+            class iteslf. 
+            </summary>
+            <remarks>
+            This method explicitly handles class-level attributes which are not declared as
+            inherited as well as attributes on interfaces.
+            </remarks>
+            <param name="type">The class to look for attributes on .</param>
+            <param name="attributeType">Type of the attribibute to look for.</param>
+            <returns>the attribute of the given type found, or <code>null</code></returns>
         </member>
         <member name="T:Spring.Util.CollectionUtils">
             <summary>
@@ -39836,6 +40594,191 @@
             <param name="node">Node to get the file name for.</param>
             <returns>The name of the file specified node is defined in.</returns>
         </member>
+        <member name="T:Spring.Util.ConfigXmlAttribute">
+            <summary>
+            An <see cref="T:System.Xml.XmlAttribute"/> holding information about its original text source location.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="T:Spring.Util.ITextPosition">
+            <summary>
+            Holds text position information for e.g. error reporting purposes.
+            </summary>
+            <seealso cref="T:Spring.Util.ConfigXmlElement"/>
+            <seealso cref="T:Spring.Util.ConfigXmlAttribute"/>
+        </member>
+        <member name="P:Spring.Util.ITextPosition.Filename">
+            <summary>
+             Gets a string specifying the file/resource name related to the configuration details.
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ITextPosition.LineNumber">
+            <summary>
+             Gets an integer specifying the line number related to the configuration details.
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ITextPosition.LinePosition">
+            <summary>
+            Gets an integer specifying the line position related to the configuration details.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlAttribute.#ctor(Spring.Util.ITextPosition,System.String,System.String,System.String,System.Xml.XmlDocument)">
+            <summary>
+             Creates a new instance of <see cref="T:Spring.Util.ConfigXmlAttribute"/>, storing a copy of the passed 
+             <paramref name="currentTextPositionPositionInfo"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlAttribute.CloneNode(System.Boolean)">
+            <summary>
+            Creates a duplicate of this node.
+            </summary>
+            <param name="deep">true to recursively clone the subtree under the specified node; false to clone only the node itself </param>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlAttribute.Filename">
+            <summary>
+            The name of the resource this element was read from
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlAttribute.LineNumber">
+            <summary>
+            The line number within the resource this element was read from
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlAttribute.LinePosition">
+            <summary>
+            The line position within the resource this element was read from.
+            </summary>
+        </member>
+        <member name="T:Spring.Util.ConfigXmlDocument">
+            <summary>
+            An <see cref="T:System.Xml.XmlDocument"/> implementation, who's elements retain information
+            about their location in the original XML text document the were read from.
+            </summary>
+            <remarks>
+            When loading a document, the used <see cref="T:System.Xml.XmlReader"/> must implement <see cref="T:System.Xml.IXmlLineInfo"/>. 
+            Typical XmlReader implementations like <see cref="T:System.Xml.XmlTextReader"/> support this interface.
+            </remarks>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.CreateElement(System.String,System.String,System.String)">
+            <summary>
+            Overridden to create a <see cref="T:Spring.Util.ConfigXmlElement"/> retaining the current 
+            text position information.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.CreateAttribute(System.String,System.String,System.String)">
+            <summary>
+            Overridden to create a <see cref="T:Spring.Util.ConfigXmlAttribute"/> retaining the current 
+            text position information.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.LoadXml(System.String,System.String)">
+             <summary>
+             Load the document from the given <see cref="T:System.Xml.XmlReader"/>.
+             Child nodes will store <paramref name="resourceName"/> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+             </summary>
+            <param name="resourceName">the name of the resource</param>
+            <param name="xml">The XML source </param>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.Load(System.String,System.IO.Stream)">
+             <summary>
+             Load the document from the given <see cref="T:System.Xml.XmlReader"/>.
+             Child nodes will store <paramref name="resourceName"/> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+             </summary>
+            <param name="resourceName">the name of the resource</param>
+            <param name="stream">The XML source </param>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.Load(System.String,System.IO.TextReader)">
+             <summary>
+             Load the document from the given <see cref="T:System.Xml.XmlReader"/>.
+             Child nodes will store <paramref name="resourceName"/> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+             </summary>
+            <param name="resourceName">the name of the resource</param>
+            <param name="reader">The XML source </param>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.Load(System.String,System.Xml.XmlReader)">
+             <summary>
+             Load the document from the given <see cref="T:System.Xml.XmlReader"/>.
+             Child nodes will store <paramref name="resourceName"/> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+             </summary>
+            <param name="resourceName">the name of the resource</param>
+            <param name="reader">The XML source </param>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.Load(System.Xml.XmlReader)">
+            <summary>
+            Load the document from the given <see cref="T:System.Xml.XmlReader"/>.
+            Child nodes will store <c>null</c> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+            </summary>
+            <param name="reader">The XML source </param>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.ReadNode(System.String,System.Xml.XmlReader)">
+            <summary>
+            Creates an <see cref="T:System.Xml.XmlNode"></see> object based on the information in the <see cref="T:System.Xml.XmlReader"></see>. The reader must be positioned on a node or attribute.
+            Child nodes will store <paramref name="resourceName"/> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+            </summary>
+            <returns>
+            The new XmlNode or null if no more nodes exist.
+            </returns>
+            <param name="resourceName">the name of the resource</param>
+            <param name="reader">The XML source </param>
+            <exception cref="T:System.InvalidOperationException">The reader is positioned on a node type that does not translate to a valid DOM node (for example, EndElement or EndEntity). </exception>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlDocument.ReadNode(System.Xml.XmlReader)">
+            <summary>
+            Creates an <see cref="T:System.Xml.XmlNode"></see> object based on the information in the <see cref="T:System.Xml.XmlReader"></see>. The reader must be positioned on a node or attribute.
+            Child nodes will store <c>null</c> as their <see cref="P:Spring.Util.ITextPosition.Filename"/> property.        
+            </summary>
+            <returns>
+            The new XmlNode or null if no more nodes exist.
+            </returns>
+            <param name="reader">The XML source </param>
+            <exception cref="T:System.InvalidOperationException">The reader is positioned on a node type that does not translate to a valid DOM node (for example, EndElement or EndEntity). </exception>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlDocument.CurrentTextPosition">
+            <summary>
+            Get info about the current text position during loading a document.
+            Outside loading a document, the properties of <see cref="P:Spring.Util.ConfigXmlDocument.CurrentTextPosition"/> 
+            will always be <c>null</c>.
+            </summary>
+        </member>
+        <member name="T:Spring.Util.ConfigXmlDocument.CurrentTextPositionHolder">
+            <summary>
+            Holds the current text position during loading a document
+            </summary>
+        </member>
+        <member name="T:Spring.Util.ConfigXmlElement">
+            <summary>
+            An <see cref="T:System.Xml.XmlElement"/> holding information about its original text source location.
+            </summary>
+            <author>Erich Eichinger</author>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlElement.#ctor(Spring.Util.ITextPosition,System.String,System.String,System.String,System.Xml.XmlDocument)">
+            <summary>
+             Creates a new instance of <see cref="T:Spring.Util.ConfigXmlElement"/>, storing a copy of the passed 
+             <paramref name="currentTextPositionPositionInfo"/>.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.ConfigXmlElement.CloneNode(System.Boolean)">
+            <summary>
+            Creates a duplicate of this node.
+            </summary>
+            <param name="deep">true to recursively clone the subtree under the specified node; false to clone only the node itself </param>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlElement.Filename">
+            <summary>
+            The name of the resource this element was read from
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlElement.LineNumber">
+            <summary>
+            The line number within the resource this element was read from
+            </summary>
+        </member>
+        <member name="P:Spring.Util.ConfigXmlElement.LinePosition">
+            <summary>
+            The line position within the resource this element was read from.
+            </summary>
+        </member>
         <member name="T:Spring.Util.DelegateInfo">
             <summary>
             Discovers the attributes of a <see cref="T:System.Delegate"/>
@@ -40072,6 +41015,28 @@
             </summary>
             <param name="sink">The sink to be invoked.</param>
             <param name="arguments">The arguments to the sink.</param>
+        </member>
+        <member name="T:Spring.Util.IOUtils">
+            <summary>
+            Utility methods for IO handling
+            </summary>
+        </member>
+        <member name="M:Spring.Util.IOUtils.CopyStream(System.IO.Stream,System.IO.Stream)">
+            <summary>
+            Copies one stream into another. 
+            (Don't forget to call <see cref="M:System.IO.Stream.Flush"/> on the destination stream!)
+            </summary>
+            <remarks>
+            Does not close the input stream!
+            </remarks>
+        </member>
+        <member name="M:Spring.Util.IOUtils.ToByteArray(System.IO.Stream)">
+            <summary>
+            Reads a stream into a byte array. 
+            </summary>
+            <remarks>
+            Does not close the input stream!
+            </remarks>
         </member>
         <member name="T:Spring.Util.NumberUtils">
             <summary>
@@ -40624,6 +41589,32 @@
             </param>
             <returns> whether the String matches any of the given patterns
             </returns>
+        </member>
+        <member name="M:Spring.Util.PatternMatchUtils.IsObjectNameMatch(System.Type,System.String,System.Collections.IList,Spring.Util.PatternMatchUtils.ObjectNameMatchPredicate,System.String)">
+            <summary>
+            Convenience method that may be used by derived classes. Iterates over the list of <paramref name="objectNamePatterns"/> to match <paramref name="objectName"/> against.
+            </summary>
+            <param name="objType">the object's type. Must not be <c>null</c>.</param>
+            <param name="objectName">the name of the object Must not be <c>null</c>.</param>
+            <param name="objectNamePatterns">the list of patterns, that <paramref name="objectName"/> shall be matched against. Must not be <c>null</c>.</param>
+            <param name="isMatchPredicate">
+            the <see cref="T:Spring.Util.PatternMatchUtils.ObjectNameMatchPredicate"/> used for 
+            matching <paramref name="objectName"/> against each pattern in <paramref name="objectNamePatterns"/>. Must not be <c>null</c>.
+            </param>
+            <param name="factoryObjectPrefix">the prefix to be used for dereferencing factory object names.</param>
+            <returns>
+            If <paramref name="objectNamePatterns"/> is <c>null</c>, will always return <c>true</c>, otherwise
+            if <paramref name="objectName"/> matches any of the patterns specified in <paramref name="objectNamePatterns"/>. 
+            </returns>
+        </member>
+        <member name="T:Spring.Util.PatternMatchUtils.ObjectNameMatchPredicate">
+            <summary>
+            Signature of callbacks that may be used for matching object names.
+            </summary>
+            <param name="objectName">the object name to check.</param>
+            <param name="namePattern">the pattern to match <paramref name="objectName"/> against.</param>
+            <returns>true, if the <paramref name="objectName"/> matches <paramref name="namePattern"/></returns>
+            <see cref="M:Spring.Util.PatternMatchUtils.IsObjectNameMatch(System.Type,System.String,System.Collections.IList,Spring.Util.PatternMatchUtils.ObjectNameMatchPredicate,System.String)"/>
         </member>
         <member name="T:Spring.Util.Properties">
             <summary>
@@ -41661,6 +42652,38 @@
             CurrentThread.ManagedThreadId otherwise.
             </summary>
             <value>The thread id.</value>
+        </member>
+        <member name="T:Spring.Util.TextPositionInfo">
+            <summary>
+            Holds text position information for e.g. error reporting purposes.
+            </summary>
+            <seealso cref="T:Spring.Util.ConfigXmlElement"/>
+            <seealso cref="T:Spring.Util.ConfigXmlAttribute"/>
+        </member>
+        <member name="M:Spring.Util.TextPositionInfo.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            Creates a new TextPositionInfo instance.
+            </summary>
+        </member>
+        <member name="M:Spring.Util.TextPositionInfo.#ctor(Spring.Util.ITextPosition)">
+            <summary>
+            Creates a new TextPositionInfo instance, copying values from another instance.
+            </summary>
+        </member>
+        <member name="P:Spring.Util.TextPositionInfo.Filename">
+            <summary>
+            The filename related to this text position
+            </summary>
+        </member>
+        <member name="P:Spring.Util.TextPositionInfo.LineNumber">
+            <summary>
+            The line number related to this text position
+            </summary>
+        </member>
+        <member name="P:Spring.Util.TextPositionInfo.LinePosition">
+            <summary>
+            The line position related to this text position
+            </summary>
         </member>
         <member name="T:Spring.Util.UniqueKey">
             <summary>
@@ -42755,6 +43778,15 @@
             <param name="errors"><see cref="T:Spring.Validation.ValidationErrors"/> instance to add error messages to.</param>
             <returns><c>True</c> if validation was successful, <c>False</c> otherwise.</returns>
         </member>
+        <member name="M:Spring.Validation.ValidatorGroup.ValidateGroup(System.Collections.IDictionary,Spring.Validation.IValidationErrors,System.Object)">
+            <summary>
+            Actual implementation how to validate the specified object.
+            </summary>
+            <param name="validationContext">The object to validate.</param>
+            <param name="contextParams">Additional context parameters.</param>
+            <param name="errors"><see cref="T:Spring.Validation.ValidationErrors"/> instance to add error messages to.</param>
+            <returns><c>True</c> if validation was successful, <c>False</c> otherwise.</returns>
+        </member>
         <member name="M:Spring.Validation.ValidatorGroup.Validate(System.Object)">
             <summary>
             Doesn't do anything for validator group as there is no single test.
@@ -42767,6 +43799,15 @@
             Gets or sets the validators.
             </summary>
             <value>The validators.</value>
+        </member>
+        <member name="P:Spring.Validation.ValidatorGroup.FastValidate">
+            <summary>
+            When set <c>true</c>, shortcircuits evaluation.
+            </summary>
+            <remarks>
+            The validators within the group will only be validated 
+            in order until the first validator fails.
+            </remarks>
         </member>
         <member name="M:Spring.Validation.AnyValidatorGroup.#ctor">
             <summary>
@@ -42785,7 +43826,7 @@
             </summary>
             <param name="when">The expression that determines if this validator should be evaluated.</param>
         </member>
-        <member name="M:Spring.Validation.AnyValidatorGroup.Validate(System.Object,System.Collections.IDictionary,Spring.Validation.IValidationErrors)">
+        <member name="M:Spring.Validation.AnyValidatorGroup.ValidateGroup(System.Collections.IDictionary,Spring.Validation.IValidationErrors,System.Object)">
             <summary>
             Validates the specified object.
             </summary>
@@ -42867,11 +43908,21 @@
             <param name="errors"><see cref="T:Spring.Validation.ValidationErrors"/> instance to add error messages to.</param>
             <returns><c>True</c> if validation was successful, <c>False</c> otherwise.</returns>
         </member>
+        <member name="M:Spring.Validation.CollectionValidator.ValidateGroup(System.Collections.IDictionary,Spring.Validation.IValidationErrors,System.Object)">
+            <summary>
+            Actual implementation how to validate the specified object.
+            </summary>
+            <param name="validationContext">The object to validate.</param>
+            <param name="contextParams">Additional context parameters.</param>
+            <param name="errors"><see cref="T:Spring.Validation.ValidationErrors"/> instance to add error messages to.</param>
+            <returns><c>True</c> if validation was successful, <c>False</c> otherwise.</returns>
+        </member>
         <member name="P:Spring.Validation.CollectionValidator.ValidateAll">
             <summary>
             Gets or sets the value that indicates whether to validate all elements of the collection
             regardless of the errors.
             </summary>        
+            <remarks>This is just an alias for <see cref="P:Spring.Validation.ValidatorGroup.FastValidate"/></remarks>
         </member>
         <member name="P:Spring.Validation.CollectionValidator.IncludeElementErrors">
             <summary>
@@ -42885,79 +43936,6 @@
             </summary>
             <value>The expression that should be used to narrow validation context.</value>
         </member>
-        <member name="T:Spring.Validation.ErrorMessage">
-            <summary>
-            Represents a single validation error message.
-            </summary>
-            <author>Aleksandar Seovic</author>
-            <author>Goran Milosavljevic</author>
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.#ctor(System.String,System.Object[])">
-            <summary>
-            Initializes a new instance of the <see cref="T:Spring.Validation.ErrorMessage"/> class.
-            </summary>
-            <param name="id">Error message resource identifier.</param>
-            <param name="parameters">Parameters that should be used for message resolution.</param>
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.GetSchema">
-             <summary>
-             This property is reserved, apply the 
-             <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute" />
-             to the class instead. 
-             </summary>
-             <returns>
-             An <see cref="T:System.Xml.Schema.XmlSchema" /> 
-             that describes the XML representation of the object that 
-             is produced by the 
-             <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" />
-             method and consumed by the 
-             <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)" />
-             method.
-             </returns>
-            
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.ReadXml(System.Xml.XmlReader)">
-            <summary>
-            Generates an object from its XML representation.
-            </summary>
-            <param name="reader">
-            The <see cref="T:System.Xml.XmlReader"></see> stream 
-            from which the object is deserialized. 
-            </param>
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.WriteXml(System.Xml.XmlWriter)">
-            <summary>
-            Converts an object into its XML representation.
-            </summary>
-            <param name="writer">
-            The <see cref="T:System.Xml.XmlWriter"></see> stream 
-            to which the object is serialized. 
-            </param>
-        </member>
-        <member name="M:Spring.Validation.ErrorMessage.GetMessage(Spring.Context.IMessageSource)">
-            <summary>
-            Resolves the message against specified <see cref="T:Spring.Context.IMessageSource"/>.
-            </summary>
-            <param name="messageSource">Message source to resolve this error message against.</param>
-            <returns>Resolved error message.</returns>
-        </member>
-        <member name="P:Spring.Validation.ErrorMessage.Id">
-            <summary>
-            Gets or sets the resource identifier for this message.
-            </summary>
-            <value>The resource identifier for this message.</value>
-        </member>
-        <member name="P:Spring.Validation.ErrorMessage.Parameters">
-            <summary>
-            Gets or sets the message parameters.
-            </summary>
-            <value>The message parameters.</value>   
-        </member>
         <member name="T:Spring.Validation.ExclusiveValidatorGroup">
             <summary>
             <see cref="T:Spring.Validation.IValidator"/> implementation that supports grouping of validators.
@@ -42970,6 +43948,9 @@
             <c>ValidationErrors</c> property will return a union of all validation error messages 
             for the contained validators, but only if this validator is not valid (meaning, when none
             of the contained validators are valid).
+            </p>
+            <p>
+            By default, this validator group uses <c><see cref="P:Spring.Validation.ValidatorGroup.FastValidate"/> == true</c> semantics.
             </p>
             </remarks>
             <author>Aleksandar Seovic</author>
@@ -42991,9 +43972,9 @@
             </summary>
             <param name="when">The expression that determines if this validator should be evaluated.</param>
         </member>
-        <member name="M:Spring.Validation.ExclusiveValidatorGroup.Validate(System.Object,System.Collections.IDictionary,Spring.Validation.IValidationErrors)">
+        <member name="M:Spring.Validation.ExclusiveValidatorGroup.ValidateGroup(System.Collections.IDictionary,Spring.Validation.IValidationErrors,System.Object)">
             <summary>
-            Validates the specified object.
+            Actual implementation how to validate the specified object.
             </summary>
             <param name="validationContext">The object to validate.</param>
             <param name="contextParams">Additional context parameters.</param>

@@ -35,5 +35,16 @@
             </summary>
             <param name="handler">The <see cref="T:System.Web.IHttpHandler"/> object to reuse.</param>
         </member>
+        <member name="M:Spring.Web.Script.Services.ScriptHandlerFactory.CreateHandlerInstance(Spring.Context.IConfigurableApplicationContext,System.Web.HttpContext,System.String,System.String,System.String)">
+            <summary>
+            Create a handler instance for the given URL.
+            </summary>
+            <param name="appContext">the application context corresponding to the current request</param>
+            <param name="context">The <see cref="T:System.Web.HttpContext"/> instance for this request.</param>
+            <param name="requestType">The HTTP data transfer method (GET, POST, ...)</param>
+            <param name="rawUrl">The requested <see cref="P:System.Web.HttpRequest.RawUrl"/>.</param>
+            <param name="physicalPath">The physical path of the requested resource.</param>
+            <returns>A handler instance for the current request.</returns>
+        </member>
     </members>
 </doc>
