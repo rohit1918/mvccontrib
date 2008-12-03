@@ -159,7 +159,7 @@
     <Compile Include="UI\Html\FormHelper.cs" />
     <Compile Include="UI\Html\Grid\GridColumn.cs" />
     <Compile Include="UI\Html\Grid\GridColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\GridHelper.cs" />
+    <Compile Include="UI\Html\Grid\Legacy\GridHelper.cs" />
     <Compile Include="UI\Html\Grid\Grid.cs" />
     <Compile Include="UI\Html\Grid\GridOptions.cs" />
     <Compile Include="UI\Html\Grid\IExpressionColumnBuilder.cs" />

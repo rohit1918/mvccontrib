@@ -26,11 +26,19 @@ namespace MvcContrib.UI.Html.Grid
 		public string PageQueryName { get; set; }
 
 		/// <summary>
-		/// Creates a new instance of the GridOptions class.
+		/// Creates a new instance of the GridOptions class and will attempt to extract a default set of options from the specified dictionary.
+		/// This constructor is present for backwards compatibility with the Legacy Grid.
 		/// </summary>
 		/// <param name="options"></param>
-		public GridOptions(IDictionary options)
+		public GridOptions(IDictionary options) : this()
 		{
+			LoadFromDictionary(options);
+		}
+
+		/// <summary>
+		/// Creates a new instance of the GridOptions class.
+		/// </summary>
+		public GridOptions() {
 			PageQueryName = "page";
 			PaginationLast = "last";
 			PaginationNext = "next";
@@ -38,7 +46,6 @@ namespace MvcContrib.UI.Html.Grid
 			PaginationFirst = "first";
 			PaginationSingleFormat = "Showing {0} of {1} ";
 			PaginationFormat = "Showing {0} - {1} of {2} ";
-			LoadFromDictionary(options);
 		}
 
 		private void LoadFromDictionary(IDictionary options)
@@ -92,18 +99,6 @@ namespace MvcContrib.UI.Html.Grid
 			}
 		}
 
-		/// <summary>
-		/// Creates a new instance of the GridOptions class.
-		/// </summary>
-		public GridOptions()
-		{
-			PageQueryName = "page";
-			PaginationLast = "last";
-			PaginationNext = "next";
-			PaginationPrev = "prev";
-			PaginationFirst = "first";
-			PaginationSingleFormat = "Showing {0} of {1} ";
-			PaginationFormat = "Showing {0} - {1} of {2} ";
-		}
+		
 	}
 }

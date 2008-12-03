@@ -10,6 +10,7 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using MvcContrib.UI.Html.Grid;
 using MvcContrib.Pagination;
+using MvcContrib.UI.Html.Grid.Legacy;
 namespace MvcContrib.UnitTests.UI.Html
 {
 	[TestFixture]

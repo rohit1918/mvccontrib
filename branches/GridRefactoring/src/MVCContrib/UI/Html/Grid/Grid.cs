@@ -29,42 +29,6 @@ namespace MvcContrib.UI.Html.Grid
 		public HttpContextBase Context { get; set; }
 
 		/// <summary>
-		/// Creates a new instance of the <see cref="Grid{T}"/> class using the specified viewDataKey to extract the data source from the viewdata.
-		/// </summary>
-		/// <param name="viewDataKey">Key to use to extract the </param>
-		/// <param name="viewContext">The view context</param>
-		/// <param name="columns">Columns</param>
-		/// <param name="htmlAttributes">Custom html attributes and options</param>
-		/// <param name="writer">Where to write the output</param>
-		public Grid(string viewDataKey, ViewContext viewContext, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer) 
-			: this(GetDataSourceFromViewData(viewDataKey, viewContext), columns, htmlAttributes, writer, viewContext.HttpContext)
-		{
-				
-		}
-
-		protected static IEnumerable<T> GetDataSourceFromViewData(string key, ViewContext context)
-		{
-			object items = new DefaultDataBinder().ExtractValue(key, context);
-			IEnumerable<T> collection = null;
-
-			if (items != null)
-			{
-				//First try as IEnumerable of T
-				collection = items as IEnumerable<T>;
-
-				//Otherwise try IEnumerable with a cast.
-				//TODO: error handling?
-				if (collection == null)
-				{
-					collection = (items as IEnumerable).Cast<T>();
-				}
-			}
-
-			return collection;
-		}
-
-
-		/// <summary>
 		/// Creates a new instance of the <see cref="Grid{T}"/> using the specified data source.
 		/// </summary>
 		/// <param name="items">Data source</param>
@@ -72,7 +36,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// <param name="htmlAttributes">Custom attributes and options</param>
 		/// <param name="writer">Where to write the output</param>
 		/// <param name="context">HTTP Context</param>
-		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context)
+		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
 			: base(items, columns, writer)
 		{
 			Context = context;
