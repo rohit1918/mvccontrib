@@ -2,16 +2,14 @@
 using System.Collections;
 using System.IO;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Collections.Generic;
 using MvcContrib.UI.Html.Grid;
 using MvcContrib.Pagination;
-using MvcContrib.UI.Html.Grid.Legacy;
-namespace MvcContrib.UnitTests.UI.Html
+
+namespace MvcContrib.UnitTests.UI.Html.Grid
 {
 	[TestFixture]
 	public class HtmlGridTester
@@ -25,37 +23,45 @@ namespace MvcContrib.UnitTests.UI.Html
 
 		private MockRepository _mocks;
 		private HttpContextBase _context;
-		private HtmlHelper _helper;
-		private ViewContext _viewContext;
 		private List<Person> _people;
+		private GridColumnBuilder<Person> _columnBuilder;
 
 		[SetUp]
 		public void Setup()
 		{
+			_columnBuilder = new GridColumnBuilder<Person>();
 			_mocks = new MockRepository();
 			_context = _mocks.DynamicHttpContextBase();
 			SetupResult.For(_context.Request.FilePath).Return("Test.mvc");
-		    var view = _mocks.DynamicMock<IView>();
-            _viewContext = new ViewContext(_context, new RouteData(), _mocks.DynamicMock<ControllerBase>(), view, new ViewDataDictionary(), null);
-			_helper = new HtmlHelper(_viewContext, new ViewPage());
 			_people = new List<Person>
-			              	{
-			              		new Person { Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}
-			              	};
-			AddToViewData("people", _people);
+			          	{
+			          		new Person { Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}
+			          	};
 			_mocks.ReplayAll();
 
 		}
+
+		private GridColumnBuilder<Person> Column
+		{
+			get { return _columnBuilder; }
+		}
+
 		private TextWriter Writer
 		{
 			get { return _context.Response.Output; }
 		}
 
-
-		private void AddToViewData(string key, Object value)
+		private void RenderGrid()
 		{
-			_viewContext.ViewData.Add(key, value);
+			RenderGrid(Hash.Empty);
 		}
+		
+		private void RenderGrid(IDictionary htmlAttributes)
+		{
+			var grid = new Grid<Person>(_people, _columnBuilder, htmlAttributes, Writer, _context);
+			grid.Render();
+		}
+
 
 		[Test]
 		public void Should_render_empty_table()
@@ -71,43 +77,38 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_render_empty_table_when_collection_is_empty()
 		{
 			_people.Clear();
+			Column.For(p => p.Name); 
+			Column.For(p => p.Id);
+
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); });
-
-			Assert.That(Writer.ToString(), Is.EqualTo(expected));
-		}
-
-		[Test]
-		public void Should_render_empty_table_with_custom_message()
-		{
-			string expected = "<table class=\"grid\"><tr><td>Test</td></tr></table>";
-			_helper.Grid<Person>((string)null, new Hash(empty => "Test"), column => { column.For(p => p.Name); column.For(p => p.Id); });
+			RenderGrid();
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
 		[Test]
 		public void Custom_html_attrs()
 		{
+			_people.Clear();
 			string expected = "<table class=\"sortable grid\"><tr><td>There is no data available.</td></tr></table>";
-			var grid = new Grid<Person>(null, null, new Hash(@class => "sortable grid"), Writer, null);
-			grid.Render();
-
+			RenderGrid(new Hash(@class => "sortable grid"));
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
-
 		}
 
 		[Test]
 		public void Should_render()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); });
+			Column.For(p => p.Name);
+			Column.For(p => p.Id);
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
+			RenderGrid();
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
 		[Test]
 		public void Should_render_with_custom_Header_section()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name).Header(() => Writer.Write("<td>TEST</td>")); column.For(p => p.Id); });
+			Column.For(p => p.Name).Header(() => Writer.Write("<td>TEST</td>")); Column.For(p => p.Id);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 
@@ -116,20 +117,18 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Header_should_be_split_pascal_case()
 		{
-			_helper.Grid<Person>("people", column => column.For(p => p.DateOfBirth).Formatted("{0:dd}"));
-
+			Column.For(p => p.DateOfBirth).Formatted("{0:dd}");
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>19</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
-
 		[Test]
 		public void With_format()
 		{
-			_helper.Grid<Person>("people", column => column.For(p => p.DateOfBirth).Formatted("{0:ddd}"));
-
-		    var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
-
+			Column.For(p => p.DateOfBirth).Formatted("{0:ddd}");
+			RenderGrid();
+			var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
 			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>" + dayString + "</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -137,7 +136,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Complicated_column()
 		{
-			_helper.Grid<Person>("people", column => column.For(p => p.Id + "-" + p.Name, "Test"));
+			Column.For(p => p.Id + "-" + p.Name, "Test");
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Test</th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -145,7 +145,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Column_heading_should_be_empty()
 		{
-			_helper.Grid<Person>("people", column => column.For(p => p.Id + "-" + p.Name));
+			Column.For(p => p.Id + "-" + p.Name);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th></th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -153,7 +154,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Custom_item_section()
 		{
-			_helper.Grid<Person>("people", column => column.For("Name").Do(s => Writer.Write("<td>Test</td>")));
+			Column.For("Name").Do(s => Writer.Write("<td>Test</td>"));
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Test</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -161,8 +163,12 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void With_anonymous_type()
 		{
-			AddToViewData("test", new ArrayList { new { Name = "Testing" } });
-			_helper.Grid<object>("test", column => column.For("Name"));
+			var column = new GridColumnBuilder<object>();
+			column.For("Name");
+
+			var grid = new Grid<object>(new object[] {new {Name = "Testing"}}, column, null, Writer, _context);
+			grid.Render();
+
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Testing</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -170,7 +176,9 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void With_cell_condition()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id).CellCondition(p => false); });
+			Column.For(p => p.Name);
+			Column.For(p => p.Id).CellCondition(p => false);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td></td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -178,7 +186,9 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void With_col_condition()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id).ColumnCondition(() => false); });
+			Column.For(p => p.Name);
+			Column.For(p => p.Id).ColumnCondition(() => false);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 
@@ -187,7 +197,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void When_a_custom_renderer_is_specified_then_column_condition_should_still_be_checked()
 		{
-			_helper.Grid<Person>("people", column => column.For("Custom").Do(x => Writer.Write("<td>Foo</td>")).ColumnCondition(() => false));
+			Column.For("Custom").Do(x => Writer.Write("<td>Foo</td>")).ColumnCondition(() => false);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr></tr></thead><tr class=\"gridrow\"></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -195,8 +206,10 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Should_encode()
 		{
-			AddToViewData("people2", new List<Person> { new Person { Name = "Jeremy&" } });
-			_helper.Grid<Person>("people2", column => column.For(p => p.Name));
+			_people.Clear();
+			_people.Add(new Person() { Name = "Jeremy&"});
+			Column.For(p => p.Name);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy&amp;</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -204,41 +217,23 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Should_not_encode()
 		{
-			AddToViewData("people2", new List<Person> { new Person { Name = "Jeremy&" } });
-			_helper.Grid<Person>("people2", column => column.For(p => p.Name).DoNotEncode());
+			_people.Clear();
+			_people.Add(new Person{Name = "Jeremy&"});
+			Column.For(p => p.Name).DoNotEncode();
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy&</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
 
-		[Test]
-		public void Should_render_with_strongly_typed_data()
-		{
-			_helper.Grid(new List<Person> { new Person { Id = 1 } }, column => column.For(p => p.Id));
-			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr></table>";
-			Assert.That(Writer.ToString(), Is.EqualTo(expected)); 
-		}
-
-		[Test]
-		public void Should_render_with_strongly_typed_data_and_custom_sections() 
-		{
-			_helper.Grid(new List<Person> { new Person { Id = 1 } }, column => column.For(p => p.Id), sections => sections.RowStart(p => Writer.Write("<tr foo=\"bar\">")));
-			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr foo=\"bar\"><td>1</td></tr></table>";
-			Assert.That(Writer.ToString(), Is.EqualTo(expected));
-		}
-
-		[Test]
-		public void Should_render_with_strongly_typed_data_and_custom_attributes() 
-		{
-			_helper.Grid(new List<Person> { new Person { Id = 1 } }, new Hash(style => "width: 100%"), column => column.For(p => p.Id));
-			string expected = "<table style=\"width: 100%\" class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr></table>";
-			Assert.That(Writer.ToString(), Is.EqualTo(expected));
-		}
-
-
+		
 		[Test]
 		public void Should_render_custom_row_end()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id);  }, sections => sections.RowEnd(person => Writer.Write("</tr>TEST")));
+			Column.For(p => p.Name); 
+			Column.For(p => p.Id);
+			Column.RowEnd(p => Writer.Write("</tr>TEST"));
+
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr>TEST</table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -246,7 +241,9 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Should_render_custom_row_start()
 		{
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); }, sections => sections.RowStart(p => Writer.Write("<tr class=\"row\">")));
+			Column.For(p => p.Name); Column.For(p => p.Id);
+			Column.RowStart(p => Writer.Write("<tr class=\"row\">"));
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"row\"><td>Jeremy</td><td>1</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -256,9 +253,14 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+
+			var pagedPeople = _people.AsPagination(1, 2);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=2\">last</a></span></div>";
-			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
+			
+			grid.Render();
+
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -267,9 +269,13 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(2, 2));
+			var pagedPeople = _people.AsPagination(2, 2);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			Column.For(p => p.Name);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1\">first</a> | <a href=\"Test.mvc?page=1\">prev</a> | next | last</span></div>";
-			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
+
+			grid.Render();
+
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -279,9 +285,11 @@ namespace MvcContrib.UnitTests.UI.Html
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
 			_context.Request.QueryString.Add("a", "b");
-			AddToViewData("pagedPeople", _people.AsPagination(2, 2));
+			var pagedPeople = _people.AsPagination(2, 2);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1&amp;a=b\">first</a> | <a href=\"Test.mvc?page=1&amp;a=b\">prev</a> | next | last</span></div>";
-			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
+			Column.For(x => x.Name);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			grid.Render();
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -290,11 +298,12 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 1));
+			Column.For(p => p.Name);
+			var pagedPeople = _people.AsPagination(1, 1);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
-			_helper.Grid<Person>("pagedPeople", column => column.For(p => p.Name));
+			grid.Render();
 			Assert.That(Writer.ToString().EndsWith(expected));
-
 		}
 
 		[Test]
@@ -302,7 +311,8 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-			_helper.Grid<Person>("people", column => column.For(p => p.Name));
+			Column.For(p => p.Name);
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr><tr class=\"gridrow_alternate\"><td>Person 2</td></tr><tr class=\"gridrow\"><td>Person 3</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -310,8 +320,10 @@ namespace MvcContrib.UnitTests.UI.Html
 		[Test]
 		public void Should_not_render_pagination_when_datasource_is_empty()
 		{
-			AddToViewData("foo", new List<Person>().AsPagination(1));
-			_helper.Grid<Person>("foo", column => column.For(p => p.Name));
+			var people = new List<Person>().AsPagination(1);
+			var grid = new Grid<Person>(people, Column, Hash.Empty, Writer, _context);
+			Column.For(x => x.Name);
+			grid.Render();
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -321,9 +333,17 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			var pagedPeople = _people.AsPagination(1, 2);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			grid.Options.PaginationFormat = "Visar {0} - {1} av {2} ";
+			grid.Options.PaginationFirst = "första";
+			grid.Options.PaginationPrev = "föregående";
+			grid.Options.PaginationNext = "nästa";
+			grid.Options.PaginationLast = "sista";
+			Column.For(p => p.Name);
+			grid.Render();
+
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 - 2 av 3 </span><span class='paginationRight'>första | föregående | <a href=\"Test.mvc?page=2\">nästa</a> | <a href=\"Test.mvc?page=2\">sista</a></span></div>";
-			_helper.Grid<Person>("pagedPeople", new Hash(paginationFormat => "Visar {0} - {1} av {2} ", first => "första", prev => "föregående", next => "nästa", last => "sista") ,column => column.For(p => p.Name));
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -332,7 +352,10 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); }, sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+			Column.For(p => p.Name);
+			Column.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">"));
+			RenderGrid();
+
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -343,9 +366,13 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 1));
+			Column.For(x => x.Name);
+			var pagedPeople = _people.AsPagination(1, 1);
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			grid.Options.PaginationSingleFormat = "Visar {0} av {1} ";
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 av 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
-			_helper.Grid<Person>("pagedPeople",new Hash(paginationSingleFormat => "Visar {0} av {1} "), column => column.For(p => p.Name));
+			grid.Render();
+
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -354,9 +381,12 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			AddToViewData("pagedPeople", _people.AsPagination(1, 2));
+			var pagedPeople = _people.AsPagination(1, 2);
+			Column.For(p => p.Name);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?my_page=2\">next</a> | <a href=\"Test.mvc?my_page=2\">last</a></span></div>";
-			_helper.Grid<Person>("pagedPeople", new Hash(page => "my_page"), column => column.For(p => p.Name));
+			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			grid.Options.PageQueryName = "my_page";
+			grid.Render();
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -365,7 +395,10 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-			_helper.Grid<Person>("people", column => column.For(p => p.Name).HeaderAttributes(new Hash(style=>"width:100%")), sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+			Column.For(p => p.Name).HeaderAttributes(new Hash(style=>"width:100%"));
+			Column.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">"));
+
+			RenderGrid();
 			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}

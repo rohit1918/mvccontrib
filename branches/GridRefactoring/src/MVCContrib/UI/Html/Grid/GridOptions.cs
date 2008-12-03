@@ -38,7 +38,8 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// Creates a new instance of the GridOptions class.
 		/// </summary>
-		public GridOptions() {
+		public GridOptions()
+		{
 			PageQueryName = "page";
 			PaginationLast = "last";
 			PaginationNext = "next";
@@ -50,6 +51,8 @@ namespace MvcContrib.UI.Html.Grid
 
 		private void LoadFromDictionary(IDictionary options)
 		{
+			if(options == null) return;
+
 			if(options.Contains(Empty_Text_Key))
 			{
 				EmptyMessageText = options[Empty_Text_Key] as string;
@@ -98,7 +101,5 @@ namespace MvcContrib.UI.Html.Grid
 				options.Remove(Page_Query_Name_Text_Key);
 			}
 		}
-
-		
 	}
 }
