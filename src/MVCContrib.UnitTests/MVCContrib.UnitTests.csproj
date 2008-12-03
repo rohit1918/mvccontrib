@@ -251,8 +251,9 @@
     <Compile Include="UI\ElementTester.cs" />
     <Compile Include="UI\Html\DefaultViewDataBinderTester.cs" />
     <Compile Include="UI\Html\FormHelperTester.cs" />
-    <Compile Include="UI\Html\GridColumnBuilderTester.cs" />
-    <Compile Include="UI\Html\HtmlGridTester.cs" />
+    <Compile Include="UI\Html\Grid\GridBuilderTester.cs" />
+    <Compile Include="UI\Html\Grid\GridColumnBuilderTester.cs" />
+    <Compile Include="UI\Html\Grid\HtmlGridTester.cs" />
     <Compile Include="UI\Html\HtmlHelperTests.cs" />
     <Compile Include="UI\Html\InputElementListTester.cs" />
     <Compile Include="UI\Html\ScriptElementTester.cs" />

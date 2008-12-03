@@ -1,0 +1,145 @@
+using System;
+using System.IO;
+using System.Web.Mvc;
+using System.Web.Routing;
+using MvcContrib.UI.Html.Grid;
+using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
+using System.Collections.Generic;
+namespace MvcContrib.UnitTests.UI.Html
+{
+	[TestFixture]
+	public class GridBuilderTester
+	{
+		private ViewContext _context;
+		private GridBuilder<Person> _builder;
+		private StringWriter _writer;
+
+		[SetUp]
+		public void Setup()
+		{
+			_writer = new StringWriter();
+			_context = new ViewContext(MvcMockHelpers.DynamicHttpContextBase(), new RouteData(), MockRepository.GenerateStub<ControllerBase>(), MockRepository.GenerateStub<IView>(), new ViewDataDictionary(), new TempDataDictionary());
+			_builder = new GridBuilder<Person>(_context, _writer);
+		}
+
+		[Test]
+		public void GridExtension_should_create_instance_of_gridbuilder()
+		{
+			var helper = new HtmlHelper(_context, MockRepository.GenerateStub<IViewDataContainer>());
+			var grid = helper.Grid<Person>();
+
+			Assert.That(grid, Is.InstanceOfType(typeof(GridBuilder<Person>)));
+		}
+
+		[Test]
+		public void Should_extract_datasource_from_viewdata()
+		{
+			var people = new List<Person>();
+			_context.ViewData.Add("people", people);
+
+			_builder.FromViewData("people");
+			Assert.That(_builder.DataSource, Is.SameAs(people));
+		}
+
+		[Test]
+		public void Should_use_explicit_datasource()
+		{
+			var people = new List<Person>();
+			_builder.WithData(people);
+			Assert.That(_builder.DataSource, Is.SameAs(people));
+		}
+
+		[Test]
+		public void Should_render_to_output_stream()
+		{
+			_builder.Render();
+			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
+
+			Assert.That(_writer.ToString(), Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void ToString_should_return_null_and_render()
+		{
+			string toStringResult = _builder.ToString();
+			Assert.IsNull(toStringResult);
+			Assert.IsNotEmpty(_writer.ToString());
+		}
+
+		[Test]
+		public void Should_allow_attribute_to_be_specified()
+		{
+			_builder.Attribute("id", "foo");
+			Assert.That(_builder.HtmlAttributes["id"], Is.EqualTo("foo"));
+		}
+
+		[Test]
+		public void Should_set_css_class()
+		{
+			_builder.Class("foo");
+			Assert.That(_builder.Classes.Contains("foo"));
+		}
+
+		[Test]
+		public void Should_override_custom_css_class_when_rendered()
+		{
+			_builder.Class("foo");
+			_builder.Render();
+			Assert.That(_writer.ToString().StartsWith("<table class=\"foo\">"));
+		}
+
+		[Test]
+		public void Should_supply_multiple_css_classes_when_rendered()
+		{
+			_builder.Class("foo");
+			_builder.Class("bar");
+			_builder.Render();
+
+			Assert.That(_writer.ToString().StartsWith("<table class=\"foo bar\">"));
+		}
+
+		[Test]
+		public void Should_define_style()
+		{
+			_builder.Style("width", "100%");
+			Assert.That(_builder.Styles["width"], Is.EqualTo("100%"));
+		}
+
+		[Test]
+		public void Should_render_style()
+		{
+			_builder.Style("width", "100%");
+			_builder.Render();
+			Assert.That(_writer.ToString().StartsWith("<table style=\"width:100%\" class=\"grid\">"));
+		}
+
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void Should_throw_when_columns_are_null()
+		{
+			_builder.Columns(null);
+		}
+
+		[Test]
+		public void Should_define_columns()
+		{
+			_builder.WithData(new[] {new Person {Name = "Jeremy"}})
+					.Columns(column => {
+						column.For(x => x.Name);
+					});
+
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
+
+
+			_builder.Render();
+			Assert.That(_writer.ToString(), Is.EqualTo(expected)); ;
+		}
+
+
+		private class Person
+		{
+			public string Name { get; set; }
+		}
+	}
+}
