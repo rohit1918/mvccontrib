@@ -9,97 +9,43 @@ namespace MvcContrib.UI.Html.Grid
 	/// Constructs GridColumn objects representing the columns to be rendered in a grid.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>> where T : class
+	public class GridColumnBuilder<T> : IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>>
+		where T : class
 	{
-		
 		private readonly List<GridColumn<T>> columns = new List<GridColumn<T>>(); //Final collection of columns to render
-		private GridColumn<T> currentColumn; //The column currently being parsed
 		public Action<T> RowStartBlock { get; set; }
 		public Action<T, bool> RowStartWithAlternateBlock { get; set; }
 		public Action<T> RowEndBlock { get; set; }
 
-		public INestedGridColumnBuilder<T> Formatted(string format)
-		{
-			currentColumn.Format = format;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> DoNotEncode()
-		{
-			currentColumn.Encode = false;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> DoNotSplit()
-		{
-			currentColumn.DoNotSplit = true;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> CellCondition(Func<T, bool> condition)
-		{
-			currentColumn.CellCondition = condition;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> ColumnCondition(Func<bool> condition)
-		{
-			currentColumn.ColumnCondition = condition;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> Do(Action<T> block)
-		{
-			currentColumn.CustomRenderer = block;
-			return this;
-		}
-
-		public INestedGridColumnBuilder<T> Header(Action block)
-		{
-			currentColumn.CustomHeader = block;
-			return this;
-		}
-
-		/// <summary>
-		/// Applies the specified attributes to the header of the current column.
-		/// </summary>
-		/// <param name="attributes"></param>
-		/// <returns></returns>
-		public INestedGridColumnBuilder<T> HeaderAttributes(IDictionary attributes)
-		{
-			currentColumn.HeaderAttributes = attributes;
-			return this;
-		}
-
 		public IExpressionColumnBuilder<T> For(Expression<Func<T, object>> expression)
 		{
-			currentColumn = new GridColumn<T>
-			                	{
-			                		Name = ExpressionToName(expression),
-			                		ColumnDelegate = expression.Compile(),
-			                	};
+			var column = new GridColumn<T>
+			             	{
+			             		Name = ExpressionToName(expression),
+			             		ColumnDelegate = expression.Compile(),
+			             	};
 
-			columns.Add(currentColumn);
-			return this;
+			columns.Add(column);
+			return column;
 		}
 
 		public INestedGridColumnBuilder<T> For(Func<T, object> func, string name)
 		{
-			currentColumn = new GridColumn<T>
-			                	{
-			                		Name = name,
-			                		ColumnDelegate = func,
-			                		DoNotSplit = true
-			                	};
-			columns.Add(currentColumn);
-			return this;
+			var column = new GridColumn<T>
+			             	{
+			             		Name = name,
+			             		ColumnDelegate = func,
+			             		DoNotSplit = true
+			             	};
+			columns.Add(column);
+			return column;
 		}
 
 		public ISimpleColumnBuilder<T> For(string name)
 		{
-			currentColumn = new GridColumn<T> { Name = name, DoNotSplit = true };
-			columns.Add(currentColumn);
-			return this;
+			var column = new GridColumn<T> {Name = name, DoNotSplit = true};
+			columns.Add(column);
+			return column;
 		}
 
 		public void RowStart(Action<T> block)
@@ -133,7 +79,7 @@ namespace MvcContrib.UI.Html.Grid
 		private static Expression RemoveUnary(Expression body)
 		{
 			var unary = body as UnaryExpression;
-			if (unary != null)
+			if(unary != null)
 			{
 				return unary.Operand;
 			}
@@ -153,10 +99,12 @@ namespace MvcContrib.UI.Html.Grid
 
 		public GridColumn<T> this[int index]
 		{
-			get
-			{
-				return columns[index];
-			}
+			get { return columns[index]; }
+		}
+
+		public void AddColumn(GridColumn<T> column)
+		{
+			columns.Add(column);
 		}
 	}
 }
