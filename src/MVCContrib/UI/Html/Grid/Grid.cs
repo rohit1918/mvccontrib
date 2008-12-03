@@ -17,7 +17,6 @@ namespace MvcContrib.UI.Html.Grid
 	public class Grid<T> : GridBase<T> where T : class
 	{
 		private const string Default_Css_Class = "grid";
-		private readonly GridOptions _options;
 
 		/// <summary>
 		/// Custom HTML attributes.
@@ -28,6 +27,35 @@ namespace MvcContrib.UI.Html.Grid
 		/// </summary>
 		public HttpContextBase Context { get; set; }
 
+		public GridOptions Options { get; private set; }
+
+		/// <summary>
+		/// Creates a new instance of the <see cref="Grid{T}"/> using the specified data source.
+		/// </summary>
+		/// <param name="items">Data source</param>
+		/// <param name="columns">Columns</param>
+		/// <param name="options">Options for the grid</param>
+		/// <param name="htmlAttributes">Custom attributes and options</param>
+		/// <param name="writer">Where to write the output</param>
+		/// <param name="context">HTTP Context</param>
+		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
+			: base(items, columns, writer)
+		{
+			Context = context;
+			HtmlAttributes = htmlAttributes ?? Hash.Empty;
+
+			Options = options;
+
+			if (!string.IsNullOrEmpty(Options.EmptyMessageText)) {
+				EmptyMessageText = Options.EmptyMessageText;
+			}
+
+			if (!HtmlAttributes.Contains("class")) {
+				HtmlAttributes["class"] = Default_Css_Class;
+			}
+		}
+
+
 		/// <summary>
 		/// Creates a new instance of the <see cref="Grid{T}"/> using the specified data source.
 		/// </summary>
@@ -37,22 +65,8 @@ namespace MvcContrib.UI.Html.Grid
 		/// <param name="writer">Where to write the output</param>
 		/// <param name="context">HTTP Context</param>
 		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
-			: base(items, columns, writer)
+			: this(items, columns, new GridOptions(htmlAttributes), htmlAttributes, writer, context)
 		{
-			Context = context;
-			HtmlAttributes = htmlAttributes ?? Hash.Empty;
-
-			_options = new GridOptions(HtmlAttributes);
-
-			if(! string.IsNullOrEmpty(_options.EmptyMessageText))
-			{
-				EmptyMessageText = _options.EmptyMessageText;				
-			}
-
-			if (!HtmlAttributes.Contains("class"))
-			{
-				HtmlAttributes["class"] = Default_Css_Class;
-			}
 			
 		}
 
@@ -141,33 +155,33 @@ namespace MvcContrib.UI.Html.Grid
 			builder.Append("<span class='paginationLeft'>");
 			if (pagedList.PageSize == 1)
 			{
-				builder.AppendFormat(_options.PaginationSingleFormat, pagedList.FirstItem, pagedList.TotalItems);
+				builder.AppendFormat(Options.PaginationSingleFormat, pagedList.FirstItem, pagedList.TotalItems);
 			}
 			else
 			{
-				builder.AppendFormat(_options.PaginationFormat, pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
+				builder.AppendFormat(Options.PaginationFormat, pagedList.FirstItem, pagedList.LastItem, pagedList.TotalItems);
 			}
 			builder.Append("</span>");
 			builder.Append("<span class='paginationRight'>");
 
 			if (pagedList.PageNumber == 1)
 			{
-				builder.Append(_options.PaginationFirst);
+				builder.Append(Options.PaginationFirst);
 			}
 			else
 			{
-				builder.Append(CreatePageLink(1, _options.PaginationFirst));
+				builder.Append(CreatePageLink(1, Options.PaginationFirst));
 			}
 
 			builder.Append(" | ");
 
 			if (pagedList.HasPreviousPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber - 1, _options.PaginationPrev));
+				builder.Append(CreatePageLink(pagedList.PageNumber - 1, Options.PaginationPrev));
 			}
 			else
 			{
-				builder.Append(_options.PaginationPrev);
+				builder.Append(Options.PaginationPrev);
 			}
 
 
@@ -175,11 +189,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.HasNextPage)
 			{
-				builder.Append(CreatePageLink(pagedList.PageNumber + 1, _options.PaginationNext));
+				builder.Append(CreatePageLink(pagedList.PageNumber + 1, Options.PaginationNext));
 			}
 			else
 			{
-				builder.Append(_options.PaginationNext);
+				builder.Append(Options.PaginationNext);
 			}
 
 
@@ -189,11 +203,11 @@ namespace MvcContrib.UI.Html.Grid
 
 			if (pagedList.PageNumber < lastPage)
 			{
-				builder.Append(CreatePageLink(lastPage, _options.PaginationLast));
+				builder.Append(CreatePageLink(lastPage, Options.PaginationLast));
 			}
 			else
 			{
-				builder.Append(_options.PaginationLast);
+				builder.Append(Options.PaginationLast);
 			}
 
 
@@ -213,7 +227,7 @@ namespace MvcContrib.UI.Html.Grid
 		{
 			string queryString = CreateQueryString(Context.Request.QueryString);
 			string filePath = Context.Request.FilePath;
-			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, _options.PageQueryName, pageNumber, queryString, text);
+			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, Options.PageQueryName, pageNumber, queryString, text);
 		}
 
 		protected virtual string CreateQueryString(NameValueCollection values)

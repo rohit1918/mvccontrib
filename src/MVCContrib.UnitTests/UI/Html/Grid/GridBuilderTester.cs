@@ -136,6 +136,22 @@ namespace MvcContrib.UnitTests.UI.Html
 			Assert.That(_writer.ToString(), Is.EqualTo(expected)); ;
 		}
 
+		[Test]
+		public void Empty_should_set_EmptyMessageText_on_the_grid_options()
+		{
+			_builder.Empty("It is empty");
+			Assert.That(_builder.GridOptions.EmptyMessageText, Is.EqualTo("It is empty"));
+		}
+
+		[Test]
+		public void Custom_grid_options_should_be_passed_to_the_underlying_grid()
+		{
+			_builder.GridOptions.EmptyMessageText = "It is empty";
+			_builder.Render();
+			string expected = "<table class=\"grid\"><tr><td>It is empty</td></tr></table>";
+			Assert.That(_writer.ToString(), Is.EqualTo(expected));
+		}
+
 
 		private class Person
 		{
