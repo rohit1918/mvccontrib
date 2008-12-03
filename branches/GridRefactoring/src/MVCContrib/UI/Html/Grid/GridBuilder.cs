@@ -109,6 +109,7 @@ namespace MvcContrib.UI.Html.Grid
 		}
 	}
 
+
 	public interface IGridBuilder<T> where T : class
 	{
 		IGridBuilder<T> FromViewData(string viewDataKey);

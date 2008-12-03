@@ -9,7 +9,7 @@ namespace MvcContrib.UI.Html.Grid
 	/// A column to be rendered as part of a grid.
 	/// </summary>
 	/// <typeparam name="T">Type of object to be rendered in the grid.</typeparam>
-	public class GridColumn<T>
+	public class GridColumn<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T> where T : class
 	{
 		/// <summary>
 		/// Creates a new instance of the <see cref="GridColumn{T}"/>
@@ -23,7 +23,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// Delegate that will be invoked on each item in the in the datasource in order to obtain the current item's value.
 		/// </summary>
-		public Func<T, object> ColumnDelegate {get; set; }
+		public Func<T, object> ColumnDelegate { get; set; }
 
 		private string _name;
 
@@ -35,7 +35,7 @@ namespace MvcContrib.UI.Html.Grid
 			get
 			{
 				//By default, PascalCased property names should be split and separated by a space (eg "Pascal Cased")
-				if (!DoNotSplit)
+				if(!DoNotSplit)
 				{
 					return SplitPascalCase(_name);
 				}
@@ -48,26 +48,32 @@ namespace MvcContrib.UI.Html.Grid
 		/// Custom format for the cell output.
 		/// </summary>
 		public string Format { get; set; }
+
 		/// <summary>
 		/// Whether or not PascalCased names should be split.
 		/// </summary>
 		public bool DoNotSplit { get; set; }
+
 		/// <summary>
 		/// Delegate used to hide the contents of the cells in a column.
 		/// </summary>
 		public Func<T, bool> CellCondition { get; set; }
+
 		/// <summary>
 		/// Delegate used to hide the entire column
 		/// </summary>
 		public Func<bool> ColumnCondition { get; set; }
+
 		/// <summary>
 		/// Delegate that can be used to perform custom rendering actions.
 		/// </summary>
 		public Action<T> CustomRenderer { get; set; }
+
 		/// <summary>
 		/// Delegate used to specify a custom heading.
 		/// </summary>
 		public Action CustomHeader { get; set; }
+
 		/// <summary>
 		/// Whether to HTML-Encode the output (default is true).
 		/// </summary>
@@ -89,5 +95,57 @@ namespace MvcContrib.UI.Html.Grid
 			return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
 		}
 
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.Formatted(string format)
+		{
+			Format = format;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.DoNotEncode()
+		{
+			Encode = false;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> IExpressionColumnBuilder<T>.DoNotSplit()
+		{
+			DoNotSplit = true;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.CellCondition(Func<T, bool> condition)
+		{
+			CellCondition = condition;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.ColumnCondition(Func<bool> condition)
+		{
+			ColumnCondition = condition;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> ISimpleColumnBuilder<T>.Do(Action<T> block)
+		{
+			CustomRenderer = block;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.Header(Action block)
+		{
+			CustomHeader = block;
+			return this;
+		}
+
+		/// <summary>
+		/// Applies the specified attributes to the header of the current column.
+		/// </summary>
+		/// <param name="attributes"></param>
+		/// <returns></returns>
+		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.HeaderAttributes(IDictionary attributes)
+		{
+			HeaderAttributes = attributes;
+			return this;
+		}
 	}
 }
