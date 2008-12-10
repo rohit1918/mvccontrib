@@ -61,6 +61,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\castle\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.3.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ObjectBuilder, Version=1.0.51206.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\objectbuilder\Microsoft.Practices.ObjectBuilder.dll</HintPath>
@@ -185,6 +189,36 @@
     <Compile Include="Filters\MvcTransactionAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
+    <Compile Include="FluentHtml\CheckboxTests.cs" />
+    <Compile Include="FluentHtml\CustomBehaviors\CustomRequiredHtmlBehavior.cs" />
+    <Compile Include="FluentHtml\DefaultMaxlengthHtmlBehaviorTests.cs" />
+    <Compile Include="FluentHtml\DefaultRequredHtmlBehaviorTests.cs" />
+    <Compile Include="FluentHtml\Fakes\FakeChildModel.cs" />
+    <Compile Include="FluentHtml\Fakes\FakeEnum.cs" />
+    <Compile Include="FluentHtml\Fakes\FakeModel.cs" />
+    <Compile Include="FluentHtml\Fakes\FakeViewDataContainer.cs" />
+    <Compile Include="FluentHtml\Fakes\FakeViewModelContainer.cs" />
+    <Compile Include="FluentHtml\FileUploadTests.cs" />
+    <Compile Include="FluentHtml\FormLiteralTests.cs" />
+    <Compile Include="FluentHtml\Helpers\TestExtensions.cs" />
+    <Compile Include="FluentHtml\HiddenTests.cs" />
+    <Compile Include="FluentHtml\LiteralTests.cs" />
+    <Compile Include="FluentHtml\ModelExpressionHelperTests.cs" />
+    <Compile Include="FluentHtml\ModelMasterViewPageTests.cs" />
+    <Compile Include="FluentHtml\ModelViewPageTests.cs" />
+    <Compile Include="FluentHtml\ModelViewUserControlPageTests.cs" />
+    <Compile Include="FluentHtml\MultiSelectTests.cs" />
+    <Compile Include="FluentHtml\PasswordTests.cs" />
+    <Compile Include="FluentHtml\SelectTests.cs" />
+    <Compile Include="FluentHtml\SubmitButtonTests.cs" />
+    <Compile Include="FluentHtml\TextAreaTests.cs" />
+    <Compile Include="FluentHtml\TextboxTests.cs" />
+    <Compile Include="FluentHtml\ViewDataContainerExtensionsTests.cs" />
+    <Compile Include="FluentHtml\ViewModelContainerExtensionsTests.cs" />
+    <Compile Include="FluentHtml\ViewModelContainerTestBase.cs" />
+    <Compile Include="FluentHtml\Views\TestableViewPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="HashTester.cs" />
     <Compile Include="IoC\DependencyResolverTester.cs" />
     <Compile Include="IoC\IDependency.cs" />
@@ -289,6 +323,14 @@
     <ProjectReference Include="..\MvcContrib.Castle\MvcContrib.Castle.csproj">
       <Project>{F3C74912-8FF8-4F79-8CA1-4697025FDF2D}</Project>
       <Name>MvcContrib.Castle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.FluentHtml\MvcContrib.FluentHtml.csproj">
+      <Project>{35AFBC04-8C09-42B7-A56A-EA404688A5B1}</Project>
+      <Name>MvcContrib.FluentHtml</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MvcContrib.ModelAttributes\MvcContrib.ModelAttributes.csproj">
+      <Project>{FC399CBC-D74A-4A7F-94FF-98695CFDF195}</Project>
+      <Name>MvcContrib.ModelAttributes</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
       <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
