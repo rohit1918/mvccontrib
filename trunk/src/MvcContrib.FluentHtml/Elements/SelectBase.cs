@@ -11,10 +11,12 @@ namespace MvcContrib.FluentHtml.Elements
 {
 	public abstract class SelectBase<T> : FormElement<SelectBase<T>> where T : SelectBase<T>
 	{
-		protected IEnumerable options;
-		protected string dataValueField;
-		protected string dataTextField;
+		protected IEnumerable _options;
+		protected string _dataValueField;
+		protected string _dataTextField;
 		protected IEnumerable _selectedValues;
+		protected Func<object, object> _textFieldSelector;
+		protected Func<object, object> _valueFieldSelector;
 
 		protected SelectBase(string name) : base(HtmlTag.Select, name) { }
 
@@ -36,9 +38,9 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			if (value != null)
 			{
-				options = value.Items;
-				dataValueField = value.DataValueField;
-				dataTextField = value.DataTextField;
+				_options = value.Items;
+				_dataValueField = value.DataValueField;
+				_dataTextField = value.DataTextField;
 				if (value.SelectedValues != null)
 				{
 					_selectedValues = value.SelectedValues;
@@ -49,17 +51,30 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public virtual T Options<TKey, TValue>(IDictionary<TKey, TValue> value)
 		{
-			options = value;
-			dataValueField = "Key";
-			dataTextField = "Value";
+			_options = value;
+			_dataValueField = "Key";
+			_dataTextField = "Value";
 			return (T)this;
 		}
 
 		public virtual T Options(IEnumerable value, string valueField, string textField)
 		{
-			options = value;
-			dataValueField = valueField;
-			dataTextField = textField;
+			_options = value;
+			_dataValueField = valueField;
+			_dataTextField = textField;
+			return (T)this;
+		}
+
+		public virtual T Options<TDataSource>(IEnumerable<TDataSource> values, Func<TDataSource, object> valueFieldSelector, Func<TDataSource, object> textFieldSelector)
+		{
+			if(valueFieldSelector == null) throw new ArgumentNullException("valueFieldSelector");
+			if(textFieldSelector == null) throw new ArgumentNullException("textFieldSelector");
+
+			_options = values;
+			//TODO: Is there a better way to do this without making Select have a type parameter of TDataSource?
+			_textFieldSelector = x => textFieldSelector((TDataSource)x);
+			_valueFieldSelector = x => valueFieldSelector((TDataSource)x);
+
 			return (T)this;
 		}
 
@@ -81,36 +96,47 @@ namespace MvcContrib.FluentHtml.Elements
 
 		private string RenderOptions()
 		{
-			if (options == null)
+			if (_options == null)
 			{
 				return null;
 			}
-			var enumerator = options.GetEnumerator();
-			if (!enumerator.MoveNext())
+
+			if(_textFieldSelector == null || _valueFieldSelector == null)
 			{
-				return null;
+				var enumerator = _options.GetEnumerator();
+				if(!enumerator.MoveNext())
+				{
+					return null;
+				}
+				var type = enumerator.Current.GetType();
+				var valueProp = type.GetProperty(_dataValueField);
+				if(valueProp == null)
+				{
+					throw new ArgumentException(string.Format("The option list does not contain the specified value property: {0}", _dataValueField), "dataValueField");
+				}
+				var textProp = type.GetProperty(_dataTextField);
+				if(textProp == null)
+				{
+					throw new ArgumentException(string.Format("The option list does not contain the specified text property: {0}", _dataTextField), "dataTextField");
+				}
+
+				_textFieldSelector = x => textProp.GetValue(x, null);
+				_valueFieldSelector = x => valueProp.GetValue(x, null);
 			}
-			var type = enumerator.Current.GetType();
-			var valueProp = type.GetProperty(dataValueField);
-			if (valueProp == null)
-			{
-				throw new ArgumentException(string.Format("The option list does not contain the specified value property: {0}", dataValueField), "dataValueField");
-			}
-			var textProp = type.GetProperty(dataTextField);
-			if (textProp == null)
-			{
-				throw new ArgumentException(string.Format("The option list does not contain the specified text property: {0}", dataTextField), "dataTextField");
-			}
+
 			var sb = new StringBuilder();
-			foreach (var item in options)
+
+			foreach(var item in _options)
 			{
-				var value = valueProp.GetValue(item, null);
-				var text = textProp.GetValue(item, null);
+				var value = _valueFieldSelector(item);
+				var text = _textFieldSelector(item);
+
 				var option = new Option()
 					.Value(value == null ? string.Empty : value.ToString())
 					.Text(text == null ? string.Empty : text.ToString())
 					.Selected(IsSelectedValue(value));
-				sb.Append(option.ToString());
+
+				sb.Append(option);
 			}
 			return sb.ToString();
 		}
