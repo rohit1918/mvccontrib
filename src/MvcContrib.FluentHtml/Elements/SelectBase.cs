@@ -126,7 +126,17 @@ namespace MvcContrib.FluentHtml.Elements
 
 			var sb = new StringBuilder();
 
-			foreach(var item in _options)
+			foreach(var option in BuildOptions())
+			{
+				sb.Append(option);
+			}
+
+			return sb.ToString();
+		}
+
+		protected virtual IEnumerable<Option> BuildOptions()
+		{
+			foreach (var item in _options) 
 			{
 				var value = _valueFieldSelector(item);
 				var text = _textFieldSelector(item);
@@ -136,9 +146,8 @@ namespace MvcContrib.FluentHtml.Elements
 					.Text(text == null ? string.Empty : text.ToString())
 					.Selected(IsSelectedValue(value));
 
-				sb.Append(option);
+				yield return option;
 			}
-			return sb.ToString();
 		}
 
 		private bool IsSelectedValue(object value)
