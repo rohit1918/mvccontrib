@@ -135,5 +135,29 @@ namespace MvcContrib.FluentHtml.Tests
 		{
 			new Select("x").Options<int>().ToString();
 		}
+
+		[Test]
+		public void select_with_lambda_selector_for_options_should_render()
+		{
+			var items = new List<FakeModel> { new FakeModel {Price = 1, Title = "One"} };
+			var html = new Select("x").Options(items, x => x.Price, x => x.Title).ToString();
+
+			var element = html.ShouldHaveHtmlNode("x");
+			var options = element.ShouldHaveChildNodesCount(1);
+			options[0].ShouldBeUnSelectedOption("1", "One");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void select_options_with_null_text_field_selector_should_throw()
+		{
+			new Select("x").Options(new List<FakeModel>(), null, x => x.Title);
+		}
+			
+		[Test, ExpectedException(typeof(ArgumentNullException))]
+		public void select_options_with_null_value_field_selector_should_throw()
+		{
+			new Select("x").Options(new List<FakeModel>(), x => x.Price, null);
+			
+		}
 	}
 }
