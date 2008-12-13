@@ -1,6 +1,6 @@
 using System;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.Html.Grid.Legacy
 {
 	/// <summary>
 	/// Used to provide custon sections to the grid.

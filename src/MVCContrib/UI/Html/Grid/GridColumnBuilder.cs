@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using MvcContrib.UI.Html.Grid.Legacy;
 
 namespace MvcContrib.UI.Html.Grid
 {
