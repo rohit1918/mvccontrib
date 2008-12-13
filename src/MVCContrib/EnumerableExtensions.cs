@@ -16,7 +16,7 @@ namespace MvcContrib.EnumerableExtensions
 		/// </summary>
 		/// <typeparam name="T">Type of item in the collection</typeparam>
 		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
+		/// <param name="items">DataSource to convert into a select list</param>
 		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
 		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
 		/// <returns>A populated SelectList</returns>
@@ -33,7 +33,7 @@ namespace MvcContrib.EnumerableExtensions
 		/// </summary>
 		/// <typeparam name="T">Type of item in the collection</typeparam>
 		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
+		/// <param name="items">DataSource to convert into a select list</param>
 		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
 		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
 		/// <param name="selectedValue">The selected value</param>
@@ -51,7 +51,7 @@ namespace MvcContrib.EnumerableExtensions
 		/// </summary>
 		/// <typeparam name="T">Type of item in the collection</typeparam>
 		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
+		/// <param name="items">DataSource to convert into a select list</param>
 		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
 		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
 		/// <param name="selectedValueSelector">A predicate that can be used to specify which values should be selected</param>

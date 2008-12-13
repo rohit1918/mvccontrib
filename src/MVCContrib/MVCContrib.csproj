@@ -157,6 +157,7 @@
     <Compile Include="UI\Html\BaseHelper.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
+    <Compile Include="UI\Html\Grid\DefaultGridRenderer.cs" />
     <Compile Include="UI\Html\Grid\GridBuilder.cs" />
     <Compile Include="UI\Html\Grid\GridColumn.cs" />
     <Compile Include="UI\Html\Grid\GridColumnBuilder.cs" />
