@@ -19,21 +19,21 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_identify_column_name_from_expression()
 		{
 			_builder.For(p => p.Name);
-			Assert.That(_builder[0].Name, Is.EqualTo("Name"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Name, Is.EqualTo("Name"));
 		}
 
 		[Test]
 		public void Should_identify_column_name_from_expression_and_split_pascal_casing()
 		{
 			_builder.For(p => p.DateOfBirth);
-			Assert.That(_builder[0].Name, Is.EqualTo("Date Of Birth"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Name, Is.EqualTo("Date Of Birth"));
 		}
 
 		[Test]
 		public void Should_identify_column_name_from_expression_and_not_split_pascal_casing()
 		{
 			_builder.For(p => p.DateOfBirth).DoNotSplit();
-			Assert.That(_builder[0].Name, Is.EqualTo("DateOfBirth"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Name, Is.EqualTo("DateOfBirth"));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_use_alias()
 		{
 			_builder.For(p => p.Name, "Person Name");
-			Assert.That(_builder[0].Name, Is.EqualTo("Person Name"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Name, Is.EqualTo("Person Name"));
 		}
 
 		[Test]
@@ -79,14 +79,14 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Calling_ColumnCondition_should_set_ColumnCondition()
 		{
 			_builder.For(p => p.Name).ColumnCondition(() => false);
-			Assert.That(_builder[0].ColumnCondition, Is.Not.Null);
+			Assert.That(((GridColumn<Person>)_builder[0]).ColumnCondition, Is.Not.Null);
 		}
 
 		[Test]
 		public void Calling_Header_should_set_custom_header_renderer()
 		{
 			_builder.For(p => p.Name).Header(() => { });
-			Assert.That(_builder[0].CustomHeader, Is.Not.Null);
+			Assert.That(((GridColumn<Person>)_builder[0]).CustomHeader, Is.Not.Null);
 		}
 
 		[Test]
@@ -114,7 +114,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_not_split_if_space_already_in_name()
 		{
 			_builder.For("A ColumnHeading");
-			Assert.That(_builder[0].Name, Is.EqualTo("A ColumnHeading"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Name, Is.EqualTo("A ColumnHeading"));
 		}
 
 		[Test]
