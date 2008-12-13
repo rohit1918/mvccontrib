@@ -11,7 +11,7 @@ using MvcContrib.FluentHtml.Tests.Helpers;
 using MvcContrib.FluentHtml.Tests.Fakes;
 using MvcContrib.ModelAttributes;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class TextBoxTests
@@ -66,6 +66,14 @@ namespace MvcContrib.FluentHtml.Tests
 		public void textbox_format_renders_formatted_value()
 		{
 			new TextBox("x").Value(100.00m).Format("$0.00").ToString()
+				.ShouldHaveHtmlNode("x")
+				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("$100.00");
+		}
+
+		[Test]
+		public void textbox_format_using_full_format_placeholder_renders_formatted_value()
+		{
+			new TextBox("x").Value(100.00m).Format("{0:$0.00}").ToString()
 				.ShouldHaveHtmlNode("x")
 				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("$100.00");
 		}

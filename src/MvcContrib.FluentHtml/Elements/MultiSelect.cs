@@ -19,9 +19,9 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.MergeAttribute(HtmlAttribute.Multiple, HtmlAttribute.Multiple, true);
 		}
 
-		public virtual MultiSelect Selected(IEnumerable sselectedValues)
+		public virtual MultiSelect Selected(IEnumerable selectedValues)
 		{
-			_selectedValues = sselectedValues;
+			_selectedValues = selectedValues;
 			return this;
 		}
 	}

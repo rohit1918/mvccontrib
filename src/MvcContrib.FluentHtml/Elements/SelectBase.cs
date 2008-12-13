@@ -80,7 +80,12 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public virtual T Options<TEnum>() where TEnum : struct
 		{
-			return Options(EnumToDictionary<TEnum>());
+			return Options(EnumToDictionary<TEnum>(null));
+		}
+
+		public virtual T Options<TEnum>(string firstOptionText) where TEnum : struct
+		{
+			return Options(EnumToDictionary<TEnum>(firstOptionText));
 		}
 
 		public override string ToString()
@@ -152,16 +157,18 @@ namespace MvcContrib.FluentHtml.Elements
 
 		private bool IsSelectedValue(object value)
 		{
+			var valueString = value == null ? string.Empty : value.ToString();
 			if (_selectedValues != null)
 			{
 				var enumerator = _selectedValues.GetEnumerator();
 				while (enumerator.MoveNext())
 				{
-					var selectedValue = enumerator.Current != null && enumerator.Current.GetType().IsEnum
-						? (int)enumerator.Current
-						: enumerator.Current;
-					if (value == null && selectedValue == null ||
-						selectedValue != null && selectedValue.Equals(value))
+					var selectedValueString = enumerator.Current == null 
+						? string.Empty
+						: enumerator.Current.GetType().IsEnum
+							? ((int)enumerator.Current).ToString()
+							: enumerator.Current.ToString();
+					if (valueString == selectedValueString)
 					{
 						return true;
 					}
@@ -170,17 +177,21 @@ namespace MvcContrib.FluentHtml.Elements
 			return false;
 		}
 
-		protected Dictionary<int, string> EnumToDictionary<TEnum>()
+		protected Dictionary<string, string> EnumToDictionary<TEnum>(string firstOptionText)
 		{
 			if (!typeof(TEnum).IsEnum)
 			{
 				throw new ArgumentException("The generic parameter must be an enum", "TEnum");
 			}
-			var dict = new Dictionary<int, string>();
+			var dict = new Dictionary<string, string>();
+			if (firstOptionText != null)
+			{
+				dict.Add(string.Empty, firstOptionText);
+			}
 			var values = Enum.GetValues(typeof(TEnum));
 			foreach (var item in values)
 			{
-				dict.Add(Convert.ToInt32(item), item.ToString());
+				dict.Add(Convert.ToInt32(item).ToString(), item.ToString());
 			}
 			return dict;
 		}
