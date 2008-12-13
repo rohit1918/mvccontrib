@@ -26,8 +26,8 @@ namespace MvcContrib.FluentHtml.Tests
 				Numbers = new [] {1, 3},
 				Customers = new List<FakeChildModel>
 				{
-					new FakeChildModel { FirstName = "John", LastName = "Wyane" },
-					new FakeChildModel { FirstName = "Marlin", LastName = "Brando" }
+					new FakeChildModel { FirstName = "John", LastName = "Wyane", Balance = 123.33m },
+					new FakeChildModel { FirstName = "Marlin", LastName = "Brando", Balance = 234.56m }
 				}
 			};
 		}
@@ -106,5 +106,22 @@ namespace MvcContrib.FluentHtml.Tests
 			var name = expression.GetNameFor();
 			name.ShouldEqual("FakeModelArray[999].FakeModelArray[888].Person.FirstName");
 		}
+
+	    [Test]
+        public void can_get_value_from_model()
+        {
+            Expression<Func<FakeModel, object>> expression = x => x.Customers[1].Balance;
+            var value = expression.GetValueFrom(model);
+            value.ShouldEqual(model.Customers[1].Balance);
+        }
+
+	    [Test]
+	    public void get_value_for_null_intermediate_property_returns_null()
+	    {
+	        model.Person = null;
+	        Expression<Func<FakeModel, object>> expression = x => x.Person.FirstName;
+	        var value = expression.GetValueFrom(model);
+	        value.ShouldBeNull();
+	    }
 	}
 }

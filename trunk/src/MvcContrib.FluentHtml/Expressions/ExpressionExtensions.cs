@@ -18,7 +18,7 @@ namespace MvcContrib.FluentHtml.Expressions
 							? null
 							: expression.Compile().Invoke(viewModel);
 			}
-			catch
+			catch (NullReferenceException)
 			{
 				return null;
 			}
