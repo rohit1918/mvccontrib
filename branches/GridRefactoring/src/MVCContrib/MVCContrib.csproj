@@ -164,7 +164,7 @@
     <Compile Include="UI\Html\Grid\Grid.cs" />
     <Compile Include="UI\Html\Grid\GridOptions.cs" />
     <Compile Include="UI\Html\Grid\IExpressionColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\IGridSections.cs" />
+    <Compile Include="UI\Html\Grid\Legacy\IGridSections.cs" />
     <Compile Include="UI\Html\Grid\INestedGridColumnBuilder.cs" />
     <Compile Include="UI\Html\Grid\IRootGridColumnBuilder.cs" />
     <Compile Include="UI\Html\Grid\ISimpleColumnBuilder.cs" />
