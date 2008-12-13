@@ -15,7 +15,7 @@ namespace MvcContrib.UI.Html.Grid
 		private readonly Dictionary<string, string> _styles = new Dictionary<string, string>();
 		private readonly GridColumnBuilder<T> _columnBuilder = new GridColumnBuilder<T>();
 		private readonly GridOptions _gridOptions = new GridOptions();
-		private IGridRenderer<T> _renderer = new DefaultGridRenderer<T>();
+		private IGridRenderer<T> _renderer = new HtmlGridRenderer<T>();
 
 		public IEnumerable<T> DataSource { get; protected set; }
 
@@ -111,6 +111,12 @@ namespace MvcContrib.UI.Html.Grid
 			_gridOptions.EmptyMessageText = emptyMessageText;
 			return this;
 		}
+
+		public IGridBuilder<T> RenderUsing(IGridRenderer<T> customRenderer)
+		{
+			_renderer = customRenderer;
+			return this;
+		}
 	}
 
 	public static class GridExtensions
@@ -126,14 +132,6 @@ namespace MvcContrib.UI.Html.Grid
 		void Render(IEnumerable<T> dataSource, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, ViewContext context);
 	}
 
-	public class DefaultGridRenderer<T> : IGridRenderer<T> where T : class
-	{
-		public void Render(IEnumerable<T> dataSource, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, ViewContext context)
-		{
-			var grid = new Grid<T>(dataSource, columns, options, htmlAttributes, context.HttpContext.Response.Output, context.HttpContext);
-			grid.Render();
-		}
-	}
 
 	public interface IGridBuilder<T> where T : class
 	{
@@ -144,5 +142,6 @@ namespace MvcContrib.UI.Html.Grid
 		IGridBuilder<T> Style(string key, string value);
 		IGridBuilder<T> Columns(Action<IRootGridColumnBuilder<T>> columnBuilder);
 		IGridBuilder<T> Empty(string emptyMessageText);
+		IGridBuilder<T> RenderUsing(IGridRenderer<T> customRenderer);
 	}
 }

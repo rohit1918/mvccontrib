@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -152,6 +153,25 @@ namespace MvcContrib.UnitTests.UI.Html
 			Assert.That(_writer.ToString(), Is.EqualTo(expected));
 		}
 
+		[Test]
+		public void Should_use_custom_renderer()
+		{
+			var renderer = new CustomRenderer();
+
+			_builder.RenderUsing(renderer);
+			_builder.Render();
+
+			Assert.IsTrue(renderer.Rendered);
+		}
+
+		private class CustomRenderer : IGridRenderer<Person>
+		{
+			public bool Rendered;
+			public void Render(IEnumerable<Person> dataSource, GridColumnBuilder<Person> columns, GridOptions options, IDictionary htmlAttributes, ViewContext context)
+			{
+				Rendered = true;
+			}
+		}
 
 		private class Person
 		{

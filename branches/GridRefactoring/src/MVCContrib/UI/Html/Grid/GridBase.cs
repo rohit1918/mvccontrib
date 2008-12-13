@@ -12,6 +12,8 @@ namespace MvcContrib.UI.Html.Grid
 	/// <typeparam name="T">The type of object for each row in the grid.</typeparam>
 	public abstract class GridBase<T> where T : class
 	{
+		//private IGridRenderer<T> gridRenderer;
+
 		/// <summary>
 		/// The items to be displayed in the grid.
 		/// </summary>
@@ -28,7 +30,7 @@ namespace MvcContrib.UI.Html.Grid
 		protected TextWriter Writer { get; private set; }
 
 		/// <summary>
-		/// Message to be displayed if the Items property is empty.
+		/// Message to be displayed if the DataSource property is empty.
 		/// </summary>
 		public string EmptyMessageText { get; set; }
 
