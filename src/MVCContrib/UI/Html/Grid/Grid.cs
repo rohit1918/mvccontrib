@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using MvcContrib.Pagination;
+using MvcContrib.UI.Html.Grid.Legacy;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -65,7 +66,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// <param name="writer">Where to write the output</param>
 		/// <param name="context">HTTP Context</param>
 		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
-			: this(items, columns, new GridOptions(htmlAttributes), htmlAttributes, writer, context)
+			: this(items, columns, new GridOptions().LoadFromDictionary(htmlAttributes), htmlAttributes, writer, context)
 		{
 			
 		}
