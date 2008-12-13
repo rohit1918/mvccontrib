@@ -36,7 +36,14 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			if (!string.IsNullOrEmpty(_format))
 			{
-				elementValue = string.Format("{0:" + _format + "}", elementValue);
+				if (_format.StartsWith("{0") && _format.EndsWith("}"))
+				{
+					elementValue = string.Format(_format, elementValue);
+				}
+				else
+				{
+					elementValue = string.Format("{0:" + _format + "}", elementValue);
+				}
 			}
 		}
 	}

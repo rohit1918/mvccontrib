@@ -87,6 +87,16 @@ namespace MvcContrib.FluentHtml.Tests
 		}
 
 		[Test]
+		public void select_with_options_for_enum_renders_null_first_option()
+		{
+			var html = new Select("foo.Bar").Options<FakeEnum>("-Choose-").ToString();
+
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var optionNodes = element.ShouldHaveChildNodesCount(5);
+			optionNodes[0].ShouldBeUnSelectedOption(string.Empty, "-Choose-");
+		}
+
+		[Test]
 		public void basic_select_can_select_null_valued_options()
 		{
 			var items = new List<FakeModel>

@@ -12,9 +12,16 @@ namespace MvcContrib.FluentHtml.Expressions
 
 		public static object GetValueFrom<T>(this Expression<Func<T, object>> expression, T viewModel) where T : class
 		{
-			return viewModel == null
-						? null
-						: expression.Compile().Invoke(viewModel);
+			try
+			{
+				return viewModel == null
+							? null
+							: expression.Compile().Invoke(viewModel);
+			}
+			catch
+			{
+				return null;
+			}
 		}
 
 		public static MemberExpression GetMemberExpression<T>(this Expression<Func<T, object>> expression) where T : class
