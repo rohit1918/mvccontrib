@@ -242,11 +242,11 @@ namespace MvcContrib.UI.Html.Grid
 		}
 
 		protected abstract void RenderHeaderCellEnd();
-		protected abstract void RenderHeaderCellStart(GridColumn<T> column);
+		protected abstract void RenderHeaderCellStart(IGridColumn<T> column);
 		protected abstract void RenderRowStart(bool isAlternate);
 		protected abstract void RenderRowEnd();
 		protected abstract void RenderEndCell();
-		protected abstract void RenderStartCell(GridColumn<T> column);
+		protected abstract void RenderStartCell(IGridColumn<T> column);
 		protected abstract void RenderHeadStart();
 		protected abstract void RenderHeadEnd();
 		protected abstract void RenderGridStart();

@@ -9,10 +9,10 @@ namespace MvcContrib.UI.Html.Grid
 	/// Constructs GridColumn objects representing the columns to be rendered in a grid.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class GridColumnBuilder<T> : IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>>
+	public class GridColumnBuilder<T> : IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<IGridColumn<T>>
 		where T : class
 	{
-		private readonly List<GridColumn<T>> columns = new List<GridColumn<T>>(); //Final collection of columns to render
+		private readonly List<IGridColumn<T>> columns = new List<IGridColumn<T>>(); //Final collection of columns to render
 		public Action<T> RowStartBlock { get; set; }
 		public Action<T, bool> RowStartWithAlternateBlock { get; set; }
 		public Action<T> RowEndBlock { get; set; }
@@ -92,17 +92,17 @@ namespace MvcContrib.UI.Html.Grid
 			return columns.GetEnumerator();
 		}
 
-		public IEnumerator<GridColumn<T>> GetEnumerator()
+		public IEnumerator<IGridColumn<T>> GetEnumerator()
 		{
 			return columns.GetEnumerator();
 		}
 
-		public GridColumn<T> this[int index]
+		public IGridColumn<T> this[int index]
 		{
 			get { return columns[index]; }
 		}
 
-		public void AddColumn(GridColumn<T> column)
+		public void AddColumn(IGridColumn<T> column)
 		{
 			columns.Add(column);
 		}
