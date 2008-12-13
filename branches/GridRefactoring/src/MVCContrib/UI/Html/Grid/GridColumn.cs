@@ -149,6 +149,26 @@ namespace MvcContrib.UI.Html.Grid
 			renderEndCell();
 		}
 
+		public void RenderHeader(TextWriter writer, Action renderHeaderStart, Action renderHeaderEnd)
+		{
+			//Allow for custom header overrides.
+			if (CustomHeader != null) {
+				CustomHeader();
+			}
+			else {
+				//Skip if the custom Column Condition fails.
+				if (ColumnCondition != null && !ColumnCondition()) {
+					return;
+				}
+
+				renderHeaderStart();
+
+				writer.Write(Name);
+
+				renderHeaderEnd();
+			}
+		}
+
 		/// <summary>
 		/// Replaces pascal casing with spaces. For example "CustomerId" would become "Customer Id".
 		/// Strings that already contain spaces are ignored.
@@ -217,25 +237,26 @@ namespace MvcContrib.UI.Html.Grid
 	public interface IGridColumn<T> where T : class
 	{
 		/// <summary>
-		/// Name of the column
-		/// </summary>
-		string Name { get; set; }
-
-		/// <summary>
-		/// Delegate used to hide the entire column
-		/// </summary>
-		Func<bool> ColumnCondition { get; set; }
-
-		/// <summary>
-		/// Delegate used to specify a custom heading.
-		/// </summary>
-		Action CustomHeader { get; set; }
-
-		/// <summary>
 		/// The attributs to apply to the header of the column.
 		/// </summary>
 		IDictionary HeaderAttributes { get; set; }
 
+		/// <summary>
+		/// Renders the contents of the cell.
+		/// </summary>
+		/// <param name="item">The item for which the cell should be rendered</param>
+		/// <param name="writer">The textwriter to which he output should be written</param>
+		/// <param name="renderStartCell">Action to be called before the cell is rendered</param>
+		/// <param name="renderEndCell">Action to be called after the cell is rendered</param>
 		void Render(T item, TextWriter writer, Action renderStartCell, Action renderEndCell);
+
+
+		/// <summary>
+		/// Renders the header for the column
+		/// </summary>
+		/// <param name="writer">The textwriter to which the output should be written</param>
+		/// <param name="renderHeaderStart">Action to be called before the header is written</param>
+		/// <param name="renderHeaderEnd">Action to be called after the header is written</param>
+		void RenderHeader(TextWriter writer, Action renderHeaderStart, Action renderHeaderEnd);
 	}
 }

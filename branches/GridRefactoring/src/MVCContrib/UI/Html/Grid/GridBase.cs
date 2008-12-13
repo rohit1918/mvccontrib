@@ -118,25 +118,10 @@ namespace MvcContrib.UI.Html.Grid
 
 			foreach(var column in Columns)
 			{
-				//Allow for custom header overrides.
-				if(column.CustomHeader != null)
-				{
-					column.CustomHeader();
-				}
-				else
-				{
-					//Skip if the custom Column Condition fails.
-					if(column.ColumnCondition != null && !column.ColumnCondition())
-					{
-						continue;
-					}
+				Action cellStart = () => RenderHeaderCellStart(column);
+				Action cellEnd = RenderHeaderCellEnd;
 
-					RenderHeaderCellStart(column);				
-
-					RenderText(column.Name);
-
-					RenderHeaderCellEnd();
-				}
+				column.RenderHeader(Writer, cellStart, cellEnd);
 			}
 
 			RenderHeadEnd();
