@@ -1,3 +1,4 @@
+using System;
 using System.Web;
 using System.Collections.Generic;
 using System.IO;
@@ -80,66 +81,10 @@ namespace MvcContrib.UI.Html.Grid
 
 				foreach(var column in Columns)
 				{
-					//Column condition has been specified. Continue to the next column if the condition fails.
-					if (column.ColumnCondition != null && !column.ColumnCondition()) 
-					{
-						continue;
-					}
+					Action renderStartCell = () => RenderStartCell(column);
+					Action renderEndCell = RenderEndCell;
 
-					//A custom item section has been specified - render it and continue to the next iteration.
-					if(column.Name != null && column.CustomRenderer != null)
-					{
-						column.CustomRenderer(item);
-						continue;
-					}
-
-					RenderStartCell(column);
-					object value = null;
-
-					bool failedCellCondition = false;
-
-					//Cell condition has been specified. Skip rendering of this cell if the cell condition fails.
-					if(column.CellCondition != null && !column.CellCondition(item))
-					{
-						failedCellCondition = true;
-					}
-
-					if(!failedCellCondition)
-					{
-						//Invoke the delegate to retrieve the value to be displayed in the cell.
-						if(column.ColumnDelegate != null)
-						{
-							value = column.ColumnDelegate(item);
-						}
-						else //If there isn't a column delegate, attempt to use reflection instead (for anonymous types)
-						{
-							var property = item.GetType().GetProperty(column.Name);
-							if(property != null)
-							{
-								value = property.GetValue(item, null);
-							}
-						}
-
-
-						if(value != null)
-						{
-							if(column.Format != null) //Use custom output format if specified.
-							{
-								RenderText(string.Format(column.Format, value));
-							}
-							else if(column.Encode) //HTML-Encode unless encoding has been explicitly disabled for this cell.
-							{
-								RenderText(HttpUtility.HtmlEncode(value.ToString()));
-							}
-							else
-							{
-								RenderText(value.ToString());
-							}
-						}
-					}
-
-
-					RenderEndCell();
+					column.Render(item, Writer, renderStartCell, renderEndCell);
 				}
 
 				RenderRowEnd(item);
