@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -84,6 +86,69 @@ namespace MvcContrib.UI.Html.Grid
 		/// </summary>
 		public IDictionary HeaderAttributes { get; set; }
 
+		public void Render(T item, TextWriter writer, Action renderStartCell, Action renderEndCell)
+		{
+			//Column condition has been specified. Continue to the next column if the condition fails.
+			if(ColumnCondition != null && !ColumnCondition())
+			{
+				return;
+			}
+
+			//A custom item section has been specified - render it and continue to the next iteration.
+			if(Name != null && CustomRenderer != null)
+			{
+				CustomRenderer(item);
+				return;
+			}
+
+			renderStartCell();
+
+			object value = null;
+
+			bool failedCellCondition = false;
+
+			//Cell condition has been specified. Skip rendering of this cell if the cell condition fails.
+			if(CellCondition != null && !CellCondition(item))
+			{
+				failedCellCondition = true;
+			}
+
+			if(!failedCellCondition)
+			{
+				//Invoke the delegate to retrieve the value to be displayed in the cell.
+				if(ColumnDelegate != null)
+				{
+					value = ColumnDelegate(item);
+				}
+				else //If there isn't a column delegate, attempt to use reflection instead (for anonymous types)
+				{
+					var property = item.GetType().GetProperty(Name);
+					if(property != null)
+					{
+						value = property.GetValue(item, null);
+					}
+				}
+
+
+				if(value != null)
+				{
+					if(Format != null) //Use custom output format if specified.
+					{
+						writer.Write(string.Format(Format, value));
+					}
+					else if(Encode) //HTML-Encode unless encoding has been explicitly disabled for this cell.
+					{
+						writer.Write(HttpUtility.HtmlEncode(value.ToString()));
+					}
+					else
+					{
+						writer.Write(value.ToString());
+					}
+				}
+			}
+			renderEndCell();
+		}
+
 		/// <summary>
 		/// Replaces pascal casing with spaces. For example "CustomerId" would become "Customer Id".
 		/// Strings that already contain spaces are ignored.
@@ -149,7 +214,7 @@ namespace MvcContrib.UI.Html.Grid
 		}
 	}
 
-	public interface IGridColumn<T> where T : class 
+	public interface IGridColumn<T> where T : class
 	{
 		/// <summary>
 		/// Delegate that will be invoked on each item in the in the datasource in order to obtain the current item's value.
@@ -200,5 +265,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// The attributs to apply to the header of the column.
 		/// </summary>
 		IDictionary HeaderAttributes { get; set; }
+
+		void Render(T item, TextWriter writer, Action renderStartCell, Action renderEndCell);
 	}
 }
