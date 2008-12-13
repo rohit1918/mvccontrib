@@ -75,7 +75,7 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText("</th>");
 		}
 
-		protected override void RenderHeaderCellStart(GridColumn<T> column)
+		protected override void RenderHeaderCellStart(IGridColumn<T> column)
 		{
 			string attrs = BuildHtmlAttributes(column.HeaderAttributes);
 			if (attrs.Length > 0)
@@ -106,7 +106,7 @@ namespace MvcContrib.UI.Html.Grid
 			RenderText("</td>");
 		}
 
-		protected override void RenderStartCell(GridColumn<T> column)
+		protected override void RenderStartCell(IGridColumn<T> column)
 		{
 			RenderText("<td>");
 		}
