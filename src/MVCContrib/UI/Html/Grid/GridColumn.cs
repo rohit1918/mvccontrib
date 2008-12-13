@@ -217,29 +217,9 @@ namespace MvcContrib.UI.Html.Grid
 	public interface IGridColumn<T> where T : class
 	{
 		/// <summary>
-		/// Delegate that will be invoked on each item in the in the datasource in order to obtain the current item's value.
-		/// </summary>
-		Func<T, object> ColumnDelegate { get; set; }
-
-		/// <summary>
 		/// Name of the column
 		/// </summary>
 		string Name { get; set; }
-
-		/// <summary>
-		/// Custom format for the cell output.
-		/// </summary>
-		string Format { get; set; }
-
-		/// <summary>
-		/// Whether or not PascalCased names should be split.
-		/// </summary>
-		bool DoNotSplit { get; set; }
-
-		/// <summary>
-		/// Delegate used to hide the contents of the cells in a column.
-		/// </summary>
-		Func<T, bool> CellCondition { get; set; }
 
 		/// <summary>
 		/// Delegate used to hide the entire column
@@ -247,19 +227,9 @@ namespace MvcContrib.UI.Html.Grid
 		Func<bool> ColumnCondition { get; set; }
 
 		/// <summary>
-		/// Delegate that can be used to perform custom rendering actions.
-		/// </summary>
-		Action<T> CustomRenderer { get; set; }
-
-		/// <summary>
 		/// Delegate used to specify a custom heading.
 		/// </summary>
 		Action CustomHeader { get; set; }
-
-		/// <summary>
-		/// Whether to HTML-Encode the output (default is true).
-		/// </summary>
-		bool Encode { get; set; }
 
 		/// <summary>
 		/// The attributs to apply to the header of the column.
