@@ -41,7 +41,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		{
 			_builder.For(p => p.Name);
 			var person = new Person { Name = "Jeremy", Id = 1, DateOfBirth = new DateTime(1987, 4, 19) };
-			Assert.That(_builder[0].ColumnDelegate(person), Is.EqualTo("Jeremy"));
+			Assert.That(((GridColumn<Person>)_builder[0]).ColumnDelegate(person), Is.EqualTo("Jeremy"));
 		}
 
 		[Test]
@@ -55,7 +55,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Should_use_custom_formatting()
 		{
 			_builder.For(p => p.DateOfBirth).Formatted("{0:ddd}");
-			Assert.That(_builder[0].Format, Is.EqualTo("{0:ddd}"));
+			Assert.That(((GridColumn<Person>)_builder[0]).Format, Is.EqualTo("{0:ddd}"));
 		}
 
 		[Test]
@@ -64,15 +64,15 @@ namespace MvcContrib.UnitTests.UI.Html
 			_builder.For(p => p.Name);
 			_builder.For(p => p.Name).DoNotEncode();
 
-			Assert.That(_builder[0].Encode, Is.EqualTo(true));
-			Assert.That(_builder[1].Encode, Is.EqualTo(false));
+			Assert.That(((GridColumn<Person>)  _builder[0]).Encode, Is.EqualTo(true));
+			Assert.That(((GridColumn<Person>)_builder[1]).Encode, Is.EqualTo(false));
 		}
 
 		[Test]
 		public void Calling_CellCondition_should_set_CellCondition()
 		{
 			_builder.For(p => p.Name).CellCondition(p => false);
-			Assert.That(_builder[0].CellCondition, Is.Not.Null);
+			Assert.That(((GridColumn<Person>)_builder[0]).CellCondition, Is.Not.Null);
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace MvcContrib.UnitTests.UI.Html
 		public void Calling_Do_should_set_custom_renderer()
 		{
 			_builder.For("Custom").Do(p => { });
-			Assert.That(_builder[0].CustomRenderer, Is.Not.Null);
+			Assert.That(((GridColumn<Person>)_builder[0]).CustomRenderer, Is.Not.Null);
 		}
 
 		[Test]
