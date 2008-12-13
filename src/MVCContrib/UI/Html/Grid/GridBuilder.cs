@@ -10,20 +10,19 @@ namespace MvcContrib.UI.Html.Grid
 	public class GridBuilder<T> : IGridBuilder<T> where T : class
 	{
 		private readonly ViewContext _context;
-		private readonly TextWriter _writer;
 		private readonly Dictionary<string, string> _htmlAttributes = new Dictionary<string, string>();
 		private readonly IList<string> _classes = new List<string>();
 		private readonly Dictionary<string, string> _styles = new Dictionary<string, string>();
 		private readonly GridColumnBuilder<T> _columnBuilder = new GridColumnBuilder<T>();
 		private readonly GridOptions _gridOptions = new GridOptions();
+		private IGridRenderer<T> _renderer = new DefaultGridRenderer<T>();
 
 		public IEnumerable<T> DataSource { get; protected set; }
 
 
-		public GridBuilder(ViewContext context, TextWriter writer)
+		public GridBuilder(ViewContext context)
 		{
 			_context = context;
-			_writer = writer;
 		}
 
 		public GridOptions GridOptions
@@ -84,8 +83,8 @@ namespace MvcContrib.UI.Html.Grid
 				Attribute("style", styles);
 			}
 
-			var grid = new Grid<T>(DataSource, _columnBuilder, _gridOptions, _htmlAttributes, _writer, _context.HttpContext);
-			grid.Render();
+			_renderer.Render(DataSource, _columnBuilder, _gridOptions, _htmlAttributes, _context);
+			
 		}
 
 		public IGridBuilder<T> Class(string cssClass)
@@ -118,10 +117,23 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		public static IGridBuilder<T> Grid<T>(this HtmlHelper helper) where T: class 
 		{
-			return new GridBuilder<T>(helper.ViewContext, helper.ViewContext.HttpContext.Response.Output);
+			return new GridBuilder<T>(helper.ViewContext);
 		}
 	}
 
+	public interface IGridRenderer<T> where T : class 
+	{
+		void Render(IEnumerable<T> dataSource, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, ViewContext context);
+	}
+
+	public class DefaultGridRenderer<T> : IGridRenderer<T> where T : class
+	{
+		public void Render(IEnumerable<T> dataSource, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, ViewContext context)
+		{
+			var grid = new Grid<T>(dataSource, columns, options, htmlAttributes, context.HttpContext.Response.Output, context.HttpContext);
+			grid.Render();
+		}
+	}
 
 	public interface IGridBuilder<T> where T : class
 	{

@@ -14,14 +14,14 @@ namespace MvcContrib.UnitTests.UI.Html
 	{
 		private ViewContext _context;
 		private GridBuilder<Person> _builder;
-		private StringWriter _writer;
+		private TextWriter _writer;
 
 		[SetUp]
 		public void Setup()
 		{
-			_writer = new StringWriter();
 			_context = new ViewContext(MvcMockHelpers.DynamicHttpContextBase(), new RouteData(), MockRepository.GenerateStub<ControllerBase>(), MockRepository.GenerateStub<IView>(), new ViewDataDictionary(), new TempDataDictionary());
-			_builder = new GridBuilder<Person>(_context, _writer);
+			_builder = new GridBuilder<Person>(_context);
+			_writer = _context.HttpContext.Response.Output;
 		}
 
 		[Test]
