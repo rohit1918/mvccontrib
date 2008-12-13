@@ -5,6 +5,7 @@ using Ninject.Core.Parameters;
 
 namespace MvcContrib.Ninject
 {
+	[Obsolete("The MvcContrib version of the NinjectControllerFactory has been deprecated. Please use the official version for Ninject which can be found at http://www.ninject.org")]
     public class NinjectControllerFactory : IControllerFactory
     {
         public IController CreateController(RequestContext context, string controllerName)

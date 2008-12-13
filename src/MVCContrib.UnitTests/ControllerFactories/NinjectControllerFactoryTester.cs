@@ -18,7 +18,9 @@ namespace MvcContrib.UnitTests.ControllerFactories
         public void SetUp()
         {
             NinjectKernel.Initialize(new TestModule());
+#pragma warning disable 618,612
 			_factory = new NinjectControllerFactory();
+#pragma warning restore 618,612
         }
 
         [Test]
