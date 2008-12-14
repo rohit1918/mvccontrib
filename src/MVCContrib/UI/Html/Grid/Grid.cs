@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.Mvc;
@@ -19,56 +20,13 @@ namespace MvcContrib.UI.Html.Grid
 	{
 		private const string Default_Css_Class = "grid";
 
-		/// <summary>
-		/// Custom HTML attributes.
-		/// </summary>
-		public IDictionary HtmlAttributes { get; private set; }
-		/// <summary>
-		/// The HTTP Context.
-		/// </summary>
-		public HttpContextBase Context { get; set; }
-
-		public GridOptions Options { get; private set; }
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="Grid{T}"/> using the specified data source.
-		/// </summary>
-		/// <param name="items">Data source</param>
-		/// <param name="columns">Columns</param>
-		/// <param name="options">Options for the grid</param>
-		/// <param name="htmlAttributes">Custom attributes and options</param>
-		/// <param name="writer">Where to write the output</param>
-		/// <param name="context">HTTP Context</param>
-		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, GridOptions options, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
-			: base(items, columns, writer)
+		protected override void Render() 
 		{
-			Context = context;
-			HtmlAttributes = htmlAttributes ?? Hash.Empty;
-
-			Options = options;
-
-			if (!string.IsNullOrEmpty(Options.EmptyMessageText)) {
-				EmptyMessageText = Options.EmptyMessageText;
+			if (!Attributes.Contains("class"))
+			{
+				Attributes["class"] = Default_Css_Class;
 			}
-
-			if (!HtmlAttributes.Contains("class")) {
-				HtmlAttributes["class"] = Default_Css_Class;
-			}
-		}
-
-
-		/// <summary>
-		/// Creates a new instance of the <see cref="Grid{T}"/> using the specified data source.
-		/// </summary>
-		/// <param name="items">Data source</param>
-		/// <param name="columns">Columns</param>
-		/// <param name="htmlAttributes">Custom attributes and options</param>
-		/// <param name="writer">Where to write the output</param>
-		/// <param name="context">HTTP Context</param>
-		public Grid(IEnumerable<T> items, GridColumnBuilder<T> columns, IDictionary htmlAttributes, TextWriter writer, HttpContextBase context) 
-			: this(items, columns, new GridOptions().LoadFromDictionary(htmlAttributes), htmlAttributes, writer, context)
-		{
-			
+			base.Render();
 		}
 
 		protected override void RenderHeaderCellEnd()
@@ -124,7 +82,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected override void RenderGridStart()
 		{
-			string attrs = BuildHtmlAttributes(this.HtmlAttributes);
+			string attrs = BuildHtmlAttributes(this.Attributes);
 			if (attrs.Length > 0)
 				attrs = " " + attrs;
 
@@ -226,8 +184,8 @@ namespace MvcContrib.UI.Html.Grid
 		/// <returns></returns>
 		protected virtual string CreatePageLink(int pageNumber, string text)
 		{
-			string queryString = CreateQueryString(Context.Request.QueryString);
-			string filePath = Context.Request.FilePath;
+			string queryString = CreateQueryString(Context.HttpContext.Request.QueryString);
+			string filePath = Context.HttpContext.Request.FilePath;
 			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, Options.PageQueryName, pageNumber, queryString, text);
 		}
 
@@ -253,7 +211,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected override void RenderEmpty()
 		{
-			RenderText("<tr><td>" + EmptyMessageText + "</td></tr>");
+			RenderText("<tr><td>" + Options.EmptyMessageText + "</td></tr>");
 		}
 
 

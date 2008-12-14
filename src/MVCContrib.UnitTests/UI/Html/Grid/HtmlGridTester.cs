@@ -2,6 +2,9 @@
 using System.Collections;
 using System.IO;
 using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using MvcContrib.UI.Html.Grid.Legacy;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -22,7 +25,7 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		}
 
 		private MockRepository _mocks;
-		private HttpContextBase _context;
+		private ViewContext _context;
 		private List<Person> _people;
 		private GridColumnBuilder<Person> _columnBuilder;
 
@@ -31,8 +34,8 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		{
 			_columnBuilder = new GridColumnBuilder<Person>();
 			_mocks = new MockRepository();
-			_context = _mocks.DynamicHttpContextBase();
-			SetupResult.For(_context.Request.FilePath).Return("Test.mvc");
+			_context = new ViewContext(_mocks.DynamicHttpContextBase(), new RouteData(), MockRepository.GenerateStub<ControllerBase>(), MockRepository.GenerateStub<IView>(), new ViewDataDictionary(),new TempDataDictionary() );
+			SetupResult.For(_context.HttpContext.Request.FilePath).Return("Test.mvc");
 			_people = new List<Person>
 			          	{
 			          		new Person { Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}
@@ -48,7 +51,7 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 
 		private TextWriter Writer
 		{
-			get { return _context.Response.Output; }
+			get { return _context.HttpContext.Response.Output; }
 		}
 
 		private void RenderGrid()
@@ -58,8 +61,8 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		
 		private void RenderGrid(IDictionary htmlAttributes)
 		{
-			var grid = new Grid<Person>(_people, _columnBuilder, htmlAttributes, Writer, _context);
-			grid.Render();
+			var grid = new Grid<Person>();
+			grid.Render(_people, _columnBuilder, new GridOptions().LoadFromDictionary(htmlAttributes),  htmlAttributes, _context);
 		}
 
 
@@ -67,8 +70,9 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		public void Should_render_empty_table()
 		{
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
-			var grid = new Grid<Person>(null, null, null, Writer, null);
-			grid.Render();
+			var grid = new Grid<Person>();
+			
+			grid.Render(null, null, null, null, _context);
 
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -166,8 +170,8 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			var column = new GridColumnBuilder<object>();
 			column.For("Name");
 
-			var grid = new Grid<object>(new object[] {new {Name = "Testing"}}, column, null, Writer, _context);
-			grid.Render();
+			var grid = new Grid<object>();
+			grid.Render(new object[] {new {Name = "Testing"}}, column, null, null, _context);
 
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Testing</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
@@ -255,12 +259,11 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			_people.Add(new Person { Name = "Person 3" });
 
 			var pagedPeople = _people.AsPagination(1, 2);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
+			grid.Render(pagedPeople, Column, null, Hash.Empty, _context);
 
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=2\">last</a></span></div>";
 			
-			grid.Render();
-
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -270,11 +273,11 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
 			var pagedPeople = _people.AsPagination(2, 2);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			Column.For(p => p.Name);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1\">first</a> | <a href=\"Test.mvc?page=1\">prev</a> | next | last</span></div>";
 
-			grid.Render();
+			grid.Render(pagedPeople, Column, null, null, _context);
 
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
@@ -284,12 +287,12 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		{
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
-			_context.Request.QueryString.Add("a", "b");
+			_context.HttpContext.Request.QueryString.Add("a", "b");
 			var pagedPeople = _people.AsPagination(2, 2);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1&amp;a=b\">first</a> | <a href=\"Test.mvc?page=1&amp;a=b\">prev</a> | next | last</span></div>";
 			Column.For(x => x.Name);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
-			grid.Render();
+			var grid = new Grid<Person>();
+			grid.Render(pagedPeople, Column, null,null,_context);
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -300,9 +303,9 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			_people.Add(new Person { Name = "Person 3" });
 			Column.For(p => p.Name);
 			var pagedPeople = _people.AsPagination(1, 1);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
-			grid.Render();
+			grid.Render(pagedPeople, Column, null,null, _context);
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 
@@ -321,9 +324,9 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 		public void Should_not_render_pagination_when_datasource_is_empty()
 		{
 			var people = new List<Person>().AsPagination(1);
-			var grid = new Grid<Person>(people, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			Column.For(x => x.Name);
-			grid.Render();
+			grid.Render(people, Column, null,null, _context);
 			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
 			Assert.That(Writer.ToString(), Is.EqualTo(expected));
 		}
@@ -334,14 +337,14 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			_people.Add(new Person { Name = "Person2" });
 			_people.Add(new Person { Name = "Person 3" });
 			var pagedPeople = _people.AsPagination(1, 2);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			grid.Options.PaginationFormat = "Visar {0} - {1} av {2} ";
 			grid.Options.PaginationFirst = "första";
 			grid.Options.PaginationPrev = "föregående";
 			grid.Options.PaginationNext = "nästa";
 			grid.Options.PaginationLast = "sista";
 			Column.For(p => p.Name);
-			grid.Render();
+			grid.Render(pagedPeople, Column,null,null, _context);
 
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 - 2 av 3 </span><span class='paginationRight'>första | föregående | <a href=\"Test.mvc?page=2\">nästa</a> | <a href=\"Test.mvc?page=2\">sista</a></span></div>";
 			Assert.That(Writer.ToString().EndsWith(expected));
@@ -368,10 +371,10 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			_people.Add(new Person { Name = "Person 3" });
 			Column.For(x => x.Name);
 			var pagedPeople = _people.AsPagination(1, 1);
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			grid.Options.PaginationSingleFormat = "Visar {0} av {1} ";
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Visar 1 av 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?page=2\">next</a> | <a href=\"Test.mvc?page=3\">last</a></span></div>";
-			grid.Render();
+			grid.Render(pagedPeople, Column, null,null, _context);
 
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
@@ -384,9 +387,9 @@ namespace MvcContrib.UnitTests.UI.Html.Grid
 			var pagedPeople = _people.AsPagination(1, 2);
 			Column.For(p => p.Name);
 			string expected = "</table><div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"Test.mvc?my_page=2\">next</a> | <a href=\"Test.mvc?my_page=2\">last</a></span></div>";
-			var grid = new Grid<Person>(pagedPeople, Column, Hash.Empty, Writer, _context);
+			var grid = new Grid<Person>();
 			grid.Options.PageQueryName = "my_page";
-			grid.Render();
+			grid.Render(pagedPeople, Column, null,null, _context);
 			Assert.That(Writer.ToString().EndsWith(expected));
 		}
 

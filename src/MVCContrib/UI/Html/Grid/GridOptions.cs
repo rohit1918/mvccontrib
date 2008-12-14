@@ -28,6 +28,7 @@ namespace MvcContrib.UI.Html.Grid
 			PaginationFirst = "first";
 			PaginationSingleFormat = "Showing {0} of {1} ";
 			PaginationFormat = "Showing {0} - {1} of {2} ";
+			EmptyMessageText = "There is no data available.";
 		}
 
 		
