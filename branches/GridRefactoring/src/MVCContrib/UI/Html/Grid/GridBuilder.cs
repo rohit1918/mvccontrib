@@ -125,6 +125,13 @@ namespace MvcContrib.UI.Html.Grid
 		{
 			return new GridBuilder<T>(helper.ViewContext);
 		}
+
+		public static INestedGridColumnBuilder<T> RenderPartial<T>(this ISimpleColumnBuilder<T> column, string partialName) where T : class
+		{
+			return column.CustomRenderer((x, writer, ctx) => {
+				ViewEngines.DefaultEngine.FindPartialView(ctx, partialName).View.Render(ctx, writer);
+			});
+		}
 	}
 
 	public interface IGridRenderer<T> where T : class 
