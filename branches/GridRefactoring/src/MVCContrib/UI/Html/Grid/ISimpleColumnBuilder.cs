@@ -1,3 +1,6 @@
+using System.IO;
+using System.Web.Mvc;
+
 namespace MvcContrib.UI.Html.Grid
 {
 	using System;
@@ -13,6 +16,6 @@ namespace MvcContrib.UI.Html.Grid
 		/// </summary>
 		/// <param name="block">The delegate to invoke</param>
 		/// <returns>The grid column builder.</returns>
-		INestedGridColumnBuilder<T> Do(Action<T> block);
+		INestedGridColumnBuilder<T> CustomRenderer(Action<T, TextWriter, ViewContext> block);
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -69,7 +70,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// Delegate that can be used to perform custom rendering actions.
 		/// </summary>
-		public Action<T> CustomRenderer { get; set; }
+		public Action<T, TextWriter, ViewContext> CustomRenderer { get; set; }
 
 		/// <summary>
 		/// Delegate used to specify a custom heading.
@@ -129,11 +130,7 @@ namespace MvcContrib.UI.Html.Grid
 			return this;
 		}
 
-		INestedGridColumnBuilder<T> ISimpleColumnBuilder<T>.Do(Action<T> block)
-		{
-			CustomRenderer = block;
-			return this;
-		}
+		
 
 		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.Header(Action block)
 		{
@@ -149,6 +146,12 @@ namespace MvcContrib.UI.Html.Grid
 		INestedGridColumnBuilder<T> INestedGridColumnBuilder<T>.HeaderAttributes(IDictionary attributes)
 		{
 			HeaderAttributes = attributes;
+			return this;
+		}
+
+		INestedGridColumnBuilder<T> ISimpleColumnBuilder<T>.CustomRenderer(Action<T, TextWriter, ViewContext> block)
+		{
+			CustomRenderer = block;
 			return this;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using MvcContrib.UI.Html.Grid.Legacy;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using MvcContrib.UI.Html.Grid;

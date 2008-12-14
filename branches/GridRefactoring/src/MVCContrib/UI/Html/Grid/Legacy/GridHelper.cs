@@ -78,6 +78,11 @@ namespace MvcContrib.UI.Html.Grid.Legacy
 
 		}
 
+		public static INestedGridColumnBuilder<T> Do<T>(this ISimpleColumnBuilder<T> column, Action<T> block) where T : class
+		{
+			return column.CustomRenderer((x, writer, ctx) => block(x));
+		}
+
 		private static GridColumnBuilder<T> CreateColumnBuilder<T>(Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
 			var builder = new GridColumnBuilder<T>();
