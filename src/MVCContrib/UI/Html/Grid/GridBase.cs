@@ -111,7 +111,7 @@ namespace MvcContrib.UI.Html.Grid
 					//A custom item section has been specified - render it and continue to the next iteration.
 					if(column.Name != null && column.CustomRenderer != null)
 					{
-						column.CustomRenderer(item);
+						column.CustomRenderer(item, Writer, Context);
 						continue;
 					}
 
