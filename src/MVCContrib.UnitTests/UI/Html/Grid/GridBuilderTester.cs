@@ -164,6 +164,25 @@ namespace MvcContrib.UnitTests.UI.Html
 			Assert.IsTrue(renderer.Rendered);
 		}
 
+		[Test]
+		public void Should_render_partial_for_custom_renderer()
+		{
+			ViewEngines.Engines.Clear();
+			var engine = MockRepository.GenerateMock<IViewEngine>();
+			var view = MockRepository.GenerateMock<IView>();
+			view.Expect(x=>x.Render(null,null)).IgnoreArguments().Do(new Action<ViewContext, TextWriter>((c,w) => w.Write("Foo")));
+            engine.Expect(x => x.FindPartialView(null, null)).IgnoreArguments().Do(new Func<ControllerContext, string, ViewEngineResult>((c,s) => new ViewEngineResult(view, engine)));
+			ViewEngines.Engines.Add(engine);
+
+			var columnBuilder = new GridColumnBuilder<Person>();
+			columnBuilder.For("test").RenderPartial("MyPartial");
+
+			columnBuilder[0].CustomRenderer(null, _writer, _context);
+			Assert.That(_writer.ToString(), Is.EqualTo("Foo"));
+
+			ViewEngines.Engines.Clear();
+		}
+
 		private class CustomRenderer : IGridRenderer<Person>
 		{
 			public bool Rendered;
