@@ -37,15 +37,16 @@ namespace MvcContrib.UI.Html.Grid.Legacy
 
 		public static void Grid<T>(this HtmlHelper helper, string viewDataKey, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
-			var grid = new Grid<T>(
+			var grid = new Grid<T>();
+			
+			grid.Render(
 				GetDataSourceFromViewData<T>(viewDataKey, helper.ViewContext),
 				CreateColumnBuilder(columns, sections),
+				new GridOptions().LoadFromDictionary(htmlAttributes), 
 				htmlAttributes,
-				helper.ViewContext.HttpContext.Response.Output,
-				helper.ViewContext.HttpContext
-				);
+				helper.ViewContext
+			);
 
-			grid.Render();
 		}
 
 		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, Action<IRootGridColumnBuilder<T>> columns) where T : class
@@ -65,15 +66,16 @@ namespace MvcContrib.UI.Html.Grid.Legacy
 
 		public static void Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource, IDictionary htmlAttributes, Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class
 		{
-			var grid = new Grid<T>(
+			var grid = new Grid<T>();
+
+			grid.Render(
 				dataSource,
 				CreateColumnBuilder(columns, sections),
+				new GridOptions().LoadFromDictionary(htmlAttributes),
 				htmlAttributes,
-				helper.ViewContext.HttpContext.Response.Output,
-				helper.ViewContext.HttpContext
-				);
+				helper.ViewContext
+			);
 
-			grid.Render();
 		}
 
 		private static GridColumnBuilder<T> CreateColumnBuilder<T>(Action<IRootGridColumnBuilder<T>> columns, Action<IGridSections<T>> sections) where T : class

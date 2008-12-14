@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Web;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Html.Grid
 {
@@ -10,10 +12,8 @@ namespace MvcContrib.UI.Html.Grid
 	/// Base class for SmartGrid functionality.
 	/// </summary>
 	/// <typeparam name="T">The type of object for each row in the grid.</typeparam>
-	public abstract class GridBase<T> where T : class
+	public abstract class GridBase<T> : IGridRenderer<T> where T : class
 	{
-		//private IGridRenderer<T> gridRenderer;
-
 		/// <summary>
 		/// The items to be displayed in the grid.
 		/// </summary>
@@ -27,19 +27,38 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// The writer to output the results to.
 		/// </summary>
-		protected TextWriter Writer { get; private set; }
+		protected TextWriter Writer { get; set; }
 
-		/// <summary>
-		/// Message to be displayed if the DataSource property is empty.
-		/// </summary>
-		public string EmptyMessageText { get; set; }
+		public GridOptions Options { get; protected set; }
 
-		protected GridBase(IEnumerable<T> items, GridColumnBuilder<T> columns, TextWriter writer)
+		protected IDictionary Attributes { get; set; }
+
+		protected ViewContext Context { get; set; }
+
+		public GridBase()
+		{
+			Options = new GridOptions();
+			Attributes = new Hash();
+		}
+
+		public void Render(IEnumerable<T> items, GridColumnBuilder<T> columns, GridOptions options, IDictionary attributes, ViewContext context)
 		{
 			Items = items;
 			Columns = columns;
-			Writer = writer;
-			EmptyMessageText = "There is no data available.";
+			Context = context;
+			Writer = context.HttpContext.Response.Output;
+
+			if(options != null)
+			{
+				Options = options;
+			}
+
+			if(attributes != null)
+			{
+				Attributes = attributes;
+			}
+
+			Render();
 		}
 
 		/// <summary>
@@ -54,7 +73,7 @@ namespace MvcContrib.UI.Html.Grid
 		/// <summary>
 		/// Performs the rendering of the grid.
 		/// </summary>
-		public virtual void Render()
+		protected virtual void Render()
 		{
 			RenderGridStart();
 			bool headerRendered = RenderHeader();

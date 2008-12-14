@@ -15,7 +15,7 @@ namespace MvcContrib.UI.Html.Grid
 		private readonly Dictionary<string, string> _styles = new Dictionary<string, string>();
 		private readonly GridColumnBuilder<T> _columnBuilder = new GridColumnBuilder<T>();
 		private readonly GridOptions _gridOptions = new GridOptions();
-		private IGridRenderer<T> _renderer = new HtmlGridRenderer<T>();
+		private IGridRenderer<T> _renderer = new Grid<T>();
 
 		public IEnumerable<T> DataSource { get; protected set; }
 
