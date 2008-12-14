@@ -93,5 +93,11 @@ namespace MvcContrib.UnitTests.TestHelper
         {
             "~/funky/bar/widget".Route().ShouldMapTo<FunkyController>(x => x.Bar("something_else"));
         }
+
+        [Test]
+        public void should_be_able_to_test_routes_directly_from_a_string()
+        {
+            "~/funky/bar/widget".ShouldMapTo<FunkyController>(x => x.Bar("widget"));
+        }
     }
 }

@@ -71,6 +71,18 @@ namespace MvcContrib.TestHelper
         }
 
         /// <summary>
+        /// Converts the URL to matching RouteData and verifies that it will match a route with the values specified by the expression.
+        /// </summary>
+        /// <typeparam name="TController">The type of controller</typeparam>
+        /// <param name="relativeUrl">The ~/ based url</param>
+        /// <param name="action">The expression that defines what action gets called (and with which parameters)</param>
+        /// <returns></returns>
+        public static RouteData ShouldMapTo<TController>(this string relativeUrl, Expression<Func<TController, ActionResult>> action) where TController : Controller
+        {
+            return relativeUrl.Route().ShouldMapTo(action);
+        }
+
+        /// <summary>
         /// Verifies the <see cref="RouteData">routeData</see> maps to the controller type specified.
         /// </summary>
         /// <typeparam name="TController"></typeparam>
