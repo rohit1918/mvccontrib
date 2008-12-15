@@ -5,7 +5,7 @@ using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
 {
-	public abstract class TextInput<T> : Input<T> where T : TextInput<T>
+	public abstract class TextInput<T> : Input<T>, ISupportsMaxLength where T : TextInput<T>
 	{
 		protected string _format;
 

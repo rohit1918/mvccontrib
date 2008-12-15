@@ -13,15 +13,11 @@ namespace MvcContrib.FluentHtml.Behaviors
 			{
 				return;
 			}
-			//NOTE: Is it better to use relfection here or IElement.SetAttr method?  What if it's a tag where maxlength is meaningless, like select?
-			//NOTE: We could instead create a Set method for each type of HTML attribute in all types of IElement and have a heirarchy of interfaces to expose them.  Makes the API too noisy?
-			//NOTE: This second reflection step will only happen when the model attibute is found.  Maybe not so bad?
-			var method = helper.GetMethod(element, "MaxLength");
-			if (method == null)
+
+			if(element is ISupportsMaxLength)
 			{
-				return;
+				element.SetAttr("maxlength", attribute.Length);
 			}
-			helper.InvokeMethod(method, element, attribute.Length);
 		}
 	}
 }
