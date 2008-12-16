@@ -34,7 +34,15 @@ namespace MvcContrib.FluentHtml.Elements
 		public override string ToString()
 		{
 			var html = base.ToString();
-			var hidden = new Hidden(builder.Attributes[HtmlAttribute.Name]).Value("false").ToString();
+
+			string hiddenId = "_Hidden";
+
+			if(Builder.Attributes.ContainsKey("id"))
+			{
+				hiddenId = Builder.Attributes["id"] + hiddenId;
+			}
+
+			var hidden = new Hidden(builder.Attributes[HtmlAttribute.Name]).Id(hiddenId).Value("false").ToString();
 			return string.Concat(html, hidden);
 		}
 	}

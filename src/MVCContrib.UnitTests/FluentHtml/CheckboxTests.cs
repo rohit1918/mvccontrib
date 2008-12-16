@@ -38,7 +38,7 @@ namespace MvcContrib.FluentHtml.Tests
 
 			var hidden = doc.ChildNodes[1].ShouldBeNamed(HtmlTag.Input);
 			hidden.ShouldHaveAttributesCount(4);
-			hidden.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done");
+			hidden.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done_Hidden");
 			hidden.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
 			hidden.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
 			hidden.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("false");
