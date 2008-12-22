@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
-using MvcContrib.FluentHtml.Tests.Fakes;
 using HtmlAttribute=MvcContrib.FluentHtml.Html.HtmlAttribute;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
-	[TestFixture]
+    [TestFixture]
 	public class SelectTests
 	{
 		[Test]
@@ -166,8 +166,7 @@ namespace MvcContrib.FluentHtml.Tests
 		[Test, ExpectedException(typeof(ArgumentNullException))]
 		public void select_options_with_null_value_field_selector_should_throw()
 		{
-			new Select("x").Options(new List<FakeModel>(), x => x.Price, null);
-			
+			new Select("x").Options(new List<FakeModel>(), x => x.Price, null);	
 		}
 	}
 }

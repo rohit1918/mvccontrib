@@ -2,7 +2,7 @@ using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.ModelAttributes;
 
-namespace MvcContrib.FluentHtml.Tests.CustomBehaviors
+namespace MvcContrib.UnitTests.FluentHtml.CustomBehaviors
 {
 	public class CustomRequiredHtmlBehavior : IMemberBehavior
 	{

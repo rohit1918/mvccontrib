@@ -4,11 +4,11 @@ using System.Linq.Expressions;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
-using MvcContrib.FluentHtml.Tests.Fakes;
-using MvcContrib.FluentHtml.Tests.Helpers;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class DefaultMaxlengthHtmlBehaviorTests

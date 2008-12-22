@@ -1,9 +1,9 @@
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class FileUploadTests

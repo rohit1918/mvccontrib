@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Web;
+using MvcContrib.UnitTests.FluentHtml.CustomBehaviors;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.CustomBehaviors;
-using MvcContrib.FluentHtml.Tests.Helpers;
-using MvcContrib.FluentHtml.Tests.Fakes;
 using MvcContrib.ModelAttributes;
 
 namespace MvcContrib.UnitTests.FluentHtml
@@ -219,5 +220,14 @@ namespace MvcContrib.UnitTests.FluentHtml
 
 			label.ShouldHaveAttribute(HtmlAttribute.Class).WithValue("bar");
 		}
+
+        [Test]
+        public void text_box_value_html_attribute_encodes_value()
+        {
+            var value = "<div>Foo</div>";
+            new TextBox("x").Value(value).ToString()
+                .ShouldHaveHtmlNode("x")
+                .ShouldHaveAttribute(HtmlAttribute.Value).WithValue(HttpUtility.HtmlAttributeEncode(value));
+        }
 	}
 }

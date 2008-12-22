@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using MvcContrib.ModelAttributes;
 
-namespace MvcContrib.FluentHtml.Tests.Fakes
+namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
 	public class FakeModel
 	{

@@ -1,13 +1,13 @@
 using System;
 using System.Linq.Expressions;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
-using MvcContrib.FluentHtml.Tests.Fakes;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class HiddenTests

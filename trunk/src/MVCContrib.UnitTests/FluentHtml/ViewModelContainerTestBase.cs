@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
+using MvcContrib.FluentHtml;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Behaviors;
-using MvcContrib.FluentHtml.Tests.Helpers;
 using Rhino.Mocks;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	public class ViewModelContainerTestBase<T, TModel> where T : IViewModelContainer<TModel> where TModel : class
 	{

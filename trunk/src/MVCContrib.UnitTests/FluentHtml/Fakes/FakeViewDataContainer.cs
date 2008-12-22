@@ -1,6 +1,6 @@
 using System.Web.Mvc;
 
-namespace MvcContrib.FluentHtml.Tests.Fakes
+namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
 	public class FakeViewDataContainer : IViewDataContainer
 	{
