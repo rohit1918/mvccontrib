@@ -4,9 +4,10 @@ using HtmlAgilityPack;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
 using NUnit.Framework;
+using FluentHtmlAttribute = MvcContrib.FluentHtml.Html.HtmlAttribute;
 using HtmlAttribute=HtmlAgilityPack.HtmlAttribute;
 
-namespace MvcContrib.FluentHtml.Tests.Helpers
+namespace MvcContrib.UnitTests.FluentHtml.Helpers
 {
 	public static class TestExtensions
 	{
@@ -138,7 +139,7 @@ namespace MvcContrib.FluentHtml.Tests.Helpers
 
 		public static IElement ValueAttributeShouldEqual(this IElement e, string expectedValue)
 		{
-			return e.AttributeShouldEqual(Html.HtmlAttribute.Value, expectedValue);
+            return e.AttributeShouldEqual(FluentHtmlAttribute.Value, expectedValue);
 		}
 
 		public static IElement AttributeShouldEqual(this IElement e, string attributeKey, string expectedValue)
@@ -159,16 +160,16 @@ namespace MvcContrib.FluentHtml.Tests.Helpers
 		public static void ShouldBeUnSelectedOption(this HtmlNode node, object expectedValue, object expectedText)
 		{
 			node.ShouldBeNamed(HtmlTag.Option);
-			node.ShouldHaveAttribute(Html.HtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
-			node.ShouldNotHaveAttribute(Html.HtmlAttribute.Selected);
+            node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
+            node.ShouldNotHaveAttribute(FluentHtmlAttribute.Selected);
 			node.ShouldHaveInnerTextEqual(ToSafeString(expectedText));
 		}
 
 		public static void ShouldBeSelectedOption(this HtmlNode node, object expectedValue, object expectedText)
 		{
 			node.ShouldBeNamed(HtmlTag.Option);
-			node.ShouldHaveAttribute(Html.HtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
-			node.ShouldHaveAttribute(Html.HtmlAttribute.Selected).WithValue(Html.HtmlAttribute.Selected);
+            node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
+            node.ShouldHaveAttribute(FluentHtmlAttribute.Selected).WithValue(FluentHtmlAttribute.Selected);
 			node.ShouldHaveInnerTextEqual(ToSafeString(expectedText));
 		}
 

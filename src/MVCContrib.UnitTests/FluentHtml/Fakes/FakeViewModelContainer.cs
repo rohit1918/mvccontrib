@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MvcContrib.FluentHtml;
 using MvcContrib.FluentHtml.Behaviors;
 
-namespace MvcContrib.FluentHtml.Tests.Fakes
+namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
 	public class FakeViewModelContainer : IViewModelContainer<FakeModel>
 	{

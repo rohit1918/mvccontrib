@@ -1,9 +1,9 @@
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class SubmitButtonTests

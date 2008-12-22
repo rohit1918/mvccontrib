@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Web;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
-using MvcContrib.FluentHtml.Tests.Fakes;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class TextAreaTests
@@ -74,5 +75,14 @@ namespace MvcContrib.FluentHtml.Tests
 				.ShouldHaveHtmlNode("x")
 				.ShouldHaveAttribute(HtmlAttribute.Cols).WithValue("44");
 		}
+
+        [Test]
+        public void textarea_value_html_encodes_inner_text()
+        {
+            var value = "<div>Foo</div>";
+            new TextArea("x").Value(value).ToString()
+                .ShouldHaveHtmlNode("x")
+                .ShouldHaveInnerTextEqual(HttpUtility.HtmlEncode(value));
+        }
 	}
 }

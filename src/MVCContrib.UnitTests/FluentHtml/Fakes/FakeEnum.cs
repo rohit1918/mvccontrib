@@ -1,4 +1,4 @@
-namespace MvcContrib.FluentHtml.Tests.Fakes
+namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
 	public enum FakeEnum
 	{

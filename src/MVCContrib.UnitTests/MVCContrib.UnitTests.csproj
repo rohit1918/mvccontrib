@@ -208,6 +208,7 @@
     <Compile Include="FluentHtml\ModelViewPageTests.cs" />
     <Compile Include="FluentHtml\ModelViewUserControlPageTests.cs" />
     <Compile Include="FluentHtml\MultiSelectTests.cs" />
+    <Compile Include="FluentHtml\OptionTests.cs" />
     <Compile Include="FluentHtml\PasswordTests.cs" />
     <Compile Include="FluentHtml\SelectTests.cs" />
     <Compile Include="FluentHtml\SubmitButtonTests.cs" />

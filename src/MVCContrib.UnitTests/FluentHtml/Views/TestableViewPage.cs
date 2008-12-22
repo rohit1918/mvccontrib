@@ -1,6 +1,7 @@
 using System.Web.Mvc;
+using MvcContrib.FluentHtml;
 
-namespace MvcContrib.FluentHtml.Tests.Views
+namespace MvcContrib.UnitTests.FluentHtml.Views
 {
 	public class TestableViewPage<T> : ModelViewPage<T> where T : class
 	{

@@ -1,7 +1,8 @@
+using MvcContrib.FluentHtml;
+using MvcContrib.UnitTests.FluentHtml.Fakes;
 using NUnit.Framework;
-using MvcContrib.FluentHtml.Tests.Fakes;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class ModelViewPageTests : ViewModelContainerTestBase<ModelViewPage<FakeModel>, FakeModel>

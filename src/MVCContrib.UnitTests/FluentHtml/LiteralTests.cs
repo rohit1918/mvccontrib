@@ -1,9 +1,10 @@
+using System.Web;
+using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.FluentHtml.Tests.Helpers;
 
-namespace MvcContrib.FluentHtml.Tests
+namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
 	public class LiteralTests
@@ -31,5 +32,14 @@ namespace MvcContrib.FluentHtml.Tests
 			html.ShouldRenderHtmlDocument().ChildNodes[0]
 				.ShouldHaveInnerTextEqual("$1,234.50");
 		}
+
+        [Test]
+        public void textarea_value_html_encodes_value()
+        {
+            var value = "<div>Foo</div>";
+            var html = new Literal().Value(value).ToString();
+            html.ShouldRenderHtmlDocument().ChildNodes[0]
+                .ShouldHaveInnerTextEqual(HttpUtility.HtmlEncode(value));
+        }
 	}
 }
