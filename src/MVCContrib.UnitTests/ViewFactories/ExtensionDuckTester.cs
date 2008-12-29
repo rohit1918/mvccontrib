@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using NVelocity.Util.Introspection;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ViewFactories
@@ -67,8 +68,25 @@ namespace MvcContrib.UnitTests.ViewFactories
 
             Assert.That(result, Is.EqualTo("Bar"));
                         
-        }       
+        }
+
+		[Test]
+		public void CanFindMethodWithAmbiguousOverloads() 
+		{
+			var viewContext = _mocks.DynamicViewContext("someView");
+			var viewDataContainer = _mocks.DynamicMock<IViewDataContainer>();
+
+			HtmlExtensionDuck.AddExtension(typeof(HtmlExtensionForTesting));
+			var htmlExtensionDuck = new HtmlExtensionDuck(viewContext, viewDataContainer);
+
+			object result = htmlExtensionDuck.Invoke("Bar", "x");
+
+			Assert.That(result, Is.EqualTo("Bar"));
+
+		}   
 	}
+
+	
 
     public static class HtmlExtensionForTesting
     {
@@ -76,5 +94,15 @@ namespace MvcContrib.UnitTests.ViewFactories
         {
             return "Bar";
         }
+
+		public static string Bar(this HtmlHelper htmlHelper, string arg)
+		{
+			return "Bar";
+		}
+
+		public static string Bar(this HtmlHelper htmlHelper, object arg) 
+		{
+			return "Bar2";
+		}
     }
 }

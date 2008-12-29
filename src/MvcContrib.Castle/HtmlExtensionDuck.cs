@@ -9,6 +9,7 @@ namespace MvcContrib.Castle
 	{
 	    private static readonly List<Type> _extensionTypes = new List<Type>
 	        {
+					typeof(NVelocityHtmlHelper),
 	        		typeof(ButtonsAndLinkExtensions),                    
 					typeof(FormExtensions), 
                     typeof(ImageExtensions), 
@@ -24,7 +25,7 @@ namespace MvcContrib.Castle
 			};
 
 	    public HtmlExtensionDuck(ViewContext viewContext, IViewDataContainer container)
-			: this(new NVelocityHtmlHelper(viewContext, container))
+			: this(new HtmlHelper(viewContext, container))
 		{
 		}
 
