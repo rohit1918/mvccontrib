@@ -12,7 +12,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 	public class NVelocityHtmlHelperTester
 	{
 		private MockRepository _mocks;
-		private NVelocityHtmlHelper _htmlHelper;
+		private HtmlHelper _htmlHelper;
 
 		[SetUp]
 		public void SetUp()
@@ -34,22 +34,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			var viewContext =
 				new ViewContext(controllerContext, view, new ViewDataDictionary(), new TempDataDictionary());
 
-			_htmlHelper = new NVelocityHtmlHelper(viewContext, new ViewPage());
-		}
-
-		[Test,Ignore]
-		public void Submit_Defaults_To_No_HtmlName()
-		{
-//			Assert.AreEqual(_htmlHelper.SubmitButton(string.Empty, "test"), _htmlHelper.Submit("test"));
-		}
-
-		[Test,Ignore]
-		public void Submit_Uses_Id_For_HtmlName()
-		{
-			var htmlAttributes = new Hashtable();
-			htmlAttributes["id"] = "id";
-
-			//Assert.AreEqual(_htmlHelper.SubmitButton("id", "test"), _htmlHelper.Submit("test", htmlAttributes));
+			_htmlHelper = new HtmlHelper(viewContext, new ViewPage());
 		}
 
 		[Test]
@@ -68,20 +53,6 @@ namespace MvcContrib.UnitTests.ViewFactories
 			htmlAttributes["attr"] = "value";
 
 			Assert.AreEqual(_htmlHelper.TextBox("htmlName", "value", new { attr = "value" }), _htmlHelper.TextBox("htmlName", "value", htmlAttributes));
-		}
-
-		[Test,Ignore]
-		public void Mailto_Uses_Subject_Body_Cc_And_Bcc_Attributes()
-		{
-			var htmlAttributes = new Hashtable();
-			htmlAttributes["subject"] = "subject";
-			htmlAttributes["body"] = "body";
-			htmlAttributes["cc"] = "cc";
-
-            //string expected = _htmlHelper.Mailto("emailAddress", "linkText", "subject", "body", "cc", string.Empty, null);
-            //string actual = _htmlHelper.Mailto("emailAddress", "linkText", htmlAttributes);
-
-            //Assert.AreEqual(expected, actual);
 		}
 	}
 }
