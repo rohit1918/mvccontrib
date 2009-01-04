@@ -24,19 +24,38 @@ namespace MvcContrib.Castle
 		public string Exclude { get; set; }
 
 		/// <summary>
-        /// Creates a new CastleBind attribute with the specified parameter prefix. 
+        /// Creates a new CastleBind attribute with the specified parameter prefix.
+        /// The model will be bound from Request.Form.
         /// </summary>
-        /// <param name="prefix">Prefix to use when extracting from the Request.Form.</param>
-        public CastleBindAttribute(string prefix) : base(prefix)
+        /// <param name="prefix">Prefix to use when extracting from the request store.</param>
+        public CastleBindAttribute(string prefix) : this(prefix, RequestStore.Form)
         {
         }
 
         /// <summary>
         /// Creates a new CastleBind attribute. The name of the parameter will be used as the request prefix.
+        /// The model will be bound from Request.Form
         /// </summary>
-		public CastleBindAttribute() : base(null)
+		public CastleBindAttribute() : this(null, RequestStore.Form)
         {
         }
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="requestStore">The requst store that should be used to bind the model</param>
+		/// <param name="prefix">Prefix to use when extract </param>
+		public CastleBindAttribute(string prefix, RequestStore requestStore) : base(prefix, requestStore)
+		{
+		}
+
+		/// <summary>
+		/// Creates a new instance of the CastleBind attribute. The name of the parameter will be used as the request prefix.
+		/// </summary>
+		/// <param name="requestStore">The requst store that should be used to bind the model</param>
+		public CastleBindAttribute(RequestStore requestStore) : this(null, requestStore)
+		{
+		}
 
 		/// <summary>
 		/// Binds the model object using a castle IDataBinder
@@ -47,7 +66,7 @@ namespace MvcContrib.Castle
 		{
 			IDataBinder binder = LocateBinder(bindingContext);
 			string modelName = Prefix ?? bindingContext.ModelName;
-			object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(bindingContext.HttpContext.Request.Form));
+			object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(GetStore(bindingContext)));
 			return new ModelBinderResult(instance);
 		}
 

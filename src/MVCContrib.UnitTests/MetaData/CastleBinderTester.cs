@@ -2,6 +2,7 @@ using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Components.Binder;
+using MvcContrib.Attributes;
 using MvcContrib.Castle;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -86,6 +87,28 @@ namespace MvcContrib.UnitTests.MetaData
 
 			Assert.That(controller.Binder, Is.SameAs(castleBinder));
 			Assert.That(castleBinder.ErrorList["Id"], Is.Not.Null);
+		}
+
+		[Test]
+		public void Should_only_bind_from_Form_by_default()
+		{
+			_context.HttpContext.Request.QueryString["cust.Id"] = "5";
+
+			var binder = new CastleBindAttribute();
+			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
+
+			Assert.That(customer.Id, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Should_be_configurable_to_bind_from_other_sources()
+		{
+			_context.HttpContext.Request.QueryString["cust.Id"] = "5";
+
+			var binder = new CastleBindAttribute(RequestStore.QueryString);
+			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
+
+			Assert.That(customer.Id, Is.EqualTo(5));
 		}
 
 		private ModelBindingContext CreateContext(string name, Type type)
