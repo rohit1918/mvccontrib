@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -62,7 +63,19 @@ namespace MvcContrib.TestHelper
             for (int i = 0; i < methodCall.Arguments.Count; i++)
             {
                 string name = methodCall.Method.GetParameters()[i].Name;
-                object value = ((ConstantExpression) methodCall.Arguments[i]).Value;
+                object value = null;
+
+                switch ( methodCall.Arguments[ i ].NodeType )
+                {
+                    case ExpressionType.Constant:
+                        value = ( (ConstantExpression)methodCall.Arguments[ i ] ).Value;
+                        break;
+
+                    case ExpressionType.MemberAccess:
+                        value = Expression.Lambda(methodCall.Arguments[ i ]).Compile().DynamicInvoke();
+                        break;
+                }
+                
 
                 Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value.ToString()));
             }
