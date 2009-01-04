@@ -9,7 +9,7 @@
 		<b>Form.ValidatorInitializationScripts</b> at the end of your body element, and when creating your form call <b>Form.FormValidation</b> as the htmlAttributes parameter. 
 		You can also specify the different validation groups when creating your form validation and validators. You'll notice this was done below to separate the examples.</p>
 		
-	<% using (Html.Form("Home", "ValidationHelper", FormMethod.Post, Html.Validation().FormValidation("required"))) { %>
+	<% using (Html.BeginForm("ValidationHelper", "Home", FormMethod.Post, Html.Validation().FormValidation("required"))) { %>
 		<p>You can use a <b>Required Validator:</b> (click the Validate button)</p>
 		Name: <%= Html.TextBox("nameForRequired") %>
 		<%= Html.Validation().RequiredValidator("nameForRequiredValidator", "nameForRequired", "You must supply a name.", "required") %>
@@ -17,7 +17,7 @@
 		<%= Html.SubmitButton("submitRequired", "Validate") %>
 	<% } %>
 	
-	<% using (Html.Form("Home", "ValidationHelper", FormMethod.Post, Html.Validation().FormValidation("regex"))) { %>
+	<% using (Html.BeginForm("ValidationHelper", "Home", FormMethod.Post, Html.Validation().FormValidation("regex"))) { %>
 		<p>You can use a <b>Regular Expression Validator:</b> (type any non alpha character)</p>
 		Name: <%= Html.TextBox("nameForRegex") %>
 		<%= Html.Validation().RegularExpressionValidator("nameForRegexValidator", "nameForRegex", "[a-zA-Z]*", "The name can only contain alpha characters.", "regex") %>
@@ -25,7 +25,7 @@
 		<%= Html.SubmitButton("submitRegex", "Validate") %>
 	<% } %>
 	
-	<% using (Html.Form("Home", "ValidationHelper", FormMethod.Post, Html.Validation().FormValidation("range"))) { %>
+	<% using (Html.BeginForm("ValidationHelper", "Home", FormMethod.Post, Html.Validation().FormValidation("range"))) { %>
 		<p>You can use a <b>Range Validator:</b> (type a number less than 18 or greater than 35)</p>
 		Age: <%= Html.TextBox("ageForRange") %>
 		<%= Html.Validation().RangeValidator("ageForRangeValidator", "ageForRange", "18", "35", ValidationDataType.Integer, "You do not meet the target age range of 18-35.", "range") %>
@@ -33,7 +33,7 @@
 		<%= Html.SubmitButton("submitRange", "Validate") %>
 	<% } %>
 	
-	<% using (Html.Form("Home", "ValidationHelper", FormMethod.Post, Html.Validation().FormValidation("compare"))) { %>
+	<% using (Html.BeginForm("ValidationHelper", "Home", FormMethod.Post, Html.Validation().FormValidation("compare"))) { %>
 		<p>You can use a <b>Compare Validator:</b> (type the same text in each)</p>
 		First: <%= Html.TextBox("firstCompare") %>
 		Second: <%= Html.TextBox("secondCompare") %>
@@ -42,7 +42,7 @@
 		<%= Html.SubmitButton("submitCompare", "Validate") %>
 	<% } %>
 	
-	<% using (Html.Form("Home", "ValidationHelper", FormMethod.Post, Html.Validation().FormValidation("custom"))) { %>
+	<% using (Html.BeginForm("ValidationHelper", "Home", FormMethod.Post, Html.Validation().FormValidation("custom"))) { %>
 		<p>You can use a <b>Custom Validator:</b> (type anything but 'mvc')</p>
 		<script type="text/javascript">
 			function ValidateTextEquals(source, args) { 
