@@ -28,7 +28,9 @@ namespace MvcContrib.Samples.NinjectControllerFactory
         public void InitializeNinject()
         {
             NinjectKernel.Initialize(new ControllerModule(), new DomainModule());
+#pragma warning disable 618,612
             ControllerBuilder.Current.SetControllerFactory(typeof (Ninject.NinjectControllerFactory));
+#pragma warning restore 618,612
         }
 
         protected void Application_Start(object sender, EventArgs e)
