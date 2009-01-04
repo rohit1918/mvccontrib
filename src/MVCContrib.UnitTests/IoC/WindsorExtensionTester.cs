@@ -34,14 +34,14 @@ namespace MvcContrib.UnitTests.IoC
 			[Test]
 			public void Then_the_type_should_be_registered()
 			{
-				Assert.That(_container.Kernel.HasComponent("windsorsimplecontroller"));
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
+				Assert.That(_container.Kernel.HasComponent("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller"));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
 			}
 
 			[Test]
 			public void Then_the_lifestyle_should_be_transient()
 			{
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
 			}
 		}
 
@@ -57,14 +57,14 @@ namespace MvcContrib.UnitTests.IoC
 			[Test]
 			public void Then_the_type_should_be_registered()
 			{
-				Assert.That(_container.Kernel.HasComponent("windsorsimplecontroller"));
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
+				Assert.That(_container.Kernel.HasComponent("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller"));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
 			}
 
 			[Test]
 			public void Then_the_lifestyle_should_be_transient()
 			{
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
 			}
 		}
 
@@ -80,19 +80,19 @@ namespace MvcContrib.UnitTests.IoC
 			[Test]
 			public void Then_all_controllers_in_the_assembly_should_be_registered()
 			{
-				Assert.That(_container.Kernel.HasComponent("ioctestcontroller"));
-				Assert.That(_container.Kernel.GetHandler("ioctestcontroller").ComponentModel.Implementation, Is.EqualTo(typeof(ControllerFactories.IoCControllerFactoryTester.IocTestController)));
+				Assert.That(_container.Kernel.HasComponent("mvccontrib.unittests.controllerfactories.ioccontrollerfactorytester.ioctestcontroller"));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.controllerfactories.ioccontrollerfactorytester.ioctestcontroller").ComponentModel.Implementation, Is.EqualTo(typeof(ControllerFactories.IoCControllerFactoryTester.IocTestController)));
 
-				Assert.That(_container.Kernel.HasComponent("windsorsimplecontroller"));
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
+				Assert.That(_container.Kernel.HasComponent("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller"));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.Implementation, Is.EqualTo(typeof(WindsorControllerFactoryTester.WindsorSimpleController)));
 				//etc
 			}
 
 			[Test]
 			public void Then_lifestyles_should_be_set_to_transient()
 			{
-				Assert.That(_container.Kernel.GetHandler("windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
-				Assert.That(_container.Kernel.GetHandler("ioctestcontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.castle.windsorcontrollerfactorytester+windsorsimplecontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
+				Assert.That(_container.Kernel.GetHandler("mvccontrib.unittests.controllerfactories.ioccontrollerfactorytester.ioctestcontroller").ComponentModel.LifestyleType, Is.EqualTo(LifestyleType.Transient));
 			}
 		}
 	}
