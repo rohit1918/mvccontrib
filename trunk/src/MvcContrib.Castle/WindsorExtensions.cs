@@ -23,7 +23,7 @@ namespace MvcContrib.Castle
 			{
 				if(ControllerDescriptor.IsController(type))
 				{
-					container.AddComponentLifeStyle(type.Name.ToLower(), type, LifestyleType.Transient);
+					container.AddComponentLifeStyle(type.FullName.ToLower(), type, LifestyleType.Transient);
 				}
 			}
 
