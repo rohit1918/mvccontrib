@@ -8,7 +8,7 @@ namespace MvcContrib.FluentHtml.Elements
 	public interface IMemberElement : IElement
 	{
 		/// <summary>
-		/// Expression indicating the view model member assocaited with the element.</param>
+		/// Expression indicating the view model member associated with the element.</param>
 		/// </summary>
 		MemberExpression ForMember { get; }
 	}

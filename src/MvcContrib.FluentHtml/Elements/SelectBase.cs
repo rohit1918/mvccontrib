@@ -95,7 +95,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// Set the options for the element.
 		/// </summary>
 		/// <param name="values">List of values used to generate the options.</param>
-		/// <param name="valueFieldSelector">An expression representing property to be used as the value of the options.</param>
+		/// <param name="valueFieldSelector">An expression representing the property to be used as the value of the options.</param>
 		/// <param name="textFieldSelector">An expression representing the property to be used as the text of the options.</param>
 		public virtual T Options<TDataSource>(IEnumerable<TDataSource> values, Func<TDataSource, object> valueFieldSelector, Func<TDataSource, object> textFieldSelector)
 		{
@@ -103,7 +103,6 @@ namespace MvcContrib.FluentHtml.Elements
 			if(textFieldSelector == null) throw new ArgumentNullException("textFieldSelector");
 
 			_options = values;
-			//TODO: Is there a better way to do this without making Select have a type parameter of TDataSource?
 			_textFieldSelector = x => textFieldSelector((TDataSource)x);
 			_valueFieldSelector = x => valueFieldSelector((TDataSource)x);
 
