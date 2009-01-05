@@ -5,6 +5,10 @@ using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
 {
+	/// <summary>
+	/// Base class for text input elements.
+	/// </summary>
+	/// <typeparam name="T">The derived type</typeparam>
 	public abstract class TextInput<T> : Input<T>, ISupportsMaxLength where T : TextInput<T>
 	{
 		protected string _format;
@@ -14,15 +18,24 @@ namespace MvcContrib.FluentHtml.Elements
 		protected TextInput(string type, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
 			: base(type, name, forMember, behaviors) { }
 
+		/// <summary>
+		/// Set the 'maxlength' attribute. 
+		/// </summary>
+		/// <param name="value">Value for the maxlength attribute.</param>
 		public virtual T MaxLength(int value)
 		{
 			Attr(HtmlAttribute.MaxLength, value);
 			return (T)this;
 		}
 
-		public T Format(string format)
+		/// <summary>
+		/// Specify a format string to be applied to the value.  The format string can be either a
+		/// specification (e.g., '$#,##0.00') or a placeholder (e.g., '{0:$#,##0.00}').
+		/// </summary>
+		/// <param name="value">A format string.</param>
+		public T Format(string value)
 		{
-			_format = format;
+			_format = value;
 			return (T)this;
 		}
 

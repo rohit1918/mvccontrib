@@ -6,6 +6,10 @@ using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
 {
+	/// <summary>
+	/// Base class for form elements.
+	/// </summary>
+	/// <typeparam name="T">Derived type</typeparam>
 	public abstract class FormElement<T> : DisableableElement<T>, IMemberElement where T : FormElement<T>, IElement
 	{
 		protected MemberExpression forMember;
@@ -29,6 +33,9 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.MergeAttribute(HtmlAttribute.Name, name, true);
 		}
 
+		/// <summary>
+		/// Expression indicating the view model member assocaited with the element.</param>
+		/// </summary>
 		public virtual MemberExpression ForMember
 		{
 			get { return forMember; }
@@ -40,6 +47,9 @@ namespace MvcContrib.FluentHtml.Elements
 			return base.ToString();
 		}
 
+		/// <summary>
+		/// Determines how the HTML element is closed.
+		/// </summary>
 		public override TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.SelfClosing; }
