@@ -17,7 +17,7 @@ namespace MvcContrib.FluentHtml.Elements
 		public Hidden(string name) : base(HtmlInputType.Hidden, name) { }
 
 		/// <summary>
-		/// Generate an HTML input element of type 'hidden.'
+		/// Generates an HTML input element of type 'hidden.'
 		/// </summary>
 		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
 		/// <param name="forMember">Expression indicating the model member assocaited with the element.</param>

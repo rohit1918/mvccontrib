@@ -112,7 +112,7 @@ namespace MvcContrib.FluentHtml.Elements
 		}
 
 		/// <summary>
-		/// Gernerate a label before the element.
+		/// Generate a label before the element.
 		/// </summary>
 		/// <param name="value">The inner text of the label.</param>
 		/// <param name="class">The value of the 'class' attribute for the label.</param>
@@ -133,7 +133,7 @@ namespace MvcContrib.FluentHtml.Elements
 		}
 
 		/// <summary>
-		/// Gernerate a label after the element.
+		/// Generate a label after the element.
 		/// </summary>
 		/// <param name="value">The inner text of the label.</param>
 		/// <param name="class">The value of the 'class' attribute for the label.</param>

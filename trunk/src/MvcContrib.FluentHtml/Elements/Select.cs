@@ -5,7 +5,7 @@ using MvcContrib.FluentHtml.Behaviors;
 namespace MvcContrib.FluentHtml.Elements
 {
 	/// <summary>
-	/// Gernerate and HTML select element.
+	/// Generate and HTML select element.
 	/// </summary>
 	public class Select : SelectBase<Select>
 	{

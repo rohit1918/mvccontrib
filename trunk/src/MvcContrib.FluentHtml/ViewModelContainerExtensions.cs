@@ -7,7 +7,7 @@ using MvcContrib.FluentHtml.Expressions;
 namespace MvcContrib.FluentHtml
 {
 	/// <summary>
-	/// Extensions of IViewModelContainer<T>
+	/// Extensions of IViewModelContainer&lt;T&gt;
 	/// </summary>
 	public static class ViewModelContainerExtensions
 	{
