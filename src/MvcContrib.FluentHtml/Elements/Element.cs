@@ -100,18 +100,29 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.MergeAttribute(name, valueString, true);
 		}
 
+        /// <summary>
+        /// Get the value of the specified attribute.
+        /// </summary>
+        /// <param name="name">The name of the attribute.</param>
+        public virtual string GetAttr(string name)
+        {
+            string result;
+            builder.Attributes.TryGetValue(name, out result);
+            return result;
+        }
+
 		/// <summary>
 		/// Set the value of a specified attribute.
 		/// </summary>
 		/// <param name="name">The name of the attribute.</param>
 		/// <param name="value">The value of the attribute.</param>
-		public virtual T Attr(string name, object value)
+        public virtual T Attr(string name, object value)
 		{
-			SetAttr(name, value);
-			return (T)this;
+		    SetAttr(name, value);
+		    return (T)this;
 		}
 
-		/// <summary>
+	    /// <summary>
 		/// Generate a label before the element.
 		/// </summary>
 		/// <param name="value">The inner text of the label.</param>

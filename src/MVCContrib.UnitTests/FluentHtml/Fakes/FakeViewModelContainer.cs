@@ -7,7 +7,7 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
 	public class FakeViewModelContainer : IViewModelContainer<FakeModel>
 	{
-		private readonly ViewDataDictionary viewData = new ViewDataDictionary();
+		private ViewDataDictionary viewData = new ViewDataDictionary();
 
 		public FakeModel ViewModel
 		{
@@ -18,6 +18,12 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 		public IEnumerable<IMemberBehavior> MemberBehaviors
 		{
 			get { return new List<IMemberBehavior>(); }
+		}
+
+		public ViewDataDictionary ViewData
+		{
+			get { return viewData; }
+			set { viewData = value; }
 		}
 	}
 }

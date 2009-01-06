@@ -6,7 +6,7 @@ namespace MvcContrib.FluentHtml
 {
 	public class ModelViewUserControl<T> : ViewUserControl<T>, IViewModelContainer<T> where T : class
 	{
-		private readonly IEnumerable<IMemberBehavior> memberBehaviors = new List<IMemberBehavior>();
+		protected readonly IList<IMemberBehavior> memberBehaviors = new List<IMemberBehavior>();
 
 		public ModelViewUserControl() { }
 

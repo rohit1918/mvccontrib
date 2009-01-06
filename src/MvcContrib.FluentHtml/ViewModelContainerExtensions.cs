@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 
@@ -121,6 +122,45 @@ namespace MvcContrib.FluentHtml
 		public static Literal FormLiteral<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
 			return new FormLiteral(expression.GetNameFor()).Value(expression.GetValueFrom(view.ViewModel));
+		}
+
+		/// <summary>
+		/// If ModelState contains an error for the specified view model member, generate an HTML span element with the 
+		/// ModelState error message is the specified message is null.   If no class is specified the class attribute 
+		/// of the span element will be 'field-validation-error'.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
+		public static Literal ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return ValidationMessage(view, expression, null);
+		}
+
+		/// <summary>
+		/// If ModelState contains an error for the specified view model member, generate an HTML span element with the 
+		/// specified message as inner text, or with the ModelState error message is the specified message is null.  If no
+		/// class is specified the class attribute of the span element will be 'field-validation-error'.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
+		/// <param name="message">The error message.</param>
+		public static Literal ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression, string message) where T : class
+		{
+			string errorMessage = null;
+			var name = expression.GetNameFor();
+			if (view.ViewData.ModelState.ContainsKey(name))
+			{
+				var modelState = view.ViewData.ModelState[name];
+				if(modelState != null && modelState.Errors != null && modelState.Errors.Count > 0)
+				{
+					errorMessage = modelState.Errors[0] == null
+						? null
+						: message ?? modelState.Errors[0].ErrorMessage;
+				}
+			}
+			return new ValidationMessage().Value(errorMessage);
 		}
 	}
 }
