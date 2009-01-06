@@ -205,6 +205,7 @@
     <Compile Include="FluentHtml\LiteralTests.cs" />
     <Compile Include="FluentHtml\ModelExpressionHelperTests.cs" />
     <Compile Include="FluentHtml\ModelMasterViewPageTests.cs" />
+    <Compile Include="FluentHtml\ValidationMemberBehaviorTests.cs" />
     <Compile Include="FluentHtml\ModelViewPageTests.cs" />
     <Compile Include="FluentHtml\ModelViewUserControlPageTests.cs" />
     <Compile Include="FluentHtml\MultiSelectTests.cs" />

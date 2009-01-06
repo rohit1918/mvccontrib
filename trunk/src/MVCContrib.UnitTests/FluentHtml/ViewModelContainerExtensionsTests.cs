@@ -110,5 +110,38 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var element = target.TextArea(x => fake.Title);
 			element.InnerTextShouldEqual(fake.Title);
 		}
+
+		[Test]
+		public void can_get_validation_message_for_element_with_error()
+		{
+			var message = "You did something wrong";
+			target.ViewData.ModelState.AddModelError("Title", "Bad stuff");
+			var element = target.ValidationMessage(x => x.Title, message);
+			element.InnerTextShouldEqual(message);
+			element.AttributeShouldEqual("class", "field-validation-error");
+		}
+
+		[Test]
+		public void validation_message_for_element_with_not_error_return_null()
+		{
+			target.ValidationMessage(x => x.Title, "foo").ToString().ShouldBeNull();
+		}
+
+		[Test]
+		public void can_get_validation_message_for_element_with_error_with_custom_class()
+		{
+			var message = "You did something wrong";
+			target.ViewData.ModelState.AddModelError("Title", "Bad stuff");
+			var element = target.ValidationMessage(x => x.Title, message).Class("error");
+			element.AttributeShouldEqual("class", "error");
+		}
+
+		[Test]
+		public void validation_message_for_element_with_no_message_specified_uses_model_state_error_message()
+		{
+			target.ViewData.ModelState.AddModelError("Title", "Bad stuff");
+			var element = target.ValidationMessage(x => x.Title);
+			element.InnerTextShouldEqual("Bad stuff");
+		}
 	}
 }

@@ -6,7 +6,7 @@ namespace MvcContrib.FluentHtml
 {
 	public class ModelViewPage<T> : ViewPage<T>, IViewModelContainer<T> where T : class
 	{
-		private readonly IEnumerable<IMemberBehavior> memberBehaviors = new List<IMemberBehavior>();
+		protected readonly IList<IMemberBehavior> memberBehaviors = new List<IMemberBehavior>();
 
 		public ModelViewPage() {}
 
