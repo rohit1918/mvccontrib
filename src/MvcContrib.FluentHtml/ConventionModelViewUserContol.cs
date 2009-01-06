@@ -7,7 +7,7 @@ namespace MvcContrib.FluentHtml
 		public ConventionModelViewUserContol() 
 			: base(new DefaultMaxLengthMemberBehavior(), new DefaultRequiredMemberBehavior())
 		{
-            memberBehaviors.Add(new ValidationMemberBehavior(ViewData.ModelState));
+            memberBehaviors.Add(new ValidationMemberBehavior(() => ViewData.ModelState));
 		}
 	}
 }

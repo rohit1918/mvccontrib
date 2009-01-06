@@ -19,7 +19,7 @@ namespace MvcContrib.UnitTests.FluentHtml
         {
             var stateDictionary = new ModelStateDictionary();
             Expression<Func<FakeModel, object>> expression = x => x.Title;
-            var target = new ValidationMemberBehavior(stateDictionary);
+            var target = new ValidationMemberBehavior(()=>stateDictionary);
             var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), 
                                       new List<IMemberBehavior> { target });
             var element = textbox.ToString().ShouldHaveHtmlNode("Title");
@@ -31,7 +31,7 @@ namespace MvcContrib.UnitTests.FluentHtml
         {
             var stateDictionary = new ModelStateDictionary();
             stateDictionary.AddModelError("Title", "Something bad happened");
-            var target = new ValidationMemberBehavior(stateDictionary);
+            var target = new ValidationMemberBehavior(()=>stateDictionary);
             Expression<Func<FakeModel, object>> expression = x => x.Title;
             var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(),
                                       new List<IMemberBehavior> { target });
@@ -44,7 +44,7 @@ namespace MvcContrib.UnitTests.FluentHtml
         {
             var stateDictionary = new ModelStateDictionary();
             stateDictionary.AddModelError("Title", "Something bad happened");
-            var target = new ValidationMemberBehavior(stateDictionary, "my-error-class");
+            var target = new ValidationMemberBehavior(()=>stateDictionary, "my-error-class");
             Expression<Func<FakeModel, object>> expression = x => x.Title;
             var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(),
                                       new List<IMemberBehavior> { target }).Class("another-class");
