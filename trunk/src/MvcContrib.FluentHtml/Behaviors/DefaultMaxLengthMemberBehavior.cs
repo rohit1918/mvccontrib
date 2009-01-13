@@ -1,4 +1,5 @@
 using MvcContrib.FluentHtml.Elements;
+using MvcContrib.FluentHtml.Html;
 using MvcContrib.ModelAttributes;
 
 namespace MvcContrib.FluentHtml.Behaviors
@@ -16,7 +17,7 @@ namespace MvcContrib.FluentHtml.Behaviors
 
 			if(element is ISupportsMaxLength)
 			{
-				element.SetAttr("maxlength", attribute.Length);
+				element.SetAttr(HtmlAttribute.MaxLength, attribute.Length);
 			}
 		}
 	}

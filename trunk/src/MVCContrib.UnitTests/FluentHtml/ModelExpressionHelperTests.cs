@@ -107,21 +107,37 @@ namespace MvcContrib.UnitTests.FluentHtml
 			name.ShouldEqual("FakeModelArray[999].FakeModelArray[888].Person.FirstName");
 		}
 
-	    [Test]
-        public void can_get_value_from_model()
-        {
-            Expression<Func<FakeModel, object>> expression = x => x.Customers[1].Balance;
-            var value = expression.GetValueFrom(model);
-            value.ShouldEqual(model.Customers[1].Balance);
-        }
+		[Test]
+		public void can_get_value_from_model()
+		{
+			Expression<Func<FakeModel, object>> expression = x => x.Customers[1].Balance;
+			var value = expression.GetValueFrom(model);
+			value.ShouldEqual(model.Customers[1].Balance);
+		}
 
-	    [Test]
-	    public void get_value_for_null_intermediate_property_returns_null()
-	    {
-	        model.Person = null;
-	        Expression<Func<FakeModel, object>> expression = x => x.Person.FirstName;
-	        var value = expression.GetValueFrom(model);
-	        value.ShouldBeNull();
-	    }
+		[Test]
+		public void get_value_for_null_intermediate_property_returns_null()
+		{
+			model.Person = null;
+			Expression<Func<FakeModel, object>> expression = x => x.Person.FirstName;
+			var value = expression.GetValueFrom(model);
+			value.ShouldBeNull();
+		}
+
+		[Test]
+		public void get_name_for_applies_prefix_from_view()
+		{
+			var view = new FakeViewModelContainer<FakeModel>("prefix");
+			Expression<Func<FakeModel, object>> expression = x => x.Person.FirstName;
+			expression.GetNameFor(view).ShouldEqual("prefix.Person.FirstName");
+		}
+
+		[Test]
+		public void get_name_for_applies_prefix_from_view_to_collection_model()
+		{
+			var view = new FakeViewModelContainer<IList<FakeModel>>("prefix");
+			Expression<Func<IList<FakeModel>, object>> expression = x => x[123].Person.FirstName;
+			expression.GetNameFor(view).ShouldEqual("prefix[123].Person.FirstName");
+		}
 	}
 }

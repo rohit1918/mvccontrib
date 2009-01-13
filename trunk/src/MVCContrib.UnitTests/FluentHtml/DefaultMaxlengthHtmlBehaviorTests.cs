@@ -13,12 +13,19 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class DefaultMaxlengthHtmlBehaviorTests
 	{
-		[Test]
+	    private IList<IMemberBehavior> behaviors;
+
+        [SetUp]
+        public void SetUp()
+        {
+            behaviors = new List<IMemberBehavior> {new DefaultMaxLengthMemberBehavior()};
+        }
+
+	    [Test]
 		public void member_with_maxlength_attribute_renders_with_maxlength_attribute()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Title;
-			var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), 
-				new List<IMemberBehavior> { new DefaultMaxLengthMemberBehavior() });
+			var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
 			var element = textbox.ToString().ShouldHaveHtmlNode("Title");
 			element.ShouldHaveAttribute("maxlength").ValueShouldContain("200");
 		}
@@ -27,8 +34,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void member_without_required_attribute_renders_without_required_class()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Done;
-			var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), 
-				new List<IMemberBehavior> { new DefaultMaxLengthMemberBehavior() });
+            var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
 			var element = textbox.ToString().ShouldHaveHtmlNode("Done");
 			element.ShouldNotHaveAttribute("maxlength");
 		}
@@ -37,9 +43,8 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void render_element_without_maxlength_method_renders_without_maxlength()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Done;
-			var textbox = new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), 
-				new List<IMemberBehavior> { new DefaultMaxLengthMemberBehavior() });
-			var element = textbox.ToString().ShouldHaveHtmlNode("Done");
+            var checkbox = new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
+            var element = checkbox.ToString().ShouldHaveHtmlNode("Done");
 			element.ShouldNotHaveAttribute("maxlength");
 		}
 	}

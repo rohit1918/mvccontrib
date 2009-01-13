@@ -13,19 +13,13 @@ namespace MvcContrib.FluentHtml.Elements
 	public abstract class FormElement<T> : DisableableElement<T>, IMemberElement where T : FormElement<T>, IElement
 	{
 		protected MemberExpression forMember;
+		private readonly IEnumerable<IMemberBehavior> behaviors;
 
 		protected FormElement(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
 			: this(tag, name)
 		{
 			this.forMember = forMember;
-			if (behaviors == null)
-			{
-				return;
-			}
-			foreach (var behavior in behaviors)
-			{
-				behavior.Execute(this);
-			}
+			this.behaviors = behaviors;
 		}
 
 		protected FormElement(string tag, string name) : base(tag)
@@ -44,8 +38,12 @@ namespace MvcContrib.FluentHtml.Elements
 		public override string ToString()
 		{
 			InferIdFromName();
+			ApplyBehaviors();
+			PreRender();
 			return base.ToString();
 		}
+
+		protected virtual void PreRender() { }
 
 		/// <summary>
 		/// Determines how the HTML element is closed.
@@ -53,6 +51,18 @@ namespace MvcContrib.FluentHtml.Elements
 		public override TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.SelfClosing; }
+		}
+
+		private void ApplyBehaviors()
+		{
+			if(behaviors == null)
+			{
+				return;
+			}
+			foreach(var behavior in behaviors)
+			{
+				behavior.Execute(this);
+			}
 		}
 
 		private void InferIdFromName()

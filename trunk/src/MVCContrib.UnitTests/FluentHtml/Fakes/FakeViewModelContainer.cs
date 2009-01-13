@@ -5,19 +5,33 @@ using MvcContrib.FluentHtml.Behaviors;
 
 namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
-	public class FakeViewModelContainer : IViewModelContainer<FakeModel>
+	public class FakeViewModelContainer<T> : IViewModelContainer<T> where T : class
 	{
 		private ViewDataDictionary viewData = new ViewDataDictionary();
+		private string htmlNamePrefix;
 
-		public FakeModel ViewModel
+		public FakeViewModelContainer() { }
+
+		public FakeViewModelContainer(string htmlNamePrefix)
 		{
-			get { return viewData.Model as FakeModel; }
+			this.htmlNamePrefix = htmlNamePrefix;
+		}
+
+		public T ViewModel
+		{
+			get { return viewData.Model as T; }
 			set { viewData.Model = value; }
 		}
 
 		public IEnumerable<IMemberBehavior> MemberBehaviors
 		{
 			get { return new List<IMemberBehavior>(); }
+		}
+
+		public string HtmlNamePrefix
+		{
+			get { return htmlNamePrefix; }
+			set { htmlNamePrefix = value; }
 		}
 
 		public ViewDataDictionary ViewData

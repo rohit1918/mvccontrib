@@ -10,15 +10,26 @@ namespace MvcContrib.FluentHtml.Expressions
 			return new ExpressionNameVisitor().Visit(expression.Body);
 		}
 
+		public static string GetNameFor<T>(this Expression<Func<T, object>> expression, IViewModelContainer<T> view) where T : class
+		{
+			var name = expression.GetNameFor();
+			return string.Format("{0}{1}{2}",
+				view.HtmlNamePrefix, 
+				(string.IsNullOrEmpty(view.HtmlNamePrefix) || string.IsNullOrEmpty(name) || name.StartsWith("[") 
+					? null 
+					: "."),
+				name);
+		}
+
 		public static object GetValueFrom<T>(this Expression<Func<T, object>> expression, T viewModel) where T : class
 		{
 			try
 			{
 				return viewModel == null
-							? null
-							: expression.Compile().Invoke(viewModel);
+					? null
+					: expression.Compile().Invoke(viewModel);
 			}
-			catch (NullReferenceException)
+			catch (Exception)
 			{
 				return null;
 			}

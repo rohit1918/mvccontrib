@@ -5,6 +5,7 @@ using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
 using MvcContrib.FluentHtml.Behaviors;
 using Rhino.Mocks;
+using System.Linq;
 
 namespace MvcContrib.UnitTests.FluentHtml
 {
@@ -24,7 +25,8 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var mockBehavior1 = MockRepository.GenerateMock<IMemberBehavior>();
 			var mockBehavior2 = MockRepository.GenerateMock<IMemberBehavior>();
 			target = (T)Activator.CreateInstance(typeof(T), mockBehavior1, mockBehavior2);
-			target.MemberBehaviors.ShouldCount(2);
+			target.MemberBehaviors.ShouldCount(3);
+			target.MemberBehaviors.Where(x => x is ValidationMemberBehavior);
 			Assert.Contains(mockBehavior1, (ICollection)target.MemberBehaviors);
 			Assert.Contains(mockBehavior2, (ICollection)target.MemberBehaviors);
 		}

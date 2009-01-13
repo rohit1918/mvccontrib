@@ -72,7 +72,7 @@ namespace MvcContrib.FluentHtml.Elements
 			return this;
 		}
 
-		public override string ToString()
+		protected override void PreRender()
 		{
 			if (!(rawValue is string) && rawValue is IEnumerable)
 			{
@@ -87,7 +87,6 @@ namespace MvcContrib.FluentHtml.Elements
 			{
 				builder.SetInnerText(FormatValue(rawValue));
 			}
-			return base.ToString();
 		}
 
 		protected virtual string FormatValue(object value)

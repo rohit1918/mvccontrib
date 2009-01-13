@@ -10,13 +10,13 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class ViewModelContainerExtensionsTests
 	{
-		private FakeViewModelContainer target;
+		private FakeViewModelContainer<FakeModel> target;
 		private FakeModel fake;
 
 		[SetUp]
 		public void SetUp()
 		{
-			target = new FakeViewModelContainer();
+			target = new FakeViewModelContainer<FakeModel>();
 			fake = new FakeModel
 			{
 				Title = "Test Title",
@@ -64,15 +64,33 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void can_get_form_literal_with_value()
 		{
-			var element = target.FormLiteral(x => fake.Title);
+			var element = target.FormLiteral(x => x.Title);
 			element.InnerTextShouldEqual(fake.Title);
 		}
 
 		[Test]
 		public void can_get_hidden_with_value()
 		{
-			var element = target.Hidden(x => fake.Title);
+			var element = target.Hidden(x => x.Title);
 			element.ValueAttributeShouldEqual(fake.Title);
+		}
+
+		[Test]
+		public void can_get_index_element()
+		{
+			target = new FakeViewModelContainer<FakeModel>("fake") { ViewModel = fake };
+			var element = target.Index(x => x, x => x.Id);
+			element.AttributeShouldEqual("name", "fake.Index");
+			element.AttributeShouldEqual("id", "fake_Index_" + fake.Id);
+		}
+
+		[Test]
+		public void can_get_index_element_with_value()
+		{
+			target = new FakeViewModelContainer<FakeModel>("fake") {ViewModel = fake};
+			var element = target.Index(x => x, x => x.Id);
+			element.AttributeShouldEqual("name", "fake.Index");
+			element.ValueAttributeShouldEqual(fake.Id.ToString());
 		}
 
 		[Test]

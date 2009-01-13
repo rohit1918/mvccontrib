@@ -52,7 +52,7 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			var html = base.ToString();
 
-			string hiddenId = "_Hidden";
+			var hiddenId = "_Hidden";
 
 			if(Builder.Attributes.ContainsKey("id"))
 			{

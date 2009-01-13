@@ -190,6 +190,10 @@
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
     <Compile Include="FluentHtml\CheckboxTests.cs" />
+    <Compile Include="FluentHtml\ConventionModelViewMasterPageTests.cs" />
+    <Compile Include="FluentHtml\ConventionModelViewPageTests.cs" />
+    <Compile Include="FluentHtml\ConventionModelViewUserControlTests.cs" />
+    <Compile Include="FluentHtml\ConventionViewModelContainerTestBase.cs" />
     <Compile Include="FluentHtml\CustomBehaviors\CustomRequiredHtmlBehavior.cs" />
     <Compile Include="FluentHtml\DefaultMaxlengthHtmlBehaviorTests.cs" />
     <Compile Include="FluentHtml\DefaultRequredHtmlBehaviorTests.cs" />

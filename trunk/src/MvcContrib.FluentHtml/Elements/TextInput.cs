@@ -39,10 +39,10 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
-		public override string ToString()
+		protected override void PreRender()
 		{
 			FormatValue();
-			return base.ToString();
+			base.PreRender();
 		}
 
 		protected virtual void FormatValue()
