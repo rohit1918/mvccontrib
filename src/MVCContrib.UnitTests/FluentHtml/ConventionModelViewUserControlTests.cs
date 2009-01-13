@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace MvcContrib.UnitTests.FluentHtml
 {
 	[TestFixture]
-	public class ModelViewMasterPageTests : ViewModelContainerTestBase<ModelViewMasterPage<FakeModel>, FakeModel>
+	public class ConventionModelViewUserControlTests : ConventionViewModelContainerTestBase<ConventionModelViewUserContol<FakeModel>, FakeModel>
 	{
 	}
 }

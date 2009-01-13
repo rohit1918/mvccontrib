@@ -44,10 +44,9 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
-		public override string ToString()
+		protected override void PreRender()
 		{
 			Attr(HtmlAttribute.Value, elementValue);
-			return base.ToString();
 		}
 	}
 }

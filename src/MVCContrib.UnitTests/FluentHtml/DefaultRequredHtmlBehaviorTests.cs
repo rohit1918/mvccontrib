@@ -13,12 +13,20 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class DefaultRequredHtmlBehaviorTests
 	{
+        private IList<IMemberBehavior> behaviors;
+
+        [SetUp]
+        public void SetUp()
+        {
+            behaviors = new List<IMemberBehavior> { new DefaultRequiredMemberBehavior() };
+        }
+
+
 		[Test]
 		public void member_with_required_attribute_renders_with_required_class()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Price;
-			var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), 
-				new List<IMemberBehavior> {new DefaultRequiredMemberBehavior()});
+		    var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
 			var element = textbox.ToString().ShouldHaveHtmlNode("Price");
 			element.ShouldHaveAttribute("class").ValueShouldContain("required");
 		}
@@ -27,8 +35,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void member_without_required_attribute_renders_without_required_class()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Done;
-			var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), 
-				new List<IMemberBehavior> { new DefaultRequiredMemberBehavior() });
+            var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
 			var element = textbox.ToString().ShouldHaveHtmlNode("Done");
 			element.ShouldNotHaveAttribute("class");
 		}

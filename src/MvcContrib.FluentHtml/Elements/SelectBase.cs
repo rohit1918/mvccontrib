@@ -129,10 +129,9 @@ namespace MvcContrib.FluentHtml.Elements
 			return Options(EnumToDictionary<TEnum>(firstOptionText));
 		}
 
-		public override string ToString()
+		protected override void PreRender()
 		{
 			builder.InnerHtml = RenderOptions();
-			return base.ToString();
 		}
 
 		public override TagRenderMode TagRenderMode

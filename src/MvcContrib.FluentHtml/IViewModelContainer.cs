@@ -8,5 +8,6 @@ namespace MvcContrib.FluentHtml
 	{
 		T ViewModel { get; }
 		IEnumerable<IMemberBehavior> MemberBehaviors { get; }
+		string HtmlNamePrefix { get; set;  }
 	}
 }
