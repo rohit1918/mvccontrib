@@ -46,18 +46,27 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void textarea_renders_with_formatted_inner_text()
 		{
-			new TextArea("foo.Bar").Value(1234.5).Format("$#,##0.00").ToString()
+			var item = 1234.5m;
+			var expected = string.Format("{0:$#,##0.00}", item);
+			new TextArea("foo.Bar").Value(item).Format("$#,##0.00").ToString()
 				.ShouldHaveHtmlNode("foo_Bar")
-				.ShouldHaveInnerTextEqual("$1,234.50");
+				.ShouldHaveInnerTextEqual(expected);
 		}
 
 		[Test]
 		public void textarea_renders_with_correct_inner_text_from_enumerable_value_with_formatting()
 		{
+
 			var items = new List<decimal> { 1234.5m, 234, 345.666m };
+			String expected = string.Empty;
+			foreach(var item in items)
+			{
+				expected += string.Format("{0:$#,##0.00}\r\n", item);
+			}
+            expected = expected.TrimEnd('\r', '\n');
 			new TextArea("foo.Bar").Value(items).Format("$#,##0.00").ToString()
 				.ShouldHaveHtmlNode("foo_Bar")
-				.ShouldHaveInnerTextEqual("$1,234.50\r\n$234.00\r\n$345.67");
+				.ShouldHaveInnerTextEqual(expected);
 		}
 
 		[Test]
