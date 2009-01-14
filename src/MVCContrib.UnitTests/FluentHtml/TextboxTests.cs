@@ -66,17 +66,21 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void textbox_format_renders_formatted_value()
 		{
-			new TextBox("x").Value(100.00m).Format("$0.00").ToString()
+			var item = 100.00m;
+			var expected = string.Format("{0:$0.00}", item);
+			new TextBox("x").Value(item).Format("$0.00").ToString()
 				.ShouldHaveHtmlNode("x")
-				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("$100.00");
+				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(expected);
 		}
 
 		[Test]
 		public void textbox_format_using_full_format_placeholder_renders_formatted_value()
 		{
-			new TextBox("x").Value(100.00m).Format("{0:$0.00}").ToString()
+			var item = 100.00m;
+			var expected = string.Format("{0:$0.00}", item);
+			new TextBox("x").Value(item).Format("{0:$0.00}").ToString()
 				.ShouldHaveHtmlNode("x")
-				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("$100.00");
+				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(expected);
 		}
 
 		[Test]

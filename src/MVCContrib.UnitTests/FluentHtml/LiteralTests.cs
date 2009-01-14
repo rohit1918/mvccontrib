@@ -28,9 +28,11 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void literal_renders_with_inner_text_formatted()
 		{
-			var html = new Literal().Value(1234.5m).Format("$#,##0.00").ToString();
+			var item = 1234.5m;
+			var expected = string.Format("{0:$#,##0.00}", item);
+			var html = new Literal().Value(item).Format("$#,##0.00").ToString();
 			html.ShouldRenderHtmlDocument().ChildNodes[0]
-				.ShouldHaveInnerTextEqual("$1,234.50");
+				.ShouldHaveInnerTextEqual(expected);
 		}
 
         [Test]
