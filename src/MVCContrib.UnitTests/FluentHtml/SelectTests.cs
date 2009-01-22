@@ -47,6 +47,17 @@ namespace MvcContrib.UnitTests.FluentHtml
 			option2.ShouldHaveInnerTextEqual(options[2]);
 		}
 
+        [Test]
+        public void can_render_options_from_enumerable_of_simple_objects()
+        {
+            var optionNodes = new Select("foo.Bar").Options(new[] { 1, 2 }).ToString()
+                .ShouldHaveHtmlNode("foo_Bar")
+                .ShouldHaveChildNodesCount(2);
+
+            optionNodes[0].ShouldBeUnSelectedOption("1", "1");
+            optionNodes[1].ShouldBeUnSelectedOption("2", "2");
+        }
+
 		[Test]
 		public void basic_select_renders_select_with_options_from_select_list()
 		{

@@ -77,12 +77,17 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Elements\Checkbox.cs" />
+    <Compile Include="Elements\CheckBoxBase.cs" />
     <Compile Include="Elements\DisableableElement.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\FileUpload.cs" />
     <Compile Include="Elements\FormElement.cs" />
     <Compile Include="Elements\FormLiteral.cs" />
+    <Compile Include="Elements\FormLiteralBase.cs" />
     <Compile Include="Elements\Hidden.cs" />
+    <Compile Include="Elements\LiteralBase.cs" />
+    <Compile Include="Elements\SubmitButtonBase.cs" />
+    <Compile Include="Elements\TextAreaBase.cs" />
     <Compile Include="Elements\ValidationMessage.cs" />
     <Compile Include="Expressions\ExpressionNameVisitor.cs" />
     <Compile Include="Expressions\ExpressionNameVisitorResult.cs" />
