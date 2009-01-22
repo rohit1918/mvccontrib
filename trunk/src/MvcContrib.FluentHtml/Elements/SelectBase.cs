@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
+using System.Linq;
 
 namespace MvcContrib.FluentHtml.Elements
 {
@@ -80,7 +81,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <summary>
 		/// Set the options for the element.
 		/// </summary>
-		/// <param name="values">A dictionary used to generate the options.</param>
+		/// <param name="values">Enumeration used to generate the options.</param>
 		/// <param name="valueField">The name of the property to be used as the value of the options.</param>
 		/// <param name="textField">The name of the property to be used as the text of the options.</param>
 		public virtual T Options(IEnumerable values, string valueField, string textField)
@@ -90,6 +91,16 @@ namespace MvcContrib.FluentHtml.Elements
 			_dataTextField = textField;
 			return (T)this;
 		}
+
+        /// <summary>
+        /// Set the options for the element.
+        /// </summary>
+        /// <param name="value">Enumeration used to generate the options.  (Do not use this overload if the enumeration 
+        /// contains complex objects.  Instead use the overload that allows you to specify valueField and textField names.)</param>
+        public virtual T Options<TValue>(IEnumerable<TValue> value)
+        {
+            return Options(value.ToDictionary(x => x, x => x));
+        }
 
 		/// <summary>
 		/// Set the options for the element.

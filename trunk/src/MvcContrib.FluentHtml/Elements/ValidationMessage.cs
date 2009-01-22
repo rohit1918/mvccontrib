@@ -3,7 +3,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// Generate a validation message (text inside a span element).
 	/// </summary>
-	public class ValidationMessage: Literal, IElement
+	public class ValidationMessage: LiteralBase<ValidationMessage>, IElement
 	{
 		public override string ToString()
 		{

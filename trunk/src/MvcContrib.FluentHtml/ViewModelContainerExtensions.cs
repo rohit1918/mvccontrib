@@ -118,7 +118,7 @@ namespace MvcContrib.FluentHtml
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
-		public static Literal FormLiteral<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		public static FormLiteral FormLiteral<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
 			return new FormLiteral(expression.GetNameFor(view)).Value(expression.GetValueFrom(view.ViewModel));
 		}
@@ -131,7 +131,7 @@ namespace MvcContrib.FluentHtml
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
-		public static Literal ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		public static ValidationMessage ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
 			return ValidationMessage(view, expression, null);
 		}
@@ -145,7 +145,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		/// <param name="message">The error message.</param>
-		public static Literal ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression, string message) where T : class
+		public static ValidationMessage ValidationMessage<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression, string message) where T : class
 		{
 			string errorMessage = null;
 			var name = expression.GetNameFor(view);

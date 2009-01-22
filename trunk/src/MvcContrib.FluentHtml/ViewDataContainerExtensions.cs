@@ -112,7 +112,7 @@ namespace MvcContrib.FluentHtml
 		/// </summary>
 		/// <param name="view">The view.</param>
 		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
-		public static Literal FormLiteral(this IViewDataContainer view, string name)
+		public static FormLiteral FormLiteral(this IViewDataContainer view, string name)
 		{
 			return new FormLiteral(name).Value(view.ViewData.Eval(name));
 		}
