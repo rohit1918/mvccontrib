@@ -158,13 +158,30 @@ namespace MvcContrib.MetaData
 		{
 			var filters = controllerFilters.Concat(actionFilters).OrderBy(f => f.Order).ToList();
 
-			var filterInfo = new FilterInfo 
-			{
-				ActionFilters = filters.OfType<IActionFilter>().ToList(),
-				AuthorizationFilters = filters.OfType<IAuthorizationFilter>().ToList(),
-				ExceptionFilters = filters.OfType<IExceptionFilter>().ToList(),
-				ResultFilters = filters.OfType<IResultFilter>().ToList()
-			};
+		    var filterInfo = new FilterInfo();
+			
+            foreach(var action in filters.OfType<IActionFilter>())
+            {
+                filterInfo.ActionFilters.Add(action);
+            }
+            foreach (var action in filters.OfType<IAuthorizationFilter>())
+            {
+                filterInfo.AuthorizationFilters.Add(action);
+            }
+            foreach (var action in filters.OfType<IExceptionFilter>())
+            {
+                filterInfo.ExceptionFilters.Add(action);
+            }
+            foreach (var action in filters.OfType<IResultFilter>())
+            {
+                filterInfo.ResultFilters.Add(action);
+            }
+
+            ////ActionFilters// = 
+            //    AuthorizationFilters = filters.OfType<IAuthorizationFilter>().ToList(),
+            //    ExceptionFilters = filters.OfType<IExceptionFilter>().ToList(),
+            //    ResultFilters = filters.OfType<IResultFilter>().ToList()
+            //};
 
 			return filterInfo;
 		}

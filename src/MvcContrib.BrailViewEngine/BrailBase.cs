@@ -413,7 +413,7 @@ namespace MvcContrib.BrailViewEngine
 			}
 
 			properties["html"] = new HtmlHelper(viewContext, this);
-			properties["url"] = new UrlHelper(viewContext);
+			properties["url"] = new UrlHelper(viewContext.RequestContext);
 			properties["form"] = new FormHelper() { ViewContext = viewContext };
 
 //			if (controllerContext.Resources != null)

@@ -16,7 +16,7 @@ namespace MvcContrib.UnitTests.Filters
 		public void Setup()
 		{
 			_filter = new TempDataToViewDataAttribute();
-			_context = new ActionExecutedContext(new TestController().SetupControllerContext().ControllerContext, false, null);
+			_context = new ActionExecutedContext(new TestController().SetupControllerContext().ControllerContext,null, false,null);
 			_context.Controller.TempData.Add("foo", "bar");
 			_context.Controller.TempData.Add("baz", "blah");
 		}

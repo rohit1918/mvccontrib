@@ -62,12 +62,13 @@ namespace MvcContrib.Castle
 		/// </summary>
 		/// <param name="bindingContext">The current binding context</param>
 		/// <returns>A ModelBinderResult containing the bound object</returns>
-		public override ModelBinderResult BindModel(ModelBindingContext bindingContext) 
+		public  object BindModel(ModelBindingContext bindingContext) 
 		{
-			IDataBinder binder = LocateBinder(bindingContext);
-			string modelName = Prefix ?? bindingContext.ModelName;
-			object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(GetStore(bindingContext)));
-			return new ModelBinderResult(instance);
+            throw new NotImplementedException();
+            //IDataBinder binder = LocateBinder(bindingContext);
+            //string modelName = Prefix ?? bindingContext.ModelName;
+            //object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(GetStore(bindingContext)));
+            //return new instance;
 		}
 
 
@@ -99,5 +100,10 @@ namespace MvcContrib.Castle
         {
             return new DataBinder();
         }
+
+	    public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+	    {
+	        throw new System.NotImplementedException();
+	    }
 	}
 }

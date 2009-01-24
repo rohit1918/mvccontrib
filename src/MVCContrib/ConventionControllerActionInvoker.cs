@@ -13,7 +13,7 @@ namespace MvcContrib
 	/// </summary>
 	public class ConventionControllerActionInvoker : ControllerActionInvoker
 	{
-		private ControllerMetaData _metaData;
+		private ControllerMetaData _metaData=null;
 		private IControllerDescriptor _controllerDescriptor;
 
 		/// <summary>
@@ -30,7 +30,8 @@ namespace MvcContrib
 			{
 				if(_metaData == null)
 				{
-					_metaData = ControllerDescriptor.GetMetaData(ControllerContext.Controller);
+					//_metaData = ControllerDescriptor.GetMetaData(base.  ControllerContext.Controller);
+                    throw new NotImplementedException();
 				}
 				return _metaData;
 			}
@@ -51,8 +52,25 @@ namespace MvcContrib
 			}
 			set { _controllerDescriptor = value; }
 		}
+        protected override ActionDescriptor FindAction(ControllerContext controllerContext, System.Web.Mvc.ControllerDescriptor controllerDescriptor, string actionName)
+        {
+            if (string.IsNullOrEmpty(actionName))
+            {
+                throw new ArgumentNullException("actionName");
+            }
 
-		protected override MethodInfo FindActionMethod(string actionName) 
+            var action = FindActionMetaData(actionName);
+
+            if (action != null)
+            {
+                SelectedAction = action;
+                return new ReflectedActionDescriptor(action.MethodInfo, actionName, controllerDescriptor);
+                //action.MethodInfo;
+            }
+
+            return null;
+        }
+		protected  MethodInfo FindActionMethod(string actionName) 
 		{
 			if (string.IsNullOrEmpty(actionName)) 
 			{
@@ -76,15 +94,15 @@ namespace MvcContrib
 		/// <param name="actionName">Name of the action to locate.</param>
 		/// <returns>ActionMetaData or null if no action can be found with the specified name.</returns>
 		public virtual ActionMetaData FindActionMetaData(string actionName)
-		{
-			var action = MetaData.GetAction(actionName, ControllerContext);
+		{  throw  new NotImplementedException("ControllerContext removed");
+        //    var action = MetaData.GetAction(actionName, null);
 
-			if(action == null && MetaData.DefaultAction != null)
-			{
-				action = MetaData.DefaultAction;
-			}
+        //    if(action == null && MetaData.DefaultAction != null)
+        //    {
+        //        action = MetaData.DefaultAction;
+        //    }
 
-			return action;
-		}
+        //    return action;
+        }
 	}
 }

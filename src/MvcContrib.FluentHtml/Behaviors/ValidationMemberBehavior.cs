@@ -34,7 +34,7 @@ namespace MvcContrib.FluentHtml.Behaviors
 				var valueMethod = element.GetType().GetMethod("Value");
 				if (valueMethod != null)
 				{
-					valueMethod.Invoke(element, new [] { state.AttemptedValue });
+					valueMethod.Invoke(element, new [] { state.Value });
 				}
 			}
 		}
