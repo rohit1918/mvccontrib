@@ -20,7 +20,8 @@ namespace MvcContrib.UnitTests.Binders
 			var httpContext = MvcMockHelpers.DynamicHttpContextBase();
 			var controllerContext = new ControllerContext(httpContext, new RouteData(), MockRepository.GenerateStub<ControllerBase>());
 
-			_context = new ModelBindingContext(controllerContext, MockRepository.GenerateStub<IValueProvider>(), typeof(object), "Test", null, new ModelStateDictionary(), null);
+		    _context = new ModelBindingContext();
+            //controllerContext, MockRepository.GenerateStub<IValueProvider>(), typeof(object), "Test", null, new ModelStateDictionary(), null);
 		}
 
 		[Test]
@@ -64,10 +65,10 @@ namespace MvcContrib.UnitTests.Binders
 
 		public class TestModelBinder : IModelBinder
 		{
-			public ModelBinderResult BindModel(ModelBindingContext bindingContext)
-			{
-				return new ModelBinderResult("TestResult");
-			}
+		    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+		    {
+		        return "TestResult";
+		    }
 		}
 	}
 }

@@ -10,6 +10,7 @@ using MvcContrib.MetaData;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
+using ControllerDescriptor=MvcContrib.MetaData.ControllerDescriptor;
 
 namespace MvcContrib.UnitTests.MetaData
 {

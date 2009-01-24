@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -85,7 +86,7 @@ namespace MvcContrib.Filters
 			/// <param name="value">The ModelState entry to wrap</param>
 			public ModelStateSerializable(ModelState value)
 			{
-				AttemptedValue = value.AttemptedValue;
+				AttemptedValue = value.Value.ToString();
 				Errors = value.Errors
 					.Select(x => x.ErrorMessage)
 					.ToList();
@@ -96,13 +97,14 @@ namespace MvcContrib.Filters
 			/// </summary>
 			/// <returns>A reconstructed ModelState instance</returns>
 			public ModelState ToModelState()
-			{
-				var modelState = new ModelState {AttemptedValue = AttemptedValue};
-				foreach(var error in Errors)
-				{
-					modelState.Errors.Add(error);
-				}
-				return modelState;
+		  {
+                throw new NotImplementedException("vauleresult was added.");
+                //var modelState = new ModelState {Value = new ValueProviderResult(null,this.AttemptedValue,CultureInfo.CurrentCulture)};
+                //foreach(var error in Errors)
+                //{
+                //    modelState.Errors.Add(error);
+                //}
+                //return modelState;
 			}
 		}
 	}
