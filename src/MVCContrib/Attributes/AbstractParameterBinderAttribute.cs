@@ -44,41 +44,40 @@ namespace MvcContrib.Attributes
 			return this;
 		}
 
-		public virtual NameValueCollection GetStore(ModelBindingContext context)
+		public virtual NameValueCollection GetStore(ControllerContext context)
 		{
-            throw new NotImplementedException();
-			//NameValueCollection store = null;
+			NameValueCollection store = null;
 
-            //switch (RequestStore)
-            //{
+            switch (RequestStore)
+            {
                    
-            //    case RequestStore.QueryString:
-            //        store = context.HttpContext.Request.QueryString;
-            //        break;
-            //    case RequestStore.Form:
-            //        store = context.HttpContext.Request.Form;
-            //        break;
-            //    case RequestStore.Cookies:
-            //        store = CreateStoreFromCookies(context.HttpContext.Request.Cookies);
-            //        break;
-            //    case RequestStore.ServerVariables:
-            //        store = context.HttpContext.Request.ServerVariables;
-            //        break;
-            //    case RequestStore.Params:
-            //        store = context.HttpContext.Request.Params;
-            //        break;
-            //    case RequestStore.TempData:
-            //        store = CreateStoreFromDictionary(context.Controller.TempData);
-            //        break;
-            //    case RequestStore.RouteData:
-            //        store = CreateStoreFromDictionary(context.RouteData.Values);
-            //        break;
-            //    case RequestStore.All:
-            //        store = CreateStoreFromAll(context.HttpContext.Request.Params, context.Controller.TempData, context.RouteData);
-            //        break;
-            //}
+                case RequestStore.QueryString:
+                    store = context.RequestContext.HttpContext.Request.QueryString;
+                    break;
+                case RequestStore.Form:
+                    store = context.RequestContext.HttpContext.Request.Form;
+                    break;
+                case RequestStore.Cookies:
+                    store = CreateStoreFromCookies(context.RequestContext.HttpContext.Request.Cookies);
+                    break;
+                case RequestStore.ServerVariables:
+                    store = context.RequestContext.HttpContext.Request.ServerVariables;
+                    break;
+                case RequestStore.Params:
+                    store = context.RequestContext.HttpContext.Request.Params;
+                    break;
+                case RequestStore.TempData:
+                    store = CreateStoreFromDictionary(context.Controller.TempData);
+                    break;
+                case RequestStore.RouteData:
+                    store = CreateStoreFromDictionary(context.RouteData.Values);
+                    break;
+                case RequestStore.All:
+                    store = CreateStoreFromAll(context.RequestContext.HttpContext.Request.Params, context.Controller.TempData, context.RouteData);
+                    break;
+            }
 
-            //return store;
+            return store;
 		}
 
 		public virtual NameValueCollection CreateStoreFromCookies(HttpCookieCollection cookies)
@@ -121,7 +120,6 @@ namespace MvcContrib.Attributes
 			return store;
 		}
 
-		//public abstract ModelBinderResult BindModel(ModelBindingContext bindingContext);
 	    public abstract object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext);
 	  
 	}
