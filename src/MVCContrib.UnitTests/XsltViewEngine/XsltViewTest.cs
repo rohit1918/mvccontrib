@@ -54,7 +54,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
 		    _context.Controller.ViewData.Model = vData;
 
             var viewFactory = new XsltViewFactory(virtualPathProvider);
-			var viewResult = viewFactory.FindView(_context, "MyView", null);
+			var viewResult = viewFactory.FindView(_context, "MyView", null,false);
 
 			Assert.IsNotNull(viewResult.View);
 

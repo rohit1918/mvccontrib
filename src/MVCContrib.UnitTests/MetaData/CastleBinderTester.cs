@@ -37,7 +37,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute();
-			object value = binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
+			object value = binder.BindModel(CreateContext("cust", typeof(Customer)));
 			var customer = value as Customer;
 
 			Assert.That(customer, Is.Not.Null);
@@ -52,7 +52,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.Form["cust.Name"] = "Jeremy";
 
 			var binder = new CastleBindAttribute("cust");
-			object value = binder.BindModel(CreateContext("Foo", typeof(Customer))).Value;
+			object value = binder.BindModel(CreateContext("Foo", typeof(Customer)));
 			var customer = value as Customer;
 
 			Assert.That(customer, Is.Not.Null);
@@ -95,7 +95,7 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.QueryString["cust.Id"] = "5";
 
 			var binder = new CastleBindAttribute();
-			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
+			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer)));
 
 			Assert.That(customer.Id, Is.EqualTo(0));
 		}
@@ -106,22 +106,17 @@ namespace MvcContrib.UnitTests.MetaData
 			_context.HttpContext.Request.QueryString["cust.Id"] = "5";
 
 			var binder = new CastleBindAttribute(RequestStore.QueryString);
-			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer))).Value;
+			var customer = (Customer)binder.BindModel(CreateContext("cust", typeof(Customer)));
 
 			Assert.That(customer.Id, Is.EqualTo(5));
 		}
 
 		private ModelBindingContext CreateContext(string name, Type type)
 		{
-			return new ModelBindingContext(
-				_context,
-				MockRepository.GenerateStub<IValueProvider>(),
-				type,
-				name,
-				null, 
-				new ModelStateDictionary(),
-				null 
-			);
+			var context = new ModelBindingContext();
+			context.ModelType = type;
+			context.ModelName = name;
+			return context;
 		}
 
 		public class Customer

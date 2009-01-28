@@ -56,7 +56,8 @@ namespace MvcContrib.UnitTests.Filters
 			var controllerContext = new ControllerContext(mockHttpContext, new RouteData(), controller);
 			controller.ControllerContext = controllerContext;
 			var actionExecutingContext = new ActionExecutingContext(
-				controllerContext, new Dictionary<string, object>());
+				controllerContext,new ReflectedActionDescriptor(null,null,null) ,new Dictionary<string, object>());
+			//the reflectedactionDescriptor needs to be fixed.
 			return actionExecutingContext;
 		}
 	}

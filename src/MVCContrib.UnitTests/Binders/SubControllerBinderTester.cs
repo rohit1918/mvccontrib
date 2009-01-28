@@ -38,11 +38,13 @@ namespace MvcContrib.UnitTests.Binders
         {
             var binder = new SubControllerBinder();
 
-            var bindingContext = new ModelBindingContext(GetControllerContext(),
-                                                         MockRepository.GenerateStub<IValueProvider>(),
-                                                         typeof(FooController), "foo", null, new ModelStateDictionary(),
-                                                         predicate);
-            object value = binder.BindModel(bindingContext).Value;
+        	var bindingContext = new ModelBindingContext();
+			
+			//GetControllerContext(),
+			//                                             MockRepository.GenerateStub<IValueProvider>(),
+			//                                             typeof(FooController), "foo", null, new ModelStateDictionary(),
+			//                                             predicate);
+            object value = binder.BindModel(GetControllerContext(),bindingContext);
 
             Assert.That(value, Is.InstanceOfType(typeof(FooController)));
         }
@@ -61,8 +63,9 @@ namespace MvcContrib.UnitTests.Binders
         {
             var binder = new SubControllerBinder();
         	var controllercontext = GetControllerContext();
-        	var context = new ModelBindingContext(controllercontext, new DefaultValueProvider(controllercontext), typeof(string), "foo", null, new ModelStateDictionary(), null);
-            object value = binder.BindModel(context).Value;
+        	var context = new ModelBindingContext();
+			//controllercontext, new DefaultValueProvider(controllercontext), typeof(string), "foo", null, new ModelStateDictionary(), null);
+            object value = binder.BindModel(controllercontext,context);
 
             Assert.That(value, Is.EqualTo("bar"));
         }
