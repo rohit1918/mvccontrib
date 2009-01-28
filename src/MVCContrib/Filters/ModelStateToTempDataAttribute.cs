@@ -43,28 +43,21 @@ namespace MvcContrib.Filters
 		{
 			if(!tempData.ContainsKey(TempDataKey)) return;
 
-			var fromTempData = tempData[TempDataKey] as Dictionary<string, ModelStateSerializable>;
+			var fromTempData = tempData[TempDataKey] as ModelStateDictionary;
 			if(fromTempData == null) return;
 
 			foreach(var pair in fromTempData)
 			{
-				modelState.Add(pair.Key, pair.Value.ToModelState());
+				modelState.Add(pair.Key, pair.Value);
 			}
 		}
 
 		private static void CopyModelStateToTempData(ModelStateDictionary modelState, TempDataDictionary tempData)
 		{
-			var dict = new Dictionary<string, ModelStateSerializable>();
-
-			foreach(var statePair in modelState)
-			{
-				dict.Add(statePair.Key, new ModelStateSerializable(statePair.Value));
-			}
-
-			tempData[TempDataKey] = dict;
+			tempData[TempDataKey] = modelState;
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Temporarily stores ModelStat entries so they can be serialized to SessionState.
 		/// </summary>
 		[Serializable]
@@ -106,6 +99,6 @@ namespace MvcContrib.Filters
                 //}
                 //return modelState;
 			}
-		}
+		}*/
 	}
 }
