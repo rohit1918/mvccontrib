@@ -14,18 +14,22 @@ namespace MvcContrib.UnitTests.UI.Html
 	{
 		public class DataBinderTesterBase : BaseViewTester
 		{
+#pragma warning disable 618,612
 			protected DefaultDataBinder _binder;
+#pragma warning restore 618,612
 
 			[SetUp]
 			protected override void Setup()
 			{
 				base.Setup();
+#pragma warning disable 618,612
 				_binder = new DefaultDataBinder();
+#pragma warning restore 618,612
 			}
 
 			protected void AddToViewData(string key, object item)
 			{
-				((IDictionary)_viewContext.ViewData)[key] = item;
+				_viewContext.ViewData[key] = item;
 			}
 		}
 
@@ -43,13 +47,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void It_should_obtain_the_value_from_typed_ViewData()
 			{
-				var viewContext = new ViewContext(
-						_viewContext.Controller.ControllerContext, 
-						_viewContext.View, 
-						new ViewDataDictionary(new Person("Jeremy")), 
-						_viewContext.TempData);
-
-
+				var viewContext = new ViewContext() { ViewData = new ViewDataDictionary(new Person("Jeremy"))};
 				object instance = _binder.ExtractValue("Name", viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));
 			}
@@ -59,12 +57,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			{
 				var p = new Person {NestedPerson = new Person("Jeremy")};
 
-				var viewContext = new ViewContext(
-						_viewContext.Controller.ControllerContext,
-						_viewContext.View,
-						new ViewDataDictionary(p),
-						_viewContext.TempData);
-
+				var viewContext = new ViewContext() { ViewData = new ViewDataDictionary(p)};
 				object instance = _binder.ExtractValue("NestedPerson.Name", viewContext);
 				Assert.That(instance, Is.EqualTo("Jeremy"));
 			}
