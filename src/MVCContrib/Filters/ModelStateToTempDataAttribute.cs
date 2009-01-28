@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace MvcContrib.Filters
@@ -56,49 +52,5 @@ namespace MvcContrib.Filters
 		{
 			tempData[TempDataKey] = modelState;
 		}
-
-		/*/// <summary>
-		/// Temporarily stores ModelStat entries so they can be serialized to SessionState.
-		/// </summary>
-		[Serializable]
-		public class ModelStateSerializable
-		{
-			/// <summary>
-			/// The errors from the ModelCollection
-			/// </summary>
-			public IEnumerable<string> Errors { get; private set; }
-
-			/// <summary>
-			/// The attempted value
-			/// </summary>
-			public string AttemptedValue { get; private set; }
-
-			/// <summary>
-			/// Creates a new instance of the ModelStateSerializable class.
-			/// </summary>
-			/// <param name="value">The ModelState entry to wrap</param>
-			public ModelStateSerializable(ModelState value)
-			{
-				AttemptedValue = value.Value.ToString();
-				Errors = value.Errors
-					.Select(x => x.ErrorMessage)
-					.ToList();
-			}
-
-			/// <summary>
-			/// Converts back to a ModelState instance.
-			/// </summary>
-			/// <returns>A reconstructed ModelState instance</returns>
-			public ModelState ToModelState()
-		  {
-                throw new NotImplementedException("vauleresult was added.");
-                //var modelState = new ModelState {Value = new ValueProviderResult(null,this.AttemptedValue,CultureInfo.CurrentCulture)};
-                //foreach(var error in Errors)
-                //{
-                //    modelState.Errors.Add(error);
-                //}
-                //return modelState;
-			}
-		}*/
 	}
 }
