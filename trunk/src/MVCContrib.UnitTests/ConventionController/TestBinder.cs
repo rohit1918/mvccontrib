@@ -1,7 +1,6 @@
 using System;
 using System.Web.Mvc;
 using MvcContrib.Attributes;
-using MvcContrib.MetaData;
 
 namespace MvcContrib.UnitTests.ConventionController
 {
@@ -11,10 +10,11 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 		}
 
-		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
-		{
-			((TestController)bindingContext.Controller).BinderFilterOrdering += "Binder";
-			return null;
-		}
+
+	    public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+	    {
+            ((TestController)controllerContext.Controller).BinderFilterOrdering += "Binder";
+            return null;
+        }
 	}
 }

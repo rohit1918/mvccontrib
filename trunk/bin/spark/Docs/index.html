@@ -18,7 +18,7 @@
 
 <p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
   <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">'var p in ViewData.Model.Products'</span><span class="re2">&gt;</span></span>
-    ${p.Name} ${Html.ActionLink[[ProductController]](c=&gt;c.Edit(p.Id), &quot;Edit&quot;)}
+    ${p.Name} !{Html.ActionLink[[ProductController]](c=&gt;c.Edit(p.Id), &quot;Edit&quot;)}
   <span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>  
 <span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span></pre></div></p>
 
@@ -34,8 +34,11 @@
 <li>monorail view components</li>
 <li>clientside rendering</li>
 <li>javascript clientside views</li>
+<li>Use of ${expr} and !{expr} and automaticEncoding</li>
+<li>late bound ${#prop} and ${Eval("prop")}</li>
+<li>view areas</li>
 </ul>
-  <div id="node-10" class="section-2">
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  <div id="node-10" class="section-2">
   <h1 class="book-heading">Configuring Spark</h1>
   <div class="toc">
 <div class="toc-title">Table of Contents [<a href="#" class="toc-toggle">hide</a>]</div>
@@ -139,7 +142,7 @@
 &nbsp;
     ViewEngines.<span class="me1">Engines</span>.<span class="me1">Add</span><span class="br0">&#40;</span><span class="kw3">new</span> SparkViewFactory<span class="br0">&#40;</span>settings<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
 <span class="br0">&#125;</span></pre></div></p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-9" class="section-2">
   <h1 class="book-heading">General Syntax</h1>
   <p><div class="toc">
@@ -282,7 +285,7 @@
   ${ShowNames(&quot;gamma&quot;)}
 <span class="sc3"><span class="re1">&lt;/body<span class="re2">&gt;</span></span></span>
 <span class="sc3"><span class="re1">&lt;/html<span class="re2">&gt;</span></span></span></pre></div></p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-6" class="section-2">
   <h1 class="book-heading">Variables</h1>
   <p><div class="toc">
@@ -314,13 +317,19 @@
 
 <p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;var</span> <span class="re0">styles</span>=<span class="st0">&quot;new [] {'odd', 'even'}&quot;</span> <span class="re0">i</span>=<span class="st0">&quot;0&quot;</span><span class="re2">/&gt;</span></span></pre></div></p>
 
-<p>Results in <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw4">var</span> styles <span class="sy0">=</span> <span class="kw3">new</span> <span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="br0">&#123;</span><span class="st0">&quot;odd&quot;</span>, <span class="st0">&quot;even&quot;</span><span class="br0">&#125;</span><span class="sy0">;</span></code></span> and <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw4">var</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span></code></span>. This is syntactically equivalent to <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw4">string</span><span class="br0">&#91;</span><span class="br0">&#93;</span> styles <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">string</span><span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="br0">&#123;</span><span class="st0">&quot;odd&quot;</span>, <span class="st0">&quot;even&quot;</span><span class="br0">&#125;</span><span class="sy0">;</span></code></span> and <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span></code></span>.</p>
+<p>Produces the following:</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="kw4">var</span> styles <span class="sy0">=</span> <span class="kw3">new</span> <span class="br0">&#91;</span><span class="br0">&#93;</span> <span class="br0">&#123;</span><span class="st0">&quot;odd&quot;</span>, <span class="st0">&quot;even&quot;</span><span class="br0">&#125;</span><span class="sy0">;</span>
+<span class="kw4">var</span> i <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span></pre></div></p>
 
 <p>The var element has an optional type attribute which can be used to provide an explicit type used instead of the automatic type syntax "var".</p>
 
 <p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;var</span> <span class="re0">foo</span>=<span class="st0">&quot;null&quot;</span> <span class="re0">bar</span>=<span class="st0">&quot;null&quot;</span> <span class="re0">type</span>=<span class="st0">&quot;string&quot;</span><span class="re2">/&gt;</span></span></pre></div></p>
 
-<p>Results in <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw4">string</span> foo <span class="sy0">=</span> null<span class="sy0">;</span></code></span> and <span class="geshifilter"><code class="geshifilter-xml">string bar = null;</code></span>.</p>
+<p>Will declare variables of type <span class="geshifilter"><code class="geshifilter-xml">string</code></span> instead of <span class="geshifilter"><code class="geshifilter-xml">var</code></span>.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="kw4">string</span> foo <span class="sy0">=</span> null<span class="sy0">;</span>
+<span class="kw4">string</span> bar <span class="sy0">=</span> null<span class="sy0">;</span></pre></div></p>
 
 <p>Finally if the var element is not declared as a self-closing tag the scope of the variables will be limited. For example:</p>
 
@@ -390,12 +399,10 @@ i <span class="sy0">=</span> <span class="nu0">5</span><span class="sy0">;</span
   <span class="re0">Products</span>=<span class="st0">&quot;System.Collections.Generic.IList[[MyApp.Models.Product]]&quot;</span><span class="re2">/&gt;</span></span>
 <span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>
   <span class="sc3"><span class="re1">&lt;h3<span class="re2">&gt;</span></span></span>${Caption}<span class="sc3"><span class="re1">&lt;/h3<span class="re2">&gt;</span></span></span>
-  <span class="sc3"><span class="re1">&lt;for</span> <span class="re0">each</span>=<span class="st0">&quot;var product in Products&quot;</span><span class="re2">&gt;</span></span>
-    <span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>
-      <span class="sc3"><span class="re1">&lt;h4<span class="re2">&gt;</span></span></span>${product.Name}<span class="sc3"><span class="re1">&lt;/h4<span class="re2">&gt;</span></span></span>
-      <span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>${product.Description}<span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
-    <span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
-  <span class="sc3"><span class="re1">&lt;/for<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;div</span>  <span class="re0">each</span>=<span class="st0">&quot;var product in Products&quot;</span><span class="re2">&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;h4<span class="re2">&gt;</span></span></span>${product.Name}<span class="sc3"><span class="re1">&lt;/h4<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>${product.Description}<span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
 <span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span></pre></div></p>
 
 <p>The viewdata element may occur anywhere in the view or master file actually. The net result is the same which is to add something like the following to the generated class.</p>
@@ -423,7 +430,7 @@ i <span class="sy0">=</span> <span class="nu0">5</span><span class="sy0">;</span
 <span class="sc3"><span class="re1">&lt;title<span class="re2">&gt;</span></span></span>${Html.Encode(Title ?? &quot;My Sample MVC Application&quot;)}<span class="sc3"><span class="re1">&lt;/title<span class="re2">&gt;</span></span></span></pre></div></p>
 
 <p>The above example enables you to add a string Title property to any class used as a TModel, or as an automatic class <span class="geshifilter"><code class="geshifilter-csharp"><span class="kw3">new</span> <span class="br0">&#123;</span>Title <span class="sy0">=</span> <span class="st0">&quot;hello&quot;</span><span class="br0">&#125;</span></code></span>, or as a dictionary entry in an untyped view data dictionary. </p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-5" class="section-2">
   <h1 class="book-heading">Expressions</h1>
   <div class="toc">
@@ -746,7 +753,7 @@ Output.<span class="me1">Write</span><span class="br0">&#40;</span><span class="
 Output.<span class="me1">Write</span><span class="br0">&#40;</span><span class="st0">&quot;<span class="es0">\r</span><span class="es0">\n</span><span class="es0">\r</span><span class="es0">\n</span>&lt;!-- form here, field validation messages, etc. --&gt;<span class="es0">\r</span><span class="es0">\n</span><span class="es0">\r</span><span class="es0">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span></pre></div></p>
 
 <p>A macro may also call itself recursively, which is convenient for producing something like a threaded comment list or a nested ul/ul/li tree structure.</p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-7" class="section-2">
   <h1 class="book-heading">Organizing Content</h1>
   <p><div class="toc">
@@ -944,7 +951,7 @@ This macro writes out a warning or error if it's in the viewdata.
 <span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span></pre></div></p>
 
 <p>When a file is including another file it happens before <em>any</em> significant processing takes place. As far as the Spark view engine is concerned the contents of the target file may as well have been copy-and-pasted right at the location of the include element. This can have some advantages, but be cautions about duplicate macro declarations or circular include references.</p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-11" class="section-2">
   <h1 class="book-heading">Precompiling Views</h1>
   <p><div class="toc">
@@ -1089,7 +1096,7 @@ generated.cs(20,22): error CS0103: The name 'hi' does not exist in the current c
 <p>If Include is not called for a rule the default is to include all views that don't start with a "_". If Layout is not called the default is to use the layout that would be used automatically appropriate for the framework in question. If you call .Layout multiple times it'll generate a class for each combination of layout and view. That's if you want to precompile several themes where the controller will specify the layout at runtime.</p>
 
 <p>A call to layout can take an array of strings. This is <em>not</em> the same as calling Layout multiple times - rather it's to support MonoRail's ability to organize the layout into several layers.</p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 <div id="node-14" class="section-2">
   <h1 class="book-heading">View Locations</h1>
   <div class="toc">
@@ -1172,7 +1179,343 @@ generated.cs(20,22): error CS0103: The name 'hi' does not exist in the current c
 <span class="sc3"><span class="re1">&lt;/spark<span class="re2">&gt;</span></span></span></pre></div></p>
 
 <p>Any path can be the target for adding additional files. If no subfolder is provided the contents are added at the root.</p>
-  </div>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
+<div id="node-15" class="section-2">
+  <h1 class="book-heading">Iron Python</h1>
+  <div class="toc">
+<div class="toc-title">Table of Contents [<a href="#" class="toc-toggle">hide</a>]</div>
+<div class="toc-list">
+<ul>
+
+<ul>
+
+<ul>
+	<li><a href="#AboutIronPython">About Iron Python</a></li>
+	<li><a href="#Creatinganewproject">Creating a new project</a></li>
+	<li><a href="#Addingviews">Adding views</a></li>
+	<li><a href="#Variable">Variable</a></li>
+	<li><a href="#ViewData">ViewData</a></li>
+	<li><a href="#Loopingandconditional">Looping and conditional</a></li>
+	<li><a href="#Inlinecode">Inline code</a></li>
+	<li><a href="#Invokingmethodsandhelpers">Invoking methods and helpers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<h3 id="AboutIronPython">About Iron Python</h3>
+
+<p><a href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">Iron Python</a> is a dynamic language runtime (DLR) based implementation of Python. Spark scripting is based on assemblies in the <a href="http://www.codeplex.com/IronPython/Release/ProjectReleases.aspx?ReleaseId=17404">2.0 Release Candidate 1</a> binary zip. Other good resources are the <a href="http://docs.python.org/">Python documentation</a> and the <a href="http://www.python.org/">Python site</a> itself.</p>
+
+<p>The support for the DLR is very Asp.Net MVC centric. If there's an interest in expanded Castle MonoRail support, <a href="http://groups.google.com/group/spark-dev">please speak up in the discussion group</a>.</p>
+
+<h3 id="Creatinganewproject">Creating a new project</h3>
+
+<p>A standard Asp.Net MVC web application is always a great starting place. First, add references to the following assemblies:</p>
+
+<ul>
+<li>Spark.dll</li>
+<li>Spark.Python.dll</li>
+<li>Spark.Web.Mvc.dll</li>
+<li>Spark.Web.Mvc.Python.dll</li>
+</ul>
+
+<p>And the following from the IronPython release which are available in the Spark bin\dependencies folder. If you have problems with the these files from Codeplex try the ones in from the Spark distribution. You have the "works on my machine" guarantee.</p>
+
+<ul>
+<li>Microsoft.Scripting.dll</li>
+<li>Microsoft.Scripting.Core.dll</li>
+<li>Microsoft.Scripting.ExtensionAttribute.dll</li>
+<li>IronPython.dll</li>
+<li>IronPython.Modules.dll</li>
+</ul>
+
+<p>Yeah, I know. It's a lot of assemblies. You're going to love the next part though, adding the Spark view engine to an Asp.Net MVC web application has been simplified.</p>
+
+<p>Add the following to your Global Application_Start method:</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="kw1">using</span> <span class="co3">Spark.Web.Mvc.Scripting</span><span class="sy0">;</span>
+...
+<span class="kw1">protected</span> <span class="kw1">void</span> Application_Start<span class="br0">&#40;</span><span class="kw4">object</span> sender, EventArgs e<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    SparkPythonEngineStarter.<span class="me1">RegisterViewEngine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre></div></p>
+
+<p>This will create a view engine and add it to the engines collection.</p>
+
+<p>The Spark engine starter also has several utility methods for more advanced initialization. You can, for example, provide a settings object from code. You can also use the ISparkServicesContainer to provide specific implementations of different services used by the Spark engine. For example:</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="co1">// this example avoids adding &lt;spark&gt; to web.config</span>
+<span class="kw4">var</span> settings <span class="sy0">=</span> <span class="kw3">new</span> SparkSettings<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// change settings, like</span>
+settings
+    .<span class="me1">SetDebug</span><span class="br0">&#40;</span><span class="kw1">true</span><span class="br0">&#41;</span>
+    .<span class="me1">SetPageBaseType</span><span class="br0">&#40;</span><span class="kw3">typeof</span><span class="br0">&#40;</span>MyBasePage<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw4">var</span> container <span class="sy0">=</span> SparkPythonEngineStarter.<span class="me1">CreateContainer</span><span class="br0">&#40;</span>settings<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// change services, like</span>
+container.<span class="me1">SetServiceBuilder</span><span class="sy0">&lt;</span>IViewActivatorFactory<span class="sy0">&gt;</span><span class="br0">&#40;</span>
+    c <span class="sy0">=&gt;</span> <span class="kw3">new</span> MyViewActivatorFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+SparkPythonEngineStarter.<span class="me1">RegisterViewEngine</span><span class="br0">&#40;</span>
+    ViewEngines.<span class="me1">Engines</span>, container<span class="br0">&#41;</span><span class="sy0">;</span></pre></div></p>
+
+<h3 id="Addingviews">Adding views</h3>
+
+<p>Spark views for IronPython look and act much like they would for csharp. They have a .spark extension and exist in the normal <code>Views\&lt;controllername&gt;\&lt;viewname&gt;.spark</code> path.</p>
+
+<p>One of the most obvious differences would be the lack of a need to declare <code>&lt;viewdata/&gt;</code>. Other than that it's pretty darn straightforward. You can execute code inline with <code>#statement</code> and output information with <code>${expression}</code> and all of the <code>&lt;content&gt;</code>, <code>&lt;macro&gt;</code>, support for underscored partials, imports, etc. is unchanged.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml">#import clr
+<span class="sc3"><span class="re1">&lt;p<span class="re2">&gt;</span></span></span>Methods available from the clr module<span class="sc3"><span class="re1">&lt;/p<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;x in dir(clr)&quot;</span><span class="re2">&gt;</span></span>${x}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;p<span class="re2">&gt;</span></span></span>Methods (and extension methods) available to the normal helpers<span class="sc3"><span class="re1">&lt;/p<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;var</span> <span class="re0">underscores</span>=<span class="st0">&quot;'__'&quot;</span><span class="re2">/&gt;</span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;x in dir(Html)&quot;</span> <span class="re0">if</span>=<span class="st0">&quot;not x.startswith(underscores)&quot;</span><span class="re2">&gt;</span></span>Html.${x}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;x in dir(Ajax)&quot;</span> <span class="re0">if</span>=<span class="st0">&quot;not x.startswith(underscores)&quot;</span><span class="re2">&gt;</span></span>Ajax.${x}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;x in dir(Url)&quot;</span> <span class="re0">if</span>=<span class="st0">&quot;not x.startswith(underscores)&quot;</span><span class="re2">&gt;</span></span>Url.${x}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<p>So once you get past the subtle expression differences it's pretty straightforward. I relied very heavily on the Python language documentation figuring out the syntax to use. If you're comfortable with Python, or simply hate declaring your view data and mucking around with strong types and assembly references, using the DLR might be an attractive option.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;html<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;head<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;global</span> <span class="re0">Title</span>=<span class="st0">&quot;'Python View Language Sample'&quot;</span><span class="re2">/&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;title<span class="re2">&gt;</span></span></span>${Title}<span class="sc3"><span class="re1">&lt;/title<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/head<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;body<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;use:view</span><span class="re2">/&gt;</span></span>
+  <span class="sc3"><span class="re1">&lt;/body<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/html<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml">#Title = &quot;Products - &quot; + Title
+<span class="sc3"><span class="re1">&lt;p<span class="re2">&gt;</span></span></span>There are ${len(products)} products available<span class="sc3"><span class="re1">&lt;/p<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;p in products&quot;</span><span class="re2">&gt;</span></span>${Html.ActionLink(p.Name, &quot;Show&quot;)}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<h3 id="Variable">Variable</h3>
+
+<p>Variable scope in Python is very different than in csharp because of the nature of the language itself. The entire view, and the entire master, are both single functions. All of the variables in those two functions are available to all of the views and partial files.</p>
+
+<p>To share variables between view and master, use the global element, like <code>&lt;global title="'Default Title'"/&gt;</code>. Of course <code>&lt;content name="foo"&gt;...&lt;/content&gt;</code> and <code>&lt;use content="foo"/&gt;</code> can also be used to produce and consume material.</p>
+
+<p>Other forms of variable declaration all end up meaning the same thing. <code>&lt;var x="5" hello="'world'"/&gt;</code>, <code>&lt;def x="5" hello="'world'"/&gt;</code>, and <code>&lt;set x="5" hello="'world'"/&gt;</code> are virtually interchangable - just remember to assign a variable before you use it.</p>
+
+<p>Providing a fall-back value with <code>&lt;default x="1" hello="'(your name here)'"/&gt;</code> will work and is very convenient for assigning default values for optional arguments in partials.</p>
+
+<h3 id="ViewData">ViewData</h3>
+
+<p>Viewdata does need to be declared because the contents of the dictionary will appear to be global symbols. Because they have a lower precedence than view class members you may need to use <code>ViewData["name"]</code> syntax to access information that collides with existing members.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="kw1">public</span> ActionResult Index<span class="br0">&#40;</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+  ViewData<span class="br0">&#91;</span><span class="st0">&quot;foo&quot;</span><span class="br0">&#93;</span> <span class="sy0">=</span> <span class="st0">&quot;bar&quot;</span><span class="sy0">;</span>
+  <span class="kw1">return</span> View<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre></div></p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml">## no declaration needed
+<span class="sc3"><span class="re1">&lt;p<span class="re2">&gt;</span></span></span>Foo is ${foo}<span class="sc3"><span class="re1">&lt;/p<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<h3 id="Loopingandconditional">Looping and conditional</h3>
+
+<p>Iteration in Python doesn't require a type declaration on the looping variable. Otherwise it's very similar to Spark with csharp.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;for</span> <span class="re0">each</span>=<span class="st0">&quot;c in categories&quot;</span><span class="re2">&gt;</span></span>
+  <span class="sc3"><span class="re1">&lt;h3<span class="re2">&gt;</span></span></span>${H(c.Name)}<span class="sc3"><span class="re1">&lt;/h3<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;p in c.Products&quot;</span> <span class="re0">class</span>=<span class="st0">&quot;alt?{pIndex%2}&quot;</span><span class="re2">&gt;</span></span>${H(p.Name)}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/for<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<p>The conditional elements and attributes (test, if, elseif, else) in all their various forms work fine structurally once you take into account language differences. Python will use <code>not</code>, <code>or</code>, and <code>and</code> boolean keywords rather than punctuation operators. It will also infer the value of True for non-default values. So 0, False, and None (or null) all act as false. Which is why the condition <code>?{pIndex%2}</code> above will give you even-odd striping by removing the alt css class as the result of 0 and 1 varies.</p>
+
+<h3 id="Inlinecode">Inline code</h3>
+
+<p>The <code>#statement&lt;newline&gt;</code> format works <em>especially</em> well for adding Python code inline, but bear in mind how significant whitespace will be. The statement following the # character will be written at the correct indentation for the place it appears in scope, but there should only be whitespace between the # and the code if you're intentionally creating something scoped to a previous statement.</p>
+
+<p>One use for that would be declaring a function.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;h3<span class="re2">&gt;</span></span></span>Declaring a function<span class="sc3"><span class="re1">&lt;/h3<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+  #import math
+  ## Calculate the n-dimensional hypotenuse
+  #def vectorlength(vector):
+  #  dt = 0
+  #  for d in vector:
+  #    dt = dt + d * d
+  #  return math.sqrt(dt)
+  <span class="sc3"><span class="re1">&lt;li<span class="re2">&gt;</span></span></span>3,4 : ${vectorlength([3,4])}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li<span class="re2">&gt;</span></span></span>12,13 : ${vectorlength([12,13])}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li<span class="re2">&gt;</span></span></span>0,5,3,2,0,6 : ${vectorlength([0,5,3,2,0,6])}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<p>Note, since # is a comment in python ## can be used in Spark as a code-comment which won't appear in html output.</p>
+
+<h3 id="Invokingmethodsandhelpers">Invoking methods and helpers</h3>
+
+<p>All methods and properties of the base view class are available . If you're writing output explicitly there is a subtle problem with overloaded methods, like Output.Write(...), when the DLR determines which method to invoke. Writing a number for example will throw an exception because the several flavors of integer and floating point are ambiguous from the scripting point of view. Another method OutputWriteAdapter(object value) has been added to the scripting-specific spark view class, and that is the method ${expression} will invoke.</p>
+
+<p>Some helper methods can be particularly tricky. It appears that native IronPython property-bearing reflect with put properties Keys and Values, so they can't be used for helper methods which take an anonymous type as a dictionary. The good news is you can typically call a different overload of the helper method by building the CLR dictionary classes.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>
+  #import clr
+  #clr.AddReference(&quot;System.Web.Routing&quot;)
+  #from System.Web.Routing import RouteValueDictionary
+  #routeData = RouteValueDictionary()
+&nbsp;
+  #routeData[&quot;id&quot;] = page.CurrentPage - 1
+  <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${Url.Action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span><span class="sc1">&amp;laquo;</span> Previous<span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+&nbsp;
+  <span class="sc3"><span class="re1">&lt;for</span> <span class="re0">each</span>=<span class="st0">&quot;pageIndex in range(1, page.PageCount + 1)&quot;</span><span class="re2">&gt;</span></span>
+    #routeData[&quot;id&quot;] = pageIndex
+    <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${Url.Action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span>${pageIndex}<span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/for<span class="re2">&gt;</span></span></span>
+&nbsp;
+  #routeData[&quot;id&quot;] = page.CurrentPage + 1
+  <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${Url.Action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span>Next <span class="sc1">&amp;raquo;</span><span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
+&nbsp;</pre></div></p>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
+<div id="node-16" class="section-2">
+  <h1 class="book-heading">Iron Ruby</h1>
+  <div class="toc">
+<div class="toc-title">Table of Contents [<a href="#" class="toc-toggle">hide</a>]</div>
+<div class="toc-list">
+<ul>
+
+<ul>
+
+<ul>
+	<li><a href="#AboutIronRuby">About Iron Ruby</a></li>
+	<li><a href="#Creatinganewproject">Creating a new project</a></li>
+	<li><a href="#Addingviews">Adding views</a></li>
+	<li><a href="#Invokingmethodsandhelpers">Invoking methods and helpers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<h3 id="AboutIronRuby">About Iron Ruby</h3>
+
+<p><a href="http://www.ironruby.net/">Iron Ruby</a> is a <a href="http://blogs.msdn.com/hugunin/archive/2007/04/30/a-dynamic-language-runtime-dlr.aspx">dynamic language runtime</a> (DLR) based implementation of <a href="http://www.ruby-lang.org/en/">Ruby</a>. Spark's Ruby integration is based on slightly modified <a href="http://rubyforge.org/scm/?group_id=4359">trunk code</a>. Other good resources are <a href="http://www.ruby-lang.org/en/documentation/">Ruby documentation</a> and <a href="http://www.ruby-doc.org/docs/ProgrammingRuby/">Programming Ruby</a>.</p>
+
+<p>The build of IronRuby used for Spark has had the assemblies <code>Microsoft.Scripting.*</code> assemblies renamed <code>NonStandard.Microsoft.Scripting.*</code>. Those libraries appear to be works in progess and some irreconcilable differences existed in these shared assemblies in the IronPython and IronRuby sources which were available at the time the integration with Spark was done. As those projects evolve the need for two sets of assemblies should disappear.</p>
+
+<p>The support for the DLR is very Asp.Net MVC centric. If there's an interest in expanded Castle MonoRail support, <a href="http://groups.google.com/group/spark-dev">please speak up in the discussion group</a>.</p>
+
+<h3 id="Creatinganewproject">Creating a new project</h3>
+
+<p>A standard Asp.Net MVC web application is always a great starting place. First, add references to the following assemblies:</p>
+
+<ul>
+<li>Spark.dll</li>
+<li>Spark.Ruby.dll</li>
+<li>Spark.Web.Mvc.dll</li>
+<li>Spark.Web.Mvc.Ruby.dll</li>
+</ul>
+
+<p>And the following from the IronRuby release which are available in the Spark bin\dependencies folder. If you have problems with the these files from RubyForge try the ones in from the Spark distribution. You have the "works on my machine" guarantee.</p>
+
+<ul>
+<li>NonStandard.Microsoft.Scripting.dll</li>
+<li>NonStandard.Microsoft.Scripting.Core.dll</li>
+<li>NonStandard.Microsoft.Scripting.ExtensionAttribute.dll</li>
+<li>IronRuby.dll</li>
+<li>IronRuby.Library.dll</li>
+</ul>
+
+<p>Yeah, I know. It's a lot of assemblies. You're going to love the next part though, adding the Spark view engine to an Asp.Net MVC web application has been simplified.</p>
+
+<p>Add the following to your Global Application_Start method:</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="kw1">using</span> <span class="co3">Spark.Web.Mvc.Ruby</span><span class="sy0">;</span>
+...
+<span class="kw1">protected</span> <span class="kw1">void</span> Application_Start<span class="br0">&#40;</span><span class="kw4">object</span> sender, EventArgs e<span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    SparkRubyEngineStarter.<span class="me1">RegisterViewEngine</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span></pre></div></p>
+
+<p>This will create a view engine and add it to the engines collection.</p>
+
+<p>The Spark engine starter also has several utility methods for more advanced initialization. You can, for example, provide a settings object from code. You can also use the ISparkServicesContainer to provide specific implementations of different services used by the Spark engine. For example:</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-csharp"><span class="co1">// this example avoids adding &lt;spark&gt; to web.config</span>
+<span class="kw4">var</span> settings <span class="sy0">=</span> <span class="kw3">new</span> SparkSettings<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// change settings, like</span>
+settings
+    .<span class="me1">SetDebug</span><span class="br0">&#40;</span><span class="kw1">true</span><span class="br0">&#41;</span>
+    .<span class="me1">SetPageBaseType</span><span class="br0">&#40;</span><span class="kw3">typeof</span><span class="br0">&#40;</span>MyBasePage<span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw4">var</span> container <span class="sy0">=</span> SparkRubyEngineStarter.<span class="me1">CreateContainer</span><span class="br0">&#40;</span>settings<span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// change services, like</span>
+container.<span class="me1">SetServiceBuilder</span><span class="sy0">&lt;</span>IViewActivatorFactory<span class="sy0">&gt;</span><span class="br0">&#40;</span>
+    c <span class="sy0">=&gt;</span> <span class="kw3">new</span> MyViewActivatorFactory<span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+SparkRubyEngineStarter.<span class="me1">RegisterViewEngine</span><span class="br0">&#40;</span>
+    ViewEngines.<span class="me1">Engines</span>, container<span class="br0">&#41;</span><span class="sy0">;</span></pre></div></p>
+
+<h3 id="Addingviews">Adding views</h3>
+
+<p>Spark views for IronRuby look and act much like they would for csharp. They have a .spark extension and exist in the normal <code>Views\&lt;controllername&gt;\&lt;viewname&gt;.spark</code> path.</p>
+
+<p>The syntax of Ruby on Spark is a bit rhtml-like. Spark supports <code>&lt;%= ... %&gt;</code> and <code>&lt;% ...%&gt;</code> in the same way, and the dictionary of ViewData values are added as <code>@name</code> attributes. Of course, just like other Spark variations can also execute code inline with <code>#statement</code> and output information with <code>${expression}</code> and all of the <code>&lt;content&gt;</code>, <code>&lt;macro&gt;</code>, support for underscored partials, imports, etc. is unchanged.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;html<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;head<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;global</span> <span class="re0">title</span>=<span class="st0">&quot;'Python View Language Sample'&quot;</span><span class="re2">/&gt;</span></span>
+    <span class="sc3"><span class="re1">&lt;title<span class="re2">&gt;</span></span></span>${@title}<span class="sc3"><span class="re1">&lt;/title<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/head<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;body<span class="re2">&gt;</span></span></span>
+    <span class="sc3"><span class="re1">&lt;use:view</span><span class="re2">/&gt;</span></span>
+  <span class="sc3"><span class="re1">&lt;/body<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/html<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml">#@title = &quot;Products - &quot; + @title
+<span class="sc3"><span class="re1">&lt;ul<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;li</span> <span class="re0">each</span>=<span class="st0">&quot;p in @products&quot;</span><span class="re2">&gt;</span></span>${html.ActionLink(p.name, &quot;Show&quot;)}<span class="sc3"><span class="re1">&lt;/li<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/ul<span class="re2">&gt;</span></span></span></pre></div></p>
+
+<h3 id="Invokingmethodsandhelpers">Invoking methods and helpers</h3>
+
+<p>All methods and properties of the base view class are available. Ruby naming convention may be in effect, so if a symbol like ViewData isn't resolved try using view_data.</p>
+
+<p>Some helper methods can be particularly tricky. It appears that native IronRuby can't be used for helper methods which take an anonymous type as a dictionary. The good news is you can typically call those helper methods with a CLR dictionary class you can create. The following is a bit of simplified code from the samples\AspNetMvc\IronRubyViews project available in the download.</p>
+
+<p><div class="geshifilter"><pre class="geshifilter-xml"><span class="sc3"><span class="re1">&lt;div<span class="re2">&gt;</span></span></span>
+  ## make a clr route dictionary for url.action
+  #require 'System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35'
+  #routeData = System::Web::Routing::RouteValueDictionary.new
+&nbsp;
+  ## monkey patch an id setter equivalent to {routeData[&quot;id&quot;] = value}
+  #def routeData.id=(value); set_Item('id',value); end
+&nbsp;
+  #routeData.id = page.CurrentPage - 1
+  <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${url.action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span><span class="sc1">&amp;laquo;</span> Previous<span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+&nbsp;
+  <span class="sc3"><span class="re1">&lt;for</span> <span class="re0">each</span>=<span class="st0">&quot;pageIndex in 1..page.PageCount&quot;</span><span class="re2">&gt;</span></span>
+    #routeData.id = pageIndex
+    <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${url.action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span>${pageIndex}<span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+  <span class="sc3"><span class="re1">&lt;/for<span class="re2">&gt;</span></span></span>
+&nbsp;
+  #routeData.id = page.CurrentPage + 1
+  <span class="sc3"><span class="re1">&lt;a</span> <span class="re0">href</span>=<span class="st0">&quot;${url.action(action, controller, routeData)}&quot;</span><span class="re2">&gt;</span></span>Next <span class="sc1">&amp;raquo;</span><span class="sc3"><span class="re1">&lt;/a<span class="re2">&gt;</span></span></span>
+<span class="sc3"><span class="re1">&lt;/div<span class="re2">&gt;</span></span></span>
+&nbsp;</pre></div></p>
+<div class="buymeabeer"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=louis.dejardin@gmail.com&amp;item_name=Support Spark tools via Paypal." class="buymeabeer-link" title="Support Spark tools via Paypal."><em>Help Spark avoid the Spousal Event Horizon.</em> ;)</a></div>  </div>
 </div>
     
   </body>

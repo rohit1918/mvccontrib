@@ -184,19 +184,18 @@ namespace MvcContrib.UnitTests.ConventionController
 
 			public List<string> CustomViews = new List<string>();
 
-			public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName) 
-			{
-				return null;
-			}
+		    public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+		    {
+		        throw new System.NotImplementedException();
+		    }
 
-			public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName) 
-			{
-				if(CustomViews.Contains(viewName))
-				{
-					return new ViewEngineResult(MockRepository.GenerateStub<IView>(),this);
+		    public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+		    {
+				if (CustomViews.Contains(viewName)) {
+					return new ViewEngineResult(MockRepository.GenerateStub<IView>(), this);
 				}
 				return new ViewEngineResult(new List<string>());
-			}
+		    }
 
 		    public void ReleaseView(ControllerContext controllerContext, IView view)
 		    {

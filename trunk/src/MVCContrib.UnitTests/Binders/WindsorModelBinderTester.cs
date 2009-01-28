@@ -17,10 +17,7 @@ namespace MvcContrib.UnitTests.Binders
 		[SetUp]
 		public void Setup()
 		{
-			var httpContext = MvcMockHelpers.DynamicHttpContextBase();
-			var controllerContext = new ControllerContext(httpContext, new RouteData(), MockRepository.GenerateStub<ControllerBase>());
-
-			_context = new ModelBindingContext(controllerContext, MockRepository.GenerateStub<IValueProvider>(), typeof(object), "Test", null, new ModelStateDictionary(), null);
+		    _context = new ModelBindingContext() { ModelType = typeof(object), ModelName = "test" };
 		}
 
 		[Test]
@@ -32,9 +29,9 @@ namespace MvcContrib.UnitTests.Binders
 
 			var binder = new WindsorModelBinder(container);
 
-			var value = binder.BindModel(_context);
+			var value = binder.BindModel(new ControllerContext(), _context);
 
-			Assert.That(value.Value, Is.EqualTo("TestResult"));
+			Assert.That(value, Is.EqualTo("TestResult"));
 		}
 
 		[Test]
@@ -42,14 +39,14 @@ namespace MvcContrib.UnitTests.Binders
 		{
 			var container = new WindsorContainer();
 			var fallbackBinder = MockRepository.GenerateMock<IModelBinder>();
-			fallbackBinder.Expect(b => b.BindModel(_context))
-				.Return(new ModelBinderResult("MockedResult"));
+			fallbackBinder.Expect(b => b.BindModel(null,_context))
+				.Return("MockedResult");
 
 			var binder = new WindsorModelBinder(container, fallbackBinder);
 
-			var value = binder.BindModel(_context);
+			var value = binder.BindModel(new ControllerContext(), _context);
 
-			Assert.That(value.Value, Is.EqualTo("MockedResult"));
+			Assert.That(value, Is.EqualTo("MockedResult"));
 		}
 
 		[Test, ExpectedException(typeof(InvalidOperationException))]
@@ -59,15 +56,15 @@ namespace MvcContrib.UnitTests.Binders
 			container.AddComponent<object>("testmodelbinder");
 
 			var binder = new WindsorModelBinder(container);
-			binder.BindModel(_context);
+			binder.BindModel(new ControllerContext(),  _context);
 		}
 
 		public class TestModelBinder : IModelBinder
 		{
-			public ModelBinderResult BindModel(ModelBindingContext bindingContext)
-			{
-				return new ModelBinderResult("TestResult");
-			}
+		    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+		    {
+		        return "TestResult";
+		    }
 		}
 	}
 }

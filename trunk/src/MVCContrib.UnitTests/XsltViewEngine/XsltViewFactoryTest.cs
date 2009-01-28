@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.XsltViewEngine
             
 			XsltViewFactory viewFactory = new XsltViewFactory(new XsltTestVirtualPathProvider());
 
-            viewFactory.FindView(new ControllerContext(HttpContext, routeData, _fakeController), "MyView", null);
+            viewFactory.FindView(new ControllerContext(HttpContext, routeData, _fakeController), "MyView", null,false);
 		}
 	}
 }

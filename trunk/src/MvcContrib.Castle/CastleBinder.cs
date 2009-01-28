@@ -2,7 +2,6 @@ using System;
 using System.Web.Mvc;
 using Castle.Components.Binder;
 using MvcContrib.Attributes;
-using MvcContrib.MetaData;
 
 namespace MvcContrib.Castle
 {
@@ -60,14 +59,15 @@ namespace MvcContrib.Castle
 		/// <summary>
 		/// Binds the model object using a castle IDataBinder
 		/// </summary>
+		/// <param name="controllerContext"></param>
 		/// <param name="bindingContext">The current binding context</param>
 		/// <returns>A ModelBinderResult containing the bound object</returns>
-		public override ModelBinderResult BindModel(ModelBindingContext bindingContext) 
+	    public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
-			IDataBinder binder = LocateBinder(bindingContext);
-			string modelName = Prefix ?? bindingContext.ModelName;
-			object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(GetStore(bindingContext)));
-			return new ModelBinderResult(instance);
+            IDataBinder binder = LocateBinder(controllerContext);
+            string modelName = Prefix ?? bindingContext.ModelName;
+            object instance = binder.BindObject(bindingContext.ModelType, modelName, Exclude, null, new TreeBuilder().BuildSourceNode(GetStore(controllerContext)));
+            return instance;
 		}
 
 

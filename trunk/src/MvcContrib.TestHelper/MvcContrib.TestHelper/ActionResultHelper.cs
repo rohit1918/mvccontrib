@@ -110,12 +110,13 @@ namespace MvcContrib.TestHelper
 		/// <returns></returns>
 		public static RedirectToRouteResult WithParameter(this RedirectToRouteResult result, string paramName, object value)
 		{
-			if(!result.Values.ContainsKey(paramName))
+            
+			if(!result.RouteValues.ContainsKey(paramName))
 			{
 				throw new ActionResultAssertionException(string.Format("Could not find a parameter named '{0}' in the result's Values collection.", paramName));
 			}
 
-			var paramValue = result.Values[paramName];
+			var paramValue = result.RouteValues[paramName];
 
 			if(!paramValue.Equals(value))
 			{

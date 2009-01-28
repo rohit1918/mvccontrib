@@ -49,14 +49,12 @@ namespace MvcContrib.UnitTests.Filters
 
 		private static ActionExecutingContext GetFilterContext(ControllerBase controller)
 		{
-			var mockResponse = MockRepository.GenerateStub<HttpResponseBase>();
-			var mockHttpContext = MockRepository.GenerateStub<HttpContextBase>();
-			mockHttpContext.Stub(c => c.Response).Return(mockResponse).Repeat.Any();
-			mockHttpContext.Stub(c => c.Timestamp).Return(new DateTime(2001, 1, 1)).Repeat.Any();
-			var controllerContext = new ControllerContext(mockHttpContext, new RouteData(), controller);
-			controller.ControllerContext = controllerContext;
-			var actionExecutingContext = new ActionExecutingContext(
-				controllerContext, new Dictionary<string, object>());
+			controller.ControllerContext = new ControllerContext { Controller = controller };
+			var actionExecutingContext = new ActionExecutingContext()
+			                             	{
+			                             		ActionParameters = new Dictionary<string, object>(),
+												Controller = controller
+			                             	};
 			return actionExecutingContext;
 		}
 	}

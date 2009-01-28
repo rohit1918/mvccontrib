@@ -23,10 +23,10 @@ namespace MvcContrib.Attributes
 		{
 		}
 
-		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
+		public override object BindModel(ControllerContext controllerContext,    ModelBindingContext bindingContext)
 		{
-			NameValueCollection store = GetStore(bindingContext);
-			return new ModelBinderResult(_deserializer.Deserialize(store, Prefix, bindingContext.ModelType));
+			NameValueCollection store = GetStore(controllerContext);
+			return _deserializer.Deserialize(store, Prefix, bindingContext.ModelType);
 		}
 	}
 }
