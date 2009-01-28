@@ -263,6 +263,7 @@
     <Compile Include="MetaData\FilterTester.cs" />
     <Compile Include="MetaData\NameValueDeserializerTester.cs" />
     <Compile Include="ActionResults\XmlActionResultTester.cs" />
+    <Compile Include="MockValueProvider.cs" />
     <Compile Include="MvcRouteTester.cs" />
     <Compile Include="ConventionController\RescueTester.cs" />
     <Compile Include="PaginationTester.cs" />
