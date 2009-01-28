@@ -2,7 +2,6 @@ using System;
 using System.Web.Mvc;
 using Castle.Components.Binder;
 using MvcContrib.Attributes;
-using MvcContrib.MetaData;
 
 namespace MvcContrib.Castle
 {

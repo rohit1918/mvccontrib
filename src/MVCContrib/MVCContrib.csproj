@@ -108,7 +108,6 @@
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
     <Compile Include="ISubController.cs" />
-    <Compile Include="MetaData\CachedControllerDescriptor.cs" />
     <Compile Include="Pagination\IPagination.cs" />
     <Compile Include="Pagination\LazyPagination.cs" />
     <Compile Include="Pagination\PaginationHelper.cs" />
@@ -124,11 +123,7 @@
     <Compile Include="Routing\RegexRoute.cs" />
     <Compile Include="Routing\RouteDebugger.cs" />
     <Compile Include="Services\EmailTemplateService.cs" />
-    <Compile Include="MetaData\ActionMetaData.cs" />
-    <Compile Include="MetaData\ControllerDescriptor.cs" />
-    <Compile Include="MetaData\IControllerDescriptor.cs" />
     <Compile Include="MetaData\DefaultConvertible.cs" />
-    <Compile Include="MetaData\ControllerMetaData.cs" />
     <Compile Include="MetaData\NameValueDeserializer.cs" />
     <Compile Include="Services\DependencyResolver.cs" />
     <Compile Include="Services\IEmailTemplateService.cs" />
