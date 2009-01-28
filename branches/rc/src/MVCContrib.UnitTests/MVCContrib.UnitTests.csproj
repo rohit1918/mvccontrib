@@ -271,7 +271,6 @@
     <Compile Include="SimplyRestful\SimplyRestfulRouteHandlerTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulRouteMatchTester.cs" />
     <Compile Include="SimplyRestful\SimplyRestfulSpecs.cs" />
-    <Compile Include="SparkViewEngine\SparkViewFactoryTester.cs" />
     <Compile Include="SparkViewEngine\ViewSourceLoaderAdapterTester.cs" />
     <Compile Include="SubControllerTester.cs" />
     <Compile Include="TestHelper\ActionResultHelperTester.cs" />
