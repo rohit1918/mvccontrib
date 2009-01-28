@@ -1,65 +1,55 @@
+// Copyright 2008 Louis DeJardin - http://whereslou.com
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// 
 using System.IO;
+using System.Linq;
 using MvcContrib.SparkViewEngine;
 using MvcContrib.ViewFactories;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Spark.FileSystem;
 
 namespace MvcContrib.UnitTests.SparkViewEngine
 {
 	[TestFixture]
-	[Category("SparkViewEngine")]
-	public class ViewSourceLoaderAdapterTester
+	public class ViewSourceLoaderWrapperTester
 	{
-		private MockRepository _mocks;
-
-		[SetUp]
-		public void Init()
-		{
-			_mocks = new MockRepository();
-		}
-
 		[Test]
-		public void HasView_And_ListViews_Calls_Through()
+		public void ResultsAreTheSame()
 		{
-			var loader = _mocks.StrictMock<IViewSourceLoader>();
-			loader.Expect(c => c.HasView("Hello\\World.spark")).Return(true);
-			loader.Expect(c => c.HasView("Hello\\NoSuchFile.spark")).Return(false);
-			loader.Expect(c => c.ListViews("Hello")).Return(new[] { "World.spark" });
+			IViewSourceLoader loader = new FileSystemViewSourceLoader("MvcContrib.Tests.Views");
+			IViewFolder wrapper = new ViewSourceLoaderWrapper(loader);
 
-			var container = _mocks.StrictMock<IViewSourceLoaderContainer>();
-			container.Expect(c => c.ViewSourceLoader).Return(loader).Repeat.Times(3);
+			Assert.AreEqual(loader.HasView("Home\\foreach.spark"), wrapper.HasView("Home\\foreach.spark"));
+			Assert.AreEqual(loader.HasView("Home\\nosuchfile.spark"), wrapper.HasView("Home\\nosuchfile.spark"));
 
-			_mocks.ReplayAll();
-			IViewFolder viewFolder = new ViewSourceLoaderAdapter(container);
-			Assert.IsTrue(viewFolder.HasView("Hello\\World.spark"));
-			Assert.IsFalse(viewFolder.HasView("Hello\\NoSuchFile.spark"));
-			var views = viewFolder.ListViews("Hello");
-			Assert.AreEqual(1, views.Count);
-			_mocks.VerifyAll();
-		}
+			var loaderViews = loader.ListViews("Shared");
+			var wrapperViews = wrapper.ListViews("Shared");
+			Assert.AreEqual(loaderViews.Count(), wrapperViews.Count);
 
-		[Test]
-		public void GetViewSource_Calls_Through()
-		{
-			var stream = new MemoryStream(new byte[] { 1, 2, 3 });
+			foreach(var viewName in loaderViews)
+			{
+				Assert.That(wrapperViews.Contains(viewName));
+			}
 
-			var source = _mocks.StrictMock<IViewSource>();
-			source.Expect(c => c.LastModified).Return(12345);
-			source.Expect(c => c.OpenViewStream()).Return(stream);
+			var loaderView = loader.GetViewSource("Home\\foreach.spark");
+			var wrapperView = wrapper.GetViewSource("Home\\foreach.spark");
 
-			var loader = _mocks.StrictMock<IViewSourceLoader>();
-			loader.Expect(c => c.GetViewSource("Hello\\World.spark")).Return(source);
+			Assert.AreEqual(loaderView.LastModified, wrapperView.LastModified);
 
-			var container = _mocks.StrictMock<IViewSourceLoaderContainer>();
-			container.Expect(c => c.ViewSourceLoader).Return(loader);
-
-			_mocks.ReplayAll();
-			var viewFolder = new ViewSourceLoaderAdapter(container);
-			var viewFile = viewFolder.GetViewSource("Hello\\World.spark");
-			Assert.AreEqual(12345, viewFile.LastModified);
-			Assert.AreSame(stream, viewFile.OpenViewStream());
-			_mocks.VerifyAll();
+			var loaderReader = new StreamReader(loaderView.OpenViewStream());
+			var wrapperReader = new StreamReader(wrapperView.OpenViewStream());
+			Assert.AreEqual(loaderReader.ReadToEnd(), wrapperReader.ReadToEnd());
 		}
 	}
 }
