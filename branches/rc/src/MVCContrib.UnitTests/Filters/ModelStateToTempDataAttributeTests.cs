@@ -8,6 +8,7 @@ using System.Web.Routing;
 using MvcContrib.Filters;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.Filters
 {
@@ -23,7 +24,7 @@ namespace MvcContrib.UnitTests.Filters
 		{
 			controller = new TestingController().SetupControllerContext();
 			attr = new ModelStateToTempDataAttribute();
-			context = new ActionExecutedContext(controller.ControllerContext, null,false, null);
+			context = new ActionExecutedContext(controller.ControllerContext, MockRepository.GenerateStub<ActionDescriptor>(),false, null);
 		}
 
 		private void SetupModelState(ModelStateDictionary modelData)
@@ -51,14 +52,12 @@ namespace MvcContrib.UnitTests.Filters
 
 			attr.OnActionExecuted(context);
 
-			var fromTempData =
-				(Dictionary<string, ModelStateToTempDataAttribute.ModelStateSerializable>)
-				TempData[ModelStateToTempDataAttribute.TempDataKey];
+			var fromTempData =(ModelStateDictionary)TempData[ModelStateToTempDataAttribute.TempDataKey];
 
 			Assert.That(fromTempData.Count, Is.EqualTo(2));
 			Assert.That(fromTempData["foo"].Errors.Count(), Is.EqualTo(2));
-			Assert.That(fromTempData["foo"].Errors.First(), Is.EqualTo("bar"));
-			Assert.That(fromTempData["bar"].Errors.First(), Is.EqualTo("blah"));
+			Assert.That(fromTempData["foo"].Errors.First().ErrorMessage, Is.EqualTo("bar"));
+			Assert.That(fromTempData["bar"].Errors.First().Exception.Message, Is.EqualTo("blah"));
 		}
 
 		[Test]
@@ -73,12 +72,9 @@ namespace MvcContrib.UnitTests.Filters
 		[Test]
 		public void When_a_viewresult_is_returned_the_modelstate_should_be_copied_from_tempdata_to_viewdata()
 		{
-			var dict = new Dictionary<string, ModelStateToTempDataAttribute.ModelStateSerializable>();
-			var tempModState = new ModelStateDictionary();
-			SetupModelState(tempModState);
-			dict.Add("foo", new ModelStateToTempDataAttribute.ModelStateSerializable(tempModState["foo"]));
-			dict.Add("bar", new ModelStateToTempDataAttribute.ModelStateSerializable(tempModState["bar"]));
-			TempData[ModelStateToTempDataAttribute.TempDataKey] = dict;
+			var tempDataModelState = new ModelStateDictionary();
+			SetupModelState(tempDataModelState);
+			TempData[ModelStateToTempDataAttribute.TempDataKey] = tempDataModelState;
 
 			context.Result = new ViewResult();
 
@@ -87,7 +83,7 @@ namespace MvcContrib.UnitTests.Filters
 			Assert.That(ModelState.Count, Is.EqualTo(2));
 			Assert.That(ModelState["foo"].Errors.Count, Is.EqualTo(2));
 			Assert.That(ModelState["foo"].Errors[0].ErrorMessage, Is.EqualTo("bar"));
-			Assert.That(ModelState["bar"].Errors[0].ErrorMessage, Is.EqualTo("blah"));
+			Assert.That(ModelState["bar"].Errors[0].Exception.Message, Is.EqualTo("blah"));
 		}
 
 		[Test]
@@ -96,9 +92,7 @@ namespace MvcContrib.UnitTests.Filters
 			SetupModelState(ModelState);
 			context.Result = new RedirectToRouteResult(new RouteValueDictionary());
 			attr.OnActionExecuted(context);
-			var fromTempData =
-				(Dictionary<string, ModelStateToTempDataAttribute.ModelStateSerializable>)
-				TempData[ModelStateToTempDataAttribute.TempDataKey];
+			var fromTempData =(ModelStateDictionary)TempData[ModelStateToTempDataAttribute.TempDataKey];
 
 			using(var stream = new MemoryStream())
 			{
