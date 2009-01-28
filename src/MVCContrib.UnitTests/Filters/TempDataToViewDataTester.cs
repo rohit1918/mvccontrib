@@ -3,6 +3,7 @@ using System.Web.Routing;
 using MvcContrib.Filters;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.Filters
 {
@@ -16,7 +17,7 @@ namespace MvcContrib.UnitTests.Filters
 		public void Setup()
 		{
 			_filter = new TempDataToViewDataAttribute();
-			_context = new ActionExecutedContext(new TestController().SetupControllerContext().ControllerContext,null, false,null);
+			_context = new ActionExecutedContext(new TestController().SetupControllerContext().ControllerContext, MockRepository.GenerateStub<ActionDescriptor>(), false,null);
 			_context.Controller.TempData.Add("foo", "bar");
 			_context.Controller.TempData.Add("baz", "blah");
 		}
