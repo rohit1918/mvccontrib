@@ -38,17 +38,14 @@ namespace MvcContrib.Castle
 			_defaultModelBinder = defaultModelBinder;
 		}
 
-		public object BindModel(ModelBindingContext bindingContext)
-		{
-
+	    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+	    {
 			string componentName = bindingContext.ModelName.ToLower() + "modelbinder";
 
-			if(_container.Kernel.HasComponent(componentName))
-			{
+			if (_container.Kernel.HasComponent(componentName)) {
 				var binderFromWindsor = _container.Resolve(componentName) as IModelBinder;
 
-				if(binderFromWindsor == null)
-				{
+				if (binderFromWindsor == null) {
 					throw new InvalidOperationException(string.Format("Expected component with key {0} to be an IModelBinder.", componentName));
 				}
 
@@ -56,12 +53,7 @@ namespace MvcContrib.Castle
 			}
 
 			// Delegate to the base binder if the type hasn't been registered in Windsor (also does String, Int32 etc if we're using DefaultModelBinder)
-			return _defaultModelBinder.BindModel(null,bindingContext);
-		}
-
-	    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-	    {
-	        throw new System.NotImplementedException();
+			return _defaultModelBinder.BindModel(null, bindingContext);
 	    }
 	}
 }

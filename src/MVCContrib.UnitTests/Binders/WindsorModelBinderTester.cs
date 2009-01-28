@@ -17,11 +17,7 @@ namespace MvcContrib.UnitTests.Binders
 		[SetUp]
 		public void Setup()
 		{
-			var httpContext = MvcMockHelpers.DynamicHttpContextBase();
-			var controllerContext = new ControllerContext(httpContext, new RouteData(), MockRepository.GenerateStub<ControllerBase>());
-
-		    _context = new ModelBindingContext();
-            //controllerContext, MockRepository.GenerateStub<IValueProvider>(), typeof(object), "Test", null, new ModelStateDictionary(), null);
+		    _context = new ModelBindingContext() { ModelType = typeof(object), ModelName = "test" };
 		}
 
 		[Test]
@@ -33,7 +29,7 @@ namespace MvcContrib.UnitTests.Binders
 
 			var binder = new WindsorModelBinder(container);
 
-			var value = binder.BindModel(_context);
+			var value = binder.BindModel(new ControllerContext(), _context);
 
 			Assert.That(value, Is.EqualTo("TestResult"));
 		}
@@ -48,7 +44,7 @@ namespace MvcContrib.UnitTests.Binders
 
 			var binder = new WindsorModelBinder(container, fallbackBinder);
 
-			var value = binder.BindModel(_context);
+			var value = binder.BindModel(new ControllerContext(), _context);
 
 			Assert.That(value, Is.EqualTo("MockedResult"));
 		}
@@ -60,7 +56,7 @@ namespace MvcContrib.UnitTests.Binders
 			container.AddComponent<object>("testmodelbinder");
 
 			var binder = new WindsorModelBinder(container);
-			binder.BindModel(_context);
+			binder.BindModel(new ControllerContext(),  _context);
 		}
 
 		public class TestModelBinder : IModelBinder
