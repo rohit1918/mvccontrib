@@ -9,14 +9,17 @@ using Rhino.Mocks;
 using MvcContrib.Interfaces;
 using System.Linq;
 using MvcContrib.Services;
-namespace MvcContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html 
 {
+#pragma warning disable 618,612
+
 	[TestFixture]
 	public class FormHelperTester
 	{
 		public class BaseFormHelperTester : BaseViewTester
 		{
 			protected FormHelper _helper;
+
 
 			[SetUp]
 			protected override void Setup()
@@ -107,7 +110,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void ObtainFromViewData_should_return_null()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				(_viewContext.ViewData).Add("foo", "Bar");
 				_helper.Binder = null;
 				string html = _helper.TextField("foo");
 				string expected = "<input type=\"text\" name=\"foo\" id=\"foo\"/>";
@@ -177,7 +180,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				_viewContext.ViewData.Add("foo", "Bar");
 				string html = _helper.TextField("foo");
 				string expected = "<input type=\"text\" name=\"foo\" id=\"foo\" value=\"Bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -226,7 +229,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				_viewContext.ViewData.Add("foo", "Bar");
 				string html = _helper.PasswordField("foo");
 				string expected = "<input type=\"password\" name=\"foo\" id=\"foo\" value=\"Bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -275,7 +278,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				_viewContext.ViewData.Add("foo", "Bar");
 				string html = _helper.HiddenField("foo");
 				string expected = "<input type=\"hidden\" name=\"foo\" id=\"foo\" value=\"Bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -323,7 +326,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "Bar");
+				_viewContext.ViewData.Add("foo", "Bar");
 				string html = _helper.TextArea("foo");
 				string expected = "<textarea name=\"foo\" id=\"foo\">Bar</textarea>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -453,7 +456,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("persons", BuildPeople().Select(p => p.Id).ToArray());
+				_viewContext.ViewData.Add("persons", BuildPeople().Select(p => p.Id).ToArray());
 				string html = _helper.Select("persons", BuildPeople(), "Name", "Id");
 				string expected = "<select name=\"persons\" id=\"persons\"><option value=\"1\" selected=\"selected\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -462,7 +465,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_the_name_matches_an_item_in_the_ViewData_it_should_be_databound_ids_only()
 			{
-				((IDictionary)_viewContext.ViewData).Add("persons", new[] { 1, 2 });
+				_viewContext.ViewData.Add("persons", new[] { 1, 2 });
 				string html = _helper.Select("persons", BuildPeople(), "Name", "Id");
 				string expected = "<select name=\"persons\" id=\"persons\"><option value=\"1\" selected=\"selected\">Jeremy</option><option value=\"2\" selected=\"selected\">Josh</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -479,7 +482,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_generic_enum_parameter_and_the_name_matches_an_item_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("enumArray", new[] { TestEnum.One, TestEnum.Two });
+				_viewContext.ViewData.Add("enumArray", new[] { TestEnum.One, TestEnum.Two });
 				var html = _helper.Select<TestEnum>("enumArray");
 				var expected = "<select name=\"enumArray\" id=\"enumArray\"><option value=\"0\" selected=\"selected\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -488,7 +491,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void With_generic_enum_parameter_and_the_name_matches_property_on_complex_object_in_the_ViewData_it_should_be_databound()
 			{
-				((IDictionary)_viewContext.ViewData).Add("person", new Person("Jeremy", 1) {Test = TestEnum.Two});
+				_viewContext.ViewData.Add("person", new Person("Jeremy", 1) {Test = TestEnum.Two});
 				var html = _helper.Select<TestEnum>("person.Test");
 				var expected = "<select name=\"person.Test\" id=\"person-Test\"><option value=\"0\">One</option><option value=\"1\" selected=\"selected\">Two</option></select>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -574,7 +577,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_Checked_should_be_true_if_item_in_viewdata_is_true()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", true);
+				_viewContext.ViewData.Add("foo", true);
 				string html = _helper.CheckBoxField("foo");
 				string expected = "<input type=\"checkbox\" name=\"foo\" id=\"foo\" value=\"true\" checked=\"checked\"/><input type=\"hidden\" value=\"false\" id=\"fooH\" name=\"foo\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -583,7 +586,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void Then_Checked_should_be_false_if_item_in_viewdata_is_false()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", false);
+				_viewContext.ViewData.Add("foo", false);
 				string html = _helper.CheckBoxField("foo");
 				string expected = "<input type=\"checkbox\" name=\"foo\" id=\"foo\" value=\"true\"/><input type=\"hidden\" value=\"false\" id=\"fooH\" name=\"foo\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -669,7 +672,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_its_value_matches_the_viewdata_value_then_checked_should_be_set()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "bar");
+				_viewContext.ViewData.Add("foo", "bar");
 				string html = _helper.RadioField("foo", "bar");
 				string expected = "<input type=\"radio\" name=\"foo\" value=\"bar\" checked=\"checked\" id=\"foo-bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -678,7 +681,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			[Test]
 			public void And_its_value_does_not_match_viewdata_value_then_checked_should_not_be_set()
 			{
-				((IDictionary)_viewContext.ViewData).Add("foo", "foo");
+				_viewContext.ViewData.Add("foo", "foo");
 				string html = _helper.RadioField("foo", "bar");
 				string expected = "<input type=\"radio\" name=\"foo\" value=\"bar\" id=\"foo-bar\"/>";
 				Assert.That(html, Is.EqualTo(expected));
@@ -804,7 +807,7 @@ namespace MvcContrib.UnitTests.UI.Html
 				public void With_string_key_and_item_is_in_viewdata_then_item_should_be_extracted_from_viewdata()
 				{
 					var p = new Person("Jeremy", 1);
-					((IDictionary)_viewContext.ViewData).Add("person", p);
+					_viewContext.ViewData.Add("person", p);
 					_helper.For<Person>("person", "/home/index", Hash.Empty, f => Assert.That(f.Item.Name, Is.EqualTo("Jeremy")));
 				}
 
@@ -846,4 +849,5 @@ namespace MvcContrib.UnitTests.UI.Html
 			Two
 		}
 	}
+#pragma warning restore 618,612
 }

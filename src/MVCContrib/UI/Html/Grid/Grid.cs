@@ -59,7 +59,7 @@ namespace MvcContrib.UI.Html.Grid
 
 		protected static IEnumerable<T> GetDataSourceFromViewData(string key, ViewContext context)
 		{
-			object items = new DefaultDataBinder().ExtractValue(key, context);
+			object items = key == null ? null : context.ViewData.Eval(key);
 			IEnumerable<T> collection = null;
 
 			if (items != null)

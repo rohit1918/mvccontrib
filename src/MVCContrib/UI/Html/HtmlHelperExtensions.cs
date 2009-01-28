@@ -6,7 +6,9 @@ namespace MvcContrib.UI.Html
 	{
 		public static IFormHelper FormHelper(this HtmlHelper helper)
 		{
+#pragma warning disable 618,612
 			return Html.FormHelper.GetInstance(helper.ViewContext);
+#pragma warning restore 618,612
 		}
 
 		public static IValidationHelper Validation(this HtmlHelper helper)

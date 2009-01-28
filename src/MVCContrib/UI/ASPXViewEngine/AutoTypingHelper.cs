@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace MvcContrib.UI.ASPXViewEngine
 			else
 			{
 				// Convert the incoming object to a dictionary, if it isn't one already
-				IDictionary suppliedProps = viewData;
+				IDictionary<string,Object> suppliedProps = viewData;
 				if(viewData.Model != null)
 				{
 					suppliedProps = viewData.Model.GetType().GetProperties()
@@ -31,7 +32,7 @@ namespace MvcContrib.UI.ASPXViewEngine
 				// Construct a T object, taking values from suppliedProps where available
 				var result = Activator.CreateInstance<T>();
 				foreach (var allowedProp in typeof(T).GetProperties())
-					if (suppliedProps.Contains(allowedProp.Name))
+					if (suppliedProps.ContainsKey(allowedProp.Name))
 						allowedProp.SetValue(result, suppliedProps[allowedProp.Name], null);
 
 				viewData.Model = result;

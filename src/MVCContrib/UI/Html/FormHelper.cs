@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace MvcContrib.UI.Html
 {
+	[Obsolete]
 	public class FormHelper : BaseHelper, IFormHelper
 	{
 		public const string CACHE_KEY = "__MvcContribFormHelper__";

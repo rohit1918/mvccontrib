@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace MvcContrib.UI.Html
 {
+	[Obsolete]
 	public class DefaultDataBinder : IDataBinder
 	{
 		public object NestedRootInstance { get; set; }

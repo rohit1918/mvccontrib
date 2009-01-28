@@ -89,11 +89,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			return Xml("Test 1 2 3");
 		}
 
-		public ActionResult BinaryResult()
-		{
-			return Binary(new byte[1], "application/ms-excel", true, "test.pdf");
-		}
-
 		public RedirectToRouteResult RedirectActionOnSameController()
 		{
 			return RedirectToAction<TestController>(c => c.BasicAction(1));

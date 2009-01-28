@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace MvcContrib.Filters
@@ -42,68 +39,18 @@ namespace MvcContrib.Filters
 		{
 			if(!tempData.ContainsKey(TempDataKey)) return;
 
-			var fromTempData = tempData[TempDataKey] as Dictionary<string, ModelStateSerializable>;
+			var fromTempData = tempData[TempDataKey] as ModelStateDictionary;
 			if(fromTempData == null) return;
 
 			foreach(var pair in fromTempData)
 			{
-				modelState.Add(pair.Key, pair.Value.ToModelState());
+				modelState.Add(pair.Key, pair.Value);
 			}
 		}
 
 		private static void CopyModelStateToTempData(ModelStateDictionary modelState, TempDataDictionary tempData)
 		{
-			var dict = new Dictionary<string, ModelStateSerializable>();
-
-			foreach(var statePair in modelState)
-			{
-				dict.Add(statePair.Key, new ModelStateSerializable(statePair.Value));
-			}
-
-			tempData[TempDataKey] = dict;
-		}
-
-		/// <summary>
-		/// Temporarily stores ModelStat entries so they can be serialized to SessionState.
-		/// </summary>
-		[Serializable]
-		public class ModelStateSerializable
-		{
-			/// <summary>
-			/// The errors from the ModelCollection
-			/// </summary>
-			public IEnumerable<string> Errors { get; private set; }
-
-			/// <summary>
-			/// The attempted value
-			/// </summary>
-			public string AttemptedValue { get; private set; }
-
-			/// <summary>
-			/// Creates a new instance of the ModelStateSerializable class.
-			/// </summary>
-			/// <param name="value">The ModelState entry to wrap</param>
-			public ModelStateSerializable(ModelState value)
-			{
-				AttemptedValue = value.AttemptedValue;
-				Errors = value.Errors
-					.Select(x => x.ErrorMessage)
-					.ToList();
-			}
-
-			/// <summary>
-			/// Converts back to a ModelState instance.
-			/// </summary>
-			/// <returns>A reconstructed ModelState instance</returns>
-			public ModelState ToModelState()
-			{
-				var modelState = new ModelState {AttemptedValue = AttemptedValue};
-				foreach(var error in Errors)
-				{
-					modelState.Errors.Add(error);
-				}
-				return modelState;
-			}
+			tempData[TempDataKey] = modelState;
 		}
 	}
 }

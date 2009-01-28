@@ -23,7 +23,7 @@
 	<!-- debug|release -->
 	<property name="build.dir" value="${build.base}/${nant.settings.currentframework}.${platform::get-name()}-${project::get-name()}-${project.config}/"/>
 
-	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
+	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test"/>
 	<target name="cruise" depends="build, package"/>
   <target name="cruise-coverage" depends="analyze"/>
 	<target name="commiter" depends="build, analyze, package"/>

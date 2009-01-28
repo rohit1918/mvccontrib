@@ -102,15 +102,14 @@ namespace MvcContrib.Castle
 			return _engine.GetTemplate(targetView);
 		}
 
-		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName)
-		{
+	    public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+	    {
 			//TODO: Preview 5: Does this method need any custom logic?
-			return FindView(controllerContext, partialViewName, null);
-		}
+			return FindView(controllerContext, partialViewName, null, useCache);
+	    }
 
-		//TODO: Preview 5: Instead of throwing exceptions if the view cannot be found, return a ViewEngineResult with SearchedLocations populated.
-		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName)
-		{
+	    public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+	    {
 			var controllerName = (string)controllerContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
 
@@ -119,8 +118,8 @@ namespace MvcContrib.Castle
 
 			var view = new NVelocityView(viewTemplate, masterTemplate);
 
-			return new ViewEngineResult(view,this);
-		}
+			return new ViewEngineResult(view, this);
+	    }
 
 	    public void ReleaseView(ControllerContext controllerContext, IView view)
 	    {

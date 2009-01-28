@@ -8,7 +8,7 @@ namespace MvcContrib.Binders
 	///</summary>
 	public class SubControllerBinder : DefaultModelBinder
 	{
-		public override ModelBinderResult BindModel(ModelBindingContext bindingContext)
+		public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
 		{
 			if(typeof(ISubController).IsAssignableFrom(bindingContext.ModelType))
 			{
@@ -18,12 +18,11 @@ namespace MvcContrib.Binders
 					throw new InvalidOperationException(bindingContext.ModelType + " not created properly.");
 				}
 
-				return new ModelBinderResult(instance);
+				return instance;
 			}
 
-			return base.BindModel(bindingContext);
+			return base.BindModel(controllerContext, bindingContext);
 		}
-
 
 		///<summary>
 		/// Creates the subcontroller given its type.  Override this method to wire into an IoC container
