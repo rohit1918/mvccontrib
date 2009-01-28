@@ -26,13 +26,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
-		public void Binary_should_return_BinaryResult_object()
-		{
-			var result = _controller.BinaryResult() as BinaryResult;
-			Assert.That(result, Is.Not.Null);
-		}
-
-		[Test]
 		public void Expression_based_redirect_to_action_should_redirect_correctly_to_same_controller()
 		{
 			var redirectToRouteResult = _controller.RedirectActionOnSameController();

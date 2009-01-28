@@ -167,7 +167,6 @@
     <Compile Include="AcceptGetAttributeTester.cs" />
     <Compile Include="AcceptPostAttributeTester.cs" />
     <Compile Include="Filters\LayoutAttributeTester.cs" />
-    <Compile Include="ActionResults\BinaryActionResultTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="Binders\SubControllerBinderTester.cs" />
     <Compile Include="Binders\WindsorModelBinderTester.cs" />
