@@ -23,7 +23,7 @@ namespace MvcContrib.UnitTests.Filters
 		{
 			controller = new TestingController().SetupControllerContext();
 			attr = new ModelStateToTempDataAttribute();
-			context = new ActionExecutedContext(controller.ControllerContext, false, null);
+			context = new ActionExecutedContext(controller.ControllerContext, null,false, null);
 		}
 
 		private void SetupModelState(ModelStateDictionary modelData)

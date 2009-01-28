@@ -44,9 +44,7 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void It_should_obtain_the_value_from_typed_ViewData()
 			{
 				var viewContext = new ViewContext(
-						_viewContext.HttpContext, 
-						_viewContext.RouteData, 
-						_viewContext.Controller, 
+						_viewContext.Controller.ControllerContext, 
 						_viewContext.View, 
 						new ViewDataDictionary(new Person("Jeremy")), 
 						_viewContext.TempData);
@@ -62,11 +60,9 @@ namespace MvcContrib.UnitTests.UI.Html
 				var p = new Person {NestedPerson = new Person("Jeremy")};
 
 				var viewContext = new ViewContext(
-						_viewContext.HttpContext,
-						_viewContext.RouteData,
-						_viewContext.Controller,
+						_viewContext.Controller.ControllerContext,
 						_viewContext.View,
-						new ViewDataDictionary(p), 
+						new ViewDataDictionary(p),
 						_viewContext.TempData);
 
 				object instance = _binder.ExtractValue("NestedPerson.Name", viewContext);

@@ -58,7 +58,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void LoadValidView()
 		{
-			NVelocityView view = (NVelocityView)_viewEngine.FindView(_controllerContext, "view", null).View;
+			NVelocityView view = (NVelocityView)_viewEngine.FindView(_controllerContext, "view", null,false).View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 		}
@@ -68,14 +68,14 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void InvalidViewThrows()
 		{
 			//var context = new ViewContext(_controllerContext, "nonExistant", null, null);
-			_viewEngine.FindView(_controllerContext, "nonExistant", null);
+			_viewEngine.FindView(_controllerContext, "nonExistant", null,false);
 		}
 
 		[Test]
 		public void LoadValidViewWithMaster()
 		{
 			//var context = new ViewContext(_controllerContext, "view", null, null);
-			NVelocityView view = (NVelocityView)_viewEngine.FindView(_controllerContext, "view", "master").View;
+			NVelocityView view = (NVelocityView)_viewEngine.FindView(_controllerContext, "view", "master",false).View;
 			Assert.IsNotNull(view);
 			Assert.IsNotNull(view.ViewTemplate);
 			Assert.IsNotNull(view.MasterTemplate);
@@ -86,7 +86,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		public void InvalidMasterThrows()
 		{
 			//var context = new ViewContext(_controllerContext, "view", null, null);
-			_viewEngine.FindView(_controllerContext, "view", "nonExistant");
+			_viewEngine.FindView(_controllerContext, "view", "nonExistant",false);
 		}
 
 		[Test]
@@ -94,7 +94,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			string expected = "Master Template View Template";
 
-		    var view = _viewEngine.FindView(_controllerContext, "view", "master").View;
+		    var view = _viewEngine.FindView(_controllerContext, "view", "master",false).View;
             var context = new ViewContext(_controllerContext, view, null, null);
             view.Render(context, _output);
 			string output = _output.ToString();
