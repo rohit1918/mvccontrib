@@ -41,7 +41,7 @@ namespace MvcContrib
 		/// <returns>True if type is a controller, otherwise false</returns>
 		public static bool IsController(Type type) {
 			return type != null
-				&& type.IsPublic
+//				&& type.IsPublic
 				&& type.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase)
 				&& !type.IsAbstract
 				&& typeof(IController).IsAssignableFrom(type);
