@@ -35,7 +35,7 @@ namespace MvcContrib.UnitTests.Binders
 
 			var value = binder.BindModel(_context);
 
-			Assert.That(value.Value, Is.EqualTo("TestResult"));
+			Assert.That(value, Is.EqualTo("TestResult"));
 		}
 
 		[Test]
@@ -43,14 +43,14 @@ namespace MvcContrib.UnitTests.Binders
 		{
 			var container = new WindsorContainer();
 			var fallbackBinder = MockRepository.GenerateMock<IModelBinder>();
-			fallbackBinder.Expect(b => b.BindModel(_context))
-				.Return(new ModelBinderResult("MockedResult"));
+			fallbackBinder.Expect(b => b.BindModel(null,_context))
+				.Return("MockedResult");
 
 			var binder = new WindsorModelBinder(container, fallbackBinder);
 
 			var value = binder.BindModel(_context);
 
-			Assert.That(value.Value, Is.EqualTo("MockedResult"));
+			Assert.That(value, Is.EqualTo("MockedResult"));
 		}
 
 		[Test, ExpectedException(typeof(InvalidOperationException))]

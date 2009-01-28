@@ -37,9 +37,9 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			var redirectToRouteResult = _controller.RedirectActionOnSameController();
 
-			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("Test"));
-			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("BasicAction"));
-			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(1));
+			Assert.That(redirectToRouteResult.RouteValues["Controller"], Is.EqualTo("Test"));
+			Assert.That(redirectToRouteResult.RouteValues["Action"], Is.EqualTo("BasicAction"));
+			Assert.That(redirectToRouteResult.RouteValues["Id"], Is.EqualTo(1));
 		}
 
 		[Test]
@@ -47,9 +47,9 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			var redirectToRouteResult = _controller.RedirectActionOnAnotherController();
 
-			Assert.That(redirectToRouteResult.Values["Controller"], Is.EqualTo("AnotherTest"));
-			Assert.That(redirectToRouteResult.Values["Action"], Is.EqualTo("SomeAction"));
-			Assert.That(redirectToRouteResult.Values["Id"], Is.EqualTo(2));
+			Assert.That(redirectToRouteResult.RouteValues["Controller"], Is.EqualTo("AnotherTest"));
+			Assert.That(redirectToRouteResult.RouteValues["Action"], Is.EqualTo("SomeAction"));
+			Assert.That(redirectToRouteResult.RouteValues["Id"], Is.EqualTo(2));
 		}
 
 		[Test]

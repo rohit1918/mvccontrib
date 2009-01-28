@@ -119,13 +119,13 @@ namespace MvcContrib.UnitTests.Filters
 
 		private static ActionExecutingContext GetActionExecutingContext()
 		{
-			var actionExecutingContext = new ActionExecutingContext(GetControllerContext(), new Dictionary<string, object>());
+			var actionExecutingContext = new ActionExecutingContext(GetControllerContext(),null, new Dictionary<string, object>());
 			return actionExecutingContext;
 		}
 
 		private static ActionExecutedContext GetActionExecutedContext(Exception e)
 		{
-			var actionExecutingContext = new ActionExecutedContext(GetControllerContext(), false, e);
+			var actionExecutingContext = new ActionExecutedContext(GetControllerContext(), null,false, e);
 			return actionExecutingContext;
 		}
 
