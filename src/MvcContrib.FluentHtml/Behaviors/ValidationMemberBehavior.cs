@@ -32,9 +32,9 @@ namespace MvcContrib.FluentHtml.Behaviors
 			{
 				element.Builder.AddCssClass(validationErrorCssClass);
 				var valueMethod = element.GetType().GetMethod("Value");
-				if (valueMethod != null)
+                if (valueMethod != null && state.Value != null)
 				{
-					valueMethod.Invoke(element, new [] { state.Value });
+					valueMethod.Invoke(element, new [] { state.Value.AttemptedValue });
 				}
 			}
 		}

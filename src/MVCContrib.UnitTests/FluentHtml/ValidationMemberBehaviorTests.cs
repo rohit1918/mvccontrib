@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using MvcContrib.FluentHtml.Behaviors;
@@ -67,7 +68,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void element_with_error_renders_with_attempted_value()
 		{
 			stateDictionary.AddModelError("Price", "Something bad happened");
-			stateDictionary["Price"].AttemptedValue = "bad value";
+		    stateDictionary["Price"].Value = new ValueProviderResult("bad value", "bad value", CultureInfo.CurrentCulture);
 			target = new ValidationMemberBehavior(() => stateDictionary);
 			expression = x => x.Price;
 			textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(),
