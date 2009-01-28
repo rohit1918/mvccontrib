@@ -32,7 +32,7 @@ namespace MvcContrib.UI.ASPXViewEngine
 				// Construct a T object, taking values from suppliedProps where available
 				var result = Activator.CreateInstance<T>();
 				foreach (var allowedProp in typeof(T).GetProperties())
-					if (suppliedProps.Values.Contains(allowedProp.Name))
+					if (suppliedProps.ContainsKey(allowedProp.Name))
 						allowedProp.SetValue(result, suppliedProps[allowedProp.Name], null);
 
 				viewData.Model = result;
