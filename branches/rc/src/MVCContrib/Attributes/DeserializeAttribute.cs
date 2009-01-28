@@ -25,7 +25,7 @@ namespace MvcContrib.Attributes
 
 		public override object BindModel(ControllerContext controllerContext,    ModelBindingContext bindingContext)
 		{
-			NameValueCollection store = GetStore(bindingContext);
+			NameValueCollection store = GetStore(controllerContext);
 			return _deserializer.Deserialize(store, Prefix, bindingContext.ModelType);
 		}
 	}

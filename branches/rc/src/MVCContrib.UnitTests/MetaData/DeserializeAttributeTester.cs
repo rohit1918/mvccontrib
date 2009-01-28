@@ -12,15 +12,12 @@ namespace MvcContrib.UnitTests.MetaData
 	[TestFixture]
 	public class DeserializeAttributeTester
 	{
-		private MockRepository _mocks;
 		private ControllerContext _controllerContext;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_mocks = new MockRepository();
-			var context = _mocks.DynamicHttpContextBase();
-			_mocks.Replay(context.Request);
+			var context = MvcMockHelpers.DynamicHttpContextBase();
 
 			context.Request.QueryString["ids[0]"] = "1";
 			context.Request.QueryString["dupe[0]"] = "1";
@@ -34,7 +31,7 @@ namespace MvcContrib.UnitTests.MetaData
 			context.Request.ServerVariables["ids[3]"] = "4";
 			context.Request.ServerVariables["dupe[0]"] = "4";
 
-			var controller = _mocks.DynamicMock<ControllerBase>();
+			var controller = MockRepository.GenerateStub<ControllerBase>();
 			controller.TempData = new TempDataDictionary();
 			controller.TempData["ids[4]"] = 5;
 			controller.TempData["dupe[0]"] = 5;
@@ -49,8 +46,7 @@ namespace MvcContrib.UnitTests.MetaData
 
 		private ModelBindingContext CreateContext(Type type)
 		{
-			return new ModelBindingContext();
-			//_controllerContext, MockRepository.GenerateStub<IValueProvider>(), type, null, null, new ModelStateDictionary(), null);
+			return new ModelBindingContext() { ModelType = type };
 		}
 
 		[Test]
