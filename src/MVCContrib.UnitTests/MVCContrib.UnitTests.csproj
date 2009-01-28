@@ -410,6 +410,9 @@
     <None Include="BrailViewEngine\Views\view.brail">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SparkViewEngine\Views\Home\foreach.spark">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SparkViewEngine\Views\Home\List.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

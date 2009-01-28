@@ -27,7 +27,7 @@ namespace MvcContrib.UnitTests.SparkViewEngine
 		[Test]
 		public void ResultsAreTheSame()
 		{
-			IViewSourceLoader loader = new FileSystemViewSourceLoader("MvcContrib.Tests.Views");
+			IViewSourceLoader loader = new FileSystemViewSourceLoader("SparkViewEngine\\Views");
 			IViewFolder wrapper = new ViewSourceLoaderWrapper(loader);
 
 			Assert.AreEqual(loader.HasView("Home\\foreach.spark"), wrapper.HasView("Home\\foreach.spark"));
