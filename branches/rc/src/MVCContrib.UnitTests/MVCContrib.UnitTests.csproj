@@ -256,7 +256,6 @@
     <Compile Include="EmailTemplateServiceTest.cs" />
     <Compile Include="MetaData\CastleBinderTester.cs" />
     <Compile Include="MetaData\CastleSimpleBinderTester.cs" />
-    <Compile Include="MetaData\ControllerDescriptorTester.cs" />
     <Compile Include="MetaData\DefaultConvertibleTester.cs" />
     <Compile Include="MetaData\DeserializeAttributeTester.cs" />
     <Compile Include="MetaData\FilterTester.cs" />
