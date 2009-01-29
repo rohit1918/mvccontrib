@@ -26,7 +26,16 @@ namespace MvcContrib.UnitTests.TestHelper
             {
                 return null;
             }
+			
+			public ActionResult List(Bar bar)
+			{
+				return null;
+			}
         }
+		public class Bar
+		{
+			
+		}
 
         public class AwesomeController : Controller
         {
@@ -107,5 +116,12 @@ namespace MvcContrib.UnitTests.TestHelper
 
             "~/funky/bar/widget".ShouldMapTo<FunkyController>( x => x.Bar( widget ) );
         }
+		[Test]
+		public void should_be_able_to_test_routes_with_member_expressions_being_used_but_ignore_null_complex_parameteres()
+		{
+			
+
+			"~/funky/List".ShouldMapTo<FunkyController>(x => x.List(null));
+		}
     }
 }
