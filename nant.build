@@ -219,7 +219,7 @@
       commandline="documentation\docs.shfb" workingdir="." />
   </target>-->
 
-	<target name="release" >
+	<target name="release" depends="version">
 		<exec program="bin\codeplex\CreateRelease.exe"
             commandline="&quot;RC - ${project.fullversion}&quot;"
 					workingdir="." />
