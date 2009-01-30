@@ -297,6 +297,7 @@
     <Compile Include="UI\Html\TagTester.cs" />
     <Compile Include="UI\Html\ValidationHelperTester.cs" />
     <Compile Include="UI\Html\ValidatorTester.cs" />
+    <Compile Include="UI\MenuBuilder\MenuBuilderTests.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
     <Compile Include="ViewDataExtensionsForIDictionaryTester.cs" />
     <Compile Include="ViewDataExtensionsForViewDataTester.cs" />
