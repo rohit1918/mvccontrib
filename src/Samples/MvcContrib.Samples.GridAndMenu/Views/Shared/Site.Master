@@ -1,3 +1,4 @@
+<%@ Import Namespace="MvcContrib.UI.MenuBuilder"%>
 <%@ Import Namespace="MvcContrib.Samples.GridAndMenu.Navigation"%>
 <%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 
@@ -32,7 +33,7 @@
             
             <div id="menucontainer">
                 <%
-                    GridSampleMenu.MainMenu().RenderHtml(ViewContext, Writer);
+                    Html.Menu(GridSampleMenu.MainMenu());
                 %>
             </div>
         </div>
