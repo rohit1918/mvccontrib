@@ -5,12 +5,12 @@ namespace MvcContrib.FluentHtml.Expressions
 {
 	public static class ExpressionExtensions
 	{
-		public static string GetNameFor<T>(this Expression<Func<T, object>> expression) where T : class
+		public static string GetNameFor<T, TValue>(this Expression<Func<T, TValue>> expression) where T : class
 		{
 			return new ExpressionNameVisitor().Visit(expression.Body);
 		}
 
-		public static string GetNameFor<T>(this Expression<Func<T, object>> expression, IViewModelContainer<T> view) where T : class
+		public static string GetNameFor<T, TValue>(this Expression<Func<T, TValue>> expression, IViewModelContainer<T> view) where T : class
 		{
 			var name = expression.GetNameFor();
 			return string.Format("{0}{1}{2}",
@@ -21,21 +21,21 @@ namespace MvcContrib.FluentHtml.Expressions
 				name);
 		}
 
-		public static object GetValueFrom<T>(this Expression<Func<T, object>> expression, T viewModel) where T : class
+		public static TValue GetValueFrom<T, TValue>(this Expression<Func<T, TValue>> expression, T viewModel) where T : class
 		{
 			try
 			{
 				return viewModel == null
-					? null
+					? default(TValue)
 					: expression.Compile().Invoke(viewModel);
 			}
 			catch (Exception)
 			{
-				return null;
+				return default(TValue);
 			}
 		}
 
-		public static MemberExpression GetMemberExpression<T>(this Expression<Func<T, object>> expression) where T : class
+		public static MemberExpression GetMemberExpression<T, TValue>(this Expression<Func<T, TValue>> expression) where T : class
 		{
 			if (expression == null)
 			{
