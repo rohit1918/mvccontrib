@@ -188,4 +188,17 @@ namespace MvcContrib.UI.MenuBuilder
 			return item;
 		}
 	}
+
+	public static class MenuBuilderHtmlExtensions
+	{
+		/// <summary>
+		/// Render the menu to the current ViewContext
+		/// </summary>
+		/// <param name="helper"></param>
+		/// <param name="menu">The menu to render</param>
+		public static void Menu(this HtmlHelper helper, MenuItem menu)
+		{
+			menu.RenderHtml(helper.ViewContext, helper.ViewContext.HttpContext.Response.Output);
+		}
+	}
 }
