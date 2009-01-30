@@ -162,6 +162,7 @@
     <Compile Include="UI\Html\Grid\ISimpleColumnBuilder.cs" />
     <Compile Include="UI\Html\Grid\GridBase.cs" />
     <Compile Include="UI\Html\HtmlHelperExtensions.cs" />
+    <Compile Include="UI\Html\HtmlStringExtensions.cs" />
     <Compile Include="UI\Html\IDataBinder.cs" />
     <Compile Include="UI\Html\IFormHelper.cs" />
     <Compile Include="UI\Html\IValidationHelper.cs" />
@@ -170,6 +171,14 @@
     <Compile Include="UI\IHtmlAttributes.cs" />
     <Compile Include="UI\IElement.cs" />
     <Compile Include="UI\IScriptableElement.cs" />
+    <Compile Include="UI\MenuBuilder\ActionMenuItem.cs" />
+    <Compile Include="UI\MenuBuilder\MenuHelpText.cs" />
+    <Compile Include="UI\MenuBuilder\MenuTitle.cs" />
+    <Compile Include="UI\MenuBuilder\Menu.cs" />
+    <Compile Include="UI\MenuBuilder\MenuItem.cs" />
+    <Compile Include="UI\MenuBuilder\MenuList.cs" />
+    <Compile Include="UI\MenuBuilder\OpenAuthorizeAttribute.cs" />
+    <Compile Include="UI\MenuBuilder\SecureActionMenuItem.cs" />
     <Compile Include="UI\ScriptableElement.cs" />
     <Compile Include="UI\Tags\CheckBoxField.cs" />
     <Compile Include="UI\Tags\CheckBoxList.cs" />
