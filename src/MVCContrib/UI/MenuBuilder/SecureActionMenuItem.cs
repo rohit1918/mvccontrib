@@ -13,7 +13,8 @@ namespace MvcContrib.UI.MenuBuilder
 	///</summary>
 	public class SecureActionMenuItem<T> : ActionMenuItem<T> where T : Controller
 	{
-		public override bool Prepare(ControllerContext requestContext)
+        
+		public override void Prepare(ControllerContext controllerContext)
 		{
 			if(MenuAction == null)
 				throw new InvalidOperationException("MenuAction must be defined prior to using a secure menu item");
@@ -22,7 +23,8 @@ namespace MvcContrib.UI.MenuBuilder
 				throw new InvalidOperationException("Expression must be a method call");
 
 			var attributes = GetAuthorizeAttributes(callExpression.Method);
-			return CanAddItem(attributes, requestContext) && base.Prepare(requestContext);
+			internalDisabled = Disabled || !CanAddItem(attributes, controllerContext);
+            base.Prepare(controllerContext);
 		}
 
 		protected virtual bool CanAddItem(IEnumerable<AuthorizeAttribute> attributes, ControllerContext context)
@@ -35,8 +37,7 @@ namespace MvcContrib.UI.MenuBuilder
 			return true;
 		}
 
-
-		protected virtual AuthorizeAttribute[] GetAuthorizeAttributes(MethodInfo methodInfo)
+        protected virtual AuthorizeAttribute[] GetAuthorizeAttributes(MethodInfo methodInfo)
 		{
 			if (methodInfo == null)
 			{
@@ -47,6 +48,5 @@ namespace MvcContrib.UI.MenuBuilder
 			AuthorizeAttribute[] orderedFilters = typeFilters.Concat(methodFilters).OrderBy(attr => attr.Order).ToArray();
 			return orderedFilters;
 		}
-
 	}
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
-using MvcContrib.UI.MenuBuilder;
 
 namespace MvcContrib.UI.MenuBuilder
 {
@@ -31,12 +30,25 @@ namespace MvcContrib.UI.MenuBuilder
 		/// </summary>
 		public static string DefaultListClass { get; set; }
 
-
-		/// <summary>
+        /// <summary>
 		/// The directory that icon images are located in
 		/// </summary>
 		public static string DefaultIconDirectory { get; set; }
 
+        /// <summary>
+		/// Should items that the user is not authorized to see be hidden or disabled? True for hidden.
+		/// </summary>
+		public static bool DefaultShowWhenDisabled { get; set; }
+
+		/// <summary>
+		/// The default css class to use for disabled items, if they are shown instead of hidden
+		/// </summary>
+		public static string DefaultDisabledClass { get; set; }
+
+		/// <summary>
+		/// The default css class to use for selected items, based on the requested url and action
+		/// </summary>
+		public static string DefaultSelectedClass { get; set; }
 		
 		/// <summary>
 		/// Use this at the top of a fluent menu, with items in the params
@@ -183,6 +195,9 @@ namespace MvcContrib.UI.MenuBuilder
 			item.IconClass = DefaultIconClass;
 			item.ItemClass = DefaultItemClass;
 			item.IconDirectory = DefaultIconDirectory;
+			item.DisabledClass = DefaultDisabledClass;
+			item.ShowWhenDisabled = DefaultShowWhenDisabled;
+			item.SelectedClass = DefaultSelectedClass;
 			if (item is MenuList)
 				((MenuList)item).ListClass = DefaultListClass;
 			return item;

@@ -64,7 +64,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 				mockRequest.Stub(o => o.AppRelativeCurrentExecutionFilePath).Return(requestPath);
 			}
 
-			Uri uri = new Uri("http://localhost");
+			Uri uri = new Uri("http://localhost/");
 			mockRequest.Stub(o => o.Url).Return(uri);
 
 			mockRequest.Stub(o => o.PathInfo).Return(String.Empty);
@@ -81,6 +81,8 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			//				IgnoreArguments().Return(@"Home\Index");
 
 			mockContext.Stub(o => o.Response).Return(mockResponse);
+
+			mockRequest.Stub(o => o.Path).Return("Home/Index/");
 
 			var principal = mocks.DynamicMock<IPrincipal>();
 			mockContext.Stub(o => o.User).Return(principal);
@@ -127,7 +129,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			MenuItem link = Menu.Link("Url", "Title", "Icon");
 			link.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a href=\"Url\"><img border=\"0\" src=\"Icon\" alt=\"Title\"/>Title</a></li>", Out);
+			Assert.AreEqual("<li><a href=\"Url\"><img alt=\"Title\" border=\"0\" src=\"Icon\" />Title</a></li>", Out);
 		}
 
 		[Test]
@@ -135,7 +137,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			MenuItem link = Menu.Link("Url", null, "Icon");
 			link.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a href=\"Url\"><img border=\"0\" src=\"Icon\"/></a></li>", Out);
+			Assert.AreEqual("<li><a href=\"Url\"><img border=\"0\" src=\"Icon\" /></a></li>", Out);
 		}
 
 
@@ -178,7 +180,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			MenuItem action = Menu.Action<HomeController>(p => p.Index(), "Title", "Icon");
 			action.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a href=\"Home/Index/\"><img border=\"0\" src=\"Icon\" alt=\"Title\"/>Title</a></li>", Out);
+			Assert.AreEqual("<li><a href=\"Home/Index/\"><img alt=\"Title\" border=\"0\" src=\"Icon\" />Title</a></li>", Out);
 		}
 
 		[Test]
@@ -186,7 +188,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			MenuItem action = Menu.Action<HomeController>(p => p.Index(), null, "Icon");
 			action.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a href=\"Home/Index/\"><img border=\"0\" src=\"Icon\"/></a></li>", Out);
+			Assert.AreEqual("<li><a href=\"Home/Index/\"><img border=\"0\" src=\"Icon\" /></a></li>", Out);
 		}
 
 		[Test]
@@ -234,7 +236,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			Assert.AreEqual("Title2", list[1].Title);
 
 			list.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a><img border=\"0\" src=\"Icon\" alt=\"ListItems\"/>ListItems</a><ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul></li>", Out);
+			Assert.AreEqual("<li><a><img alt=\"ListItems\" border=\"0\" src=\"Icon\" />ListItems</a><ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul></li>", Out);
 		}
 
 		[Test]
@@ -248,21 +250,19 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			Assert.AreEqual("Title2", list[1].Title);
 
 			list.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a><img border=\"0\" src=\"Icon\"/></a><ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul></li>", Out);
+			Assert.AreEqual("<li><a><img border=\"0\" src=\"Icon\" /></a><ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul></li>", Out);
 		}
 
 		[Test]
 		public void SecureItemsAreRemovedFromMenuList()
 		{
 			MenuList list = Menu.Items("ListItems",
-			                           Menu.Link("Url1", "Title1"),
+									   Menu.Link("Url1", "Title1"),
 									   Menu.Link("Url2", "Title2"),
-			                           Menu.Secure<HomeController>(p => p.Index()));
-			Assert.AreEqual(3, list.Count);
+									   Menu.Secure<HomeController>(p => p.Index()));
 			list.RenderHtml(controllerContext, writer);
-			Assert.AreEqual(2, list.Count);
 			Assert.AreEqual("<li><a>ListItems</a><ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul></li>", Out);
-			
+
 		}
 
 		[Test]
@@ -271,9 +271,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			MenuList list = Menu.Items("ListItems",
 									   Menu.Link("Url1", "Title1"),
 									   Menu.Secure<HomeController>(p => p.Index()));
-			Assert.AreEqual(2, list.Count);
 			list.RenderHtml(controllerContext, writer);
-			Assert.AreEqual(1, list.Count);
 			Assert.AreEqual("<li><a href=\"Url1\">Title1</a></li>", Out);
 		}
 
@@ -283,14 +281,14 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			MenuList list = Menu.Items("ListItems",
 									   Menu.Link("Url1", "Title1"),
 									   Menu.Secure<HomeController>(p => p.Index()));
-			list.RenderHtml(writer);
+			string html = list.RenderHtml();
 		}
 
 		[Test, ExpectedException(typeof(InvalidOperationException))]
 		public void CallingRenderOnItemWithoutPrepareThrows()
 		{
 			MenuItem link = Menu.Link("Url1", "Title1");
-			link.RenderHtml(writer);
+			string html = link.RenderHtml();
 		}
 
 		[Test]
@@ -311,7 +309,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			list.CopyTo(array, 0);
 			Assert.AreEqual(item, array[0]);
 			Assert.IsFalse(list.IsReadOnly);
-			foreach(var menuItem in list)
+			foreach (var menuItem in list)
 			{
 				Assert.AreEqual(item, menuItem);
 			}
@@ -322,7 +320,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			MenuList list = new MenuList();
 			list.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("",Out);
+			Assert.AreEqual("", Out);
 		}
 
 		[Test, ExpectedException(typeof(InvalidOperationException))]
@@ -344,15 +342,19 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 		{
 			var item = Menu.Action<HomeController>(p => p.Index(), "A Title");
 			var secureItem = Menu.Secure<HomeController>(p => p.Index2(), "A Different Title");
-            Assert.AreEqual("A Title",item.Title);
+			Assert.AreEqual("A Title", item.Title);
 			Assert.AreEqual("A Different Title", secureItem.Title);
 		}
 
 		[Test]
 		public void MenuBeginCreatesMenuWithNoTitle()
 		{
-			var item = Menu.Begin();
+			var item = Menu.Begin(
+				Menu.Link("Url1", "Title1"),
+				Menu.Link("Url2", "Title2"));
 			Assert.AreEqual(null, item.Title);
+			item.RenderHtml(controllerContext, writer);
+			Assert.AreEqual("<ul><li><a href=\"Url1\">Title1</a></li><li><a href=\"Url2\">Title2</a></li></ul>", Out);
 		}
 
 		[Test]
@@ -361,7 +363,26 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			Menu.DefaultIconDirectory = "/content/";
 			var item = Menu.Link("Url", "Title", "Icon.jpg");
 			item.RenderHtml(controllerContext, writer);
-			Assert.AreEqual("<li><a href=\"Url\"><img border=\"0\" src=\"/content/Icon.jpg\" alt=\"Title\"/>Title</a></li>", Out);
+			Assert.AreEqual("<li><a href=\"Url\"><img alt=\"Title\" border=\"0\" src=\"/content/Icon.jpg\" />Title</a></li>", Out);
+		}
+
+		[Test]
+		public void DisabledItemsRenderWithDisabledClass()
+		{
+			MenuItem secure = Menu.Secure<HomeController>(p => p.Index());
+			secure.SetShowWhenDisabled(true).SetDisabledMenuItemClass("DisabledClass");
+			secure.RenderHtml(controllerContext, writer);
+			Assert.AreEqual("<li><a class=\"DisabledClass\">Index</a></li>", Out);
+		}
+
+		[Test]
+		public void SelectedItemsShouldRenderAsSuch()
+		{
+			MenuItem link = Menu.Action<HomeController>(p => p.Index());
+			link.SetSelectedClass("selected");
+			link.RenderHtml(controllerContext, writer);
+			Assert.AreEqual("<li><a class=\"selected\" href=\"Home/Index/\">Index</a></li>", Out);
+
 		}
 
 		public class HomeController : Controller

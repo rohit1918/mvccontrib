@@ -75,33 +75,45 @@ namespace MvcContrib.UI.MenuBuilder
 			return GetEnumerator();
 		}
 
-		protected virtual void RenderItems(TextWriter writer)
+		protected virtual string RenderItems()
 		{
 			if (items.Count <= 0) 
-				return;
-			writer.Write(string.Format("<ul{0}>", ListClass.AsClassAttribute()));
-			foreach (var menuBase in items)
-				menuBase.RenderHtml(writer);
-			writer.Write("</ul>");
+				return string.Empty;
+			CleanTagBuilder ul = new CleanTagBuilder("ul");
+			ul.AddCssClass(ListClass);
+            foreach (var menuBase in items)
+				ul.InnerHtml += menuBase.RenderHtml();
+			return ul.ToString(TagRenderMode.Normal);
 		}
         
-		public override void RenderHtml(TextWriter writer)
+		public override string RenderHtml()
 		{
 			if (!Prepared)
 				throw new InvalidOperationException("Must call Prepare before RenderHtml(TextWriter) or call RenderHtml(RequestContext, TextWriter)");
-			if (!IsRootList)
+			if (HideItem)
+				return string.Empty;
+			if (!IsRootList && HasSingleRenderableItem())
 			{
-				if (items.Count == 1)
-				{
-					items[0].RenderHtml(writer); //if there is only one item, don't render this menu instead skip to the item
-					return;
-				}
-				writer.Write(string.Format("<li{0}>", ItemClass.AsClassAttribute()));
-				RenderLink(writer);
+				return items[0].RenderHtml(); //if there is only one item, don't render this menu instead skip to the item
 			}
-			RenderItems(writer);
-			if (!IsRootList)
-				writer.Write("</li>");
+			if (IsRootList)
+				return RenderItems();
+			CleanTagBuilder li = new CleanTagBuilder("li");
+			li.AddCssClass(ItemClass);
+			li.InnerHtml = RenderLink() + RenderItems();
+			return li.ToString(TagRenderMode.Normal);
+		}
+
+		protected bool HasSingleRenderableItem()
+		{
+			int c = 0;
+			for(int i = 0; i < items.Count && c < 2; i++)
+			{
+				var item = items[i];
+				if(item.HideItem == false)
+					c++;
+			}
+			return c == 1;
 		}
 
 		public MenuList SetListClass(string listClass)
@@ -118,16 +130,14 @@ namespace MvcContrib.UI.MenuBuilder
 			}
 		}
 
-		public override bool Prepare(ControllerContext requestContext)
+		public override void Prepare(ControllerContext controllerContext)
 		{
 			var iCopy = new List<MenuItem>(items);
-			foreach (var menuBase in iCopy)
-			{
-				if (menuBase.Prepare(requestContext) == false)
-					items.Remove(menuBase);
-			}
+			foreach (var item in iCopy)
+				item.Prepare(controllerContext);
+			if(items.Count <= 0)
+				Disabled = true;
 			Prepared = true;
-			return items.Count > 0;
 		}
 	}
 }

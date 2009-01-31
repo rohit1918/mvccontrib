@@ -14,8 +14,9 @@ namespace MvcContrib.UI.MenuBuilder
 	{
 		public Expression<Action<T>> MenuAction { get; set; }
 
-		public override bool Prepare(ControllerContext requestContext)
+		public override void Prepare(ControllerContext controllerContext)
 		{
+			
 			if (MenuAction == null)
 				throw new InvalidOperationException("MenuAction must be defined prior to using an ActionMenuItem");
 			if (string.IsNullOrEmpty(HelpText))
@@ -27,7 +28,7 @@ namespace MvcContrib.UI.MenuBuilder
 			}
 			if (string.IsNullOrEmpty(ActionUrl))
 			{
-				ActionUrl = LinkBuilder.BuildUrlFromExpression(requestContext.RequestContext, RouteTable.Routes, MenuAction);
+				ActionUrl = LinkBuilder.BuildUrlFromExpression(controllerContext.RequestContext, RouteTable.Routes, MenuAction);
 			}
 			if (string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Icon))
 			{
@@ -46,7 +47,7 @@ namespace MvcContrib.UI.MenuBuilder
 					}
 				}
 			}
-			return base.Prepare(requestContext);
+			base.Prepare(controllerContext);
 		}
 
 		/// <summary>
