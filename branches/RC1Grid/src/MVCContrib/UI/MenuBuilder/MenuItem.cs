@@ -20,6 +20,25 @@ namespace MvcContrib.UI.MenuBuilder
 		public string ItemClass { get; set; }
 		public string IconDirectory { get; set; }
 
+		public bool ShowWhenDisabled { get; set; }
+
+		public string DisabledClass { get; set; }
+		public bool Disabled { get; set; }
+
+		public string SelectedClass { get; set; }
+
+		//internal disabled allows for resetting of the disabled property on each render, 
+		//when using Secure items
+		protected bool? internalDisabled;
+		protected bool ItemDisabled
+		{
+			get { return internalDisabled ?? Disabled; }
+		}
+
+		public bool HideItem
+		{
+			get { return ItemDisabled && ShowWhenDisabled == false; }
+		}
 
 		protected bool Prepared { get; set; }
 
@@ -28,28 +47,47 @@ namespace MvcContrib.UI.MenuBuilder
 			Prepared = false;
 		}
 
-		protected virtual void RenderLink(TextWriter writer)
+		protected virtual string RenderLink()
 		{
-			writer.Write(string.Format("<a{0}{1}>", ActionUrl.AsAttribute("href"),HelpText.AsAttribute("title")));
-			RenderIcon(writer);
-			RenderTitle(writer);
-			writer.Write(string.Format("</a>"));
+			CleanTagBuilder anchor = new CleanTagBuilder("a");
+			if (ItemDisabled)
+				anchor.AddCssClass(DisabledClass);
+			else
+				anchor.Attributes["href"] = ActionUrl;
+			if(IsItemSelected())
+				anchor.AddCssClass(SelectedClass);
+			anchor.Attributes["title"] = HelpText;
+			anchor.InnerHtml += RenderIcon() + RenderTitle();
+			return anchor.ToString(TagRenderMode.Normal);
 		}
 
-		protected virtual void RenderIcon(TextWriter writer)
+		protected bool itemSelected;
+
+		public virtual bool IsItemSelected()
+		{
+			return itemSelected;
+		}
+
+		protected virtual string RenderIcon()
 		{
 			if (!string.IsNullOrEmpty(Icon))
 			{
 				string iconPath = (IconDirectory ?? "") + Icon;
-				writer.Write(string.Format("<img border=\"0\"{0}{1}{2}/>", iconPath.AsAttribute("src"), Title.AsAttribute("alt"),
-				                           IconClass.AsClassAttribute()));
+				CleanTagBuilder icon = new CleanTagBuilder("img");
+				icon.Attributes["border"] = "0";
+				icon.Attributes["src"] = iconPath;
+				icon.Attributes["alt"] = Title;
+				icon.AddCssClass(IconClass);
+				return icon.ToString(TagRenderMode.SelfClosing);
 			}
+			return string.Empty;
 		}
 
-		protected virtual void RenderTitle(TextWriter writer)
+		protected virtual string RenderTitle()
 		{
 			if (!string.IsNullOrEmpty(Title))
-				writer.Write(Title);
+				return Title;
+			return string.Empty;
 		}
 
 		/// <summary>
@@ -59,35 +97,38 @@ namespace MvcContrib.UI.MenuBuilder
 		/// <param name="writer">The TextWriter for output</param>
 		public virtual void RenderHtml(ControllerContext requestContext, TextWriter writer)
 		{
-			if (Prepare(requestContext))
-				RenderHtml(writer);
+			Prepare(requestContext);
+			writer.Write(RenderHtml());
 		}
 
 		/// <summary>
 		/// Used internally to render the menu. Do not call this directly without first calling Prepare, or call RenderHtml(RequestContext ...)
 		/// </summary>
-		/// <param name="writer">The TextWriter to output the HTML to</param>
-		public virtual void RenderHtml(TextWriter writer)
+		public virtual string RenderHtml()
 		{
-			if(!Prepared)
-				throw new InvalidOperationException("Must call Prepare before RenderHtml(TextWriter) or call RenderHtml(RequestContext, TextWriter)");
-			writer.Write(string.Format("<li{0}>", ItemClass.AsClassAttribute())); 
-			RenderLink(writer);
-			writer.Write("</li>");
+			if (!Prepared)
+				throw new InvalidOperationException("Must call Prepare before RenderHtml() or call RenderHtml(RequestContext, TextWriter)");
+			if (HideItem)
+				return string.Empty;
+			CleanTagBuilder li = new CleanTagBuilder("li");
+			li.AddCssClass(ItemClass);
+			li.InnerHtml = RenderLink();
+			return li.ToString(TagRenderMode.Normal);
 		}
 
 		/// <summary>
 		/// Called internally by RenderHtml(RequestContext, TextWriter) to remove empty items from lists and generate urls.
 		/// Can also be called externally to prepare the menu for serialization into Json/Xml
 		/// </summary>
-		/// <param name="requestContext">The current RequestContext</param>
+		/// <param name="controllerContext">The current RequestContext</param>
 		/// <returns>if this item should be rendered</returns>
-		public virtual bool Prepare(ControllerContext requestContext)
+		public virtual void Prepare(ControllerContext controllerContext)
 		{
 			Prepared = true;
-			return true;
+			if(controllerContext.RequestContext.HttpContext.Request.Path == ActionUrl)
+				itemSelected = true;
 		}
-		
+
 		public MenuItem SetTitle(string title)
 		{
 			Title = title;
@@ -130,12 +171,46 @@ namespace MvcContrib.UI.MenuBuilder
 			return this;
 		}
 
-
 		public MenuItem SetIconDirectory(string iconDirectory)
 		{
 			IconDirectory = iconDirectory;
 			return this;
 		}
 
+		public MenuItem SetDisabled(bool disabled)
+		{
+			Disabled = disabled;
+			return this;
+		}
+
+		public MenuItem SetSelectedClass(string selectedClass)
+		{
+			SelectedClass = selectedClass;
+			return this;
+		}
+
+		/// <summary>
+		/// The class to use when displaying an insecure menu item, won't be used if hiding insecure items (default behavior)
+		/// </summary>
+		/// <param name="itemClass"></param>
+		/// <returns>this</returns>
+		public MenuItem SetDisabledMenuItemClass(string itemClass)
+		{
+			DisabledClass = itemClass;
+			return this;
+		}
+
+		/// <summary>
+		/// Should the menu item be hidden or display with limited functionality when disabled
+		/// </summary>
+		/// <param name="hide">Set to true to hide the item, false to show it in a disabled format</param>
+		/// <returns>this</returns>
+		public MenuItem SetShowWhenDisabled(bool hide)
+		{
+			ShowWhenDisabled = hide;
+			return this;
+		}
+
+		
 	}
 }

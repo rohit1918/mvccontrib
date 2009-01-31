@@ -86,5 +86,16 @@ ul.jd_menu li.jdm_active {
 	border: 1px solid #369;
 	border-left: 1px solid #9CF;
 	border-top: 1px solid #9CF;
-	
+}
+
+a.disabled
+{
+	color: Gray !important;
+	text-decoration:line-through !important;
+}
+
+a.selected
+{
+	color:Purple !important;
+	font-weight:bold !important;
 }
