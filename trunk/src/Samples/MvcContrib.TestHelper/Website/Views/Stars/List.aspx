@@ -1,23 +1,23 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" 
-    CodeBehind="List.aspx.cs" Inherits="MvcContrib.TestHelper.Sample.Views.Stars.List" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<List<Star>>" %>
+<%@ Import Namespace="System.Web.Mvc.Html"%>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
 <%@ Import Namespace="MvcContrib.TestHelper.Sample.Controllers" %>
 
 <h2>Stars</h2>
 
 <ul>
-    <% foreach (var star in ViewData.Model) { %>
+    <% foreach (var star in Model) { %>
         <li>
             <%= star.Name %> approx: <%= star.Distance %> AU
         </li>
     <% } %>
 </ul>
-<%using(Html.Form<StarsController>(action=>action.AddFormStar())){%>
+<%using(Html.BeginForm<StarsController>(action=>action.AddFormStar())){%>
     <%= Html.TextBox("NewStarName") %>
     <%= Html.SubmitButton("FormSubmit", "AddFormStar") %>
 <%}%>
 
-<%using(Html.Form<StarsController>(action=>action.AddSessionStar())){%>
+<%using(Html.BeginForm<StarsController>(action=>action.AddSessionStar())){%>
     <%= Html.TextBox("NewStarName") %>
     <%= Html.SubmitButton("SessionSubmit", "AddSessionStar") %>
 <%}%>

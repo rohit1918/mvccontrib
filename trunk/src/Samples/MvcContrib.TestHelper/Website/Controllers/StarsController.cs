@@ -19,7 +19,7 @@ namespace MvcContrib.TestHelper.Sample.Controllers
         
         public ActionResult ListWithLinks()
         {
-            List<Star> stars = StarDatabase.GetStarsAndLinks(ControllerContext);
+            List<Star> stars = StarDatabase.GetStarsAndLinks();
             return View("ListWithLinks", stars);
         }
 

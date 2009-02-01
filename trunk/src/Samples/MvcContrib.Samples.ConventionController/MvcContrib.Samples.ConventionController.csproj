@@ -68,22 +68,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ShipmentController.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\Dimension.cs" />
     <Compile Include="Models\Shipment.cs" />
-    <Compile Include="Views\Shared\Rescues\DivideByZeroException.aspx.cs">
-      <DependentUpon>DivideByZeroException.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Views\Shared\Rescues\DivideByZeroException.aspx.designer.cs">
-      <DependentUpon>DivideByZeroException.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Shipment\ShipmentViews.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shipment\New.aspx" />
@@ -94,6 +88,9 @@
     <Content Include="Views\Shared\Rescues\DivideByZeroException.aspx" />
     <Content Include="Views\Shared\Rescues\Error.aspx" />
     <Content Include="Views\Shared\Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

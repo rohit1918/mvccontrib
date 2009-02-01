@@ -29,7 +29,6 @@ namespace MvcContrib.Samples.Controllers
 			return View("track", new List<string>() { id });
 		}
 
-		[PostOnly]
 		public ActionResult Track([Deserialize("trackingNumbers")] string[] trackingNumbers)
 		{
 			List<string> validTrackingNumbers = new List<string>();

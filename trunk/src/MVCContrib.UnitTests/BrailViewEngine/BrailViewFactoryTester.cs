@@ -45,13 +45,14 @@ using Rhino.Mocks;
 			Assert.IsNotNull(viewFactory.ViewEngine);
 		}
 
-	/*	[Test]
+		[Test]
 		public void Can_Create_View()
 		{
-			_viewContext.RouteData.Values.Add("controller", "home");
-//			BrailBase view = _viewFactory.CreateView(_controllerContext, "view", null, null);
-//			Assert.IsNotNull(view);
-		}*/
+			var routeData = new RouteData();
+			routeData.Values.Add("controller", "home");
+			var result = _viewEngine.FindView(new ControllerContext() { RouteData = routeData }, "view", null, false);
+			Assert.IsNotNull(result.View);
+		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
