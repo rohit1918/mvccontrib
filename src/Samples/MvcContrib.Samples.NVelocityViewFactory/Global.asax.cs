@@ -39,7 +39,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 		{
 			if (_container == null)
 			{
-                ModelBinders.DefaultBinder = new SubControllerBinder();
+                ModelBinders.Binders.DefaultBinder = new SubControllerBinder();
 
 				_container = new WindsorContainer();
 

@@ -11,11 +11,6 @@ namespace MvcContrib.Samples
 		{
 			RouteTable.Routes.Add(new Route("{controller}/{action}/{id}", new MvcRouteHandler())
           	{
-          		Defaults = new RouteValueDictionary(new {action = "Index", id = ""}),
-          	});
-
-			RouteTable.Routes.Add(new Route("Default.aspx", new MvcRouteHandler())
-          	{
           		Defaults = new RouteValueDictionary(new {controller = "Shipment", action = "Index", id = ""}),
           	});
 		}
