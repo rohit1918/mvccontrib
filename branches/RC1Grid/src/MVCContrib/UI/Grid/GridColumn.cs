@@ -121,15 +121,16 @@ namespace MvcContrib.UI.Grid
 
 			var value = _columnValueFunc(instance);
 
+			if (!string.IsNullOrEmpty(_format)) 
+			{
+				value = string.Format(_format, value);
+			}
+
 			if(_htmlEncode && value != null)
 			{
 				value = HttpUtility.HtmlEncode(value.ToString());
 			}
 
-			if(!string.IsNullOrEmpty(_format))
-			{
-				value = string.Format(_format, value);
-			}
 
 			return value;
 		}

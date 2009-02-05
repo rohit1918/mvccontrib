@@ -68,10 +68,10 @@ namespace MvcContrib.UI.Grid
 
 		public override string ToString() 
 		{
-			if(_gridModel.Renderer == null)
+			/*if(_gridModel.Renderer == null)
 			{
 				_gridModel.Renderer = new HtmlTableGridRenderer<T>();
-			}
+			}*/
 
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer);
 			return null;
