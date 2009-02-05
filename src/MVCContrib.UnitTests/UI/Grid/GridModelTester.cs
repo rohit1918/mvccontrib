@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
 
@@ -26,6 +27,20 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			_model.Empty("Foo");
 			AsGridModel.EmptyText.ShouldEqual("Foo");
+		}
+
+		[Test]
+		public void Should_store_attributes()
+		{
+			_model.Attributes(new Dictionary<string, object>() { {"foo", "bar"} });
+			AsGridModel.Attributes["foo"].ShouldEqual("bar");
+		}
+
+		[Test]
+		public void Should_store_attributes_with_lambdas()
+		{
+			_model.Attributes(foo=>"bar");
+			AsGridModel.Attributes["foo"].ShouldEqual("bar");
 		}
 
 		private IGridModel<Person> AsGridModel

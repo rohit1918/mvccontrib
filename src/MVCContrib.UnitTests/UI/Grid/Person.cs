@@ -7,5 +7,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public string Name { get; set; }
 
 		public DateTime DateOfBirth { get; set; }
+
+		public int Id { get; set; }
 	}
 }

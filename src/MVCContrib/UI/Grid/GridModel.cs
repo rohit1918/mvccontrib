@@ -11,9 +11,9 @@ namespace MvcContrib.UI.Grid
 	public class GridModel<T>  : IGridModel<T>
 	{
 		private readonly IList<GridColumn<T>> _columns = new List<GridColumn<T>>();
-		private IGridRenderer<T> _renderer;
+		private IGridRenderer<T> _renderer = new HtmlTableGridRenderer<T>();
 		private string _emptyText;
-		private IDictionary<string, object> _attributes;
+		private IDictionary<string, object> _attributes = new Dictionary<string, object>();
 
 
 		IList<GridColumn<T>> IGridModel<T>.Columns
@@ -67,6 +67,24 @@ namespace MvcContrib.UI.Grid
 		public void Empty(string emptyText)
 		{
 			_emptyText = emptyText;
+		}
+
+		/// <summary>
+		/// Defines additional attributes for the grid.
+		/// </summary>
+		/// <param name="hash"></param>
+		public void Attributes(params Func<object, object>[] hash)
+		{
+			Attributes(new Hash(hash));
+		}
+
+		/// <summary>
+		/// Defines additional attributes for the grid
+		/// </summary>
+		/// <param name="attributes"></param>
+		public void Attributes(IDictionary<string, object> attributes)
+		{
+			_attributes = attributes;
 		}
 	}
 }
