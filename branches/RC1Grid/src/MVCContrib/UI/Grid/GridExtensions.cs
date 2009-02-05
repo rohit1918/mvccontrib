@@ -36,5 +36,14 @@ namespace MvcContrib.UI.Grid
 
 			return helper.Grid(dataSource);
 		}
+
+		/// <summary>
+		/// Defines additional attributes for the column heading.
+		/// </summary>
+		/// <returns></returns>
+		public static IGridColumn<T> HeaderAttributes<T>(this IGridColumn<T> column, params Func<object, object>[] hash)
+		{
+			return column.HeaderAttributes(new Hash(hash));
+		}
 	}
 }

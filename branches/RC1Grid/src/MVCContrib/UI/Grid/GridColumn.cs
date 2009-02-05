@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -16,6 +17,7 @@ namespace MvcContrib.UI.Grid
 		private string _format;
 		private bool _visible = true;
 		private bool _htmlEncode = true;
+		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
 
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
@@ -43,6 +45,14 @@ namespace MvcContrib.UI.Grid
 				}
 				return SplitPascalCase(_name);
 			}
+		}
+
+		/// <summary>
+		/// Additional attributes for the column header
+		/// </summary>
+		public IDictionary<string, object> HeaderAttributes
+		{
+			get { return _headerAttributes; }
 		}
 
 		public IGridColumn<T> Named(string name)
@@ -78,6 +88,16 @@ namespace MvcContrib.UI.Grid
 		public IGridColumn<T> DoNotEncode()
 		{
 			_htmlEncode = false;
+			return this;
+		}
+
+		IGridColumn<T> IGridColumn<T>.HeaderAttributes(IDictionary<string, object> attributes)
+		{
+			foreach(var attribute in attributes)
+			{
+				_headerAttributes.Add(attribute);
+			}
+
 			return this;
 		}
 
@@ -154,5 +174,12 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		/// <returns></returns>
 		IGridColumn<T> DoNotEncode();
+
+		/// <summary>
+		/// Defines additional attributes for the column heading.
+		/// </summary>
+		/// <param name="attributes"></param>
+		/// <returns></returns>
+		IGridColumn<T> HeaderAttributes(IDictionary<string, object> attributes);
 	}
 }

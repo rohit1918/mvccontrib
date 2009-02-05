@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
@@ -99,6 +100,21 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			builder.For(x => x.Name).DoNotEncode();
 			builder.Single().GetValue(new Person{Name = "<script>"}).ShouldEqual("<script>");
+		}
+
+		[Test]
+		public void Should_specify_header_attributes()
+		{
+			var attrs = new Dictionary<string, object> { { "foo", "bar" } };
+			builder.For(x => x.Name).HeaderAttributes(attrs);
+			builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
+		}
+
+		[Test]
+		public void Should_specify_header_attributes_using_lambdas()
+		{
+			builder.For(x => x.Name).HeaderAttributes(foo => "bar");
+			builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
 		}
 	}
 }
