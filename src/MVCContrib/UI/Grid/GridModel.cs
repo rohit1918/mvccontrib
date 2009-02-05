@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using MvcContrib.UI.Grid.Syntax;
 
 namespace MvcContrib.UI.Grid
@@ -9,24 +10,63 @@ namespace MvcContrib.UI.Grid
 	/// </summary>
 	public class GridModel<T>  : IGridModel<T>
 	{
-		private readonly IList<GridColumn<T>> columns = new List<GridColumn<T>>();
+		private readonly IList<GridColumn<T>> _columns = new List<GridColumn<T>>();
+		private IGridRenderer<T> _renderer;
+		private string _emptyText;
+		private IDictionary<string, object> _attributes;
 
-		
+
 		IList<GridColumn<T>> IGridModel<T>.Columns
 		{
-			get { return columns; }
+			get { return _columns; }
 		}
 
-		IGridRenderer<T> IGridModel<T>.Renderer { get; set; }
-		string IGridModel<T>.EmptyText { get; set; }
-		IDictionary<string, object> IGridModel<T>.Attributes { get; set; }
+		IGridRenderer<T> IGridModel<T>.Renderer
+		{
+			get { return _renderer; }
+			set { _renderer = value; }
+		}
+
+		string IGridModel<T>.EmptyText
+		{
+			get { return _emptyText; }
+			set { _emptyText = value; }
+		}
+
+		IDictionary<string, object> IGridModel<T>.Attributes
+		{
+			get { return _attributes; }
+			set { _attributes = value; }
+		}
 
 		/// <summary>
 		/// Creates a new instance of the GridModel class
 		/// </summary>
 		public GridModel()
 		{
-			((IGridModel<T>)this).EmptyText = "There is no data available.";
+			_emptyText = "There is no data available.";
+		}
+
+		/// <summary>
+		/// Defines a column from a particular property
+		/// </summary>
+		/// <param name="propertySpecifier"></param>
+		/// <returns></returns>
+		public IGridColumn<T> ColumnFor(Expression<Func<T, object>> propertySpecifier)
+		{
+			var columnBuilder = new ColumnBuilder<T>();
+			var column = columnBuilder.For(propertySpecifier);
+			_columns.Add((GridColumn<T>)column);
+			return column;
+		}
+
+		/// <summary>
+		/// Text that will be displayed when the grid has no data.
+		/// </summary>
+		/// <param name="emptyText">Text to display</param>
+		public void Empty(string emptyText)
+		{
+			_emptyText = emptyText;
 		}
 	}
 }
