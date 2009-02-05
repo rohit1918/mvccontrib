@@ -86,6 +86,7 @@
     <Compile Include="Elements\FormLiteralBase.cs" />
     <Compile Include="Elements\Hidden.cs" />
     <Compile Include="Elements\LiteralBase.cs" />
+    <Compile Include="StringExtensions.cs" />
     <Compile Include="Elements\SubmitButtonBase.cs" />
     <Compile Include="Elements\TextAreaBase.cs" />
     <Compile Include="Elements\ValidationMessage.cs" />
