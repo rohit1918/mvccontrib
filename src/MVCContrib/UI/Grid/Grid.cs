@@ -1,52 +1,55 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using MvcContrib.UI.Grid.Syntax;
 
 namespace MvcContrib.UI.Grid
 {
-	///<summary>
-	/// A basic table based grid renderer
-	///</summary>
-	public class Grid
+	/// <summary>
+	/// Defines a grid to be rendered.
+	/// </summary>
+	/// <typeparam name="T">Type of datasource for the grid</typeparam>
+	public class Grid<T> : IGrid
 	{
+		private readonly TextWriter _writer;
+		private IGridModel _gridModel = new GridModel();
 		/// <summary>
-		/// The writer to output the results to.
+		/// Creates a new instance of the Grid class.
 		/// </summary>
-		protected TextWriter Writer { get; set; }
-
-		/// <summary>
-		/// Renders text to the output stream
-		/// </summary>
-		/// <param name="text">The text to render</param>
-		protected virtual void Write(string text)
+		/// <param name="dataSource">The datasource for the grid</param>
+		/// <param name="writer">The TextWriter where the grid should be rendered</param>
+		public Grid(IEnumerable<T> dataSource, TextWriter writer)
 		{
-			Writer.Write(text);
+			_writer = writer;
+			DataSource = dataSource;
 		}
 
-		public virtual void Render()
+		/// <summary>
+		/// The datasource for the grid.
+		/// </summary>
+		public IEnumerable<T> DataSource { get; private set; }
+
+		public IGridWithOptions RenderUsing(IGridRenderer renderer)
 		{
-			
+			_gridModel.Renderer = renderer;
+			return this;
 		}
 
+		public IGridWithOptions WithModel(IGridModel model)
+		{
+			_gridModel = model;
+			return this;
+		}
 
+		public override string ToString() 
+		{
+			if(_gridModel.Renderer == null)
+			{
+				_gridModel.Renderer = new HtmlTableGridRenderer();
+			}
 
-	}
-
-	public interface IGridData : IEnumerator
-	{
-		bool HasData();
-		
-
-	}
-
-	public interface IGridColumn
-	{
-		bool CanRenderColumn();
-		bool CanRenderCell(object value);
-
-
+			_gridModel.Renderer.Render(_gridModel, _writer);
+			return null;
+		}
 	}
 }

@@ -166,6 +166,7 @@
     </Compile>
     <Compile Include="AcceptGetAttributeTester.cs" />
     <Compile Include="AcceptPostAttributeTester.cs" />
+    <Compile Include="AssertionExtensions.cs" />
     <Compile Include="Filters\LayoutAttributeTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="Binders\SubControllerBinderTester.cs" />
@@ -282,6 +283,9 @@
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPageTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewUserControlTester.cs" />
+    <Compile Include="UI\Grid\GridExtensionTester.cs" />
+    <Compile Include="UI\Grid\GridTester.cs" />
+    <Compile Include="UI\Grid\Person.cs" />
     <Compile Include="UI\HtmlAttributesTester.cs" />
     <Compile Include="UI\DomQueryBuilderTester.cs" />
     <Compile Include="UI\DomQueryTester.cs" />
