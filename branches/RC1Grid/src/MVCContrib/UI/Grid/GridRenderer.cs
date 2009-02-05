@@ -6,11 +6,17 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Renders a grid as an HTML table.
 	/// </summary>
-	public class HtmlTableGridRenderer : IGridRenderer
+	public class HtmlTableGridRenderer<T> : GridRenderer<T>
 	{
-		public void Render(IGridModel gridModel, TextWriter output)
+	}
+
+	/// <summary>
+	/// Base class for Grid Renderers. 
+	/// </summary>
+	public abstract class GridRenderer<T> : IGridRenderer<T>
+	{
+		public void Render(IGridModel<T> gridModel, TextWriter output)
 		{
-			
 		}
 	}
 }

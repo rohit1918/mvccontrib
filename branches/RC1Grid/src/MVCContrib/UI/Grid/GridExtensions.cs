@@ -15,7 +15,7 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		/// <typeparam name="T">Type of datasouce element</typeparam>
 		/// <returns></returns>
-		public static IGrid Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource)
+		public static IGrid<T> Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource) where T : class
 		{
 			return new Grid<T>(dataSource, helper.ViewContext.HttpContext.Response.Output);
 		}
@@ -25,7 +25,7 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		/// <typeparam name="T">Type of element in the grid datasource.</typeparam>
 		/// <returns></returns>
-		public static IGrid Grid<T>(this HtmlHelper helper, string viewDataKey)
+		public static IGrid<T> Grid<T>(this HtmlHelper helper, string viewDataKey) where T : class
 		{
 			var dataSource = helper.ViewContext.ViewData.Eval(viewDataKey) as IEnumerable<T>;
 
