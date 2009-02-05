@@ -11,18 +11,22 @@ namespace MvcContrib.UI.Grid
 	{
 		private readonly IList<GridColumn<T>> columns = new List<GridColumn<T>>();
 
-		IGridRenderer<T> IGridModel<T>.Renderer { get; set; }
 		
 		IList<GridColumn<T>> IGridModel<T>.Columns
 		{
 			get { return columns; }
 		}
 
+		IGridRenderer<T> IGridModel<T>.Renderer { get; set; }
+		string IGridModel<T>.EmptyText { get; set; }
+		IDictionary<string, object> IGridModel<T>.Attributes { get; set; }
+
 		/// <summary>
 		/// Creates a new instance of the GridModel class
 		/// </summary>
 		public GridModel()
 		{
+			((IGridModel<T>)this).EmptyText = "There is no data available.";
 		}
 	}
 }

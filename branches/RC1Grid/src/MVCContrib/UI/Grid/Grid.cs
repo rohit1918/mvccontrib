@@ -48,6 +48,18 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
+		public IGridWithOptions<T> Empty(string emptyText)
+		{
+			_gridModel.EmptyText = emptyText;
+			return this;
+		}
+
+		public IGridWithOptions<T> Attributes(IDictionary<string, object> attributes)
+		{
+			_gridModel.Attributes = attributes;
+			return this;
+		}
+
 		public IGridWithOptions<T> WithModel(IGridModel<T> model)
 		{
 			_gridModel = model;
@@ -61,7 +73,7 @@ namespace MvcContrib.UI.Grid
 				_gridModel.Renderer = new HtmlTableGridRenderer<T>();
 			}
 
-			_gridModel.Renderer.Render(_gridModel, _writer);
+			_gridModel.Renderer.Render(_gridModel, DataSource, _writer);
 			return null;
 		}
 	}

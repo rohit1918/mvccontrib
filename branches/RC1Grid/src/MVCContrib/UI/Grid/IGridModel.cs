@@ -10,5 +10,7 @@ namespace MvcContrib.UI.Grid
 	{
 		IGridRenderer<T> Renderer { get; set; }
 		IList<GridColumn<T>> Columns { get; }
+		string EmptyText { get; set; }
+		IDictionary<string, object> Attributes { get; set; }
 	}
 }
