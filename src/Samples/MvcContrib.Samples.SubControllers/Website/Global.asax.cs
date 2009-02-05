@@ -21,7 +21,7 @@ namespace Website
 		protected void Application_Start()
 		{
 			RegisterRoutes(RouteTable.Routes);
-			ModelBinders.DefaultBinder = new SubControllerBinder();
+			ModelBinders.Binders.DefaultBinder = new SubControllerBinder();
 		}
 	}
 }

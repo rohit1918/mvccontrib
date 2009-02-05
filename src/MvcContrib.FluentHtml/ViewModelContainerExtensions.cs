@@ -187,11 +187,33 @@ namespace MvcContrib.FluentHtml
 		{
 			var name = expression.GetNameFor(view) + ".Index";
 			var value = valueExpression.GetValueFrom(view.ViewModel);
-			var id = name.Replace('.', '_') + (value == null
+			var id = name.FormatAsHtmlId() + (value == null
 				? null
-				: "_" + value.ToString().Replace(' ', '_').Replace('.', '_'));
+				: "_" + value.ToString().FormatAsHtmlId());
 			var hidden = new Hidden(name, expression.GetMemberExpression(), view.MemberBehaviors).Value(value).Id(id);
 			return hidden;
 		}
+
+        /// <summary>
+        /// Returns a name to match the value for the HTML name attribute form elements using the same expression. 
+        /// </summary>
+        /// <typeparam name="T">The type of the ViewModel.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <param name="expression">Expression indicating the ViewModel member.</param>
+        public static string NameFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+        {
+            return expression.GetNameFor();
+        }
+
+        /// <summary>
+        /// Returns a name to match the value for the HTML id attribute form elements using the same expression. 
+        /// </summary>
+        /// <typeparam name="T">The type of the ViewModel.</typeparam>
+        /// <param name="view">The view.</param>
+        /// <param name="expression">Expression indicating the ViewModel member.</param>
+        public static string IdFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+        {
+            return expression.GetNameFor().FormatAsHtmlId();
+        }
 	}
 }

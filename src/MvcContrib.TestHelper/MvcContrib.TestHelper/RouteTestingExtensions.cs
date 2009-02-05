@@ -74,10 +74,11 @@ namespace MvcContrib.TestHelper
                     case ExpressionType.MemberAccess:
                         value = Expression.Lambda(methodCall.Arguments[ i ]).Compile().DynamicInvoke();
                         break;
+				
                 }
                 
 
-                Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value.ToString()));
+                Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value));
             }
 
             return routeData;

@@ -74,7 +74,7 @@ namespace MvcContrib.FluentHtml.Elements
 			var name = builder.Attributes[HtmlAttribute.Name];
 			if (name != null)
 			{
-				Attr(HtmlAttribute.Id, name.Replace('.', '_'));
+                Attr(HtmlAttribute.Id, name.FormatAsHtmlId());
 			}
 		}
 	}

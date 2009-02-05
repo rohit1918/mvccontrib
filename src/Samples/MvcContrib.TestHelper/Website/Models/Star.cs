@@ -27,7 +27,7 @@ namespace MvcContrib.TestHelper.Sample.Models
             return stars;
         }
 
-        public static List<Star> GetStarsAndLinks(RequestContext context)
+        public static List<Star> GetStarsAndLinks()
         {
             
             List<Star> stars = new List<Star>();

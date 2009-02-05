@@ -78,6 +78,22 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
+        /// <summary>
+        /// Set the options for the element.
+        /// </summary>
+        /// <param name="value">Enumerable of select list items used to generate the options.</param>
+        public virtual T Options(IEnumerable<SelectListItem> value)
+        {
+            _options = value;
+            _dataValueField = "Value";
+            _dataTextField = "Text";
+            if (value != null)
+            {
+                _selectedValues = value.Where(x => x.Selected).Select(x => x.Value).ToList();
+            }
+            return (T)this;
+        }
+
 		/// <summary>
 		/// Set the options for the element.
 		/// </summary>

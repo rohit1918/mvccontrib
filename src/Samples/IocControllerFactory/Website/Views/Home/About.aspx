@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="Website.Views.Home.About" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" 
+    AutoEventWireup="true" Inherits="System.Web.Mvc.ViewPage" %>
 
 <asp:Content ID="aboutContent" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <h1>

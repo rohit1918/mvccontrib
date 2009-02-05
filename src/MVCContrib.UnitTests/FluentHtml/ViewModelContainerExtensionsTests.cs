@@ -161,5 +161,19 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var element = target.ValidationMessage(x => x.Title);
 			element.InnerTextShouldEqual("Bad stuff");
 		}
+
+        [Test]
+        public void can_get_id_for_expression()
+        {
+            var result = target.IdFor(x => x.Person.FirstName);
+            result.ShouldEqual("Person_FirstName");
+        }
+
+        [Test]
+        public void can_get_name_for_expression()
+        {
+            var result = target.NameFor(x => x.Person.FirstName);
+            result.ShouldEqual("Person.FirstName");
+        }
 	}
 }
