@@ -25,8 +25,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_use_custom_renderer()
 		{
-			var mockRenderer = MockRepository.GenerateMock<IGridRenderer>();
-			mockRenderer.Expect(x => x.Render(null, null)).IgnoreArguments().Do(new Action<IGridModel, TextWriter>((g, w) => w.Write("foo")));
+			var mockRenderer = MockRepository.GenerateMock<IGridRenderer<Person>>();
+			mockRenderer.Expect(x => x.Render(null, null)).IgnoreArguments().Do(new Action<IGridModel<Person>, TextWriter>((g, w) => w.Write("foo")));
 			grid.RenderUsing(mockRenderer).ToString();
 			writer.ToString().ShouldEqual("foo");
 		}
@@ -34,10 +34,21 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_specify_custom_model()
 		{
-			var mockModel = MockRepository.GenerateStub<IGridModel>();
-			var mockRenderer = MockRepository.GenerateMock<IGridRenderer>();
+			var mockModel = MockRepository.GenerateStub<IGridModel<Person>>();
+			var mockRenderer = MockRepository.GenerateMock<IGridRenderer<Person>>();
 			grid.WithModel(mockModel).RenderUsing(mockRenderer).ToString();
 			mockRenderer.AssertWasCalled(x => x.Render(mockModel, writer));
+		}
+
+		[Test]
+		public void Should_specify_columns()
+		{
+			var columns = new List<GridColumn<Person>>();
+			var mockModel = MockRepository.GenerateStub<IGridModel<Person>>();
+			mockModel.Expect(x => x.Columns).Return(columns);
+
+			grid.WithModel(mockModel).Columns(col => col.For(x => x.Name)).ToString();
+			columns.Count.ShouldEqual(1);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MvcContrib.UI.Grid.Syntax;
 
 namespace MvcContrib.UI.Grid
@@ -5,8 +6,9 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Defines a grid model
 	/// </summary>
-	public interface IGridModel
+	public interface IGridModel<T>
 	{
-		IGridRenderer Renderer { get; set; }
+		IGridRenderer<T> Renderer { get; set; }
+		IList<GridColumn<T>> Columns { get; }
 	}
 }

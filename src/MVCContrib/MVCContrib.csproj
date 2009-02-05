@@ -144,6 +144,8 @@
     <Compile Include="UI\BlockRenderer.cs" />
     <Compile Include="UI\CapturingResponseFilter.cs" />
     <Compile Include="UI\CleanTagBuilder.cs" />
+    <Compile Include="UI\Grid\ColumnBuilder.cs" />
+    <Compile Include="UI\Grid\GridColumn.cs" />
     <Compile Include="UI\Grid\GridModel.cs" />
     <Compile Include="UI\Grid\Grid.cs" />
     <Compile Include="UI\Grid\GridExtensions.cs" />
