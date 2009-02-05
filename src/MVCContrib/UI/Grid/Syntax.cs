@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace MvcContrib.UI.Grid.Syntax
 {
@@ -27,5 +28,18 @@ namespace MvcContrib.UI.Grid.Syntax
 		/// <param name="columnBuilder"></param>
 		/// <returns></returns>
 		IGridWithOptions<T> Columns(Action<ColumnBuilder<T>> columnBuilder);
+
+		/// <summary>
+		/// Text to render when grid is empty.
+		/// </summary>
+		/// <param name="emptyText">Empty Text</param>
+		/// <returns></returns>
+		IGridWithOptions<T> Empty(string emptyText);
+
+		/// <summary>
+		/// Additional custom attributes
+		/// </summary>
+		/// <returns></returns>
+		IGridWithOptions<T> Attributes(IDictionary<string, object> attributes);
 	}
 }

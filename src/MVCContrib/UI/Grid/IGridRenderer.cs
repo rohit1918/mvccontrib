@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 
 namespace MvcContrib.UI.Grid
@@ -11,7 +12,8 @@ namespace MvcContrib.UI.Grid
 		/// Renders a grid
 		/// </summary>
 		/// <param name="gridModel">The grid model to render</param>
+		/// <param name="dataSource">Data source for the grid</param>
 		/// <param name="output">The TextWriter to which the grid should be rendered/</param>
-		void Render(IGridModel<T> gridModel, TextWriter output);
+		void Render(IGridModel<T> gridModel, IEnumerable<T> dataSource, TextWriter output);
 	}
 }

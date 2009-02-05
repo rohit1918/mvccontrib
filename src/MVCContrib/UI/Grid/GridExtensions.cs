@@ -45,5 +45,14 @@ namespace MvcContrib.UI.Grid
 		{
 			return column.HeaderAttributes(new Hash(hash));
 		}
+
+		/// <summary>
+		/// Defines additional attributes for a grid.
+		/// </summary>
+		/// <returns></returns>
+		public static IGridWithOptions<T> Attributes<T>(this IGridWithOptions<T> grid, params Func<object, object>[] hash) where T : class
+		{
+			return grid.Attributes(new Hash(hash));
+		}
 	}
 }
