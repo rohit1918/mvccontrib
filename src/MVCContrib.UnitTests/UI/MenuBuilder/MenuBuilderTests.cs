@@ -1,31 +1,22 @@
 using System;
-using System.Collections;
 using System.IO;
-using System.Linq.Expressions;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.UI;
 using MvcContrib.UI.MenuBuilder;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace MvcContrib.UnitTests.UI.MenuBuilder
 {
 	[TestFixture]
 	public class MenuBuilderTests
 	{
-		private MockRepository mocks;
-
 		[SetUp]
 		public void Setup()
 		{
-			mocks = new MockRepository();
 			writer = new StringWriter();
-
 
 			RouteTable.Routes.Clear();
 			RouteTable.Routes.MapRoute(
@@ -37,8 +28,12 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			var requestContext = GetRequestContext();
 			var controller = new HomeController();
 			controllerContext = new ControllerContext(requestContext, controller);
-			mocks.ReplayAll();
+		}
 
+		[TearDown]
+		public void Teardown()
+		{
+			RouteTable.Routes.Clear(); //To prevent other tests from failing.
 		}
 
 		private RequestContext GetRequestContext()
@@ -53,8 +48,8 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 
 		private HttpContextBase GetHttpContext(string appPath, string requestPath, string httpMethod)
 		{
-			var mockContext = mocks.DynamicMock<HttpContextBase>();
-			var mockRequest = mocks.DynamicMock<HttpRequestBase>();
+			var mockContext = MockRepository.GenerateMock<HttpContextBase>();
+			var mockRequest = MockRepository.GenerateMock<HttpRequestBase>();
 			if (!String.IsNullOrEmpty(appPath))
 			{
 				mockRequest.Stub(o => o.ApplicationPath).Return(appPath);
@@ -75,7 +70,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 			mockContext.Stub(o => o.Request).Return(mockRequest);
 			mockContext.Stub(o => o.Session).Return((HttpSessionStateBase)null);
 
-			var mockResponse = mocks.DynamicMock<HttpResponseBase>();
+			var mockResponse = MockRepository.GenerateMock<HttpResponseBase>();
 			mockResponse.Stub(o => o.ApplyAppPathModifier(null)).IgnoreArguments().Do((Func<string, string>)(s => s));
 
 			//				IgnoreArguments().Return(@"Home\Index");
@@ -84,7 +79,7 @@ namespace MvcContrib.UnitTests.UI.MenuBuilder
 
 			mockRequest.Stub(o => o.Path).Return("Home/Index/");
 
-			var principal = mocks.DynamicMock<IPrincipal>();
+			var principal = MockRepository.GenerateMock<IPrincipal>();
 			mockContext.Stub(o => o.User).Return(principal);
 			identity = new TestIdentity() { IsAuthenticated = false };
 			principal.Stub(o => o.Identity).Return(identity);
