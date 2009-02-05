@@ -1,5 +1,6 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" CodeBehind="DivideByZeroException.aspx.cs" Inherits="MvcContrib.Samples.Views.Shared.Rescues.DivideByZeroException" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" 
+    Inherits="System.Web.Mvc.ViewPage<HandleErrorInfo>" %>
 <asp:Content ContentPlaceHolderId="childContent" runat="server">
 You fail at math rescue says: 
-<%= ViewData.Model.Exception.GetBaseException().Message %>
+<%= Model.Exception.GetBaseException().Message %>
 </asp:Content>

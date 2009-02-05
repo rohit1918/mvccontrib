@@ -1,7 +1,1 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage" %>
-<script runat="server">
-	protected void Page_Load(object  sender, EventArgs e)
-	{
-		Response.Redirect("~/Shipment/Index");
-	}
-</script>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="MvcContrib.Samples._Default" %>
