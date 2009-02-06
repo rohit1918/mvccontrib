@@ -116,5 +116,12 @@ namespace MvcContrib.UnitTests.UI.Grid
 			builder.For(x => x.Name).HeaderAttributes(foo => "bar");
 			builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
 		}
+
+		[Test]
+		public void Should_create_custom_column()
+		{
+			builder.For("Name");
+			builder.Single().Name.ShouldEqual("Name");
+		}
 	}
 }

@@ -8,7 +8,7 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Default model for grid
 	/// </summary>
-	public class GridModel<T>  : IGridModel<T>
+	public class GridModel<T>  : IGridModel<T> where T : class
 	{
 		private readonly IList<GridColumn<T>> _columns = new List<GridColumn<T>>();
 		private IGridRenderer<T> _renderer = new HtmlTableGridRenderer<T>();
@@ -56,6 +56,18 @@ namespace MvcContrib.UI.Grid
 		{
 			var columnBuilder = new ColumnBuilder<T>();
 			var column = columnBuilder.For(propertySpecifier);
+			_columns.Add((GridColumn<T>)column);
+			return column;
+		}
+
+		/// <summary>
+		/// Defines a custom column
+		/// </summary>
+		/// <param name="columnName">Name of column</param>
+		public IGridColumn<T> ColumnFor(string columnName)
+		{
+			var columnBuilder = new ColumnBuilder<T>();
+			var column = columnBuilder.For(columnName);
 			_columns.Add((GridColumn<T>)column);
 			return column;
 		}
