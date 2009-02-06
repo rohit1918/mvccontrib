@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Grid
 {
@@ -18,7 +21,8 @@ namespace MvcContrib.UI.Grid
 		private bool _visible = true;
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
-
+		private Action<ViewContext, TextWriter> _customHeaderRenderer;
+		private const string CouldNotFindView = "The view '{0}' or its master could not be found. The following locations were searched:{1}";
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
 		/// </summary>
@@ -45,6 +49,14 @@ namespace MvcContrib.UI.Grid
 				}
 				return SplitPascalCase(_name);
 			}
+		}
+
+		/// <summary>
+		/// Custom header renderer
+		/// </summary>
+		public Action<ViewContext, TextWriter> CustomHeaderRenderer
+		{
+			get { return _customHeaderRenderer; }
 		}
 
 		/// <summary>
@@ -99,6 +111,40 @@ namespace MvcContrib.UI.Grid
 			}
 
 			return this;
+		}
+
+		public IGridColumn<T> WithHeader(string header)
+		{
+			_customHeaderRenderer = (c, w) => w.Write(header);
+			return this;
+		}
+
+		public IGridColumn<T> WithHeaderPartial(string partialName)
+		{
+			//TODO: Referencing ViewEngines here is nasty. Think of a better way to do this.
+			_customHeaderRenderer = CreateCustomRenderer(partialName);
+			return this;
+		}
+
+		private Action<ViewContext, TextWriter> CreateCustomRenderer(string partialName)
+		{
+			return (c, w) => {
+				var viewResult = ViewEngines.Engines.FindPartialView(c, partialName);
+
+				if(viewResult.View == null)
+				{
+					// we need to generate an exception containing all the locations we searched
+					var locationsText = new StringBuilder();
+					foreach (string location in viewResult.SearchedLocations) {
+						locationsText.AppendLine();
+						locationsText.Append(location);
+					}
+
+					throw new InvalidOperationException(string.Format(CouldNotFindView, partialName, locationsText));
+				}
+
+				viewResult.View.Render(c, w);
+			};
 		}
 
 		private string SplitPascalCase(string input)
@@ -182,5 +228,19 @@ namespace MvcContrib.UI.Grid
 		/// <param name="attributes"></param>
 		/// <returns></returns>
 		IGridColumn<T> HeaderAttributes(IDictionary<string, object> attributes);
+
+		/// <summary>
+		/// Defines a custom format for rendering the column header.
+		/// </summary>
+		/// <param name="header">The format to use.</param>
+		/// <returns></returns>
+		IGridColumn<T> WithHeader(string header);
+
+		/// <summary>
+		/// Specifies that a partial view should be used to render the column header.
+		/// </summary>
+		/// <param name="partialName"></param>
+		/// <returns></returns>
+		IGridColumn<T> WithHeaderPartial(string partialName);
 	}
 }

@@ -17,7 +17,7 @@ namespace MvcContrib.UI.Grid
 		/// <returns></returns>
 		public static IGrid<T> Grid<T>(this HtmlHelper helper, IEnumerable<T> dataSource) where T : class
 		{
-			return new Grid<T>(dataSource, helper.ViewContext.HttpContext.Response.Output);
+			return new Grid<T>(dataSource, helper.ViewContext.HttpContext.Response.Output, helper.ViewContext);
 		}
 
 		/// <summary>
