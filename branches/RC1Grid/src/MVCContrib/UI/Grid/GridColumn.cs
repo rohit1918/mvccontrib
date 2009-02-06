@@ -11,7 +11,7 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Column for the grid
 	/// </summary>
-	public class GridColumn<T> : IGridColumn<T>
+	public class GridColumn<T> : IGridColumn<T> where T : class
 	{
 		private string _name;
 		private bool _doNotSplit;
@@ -22,6 +22,8 @@ namespace MvcContrib.UI.Grid
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
 		private Action<ViewContext, TextWriter> _customHeaderRenderer;
+		private Action<ViewContext, TextWriter, T> _customItemRenderer;
+
 		private const string CouldNotFindView = "The view '{0}' or its master could not be found. The following locations were searched:{1}";
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
@@ -57,6 +59,14 @@ namespace MvcContrib.UI.Grid
 		public Action<ViewContext, TextWriter> CustomHeaderRenderer
 		{
 			get { return _customHeaderRenderer; }
+		}
+
+		/// <summary>
+		/// Custom item renderer
+		/// </summary>
+		public Action<ViewContext, TextWriter, T> CustomItemRenderer
+		{
+			get { return _customItemRenderer; }
 		}
 
 		/// <summary>
@@ -113,38 +123,49 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
-		public IGridColumn<T> WithHeader(string header)
+		public IGridColumn<T> Header(string header)
 		{
 			_customHeaderRenderer = (c, w) => w.Write(header);
 			return this;
 		}
 
-		public IGridColumn<T> WithHeaderPartial(string partialName)
+		public IGridColumn<T> HeaderPartial(string partialName)
 		{
-			//TODO: Referencing ViewEngines here is nasty. Think of a better way to do this.
-			_customHeaderRenderer = CreateCustomRenderer(partialName);
+			_customHeaderRenderer = (c, w) => {
+				var view = FindView(c, partialName);
+				view.Render(c, w);
+			};
 			return this;
 		}
 
-		private Action<ViewContext, TextWriter> CreateCustomRenderer(string partialName)
+		public IGridColumn<T> Partial(string partialName)
 		{
-			return (c, w) => {
-				var viewResult = ViewEngines.Engines.FindPartialView(c, partialName);
+			_customItemRenderer = (context, writer, item) => {
+				var view = FindView(context, partialName);
+				var newViewData = new ViewDataDictionary<T>(item);
+				var newContext = new ViewContext(context, context.View, newViewData, context.TempData);
+				view.Render(newContext, writer);
+			};
+			return this;
+		}
 
-				if(viewResult.View == null)
-				{
-					// we need to generate an exception containing all the locations we searched
-					var locationsText = new StringBuilder();
-					foreach (string location in viewResult.SearchedLocations) {
-						locationsText.AppendLine();
-						locationsText.Append(location);
-					}
+		//TODO: Referencing ViewEngines here is nasty. Think of a better way to do this.
+		private IView FindView(ViewContext context, string viewName)
+		{
+			var viewResult = ViewEngines.Engines.FindPartialView(context, viewName);
 
-					throw new InvalidOperationException(string.Format(CouldNotFindView, partialName, locationsText));
+			if (viewResult.View == null) {
+				// we need to generate an exception containing all the locations we searched
+				var locationsText = new StringBuilder();
+				foreach (string location in viewResult.SearchedLocations) {
+					locationsText.AppendLine();
+					locationsText.Append(location);
 				}
 
-				viewResult.View.Render(c, w);
-			};
+				throw new InvalidOperationException(string.Format(CouldNotFindView, viewName, locationsText));
+			}
+
+			return viewResult.View;
 		}
 
 		private string SplitPascalCase(string input)
@@ -230,17 +251,24 @@ namespace MvcContrib.UI.Grid
 		IGridColumn<T> HeaderAttributes(IDictionary<string, object> attributes);
 
 		/// <summary>
-		/// Defines a custom format for rendering the column header.
+		/// The HTML that should be used to render the header for the column. This should include TD tags. 
 		/// </summary>
 		/// <param name="header">The format to use.</param>
 		/// <returns></returns>
-		IGridColumn<T> WithHeader(string header);
+		IGridColumn<T> Header(string header);
 
 		/// <summary>
 		/// Specifies that a partial view should be used to render the column header.
 		/// </summary>
 		/// <param name="partialName"></param>
 		/// <returns></returns>
-		IGridColumn<T> WithHeaderPartial(string partialName);
+		IGridColumn<T> HeaderPartial(string partialName);
+
+		/// <summary>
+		/// Specifies that a partial view should be used to render the contents of this column.
+		/// </summary>
+		/// <param name="partialName">The name of the partial view</param>
+		/// <returns></returns>
+		IGridColumn<T> Partial(string partialName);
 	}
 }

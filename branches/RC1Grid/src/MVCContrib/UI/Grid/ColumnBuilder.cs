@@ -8,9 +8,9 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Builds grid columns
 	/// </summary>
-	public class ColumnBuilder<T> : IEnumerable<GridColumn<T>>
+	public class ColumnBuilder<T> : IEnumerable<GridColumn<T>> where T : class 
 	{
-		private readonly List<GridColumn<T>> columns = new List<GridColumn<T>>();
+		private readonly List<GridColumn<T>> _columns = new List<GridColumn<T>>();
 
 		/// <summary>
 		/// Specifies a column should be constructed for the specified property.
@@ -27,13 +27,24 @@ namespace MvcContrib.UI.Grid
 				column.Named(inferredName);
 			}
 
-			columns.Add(column);
+			_columns.Add(column);
 			return column;
+		}
+
+		/// <summary>
+		/// Specifies that a custom column should be constructed with the specified name.
+		/// </summary>
+		/// <param name="name"></param>
+		public IGridColumn<T> For(string name) 
+		{
+			var column = new GridColumn<T>(x => string.Empty);
+			_columns.Add(column);
+			return column.Named(name).Partial(name);
 		}
 
 		public IEnumerator<GridColumn<T>> GetEnumerator()
 		{
-			return columns.GetEnumerator();
+			return _columns.GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

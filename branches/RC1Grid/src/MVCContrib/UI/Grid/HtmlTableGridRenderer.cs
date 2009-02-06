@@ -6,7 +6,7 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Renders a grid as an HTML table.
 	/// </summary>
-	public class HtmlTableGridRenderer<T> : GridRenderer<T>
+	public class HtmlTableGridRenderer<T> : GridRenderer<T> where T: class 
 	{
 		private const string DefaultCssClass = "grid";
 

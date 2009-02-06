@@ -9,7 +9,7 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Base class for Grid Renderers. 
 	/// </summary>
-	public abstract class GridRenderer<T> : IGridRenderer<T>
+	public abstract class GridRenderer<T> : IGridRenderer<T> where T : class 
 	{
 		protected IGridModel<T> GridModel { get; private set; }
 		protected IEnumerable<T> DataSource { get; private set; }
@@ -62,10 +62,10 @@ namespace MvcContrib.UI.Grid
 			foreach(var column in VisibleColumns())
 			{
 				//A custom item section has been specified - render it and continue to the next iteration.
-				//					if (column.Name != null && column.CustomRenderer != null) {
-				//						column.CustomRenderer(item);
-				//						continue;
-				//					}
+				if (column.CustomItemRenderer != null) {
+					column.CustomItemRenderer(Context, _writer, item);
+					continue;
+				}
 
 				RenderStartCell(column);
 				RenderCellValue(column, item);

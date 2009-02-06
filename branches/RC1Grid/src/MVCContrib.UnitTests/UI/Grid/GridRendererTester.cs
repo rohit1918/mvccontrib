@@ -79,7 +79,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_with_custom_Header_format()
 		{
-			_model.ColumnFor(x => x.Name).WithHeader("<td>TEST</td>");
+			_model.ColumnFor(x => x.Name).Header("<td>TEST</td>");
 			_model.ColumnFor(x => x.Id);
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -89,7 +89,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_render_with_custom_header_partial()
 		{
 			SetupViewEngine("testPartial", "<td>TEST</td>");
-			_model.ColumnFor(x => x.Name).WithHeaderPartial("testPartial");
+			_model.ColumnFor(x => x.Name).HeaderPartial("testPartial");
 			_model.ColumnFor(x => x.Id);
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -105,7 +105,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 				.Return(new ViewEngineResult(new[] { "foo", "bar" }))
 				.Repeat.Any();
 
-			_model.ColumnFor(x => x.Name).WithHeaderPartial("foo");
+			_model.ColumnFor(x => x.Name).HeaderPartial("foo");
 			RenderGrid();
 		}
 
@@ -148,13 +148,36 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void Custom_item_section()
+		public void Column_should_be_rendered_using_custom_partial()
 		{
-			/*	_helper.Grid<Person>("people", column => column.For("Name").Do(s => Writer.Write("<td>Test</td>")));
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Test</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
+			SetupViewEngine("Foo", (v, w) => {
+				var model = ((Person)v.ViewData.Model);
+				w.Write("<td>" + model.Name + "_TEST</td>");
+			});
+
+			_model.ColumnFor(x => x.Name).Partial("Foo");
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy_TEST</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
 		}
+
+		[Test]
+		public void Custom_column_should_use_partial_with_same_name_as_column()
+		{
+			SetupViewEngine("Name", "<td>Foo</td>");
+			_model.ColumnFor("Name");
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Foo</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		[Test]
+		public void Custom_column_with_custom_partial()
+		{
+			SetupViewEngine("Foo", "<td>Foo</td>");
+			_model.ColumnFor("Name").Partial("Foo");
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Foo</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
 
 		[Test]
 		public void With_cell_condition()
@@ -265,18 +288,22 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			var renderer = new HtmlTableGridRenderer<Person>();
 			var writer = new StringWriter();
-			renderer.Render(_model, dataSource, writer, new ViewContext());
+			renderer.Render(_model, dataSource, writer, new ViewContext() { View = MockRepository.GenerateStub<IView>(), TempData = new TempDataDictionary()});
 			return writer.ToString();
 		}
 
 		private void SetupViewEngine(string viewName, string viewContents)
 		{
+			SetupViewEngine(viewName, (v, w) => w.Write(viewContents));
+		}
+
+		private void SetupViewEngine(string viewName, Action<ViewContext, TextWriter> action)
+		{
 			var view = MockRepository.GenerateMock<IView>();
 			_viewEngine.Expect(x => x.FindPartialView(Arg<ControllerContext>.Is.Anything, Arg<string>.Is.Equal(viewName), Arg<bool>.Is.Anything)).Return(new ViewEngineResult(view, _viewEngine));
 
 			view.Expect(x => x.Render(null, null)).IgnoreArguments()
-				.Do(new Action<ViewContext, TextWriter>((c, w) => w.Write(viewContents)));
-			
+				.Do(action);
 		}
 	}
 }
