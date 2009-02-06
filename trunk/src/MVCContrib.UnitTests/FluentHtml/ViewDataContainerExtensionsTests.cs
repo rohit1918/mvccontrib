@@ -124,5 +124,21 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var element = target.TextArea("fake.Title");
 			element.InnerTextShouldEqual(fake.Title);
 		}
+
+		[Test]
+		public void can_get_radio_set_with_selected_value()
+		{
+			var element = target.RadioSet("fake.Id");
+			element.SelectedValues.ShouldCount(1);
+			var enumerator = element.SelectedValues.GetEnumerator();
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Id);
+		}
+
+		[Test]
+		public void can_get_radio_button()
+		{
+			target.RadioButton("Id").AttributeShouldEqual(HtmlAttribute.Name, "Id");
+		}
 	}
 }

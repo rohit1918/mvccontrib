@@ -53,7 +53,7 @@ namespace MvcContrib.FluentHtml.Elements
 			get { return TagRenderMode.SelfClosing; }
 		}
 
-		private void ApplyBehaviors()
+		protected void ApplyBehaviors()
 		{
 			if(behaviors == null)
 			{
@@ -65,16 +65,11 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 		}
 
-		private void InferIdFromName()
+		protected virtual void InferIdFromName()
 		{
-			if (builder.Attributes.ContainsKey(HtmlAttribute.Id))
+			if (!builder.Attributes.ContainsKey(HtmlAttribute.Id))
 			{
-				return;
-			}
-			var name = builder.Attributes[HtmlAttribute.Name];
-			if (name != null)
-			{
-                Attr(HtmlAttribute.Id, name.FormatAsHtmlId());
+				Attr(HtmlAttribute.Id, builder.Attributes[HtmlAttribute.Name].GenerateHtmlId());
 			}
 		}
 	}

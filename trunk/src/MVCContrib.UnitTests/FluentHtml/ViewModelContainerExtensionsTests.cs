@@ -80,8 +80,8 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			target = new FakeViewModelContainer<FakeModel>("fake") { ViewModel = fake };
 			var element = target.Index(x => x, x => x.Id);
-			element.AttributeShouldEqual("name", "fake.Index");
-			element.AttributeShouldEqual("id", "fake_Index_" + fake.Id);
+			element.AttributeShouldEqual(HtmlAttribute.Name, "fake.Index");
+			element.AttributeShouldEqual(HtmlAttribute.Id, "fake_Index_" + fake.Id);
 		}
 
 		[Test]
@@ -89,12 +89,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			target = new FakeViewModelContainer<FakeModel>("fake") {ViewModel = fake};
 			var element = target.Index(x => x, x => x.Id);
-			element.AttributeShouldEqual("name", "fake.Index");
+			element.AttributeShouldEqual(HtmlAttribute.Name, "fake.Index");
 			element.ValueAttributeShouldEqual(fake.Id.ToString());
 		}
 
 		[Test]
-		public void can_get_select()
+		public void can_get_select_with_selected_value()
 		{
 			var element = target.Select(x => x.Id);
 			element.SelectedValues.ShouldCount(1);
@@ -104,7 +104,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
-		public void can_get_multi_select()
+		public void can_get_multi_select_with_selected_values()
 		{
 			var element = target.MultiSelect(x => x.Numbers);
 			element.SelectedValues.ShouldCount(2);
@@ -136,7 +136,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 			target.ViewData.ModelState.AddModelError("Title", "Bad stuff");
 			var element = target.ValidationMessage(x => x.Title, message);
 			element.InnerTextShouldEqual(message);
-			element.AttributeShouldEqual("class", "field-validation-error");
+			element.AttributeShouldEqual(HtmlAttribute.Class, "field-validation-error");
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var message = "You did something wrong";
 			target.ViewData.ModelState.AddModelError("Title", "Bad stuff");
 			var element = target.ValidationMessage(x => x.Title, message).Class("error");
-			element.AttributeShouldEqual("class", "error");
+			element.AttributeShouldEqual(HtmlAttribute.Class, "error");
 		}
 
 		[Test]
@@ -162,18 +162,34 @@ namespace MvcContrib.UnitTests.FluentHtml
 			element.InnerTextShouldEqual("Bad stuff");
 		}
 
-        [Test]
-        public void can_get_id_for_expression()
-        {
-            var result = target.IdFor(x => x.Person.FirstName);
-            result.ShouldEqual("Person_FirstName");
-        }
+		[Test]
+		public void can_get_id_for_expression()
+		{
+			var result = target.IdFor(x => x.Person.FirstName);
+			result.ShouldEqual("Person_FirstName");
+		}
 
-        [Test]
-        public void can_get_name_for_expression()
-        {
-            var result = target.NameFor(x => x.Person.FirstName);
-            result.ShouldEqual("Person.FirstName");
-        }
+		[Test]
+		public void can_get_name_for_expression()
+		{
+			var result = target.NameFor(x => x.Person.FirstName);
+			result.ShouldEqual("Person.FirstName");
+		}
+
+		[Test]
+		public void can_get_radio_set_with_selected_value()
+		{
+			var element = target.RadioSet(x => x.Id);
+			element.SelectedValues.ShouldCount(1);
+			var enumerator = element.SelectedValues.GetEnumerator();
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Id);
+		}
+
+		[Test]
+		public void can_get_radio_button()
+		{
+			target.RadioButton(x => x.Id).AttributeShouldEqual(HtmlAttribute.Name, "Id"); ;
+		}
 	}
 }
