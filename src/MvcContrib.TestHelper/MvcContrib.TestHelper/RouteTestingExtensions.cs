@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -111,6 +110,18 @@ namespace MvcContrib.TestHelper
             string actual = routeData.Values.GetValue("controller").ToString();
 
             expected.AssertSameStringAs(actual);
+            return routeData;
+        }
+
+        /// <summary>
+        /// Verifies the <see cref="RouteData">routeData</see> will instruct the routing engine to ignore the route.
+        /// </summary>
+        /// <param name="relativeUrl"></param>
+        /// <returns></returns>
+        public static RouteData ShouldBeIgnored(this string relativeUrl)
+        {
+            RouteData routeData = relativeUrl.Route();
+            Assert.That(routeData.RouteHandler is StopRoutingHandler, "Expected StopRoutingHandler, but wasn't");
             return routeData;
         }
 
