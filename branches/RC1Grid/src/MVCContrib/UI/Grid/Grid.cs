@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Mvc;
 using MvcContrib.UI.Grid.Syntax;
 
 namespace MvcContrib.UI.Grid
@@ -13,14 +14,17 @@ namespace MvcContrib.UI.Grid
 	{
 		private readonly TextWriter _writer;
 		private IGridModel<T> _gridModel = new GridModel<T>();
+		private ViewContext context;
 		/// <summary>
 		/// Creates a new instance of the Grid class.
 		/// </summary>
 		/// <param name="dataSource">The datasource for the grid</param>
 		/// <param name="writer">The TextWriter where the grid should be rendered</param>
-		public Grid(IEnumerable<T> dataSource, TextWriter writer)
+		/// <param name="context"></param>
+		public Grid(IEnumerable<T> dataSource, TextWriter writer, ViewContext context)
 		{
 			_writer = writer;
+			this.context = context;
 			DataSource = dataSource;
 		}
 
@@ -73,7 +77,7 @@ namespace MvcContrib.UI.Grid
 				_gridModel.Renderer = new HtmlTableGridRenderer<T>();
 			}*/
 
-			_gridModel.Renderer.Render(_gridModel, DataSource, _writer);
+			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
 			return null;
 		}
 	}

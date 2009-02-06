@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -14,6 +15,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		private Grid<Person> _grid;
 		private TextWriter _writer;
 		private IGridModel<Person> _model;
+		private ViewContext _context;
 
 		[SetUp]
 		public void Setup()
@@ -21,7 +23,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_writer = new StringWriter();
 			_people = new List<Person>();
 			_model = new GridModel<Person>();
-			_grid = new Grid<Person>(_people, _writer);
+			_context = new ViewContext();
+			_grid = new Grid<Person>(_people, _writer, _context);
 			_grid.WithModel(_model);
 		}
 
@@ -29,7 +32,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_use_custom_renderer()
 		{
 			var mockRenderer = MockRepository.GenerateMock<IGridRenderer<Person>>();
-			mockRenderer.Expect(x => x.Render(null, null, null)).IgnoreArguments().Do(new Action<IGridModel<Person>, IEnumerable<Person>, TextWriter>((g, d, w) => w.Write("foo")));
+			mockRenderer.Expect(x => x.Render(null, null, null, null)).IgnoreArguments().Do(new Action<IGridModel<Person>, IEnumerable<Person>, TextWriter, ViewContext>((g, d, w, c) => w.Write("foo")));
 			_grid.RenderUsing(mockRenderer).ToString();
 			_writer.ToString().ShouldEqual("foo");
 		}
@@ -40,7 +43,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 			var mockModel = MockRepository.GenerateStub<IGridModel<Person>>();
 			var mockRenderer = MockRepository.GenerateMock<IGridRenderer<Person>>();
 			_grid.WithModel(mockModel).RenderUsing(mockRenderer).ToString();
-			mockRenderer.AssertWasCalled(x => x.Render(mockModel, _people, _writer));
+			mockRenderer.AssertWasCalled(x => x.Render(mockModel, _people, _writer, _context));
 		}
 
 		[Test]

@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Grid
 {
@@ -11,13 +13,16 @@ namespace MvcContrib.UI.Grid
 	{
 		protected IGridModel<T> GridModel { get; private set; }
 		protected IEnumerable<T> DataSource { get; private set; }
+		protected ViewContext Context { get; private set; }
 		private TextWriter _writer;
 
-		public void Render(IGridModel<T> gridModel, IEnumerable<T> dataSource, TextWriter output)
+
+		public void Render(IGridModel<T> gridModel, IEnumerable<T> dataSource, TextWriter output, ViewContext context)
 		{
 			_writer = output;
 			GridModel = gridModel;
 			DataSource = dataSource;
+			Context = context;
 
 			RenderGridStart();
 			bool headerRendered = RenderHeader();
@@ -33,6 +38,7 @@ namespace MvcContrib.UI.Grid
 
 			RenderGridEnd(!headerRendered);
 		}
+
 
 		protected void RenderText(string text)
 		{
@@ -89,15 +95,17 @@ namespace MvcContrib.UI.Grid
 			foreach(var column in VisibleColumns())
 			{
 				//Allow for custom header overrides.
-//				if (column.CustomHeader != null) {
-//					column.CustomHeader();
-//				}
-				//else {
-				RenderHeaderCellStart(column);
-				RenderText(column.Name);
-				RenderHeaderCellEnd();
+				if(column.CustomHeaderRenderer != null)
+				{
+					column.CustomHeaderRenderer(Context, _writer);
+				}
+				else
+				{
+					RenderHeaderCellStart(column);
+					RenderText(column.Name);
+					RenderHeaderCellEnd();
+				}
 			}
-			//}
 
 			RenderHeadEnd();
 
