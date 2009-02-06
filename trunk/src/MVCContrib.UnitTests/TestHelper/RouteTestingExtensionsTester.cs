@@ -1,4 +1,3 @@
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.TestHelper;
@@ -45,6 +44,7 @@ namespace MvcContrib.UnitTests.TestHelper
         public void Setup()
         {
             RouteTable.Routes.Clear();
+            RouteTable.Routes.IgnoreRoute("{resource}.gif/{*pathInfo}");
             RouteTable.Routes.MapRoute(
                 "default",
                 "{controller}/{action}/{id}", 
@@ -116,6 +116,7 @@ namespace MvcContrib.UnitTests.TestHelper
 
             "~/funky/bar/widget".ShouldMapTo<FunkyController>( x => x.Bar( widget ) );
         }
+
 		[Test]
 		public void should_be_able_to_test_routes_with_member_expressions_being_used_but_ignore_null_complex_parameteres()
 		{
@@ -123,5 +124,17 @@ namespace MvcContrib.UnitTests.TestHelper
 
 			"~/funky/List".ShouldMapTo<FunkyController>(x => x.List(null));
 		}
+
+        [Test]
+        public void should_be_able_to_ignore_requests()
+        {
+            "~/someimage.gif".ShouldBeIgnored();
+        }
+
+        [Test]
+        public void should_be_able_to_ignore_requests_with_path_info()
+        {
+            "~/someimage.gif/with_stuff".ShouldBeIgnored();
+        }
     }
 }
