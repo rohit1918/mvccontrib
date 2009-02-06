@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
@@ -13,6 +12,8 @@ namespace MvcContrib.FluentHtml.Elements
 	/// </summary>
 	public class RadioSetBase<T> : OptionsElementBase<T>, IElement where T : RadioSetBase<T>
 	{
+		private string _format;
+
 		public RadioSetBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
 			: base(tag, name, forMember, behaviors) { }
 
@@ -26,6 +27,16 @@ namespace MvcContrib.FluentHtml.Elements
 		public virtual T Selected(object selectedValue)
 		{
 			_selectedValues = new List<object> { selectedValue };
+			return (T)this;
+		}
+
+		/// <summary>
+		/// Specify a format string for the HTML of each radio button and label.
+		/// </summary>
+		/// <param name="format">A format string.</param>
+		public virtual T OptionFormat(string format)
+		{
+			_format = format;
 			return (T)this;
 		}
 
@@ -52,11 +63,11 @@ namespace MvcContrib.FluentHtml.Elements
 			foreach (var option in _options)
 			{
 				var value = _valueFieldSelector(option);
-				var radioButton = new RadioButton(name)
+				sb.Append(new RadioButton(name)
 					.Value(value)
+					.Format(_format)
 					.LabelAfter(_textFieldSelector(option).ToString())
-					.Checked(IsSelectedValue(value));
-				sb.Append(radioButton.ToString());
+					.Checked(IsSelectedValue(value)));
 			}
 			return sb.ToString();
 		}

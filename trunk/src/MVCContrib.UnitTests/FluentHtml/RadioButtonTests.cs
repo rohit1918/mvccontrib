@@ -12,18 +12,17 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void can_get_a_radio_button_with_label_after()
 		{
 			var html = new RadioButton("foo.Bar").Value(10).LabelAfter("Ten").ToString();
-			var element = html.ShouldHaveHtmlNode("foo_Bar_10_Label");
-			element.ShouldBeNamed(HtmlTag.Label);
-			var nodes = element.ShouldHaveChildNodesCount(2);
-			var radioInput = nodes[0];
+			var radioInput = html.ShouldHaveHtmlNode("foo_Bar_10");
+			radioInput.ShouldBeNamed(HtmlTag.Input);
 			radioInput.ShouldBeNamed(HtmlTag.Input);
 			radioInput.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("foo_Bar_10");
 			radioInput.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("foo.Bar");
 			radioInput.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Radio);
 			radioInput.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("10");
 			radioInput.ShouldNotHaveAttribute(HtmlAttribute.Checked);
-			var labelText = nodes[1];
-			labelText.InnerText.ShouldEqual("Ten");
+			var label = html.ShouldHaveHtmlNode("foo_Bar_10_Label");
+			label.ShouldHaveAttribute(HtmlAttribute.For).WithValue("foo_Bar_10");
+			label.ShouldHaveInnerTextEqual("Ten");
 		}
 
 		[Test]
@@ -35,12 +34,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
-		public void can_get_a_radio_button_with_label_before()
+		public void can_format_a_radio_button()
 		{
-			var html = new RadioButton("foo.Bar").Value(10).Label("Ten").ToString();
-			var element = html.ShouldHaveHtmlNode("foo_Bar_10_Label");
-			var labelText = element.ShouldHaveChildNodesCount(2)[0];
-			labelText.InnerText.ShouldEqual("Ten");
+			var html = new RadioButton("foo.Bar").Value(10).Format("{0}<br/>").ToString();
+			var doc = html.ShouldRenderHtmlDocument();
+			var br = doc.ShouldHaveChildNodesCount(2)[1];
+			br.ShouldBeNamed("br");
 		}
 	}
 }
