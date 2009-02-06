@@ -30,10 +30,10 @@ namespace MvcContrib.UnitTests.FluentHtml
 			};
 			var html = new RadioSet("foo.Bar").Options(items, x => x.Price, x => x.Title).ToString();
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
-			var options = element.ShouldHaveChildNodesCount(2);
+			var options = element.ShouldHaveChildNodesCount(4);
 
-			VerifyOption("foo.Bar", items[0].Price, items[0].Title, options[0]);
-			VerifyOption("foo.Bar", items[1].Price, items[1].Title, options[1]);
+			VerifyOption("foo.Bar", items[0].Price, items[0].Title, options[0], options[1]);
+			VerifyOption("foo.Bar", items[1].Price, items[1].Title, options[2], options[3]);
 		}
 
 		[Test]
@@ -41,12 +41,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			var html = new RadioSet("foo.Bar").Options<FakeEnum>().ToString();
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
-			var options = element.ShouldHaveChildNodesCount(4);
+			var options = element.ShouldHaveChildNodesCount(8);
 
-			VerifyOption("foo.Bar", (int)FakeEnum.Zero, FakeEnum.Zero, options[0]);
-			VerifyOption("foo.Bar", (int)FakeEnum.One, FakeEnum.One, options[1]);
-			VerifyOption("foo.Bar", (int)FakeEnum.Two, FakeEnum.Two, options[2]);
-			VerifyOption("foo.Bar", (int)FakeEnum.Three, FakeEnum.Three, options[3]);
+			VerifyOption("foo.Bar", (int)FakeEnum.Zero, FakeEnum.Zero, options[0], options[1]);
+			VerifyOption("foo.Bar", (int)FakeEnum.One, FakeEnum.One, options[2], options[3]);
+			VerifyOption("foo.Bar", (int)FakeEnum.Two, FakeEnum.Two, options[4], options[5]);
+			VerifyOption("foo.Bar", (int)FakeEnum.Three, FakeEnum.Three, options[6], options[7]);
 		}
 
 		[Test]
@@ -54,23 +54,31 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			var html = new RadioSet("foo.Bar").Options<FakeEnum>().Selected(FakeEnum.Zero).ToString();
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
-			var firstOption = element.ShouldBeNamed(HtmlTag.Div).ShouldHaveChildNodesCount(4)[0];
-			var firstOptionRadioInput = firstOption.ShouldHaveChildNodesCount(2)[0];
-			firstOptionRadioInput.ShouldHaveAttribute(HtmlAttribute.Checked).WithValue(HtmlAttribute.Checked);
+			var firstRadio = element.ShouldBeNamed(HtmlTag.Div).ShouldHaveChildNodesCount(8)[0];
+			firstRadio.ShouldHaveAttribute(HtmlAttribute.Checked).WithValue(HtmlAttribute.Checked);
 		}
 
-		private void VerifyOption(string name, object value, object text, HtmlNode option)
+		[Test]
+		public void can_specify_option_format_for_radio_set()
 		{
-			option.ShouldBeNamed(HtmlTag.Label);
-			var optionNodes = option.ShouldHaveChildNodesCount(2);
+			var html = new RadioSet("foo.Bar").Options<FakeEnum>().OptionFormat("{0}<br/>").ToString();
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(12);
+			var brName = "br";
+			nodes[2].ShouldBeNamed(brName);
+			nodes[5].ShouldBeNamed(brName);
+			nodes[8].ShouldBeNamed(brName);
+			nodes[11].ShouldBeNamed(brName);
+		}
 
-			var radioInput = optionNodes[0];
-			var labelText = optionNodes[1];
+		private void VerifyOption(string name, object value, object text, HtmlNode input, HtmlNode label)
+		{
+			input.ShouldBeNamed(HtmlTag.Input);
+			input.ShouldHaveAttribute(HtmlAttribute.Name).WithValue(name);
+			input.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(value.ToString());
 
-			radioInput.ShouldBeNamed(HtmlTag.Input);
-			radioInput.ShouldHaveAttribute(HtmlAttribute.Name).WithValue(name);
-			radioInput.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(value.ToString());
-			labelText.ShouldHaveInnerTextEqual(text.ToString());
+			label.ShouldBeNamed(HtmlTag.Label);
+			label.ShouldHaveInnerTextEqual(text.ToString());
 		}
 	}
 }
