@@ -8,5 +8,6 @@ namespace MvcContrib.FluentHtml.Html
 		public const string Password = "password";
 		public const string Submit = "submit";
 		public const string File = "file";
+		public static string Radio = "radio";
 	}
 }

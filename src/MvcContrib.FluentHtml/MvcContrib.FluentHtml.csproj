@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Elements\Checkbox.cs" />
     <Compile Include="Elements\CheckBoxBase.cs" />
+    <Compile Include="Elements\OptionsElementBase.cs" />
     <Compile Include="Elements\DisableableElement.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\FileUpload.cs" />
@@ -86,6 +87,10 @@
     <Compile Include="Elements\FormLiteralBase.cs" />
     <Compile Include="Elements\Hidden.cs" />
     <Compile Include="Elements\LiteralBase.cs" />
+    <Compile Include="Elements\RadioButton.cs" />
+    <Compile Include="Elements\RadioButtonBase.cs" />
+    <Compile Include="Elements\RadioSet.cs" />
+    <Compile Include="Elements\RadioSetBase.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Elements\SubmitButtonBase.cs" />
     <Compile Include="Elements\TextAreaBase.cs" />

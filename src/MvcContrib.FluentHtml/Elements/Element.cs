@@ -100,29 +100,29 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.MergeAttribute(name, valueString, true);
 		}
 
-        /// <summary>
-        /// Get the value of the specified attribute.
-        /// </summary>
-        /// <param name="name">The name of the attribute.</param>
-        public virtual string GetAttr(string name)
-        {
-            string result;
-            builder.Attributes.TryGetValue(name, out result);
-            return result;
-        }
+		/// <summary>
+		/// Get the value of the specified attribute.
+		/// </summary>
+		/// <param name="name">The name of the attribute.</param>
+		public virtual string GetAttr(string name)
+		{
+			string result;
+			builder.Attributes.TryGetValue(name, out result);
+			return result;
+		}
 
 		/// <summary>
 		/// Set the value of a specified attribute.
 		/// </summary>
 		/// <param name="name">The name of the attribute.</param>
 		/// <param name="value">The value of the attribute.</param>
-        public virtual T Attr(string name, object value)
+		public virtual T Attr(string name, object value)
 		{
-		    SetAttr(name, value);
-		    return (T)this;
+			SetAttr(name, value);
+			return (T)this;
 		}
 
-	    /// <summary>
+		/// <summary>
 		/// Generate a label before the element.
 		/// </summary>
 		/// <param name="value">The inner text of the label.</param>
@@ -195,19 +195,25 @@ namespace MvcContrib.FluentHtml.Elements
 			{
 				return null;
 			}
+			var labelBuilder = GetLabelBuilder();
+			labelBuilder.SetInnerText(labelText);
+			return labelBuilder.ToString();
+		}
+
+		protected TagBuilder GetLabelBuilder()
+		{
 			var labelBuilder = new TagBuilder(HtmlTag.Label);
 			if (builder.Attributes.ContainsKey(HtmlAttribute.Id))
 			{
 				var id = builder.Attributes[HtmlAttribute.Id];
 				labelBuilder.MergeAttribute(HtmlAttribute.For, id);
 				labelBuilder.MergeAttribute(HtmlAttribute.Id, string.Format(LABEL_FORMAT, id));
-				if (!string.IsNullOrEmpty(labelClass))
-				{
-					labelBuilder.MergeAttribute(HtmlAttribute.Class, labelClass);
-				}
 			}
-			labelBuilder.SetInnerText(labelText);
-			return labelBuilder.ToString();
+			if (!string.IsNullOrEmpty(labelClass))
+			{
+				labelBuilder.MergeAttribute(HtmlAttribute.Class, labelClass);
+			}
+			return labelBuilder;
 		}
 	}
 }

@@ -124,6 +124,30 @@ namespace MvcContrib.FluentHtml
 		}
 
 		/// <summary>
+		/// Generate an HTML input element of type 'radio'.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
+		public static RadioButton RadioButton<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return new RadioButton(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors);
+		}
+
+		/// <summary>
+		/// Generate a set of HTML input elements of type 'radio' -- each wrapped inside a label.  The whole thing is wrapped in an HTML 
+		/// div element.  The values of the input elements and he label text are taken from the options specified.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
+		public static RadioSet RadioSet<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return new RadioSet(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+				.Selected(expression.GetValueFrom(view.ViewModel));
+		}
+
+		/// <summary>
 		/// If ModelState contains an error for the specified view model member, generate an HTML span element with the 
 		/// ModelState error message is the specified message is null.   If no class is specified the class attribute 
 		/// of the span element will be 'field-validation-error'.
@@ -187,33 +211,33 @@ namespace MvcContrib.FluentHtml
 		{
 			var name = expression.GetNameFor(view) + ".Index";
 			var value = valueExpression.GetValueFrom(view.ViewModel);
-			var id = name.FormatAsHtmlId() + (value == null
+			var id = name.GenerateHtmlId() + (value == null
 				? null
-				: "_" + value.ToString().FormatAsHtmlId());
+				: "_" + value.ToString().GenerateHtmlId());
 			var hidden = new Hidden(name, expression.GetMemberExpression(), view.MemberBehaviors).Value(value).Id(id);
 			return hidden;
 		}
 
-        /// <summary>
-        /// Returns a name to match the value for the HTML name attribute form elements using the same expression. 
-        /// </summary>
-        /// <typeparam name="T">The type of the ViewModel.</typeparam>
-        /// <param name="view">The view.</param>
-        /// <param name="expression">Expression indicating the ViewModel member.</param>
-        public static string NameFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
-        {
-            return expression.GetNameFor();
-        }
+		/// <summary>
+		/// Returns a name to match the value for the HTML name attribute form elements using the same expression. 
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member.</param>
+		public static string NameFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return expression.GetNameFor();
+		}
 
-        /// <summary>
-        /// Returns a name to match the value for the HTML id attribute form elements using the same expression. 
-        /// </summary>
-        /// <typeparam name="T">The type of the ViewModel.</typeparam>
-        /// <param name="view">The view.</param>
-        /// <param name="expression">Expression indicating the ViewModel member.</param>
-        public static string IdFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
-        {
-            return expression.GetNameFor().FormatAsHtmlId();
-        }
+		/// <summary>
+		/// Returns a name to match the value for the HTML id attribute form elements using the same expression. 
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member.</param>
+		public static string IdFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return expression.GetNameFor().GenerateHtmlId();
+		}
 	}
 }

@@ -11,6 +11,30 @@ namespace MvcContrib.UnitTests.FluentHtml.Helpers
 {
 	public static class TestExtensions
 	{
+		public static T ShouldBeOfType<T>(this object obj)
+		{
+			Assert.IsInstanceOfType(typeof(T), obj);
+			return (T)obj;
+		}
+
+		public static object ShouldBeOfType(this object obj, Type type)
+		{
+			Assert.IsInstanceOfType(type, obj);
+			return obj;
+		}
+
+		public static object ShouldNotBeOfType<T>(this object obj)
+		{
+			Assert.IsNotInstanceOfType(typeof(T), obj);
+			return obj;
+		}
+
+		public static object ShouldNotBeOfType(this object obj, Type type)
+		{
+			Assert.IsNotInstanceOfType(type, obj);
+			return obj;
+		}
+
 		public static HtmlAttribute ShouldHaveAttribute(this HtmlNode n, string attributeName)
 		{
 			var attribute = n.Attributes[attributeName];
@@ -139,7 +163,7 @@ namespace MvcContrib.UnitTests.FluentHtml.Helpers
 
 		public static IElement ValueAttributeShouldEqual(this IElement e, string expectedValue)
 		{
-            return e.AttributeShouldEqual(FluentHtmlAttribute.Value, expectedValue);
+			return e.AttributeShouldEqual(FluentHtmlAttribute.Value, expectedValue);
 		}
 
 		public static IElement AttributeShouldEqual(this IElement e, string attributeKey, string expectedValue)
@@ -160,16 +184,16 @@ namespace MvcContrib.UnitTests.FluentHtml.Helpers
 		public static void ShouldBeUnSelectedOption(this HtmlNode node, object expectedValue, object expectedText)
 		{
 			node.ShouldBeNamed(HtmlTag.Option);
-            node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
-            node.ShouldNotHaveAttribute(FluentHtmlAttribute.Selected);
+			node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
+			node.ShouldNotHaveAttribute(FluentHtmlAttribute.Selected);
 			node.ShouldHaveInnerTextEqual(ToSafeString(expectedText));
 		}
 
 		public static void ShouldBeSelectedOption(this HtmlNode node, object expectedValue, object expectedText)
 		{
 			node.ShouldBeNamed(HtmlTag.Option);
-            node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
-            node.ShouldHaveAttribute(FluentHtmlAttribute.Selected).WithValue(FluentHtmlAttribute.Selected);
+			node.ShouldHaveAttribute(FluentHtmlAttribute.Value).WithValue(ToSafeString(expectedValue));
+			node.ShouldHaveAttribute(FluentHtmlAttribute.Selected).WithValue(FluentHtmlAttribute.Selected);
 			node.ShouldHaveInnerTextEqual(ToSafeString(expectedText));
 		}
 
