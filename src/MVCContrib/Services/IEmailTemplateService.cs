@@ -5,6 +5,6 @@ namespace MvcContrib.Services
 {
     public interface IEmailTemplateService
     {
-        MailMessage RenderMessage(ViewContext viewContext);
+        MailMessage RenderMessage(ControllerContext controllerContext, string viewName);
     }
 }
