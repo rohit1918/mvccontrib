@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
 
@@ -18,7 +20,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_define_columns_using_ColumnFor()
 		{
-			_model.ColumnFor(x => x.Name);
+			_model.Column.For(x => x.Name);
 			AsGridModel.Columns.Count.ShouldEqual(1);	
 		}
 
