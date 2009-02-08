@@ -10,15 +10,15 @@ namespace MvcContrib.UI.Grid
 	/// </summary>
 	public class GridModel<T>  : IGridModel<T> where T : class
 	{
-		private readonly IList<GridColumn<T>> _columns = new List<GridColumn<T>>();
+		private readonly ColumnBuilder<T> _columnBuilder = new ColumnBuilder<T>();
 		private IGridRenderer<T> _renderer = new HtmlTableGridRenderer<T>();
 		private string _emptyText;
 		private IDictionary<string, object> _attributes = new Dictionary<string, object>();
 
 
-		IList<GridColumn<T>> IGridModel<T>.Columns
+		ICollection<GridColumn<T>> IGridModel<T>.Columns
 		{
-			get { return _columns; }
+			get { return _columnBuilder; }
 		}
 
 		IGridRenderer<T> IGridModel<T>.Renderer
@@ -48,28 +48,11 @@ namespace MvcContrib.UI.Grid
 		}
 
 		/// <summary>
-		/// Defines a column from a particular property
+		/// Column builder for this grid model
 		/// </summary>
-		/// <param name="propertySpecifier"></param>
-		/// <returns></returns>
-		public IGridColumn<T> ColumnFor(Expression<Func<T, object>> propertySpecifier)
+		public ColumnBuilder<T> Column
 		{
-			var columnBuilder = new ColumnBuilder<T>();
-			var column = columnBuilder.For(propertySpecifier);
-			_columns.Add((GridColumn<T>)column);
-			return column;
-		}
-
-		/// <summary>
-		/// Defines a custom column
-		/// </summary>
-		/// <param name="columnName">Name of column</param>
-		public IGridColumn<T> ColumnFor(string columnName)
-		{
-			var columnBuilder = new ColumnBuilder<T>();
-			var column = columnBuilder.For(columnName);
-			_columns.Add((GridColumn<T>)column);
-			return column;
+			get { return _columnBuilder; }
 		}
 
 		/// <summary>

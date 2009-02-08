@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
@@ -24,6 +25,11 @@ namespace MvcContrib.UnitTests.UI.Grid
 
 			ViewEngines.Engines.Clear();
 			ViewEngines.Engines.Add(_viewEngine);
+		}
+
+		private IGridColumn<Person> ColumnFor(Expression<Func<Person, object>> expression)
+		{
+			return _model.Column.For(expression);
 		}
 
 		[TearDown]
@@ -69,8 +75,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render()
 		{
-			_model.ColumnFor(x => x.Name);
-			_model.ColumnFor(x => x.Id);
+			ColumnFor(x => x.Name);
+			ColumnFor(x => x.Id);
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -79,8 +85,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_with_custom_Header_format()
 		{
-			_model.ColumnFor(x => x.Name).Header("<td>TEST</td>");
-			_model.ColumnFor(x => x.Id);
+			ColumnFor(x => x.Name).Header("<td>TEST</td>");
+			ColumnFor(x => x.Id);
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -89,8 +95,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_render_with_custom_header_partial()
 		{
 			SetupViewEngine("testPartial", "<td>TEST</td>");
-			_model.ColumnFor(x => x.Name).HeaderPartial("testPartial");
-			_model.ColumnFor(x => x.Id);
+			ColumnFor(x => x.Name).HeaderPartial("testPartial");
+			ColumnFor(x => x.Id);
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 
@@ -105,14 +111,14 @@ namespace MvcContrib.UnitTests.UI.Grid
 				.Return(new ViewEngineResult(new[] { "foo", "bar" }))
 				.Repeat.Any();
 
-			_model.ColumnFor(x => x.Name).HeaderPartial("foo");
+			ColumnFor(x => x.Name).HeaderPartial("foo");
 			RenderGrid();
 		}
 
 		[Test]
 		public void Header_should_be_split_pascal_case()
 		{
-			_model.ColumnFor(x => x.DateOfBirth).Format("{0:dd}");
+			ColumnFor(x => x.DateOfBirth).Format("{0:dd}");
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>19</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -122,7 +128,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void With_format()
 		{
-			_model.ColumnFor(x => x.DateOfBirth).Format("{0:ddd}");
+			ColumnFor(x => x.DateOfBirth).Format("{0:ddd}");
 			var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
 			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>" +
 			                  dayString + "</td></tr></table>";
@@ -132,7 +138,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Complicated_column()
 		{
-			_model.ColumnFor(x => x.Id + "-" + x.Name).Named("Test");
+			ColumnFor(x => x.Id + "-" + x.Name).Named("Test");
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Test</th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -141,7 +147,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Column_heading_should_be_empty()
 		{
-			_model.ColumnFor(x => x.Id + "-" + x.Name);
+			ColumnFor(x => x.Id + "-" + x.Name);
 			string expected =
 				"<table class=\"grid\"><thead><tr><th></th></tr></thead><tr class=\"gridrow\"><td>1-Jeremy</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -155,7 +161,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 				w.Write("<td>" + model.Name + "_TEST</td>");
 			});
 
-			_model.ColumnFor(x => x.Name).Partial("Foo");
+			ColumnFor(x => x.Name).Partial("Foo");
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy_TEST</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -164,7 +170,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Custom_column_should_use_partial_with_same_name_as_column()
 		{
 			SetupViewEngine("Name", "<td>Foo</td>");
-			_model.ColumnFor("Name");
+			_model.Column.For("Name");
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Foo</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -173,7 +179,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Custom_column_with_custom_partial()
 		{
 			SetupViewEngine("Foo", "<td>Foo</td>");
-			_model.ColumnFor("Name").Partial("Foo");
+			_model.Column.For("Name").Partial("Foo");
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Foo</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -182,8 +188,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void With_cell_condition()
 		{
-			_model.ColumnFor(x => x.Name);
-			_model.ColumnFor(x => x.Id).CellCondition(x => false);
+			ColumnFor(x => x.Name);
+			ColumnFor(x => x.Id).CellCondition(x => false);
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td></td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -192,8 +198,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void With_col_condition()
 		{
-			_model.ColumnFor(x => x.Name);
-			_model.ColumnFor(x => x.Id).Visible(false);
+			ColumnFor(x => x.Name);
+			ColumnFor(x => x.Id).Visible(false);
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -242,7 +248,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			_people.Add(new Person {Name = "Person 2"});
 			_people.Add(new Person {Name = "Person 3"});
-			_model.ColumnFor(x => x.Name);
+			ColumnFor(x => x.Name);
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr><tr class=\"gridrow_alternate\"><td>Person 2</td></tr><tr class=\"gridrow\"><td>Person 3</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
@@ -262,7 +268,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_header_attributes()
 		{
-			_model.ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
+			ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
 			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -270,7 +276,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_header_attributes_when_rendering_custom_row_start()
 		{
-			/*_model.ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
+			/*ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
 			//_helper.Grid<Person>("people", column => column.For(p => p.Name).HeaderAttributes(new Hash(style => "width:100%")), sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));

@@ -8,7 +8,7 @@ namespace MvcContrib.UI.Grid
 	/// <summary>
 	/// Builds grid columns
 	/// </summary>
-	public class ColumnBuilder<T> : IEnumerable<GridColumn<T>> where T : class 
+	public class ColumnBuilder<T> : ICollection<GridColumn<T>> where T : class 
 	{
 		private readonly List<GridColumn<T>> _columns = new List<GridColumn<T>>();
 
@@ -72,6 +72,41 @@ namespace MvcContrib.UI.Grid
 				return unary.Operand;
 			}
 			return body;
+		}
+
+		void ICollection<GridColumn<T>>.Add(GridColumn<T> column)
+		{
+			_columns.Add(column);
+		}
+
+		void ICollection<GridColumn<T>>.Clear()
+		{
+			_columns.Clear();
+		}
+
+		bool ICollection<GridColumn<T>>.Contains(GridColumn<T> column)
+		{
+			return _columns.Contains(column);
+		}
+
+		void ICollection<GridColumn<T>>.CopyTo(GridColumn<T>[] array, int arrayIndex)
+		{
+			_columns.CopyTo(array, arrayIndex);
+		}
+
+		bool ICollection<GridColumn<T>>.Remove(GridColumn<T> column)
+		{
+			return _columns.Remove(column);
+		}
+
+		int ICollection<GridColumn<T>>.Count
+		{
+			get { return _columns.Count; }
+		}
+
+		bool ICollection<GridColumn<T>>.IsReadOnly
+		{
+			get { return false; }
 		}
 	}
 }

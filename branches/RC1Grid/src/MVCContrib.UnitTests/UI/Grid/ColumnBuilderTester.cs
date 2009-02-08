@@ -8,120 +8,174 @@ namespace MvcContrib.UnitTests.UI.Grid
 	[TestFixture]
 	public class ColumnBuilderTester
 	{
-		private ColumnBuilder<Person> builder;
+		private ColumnBuilder<Person> _builder;
 
 		[SetUp]
 		public void Setup()
 		{
-			builder = new ColumnBuilder<Person>();
+			_builder = new ColumnBuilder<Person>();
 		}
 
 		[Test]
 		public void Should_define_columns()
 		{
-			builder.For(x => x.Name);
-			builder.For(x => x.DateOfBirth);
-			builder.Count().ShouldEqual(2);
+			_builder.For(x => x.Name);
+			_builder.For(x => x.DateOfBirth);
+			_builder.Count().ShouldEqual(2);
 		}
 
 
 		[Test]
 		public void Should_infer_column_name_from_lambda()
 		{
-			builder.For(x => x.Name);
-			builder.Single().Name.ShouldEqual("Name");
+			_builder.For(x => x.Name);
+			_builder.Single().Name.ShouldEqual("Name");
 		}
 
 		[Test]
 		public void Should_build_column_with_name()
 		{
-			builder.For(x => x.Name).Named("foo");
-			builder.Single().Name.ShouldEqual("foo");
+			_builder.For(x => x.Name).Named("foo");
+			_builder.Single().Name.ShouldEqual("foo");
 		}
 
 		[Test]
 		public void Name_should_be_null_if_no_name_specified_and_not_MemberExpression()
 		{
-			builder.For(x => 1);
-			builder.Single().Name.ShouldBeNull();
+			_builder.For(x => 1);
+			_builder.Single().Name.ShouldBeNull();
 		}
 
 		[Test]
 		public void Name_should_be_split_pascal_case()
 		{
-			builder.For(x => x.DateOfBirth);
-			builder.Single().Name.ShouldEqual("Date Of Birth");
+			_builder.For(x => x.DateOfBirth);
+			_builder.Single().Name.ShouldEqual("Date Of Birth");
 		}
 
 		[Test]
 		public void Name_should_not_be_split_if_DoNotSplit_specified()
 		{
-			builder.For(x => x.DateOfBirth).DoNotSplit();
-			builder.Single().Name.ShouldEqual("DateOfBirth");
+			_builder.For(x => x.DateOfBirth).DoNotSplit();
+			_builder.Single().Name.ShouldEqual("DateOfBirth");
 		}
 
 		[Test]
 		public void Should_obtain_value()
 		{
-			builder.For(x => x.Name);
-			builder.Single().GetValue(new Person { Name = "Jeremy" }).ShouldEqual("Jeremy");
+			_builder.For(x => x.Name);
+			_builder.Single().GetValue(new Person { Name = "Jeremy" }).ShouldEqual("Jeremy");
 		}
 
 		[Test]
 		public void Should_format_item()
 		{
-			builder.For(x => x.Name).Format("{0}_TEST");
-			builder.Single().GetValue(new Person{Name="Jeremy"}).ShouldEqual("Jeremy_TEST");
+			_builder.For(x => x.Name).Format("{0}_TEST");
+			_builder.Single().GetValue(new Person{Name="Jeremy"}).ShouldEqual("Jeremy_TEST");
 		}
 
 		[Test]
 		public void Should_not_return_value_when_CellCondition_returns_false()
 		{
-			builder.For(x => x.Name).CellCondition(x => false);
-			builder.Single().GetValue(new Person(){Name = "Jeremy"}).ShouldBeNull();
+			_builder.For(x => x.Name).CellCondition(x => false);
+			_builder.Single().GetValue(new Person(){Name = "Jeremy"}).ShouldBeNull();
 		}
 
 		[Test]
 		public void Column_should_not_be_visible()
 		{
-			builder.For(x => x.Name).Visible(false);
-			builder.Single().Visible.ShouldBeFalse();
+			_builder.For(x => x.Name).Visible(false);
+			_builder.Single().Visible.ShouldBeFalse();
 		}
 
 		[Test]
 		public void Should_html_encode_output()
 		{
-			builder.For(x => x.Name);
-			builder.Single().GetValue(new Person{Name = "<script>"}).ShouldEqual("&lt;script&gt;");
+			_builder.For(x => x.Name);
+			_builder.Single().GetValue(new Person{Name = "<script>"}).ShouldEqual("&lt;script&gt;");
 		}
 
 		[Test]
 		public void Should_not_html_encode_output()
 		{
-			builder.For(x => x.Name).DoNotEncode();
-			builder.Single().GetValue(new Person{Name = "<script>"}).ShouldEqual("<script>");
+			_builder.For(x => x.Name).DoNotEncode();
+			_builder.Single().GetValue(new Person{Name = "<script>"}).ShouldEqual("<script>");
 		}
 
 		[Test]
 		public void Should_specify_header_attributes()
 		{
 			var attrs = new Dictionary<string, object> { { "foo", "bar" } };
-			builder.For(x => x.Name).HeaderAttributes(attrs);
-			builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
+			_builder.For(x => x.Name).HeaderAttributes(attrs);
+			_builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
 		}
 
 		[Test]
 		public void Should_specify_header_attributes_using_lambdas()
 		{
-			builder.For(x => x.Name).HeaderAttributes(foo => "bar");
-			builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
+			_builder.For(x => x.Name).HeaderAttributes(foo => "bar");
+			_builder.Single().HeaderAttributes["foo"].ShouldEqual("bar");
 		}
 
 		[Test]
 		public void Should_create_custom_column()
 		{
-			builder.For("Name");
-			builder.Single().Name.ShouldEqual("Name");
+			_builder.For("Name");
+			_builder.Single().Name.ShouldEqual("Name");
 		}
+
+		[Test]
+		public void Should_add_column()
+		{
+			((ICollection<GridColumn<Person>>)_builder).Add(new GridColumn<Person>(x => null));
+			_builder.Count().ShouldEqual(1);
+		}
+
+		[Test]
+		public void Should_clear()
+		{
+			_builder.For(x => x.Name);
+			((ICollection<GridColumn<Person>>)_builder).Clear();
+			_builder.Count().ShouldEqual(0);
+		}
+
+		[Test]
+		public void Should_contain_column()
+		{
+			var column = _builder.For(x => x.Name) as GridColumn<Person>;
+			((ICollection<GridColumn<Person>>)_builder).Contains(column).ShouldBeTrue();
+		}
+
+		[Test]
+		public void Should_copy_to_array()
+		{
+			var array = new GridColumn<Person>[1];
+
+			var col = _builder.For(x => x.Name);
+			((ICollection<GridColumn<Person>>)_builder).CopyTo(array, 0);
+			array[0].ShouldBeTheSameAs(col);
+		}
+
+		[Test]
+		public void Should_remove_column()
+		{
+			var column = (GridColumn<Person>) _builder.For(x => x.Name);
+			((ICollection<GridColumn<Person>>)_builder).Remove(column);
+			_builder.Count().ShouldEqual(0);
+		}
+
+		[Test]
+		public void Should_count_columns()
+		{
+			_builder.For(x => x.Name);
+			((ICollection<GridColumn<Person>>)_builder).Count.ShouldEqual(1);
+		}
+
+		[Test]
+		public void Should_not_be_readonly()
+		{
+			((ICollection<GridColumn<Person>>)_builder).IsReadOnly.ShouldBeFalse();
+		}
+
 	}
 }
