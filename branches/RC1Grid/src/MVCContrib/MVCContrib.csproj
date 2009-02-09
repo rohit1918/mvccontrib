@@ -150,6 +150,7 @@
     <Compile Include="UI\Grid\Grid.cs" />
     <Compile Include="UI\Grid\GridExtensions.cs" />
     <Compile Include="UI\Grid\GridRenderer.cs" />
+    <Compile Include="UI\Grid\GridSections.cs" />
     <Compile Include="UI\Grid\HtmlTableGridRenderer.cs" />
     <Compile Include="UI\Grid\IGridColumn.cs" />
     <Compile Include="UI\Grid\IGridModel.cs" />
