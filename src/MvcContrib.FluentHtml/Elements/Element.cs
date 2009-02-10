@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Web.Mvc;
+using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
@@ -9,7 +12,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class for HTML elements.
 	/// </summary>
 	/// <typeparam name="T">The derived class type.</typeparam>
-	public abstract class Element<T> where T : Element<T>, IElement
+	public abstract class Element<T> : IMemberElement where T : Element<T>, IElement
 	{
 		protected const string LABEL_FORMAT = "{0}_Label";
 
@@ -18,6 +21,14 @@ namespace MvcContrib.FluentHtml.Elements
 		protected string labelBeforeText;
 		protected string labelAfterText;
 		protected string labelClass;
+		protected MemberExpression forMember;
+		protected IEnumerable<IMemberBehavior> behaviors;
+
+		protected Element(string tag, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) : this(tag)
+		{
+			this.forMember = forMember;
+			this.behaviors = behaviors;
+		}
 
 		protected Element(string tag)
 		{
@@ -175,6 +186,8 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public override string ToString()
 		{
+			ApplyBehaviors();
+			PreRender();
 			var html = RenderLabel(labelBeforeText);
 			html += builder.ToString(TagRenderMode);
 			html += RenderLabel(labelAfterText);
@@ -187,6 +200,14 @@ namespace MvcContrib.FluentHtml.Elements
 		public virtual TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.Normal; }
+		}
+
+		/// <summary>
+		/// Expression indicating the view model member assocaited with the element.</param>
+		/// </summary>
+		public virtual MemberExpression ForMember
+		{
+			get { return forMember; }
 		}
 
 		protected virtual string RenderLabel(string labelText)
@@ -215,5 +236,19 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 			return labelBuilder;
 		}
+
+		protected void ApplyBehaviors()
+		{
+			if(behaviors == null)
+			{
+				return;
+			}
+			foreach(var behavior in behaviors)
+			{
+				behavior.Execute(this);
+			}
+		}
+
+		protected virtual void PreRender() { }
 	}
 }

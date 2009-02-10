@@ -10,40 +10,24 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class for form elements.
 	/// </summary>
 	/// <typeparam name="T">Derived type</typeparam>
-	public abstract class FormElement<T> : DisableableElement<T>, IMemberElement where T : FormElement<T>, IElement
+	public abstract class FormElement<T> : DisableableElement<T> where T : FormElement<T>, IElement
 	{
-		protected MemberExpression forMember;
-		private readonly IEnumerable<IMemberBehavior> behaviors;
-
 		protected FormElement(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
-			: this(tag, name)
+			: base(tag, forMember, behaviors)
 		{
-			this.forMember = forMember;
-			this.behaviors = behaviors;
+			SetName(name);
 		}
 
 		protected FormElement(string tag, string name) : base(tag)
 		{
-			builder.MergeAttribute(HtmlAttribute.Name, name, true);
-		}
-
-		/// <summary>
-		/// Expression indicating the view model member assocaited with the element.</param>
-		/// </summary>
-		public virtual MemberExpression ForMember
-		{
-			get { return forMember; }
+			SetName(name);
 		}
 
 		public override string ToString()
 		{
 			InferIdFromName();
-			ApplyBehaviors();
-			PreRender();
 			return base.ToString();
 		}
-
-		protected virtual void PreRender() { }
 
 		/// <summary>
 		/// Determines how the HTML element is closed.
@@ -53,24 +37,17 @@ namespace MvcContrib.FluentHtml.Elements
 			get { return TagRenderMode.SelfClosing; }
 		}
 
-		protected void ApplyBehaviors()
-		{
-			if(behaviors == null)
-			{
-				return;
-			}
-			foreach(var behavior in behaviors)
-			{
-				behavior.Execute(this);
-			}
-		}
-
 		protected virtual void InferIdFromName()
 		{
 			if (!builder.Attributes.ContainsKey(HtmlAttribute.Id))
 			{
-				Attr(HtmlAttribute.Id, builder.Attributes[HtmlAttribute.Name].GenerateHtmlId());
+				Attr(HtmlAttribute.Id, builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId());
 			}
+		}
+
+		protected void SetName(string name)
+		{
+			SetAttr(HtmlAttribute.Name, name);
 		}
 	}
 }

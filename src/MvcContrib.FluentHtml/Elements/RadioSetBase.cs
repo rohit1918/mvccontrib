@@ -10,7 +10,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// Base class for a set of radio buttons.
 	/// </summary>
-	public class RadioSetBase<T> : OptionsElementBase<T>, IElement where T : RadioSetBase<T>
+	public class RadioSetBase<T> : OptionsElementBase<T> where T : RadioSetBase<T>
 	{
 		private string _format;
 

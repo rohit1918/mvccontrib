@@ -75,6 +75,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			input.ShouldBeNamed(HtmlTag.Input);
 			input.ShouldHaveAttribute(HtmlAttribute.Name).WithValue(name);
+			input.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Radio);
 			input.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(value.ToString());
 
 			label.ShouldBeNamed(HtmlTag.Label);

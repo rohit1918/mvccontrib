@@ -10,6 +10,8 @@ namespace MvcContrib.FluentHtml.Elements
 	/// </summary>
 	public abstract class CheckBoxBase<T> : Input<T>, IElement where T : CheckBoxBase<T>
 	{
+		private string _format;
+
 		protected CheckBoxBase(string name) : base(HtmlInputType.Checkbox, name)
 		{
 			elementValue = "true";
@@ -40,17 +42,22 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public override string ToString()
 		{
-			var html = base.ToString();
-
+			var html = ToCheckBoxOnlyHtml();
 			var hiddenId = "_Hidden";
-
 			if(Builder.Attributes.ContainsKey("id"))
 			{
 				hiddenId = Builder.Attributes["id"] + hiddenId;
 			}
-
 			var hidden = new Hidden(builder.Attributes[HtmlAttribute.Name]).Id(hiddenId).Value("false").ToString();
-			return string.Concat(html, hidden);
+			html = string.Concat(html, hidden);
+			return _format == null
+				? html
+				: string.Format(_format,html);
+		}
+
+		public string ToCheckBoxOnlyHtml()
+		{
+			return base.ToString();
 		}
 	}
 }

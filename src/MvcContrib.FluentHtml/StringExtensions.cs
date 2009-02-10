@@ -2,7 +2,7 @@ namespace MvcContrib.FluentHtml
 {
 	public static class StringExtensions
 	{
-		public static string GenerateHtmlId(this string name)
+		public static string FormatAsHtmlId(this string name)
 		{
 			return string.IsNullOrEmpty(name) 
 				? string.Empty 

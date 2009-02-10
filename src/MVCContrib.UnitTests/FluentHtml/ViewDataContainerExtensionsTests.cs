@@ -140,5 +140,17 @@ namespace MvcContrib.UnitTests.FluentHtml
 		{
 			target.RadioButton("Id").AttributeShouldEqual(HtmlAttribute.Name, "Id");
 		}
+
+		[Test]
+		public void can_get_checkboxlist_with_selected_values()
+		{
+			var element = target.CheckBoxList("fake.Numbers");
+			element.SelectedValues.ShouldCount(2);
+			var enumerator = element.SelectedValues.GetEnumerator();
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Numbers[0]);
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Numbers[1]);
+		}
 	}
 }

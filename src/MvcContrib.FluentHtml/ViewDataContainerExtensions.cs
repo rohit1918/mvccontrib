@@ -72,6 +72,7 @@ namespace MvcContrib.FluentHtml
 
 		/// <summary>
 		/// Generate an HTML input element of type 'checkbox' and set checked from ViewData based on the name provided.
+		/// The checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
 		/// </summary>
 		/// <param name="view">The view.</param>
 		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
@@ -84,6 +85,17 @@ namespace MvcContrib.FluentHtml
 				checkbox.Checked(chkd.Value);
 			}
 			return checkbox;
+		}
+
+		/// <summary>
+		/// Generate a list of HTML input elements of type 'checkbox' and set its value from the ViewModel based on the expression provided.
+		/// Each checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
+		public static CheckBoxList CheckBoxList(this IViewDataContainer view, string name)
+		{
+			return new CheckBoxList(name).Selected(view.ViewData.Eval(name) as IEnumerable);
 		}
 
 		/// <summary>

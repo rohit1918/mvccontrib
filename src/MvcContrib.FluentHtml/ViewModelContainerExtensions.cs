@@ -49,6 +49,7 @@ namespace MvcContrib.FluentHtml
 
 		/// <summary>
 		/// Generate an HTML input element of type 'checkbox' and set its value from the ViewModel based on the expression provided.
+		/// The checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
 		/// </summary>
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
@@ -62,6 +63,19 @@ namespace MvcContrib.FluentHtml
 				checkbox.Checked(val.Value);
 			}
 			return checkbox;
+		}
+
+		/// <summary>
+		/// Generate a list of HTML input elements of type 'checkbox' and set its value from the ViewModel based on the expression provided.
+		/// Each checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
+		public static CheckBoxList CheckBoxList<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return new CheckBoxList(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+				.Selected(expression.GetValueFrom(view.ViewModel) as IEnumerable);
 		}
 
 		/// <summary>
@@ -108,7 +122,8 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Literal Literal<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Literal().Value(expression.GetValueFrom(view.ViewModel));
+			return new Literal(expression.GetMemberExpression(), view.MemberBehaviors)
+				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
 		/// <summary>
@@ -120,7 +135,8 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static FormLiteral FormLiteral<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new FormLiteral(expression.GetNameFor(view)).Value(expression.GetValueFrom(view.ViewModel));
+			return new FormLiteral(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
 		/// <summary>
@@ -183,9 +199,8 @@ namespace MvcContrib.FluentHtml
 						: message ?? modelState.Errors[0].ErrorMessage;
 				}
 			}
-			return new ValidationMessage().Value(errorMessage);
+			return new ValidationMessage(expression.GetMemberExpression(), view.MemberBehaviors).Value(errorMessage);
 		}
-
 
 		/// <summary>
 		/// Generate an HTML input element of type 'hidden,' set it's name from the expression with '.Index' appended.
@@ -193,9 +208,9 @@ namespace MvcContrib.FluentHtml
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member to use to derive the 'name' attribute.</param>
-		public static Hidden Index<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		public static Index Index<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Hidden(expression.GetNameFor(view) + ".Index", expression.GetMemberExpression(), view.MemberBehaviors);
+			return new Index(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors);
 		}
 
 		/// <summary>
@@ -211,9 +226,9 @@ namespace MvcContrib.FluentHtml
 		{
 			var name = expression.GetNameFor(view) + ".Index";
 			var value = valueExpression.GetValueFrom(view.ViewModel);
-			var id = name.GenerateHtmlId() + (value == null
+			var id = name.FormatAsHtmlId() + (value == null
 				? null
-				: "_" + value.ToString().GenerateHtmlId());
+				: "_" + value.ToString().FormatAsHtmlId());
 			var hidden = new Hidden(name, expression.GetMemberExpression(), view.MemberBehaviors).Value(value).Id(id);
 			return hidden;
 		}
@@ -237,7 +252,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member.</param>
 		public static string IdFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return expression.GetNameFor().GenerateHtmlId();
+			return expression.GetNameFor().FormatAsHtmlId();
 		}
 	}
 }
