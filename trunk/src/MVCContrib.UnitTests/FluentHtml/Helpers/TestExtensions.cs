@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using HtmlAgilityPack;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
 using NUnit.Framework;
+using System.Linq;
 using FluentHtmlAttribute = MvcContrib.FluentHtml.Html.HtmlAttribute;
 using HtmlAttribute=HtmlAgilityPack.HtmlAttribute;
+using System.Web.Query.Dynamic;
 
 namespace MvcContrib.UnitTests.FluentHtml.Helpers
 {
@@ -79,6 +82,19 @@ namespace MvcContrib.UnitTests.FluentHtml.Helpers
 			Assert.IsNotNull(node);
 			Assert.IsTrue(node.Closed, "The element is not closed");
 			return node;
+		}
+
+        public static HtmlNode ShouldHaveChildNode(this HtmlNode n, string elementId)
+		{
+        	foreach (var node in n.ChildNodes)
+        	{
+        		if (node.Id == elementId)
+        		{
+        			return node;
+        		}
+        	}
+        	Assert.Fail("The node did not contain a child node with id of " + elementId);
+        	return null;
 		}
 
 		public static HtmlNode ShouldRenderHtmlDocument(this string s)

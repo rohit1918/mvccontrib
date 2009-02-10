@@ -189,7 +189,19 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void can_get_radio_button()
 		{
-			target.RadioButton(x => x.Id).AttributeShouldEqual(HtmlAttribute.Name, "Id"); ;
+			target.RadioButton(x => x.Id).AttributeShouldEqual(HtmlAttribute.Name, "Id");
+		}
+
+		[Test]
+		public void can_get_checkboxlist_with_selected_values()
+		{
+			var element = target.CheckBoxList(x => x.Numbers);
+			element.SelectedValues.ShouldCount(2);
+			var enumerator = element.SelectedValues.GetEnumerator();
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Numbers[0]);
+			enumerator.MoveNext();
+			enumerator.Current.ShouldEqual(fake.Numbers[1]);
 		}
 	}
 }

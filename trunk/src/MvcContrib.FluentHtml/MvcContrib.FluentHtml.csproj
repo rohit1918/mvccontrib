@@ -78,6 +78,9 @@
     </Compile>
     <Compile Include="Elements\Checkbox.cs" />
     <Compile Include="Elements\CheckBoxBase.cs" />
+    <Compile Include="Elements\CheckBoxList.cs" />
+    <Compile Include="Elements\CheckBoxListBase.cs" />
+    <Compile Include="Elements\Index.cs" />
     <Compile Include="Elements\OptionsElementBase.cs" />
     <Compile Include="Elements\DisableableElement.cs" />
     <Compile Include="Elements\Element.cs" />

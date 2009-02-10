@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
@@ -5,14 +8,14 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// Base class for a literal (text inside a span element).
 	/// </summary>
-	public abstract class LiteralBase<T> : Element<T>, IElement where T : LiteralBase<T>
+	public abstract class LiteralBase<T> : Element<T> where T : LiteralBase<T>
 	{
 		protected string format;
 		protected object rawValue;
 
-		/// <summary>
-		/// Generate a literal (text inside a span element).
-		/// </summary>
+		protected LiteralBase(MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) : 
+			base(HtmlTag.Span, forMember, behaviors) { }
+
 		protected LiteralBase() : base(HtmlTag.Span) { }
 
 		/// <summary>

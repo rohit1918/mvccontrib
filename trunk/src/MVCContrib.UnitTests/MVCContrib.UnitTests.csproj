@@ -188,6 +188,7 @@
     <Compile Include="Filters\MvcTransactionAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
+    <Compile Include="FluentHtml\CheckBoxListTests.cs" />
     <Compile Include="FluentHtml\CheckboxTests.cs" />
     <Compile Include="FluentHtml\ConventionModelViewMasterPageTests.cs" />
     <Compile Include="FluentHtml\ConventionModelViewPageTests.cs" />
