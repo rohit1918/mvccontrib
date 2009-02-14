@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
@@ -8,6 +11,9 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <typeparam name="T"></typeparam>
 	public abstract class DisableableElement<T> : Element<T> where T : DisableableElement<T>, IElement
 	{
+		protected DisableableElement(string tag, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+			: base(tag, forMember, behaviors) {}
+
 		protected DisableableElement(string tag) : base(tag) { }
 
 		/// <summary>
