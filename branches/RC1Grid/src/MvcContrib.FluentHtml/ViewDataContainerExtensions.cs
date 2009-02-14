@@ -72,6 +72,7 @@ namespace MvcContrib.FluentHtml
 
 		/// <summary>
 		/// Generate an HTML input element of type 'checkbox' and set checked from ViewData based on the name provided.
+		/// The checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
 		/// </summary>
 		/// <param name="view">The view.</param>
 		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
@@ -84,6 +85,17 @@ namespace MvcContrib.FluentHtml
 				checkbox.Checked(chkd.Value);
 			}
 			return checkbox;
+		}
+
+		/// <summary>
+		/// Generate a list of HTML input elements of type 'checkbox' and set its value from the ViewModel based on the expression provided.
+		/// Each checkbox element has an accompanying input element of type 'hidden' to support binding upon form post.
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
+		public static CheckBoxList CheckBoxList(this IViewDataContainer view, string name)
+		{
+			return new CheckBoxList(name).Selected(view.ViewData.Eval(name) as IEnumerable);
 		}
 
 		/// <summary>
@@ -125,6 +137,27 @@ namespace MvcContrib.FluentHtml
 		public static FileUpload FileUpload(this IViewDataContainer view, string name)
 		{
 			return new FileUpload(name).Value(view.ViewData.Eval(name));
+		}
+
+		/// <summary>
+		/// Generate an HTML input element of type 'radio.'
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="name">Value of the 'name' attribute of the of the input elements.  Also used to derive the 'id' attributes.</param>
+		public static RadioButton RadioButton(this IViewDataContainer view, string name)
+		{
+			return new RadioButton(name);
+		}
+
+		/// <summary>
+		/// Generate a set of HTML input elements of type 'radio' -- each wrapped inside a label.  The whole thing is wrapped in an HTML 
+		/// div element.  The values of the input elements and he label text are taken from the options specified.
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="name">Value of the 'name' attribute of the of the input elements.  Also used to derive the 'id' attributes.</param>
+		public static RadioSet RadioSet(this IViewDataContainer view, string name)
+		{
+			return new RadioSet(name).Selected(view.ViewData.Eval(name));
 		}
 	}
 }

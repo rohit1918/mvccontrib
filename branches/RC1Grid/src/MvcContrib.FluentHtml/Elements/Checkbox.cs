@@ -23,5 +23,6 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="behaviors">Behaviors to apply to the element.</param>
 		public CheckBox(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) :
 			base(name, forMember, behaviors) { }
+
 	}
 }

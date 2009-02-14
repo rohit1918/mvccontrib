@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
@@ -6,9 +9,15 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class to generate a literal element (span) accompanied by a hidden input element having the same 
 	/// value.  Use this if you want to display a value and also have that same value be included in the form post.
 	/// </summary>
-	public abstract class FormLiteralBase<T> : LiteralBase<T>, IElement where T : FormLiteralBase<T>
+	public abstract class FormLiteralBase<T> : LiteralBase<T> where T : FormLiteralBase<T>
 	{
 		protected string hiddenElementName;
+
+		protected FormLiteralBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+			: base(forMember, behaviors)
+		{
+			hiddenElementName = name;
+		}
 
 		protected FormLiteralBase(string name)
 		{

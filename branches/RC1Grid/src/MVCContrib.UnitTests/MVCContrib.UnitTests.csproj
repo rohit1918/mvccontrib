@@ -189,6 +189,7 @@
     <Compile Include="Filters\MvcTransactionAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
+    <Compile Include="FluentHtml\CheckBoxListTests.cs" />
     <Compile Include="FluentHtml\CheckboxTests.cs" />
     <Compile Include="FluentHtml\ConventionModelViewMasterPageTests.cs" />
     <Compile Include="FluentHtml\ConventionModelViewPageTests.cs" />
@@ -209,6 +210,8 @@
     <Compile Include="FluentHtml\LiteralTests.cs" />
     <Compile Include="FluentHtml\ModelExpressionHelperTests.cs" />
     <Compile Include="FluentHtml\ModelMasterViewPageTests.cs" />
+    <Compile Include="FluentHtml\RadioButtonTests.cs" />
+    <Compile Include="FluentHtml\RadioSetTests.cs" />
     <Compile Include="FluentHtml\ValidationMemberBehaviorTests.cs" />
     <Compile Include="FluentHtml\ModelViewPageTests.cs" />
     <Compile Include="FluentHtml\ModelViewUserControlPageTests.cs" />

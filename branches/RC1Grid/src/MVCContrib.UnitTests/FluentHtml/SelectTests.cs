@@ -10,7 +10,7 @@ using HtmlAttribute=MvcContrib.FluentHtml.Html.HtmlAttribute;
 
 namespace MvcContrib.UnitTests.FluentHtml
 {
-    [TestFixture]
+	[TestFixture]
 	public class SelectTests
 	{
 		[Test]
@@ -47,16 +47,16 @@ namespace MvcContrib.UnitTests.FluentHtml
 			option2.ShouldHaveInnerTextEqual(options[2]);
 		}
 
-        [Test]
-        public void can_render_options_from_enumerable_of_simple_objects()
-        {
-            var optionNodes = new Select("foo.Bar").Options(new[] { 1, 2 }).ToString()
-                .ShouldHaveHtmlNode("foo_Bar")
-                .ShouldHaveChildNodesCount(2);
+		[Test]
+		public void can_render_options_from_enumerable_of_simple_objects()
+		{
+			var optionNodes = new Select("foo.Bar").Options(new[] { 1, 2 }).ToString()
+				.ShouldHaveHtmlNode("foo_Bar")
+				.ShouldHaveChildNodesCount(2);
 
-            optionNodes[0].ShouldBeUnSelectedOption("1", "1");
-            optionNodes[1].ShouldBeUnSelectedOption("2", "2");
-        }
+			optionNodes[0].ShouldBeUnSelectedOption("1", "1");
+			optionNodes[1].ShouldBeUnSelectedOption("2", "2");
+		}
 
 		[Test]
 		public void basic_select_renders_select_with_options_from_select_list()
@@ -157,22 +157,22 @@ namespace MvcContrib.UnitTests.FluentHtml
 			new Select("x").Options<int>().ToString();
 		}
 
-        [Test]
-        public void select_option_of_enumerable_select_list_item_renders_options()
-        {
-            var items = new List<SelectListItem>
-            {
-                new SelectListItem {Value = "1", Text = "One", Selected = false},
-                new SelectListItem {Value = "2", Text = "Two", Selected = true},
-                new SelectListItem {Value = "3", Text = "Three", Selected = true}
-            };
-            var html = new Select("foo.Bar").Options(items).ToString();
-            var element = html.ShouldHaveHtmlNode("foo_Bar");
-            var optionNodes = element.ShouldHaveChildNodesCount(3);
-            optionNodes[0].ShouldBeUnSelectedOption(items[0].Value, items[0].Text);
-            optionNodes[1].ShouldBeSelectedOption(items[1].Value, items[1].Text);
-            optionNodes[2].ShouldBeSelectedOption(items[2].Value, items[2].Text);
-        }
+		[Test]
+		public void select_option_of_enumerable_select_list_item_renders_options()
+		{
+			var items = new List<SelectListItem>
+			{
+				new SelectListItem {Value = "1", Text = "One", Selected = false},
+				new SelectListItem {Value = "2", Text = "Two", Selected = true},
+				new SelectListItem {Value = "3", Text = "Three", Selected = true}
+			};
+			var html = new Select("foo.Bar").Options(items).ToString();
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var optionNodes = element.ShouldHaveChildNodesCount(3);
+			optionNodes[0].ShouldBeUnSelectedOption(items[0].Value, items[0].Text);
+			optionNodes[1].ShouldBeSelectedOption(items[1].Value, items[1].Text);
+			optionNodes[2].ShouldBeSelectedOption(items[2].Value, items[2].Text);
+		}
 
 		[Test]
 		public void select_with_lambda_selector_for_options_should_render()

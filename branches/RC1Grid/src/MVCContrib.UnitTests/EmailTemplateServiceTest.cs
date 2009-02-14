@@ -14,40 +14,34 @@ namespace MvcContrib.UnitTests
 	[TestFixture]
 	public class EmailTemplateServiceTest
 	{
-		private MockRepository _mocks;
-		private HttpResponseBase _responseMock;
-		private IViewEngine _viewEngineMock;
+		private ViewEngineCollection _viewEngines;
 
-		private ViewContext _viewContext;
+		private ControllerContext _controllerContext;
 		private EmailTemplateService _service;
-	    private IView _view;
 
 	    private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
 
 		[SetUp]
 		public void Setup()
 		{
-			_mocks = new MockRepository();
-			_responseMock = _mocks.DynamicMock<HttpResponseBase>();
-			_viewEngineMock = _mocks.DynamicMock<IViewEngine>();
+			_viewEngines = new ViewEngineCollection()
+			{
+				 MockRepository.GenerateMock<IViewEngine>()
+			};
+			_controllerContext = new ControllerContext 
+			{
+				HttpContext = MvcMockHelpers.DynamicHttpContextBase(),
+				Controller = MockRepository.GenerateStub<ControllerBase>()
+			};
+			_service = new EmailTemplateService(_viewEngines);
 
-			_viewContext = SetupViewContext();
-			_service = new EmailTemplateService(_viewEngineMock);
+			Response.Stub(x => x.Filter).PropertyBehavior();
+			Response.Expect(x => x.ContentEncoding).Return(Encoding.UTF8);
 		}
 
-		private ViewContext SetupViewContext()
+		private HttpResponseBase Response
 		{
-			var httpContext = _mocks.DynamicMock<HttpContextBase>();
-			_responseMock = _mocks.DynamicMock<HttpResponseBase>();
-			SetupResult.For(httpContext.Response).Return(_responseMock);
-			var requestContext = new RequestContext(httpContext, new RouteData());
-
-			var controller = _mocks.Stub<ControllerBase>();
-			var controllerContext = new ControllerContext(requestContext, controller);
-		    _view = _mocks.DynamicMock<IView>();
-			_mocks.Replay(httpContext);
-
-			return new ViewContext(controllerContext, _view, new ViewDataDictionary(), new TempDataDictionary());
+			get { return _controllerContext.HttpContext.Response; }
 		}
 
 		private void WriteToStream(Stream stream, string content)
@@ -59,61 +53,54 @@ namespace MvcContrib.UnitTests
 
 		#region Message Rendering
 
+		private void SetupView(string viewName, string viewContents)
+		{
+			var view = MockRepository.GenerateMock<IView>();
+
+			_viewEngines[0]
+				.Expect(x => x.FindView(_controllerContext, viewName, null, true))
+				.Return(new ViewEngineResult(view, _viewEngines[0]));
+
+			view.Expect(x => x.Render(Arg<ViewContext>.Is.Anything, Arg<TextWriter>.Is.Equal(Response.Output))).Do(
+					new RenderViewDelegate((context, stream) => WriteToStream(Response.Filter, viewContents)));
+
+		}
+
 		[Test]
 		public void CanRenderMessage()
 		{
+			int numberOfTimesFlushed = 0;
+
+			Response.Stub(x => x.Flush()).Do(new Action(() => numberOfTimesFlushed++));
+
 			string messageBody = "test message body..." + Environment.NewLine;
+			SetupView("foo", messageBody);
 
-			using(_mocks.Record())
-			{
-				SetupResult.For(_responseMock.Filter).PropertyBehavior();
-				TextWriter writer = new StringWriter();
-				SetupResult.For(_responseMock.Output).Return(writer);
-				Expect.Call(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-				Expect.Call(() => _responseMock.Flush()).Repeat.Twice();
-
-				
-				_view.Expect(x => x.Render(_viewContext, writer)).Do(
-					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
-
-                //Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-                //    new ViewEngineResult(fakeView, _viewEngineMock));
-			}
-
-			MailMessage message;
-			using(_mocks.Playback())
-			{
-				message = _service.RenderMessage(_viewContext);
-			}
+			var message = _service.RenderMessage(_controllerContext, "foo");
 
 			Assert.IsNotNull(message);
 			Assert.AreEqual(messageBody, message.Body);
 			Assert.IsFalse(message.IsBodyHtml);
+			Assert.AreEqual(2, numberOfTimesFlushed);
+		}
+
+		[Test, ExpectedException(typeof(InvalidOperationException))]
+		public void ShouldThrowIfViewCouldNotBeFound()
+		{
+			_viewEngines[0]
+				.Stub(x => x.FindView(_controllerContext, null, null, true))
+				.IgnoreArguments()
+				.Return(new ViewEngineResult(new[] { "foo", "bar" }));
+
+			_service.RenderMessage(_controllerContext, "foo");
 		}
 
 		[Test]
 		public void CanRenderHtmlMessage()
 		{
 			string messageBody = "<html> <body> <p><b>test</b> message body...</p></body></html>" + Environment.NewLine;
-
-			using(_mocks.Record())
-			{
-				SetupResult.For(_responseMock.Filter).PropertyBehavior();
-				SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-				TextWriter writer = new StringWriter();
-				SetupResult.For(_responseMock.Output).Return(writer);
-
-                _view.Expect(x => x.Render(_viewContext, writer)).Do(
-					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
-
-			}
-
-			MailMessage message;
-			using(_mocks.Playback())
-			{
-				message = _service.RenderMessage(_viewContext);
-			}
-
+			SetupView("foo", messageBody);
+			var message = _service.RenderMessage(_controllerContext, "foo");
 			Assert.AreEqual(messageBody, message.Body);
 			Assert.IsTrue(message.IsBodyHtml);
 		}
@@ -121,58 +108,30 @@ namespace MvcContrib.UnitTests
 		[Test]
 		public void CanPreserveResponseFilter()
 		{
-			var streamStub = _mocks.Stub<Stream>();
+			var streamStub = MockRepository.GenerateStub<Stream>();
+			Response.Filter = streamStub;
+			SetupView("foo", "bar");
+			
+			_service.RenderMessage(_controllerContext, "foo");
 
-			using(_mocks.Record())
-			{
-				SetupResult.For(_responseMock.Filter).PropertyBehavior();
-				SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-
-                _view = _mocks.DynamicMock<IView>();
-			}
-
-			_responseMock.Filter = streamStub;
-
-			using(_mocks.Playback())
-			{
-				_service.RenderMessage(_viewContext);
-			}
-
-			//make sure the response filter we set is still there
-			Assert.AreEqual(streamStub.GetHashCode(), _responseMock.Filter.GetHashCode());
+			Assert.AreSame(streamStub, Response.Filter);
 		}
 
 		[Test]
 		public void CanPreserveReponseFilterOnException()
 		{
-			var streamStub = _mocks.Stub<Stream>();
+			var streamStub = MockRepository.GenerateStub<Stream>();
+			Response.Filter = streamStub;
 
-			using(_mocks.Record())
+			try
 			{
-				SetupResult.For(_responseMock.Filter).PropertyBehavior();
-				SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-				TextWriter writer = new StringWriter();
-				SetupResult.For(_responseMock.Output).Return(writer);
-
-                _view.Expect(x => x.Render(_viewContext, writer)).Throw(new Exception());
-
+				_service.RenderMessage(_controllerContext, "foo");
+			}
+			catch
+			{
 			}
 
-			_responseMock.Filter = streamStub;
-
-			using(_mocks.Playback())
-			{
-				try
-				{
-					_service.RenderMessage(_viewContext);
-				}
-				catch
-				{
-				}
-			}
-
-			//make sure the response filter we set is still there
-			Assert.AreEqual(streamStub.GetHashCode(), _responseMock.Filter.GetHashCode());
+			Assert.AreSame(streamStub, Response.Filter);
 		}
 
 		#endregion
@@ -182,27 +141,8 @@ namespace MvcContrib.UnitTests
 		private MailMessage CanProcessMessageHeaders(string header, string value)
 		{
 			string messageBody = String.Format("{0}: {1}{2}test message body...", header, value, Environment.NewLine);
-
-			using(_mocks.Record())
-			{
-				SetupResult.For(_responseMock.Filter).PropertyBehavior();
-				SetupResult.For(_responseMock.ContentEncoding).Return(Encoding.UTF8);
-				var writer = new StringWriter();
-				SetupResult.For(_responseMock.Output).Return(writer);
-
-				_view.Expect(x => x.Render(_viewContext, writer)).IgnoreArguments().Do(
-					new RenderViewDelegate((context, stream) => WriteToStream(_responseMock.Filter, messageBody)));
-
-                //Expect.Call(_viewEngineMock.FindView(_viewContext.Controller.ControllerContext, "index", null)).Return(
-                //    new ViewEngineResult(fakeView,_viewEngineMock));
-			}
-
-			MailMessage message;
-			using(_mocks.Playback())
-			{
-				message = _service.RenderMessage(_viewContext);
-			}
-
+			SetupView("foo", messageBody);
+			var message = _service.RenderMessage(_controllerContext, "foo");
 			return message;
 		}
 

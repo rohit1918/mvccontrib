@@ -10,40 +10,24 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class for form elements.
 	/// </summary>
 	/// <typeparam name="T">Derived type</typeparam>
-	public abstract class FormElement<T> : DisableableElement<T>, IMemberElement where T : FormElement<T>, IElement
+	public abstract class FormElement<T> : DisableableElement<T> where T : FormElement<T>, IElement
 	{
-		protected MemberExpression forMember;
-		private readonly IEnumerable<IMemberBehavior> behaviors;
-
 		protected FormElement(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
-			: this(tag, name)
+			: base(tag, forMember, behaviors)
 		{
-			this.forMember = forMember;
-			this.behaviors = behaviors;
+			SetName(name);
 		}
 
 		protected FormElement(string tag, string name) : base(tag)
 		{
-			builder.MergeAttribute(HtmlAttribute.Name, name, true);
-		}
-
-		/// <summary>
-		/// Expression indicating the view model member assocaited with the element.</param>
-		/// </summary>
-		public virtual MemberExpression ForMember
-		{
-			get { return forMember; }
+			SetName(name);
 		}
 
 		public override string ToString()
 		{
 			InferIdFromName();
-			ApplyBehaviors();
-			PreRender();
 			return base.ToString();
 		}
-
-		protected virtual void PreRender() { }
 
 		/// <summary>
 		/// Determines how the HTML element is closed.
@@ -53,29 +37,17 @@ namespace MvcContrib.FluentHtml.Elements
 			get { return TagRenderMode.SelfClosing; }
 		}
 
-		private void ApplyBehaviors()
+		protected virtual void InferIdFromName()
 		{
-			if(behaviors == null)
+			if (!builder.Attributes.ContainsKey(HtmlAttribute.Id))
 			{
-				return;
-			}
-			foreach(var behavior in behaviors)
-			{
-				behavior.Execute(this);
+				Attr(HtmlAttribute.Id, builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId());
 			}
 		}
 
-		private void InferIdFromName()
+		protected void SetName(string name)
 		{
-			if (builder.Attributes.ContainsKey(HtmlAttribute.Id))
-			{
-				return;
-			}
-			var name = builder.Attributes[HtmlAttribute.Name];
-			if (name != null)
-			{
-                Attr(HtmlAttribute.Id, name.FormatAsHtmlId());
-			}
+			SetAttr(HtmlAttribute.Name, name);
 		}
 	}
 }

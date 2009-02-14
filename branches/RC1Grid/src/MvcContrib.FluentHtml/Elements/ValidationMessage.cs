@@ -1,10 +1,19 @@
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using MvcContrib.FluentHtml.Behaviors;
+
 namespace MvcContrib.FluentHtml.Elements
 {
 	/// <summary>
 	/// Generate a validation message (text inside a span element).
 	/// </summary>
-	public class ValidationMessage: LiteralBase<ValidationMessage>, IElement
+	public class ValidationMessage: LiteralBase<ValidationMessage>
 	{
+		public ValidationMessage(MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+			: base(forMember, behaviors) {}
+
+		public ValidationMessage() {}
+
 		public override string ToString()
 		{
 			if (rawValue == null)
