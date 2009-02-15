@@ -41,5 +41,12 @@ namespace MvcContrib.UI.Grid.Syntax
 		/// </summary>
 		/// <returns></returns>
 		IGridWithOptions<T> Attributes(IDictionary<string, object> attributes);
+
+		/// <summary>
+		/// Defines additional grid sections to render.
+		/// </summary>
+		/// <param name="sections"></param>
+		/// <returns></returns>
+		IGridWithOptions<T> Sections(Action<GridSections<T>> sections);
 	}
 }

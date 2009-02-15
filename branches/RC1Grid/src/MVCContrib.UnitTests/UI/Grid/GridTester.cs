@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
@@ -49,12 +50,17 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Columns_should_be_stored()
 		{
-			var columns = new List<GridColumn<Person>>();
-			var mockModel = MockRepository.GenerateStub<IGridModel<Person>>();
-			mockModel.Expect(x => x.Columns).Return(columns);
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).Columns(col => col.For(x => x.Name));
+			((IGridModel<Person>)model).Columns.Count.ShouldEqual(1);
+		}
 
-			_grid.WithModel(mockModel).Columns(col => col.For(x => x.Name));
-			columns.Count.ShouldEqual(1);
+		[Test]
+		public void Sections_should_be_stored()
+		{
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).Sections(sections => sections.RowStart());
+			((IGridModel<Person>)model).Sections.Count().ShouldEqual(1);
 		}
 
 		[Test]
