@@ -64,6 +64,19 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
+		public IGridWithOptions<T> Sections(Action<GridSections<T>> sectionBuilder)
+		{
+			var sections = new GridSections<T>();
+			sectionBuilder(sections);
+
+			foreach(var section in sections)
+			{
+				_gridModel.Sections.Add(section);
+			}
+
+			return this;
+		}
+
 		public IGridWithOptions<T> WithModel(IGridModel<T> model)
 		{
 			_gridModel = model;

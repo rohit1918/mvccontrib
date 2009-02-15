@@ -25,6 +25,13 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
+		public void Should_define_sections()
+		{
+			_model.Sections.RowStart();
+			AsGridModel.Sections[GridSection.RowStart].ShouldNotBeNull();
+		}
+
+		[Test]
 		public void Should_define_empty_text()
 		{
 			_model.Empty("Foo");
