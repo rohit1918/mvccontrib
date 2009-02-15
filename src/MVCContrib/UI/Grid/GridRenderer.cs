@@ -15,7 +15,14 @@ namespace MvcContrib.UI.Grid
 		protected IEnumerable<T> DataSource { get; private set; }
 		protected ViewContext Context { get; private set; }
 		private TextWriter _writer;
+		private ViewEngineCollection _engines;
 
+		protected GridRenderer() : this(ViewEngines.Engines) {}
+
+		protected GridRenderer(ViewEngineCollection engines)
+		{
+			_engines = engines;
+		}
 
 		public void Render(IGridModel<T> gridModel, IEnumerable<T> dataSource, TextWriter output, ViewContext context)
 		{
@@ -62,8 +69,9 @@ namespace MvcContrib.UI.Grid
 			foreach(var column in VisibleColumns())
 			{
 				//A custom item section has been specified - render it and continue to the next iteration.
-				if (column.CustomItemRenderer != null) {
-					column.CustomItemRenderer(Context, _writer, item);
+				if (column.CustomItemRenderer != null)
+				{
+					column.CustomItemRenderer(new RenderingContext(_writer, Context, _engines), item);
 					continue;
 				}
 
@@ -72,7 +80,7 @@ namespace MvcContrib.UI.Grid
 				RenderEndCell();
 			}
 
-			RenderRowEnd(item);
+			RenderRowEnd(item, isAlternate);
 		}
 
 		protected virtual void RenderCellValue(GridColumn<T> column, T item)
@@ -97,7 +105,7 @@ namespace MvcContrib.UI.Grid
 				//Allow for custom header overrides.
 				if(column.CustomHeaderRenderer != null)
 				{
-					column.CustomHeaderRenderer(Context, _writer);
+					column.CustomHeaderRenderer(new RenderingContext(_writer, Context, _engines));
 				}
 				else
 				{
@@ -124,32 +132,33 @@ namespace MvcContrib.UI.Grid
 
 		protected virtual void RenderRowStart(T item, bool isAlternate)
 		{
-			//If there's a custom delegate for rendering the start of the row, invoke it.
+			//If there's a custom section for rendering the start of the row, invoke it.
 			//Otherwise fall back to the default rendering.
-//			if(Columns.RowStartBlock != null)
-//			{
-//				Columns.RowStartBlock(item);
-//			}
-//			else if(Columns.RowStartWithAlternateBlock != null)
-//			{
-//				Columns.RowStartWithAlternateBlock(item, isAlternate);
-//			}
-//			else
-//			{
-			RenderRowStart(isAlternate);
-//			}
+
+			GridSection<T> section;
+
+			if(GridModel.Sections.TryGetValue(GridSection.RowStart, out section))
+			{
+				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
+			}
+			else
+			{
+				RenderRowStart(isAlternate);				
+			}
 		}
 
-		protected virtual void RenderRowEnd(T item)
+		protected virtual void RenderRowEnd(T item, bool isAlternate)
 		{
-			//If there's a custom delegate for rendering the end of the row, invoke it.
-			//Otherwise fall back to the default rendering.
-//			if (Columns.RowEndBlock != null) {
-//				Columns.RowEndBlock(item);
-//			}
-//			else {
-			RenderRowEnd();
-//			}
+			GridSection<T> section;
+
+			if(GridModel.Sections.TryGetValue(GridSection.RowEnd, out section))
+			{
+				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
+			}
+			else
+			{
+				RenderRowEnd();
+			}
 		}
 
 		protected abstract void RenderHeaderCellEnd();

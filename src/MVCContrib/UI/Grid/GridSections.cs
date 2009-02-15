@@ -1,20 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Grid
 {
 	/// <summary>
 	/// Sections for a grid.
 	/// </summary>
-	public class GridSections<T> : IDictionary<GridSection, GridSection<T>>
+	public class GridSections<T> : IDictionary<GridSection, GridSection<T>> where T : class
 	{
 		private readonly Dictionary<GridSection, GridSection<T>> _sections = new Dictionary<GridSection, GridSection<T>>();
 
-		public IGridSection<T> RowStart()
+		public void RowStart(string partialName)
 		{
-			var section = new GridSection<T>();
-			_sections[GridSection.RowStart] = section;
-			return section;
+			_sections[GridSection.RowStart] = new GridSection<T>(partialName);
+		}
+
+		public void RowEnd(string partialName) 
+		{
+			_sections[GridSection.RowEnd] = new GridSection<T>(partialName);
 		}
 
 		#region IDictionary members
@@ -106,13 +112,40 @@ namespace MvcContrib.UI.Grid
 		}
 
 		#endregion
+
 	}
 
 	/// <summary>
 	/// Grid section
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class GridSection<T> : IGridSection<T> {}
+	public class GridSection<T> : IGridSection<T> where T : class
+	{
+		private string _partialName;
+
+		/// <summary>
+		/// Creates a new instance of the GridSection class using the specified partial name. 
+		/// </summary>
+		/// <param name="partialName">The name of the partial view to render.</param>
+		public GridSection(string partialName)
+		{
+			_partialName = partialName;
+		}
+
+		/// <summary>
+		/// Renders the grid section.
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="item"></param>
+		/// <param name="isAlternate"></param>
+		public void Render(RenderingContext context, T item, bool isAlternate)
+		{
+			var view = context.ViewEngines.TryLocatePartial(context.ViewContext, _partialName);
+			var newViewData = new ViewDataDictionary<GridRowViewData<T>>(new GridRowViewData<T>(item, isAlternate));
+			var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
+			view.Render(newContext, context.Writer);
+		}
+	}
 
 	/// <summary>
 	/// Grid section

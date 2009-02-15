@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid.Syntax;
 
@@ -13,8 +14,9 @@ namespace MvcContrib.UI.Grid
 	public class Grid<T> : IGrid<T> where T : class 
 	{
 		private readonly TextWriter _writer;
+		private readonly ViewContext context;
+		private readonly GridSections<T> _sections = new GridSections<T>();
 		private IGridModel<T> _gridModel = new GridModel<T>();
-		private ViewContext context;
 		/// <summary>
 		/// Creates a new instance of the Grid class.
 		/// </summary>
@@ -64,16 +66,15 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
-		public IGridWithOptions<T> Sections(Action<GridSections<T>> sectionBuilder)
+		public IGridWithOptions<T> RowStart(string partialName)
 		{
-			var sections = new GridSections<T>();
-			sectionBuilder(sections);
+			_sections.RowStart(partialName);
+			return this;
+		}
 
-			foreach(var section in sections)
-			{
-				_gridModel.Sections.Add(section);
-			}
-
+		public IGridWithOptions<T> RowEnd(string partialName)
+		{
+			_sections.RowEnd(partialName);
 			return this;
 		}
 
@@ -85,13 +86,17 @@ namespace MvcContrib.UI.Grid
 
 		public override string ToString() 
 		{
-			/*if(_gridModel.Renderer == null)
-			{
-				_gridModel.Renderer = new HtmlTableGridRenderer<T>();
-			}*/
-
+			MergeGridSections();
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
 			return null;
+		}
+
+		private void MergeGridSections()
+		{
+			foreach(var pair in _sections)
+			{
+				_gridModel.Sections[pair.Key] = pair.Value;
+			}
 		}
 	}
 }

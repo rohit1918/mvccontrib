@@ -56,12 +56,23 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void Sections_should_be_stored()
+		public void RowStart_section_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).Sections(sections => sections.RowStart());
-			((IGridModel<Person>)model).Sections.Count().ShouldEqual(1);
+			_grid.WithModel(model).RowStart("foo");
+			_grid.ToString();
+			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
 		}
+
+		[Test]
+		public void RowEnd_section_should_be_stored_when_rendered() 
+		{
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).RowEnd("foo");
+			_grid.ToString();
+			((IGridModel<Person>)model).Sections[GridSection.RowEnd].ShouldNotBeNull();
+		}
+
 
 		[Test]
 		public void Empty_text_should_be_stored()

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace MvcContrib.UI.Grid
 {
@@ -9,6 +10,12 @@ namespace MvcContrib.UI.Grid
 	public class HtmlTableGridRenderer<T> : GridRenderer<T> where T: class 
 	{
 		private const string DefaultCssClass = "grid";
+
+		public HtmlTableGridRenderer(ViewEngineCollection engines) : base(engines)
+		{
+			
+		}
+		public HtmlTableGridRenderer() {}
 
 		protected override void RenderHeaderCellEnd()
 		{

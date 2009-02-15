@@ -33,5 +33,10 @@ namespace MvcContrib.UnitTests
 		{
 			Assert.IsTrue(value);
 		}
+
+		public static void ShouldBe<T>(this object obj)
+		{
+			Assert.IsInstanceOfType(typeof(T), obj);
+		}
 	}
 }

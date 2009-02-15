@@ -43,10 +43,17 @@ namespace MvcContrib.UI.Grid.Syntax
 		IGridWithOptions<T> Attributes(IDictionary<string, object> attributes);
 
 		/// <summary>
-		/// Defines additional grid sections to render.
+		/// Specifies that a Partial View should be rendered for the start of each row. 
 		/// </summary>
-		/// <param name="sections"></param>
+		/// <param name="partialName">The name of the partial to render</param>
 		/// <returns></returns>
-		IGridWithOptions<T> Sections(Action<GridSections<T>> sections);
+		IGridWithOptions<T> RowStart(string partialName);
+
+		/// <summary>
+		/// Specifies that a Partial View should be rendered for the end of each row.
+		/// </summary>
+		/// <param name="partialName">The name of the partial view to render</param>
+		/// <returns></returns>
+		IGridWithOptions<T> RowEnd(string partialName);
 	}
 }

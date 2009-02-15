@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid.Syntax;
 
@@ -10,6 +11,9 @@ namespace MvcContrib.UI.Grid
 	/// </summary>
 	public static class GridExtensions
 	{
+		private const string CouldNotFindView =
+			"The view '{0}' or its master could not be found. The following locations were searched:{1}";
+
 		/// <summary>
 		/// Creates a grid using the specified datasource.
 		/// </summary>
@@ -31,7 +35,9 @@ namespace MvcContrib.UI.Grid
 
 			if(dataSource == null)
 			{
-				throw new InvalidOperationException(string.Format("Item in ViewData with key '{0}' is not an IEnumerable of '{1}'.", viewDataKey, typeof(T).Name));
+				throw new InvalidOperationException(string.Format(
+				                                    	"Item in ViewData with key '{0}' is not an IEnumerable of '{1}'.", viewDataKey,
+				                                    	typeof(T).Name));
 			}
 
 			return helper.Grid(dataSource);
@@ -50,9 +56,29 @@ namespace MvcContrib.UI.Grid
 		/// Defines additional attributes for a grid.
 		/// </summary>
 		/// <returns></returns>
-		public static IGridWithOptions<T> Attributes<T>(this IGridWithOptions<T> grid, params Func<object, object>[] hash) where T : class
+		public static IGridWithOptions<T> Attributes<T>(this IGridWithOptions<T> grid, params Func<object, object>[] hash)
+			where T : class
 		{
 			return grid.Attributes(new Hash(hash));
+		}
+
+		public static IView TryLocatePartial(this ViewEngineCollection engines, ViewContext context, string viewName)
+		{
+			var viewResult = engines.FindPartialView(context, viewName);
+
+			if(viewResult.View == null)
+			{
+				var locationsText = new StringBuilder();
+				foreach(var location in viewResult.SearchedLocations)
+				{
+					locationsText.AppendLine();
+					locationsText.Append(location);
+				}
+
+				throw new InvalidOperationException(string.Format(CouldNotFindView, viewName, locationsText));
+			}
+
+			return viewResult.View;
 		}
 	}
 }
