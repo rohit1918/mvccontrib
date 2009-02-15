@@ -150,11 +150,13 @@
     <Compile Include="UI\Grid\Grid.cs" />
     <Compile Include="UI\Grid\GridExtensions.cs" />
     <Compile Include="UI\Grid\GridRenderer.cs" />
+    <Compile Include="UI\Grid\GridRowViewData.cs" />
     <Compile Include="UI\Grid\GridSections.cs" />
     <Compile Include="UI\Grid\HtmlTableGridRenderer.cs" />
     <Compile Include="UI\Grid\IGridColumn.cs" />
     <Compile Include="UI\Grid\IGridModel.cs" />
     <Compile Include="UI\Grid\IGridRenderer.cs" />
+    <Compile Include="UI\Grid\RenderingContext.cs" />
     <Compile Include="UI\Grid\Syntax.cs" />
     <Compile Include="UI\HtmlAttributes.cs" />
     <Compile Include="UI\DomQuery.cs" />

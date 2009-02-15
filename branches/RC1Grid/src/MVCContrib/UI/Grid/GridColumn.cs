@@ -21,10 +21,9 @@ namespace MvcContrib.UI.Grid
 		private bool _visible = true;
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
-		private Action<ViewContext, TextWriter> _customHeaderRenderer;
-		private Action<ViewContext, TextWriter, T> _customItemRenderer;
+		private Action<RenderingContext> _customHeaderRenderer;
+		private Action<RenderingContext, T> _customItemRenderer;
 
-		private const string CouldNotFindView = "The view '{0}' or its master could not be found. The following locations were searched:{1}";
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
 		/// </summary>
@@ -56,7 +55,7 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Custom header renderer
 		/// </summary>
-		public Action<ViewContext, TextWriter> CustomHeaderRenderer
+		public Action<RenderingContext> CustomHeaderRenderer
 		{
 			get { return _customHeaderRenderer; }
 		}
@@ -64,7 +63,7 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Custom item renderer
 		/// </summary>
-		public Action<ViewContext, TextWriter, T> CustomItemRenderer
+		public Action<RenderingContext, T> CustomItemRenderer
 		{
 			get { return _customItemRenderer; }
 		}
@@ -125,47 +124,28 @@ namespace MvcContrib.UI.Grid
 
 		public IGridColumn<T> Header(string header)
 		{
-			_customHeaderRenderer = (c, w) => w.Write(header);
+			_customHeaderRenderer = c => c.Writer.Write(header);
 			return this;
 		}
 
 		public IGridColumn<T> HeaderPartial(string partialName)
 		{
-			_customHeaderRenderer = (c, w) => {
-				var view = FindView(c, partialName);
-				view.Render(c, w);
+			_customHeaderRenderer = context => {
+				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName); 
+				view.Render(context.ViewContext, context.Writer);
 			};
 			return this;
 		}
 
 		public IGridColumn<T> Partial(string partialName)
 		{
-			_customItemRenderer = (context, writer, item) => {
-				var view = FindView(context, partialName);
+			_customItemRenderer = (context, item) => {
+             	var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName); 
 				var newViewData = new ViewDataDictionary<T>(item);
-				var newContext = new ViewContext(context, context.View, newViewData, context.TempData);
-				view.Render(newContext, writer);
+				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
+				view.Render(newContext, context.Writer);
 			};
 			return this;
-		}
-
-		//TODO: Referencing ViewEngines here is nasty. Think of a better way to do this.
-		private IView FindView(ViewContext context, string viewName)
-		{
-			var viewResult = ViewEngines.Engines.FindPartialView(context, viewName);
-
-			if (viewResult.View == null) {
-				// we need to generate an exception containing all the locations we searched
-				var locationsText = new StringBuilder();
-				foreach (string location in viewResult.SearchedLocations) {
-					locationsText.AppendLine();
-					locationsText.Append(location);
-				}
-
-				throw new InvalidOperationException(string.Format(CouldNotFindView, viewName, locationsText));
-			}
-
-			return viewResult.View;
 		}
 
 		private string SplitPascalCase(string input)

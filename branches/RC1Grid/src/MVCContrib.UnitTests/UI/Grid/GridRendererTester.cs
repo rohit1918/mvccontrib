@@ -15,6 +15,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		private List<Person> _people;
 		private GridModel<Person> _model;
 		private IViewEngine _viewEngine;
+		private ViewEngineCollection _engines;
 
 		[SetUp]
 		public void Setup()
@@ -22,21 +23,12 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_model = new GridModel<Person>();
 			_people = new List<Person> {new Person {Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}};
 			_viewEngine = MockRepository.GenerateMock<IViewEngine>();
-
-			ViewEngines.Engines.Clear();
-			ViewEngines.Engines.Add(_viewEngine);
+			_engines = new ViewEngineCollection(new List<IViewEngine> { _viewEngine });
 		}
 
 		private IGridColumn<Person> ColumnFor(Expression<Func<Person, object>> expression)
 		{
 			return _model.Column.For(expression);
-		}
-
-		[TearDown]
-		public void Teardown()
-		{
-			ViewEngines.Engines.Clear();
-			ViewEngines.Engines.Add(new WebFormViewEngine());
 		}
 
 		[Test]
@@ -206,41 +198,24 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void When_a_custom_renderer_is_specified_then_column_condition_should_still_be_checked()
+		public void Should_render_custom_row_start()
 		{
-			/*_helper.Grid<Person>("people", column => column.For("Custom").Do(x => Writer.Write("<td>Foo</td>")).ColumnCondition(() => false));
-			string expected = "<table class=\"grid\"><thead><tr></tr></thead><tr class=\"gridrow\"></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
-		}
-
-		[Test]
-		public void Should_render_with_strongly_typed_data_and_custom_sections()
-		{
-			/*	_helper.Grid(new List<Person> { new Person { Id = 1 } }, column => column.For(p => p.Id), sections => sections.RowStart(p => Writer.Write("<tr foo=\"bar\">")));
+			SetupViewEngine("RowStart", "<tr foo=\"bar\">");
+			ColumnFor(x => x.Id);
+			_model.Sections.RowStart("RowStart");
 			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr foo=\"bar\"><td>1</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
+			RenderGrid().ShouldEqual(expected);
 		}
 
 
 		[Test]
 		public void Should_render_custom_row_end()
 		{
-			/*	_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); }, sections => sections.RowEnd(person => Writer.Write("</tr>TEST")));
-				string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr>TEST</table>";
-				RenderGrid().ShouldEqual(expected);
-			 */
-			Assert.Fail();
-		}
-
-		[Test]
-		public void Should_render_custom_row_start()
-		{
-			/*_helper.Grid<Person>("people", column => { column.For(p => p.Name); column.For(p => p.Id); }, sections => sections.RowStart(p => Writer.Write("<tr class=\"row\">")));
-			string expected = "<table class=\"grid\"><thead><tr><th>Name</th><th>Id</th></tr></thead><tr class=\"row\"><td>Jeremy</td><td>1</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
+			SetupViewEngine("RowEnd", "</tr>TEST");
+			ColumnFor(x => x.Id);
+			_model.Sections.RowEnd("RowEnd");
+			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr>TEST</table>";
+			RenderGrid().ShouldEqual(expected);
 		}
 
 		[Test]
@@ -257,12 +232,19 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_custom_row_start_with_alternate_row()
 		{
-			/*	_people.Add(new Person { Name = "Person 2" });
+			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-			_helper.Grid<Person>("people", column => { column.For(p => p.Name); }, sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+			ColumnFor(x => x.Name);
+			_model.Sections.RowStart("RowStart");
+
+			SetupViewEngine("RowStart", (c, w) =>
+			{
+				var model = (GridRowViewData<Person>)c.ViewData.Model;
+				w.Write("<tr class=\"row " + (model.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
+			});
+
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
+			RenderGrid().ShouldEqual(expected);
 		}
 
 		[Test]
@@ -276,13 +258,19 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_header_attributes_when_rendering_custom_row_start()
 		{
-			/*ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
+			ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-			//_helper.Grid<Person>("people", column => column.For(p => p.Name).HeaderAttributes(new Hash(style => "width:100%")), sections => sections.RowStart((p, isAlternate) => Writer.Write("<tr class=\"row " + (isAlternate ? "gridrow_alternate" : "gridrow") + "\">")));
+
+			_model.Sections.RowStart("RowStart");
+
+			SetupViewEngine("RowStart", (c, w) => {
+				var model = (GridRowViewData<Person>)c.ViewData.Model;
+				w.Write("<tr class=\"row " + (model.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
+			});
+
 			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);*/
-			Assert.Fail();
+			RenderGrid().ShouldEqual(expected);
 		}
 
 		private string RenderGrid()
@@ -292,7 +280,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 
 		private string RenderGrid(IEnumerable<Person> dataSource)
 		{
-			var renderer = new HtmlTableGridRenderer<Person>();
+			var renderer = new HtmlTableGridRenderer<Person>(_engines);
 			var writer = new StringWriter();
 			renderer.Render(_model, dataSource, writer, new ViewContext() { View = MockRepository.GenerateStub<IView>(), TempData = new TempDataDictionary()});
 			return writer.ToString();
@@ -306,10 +294,10 @@ namespace MvcContrib.UnitTests.UI.Grid
 		private void SetupViewEngine(string viewName, Action<ViewContext, TextWriter> action)
 		{
 			var view = MockRepository.GenerateMock<IView>();
-			_viewEngine.Expect(x => x.FindPartialView(Arg<ControllerContext>.Is.Anything, Arg<string>.Is.Equal(viewName), Arg<bool>.Is.Anything)).Return(new ViewEngineResult(view, _viewEngine));
+			_viewEngine.Expect(x => x.FindPartialView(Arg<ControllerContext>.Is.Anything, Arg<string>.Is.Equal(viewName), Arg<bool>.Is.Anything)).Return(new ViewEngineResult(view, _viewEngine)).Repeat.Any();
 
 			view.Expect(x => x.Render(null, null)).IgnoreArguments()
-				.Do(action);
+				.Do(action).Repeat.Any();
 		}
 	}
 }
