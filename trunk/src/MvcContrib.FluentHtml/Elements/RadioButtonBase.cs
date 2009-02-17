@@ -48,10 +48,10 @@ namespace MvcContrib.FluentHtml.Elements
 			if (!builder.Attributes.ContainsKey(HtmlAttribute.Id))
 			{
 				Attr(HtmlAttribute.Id, string.Format("{0}{1}",
-					builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId(),
+					builder.Attributes[HtmlAttribute.Name],
 					elementValue == null 
-						? null 
-						: string.Format("_{0}", elementValue)));
+						? null
+						: string.Format("_{0}", elementValue)).FormatAsHtmlId());
 			}
 		}
 
