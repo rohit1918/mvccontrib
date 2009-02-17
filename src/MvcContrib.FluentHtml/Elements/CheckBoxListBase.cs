@@ -76,7 +76,7 @@ namespace MvcContrib.FluentHtml.Elements
 			foreach (var option in _options)
 			{
 				var value = _valueFieldSelector(option);
-				var checkbox = (new CheckBox(name)
+				var checkbox = (new CheckBox(name, forMember, behaviors)
 					.Id(string.Format("{0}_{1}", name.FormatAsHtmlId(), i))
 					.Value(value))
 					.LabelAfter(_textFieldSelector(option).ToString(), _itemClass)
