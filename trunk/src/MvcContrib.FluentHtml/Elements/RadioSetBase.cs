@@ -75,7 +75,7 @@ namespace MvcContrib.FluentHtml.Elements
 			foreach (var option in _options)
 			{
 				var value = _valueFieldSelector(option);
-				var radioButton = (new RadioButton(name)
+				var radioButton = (new RadioButton(name, forMember, behaviors)
 					.Value(value)
 					.Format(_format))
 					.LabelAfter(_textFieldSelector(option).ToString(), _itemClass)

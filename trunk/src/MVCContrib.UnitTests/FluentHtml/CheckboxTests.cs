@@ -25,25 +25,6 @@ namespace MvcContrib.UnitTests.FluentHtml
 			VerifyHtml(new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), null).ToString());
 		}
 
-		private void VerifyHtml(string html)
-		{
-			var doc = html.ShouldRenderHtmlDocument();
-
-			var chechbox = doc.ChildNodes[0].ShouldBeNamed(HtmlTag.Input);
-			chechbox.ShouldHaveAttributesCount(4);
-			chechbox.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done");
-			chechbox.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
-			chechbox.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Checkbox);
-			chechbox.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("true");
-
-			var hidden = doc.ChildNodes[1].ShouldBeNamed(HtmlTag.Input);
-			hidden.ShouldHaveAttributesCount(4);
-			hidden.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done_Hidden");
-			hidden.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
-			hidden.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
-			hidden.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("false");
-		}
-
 		[Test]
 		public void checkbox_with_label_after_and_class_renders_label_after_with_class()
 		{
@@ -63,6 +44,25 @@ namespace MvcContrib.UnitTests.FluentHtml
 			{
 				node.ShouldHaveAttribute(HtmlAttribute.Class).WithValue(cssClass);
 			}
+		}
+
+		private void VerifyHtml(string html)
+		{
+			var doc = html.ShouldRenderHtmlDocument();
+
+			var chechbox = doc.ChildNodes[0].ShouldBeNamed(HtmlTag.Input);
+			chechbox.ShouldHaveAttributesCount(4);
+			chechbox.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done");
+			chechbox.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
+			chechbox.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Checkbox);
+			chechbox.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("true");
+
+			var hidden = doc.ChildNodes[1].ShouldBeNamed(HtmlTag.Input);
+			hidden.ShouldHaveAttributesCount(4);
+			hidden.ShouldHaveAttribute(HtmlAttribute.Id).WithValue("Done_Hidden");
+			hidden.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
+			hidden.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
+			hidden.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("false");
 		}
 	}
 }
