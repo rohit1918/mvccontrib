@@ -9,5 +9,7 @@ namespace MvcContrib.FluentHtml.Html
 		public const string TextArea = "textarea";
 		public const string Option = "option";
 		public const string Label = "label";
+		public const string UnOrderedList = "ul";
+		public const string ListItem = "li";
 	}
 }
