@@ -217,7 +217,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
-		public void textbox_with_label_class_renders_label_wit_class()
+		public void textbox_with_label_class_renders_label_with_class()
 		{
 			var label = new TextBox("foo.Bar").Label("Foo:", "bar").ToString()
 				.ShouldRenderHtmlDocument().ChildNodes[0];

@@ -47,6 +47,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected override void PreRender()
 		{
 			Attr(HtmlAttribute.Value, elementValue);
+			base.PreRender();
 		}
 	}
 }

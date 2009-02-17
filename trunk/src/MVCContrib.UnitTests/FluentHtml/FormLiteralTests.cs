@@ -9,15 +9,21 @@ namespace MvcContrib.UnitTests.FluentHtml
 	public class FormLiteralTests
 	{
 		[Test]
-		public void form_literal_renders_correct_hidden_element()
+		public void can_render_form_literal()
 		{
 			var html = new FormLiteral("foo.Bar").Value("foo bar").Value(123).ToString();
 			
-			var element = html.ShouldRenderHtmlDocument().ChildNodes[1]
-				.ShouldBeNamed(HtmlTag.Input);
-			element.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
-			element.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("foo.Bar");
-			element.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("123");
+			var element = html.ShouldRenderHtmlDocument();
+
+			var hidden = element.ShouldHaveChildNode("foo_Bar");
+            hidden.ShouldBeNamed(HtmlTag.Input);
+			hidden.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
+			hidden.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("foo.Bar");
+			hidden.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("123");
+
+			var span = element.ShouldHaveChildNode("foo_Bar_Literal");
+			span.ShouldBeNamed(HtmlTag.Span);
+			span.ShouldHaveInnerTextEqual("123");
 		}
 	}
 }

@@ -15,10 +15,10 @@ namespace MvcContrib.FluentHtml.Elements
 
 		protected OptionsElementBase(string tag, string name) : base(tag, name) { }
 
-		public IEnumerable _options;
-		public Func<object, object> _textFieldSelector;
-		public Func<object, object> _valueFieldSelector;
-		public IEnumerable _selectedValues;
+		protected IEnumerable _options;
+		protected Func<object, object> _textFieldSelector;
+		protected Func<object, object> _valueFieldSelector;
+		protected IEnumerable _selectedValues;
 
 		/// <summary>
 		/// The selected values.

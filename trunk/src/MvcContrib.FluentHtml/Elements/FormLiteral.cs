@@ -8,7 +8,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Generates a literal element (span) accompanied by a hidden input element having the same value.  Use this 
 	/// if you want to display a value and also have that same value be included in the form post.
 	/// </summary>
-	public class FormLiteral : FormLiteralBase<FormLiteral>, IElement
+	public class FormLiteral : FormLiteralBase<FormLiteral>
 	{
 		/// <summary>
 		/// Generates a literal element (span) accompanied by a hidden input element having the same value.  Use 

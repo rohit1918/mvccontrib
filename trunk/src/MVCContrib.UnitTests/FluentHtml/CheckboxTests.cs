@@ -51,5 +51,18 @@ namespace MvcContrib.UnitTests.FluentHtml
 				.ShouldRenderHtmlDocument().ChildNodes[1];
 			label.ShouldHaveAttribute(HtmlAttribute.Class).WithValue("label");
 		}
+
+		[Test]
+		public void can_specify_item_class_for_checkbox_list()
+		{
+			var cssClass = "highClass";
+			var html = new CheckBoxList("foo.Bar").Options<FakeEnum>().ItemClass(cssClass).ToString();
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(8);
+			foreach (var node in nodes)
+			{
+				node.ShouldHaveAttribute(HtmlAttribute.Class).WithValue(cssClass);
+			}
+		}
 	}
 }
