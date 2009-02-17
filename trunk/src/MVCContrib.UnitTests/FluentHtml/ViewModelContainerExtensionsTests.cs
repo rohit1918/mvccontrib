@@ -203,5 +203,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 			enumerator.MoveNext();
 			enumerator.Current.ShouldEqual(fake.Numbers[1]);
 		}
+
+		[Test]
+		public void can_get_submit_button_with_value()
+		{
+			var element = target.SubmitButton("Push Me");
+			element.ValueAttributeShouldEqual("Push Me");
+		}
 	}
 }

@@ -12,5 +12,13 @@ namespace MvcContrib.FluentHtml
 				? string.Empty 
 				: Regex.Replace(name, "[^a-zA-Z0-9-:]", "_");
 		}
+
+		public static string FormatAsHtmlName(this string name)
+		{
+			//Replace charactes not valid for name attribute with underscores.
+			return string.IsNullOrEmpty(name)
+				? string.Empty
+				: Regex.Replace(name, "[^a-zA-Z0-9.-:]", "_");
+		}
 	}
 }
