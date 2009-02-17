@@ -61,7 +61,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void can_specify_option_format_for_radio_set()
 		{
-			var html = new RadioSet("foo.Bar").Options<FakeEnum>().OptionFormat("{0}<br/>").ToString();
+			var html = new RadioSet("foo.Bar").Options<FakeEnum>().ItemFormat("{0}<br/>").ToString();
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
 			var nodes = element.ShouldHaveChildNodesCount(12);
 			var brName = "br";
@@ -69,6 +69,19 @@ namespace MvcContrib.UnitTests.FluentHtml
 			nodes[5].ShouldBeNamed(brName);
 			nodes[8].ShouldBeNamed(brName);
 			nodes[11].ShouldBeNamed(brName);
+		}
+
+		[Test]
+		public void can_specify_item_class_for_radio_set()
+		{
+			var cssClass = "highClass";
+			var html = new RadioSet("foo.Bar").Options<FakeEnum>().ItemClass(cssClass).ToString();
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(8);
+			foreach (var node in nodes)
+			{
+				node.ShouldHaveAttribute(HtmlAttribute.Class).WithValue(cssClass);
+			}
 		}
 
 		private void VerifyOption(string name, object value, object text, HtmlNode input, HtmlNode label)
