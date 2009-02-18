@@ -194,6 +194,8 @@
     <Compile Include="UI\MenuBuilder\MenuList.cs" />
     <Compile Include="UI\MenuBuilder\OpenAuthorizeAttribute.cs" />
     <Compile Include="UI\MenuBuilder\SecureActionMenuItem.cs" />
+    <Compile Include="UI\Pager\Pager.cs" />
+    <Compile Include="UI\Pager\PaginationExtensions.cs" />
     <Compile Include="UI\ScriptableElement.cs" />
     <Compile Include="UI\Tags\CheckBoxField.cs" />
     <Compile Include="UI\Tags\CheckBoxList.cs" />
