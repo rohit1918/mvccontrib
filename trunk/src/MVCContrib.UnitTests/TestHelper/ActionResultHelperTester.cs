@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
 using NUnit.Framework;
@@ -173,7 +174,17 @@ namespace MvcContrib.UnitTests.TestHelper
 
 			renderResult.WithViewData<CustomValueTypeViewData>();
 		}
-		
+
+		[Test]
+		public void WithViewData_should_return_view_data_if_view_data_type_is_implementation_of_generic_interface()
+		{
+			var expectedData = new List<string> { "a", "b", "c" };
+			var renderResult = new ViewResult { ViewData = new ViewDataDictionary(expectedData) };
+
+			var result = renderResult.WithViewData<IList<string>>();
+
+			Assert.That(result, Is.EqualTo(expectedData));
+		}
 
 		class DerivedCustomViewData : CustomReferenceTypeViewData
 		{
