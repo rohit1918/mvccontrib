@@ -180,7 +180,7 @@ namespace MvcContrib.TestHelper
 				return (TViewData)actualViewData;
 			}
 
-			if (actualViewData.GetType() != typeof(TViewData) && actualViewData.GetType().IsSubclassOf(typeof(TViewData)) == false)
+			if (!typeof(TViewData).IsAssignableFrom(actualViewData.GetType()))
 			{
 				throw new ActionResultAssertionException(string.Format("Expected view data of type '{0}', actual was '{1}'",
 					typeof(TViewData).Name, actualViewData.GetType().Name));
