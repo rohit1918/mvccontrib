@@ -8,7 +8,7 @@ using System.Web.Routing;
 namespace MvcContrib.Attributes
 {
 	[Serializable]
-	[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Interface | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 	public abstract class AbstractParameterBinderAttribute : CustomModelBinderAttribute, IModelBinder
 	{
 		public AbstractParameterBinderAttribute()
