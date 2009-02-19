@@ -41,6 +41,12 @@ namespace MvcContrib.TestHelper
 		public HttpContextBase HttpContext { get; protected set; }
 
 		/// <summary>
+		/// Gets the HttpPostedFiles that controllers will have set internally when created with InitializeController
+		/// </summary>
+		/// <value>The HttpFileCollection Files</value>
+		public IWriteableHttpFileCollection Files { get; protected set; }
+
+		/// <summary>
 		/// Gets the Form data that built controllers will have set internally when created with InitializeController
 		/// </summary>
 		/// <value>The NameValueCollection Form</value>
@@ -113,6 +119,10 @@ namespace MvcContrib.TestHelper
 
 			Form = new NameValueCollection();
 			SetupResult.For(request.Form).Return(Form);
+
+			var files = new WriteableHttpFileCollection();
+			Files = files;
+			SetupResult.For(request.Files).Return(files);
 
 			Func<NameValueCollection> paramsFunc = () => new NameValueCollection {QueryString, Form};
 			SetupResult.For(request.Params).Do(paramsFunc);
