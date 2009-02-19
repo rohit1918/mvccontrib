@@ -12,7 +12,7 @@ using MvcContrib.TestHelper;
 using System.Collections.Generic;
 namespace MvcContrib.UnitTests.ConventionController
 {
-	[TestFixture]
+    [TestFixture]
 	public class RescueTester
 	{
 		private RescueViewEngine _viewEngine;
@@ -32,7 +32,6 @@ namespace MvcContrib.UnitTests.ConventionController
 			ViewEngines.Engines.Add(_viewEngine);
 
 			SetupController(new RescueTestController());
-			
 		}
 
 		[TearDown]
@@ -49,6 +48,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			routeData.Values.Add("action", "foo");
 			_controllerContext = new ControllerContext(_mocks.DynamicHttpContextBase(), routeData, controller);
 			_controller.ControllerContext = _controllerContext;
+
+			_mocks.ReplayAll();
 		}
 
 		[Test]
@@ -76,6 +77,38 @@ namespace MvcContrib.UnitTests.ConventionController
 			string expectedRescueView = "Rescues/TestRescue";
 
 			context.Result.AssertViewRendered().ForView(expectedRescueView);
+		}
+
+		[Test]
+		public void Ajax_Call_Should_Be_Ignored()
+		{
+			_exception = new RescueTestException();
+			var rescue = new RescueAttribute("TestRescue");
+			var context = new ExceptionContext(_controllerContext, _exception);
+
+			_controllerContext.HttpContext.Request.Headers["Ajax"] = "true";
+
+			rescue.OnException(context);
+
+			Assert.IsFalse(context.ExceptionHandled);
+			Assert.That(context.Result, Is.InstanceOfType(typeof(EmptyResult)));
+		}
+
+		[Test]
+		public void Ignored_Exception_Types_Should_Be_Ignored()
+		{
+			_exception = new IgnoreTestException();
+			var rescue = new RescueAttribute("TestRescue")
+			{
+				IgnoreTypes = new Type[] { typeof(IgnoreTestException) 
+				}
+			};
+			var context = new ExceptionContext(_controllerContext, _exception);
+
+			rescue.OnException(context);
+
+			Assert.IsFalse(context.ExceptionHandled);
+			Assert.That(context.Result, Is.InstanceOfType(typeof(EmptyResult)));
 		}
 
 		[Test]
@@ -216,6 +249,10 @@ namespace MvcContrib.UnitTests.ConventionController
 
 
 		private class RescueTestException : Exception 
+		{
+		}
+
+		private class IgnoreTestException : Exception
 		{
 		}
 
