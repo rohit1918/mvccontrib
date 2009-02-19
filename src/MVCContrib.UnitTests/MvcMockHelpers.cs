@@ -55,6 +55,7 @@ namespace MvcContrib.UnitTests
 						var queryString = new NameValueCollection();
 						var cookies = new HttpCookieCollection();
 						var serverVariables = new NameValueCollection();
+						var headers = new NameValueCollection();
 
 			SetupResult.For(request.Form).Return(form);
 			SetupResult.For(request.QueryString).Return(queryString);
@@ -62,6 +63,7 @@ namespace MvcContrib.UnitTests
 			SetupResult.For(request.ServerVariables).Return(serverVariables);
 			SetupResult.For(request.Params).Do((Func<NameValueCollection>)(() => CreateParams(queryString, form, cookies, serverVariables)));
 		    SetupResult.For(request.Browser).Return(browser);
+			SetupResult.For(request.Headers).Return(headers);
 
             return request;
 		}
