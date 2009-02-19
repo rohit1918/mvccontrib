@@ -12,73 +12,51 @@ namespace MvcContrib.EnumerableExtensions
 	public static class EnumerableExtensions
 	{
 		/// <summary>
-		/// Converts an enumerable into a SelectList.
+		/// Converts the source sequence into an IEnumerable of SelectListItem
 		/// </summary>
-		/// <typeparam name="T">Type of item in the collection</typeparam>
-		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
-		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
-		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
-		/// <returns>A populated SelectList</returns>
-		public static SelectList ToSelectList<T, TValueField>(this IEnumerable<T> items, Expression<Func<T, TValueField>> valueFieldSelector, Expression<Func<T, object>> textFieldSelector)
+		/// <param name="items">Source sequence</param>
+		/// <param name="nameSelector">Lambda that specifies the name for the SelectList items</param>
+		/// <param name="valueSelector">Lambda that specifies the value for the SelectList items</param>
+		/// <returns>IEnumerable of SelectListItem</returns>
+		public static IEnumerable<SelectListItem> ToSelectList<TItem, TValue>(this IEnumerable<TItem> items, Func<TItem, TValue> valueSelector, Func<TItem, string> nameSelector)
 		{
-			string textField = ExpressionToName(textFieldSelector);
-			string valueField = ExpressionToName(valueFieldSelector);
-
-			return new SelectList(items, valueField, textField);
+			return items.ToSelectList(valueSelector, nameSelector, x => false);
 		}
 
 		/// <summary>
-		/// Converts an enumerable into a SelectList.
+		/// Converts the source sequence into an IEnumerable of SelectListItem
 		/// </summary>
-		/// <typeparam name="T">Type of item in the collection</typeparam>
-		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
-		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
-		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
-		/// <param name="selectedValue">The selected value</param>
-		/// <returns>A populated SelectList</returns>
-		public static SelectList ToSelectList<T, TValueField>(this IEnumerable<T> items, Expression<Func<T, TValueField>> valueFieldSelector, Expression<Func<T, object>> textFieldSelector, TValueField selectedValue) 
+		/// <param name="items">Source sequence</param>
+		/// <param name="nameSelector">Lambda that specifies the name for the SelectList items</param>
+		/// <param name="valueSelector">Lambda that specifies the value for the SelectList items</param>
+		/// <param name="selectedItems">Those items that should be selected</param>
+		/// <returns>IEnumerable of SelectListItem</returns>
+		public static IEnumerable<SelectListItem> ToSelectList<TItem, TValue>(this IEnumerable<TItem> items, Func<TItem, TValue> valueSelector, Func<TItem, string> nameSelector, IEnumerable<TValue> selectedItems) 
 		{
-			string textField = ExpressionToName(textFieldSelector);
-			string valueField = ExpressionToName(valueFieldSelector);
-
-			return new SelectList(items, valueField, textField, selectedValue);
+			return items.ToSelectList(valueSelector, nameSelector, x => selectedItems != null && selectedItems.Contains(valueSelector(x)));
 		}
 
 		/// <summary>
-		/// Converts an enumerable into a SelectList.
+		/// Converts the source sequence into an IEnumerable of SelectListItem
 		/// </summary>
-		/// <typeparam name="T">Type of item in the collection</typeparam>
-		/// <typeparam name="TValueField">Type of the value field</typeparam>
-		/// <param name="items">Items to convert into a select list</param>
-		/// <param name="valueFieldSelector">Expression used to identify the data value field</param>
-		/// <param name="textFieldSelector">Expression used to identify the data text field</param>
-		/// <param name="selectedValueSelector">A predicate that can be used to specify which values should be selected</param>
-		/// <returns>A populated SelectList</returns>
-		public static MultiSelectList ToSelectList<T, TValueField>(this IEnumerable<T> items, Expression<Func<T, TValueField>> valueFieldSelector, Expression<Func<T, object>> textFieldSelector, Func<T, bool> selectedValueSelector) 
+		/// <param name="items">Source sequence</param>
+		/// <param name="nameSelector">Lambda that specifies the name for the SelectList items</param>
+		/// <param name="valueSelector">Lambda that specifies the value for the SelectList items</param>
+		/// <param name="selectedValueSelector">Lambda that specifies whether the item should be selected</param>
+		/// <returns>IEnumerable of SelectListItem</returns>
+		public static IEnumerable<SelectListItem> ToSelectList<TItem, TValue>(this IEnumerable<TItem> items, Func<TItem, TValue> valueSelector, Func<TItem, string> nameSelector, Func<TItem, bool> selectedValueSelector) 
 		{
-			var selectedItems = items.Where(selectedValueSelector);
-			string textField = ExpressionToName(textFieldSelector);
-			string valueField = ExpressionToName(valueFieldSelector);
-
-			return new MultiSelectList(items, valueField, textField, selectedItems);
-		}
-
-		private static string ExpressionToName<T, TValue>(Expression<Func<T, TValue>> expression)
-		{
-			var memberExpression = RemoveUnary(expression.Body) as MemberExpression;
-			return memberExpression == null ? string.Empty : memberExpression.Member.Name;
-		}
-
-		private static Expression RemoveUnary(Expression body)
-		{
-			var unary = body as UnaryExpression;
-			if(unary != null)
+			foreach (var item in items) 
 			{
-				return unary.Operand;
+				var value = valueSelector(item);
+
+				yield return new SelectListItem
+				{
+					Text = nameSelector(item),
+					Value = value.ToString(),
+					Selected = selectedValueSelector(item)
+				};
 			}
-			return body;
 		}
 	}
 }
