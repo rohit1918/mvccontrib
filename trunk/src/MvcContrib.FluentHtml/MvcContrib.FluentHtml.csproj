@@ -73,7 +73,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Behaviors\IMemberBehavior.cs" />
-    <Compile Include="ConventionModelViewUserContol.cs">
+    <Compile Include="ConventionModelViewUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Elements\Checkbox.cs" />
