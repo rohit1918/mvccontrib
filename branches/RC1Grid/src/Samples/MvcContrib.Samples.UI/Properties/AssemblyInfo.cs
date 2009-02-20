@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MvcContrib.Samples.GridAndMenu")]
+[assembly: AssemblyTitle("MvcContrib.Samples.UI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Grain Millers")]
-[assembly: AssemblyProduct("MvcContrib.Samples.GridAndMenu")]
-[assembly: AssemblyCopyright("Copyright © Grain Millers 2009")]
+[assembly: AssemblyProduct("MvcContrib.Samples.UI")]
+[assembly: AssemblyCopyright("Copyright © MvcContrib Project 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

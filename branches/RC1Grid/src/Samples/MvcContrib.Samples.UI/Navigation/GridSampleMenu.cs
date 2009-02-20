@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using MvcContrib.Samples.GridAndMenu.Controllers;
 using MvcContrib.UI.MenuBuilder;
 
-namespace MvcContrib.Samples.GridAndMenu.Navigation
+namespace MvcContrib.Samples.UI.Navigation
 {
+	using UI.Controllers;
+
 	public class GridSampleMenu
 	{
 		public static MenuItem MainMenu()

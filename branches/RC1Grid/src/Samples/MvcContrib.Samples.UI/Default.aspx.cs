@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace MvcContrib.Samples.GridAndMenu
+namespace MvcContrib.Samples.UI
 {
 	public partial class _Default : Page
 	{
