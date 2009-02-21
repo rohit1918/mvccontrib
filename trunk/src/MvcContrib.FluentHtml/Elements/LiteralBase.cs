@@ -13,7 +13,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected string format;
 		protected object rawValue;
 
-		protected LiteralBase(MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) : 
+		protected LiteralBase(MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : 
 			base(HtmlTag.Span, forMember, behaviors) { }
 
 		protected LiteralBase() : base(HtmlTag.Span) { }

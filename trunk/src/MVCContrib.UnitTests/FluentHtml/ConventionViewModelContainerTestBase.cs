@@ -20,13 +20,13 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public virtual void includes_default_required_behavior()
 		{
-			target.MemberBehaviors.Where(x => x is DefaultRequiredMemberBehavior).ShouldCount(1);
+			target.Behaviors.Where(x => x is DefaultRequiredMemberBehavior).ShouldCount(1);
 		}
 
 		[Test]
 		public virtual void includes_default_maxlength_behavior()
 		{
-			target.MemberBehaviors.Where(x => x is DefaultMaxLengthMemberBehavior).ShouldCount(1);
+			target.Behaviors.Where(x => x is DefaultMaxLengthMemberBehavior).ShouldCount(1);
 		}
 	}
 }

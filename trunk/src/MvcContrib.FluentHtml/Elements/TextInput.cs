@@ -15,7 +15,7 @@ namespace MvcContrib.FluentHtml.Elements
 
 		protected TextInput(string type, string name) : base(type, name) { }
 
-		protected TextInput(string type, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected TextInput(string type, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(type, name, forMember, behaviors) { }
 
 		/// <summary>

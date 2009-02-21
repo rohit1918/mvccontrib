@@ -18,7 +18,7 @@ namespace MvcContrib.FluentHtml.Elements
 
 		protected TextAreaBase(string name) : base(HtmlTag.TextArea, name) { }
 
-		protected TextAreaBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected TextAreaBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlTag.TextArea, name, forMember, behaviors) { }
 
 		/// <summary>

@@ -13,7 +13,7 @@ namespace MvcContrib.FluentHtml.Elements
 		private string _format;
 		protected RadioButtonBase(string name) : base(HtmlInputType.Radio, name) { }
 
-		protected RadioButtonBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected RadioButtonBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlInputType.Radio, name, forMember, behaviors) { }
 
 		/// <summary>

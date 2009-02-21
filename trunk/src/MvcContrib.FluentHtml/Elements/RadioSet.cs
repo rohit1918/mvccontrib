@@ -12,7 +12,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		public RadioSet(string name) : base(HtmlTag.Div, name) { }
 
-		public RadioSet(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		public RadioSet(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlTag.Div, name, forMember, behaviors) { }
 	}
 }

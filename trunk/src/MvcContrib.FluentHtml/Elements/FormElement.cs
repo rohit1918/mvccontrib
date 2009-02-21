@@ -12,7 +12,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <typeparam name="T">Derived type</typeparam>
 	public abstract class FormElement<T> : DisableableElement<T> where T : FormElement<T>, IElement
 	{
-		protected FormElement(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected FormElement(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(tag, forMember, behaviors)
 		{
 			SetName(name);

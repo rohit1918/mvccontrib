@@ -13,12 +13,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class DefaultMaxlengthHtmlBehaviorTests
 	{
-	    private IList<IMemberBehavior> behaviors;
+		private IList<IBehaviorMarker> behaviors;
 
         [SetUp]
         public void SetUp()
         {
-            behaviors = new List<IMemberBehavior> {new DefaultMaxLengthMemberBehavior()};
+            behaviors = new List<IBehaviorMarker> {new DefaultMaxLengthMemberBehavior()};
         }
 
 	    [Test]

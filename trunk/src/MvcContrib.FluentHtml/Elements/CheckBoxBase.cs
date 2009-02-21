@@ -15,7 +15,7 @@ namespace MvcContrib.FluentHtml.Elements
 			elementValue = "true";
 		}
 
-		protected CheckBoxBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected CheckBoxBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlInputType.Checkbox, name, forMember, behaviors)
 		{
 			elementValue = "true";

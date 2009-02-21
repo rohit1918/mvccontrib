@@ -11,7 +11,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <typeparam name="T"></typeparam>
 	public abstract class DisableableElement<T> : Element<T> where T : DisableableElement<T>, IElement
 	{
-		protected DisableableElement(string tag, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected DisableableElement(string tag, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(tag, forMember, behaviors) {}
 
 		protected DisableableElement(string tag) : base(tag) { }

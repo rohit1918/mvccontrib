@@ -60,12 +60,14 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Behaviors\IBehavior.cs" />
+    <Compile Include="Behaviors\IBehaviorMarker.cs" />
     <Compile Include="Behaviors\ISupportsMaxLength.cs" />
     <Compile Include="Behaviors\MemberBehaviorHelper.cs" />
     <Compile Include="Behaviors\DefaultRequiredMemberBehavior.cs" />
     <Compile Include="Behaviors\IMaxLengthMemberBehaviorMarker.cs" />
     <Compile Include="Behaviors\IRequiredMemberBehaviorMarker.cs" />
-    <Compile Include="Behaviors\ValidationMemberBehavior.cs" />
+    <Compile Include="Behaviors\ValidationBehavior.cs" />
     <Compile Include="ConventionModelViewMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

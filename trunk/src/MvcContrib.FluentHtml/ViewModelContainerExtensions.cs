@@ -19,7 +19,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static TextBox TextBox<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new TextBox(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new TextBox(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -31,7 +31,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Password Password<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Password(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new Password(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -43,7 +43,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Hidden Hidden<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Hidden(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new Hidden(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -56,7 +56,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static CheckBox CheckBox<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			var checkbox = new CheckBox(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors);
+			var checkbox = new CheckBox(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors);
 			var val = expression.GetValueFrom(view.ViewModel) as bool?;
 			if (val.HasValue)
 			{
@@ -74,7 +74,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static CheckBoxList CheckBoxList<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new CheckBoxList(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new CheckBoxList(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel) as IEnumerable);
 		}
 
@@ -86,7 +86,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static TextArea TextArea<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new TextArea(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new TextArea(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -98,7 +98,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Select Select<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Select(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new Select(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -110,7 +110,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static MultiSelect MultiSelect<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new MultiSelect(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new MultiSelect(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel) as IEnumerable);
 		}
 
@@ -122,7 +122,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Literal Literal<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Literal(expression.GetMemberExpression(), view.MemberBehaviors)
+			return new Literal(expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -135,7 +135,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static FormLiteral FormLiteral<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new FormLiteral(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new FormLiteral(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -147,7 +147,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static RadioButton RadioButton<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new RadioButton(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors);
+			return new RadioButton(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors);
 		}
 
 		/// <summary>
@@ -159,7 +159,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static RadioSet RadioSet<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new RadioSet(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors)
+			return new RadioSet(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -199,7 +199,7 @@ namespace MvcContrib.FluentHtml
 						: message ?? modelState.Errors[0].ErrorMessage;
 				}
 			}
-			return new ValidationMessage(expression.GetMemberExpression(), view.MemberBehaviors).Value(errorMessage);
+			return new ValidationMessage(expression.GetMemberExpression(), view.Behaviors).Value(errorMessage);
 		}
 
 		/// <summary>
@@ -210,7 +210,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member to use to derive the 'name' attribute.</param>
 		public static Index Index<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Index(expression.GetNameFor(view), expression.GetMemberExpression(), view.MemberBehaviors);
+			return new Index(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors);
 		}
 
 		/// <summary>
@@ -229,7 +229,7 @@ namespace MvcContrib.FluentHtml
 			var id = name.FormatAsHtmlId() + (value == null
 				? null
 				: "_" + value.ToString().FormatAsHtmlId());
-			var hidden = new Hidden(name, expression.GetMemberExpression(), view.MemberBehaviors).Value(value).Id(id);
+			var hidden = new Hidden(name, expression.GetMemberExpression(), view.Behaviors).Value(value).Id(id);
 			return hidden;
 		}
 
@@ -262,7 +262,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="text">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</param>
 		public static SubmitButton SubmitButton<T>(this IViewModelContainer<T> view, string text) where T : class
 		{
-			return new SubmitButton(text, view.MemberBehaviors);
+			return new SubmitButton(text, view.Behaviors);
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		protected SubmitButtonBase(string text) : this(text, null) { }
 
-		protected SubmitButtonBase(string text, IEnumerable<IMemberBehavior> behaviors)
+		protected SubmitButtonBase(string text, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlInputType.Submit, text == null ? null : text.FormatAsHtmlName(), null, behaviors)
 		{
 			elementValue = text;

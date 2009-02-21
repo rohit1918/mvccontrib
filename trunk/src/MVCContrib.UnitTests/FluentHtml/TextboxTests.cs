@@ -182,7 +182,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void text_box_for_member_with_maxlength_attibute_sets_maxlength()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Title;
-			var behaviors = new List<IMemberBehavior> { new DefaultMaxLengthMemberBehavior() };
+			var behaviors = new List<IBehaviorMarker> { new DefaultMaxLengthMemberBehavior() };
 			var expectedLength = new MemberBehaviorHelper<MaxLengthAttribute>()
 				.GetAttribute(expression.GetMemberExpression()).Length;
 
@@ -196,7 +196,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void text_box_for_member_with_required_attibute_adds_set_class_using_default_behavior()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Id;
-			var behaviors = new List<IMemberBehavior> { new DefaultRequiredMemberBehavior() };
+			var behaviors = new List<IBehaviorMarker> { new DefaultRequiredMemberBehavior() };
 
 			var html = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors).ToString();
 
@@ -208,7 +208,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void text_box_for_member_with_required_attibute_adds_set_class_using_custom_behavior()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Id;
-			var behaviors = new List<IMemberBehavior> { new CustomRequiredHtmlBehavior() };
+			var behaviors = new List<IBehaviorMarker> { new CustomRequiredHtmlBehavior() };
 
 			var html = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors).ToString();
 

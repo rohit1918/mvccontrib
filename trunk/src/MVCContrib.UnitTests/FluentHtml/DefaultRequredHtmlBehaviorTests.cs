@@ -13,14 +13,13 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class DefaultRequredHtmlBehaviorTests
 	{
-        private IList<IMemberBehavior> behaviors;
+		private IList<IBehaviorMarker> behaviors;
 
         [SetUp]
         public void SetUp()
         {
-            behaviors = new List<IMemberBehavior> { new DefaultRequiredMemberBehavior() };
+            behaviors = new List<IBehaviorMarker> { new DefaultRequiredMemberBehavior() };
         }
-
 
 		[Test]
 		public void member_with_required_attribute_renders_with_required_class()
@@ -38,6 +37,12 @@ namespace MvcContrib.UnitTests.FluentHtml
             var textbox = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors);
 			var element = textbox.ToString().ShouldHaveHtmlNode("Done");
 			element.ShouldNotHaveAttribute("class");
+		}
+
+		[Test]
+		public void default_required_behavior_tolerates_null_formember()
+		{
+			new CheckBox("Done", null, behaviors).ToString().ShouldHaveHtmlNode("Done");
 		}
 	}
 }

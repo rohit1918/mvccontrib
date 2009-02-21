@@ -14,7 +14,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// </summary>
 		/// <param name="forMember">Expression indicating the view model member assocaited with the element</param>
 		/// <param name="behaviors">Behaviors to apply to the element</param>
-		public Literal(MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) : 
+		public Literal(MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : 
 			base(forMember, behaviors) {}
 
 		/// <summary>

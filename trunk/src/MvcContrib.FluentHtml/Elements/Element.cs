@@ -22,9 +22,9 @@ namespace MvcContrib.FluentHtml.Elements
 		protected string labelAfterText;
 		protected string labelClass;
 		protected MemberExpression forMember;
-		protected IEnumerable<IMemberBehavior> behaviors;
+		protected IEnumerable<IBehaviorMarker> behaviors;
 
-		protected Element(string tag, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) : this(tag)
+		protected Element(string tag, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : this(tag)
 		{
 			this.forMember = forMember;
 			this.behaviors = behaviors;
@@ -245,7 +245,14 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 			foreach(var behavior in behaviors)
 			{
-				behavior.Execute(this);
+				if (behavior is IBehavior)
+				{
+					((IBehavior)behavior).Execute(this);
+				}
+				if (behavior is IMemberBehavior && forMember != null)
+				{
+					((IMemberBehavior)behavior).Execute(this);
+				}
 			}
 		}
 

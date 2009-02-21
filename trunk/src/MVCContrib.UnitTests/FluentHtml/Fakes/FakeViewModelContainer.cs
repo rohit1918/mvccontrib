@@ -23,9 +23,9 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 			set { viewData.Model = value; }
 		}
 
-		public IEnumerable<IMemberBehavior> MemberBehaviors
+		public IEnumerable<IBehaviorMarker> Behaviors
 		{
-			get { return new List<IMemberBehavior>(); }
+			get { return new List<IBehaviorMarker>(); }
 		}
 
 		public string HtmlNamePrefix

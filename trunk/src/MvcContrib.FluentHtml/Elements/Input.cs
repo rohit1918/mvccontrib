@@ -18,7 +18,7 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.MergeAttribute(HtmlAttribute.Type, type, true);
 		}
 
-		protected Input(string type, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected Input(string type, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlTag.Input, name, forMember, behaviors)
 		{
 			builder.MergeAttribute(HtmlAttribute.Type, type, true);
