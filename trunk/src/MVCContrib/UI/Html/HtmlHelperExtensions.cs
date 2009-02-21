@@ -1,16 +1,12 @@
+using System;
 using System.Web.Mvc;
 
 namespace MvcContrib.UI.Html
 {
 	public static class HtmlHelperExtensions
 	{
-		public static IFormHelper FormHelper(this HtmlHelper helper)
-		{
-#pragma warning disable 618,612
-			return Html.FormHelper.GetInstance(helper.ViewContext);
-#pragma warning restore 618,612
-		}
 
+		[Obsolete("ValidationHelper is obsolete. Please consider using ModelState for validation instead.")]
 		public static IValidationHelper Validation(this HtmlHelper helper)
 		{
 			return ValidationHelper.GetInstance(helper.ViewContext);

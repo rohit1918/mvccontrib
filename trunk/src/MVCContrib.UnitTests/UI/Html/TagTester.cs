@@ -779,9 +779,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void Create_Select_With_Selected_Value_From_Complex_Object()
 			{
 				var element = new Select {ValueField = "Id", TextField = "Name"};
-			    var person1 = new FormHelperTester.Person("Hillary", 1);
-				var person2 = new FormHelperTester.Person("Barak", 2);
-				var person3 = new FormHelperTester.Person("John", 3);
+			    var person1 = new Person("Hillary", 1);
+				var person2 = new Person("Barak", 2);
+				var person3 = new Person("John", 3);
 				element.AddOption(person1.Id.ToString(), person1.Name);
 				element.AddOption(person2.Id.ToString(), person2.Name);
 				element.AddOption(person3.Id.ToString(), person3.Name);
@@ -793,9 +793,9 @@ namespace MvcContrib.UnitTests.UI.Html
 			public void Create_Select_With_Mutliple_Selected_Values_From_Complex_Object()
 			{
 				var element = new Select {ValueField = "Id", TextField = "Name"};
-			    var person1 = new FormHelperTester.Person("Hillary", 1);
-				var person2 = new FormHelperTester.Person("Barak", 2);
-				var person3 = new FormHelperTester.Person("John", 3);
+			    var person1 = new Person("Hillary", 1);
+				var person2 = new Person("Barak", 2);
+				var person3 = new Person("John", 3);
 				element.AddOption(person1.Id.ToString(), person1.Name);
 				element.AddOption(person2.Id.ToString(), person2.Name);
 				element.AddOption(person3.Id.ToString(), person3.Name);
