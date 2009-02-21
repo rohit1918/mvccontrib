@@ -1,10 +1,11 @@
 using System;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.LegacyGrid
 {
 	/// <summary>
 	/// Used to provide custon sections to the grid.
 	/// </summary>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public interface IGridSections<T>
 	{
 		/// <summary>

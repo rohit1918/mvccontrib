@@ -8,12 +8,13 @@ using System.Text;
 using System.Web;
 using MvcContrib.Pagination;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.LegacyGrid
 {
 	/// <summary>
 	/// Implementation of the grid for rendering HTML in a gridview style.
 	/// </summary>
 	/// <typeparam name="T">Type of object to be rendered in each row.</typeparam>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public class Grid<T> : GridBase<T> where T : class
 	{
 		private const string Default_Css_Class = "grid";

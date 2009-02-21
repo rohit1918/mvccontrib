@@ -1,9 +1,10 @@
 ﻿using System;
+using MvcContrib.UI.LegacyGrid;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using MvcContrib.UI.Html.Grid;
-namespace MvcContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html 
 {
+#pragma warning disable 618,612
 	[TestFixture]
 	public class GridColumnBuilderTester
 	{
@@ -139,4 +140,5 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 	}
+#pragma warning restore 618,612
 }

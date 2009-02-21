@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.LegacyGrid
 {
 	/// <summary>
 	/// Constructs GridColumn objects representing the columns to be rendered in a grid.
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public class GridColumnBuilder<T> : IExpressionColumnBuilder<T>, ISimpleColumnBuilder<T>, IRootGridColumnBuilder<T>, IGridSections<T>, IEnumerable<GridColumn<T>> where T : class
 	{
 		
