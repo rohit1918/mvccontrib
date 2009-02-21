@@ -254,5 +254,15 @@ namespace MvcContrib.FluentHtml
 		{
 			return expression.GetNameFor().FormatAsHtmlId();
 		}
+
+		/// <summary>
+		/// Generate an HTML input element of type 'submit.'
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="text">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</param>
+		public static SubmitButton SubmitButton<T>(this IViewModelContainer<T> view, string text) where T : class
+		{
+			return new SubmitButton(text, view.MemberBehaviors);
+		}
 	}
 }

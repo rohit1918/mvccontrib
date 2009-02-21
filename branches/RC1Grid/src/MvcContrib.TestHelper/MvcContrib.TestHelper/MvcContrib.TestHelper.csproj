@@ -75,6 +75,8 @@
     <Compile Include="RouteTestingExtensions.cs" />
     <Compile Include="TestControllerBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IWriteableHttpFileCollection.cs" />
+    <Compile Include="WriteableHttpFileCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MVCContrib\MVCContrib.csproj">

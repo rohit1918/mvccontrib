@@ -72,7 +72,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void can_get_form_literal_with_value()
 		{
 			var element = target.FormLiteral("fake.Title");
-			element.InnerTextShouldEqual(fake.Title);
+			element.ValueAttributeShouldEqual(fake.Title);
 		}
 
 		[Test]

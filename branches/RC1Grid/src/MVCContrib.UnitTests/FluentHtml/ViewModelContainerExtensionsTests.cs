@@ -65,7 +65,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void can_get_form_literal_with_value()
 		{
 			var element = target.FormLiteral(x => x.Title);
-			element.InnerTextShouldEqual(fake.Title);
+			element.ValueAttributeShouldEqual(fake.Title);
 		}
 
 		[Test]
@@ -202,6 +202,13 @@ namespace MvcContrib.UnitTests.FluentHtml
 			enumerator.Current.ShouldEqual(fake.Numbers[0]);
 			enumerator.MoveNext();
 			enumerator.Current.ShouldEqual(fake.Numbers[1]);
+		}
+
+		[Test]
+		public void can_get_submit_button_with_value()
+		{
+			var element = target.SubmitButton("Push Me");
+			element.ValueAttributeShouldEqual("Push Me");
 		}
 	}
 }

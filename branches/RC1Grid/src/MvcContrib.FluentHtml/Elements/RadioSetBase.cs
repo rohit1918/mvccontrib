@@ -10,14 +10,15 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// Base class for a set of radio buttons.
 	/// </summary>
-	public class RadioSetBase<T> : OptionsElementBase<T> where T : RadioSetBase<T>
+	public abstract class RadioSetBase<T> : OptionsElementBase<T> where T : RadioSetBase<T>
 	{
-		private string _format;
+		protected string _format;
+		protected string _itemClass;
 
-		public RadioSetBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected RadioSetBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
 			: base(tag, name, forMember, behaviors) { }
 
-		public RadioSetBase(string tag, string name) : base(tag, name) { }
+		protected RadioSetBase(string tag, string name) : base(tag, name) { }
 
 		/// <summary>
 		/// Set the selected option.
@@ -34,15 +35,26 @@ namespace MvcContrib.FluentHtml.Elements
 		/// Specify a format string for the HTML of each radio button and label.
 		/// </summary>
 		/// <param name="format">A format string.</param>
-		public virtual T OptionFormat(string format)
+		public virtual T ItemFormat(string format)
 		{
 			_format = format;
+			return (T)this;
+		}
+
+		/// <summary>
+		/// Specify the class for the input and label elements of each item.
+		/// </summary>
+		/// <param name="value">A format string.</param>
+		public virtual T ItemClass(string value)
+		{
+			_itemClass = value;
 			return (T)this;
 		}
 
 		protected override void PreRender()
 		{
 			builder.InnerHtml = RenderBody();
+			base.PreRender();
 		}
 
 		public override TagRenderMode TagRenderMode
@@ -63,11 +75,16 @@ namespace MvcContrib.FluentHtml.Elements
 			foreach (var option in _options)
 			{
 				var value = _valueFieldSelector(option);
-				sb.Append(new RadioButton(name)
+				var radioButton = (new RadioButton(name, forMember, behaviors)
 					.Value(value)
-					.Format(_format)
-					.LabelAfter(_textFieldSelector(option).ToString())
-					.Checked(IsSelectedValue(value)));
+					.Format(_format))
+					.LabelAfter(_textFieldSelector(option).ToString(), _itemClass)
+					.Checked(IsSelectedValue(value));
+				if (_itemClass != null)
+				{
+					radioButton.Class(_itemClass);
+				}
+				sb.Append(radioButton);
 			}
 			return sb.ToString();
 		}
