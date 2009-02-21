@@ -166,6 +166,7 @@
     </Compile>
     <Compile Include="AcceptGetAttributeTester.cs" />
     <Compile Include="AcceptPostAttributeTester.cs" />
+    <Compile Include="AssertionExtensions.cs" />
     <Compile Include="Filters\LayoutAttributeTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="Binders\SubControllerBinderTester.cs" />
@@ -287,6 +288,13 @@
     <Compile Include="UI\CapturingResponseFilterTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewPageTester.cs" />
     <Compile Include="UI\ASPXViewEngine\AutoTypeViewUserControlTester.cs" />
+    <Compile Include="UI\Grid\ColumnBuilderTester.cs" />
+    <Compile Include="UI\Grid\GridExtensionTester.cs" />
+    <Compile Include="UI\Grid\GridModelTester.cs" />
+    <Compile Include="UI\Grid\GridRendererTester.cs" />
+    <Compile Include="UI\Grid\GridSectionsTester.cs" />
+    <Compile Include="UI\Grid\GridTester.cs" />
+    <Compile Include="UI\Grid\Person.cs" />
     <Compile Include="UI\HtmlAttributesTester.cs" />
     <Compile Include="UI\DomQueryBuilderTester.cs" />
     <Compile Include="UI\DomQueryTester.cs" />
@@ -302,6 +310,8 @@
     <Compile Include="UI\Html\TagTester.cs" />
     <Compile Include="UI\Html\ValidationHelperTester.cs" />
     <Compile Include="UI\Html\ValidatorTester.cs" />
+    <Compile Include="UI\MenuBuilder\MenuBuilderTests.cs" />
+    <Compile Include="UI\PagerTests.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
     <Compile Include="ViewDataExtensionsForIDictionaryTester.cs" />
     <Compile Include="ViewDataExtensionsForViewDataTester.cs" />
