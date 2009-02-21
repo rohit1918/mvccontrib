@@ -11,7 +11,8 @@ using MvcContrib.UI.Tags.Validators;
 
 namespace MvcContrib.UI.Html
 {
-	public class ValidationHelper : BaseHelper, IValidationHelper
+	[Obsolete("ValidationHelper is obsolete. Please consider using ModelState for validation instead.")]
+	public class ValidationHelper : IValidationHelper
 	{
 		public const string CACHE_KEY = "__MvcContribValidationHelper__";
 		private const string VALIDATOR_CACHE_KEY = "__MvcContrib_Validators__";
@@ -19,6 +20,8 @@ namespace MvcContrib.UI.Html
 		private const string VALIDATOR_INITIALIZED_CACHE_KEY = "__MvcContrib_Validators_Initialized__";
 		private static string _webValidationUrl;
 		private static object _webValidationUrlLock = new object();
+
+		public ViewContext ViewContext { get; set; }
 
 		public static IValidationHelper GetInstance(ViewContext context)
 		{

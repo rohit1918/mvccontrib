@@ -164,9 +164,6 @@
     <Compile Include="UI\DomQueryBuilder.cs" />
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
-    <Compile Include="UI\Html\BaseHelper.cs" />
-    <Compile Include="UI\Html\DefaultDataBinder.cs" />
-    <Compile Include="UI\Html\FormHelper.cs" />
     <Compile Include="UI\LegacyGrid\GridColumn.cs" />
     <Compile Include="UI\LegacyGrid\GridColumnBuilder.cs" />
     <Compile Include="UI\LegacyGrid\GridHelper.cs" />
@@ -179,10 +176,7 @@
     <Compile Include="UI\LegacyGrid\GridBase.cs" />
     <Compile Include="UI\Html\HtmlHelperExtensions.cs" />
     <Compile Include="UI\Html\HtmlStringExtensions.cs" />
-    <Compile Include="UI\Html\IDataBinder.cs" />
-    <Compile Include="UI\Html\IFormHelper.cs" />
     <Compile Include="UI\Html\IValidationHelper.cs" />
-    <Compile Include="UI\Html\SmartForm.cs" />
     <Compile Include="UI\Html\ValidationHelper.cs" />
     <Compile Include="UI\IHtmlAttributes.cs" />
     <Compile Include="UI\IElement.cs" />

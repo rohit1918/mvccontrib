@@ -8,8 +8,9 @@ using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
-namespace MvcContrib.UnitTests.UI.Html
+namespace MvcContrib.UnitTests.UI.Html 
 {
+#pragma warning disable 618,612
 	[TestFixture]
 	public class ValidationHelperTester
 	{
@@ -424,4 +425,5 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 	}
+#pragma warning restore 618,612
 }
