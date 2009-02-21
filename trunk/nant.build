@@ -154,8 +154,6 @@
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
 				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
-            commandline="${samples.dir}\MvcContrib.Samples.FormHelper\MvcContrib.Samples.FormHelper.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
-    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
               commandline="${samples.dir}\MvcContrib.Samples.NinjectControllerFactory\MvcContrib.Samples.NinjectControllerFactory.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
     </target>
 
