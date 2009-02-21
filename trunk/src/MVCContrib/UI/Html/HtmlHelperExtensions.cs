@@ -54,7 +54,7 @@ namespace MvcContrib.UI.Html
         /// <returns></returns>
         public static string ScriptInclude(this HtmlHelper html, string jsFile)
         {
-            string jsPath = jsFile.Contains("~") ? jsFile : "~/content/js/" + jsFile;
+            string jsPath = jsFile.Contains("~") ? jsFile : "~/Scripts/" + jsFile;
             string url = ResolveUrl(html, jsPath);
             return string.Format("<script type=\"text/javascript\" src=\"{0}\" ></script>\n", url);
         }
