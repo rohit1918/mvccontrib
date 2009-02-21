@@ -61,6 +61,13 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
+		public void Name_should_not_be_split_when_explicit_name_specified()
+		{
+			_builder.For(x => x.Id).Named("FOO");
+			_builder.Single().Name.ShouldEqual("FOO");
+		}
+
+		[Test]
 		public void Should_obtain_value()
 		{
 			_builder.For(x => x.Name);
@@ -127,7 +134,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_add_column()
 		{
-			((ICollection<GridColumn<Person>>)_builder).Add(new GridColumn<Person>(x => null));
+			((ICollection<GridColumn<Person>>)_builder).Add(new GridColumn<Person>(x => null, null));
 			_builder.Count().ShouldEqual(1);
 		}
 

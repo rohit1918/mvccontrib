@@ -18,15 +18,8 @@ namespace MvcContrib.UI.Grid
 		/// <param name="propertySpecifier">Lambda that specifies the property for which a column should be constructed</param>
 		public IGridColumn<T> For(Expression<Func<T, object>> propertySpecifier)
 		{
-			var column = new GridColumn<T>(propertySpecifier.Compile());
-			
 			string inferredName = ExpressionToName(propertySpecifier);
-
-			if(!string.IsNullOrEmpty(inferredName))
-			{
-				column.Named(inferredName);
-			}
-
+			var column = new GridColumn<T>(propertySpecifier.Compile(), inferredName);
 			_columns.Add(column);
 			return column;
 		}
@@ -37,9 +30,9 @@ namespace MvcContrib.UI.Grid
 		/// <param name="name"></param>
 		public IGridColumn<T> For(string name) 
 		{
-			var column = new GridColumn<T>(x => string.Empty);
+			var column = new GridColumn<T>(x => string.Empty, name);
 			_columns.Add(column);
-			return column.Named(name).Partial(name);
+			return column.Partial(name);
 		}
 
 		public IEnumerator<GridColumn<T>> GetEnumerator()
@@ -60,7 +53,7 @@ namespace MvcContrib.UI.Grid
 		public static string ExpressionToName<TProperty>(Expression<Func<T, TProperty>> expression)
 		{
 			var memberExpression = RemoveUnary(expression.Body) as MemberExpression;
-			return memberExpression == null ? string.Empty : memberExpression.Member.Name;
+			return memberExpression == null ? null : memberExpression.Member.Name;
 		}
 
 

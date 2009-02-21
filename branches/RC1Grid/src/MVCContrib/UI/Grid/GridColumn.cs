@@ -27,8 +27,9 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
 		/// </summary>
-		public GridColumn(Func<T, object> columnValueFunc)
+		public GridColumn(Func<T, object> columnValueFunc, string name)
 		{
+			_name = name;
 			_columnValueFunc = columnValueFunc;
 		}
 
@@ -79,6 +80,7 @@ namespace MvcContrib.UI.Grid
 		public IGridColumn<T> Named(string name)
 		{
 			_name = name;
+			_doNotSplit = true;
 			return this;
 		}
 
