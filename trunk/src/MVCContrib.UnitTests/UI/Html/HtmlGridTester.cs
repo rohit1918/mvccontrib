@@ -4,14 +4,16 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MvcContrib.UI.LegacyGrid;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Collections.Generic;
-using MvcContrib.UI.Html.Grid;
 using MvcContrib.Pagination;
 namespace MvcContrib.UnitTests.UI.Html
 {
+#pragma warning disable 618,612
+
 	[TestFixture]
 	public class HtmlGridTester
 	{
@@ -370,4 +372,5 @@ namespace MvcContrib.UnitTests.UI.Html
 		}
 
 	}
+#pragma warning restore 618,612
 }

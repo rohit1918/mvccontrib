@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.LegacyGrid
 {
 	/// <summary>
 	/// Used in the construction of grid columns.
 	/// </summary>
 	/// <typeparam name="T">Type of object to generate grid rows for.</typeparam>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public interface INestedGridColumnBuilder<T> where T : class 
 	{
 		/// <summary>

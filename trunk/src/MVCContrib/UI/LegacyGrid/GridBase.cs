@@ -2,13 +2,14 @@ using System.Web;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MvcContrib.UI.Html.Grid
+namespace MvcContrib.UI.LegacyGrid
 {
 
 	/// <summary>
 	/// Base class for SmartGrid functionality.
 	/// </summary>
 	/// <typeparam name="T">The type of object for each row in the grid.</typeparam>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public abstract class GridBase<T> where T : class
 	{
 		/// <summary>

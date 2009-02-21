@@ -1,11 +1,12 @@
-namespace MvcContrib.UI.Html.Grid
-{
-	using System;
+using System;
 
+namespace MvcContrib.UI.LegacyGrid
+{
 	/// <summary>
 	/// Used in the construction of Grid columns. 
 	/// </summary>
 	/// <typeparam name="T">Type of item to render the column for.</typeparam>
+	[System.Obsolete("The old version of the grid has been deprecated. Please switch to the version located in MvcContrib.UI.Grid")]	
 	public interface ISimpleColumnBuilder<T> : INestedGridColumnBuilder<T> where T : class
 	{
 		/// <summary>

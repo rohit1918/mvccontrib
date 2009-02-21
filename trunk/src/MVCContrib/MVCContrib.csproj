@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2E29C28C-B0B7-4D8C-A06F-67AD70C765EA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -167,16 +167,16 @@
     <Compile Include="UI\Html\BaseHelper.cs" />
     <Compile Include="UI\Html\DefaultDataBinder.cs" />
     <Compile Include="UI\Html\FormHelper.cs" />
-    <Compile Include="UI\Html\Grid\GridColumn.cs" />
-    <Compile Include="UI\Html\Grid\GridColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\GridHelper.cs" />
-    <Compile Include="UI\Html\Grid\Grid.cs" />
-    <Compile Include="UI\Html\Grid\IExpressionColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\IGridSections.cs" />
-    <Compile Include="UI\Html\Grid\INestedGridColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\IRootGridColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\ISimpleColumnBuilder.cs" />
-    <Compile Include="UI\Html\Grid\GridBase.cs" />
+    <Compile Include="UI\LegacyGrid\GridColumn.cs" />
+    <Compile Include="UI\LegacyGrid\GridColumnBuilder.cs" />
+    <Compile Include="UI\LegacyGrid\GridHelper.cs" />
+    <Compile Include="UI\LegacyGrid\Grid.cs" />
+    <Compile Include="UI\LegacyGrid\IExpressionColumnBuilder.cs" />
+    <Compile Include="UI\LegacyGrid\IGridSections.cs" />
+    <Compile Include="UI\LegacyGrid\INestedGridColumnBuilder.cs" />
+    <Compile Include="UI\LegacyGrid\IRootGridColumnBuilder.cs" />
+    <Compile Include="UI\LegacyGrid\ISimpleColumnBuilder.cs" />
+    <Compile Include="UI\LegacyGrid\GridBase.cs" />
     <Compile Include="UI\Html\HtmlHelperExtensions.cs" />
     <Compile Include="UI\Html\HtmlStringExtensions.cs" />
     <Compile Include="UI\Html\IDataBinder.cs" />
