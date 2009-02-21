@@ -77,6 +77,7 @@ namespace MvcContrib.FluentHtml.Elements
 			{
 				builder.SetInnerText(FormatValue(rawValue));
 			}
+			base.PreRender();
 		}
 
 		protected virtual string FormatValue(object value)

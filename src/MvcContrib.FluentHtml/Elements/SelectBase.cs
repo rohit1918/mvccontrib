@@ -32,6 +32,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected override void PreRender()
 		{
 			builder.InnerHtml = RenderOptions();
+			base.PreRender();
 		}
 
 		public override TagRenderMode TagRenderMode

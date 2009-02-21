@@ -75,9 +75,9 @@ namespace MvcContrib.TestHelper
                         break;
 				
                 }
-                
 
-                Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value));
+				value = (value == null ? value : value.ToString());
+				Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value));
             }
 
             return routeData;

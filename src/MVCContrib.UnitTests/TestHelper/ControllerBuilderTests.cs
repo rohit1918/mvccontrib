@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
+using System.Web;
 using System.Web.Caching;
 using System.Web.Routing;
 using MvcContrib.Interfaces;
@@ -24,6 +25,18 @@ namespace MvcContrib.UnitTests.TestHelper
 		public void Setup()
 		{
 			builder = new TestControllerBuilder();
+		}
+
+		[Test]
+		public void CanSpecifyFiles()
+		{
+			var mocks = new MockRepository();
+			var file = mocks.DynamicMock<HttpPostedFileBase>();
+
+			builder.Files["Variable"] = file;
+			var controller = new TestHelperController();
+			builder.InitializeController(controller);
+			Assert.AreSame(file, controller.Request.Files["Variable"]);
 		}
 
 		[Test]

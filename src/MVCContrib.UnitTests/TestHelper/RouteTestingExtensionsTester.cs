@@ -30,6 +30,11 @@ namespace MvcContrib.UnitTests.TestHelper
 			{
 				return null;
 			}
+
+        	public ActionResult Foo(int id)
+        	{
+        		return null;
+        	}
         }
 		public class Bar
 		{
@@ -136,5 +141,11 @@ namespace MvcContrib.UnitTests.TestHelper
         {
             "~/someimage.gif/with_stuff".ShouldBeIgnored();
         }
+
+		[Test]
+		public void should_be_able_to_match_non_string_action_parameters()
+		{
+			"~/funky/foo/1234".Route().ShouldMapTo<FunkyController>(x => x.Foo(1234));
+		}
     }
 }

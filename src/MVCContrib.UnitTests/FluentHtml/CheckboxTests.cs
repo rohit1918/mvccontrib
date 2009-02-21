@@ -25,6 +25,27 @@ namespace MvcContrib.UnitTests.FluentHtml
 			VerifyHtml(new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), null).ToString());
 		}
 
+		[Test]
+		public void checkbox_with_label_after_and_class_renders_label_after_with_class()
+		{
+			var label = new CheckBox("x").LabelAfter("Check Me", "label").ToString()
+				.ShouldRenderHtmlDocument().ChildNodes[1];
+			label.ShouldHaveAttribute(HtmlAttribute.Class).WithValue("label");
+		}
+
+		[Test]
+		public void can_specify_item_class_for_checkbox_list()
+		{
+			var cssClass = "highClass";
+			var html = new CheckBoxList("foo.Bar").Options<FakeEnum>().ItemClass(cssClass).ToString();
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(8);
+			foreach (var node in nodes)
+			{
+				node.ShouldHaveAttribute(HtmlAttribute.Class).WithValue(cssClass);
+			}
+		}
+
 		private void VerifyHtml(string html)
 		{
 			var doc = html.ShouldRenderHtmlDocument();
@@ -42,14 +63,6 @@ namespace MvcContrib.UnitTests.FluentHtml
 			hidden.ShouldHaveAttribute(HtmlAttribute.Name).WithValue("Done");
 			hidden.ShouldHaveAttribute(HtmlAttribute.Type).WithValue(HtmlInputType.Hidden);
 			hidden.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("false");
-		}
-
-		[Test]
-		public void checkbox_with_label_after_and_class_renders_label_after_with_class()
-		{
-			var label = new CheckBox("x").LabelAfter("Check Me", "label").ToString()
-				.ShouldRenderHtmlDocument().ChildNodes[1];
-			label.ShouldHaveAttribute(HtmlAttribute.Class).WithValue("label");
 		}
 	}
 }

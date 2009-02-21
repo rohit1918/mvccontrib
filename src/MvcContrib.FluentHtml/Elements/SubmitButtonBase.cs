@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
 namespace MvcContrib.FluentHtml.Elements
@@ -7,7 +9,10 @@ namespace MvcContrib.FluentHtml.Elements
 	/// </summary>
 	public abstract class SubmitButtonBase<T> : Input<T> where T : SubmitButtonBase<T>
 	{
-		protected SubmitButtonBase(string text) : base(HtmlInputType.Submit, text == null ? null : text.Replace(' ', '_'))
+		protected SubmitButtonBase(string text) : this(text, null) { }
+
+		protected SubmitButtonBase(string text, IEnumerable<IMemberBehavior> behaviors)
+			: base(HtmlInputType.Submit, text == null ? null : text.FormatAsHtmlName(), null, behaviors)
 		{
 			elementValue = text;
 		}
