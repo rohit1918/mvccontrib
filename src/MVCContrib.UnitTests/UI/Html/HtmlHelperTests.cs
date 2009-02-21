@@ -84,7 +84,7 @@ namespace MvcContrib.UnitTests.UI.Html
         public void ScriptInclude_assumes_content_js_directory()
         {
             var html = createHtmlHelper("/site");
-            var expectedTag = "<script type=\"text/javascript\" src=\"/site/content/js/jquery.js\" ></script>\n";
+            var expectedTag = "<script type=\"text/javascript\" src=\"/site/Scripts/jquery.js\" ></script>\n";
 
             Assert.That(html.ScriptInclude("jquery.js"), Is.EqualTo(expectedTag));
             
