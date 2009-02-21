@@ -9,7 +9,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// </summary>
 	public class ValidationMessage: LiteralBase<ValidationMessage>
 	{
-		public ValidationMessage(MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+		public ValidationMessage(MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
 			: base(forMember, behaviors) {}
 
 		public ValidationMessage() {}

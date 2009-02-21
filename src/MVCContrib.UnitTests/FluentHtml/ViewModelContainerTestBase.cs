@@ -25,10 +25,10 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var mockBehavior1 = MockRepository.GenerateMock<IMemberBehavior>();
 			var mockBehavior2 = MockRepository.GenerateMock<IMemberBehavior>();
 			target = (T)Activator.CreateInstance(typeof(T), mockBehavior1, mockBehavior2);
-			target.MemberBehaviors.ShouldCount(3);
-			target.MemberBehaviors.Where(x => x is ValidationMemberBehavior);
-			Assert.Contains(mockBehavior1, (ICollection)target.MemberBehaviors);
-			Assert.Contains(mockBehavior2, (ICollection)target.MemberBehaviors);
+			target.Behaviors.ShouldCount(3);
+			target.Behaviors.Where(x => x is ValidationBehavior);
+			Assert.Contains(mockBehavior1, (ICollection)target.Behaviors);
+			Assert.Contains(mockBehavior2, (ICollection)target.Behaviors);
 		}
 	}
 }

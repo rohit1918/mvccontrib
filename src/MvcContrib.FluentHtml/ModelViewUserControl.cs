@@ -6,22 +6,22 @@ namespace MvcContrib.FluentHtml
 {
 	public class ModelViewUserControl<T> : ViewUserControl<T>, IViewModelContainer<T> where T : class
 	{
-		protected readonly List<IMemberBehavior> memberBehaviors = new List<IMemberBehavior>();
+		protected readonly List<IBehaviorMarker> behaviors = new List<IBehaviorMarker>();
 		protected string htmlNamePrefix;
 
 		public ModelViewUserControl()
 		{
-			memberBehaviors.Add(new ValidationMemberBehavior(() => ViewData.ModelState));
+			behaviors.Add(new ValidationBehavior(() => ViewData.ModelState));
 		}
 
-		public ModelViewUserControl(params IMemberBehavior[] memberBehaviors) : this(null, memberBehaviors) { }
+		public ModelViewUserControl(params IBehaviorMarker[] behaviors) : this(null, behaviors) { }
 
-		public ModelViewUserControl(string htmlNamePrefix, params IMemberBehavior[] memberBehaviors) : this()
+		public ModelViewUserControl(string htmlNamePrefix, params IBehaviorMarker[] memberBehaviors) : this()
 		{
 			this.htmlNamePrefix = htmlNamePrefix;
 			if (memberBehaviors != null)
 			{
-				this.memberBehaviors.AddRange(memberBehaviors);
+				behaviors.AddRange(memberBehaviors);
 			}
 		}
 
@@ -36,9 +36,9 @@ namespace MvcContrib.FluentHtml
 			get { return ViewData.Model; }
 		}
 
-		public IEnumerable<IMemberBehavior> MemberBehaviors
+		public IEnumerable<IBehaviorMarker> Behaviors
 		{
-			get { return memberBehaviors; }
+			get { return behaviors; }
 		}
 	}
 }

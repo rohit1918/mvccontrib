@@ -12,7 +12,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		public CheckBoxList(string name) : base(HtmlTag.Div, name) { }
 
-		public CheckBoxList(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		public CheckBoxList(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlTag.Div, name, forMember, behaviors) { }
 	}
 }

@@ -20,7 +20,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// </summary>
 		/// <param name="name">Value of the 'name' attribute of the element. Also used to derive the 'id' attribute.</param>
 		/// <param name="behaviors">Behaviors to apply to the element.</param>
-		public FileUpload(string name, IEnumerable<IMemberBehavior> behaviors)
+		public FileUpload(string name, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlInputType.File, name, null, behaviors) { }
 	}
 }

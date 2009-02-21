@@ -13,7 +13,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		protected FormLiteralBase(string name) : base(HtmlInputType.Hidden, name) { }
 
-		protected FormLiteralBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+		protected FormLiteralBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
 			: base(HtmlInputType.Hidden, name, forMember, behaviors) { }
 
 		public override string ToString()

@@ -11,7 +11,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		public RadioButton(string name) : base(name) { }
 
-		public RadioButton(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		public RadioButton(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(name, forMember, behaviors) { }
 	}
 }

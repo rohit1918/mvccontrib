@@ -17,7 +17,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="name">Value of the 'name' attribute of the element.  Also used to derive the 'id' attribute.</param>
 		/// <param name="forMember">Expression indicating the view model member assocaited with the element</param>
 		/// <param name="behaviors">Behaviors to apply to the element</param>
-		public FormLiteral(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+		public FormLiteral(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
 			: base(name, forMember, behaviors) {}
 
 		/// <summary>

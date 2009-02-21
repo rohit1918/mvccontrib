@@ -16,7 +16,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected string _itemFormat;
 		protected string _itemClass;
 
-		protected CheckBoxListBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected CheckBoxListBase(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(tag, name, forMember, behaviors) { }
 
 		protected CheckBoxListBase(string tag, string name) : base(tag, name) { }

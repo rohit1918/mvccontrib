@@ -15,7 +15,7 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		protected SelectBase(string name) : base(HtmlTag.Select, name) { }
 
-		protected SelectBase(string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected SelectBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(HtmlTag.Select, name, forMember, behaviors) { }
 
 		/// <summary>

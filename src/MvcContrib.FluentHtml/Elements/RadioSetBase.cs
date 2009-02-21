@@ -15,7 +15,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected string _format;
 		protected string _itemClass;
 
-		protected RadioSetBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors)
+		protected RadioSetBase(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(tag, name, forMember, behaviors) { }
 
 		protected RadioSetBase(string tag, string name) : base(tag, name) { }

@@ -7,7 +7,7 @@ namespace MvcContrib.FluentHtml
 	public interface IViewModelContainer<T> : IViewDataContainer where T : class
 	{
 		T ViewModel { get; }
-		IEnumerable<IMemberBehavior> MemberBehaviors { get; }
+		IEnumerable<IBehaviorMarker> Behaviors { get; }
 		string HtmlNamePrefix { get; set;  }
 	}
 }

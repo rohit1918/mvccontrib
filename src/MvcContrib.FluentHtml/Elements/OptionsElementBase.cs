@@ -10,7 +10,7 @@ namespace MvcContrib.FluentHtml.Elements
 {
 	public abstract class OptionsElementBase<T> : FormElement<T> where T : OptionsElementBase<T>
 	{
-		protected OptionsElementBase(string tag, string name, MemberExpression forMember, IEnumerable<IMemberBehavior> behaviors) 
+		protected OptionsElementBase(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
 			: base(tag, name, forMember, behaviors) { }
 
 		protected OptionsElementBase(string tag, string name) : base(tag, name) { }

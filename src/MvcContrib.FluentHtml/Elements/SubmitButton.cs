@@ -19,6 +19,6 @@ namespace MvcContrib.FluentHtml.Elements
 		/// </summary>
 		/// <param name="text">Value of the 'value' and 'name' attributes. Also used to derive the 'id' attribute.</param>
 		/// <param name="behaviors">Behaviors to apply to the element.</param>
-		public SubmitButton(string text, IEnumerable<IMemberBehavior> behaviors) : base(text, behaviors) { }
+		public SubmitButton(string text, IEnumerable<IBehaviorMarker> behaviors) : base(text, behaviors) { }
 	}
 }
