@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GridController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -83,6 +84,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\PeopleFactory.cs" />
+    <Compile Include="Models\PeopleGridModel.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Navigation\GridSampleMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -95,6 +99,13 @@
     <Content Include="Content\jquery.jdMenu.css" />
     <Content Include="Scripts\jquery.jdMenu.js" />
     <Content Include="Scripts\jquery.positionBy.js" />
+    <Content Include="Views\Grid\DateOfBirthHeaderPartial.ascx" />
+    <Content Include="Views\Grid\Index.aspx" />
+    <Content Include="Views\Grid\Paged.aspx" />
+    <Content Include="Views\Grid\Show.aspx" />
+    <Content Include="Views\Grid\UsingGridModel.aspx" />
+    <Content Include="Views\Grid\ViewPersonPartial.ascx" />
+    <Content Include="Views\Grid\WithSections.aspx" />
     <Content Include="Views\Home\SecurePage1.aspx" />
     <Content Include="Views\Home\SecurePage2.aspx" />
     <Content Include="Web.config" />
@@ -117,9 +128,6 @@
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
     <Content Include="Views\Shared\Site.Master" />
     <Content Include="Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

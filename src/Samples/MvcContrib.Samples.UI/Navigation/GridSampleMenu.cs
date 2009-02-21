@@ -16,6 +16,13 @@ namespace MvcContrib.Samples.UI.Navigation
 			Menu.DefaultDisabledClass = "disabled";
 			Menu.DefaultSelectedClass = "selected";
 			return Menu.Begin(
+						Menu.Items("Grid Samples", 
+							Menu.Action<GridController>(c=>c.Index(), "Simple Grid"),
+							Menu.Action<GridController>(c => c.Paged(null), "Paged Grid"),
+							Menu.Action<GridController>(c => c.UsingGridModel(), "Using a GridModel"),
+							Menu.Action<GridController>(c => c.WithSections(), "Using Grid Sections")
+						),
+
 						Menu.Items("Home Controller Items",
 							Menu.Secure<HomeController>(p => p.Index()),
 							Menu.Secure<HomeController>(p => p.About()),
