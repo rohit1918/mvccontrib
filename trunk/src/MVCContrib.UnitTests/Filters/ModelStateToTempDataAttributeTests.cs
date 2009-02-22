@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -84,6 +85,40 @@ namespace MvcContrib.UnitTests.Filters
 			Assert.That(ModelState["foo"].Errors.Count, Is.EqualTo(2));
 			Assert.That(ModelState["foo"].Errors[0].ErrorMessage, Is.EqualTo("bar"));
 			Assert.That(ModelState["bar"].Errors[0].Exception.Message, Is.EqualTo("blah"));
+		}
+
+		[Test]
+		public void When_item_already_exists_in_modelstate_additional_errors_should_be_added()
+		{
+			ModelState.AddModelError("foo", "foo");
+
+			var modelState = new ModelStateDictionary();
+			SetupModelState(modelState);
+			TempData[ModelStateToTempDataAttribute.TempDataKey] = modelState;
+
+			context.Result = new ViewResult();
+
+			attr.OnActionExecuted(context);
+
+			ModelState["foo"].Errors[0].ErrorMessage.ShouldEqual("foo");
+			ModelState["foo"].Errors[1].ErrorMessage.ShouldEqual("bar");
+		}
+
+		[Test]
+		public void When_item_already_exists_in_modelstate_value_should_be_copied()
+		{
+			ModelState.AddModelError("foo", "foo");
+
+			var tempDataModelState = new ModelStateDictionary();
+			SetupModelState(tempDataModelState);
+			tempDataModelState.SetModelValue("foo", new ValueProviderResult("xxx", "xxx", CultureInfo.CurrentCulture));
+			TempData[ModelStateToTempDataAttribute.TempDataKey] = tempDataModelState;
+
+			context.Result = new ViewResult();
+
+			attr.OnActionExecuted(context);
+
+			ModelState["foo"].Value.ShouldBeTheSameAs(tempDataModelState["foo"].Value);
 		}
 
 		[Test]
