@@ -44,7 +44,19 @@ namespace MvcContrib.Filters
 
 			foreach(var pair in fromTempData)
 			{
-				modelState.Add(pair.Key, pair.Value);
+				if (modelState.ContainsKey(pair.Key))
+				{
+					modelState[pair.Key].Value = pair.Value.Value;
+					
+					foreach(var error in pair.Value.Errors)
+					{
+						modelState[pair.Key].Errors.Add(error);
+					}
+				}
+				else
+				{
+					modelState.Add(pair.Key, pair.Value);
+				}
 			}
 		}
 
