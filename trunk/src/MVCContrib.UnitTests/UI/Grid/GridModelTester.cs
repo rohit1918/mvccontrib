@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.UI.Grid
 {
@@ -50,6 +51,14 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			_model.Attributes(foo=>"bar");
 			AsGridModel.Attributes["foo"].ShouldEqual("bar");
+		}
+
+		[Test]
+		public void Should_be_able_to_specify_renderer()
+		{
+			var renderer = MockRepository.GenerateStub<IGridRenderer<Person>>();
+			_model.RenderUsing(renderer);
+			AsGridModel.Renderer.ShouldBeTheSameAs(renderer);
 		}
 
 		private IGridModel<Person> AsGridModel
