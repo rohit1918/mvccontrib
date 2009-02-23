@@ -95,5 +95,14 @@ namespace MvcContrib.UI.Grid
 		{
 			_attributes = attributes;
 		}
+
+		/// <summary>
+		/// Specifies the Renderer to use with this grid. If omitted, the HtmlTableGridRenderer will be used. 
+		/// </summary>
+		/// <param name="renderer">The Renderer to use</param>
+		public void RenderUsing(IGridRenderer<T> renderer)
+		{
+			_renderer = renderer;
+		}
 	}
 }
