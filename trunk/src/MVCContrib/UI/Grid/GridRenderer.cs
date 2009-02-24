@@ -135,9 +135,9 @@ namespace MvcContrib.UI.Grid
 			//If there's a custom section for rendering the start of the row, invoke it.
 			//Otherwise fall back to the default rendering.
 
-			GridSection<T> section;
+			var section = GridModel.Sections[GridSection.RowStart];
 
-			if(GridModel.Sections.TryGetValue(GridSection.RowStart, out section))
+			if(section != null)
 			{
 				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
 			}
@@ -149,9 +149,9 @@ namespace MvcContrib.UI.Grid
 
 		protected virtual void RenderRowEnd(T item, bool isAlternate)
 		{
-			GridSection<T> section;
-
-			if(GridModel.Sections.TryGetValue(GridSection.RowEnd, out section))
+			var section = GridModel.Sections[GridSection.RowEnd];
+            
+			if(section != null)
 			{
 				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
 			}
