@@ -10,7 +10,7 @@ namespace MvcContrib.UI.Grid
 	{
 		IGridRenderer<T> Renderer { get; set; }
 		ICollection<GridColumn<T>> Columns { get; }
-		IDictionary<GridSection, GridSection<T>> Sections { get; }
+		IGridSections<T> Sections { get; }
 		string EmptyText { get; set; }
 		IDictionary<string, object> Attributes { get; set; }
 	}

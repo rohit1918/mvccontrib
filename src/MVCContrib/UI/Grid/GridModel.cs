@@ -17,7 +17,7 @@ namespace MvcContrib.UI.Grid
 		private string _emptyText;
 		private IDictionary<string, object> _attributes = new Dictionary<string, object>();
 
-		IDictionary<GridSection, GridSection<T>> IGridModel<T>.Sections
+		IGridSections<T> IGridModel<T>.Sections
 		{
 			get { return _sections; }
 		}
