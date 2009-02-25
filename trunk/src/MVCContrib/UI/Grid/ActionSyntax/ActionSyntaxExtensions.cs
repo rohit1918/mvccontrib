@@ -42,5 +42,19 @@ namespace MvcContrib.UI.Grid.ActionSyntax
 			return grid;
 		}
 
+		public static void RowStart<T>(this IGridSections<T> sections, Action<T> block) where T : class
+		{
+			sections[GridSection.RowStart] = new GridSection<T>(block);
+		}
+
+		public static void RowStart<T>(this IGridSections<T> sections, Action<T, GridRowViewData<T>> block) where T : class
+		{
+			sections[GridSection.RowStart] = new GridSection<T>(block);
+		}
+
+		public static void RowEnd<T>(this IGridSections<T> sections, Action<T> block) where T : class 
+		{
+			sections[GridSection.RowEnd] = new GridSection<T>(block);
+		}
 	}
 }

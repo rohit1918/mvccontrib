@@ -59,10 +59,7 @@ namespace MvcContrib.UI.Grid
 	public interface IGridSections<T> where T : class
 	{
 		void RowStart(string partialName);
-		void RowStart(Action<T> rowStartBlock);
-		void RowStart(Action<T, GridRowViewData<T>> rowStartBlock);
 		void RowEnd(string partialName);
-		void RowEnd(Action<T> rowEndBlock);
 		IGridSection<T> this[GridSection gridSection] { get; set; }
 	}
 
