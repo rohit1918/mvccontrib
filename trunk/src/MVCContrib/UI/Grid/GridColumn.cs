@@ -59,6 +59,7 @@ namespace MvcContrib.UI.Grid
 		public Action<RenderingContext> CustomHeaderRenderer
 		{
 			get { return _customHeaderRenderer; }
+			set { _customHeaderRenderer = value; }
 		}
 
 		/// <summary>
@@ -67,6 +68,7 @@ namespace MvcContrib.UI.Grid
 		public Action<RenderingContext, T> CustomItemRenderer
 		{
 			get { return _customItemRenderer; }
+			set { _customItemRenderer = value; }
 		}
 
 		/// <summary>
@@ -121,44 +123,6 @@ namespace MvcContrib.UI.Grid
 				_headerAttributes.Add(attribute);
 			}
 
-			return this;
-		}
-
-		public IGridColumn<T> Header(string header)
-		{
-			_customHeaderRenderer = c => c.Writer.Write(header);
-			return this;
-		}
-
-		public IGridColumn<T> HeaderPartial(string partialName)
-		{
-			_customHeaderRenderer = context => {
-				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName); 
-				view.Render(context.ViewContext, context.Writer);
-			};
-			return this;
-		}
-
-		public IGridColumn<T> HeaderAction(Action action)
-		{
-			_customHeaderRenderer = context => action();
-			return this;
-		}
-
-		public IGridColumn<T> Partial(string partialName)
-		{
-			_customItemRenderer = (context, item) => {
-             	var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName); 
-				var newViewData = new ViewDataDictionary<T>(item);
-				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
-				view.Render(newContext, context.Writer);
-			};
-			return this;
-		}
-
-		public IGridColumn<T> Action(Action<T> action)
-		{
-			_customItemRenderer = (context, item) => action(item);
 			return this;
 		}
 

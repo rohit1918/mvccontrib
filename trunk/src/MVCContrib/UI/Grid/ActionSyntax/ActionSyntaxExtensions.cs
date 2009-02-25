@@ -15,7 +15,7 @@ namespace MvcContrib.UI.Grid.ActionSyntax
 		/// <param name="block">Action that renders the HTML.</param>
 		public static IGridWithOptions<T> RowStart<T>(this IGridWithOptions<T> grid, Action<T> block) where T : class
 		{
-			grid.Sections.RowStart(block);
+			grid.Model.Sections.RowStart(block);
 			return grid;
 		}
 
@@ -27,7 +27,7 @@ namespace MvcContrib.UI.Grid.ActionSyntax
 		/// <param name="block">Action that renders the HTML.</param>
 		public static IGridWithOptions<T> RowStart<T>(this IGridWithOptions<T> grid, Action<T, GridRowViewData<T>> block) where T : class
 		{
-			grid.Sections.RowStart(block);
+			grid.Model.Sections.RowStart(block);
 			return grid;
 		}
 
@@ -38,23 +38,46 @@ namespace MvcContrib.UI.Grid.ActionSyntax
 		/// <param name="block">Action that renders the HTML.</param>
 		public static IGridWithOptions<T> RowEnd<T>(this IGridWithOptions<T> grid, Action<T> block) where T : class
 		{
-			grid.Sections.RowEnd(block);
+			grid.Model.Sections.RowEnd(block);
 			return grid;
 		}
 
 		public static void RowStart<T>(this IGridSections<T> sections, Action<T> block) where T : class
 		{
-			sections[GridSection.RowStart] = new GridSection<T>(block);
+			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item));
 		}
 
 		public static void RowStart<T>(this IGridSections<T> sections, Action<T, GridRowViewData<T>> block) where T : class
 		{
-			sections[GridSection.RowStart] = new GridSection<T>(block);
+			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item, rowmodel));
 		}
 
 		public static void RowEnd<T>(this IGridSections<T> sections, Action<T> block) where T : class 
 		{
-			sections[GridSection.RowEnd] = new GridSection<T>(block);
+			sections[GridSection.RowEnd] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item));
 		}
+
+		/// <summary>
+		/// Specifies that an action should be used to render the column header.
+		/// </summary>
+		/// <param name="column">The current column</param>
+		/// <param name="action">The action to render</param>
+		/// <returns></returns>
+		public static IGridColumn<T> HeaderAction<T>(this IGridColumn<T> column, Action action) {
+			column.CustomHeaderRenderer = context => action();
+			return column;
+		}
+
+		/// <summary>
+		/// Specifies that an action should be used to render the contents of this column.
+		/// </summary>
+		/// <param name="column">The current column</param>
+		/// <param name="action">The action to render</param>
+		/// <returns></returns>
+		public static IGridColumn<T> Action<T>(this IGridColumn<T> column, Action<T> action) {
+			column.CustomItemRenderer = (context, item) => action(item);
+			return column;
+		}
+
 	}
 }

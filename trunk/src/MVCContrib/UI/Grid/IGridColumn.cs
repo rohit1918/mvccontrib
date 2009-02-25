@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace MvcContrib.UI.Grid
 {
@@ -51,40 +52,15 @@ namespace MvcContrib.UI.Grid
 		IGridColumn<T> HeaderAttributes(IDictionary<string, object> attributes);
 
 		/// <summary>
-		/// The HTML that should be used to render the header for the column. This should include TD tags. 
+		/// Custom header renderer
 		/// </summary>
-		/// <param name="header">The format to use.</param>
-		/// <returns></returns>
-		IGridColumn<T> Header(string header);
+		[EditorBrowsable(EditorBrowsableState.Never)] //hide from intellisense in fluent interface
+		Action<RenderingContext> CustomHeaderRenderer { get; set; }
 
 		/// <summary>
-		/// Specifies that a partial view should be used to render the column header.
+		/// Custom item renderer
 		/// </summary>
-		/// <param name="partialName"></param>
-		/// <returns></returns>
-		IGridColumn<T> HeaderPartial(string partialName);
-
-
-		/// <summary>
-		/// Specifies that an action should be used to render the column header.
-		/// </summary>
-		/// <param name="action">The action to render</param>
-		/// <returns></returns>
-		IGridColumn<T> HeaderAction(Action action);
-
-		/// <summary>
-		/// Specifies that a partial view should be used to render the contents of this column.
-		/// </summary>
-		/// <param name="partialName">The name of the partial view</param>
-		/// <returns></returns>
-		IGridColumn<T> Partial(string partialName);
-
-
-		/// <summary>
-		/// Specifies that an action should be used to render the contents of this column.
-		/// </summary>
-		/// <param name="action">The action to render</param>
-		/// <returns></returns>
-		IGridColumn<T> Action(Action<T> action);
+		[EditorBrowsable(EditorBrowsableState.Never)] //hide from intellisense in fluent interface
+		Action<RenderingContext, T> CustomItemRenderer { get; set; }
 	}
 }

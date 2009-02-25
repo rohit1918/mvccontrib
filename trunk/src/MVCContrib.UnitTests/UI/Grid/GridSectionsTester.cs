@@ -76,7 +76,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test,ExpectedException(typeof(ArgumentException))]
 		public void Should_throw_when_unknown_grid_section_set()
 		{
-			_sections[(GridSection)3] = new GridSection<Person>("asdf");
+			_sections[(GridSection)3] = new GridSection<Person>((x, y) => { });
 		}
 
 		[Test, ExpectedException(typeof(ArgumentException))]
