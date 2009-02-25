@@ -19,24 +19,9 @@ namespace MvcContrib.UI.Grid
 			this[GridSection.RowStart] = new GridSection<T>(partialName);
 		}
 
-		public void RowStart(Action<T> rowStartBlock)
-		{
-			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
-		}
-
-		public void RowStart(Action<T, GridRowViewData<T>> rowStartBlock)
-		{
-			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
-		}
-
 		public void RowEnd(string partialName)
 		{
 			this[GridSection.RowEnd] = new GridSection<T>(partialName);
-		}
-
-		public void RowEnd(Action<T> rowEndBlock)
-		{
-			this[GridSection.RowEnd] = new GridSection<T>(rowEndBlock);
 		}
 
 		public IGridSection<T> this[GridSection gridSection]
@@ -69,16 +54,23 @@ namespace MvcContrib.UI.Grid
 	/// <typeparam name="T"></typeparam>
 	public class GridSection<T> : IGridSection<T> where T : class
 	{
-		private string _partialName;
-		private Action<T, GridRowViewData<T>> actionAlternateBlock;
+		private Action<GridRowViewData<T>, RenderingContext> _sectionRenderer = (x, y) => {};
+
+		/// <summary>
+		/// Creates a new instance of the GridSection class.
+		/// </summary>
+		/// <param name="sectionRenderer">A delegate to invoke when the section is rendered</param>
+		public GridSection(Action<GridRowViewData<T>, RenderingContext> sectionRenderer)
+		{
+			_sectionRenderer = sectionRenderer;
+		}
 
 		/// <summary>
 		/// Creates a new instance of the GridSection class using the specified partial name. 
 		/// </summary>
 		/// <param name="partialName">The name of the partial view to render.</param>
-		public GridSection(string partialName)
+		public GridSection(string partialName) : this((rowmodel, context) => RenderPartialForSection(rowmodel, context, partialName))
 		{
-			_partialName = partialName;
 		}
 
 		/// <summary>
@@ -94,9 +86,8 @@ namespace MvcContrib.UI.Grid
 		/// Creates a new instance of the GridSection class using the specified action block. 
 		/// </summary>
 		/// <param name="actionAlternateBlock">The action block to render.</param>
-		public GridSection(Action<T, GridRowViewData<T>> actionAlternateBlock)
+		public GridSection(Action<T, GridRowViewData<T>> actionAlternateBlock) : this((rowmodel, context) => actionAlternateBlock(rowmodel.Item, rowmodel))
 		{
-			this.actionAlternateBlock = actionAlternateBlock;
 		}
 
 		/// <summary>
@@ -108,19 +99,15 @@ namespace MvcContrib.UI.Grid
 		public void Render(RenderingContext context, T item, bool isAlternate)
 		{
 			var viewData = new GridRowViewData<T>(item, isAlternate);
+			_sectionRenderer(viewData, context);
+		}
 
-			if (actionAlternateBlock != null)
-			{
-				actionAlternateBlock(item, viewData);
-			}
-			else
-			{
-				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, _partialName);
-				var newViewData = new ViewDataDictionary<GridRowViewData<T>>(viewData);
-				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData,
-												 context.ViewContext.TempData);
-				view.Render(newContext, context.Writer);
-			}
+		public static void RenderPartialForSection(GridRowViewData<T> viewData, RenderingContext context, string partialName) {
+			var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
+			var newViewData = new ViewDataDictionary<GridRowViewData<T>>(viewData);
+			var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData,
+			                                 context.ViewContext.TempData);
+			view.Render(newContext, context.Writer);
 		}
 	}
 
