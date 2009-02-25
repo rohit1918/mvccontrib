@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.UI.Grid;
@@ -16,45 +17,74 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_sections = new GridSections<Person>();
 		}
 
-		[Test]
-		public void Should_enumerate()
-		{
-			_sections.RowStart("foo");
-			_sections.Count().ShouldEqual(1);
-		}
 
 		[Test]
 		public void Should_get_by_key()
 		{
 			_sections.RowStart("foo");
-			AsGridSections[GridSection.RowStart].ShouldBe<GridSection<Person>>();
+			_sections[GridSection.RowStart].ShouldBe<GridSection<Person>>();
 		}
 
 		[Test]
 		public void Should_not_throw_when_obtaining_by_key()
 		{
-			AsGridSections[GridSection.RowStart].ShouldBeNull();
+			_sections[GridSection.RowStart].ShouldBeNull();
+		}
+
+
+		[Test]
+		public void Should_not_throw_when_obtaining_by_other_key()
+		{
+			_sections[GridSection.RowEnd].ShouldBeNull();
 		}
 
 		[Test]
-		public void Should_contain_section()
+		public void Should_set_first_item()
 		{
 			_sections.RowStart("foo");
-			var section = AsGridSections.Single().Value;
-			AsGridSections.Contains(new KeyValuePair<GridSection, GridSection<Person>>(GridSection.RowStart, section)).ShouldBeTrue();
+			_sections[GridSection.RowStart].ShouldNotBeNull();
 		}
 
 		[Test]
-		public void Should_count_sections()
+		public void Should_set_second_item()
 		{
-			_sections.RowStart("foo");
-			AsGridSections.Count().ShouldEqual(1);
+			_sections.RowEnd("foo");
+			_sections[GridSection.RowEnd].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void Should_set_action_block()
+		{
+			_sections.RowStart(p => Should_set_action_block());
+			_sections[GridSection.RowStart].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void Should_set_action_bool_block()
+		{
+			_sections.RowStart((p, b) => Should_set_action_bool_block());
+			_sections[GridSection.RowStart].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void Should_set_end_action_block()
+		{
+			_sections.RowEnd(p => Should_set_action_bool_block());
+			_sections[GridSection.RowEnd].ShouldNotBeNull();
+		}
+
+		[Test,ExpectedException(typeof(ArgumentException))]
+		public void Should_throw_when_unknown_grid_section_set()
+		{
+			_sections[(GridSection)3] = new GridSection<Person>("asdf");
+		}
+
+		[Test, ExpectedException(typeof(ArgumentException))]
+		public void Should_throw_when_unknown_grid_section_read()
+		{
+			var x = _sections[(GridSection)2];
 		}
 
 
-		private IGridSections<Person> AsGridSections
-		{
-			get { return _sections; }
-		}
 	}
 }

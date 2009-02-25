@@ -11,12 +11,13 @@ namespace MvcContrib.UI.Grid
 	/// Defines a grid to be rendered.
 	/// </summary>
 	/// <typeparam name="T">Type of datasource for the grid</typeparam>
-	public class Grid<T> : IGrid<T> where T : class 
+	public class Grid<T> : IGrid<T> where T : class
 	{
 		private readonly TextWriter _writer;
 		private readonly ViewContext context;
-		private readonly GridSections<T> _sections = new GridSections<T>();
+		private readonly IGridSections<T> _sections = new GridSections<T>();
 		private IGridModel<T> _gridModel = new GridModel<T>();
+
 		/// <summary>
 		/// Creates a new instance of the Grid class.
 		/// </summary>
@@ -45,8 +46,8 @@ namespace MvcContrib.UI.Grid
 		{
 			var builder = new ColumnBuilder<T>();
 			columnBuilder(builder);
-            
-			foreach(var column in builder)
+
+			foreach (var column in builder)
 			{
 				_gridModel.Columns.Add(column);
 			}
@@ -78,25 +79,51 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
+		public IGridWithOptions<T> RowStart(Action<T> block)
+		{
+			_sections.RowStart(block);
+			return this;
+		}
+
+		public IGridWithOptions<T> RowStart(Action<T, bool> block)
+		{
+			_sections.RowStart(block);
+			return this;
+		}
+
+		public IGridWithOptions<T> RowEnd(Action<T> block)
+		{
+			_sections.RowEnd(block);
+			return this;
+		}
+
 		public IGridWithOptions<T> WithModel(IGridModel<T> model)
 		{
 			_gridModel = model;
 			return this;
 		}
 
-		public override string ToString() 
+		/// <summary>
+		/// Renders to the TextWriter, and returns null. 
+		/// This is by design so that it can be used with inline syntax in views.
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()
+		{
+			Render();
+			return null;
+		}
+
+		public void Render()
 		{
 			MergeGridSections();
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
-			return null;
 		}
 
 		private void MergeGridSections()
 		{
-			foreach(var pair in _sections)
-			{
-				_gridModel.Sections[pair.Key] = pair.Value;
-			}
+            _gridModel.Sections[GridSection.RowStart] = _sections[GridSection.RowStart];
+			_gridModel.Sections[GridSection.RowEnd] = _sections[GridSection.RowEnd];
 		}
 	}
 }

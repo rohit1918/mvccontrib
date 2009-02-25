@@ -139,6 +139,12 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
+		public IGridColumn<T> HeaderAction(Action action)
+		{
+			_customHeaderRenderer = context => action();
+			return this;
+		}
+
 		public IGridColumn<T> Partial(string partialName)
 		{
 			_customItemRenderer = (context, item) => {
@@ -147,6 +153,12 @@ namespace MvcContrib.UI.Grid
 				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
 				view.Render(newContext, context.Writer);
 			};
+			return this;
+		}
+
+		public IGridColumn<T> Action(Action<T> action)
+		{
+			_customItemRenderer = (context, item) => action(item);
 			return this;
 		}
 

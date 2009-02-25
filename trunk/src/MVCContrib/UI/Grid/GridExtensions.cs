@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid.Syntax;
 
@@ -33,11 +35,11 @@ namespace MvcContrib.UI.Grid
 		{
 			var dataSource = helper.ViewContext.ViewData.Eval(viewDataKey) as IEnumerable<T>;
 
-			if(dataSource == null)
+			if (dataSource == null)
 			{
 				throw new InvalidOperationException(string.Format(
-				                                    	"Item in ViewData with key '{0}' is not an IEnumerable of '{1}'.", viewDataKey,
-				                                    	typeof(T).Name));
+														"Item in ViewData with key '{0}' is not an IEnumerable of '{1}'.", viewDataKey,
+														typeof(T).Name));
 			}
 
 			return helper.Grid(dataSource);
@@ -66,10 +68,10 @@ namespace MvcContrib.UI.Grid
 		{
 			var viewResult = engines.FindPartialView(context, viewName);
 
-			if(viewResult.View == null)
+			if (viewResult.View == null)
 			{
 				var locationsText = new StringBuilder();
-				foreach(var location in viewResult.SearchedLocations)
+				foreach (var location in viewResult.SearchedLocations)
 				{
 					locationsText.AppendLine();
 					locationsText.Append(location);

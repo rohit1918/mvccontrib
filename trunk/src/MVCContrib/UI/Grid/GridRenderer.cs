@@ -15,7 +15,7 @@ namespace MvcContrib.UI.Grid
 		protected IEnumerable<T> DataSource { get; private set; }
 		protected ViewContext Context { get; private set; }
 		private TextWriter _writer;
-		private ViewEngineCollection _engines;
+		private readonly ViewEngineCollection _engines;
 
 		protected GridRenderer() : this(ViewEngines.Engines) {}
 

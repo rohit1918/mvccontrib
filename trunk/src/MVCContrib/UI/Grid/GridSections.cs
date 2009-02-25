@@ -11,52 +11,60 @@ namespace MvcContrib.UI.Grid
 	/// </summary>
 	public class GridSections<T> : IGridSections<T> where T : class
 	{
-		private readonly Dictionary<GridSection, GridSection<T>> _sections = new Dictionary<GridSection, GridSection<T>>();
+		private const int NUMGRIDSECTIONS = 2;
+		private readonly IGridSection<T>[] sections = new GridSection<T>[NUMGRIDSECTIONS];
 
 		public void RowStart(string partialName)
 		{
-			_sections[GridSection.RowStart] = new GridSection<T>(partialName);
+			this[GridSection.RowStart] = new GridSection<T>(partialName);
 		}
 
-		public void RowEnd(string partialName) 
+		public void RowStart(Action<T> rowStartBlock)
 		{
-			_sections[GridSection.RowEnd] = new GridSection<T>(partialName);
+			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
 		}
 
-		GridSection<T> IGridSections<T>.this[GridSection key]
+		public void RowStart(Action<T, bool> rowStartBlock)
+		{
+			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
+		}
+
+		public void RowEnd(string partialName)
+		{
+			this[GridSection.RowEnd] = new GridSection<T>(partialName);
+		}
+
+		public void RowEnd(Action<T> rowEndBlock)
+		{
+			this[GridSection.RowEnd] = new GridSection<T>(rowEndBlock);
+		}
+
+		public IGridSection<T> this[GridSection gridSection]
 		{
 			get
 			{
-				GridSection<T> section;
-				return _sections.TryGetValue(key, out section) ? section : null;
+				if ((int)gridSection > NUMGRIDSECTIONS - 1 || (int)gridSection < 0)
+					throw new ArgumentException("Unknown Grid Section: " + gridSection, "gridSection");
+				return sections[(int)gridSection];
 			}
-			set { _sections[key] = value; }
-		}
-
-		IEnumerator<KeyValuePair<GridSection, GridSection<T>>> IEnumerable<KeyValuePair<GridSection, GridSection<T>>>.GetEnumerator()
-		{
-			return _sections.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return ((IEnumerable<KeyValuePair<GridSection, GridSection<T>>>)this).GetEnumerator();
+			set
+			{
+				if ((int)gridSection > NUMGRIDSECTIONS - 1 || (int)gridSection < 0)
+					throw new ArgumentException("Unknown Grid Section: " + gridSection, "gridSection");
+				sections[(int)gridSection] = value;
+			}
 		}
 	}
-	
-	/// <summary>
-	/// A collection of Grid Sections
-	/// </summary>
-	public interface IGridSections<T> : IEnumerable<KeyValuePair<GridSection, GridSection<T>>> where T : class
+
+	public interface IGridSections<T> where T : class
 	{
-		/// <summary>
-		/// Obtains the appropriate grid section.
-		/// </summary>
-		/// <param name="key">The section that should be retrieved</param>
-		/// <returns>A GridSection or null</returns>
-		GridSection<T> this[GridSection key] { get; set; }
+		void RowStart(string partialName);
+		void RowStart(Action<T> rowStartBlock);
+		void RowStart(Action<T, bool> rowStartBlock);
+		void RowEnd(string partialName);
+		void RowEnd(Action<T> rowEndBlock);
+		IGridSection<T> this[GridSection gridSection] { get; set; }
 	}
-
 
 	/// <summary>
 	/// Grid section
@@ -65,6 +73,8 @@ namespace MvcContrib.UI.Grid
 	public class GridSection<T> : IGridSection<T> where T : class
 	{
 		private string _partialName;
+		private Action<T> actionBlock;
+		private Action<T, bool> actionAlternateBlock;
 
 		/// <summary>
 		/// Creates a new instance of the GridSection class using the specified partial name. 
@@ -76,6 +86,24 @@ namespace MvcContrib.UI.Grid
 		}
 
 		/// <summary>
+		/// Creates a new instance of the GridSection class using the specified action block. 
+		/// </summary>
+		/// <param name="actionBlock">The action block to render.</param>
+		public GridSection(Action<T> actionBlock)
+		{
+			this.actionBlock = actionBlock;
+		}
+
+		/// <summary>
+		/// Creates a new instance of the GridSection class using the specified action block. 
+		/// </summary>
+		/// <param name="actionAlternateBlock">The action block to render.</param>
+		public GridSection(Action<T, bool> actionAlternateBlock)
+		{
+			this.actionAlternateBlock = actionAlternateBlock;
+		}
+
+		/// <summary>
 		/// Renders the grid section.
 		/// </summary>
 		/// <param name="context"></param>
@@ -83,10 +111,22 @@ namespace MvcContrib.UI.Grid
 		/// <param name="isAlternate"></param>
 		public void Render(RenderingContext context, T item, bool isAlternate)
 		{
-			var view = context.ViewEngines.TryLocatePartial(context.ViewContext, _partialName);
-			var newViewData = new ViewDataDictionary<GridRowViewData<T>>(new GridRowViewData<T>(item, isAlternate));
-			var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
-			view.Render(newContext, context.Writer);
+			if (actionBlock != null)
+			{
+				actionBlock(item);
+			}
+			else if (actionAlternateBlock != null)
+			{
+				actionAlternateBlock(item, isAlternate);
+			}
+			else
+			{
+				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, _partialName);
+				var newViewData = new ViewDataDictionary<GridRowViewData<T>>(new GridRowViewData<T>(item, isAlternate));
+				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData,
+												 context.ViewContext.TempData);
+				view.Render(newContext, context.Writer);
+			}
 		}
 	}
 
@@ -94,7 +134,16 @@ namespace MvcContrib.UI.Grid
 	/// Grid section
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public interface IGridSection<T> {}
+	public interface IGridSection<T> where T : class
+	{
+		/// <summary>
+		/// Renders the grid section.
+		/// </summary>
+		/// <param name="context"></param>
+		/// <param name="item"></param>
+		/// <param name="isAlternate"></param>
+		void Render(RenderingContext context, T item, bool isAlternate);
+	}
 
 	/// <summary>
 	/// Sections for a grid.
@@ -104,10 +153,10 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Start of each row
 		/// </summary>
-		RowStart,
+		RowStart = 0,
 		/// <summary>
 		/// End of each row
 		/// </summary>
-		RowEnd
+		RowEnd = 1
 	}
 }
