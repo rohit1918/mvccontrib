@@ -12,15 +12,10 @@ namespace MvcContrib.UI.Grid
 	public class GridModel<T>  : IGridModel<T> where T : class
 	{
 		private readonly ColumnBuilder<T> _columnBuilder = new ColumnBuilder<T>();
-		private readonly GridSections<T> _sections = new GridSections<T>();
+		private readonly IGridSections<T> _sections = new GridSections<T>();
 		private IGridRenderer<T> _renderer = new HtmlTableGridRenderer<T>();
 		private string _emptyText;
 		private IDictionary<string, object> _attributes = new Dictionary<string, object>();
-
-		IGridSections<T> IGridModel<T>.Sections
-		{
-			get { return _sections; }
-		}
 
 		ICollection<GridColumn<T>> IGridModel<T>.Columns
 		{
@@ -64,7 +59,7 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Section overrides for this grid model.
 		/// </summary>
-		public GridSections<T> Sections
+		public IGridSections<T> Sections
 		{
 			get { return _sections; }
 		}

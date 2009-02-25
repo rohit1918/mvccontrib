@@ -16,36 +16,38 @@ namespace MvcContrib.Samples.UI.Navigation
 			Menu.DefaultDisabledClass = "disabled";
 			Menu.DefaultSelectedClass = "selected";
 			return Menu.Begin(
-						Menu.Items("Grid Samples", 
-							Menu.Action<GridController>(c=>c.Index(), "Simple Grid"),
+						Menu.Items("Grid Samples",
+							Menu.Action<GridController>(c => c.Index(), "Simple Grid"),
 							Menu.Action<GridController>(c => c.Paged(null), "Paged Grid"),
 							Menu.Action<GridController>(c => c.UsingGridModel(), "Using a GridModel"),
-							Menu.Action<GridController>(c => c.WithSections(), "Using Grid Sections")
+							Menu.Action<GridController>(c => c.WithSections(), "Using Grid Sections"),
+							Menu.Action<GridController>(c => c.WithActionSections(), "Using Grid Action Sections")
+
 						),
 
-						Menu.Items("Home Controller Items",
+						Menu.Items("Secure",
 							Menu.Secure<HomeController>(p => p.Index()),
 							Menu.Secure<HomeController>(p => p.About()),
 							Menu.Secure<HomeController>(p => p.SecurePage1()),
 							Menu.Secure<HomeController>(p => p.SecurePage2())
 						),
-						Menu.Items("Some Insecure Items",
+						Menu.Items("Insecure",
 							Menu.Action<HomeController>(p => p.Index()),
-							Menu.Action<HomeController>(p => p.About(),"About", "blarg.gif"),
+							Menu.Action<HomeController>(p => p.About(), "About", "blarg.gif"),
 							Menu.Action<HomeController>(p => p.SecurePage1()),
 							Menu.Action<HomeController>(p => p.SecurePage2())
 						),
-						Menu.Items("Some Disabled Items",
+						Menu.Items("Disabled",
 							Menu.Action<HomeController>(p => p.Index(), "Disabled Index").SetDisabled(true).SetShowWhenDisabled(true),
 							Menu.Action<HomeController>(p => p.About(), "Disabled About").SetDisabled(true).SetShowWhenDisabled(true)
 						),
-						Menu.Items("Some Direct Links Items",
+						Menu.Items("Direct",
 							Menu.Link("http://microsoft.com", "Big Blue"),
 							Menu.Link("http://google.com", "Google")
 						),
-
+						Menu.Items("Administrivia",
 						Menu.Secure<AccountController>(p => p.LogOff()),
-						Menu.Secure<AccountController>(p => p.MagicLogOn())
+						Menu.Action<AccountController>(p => p.MagicLogOn()))
 					).SetListClass("jd_menu");
 		}
 	}

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
@@ -19,6 +17,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		private GridModel<Person> _model;
 		private IViewEngine _viewEngine;
 		private ViewEngineCollection _engines;
+		private StringWriter _writer;
 
 		[SetUp]
 		public void Setup()
@@ -27,6 +26,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_people = new List<Person> {new Person {Id = 1, Name = "Jeremy", DateOfBirth = new DateTime(1987, 4, 19)}};
 			_viewEngine = MockRepository.GenerateMock<IViewEngine>();
 			_engines = new ViewEngineCollection(new List<IViewEngine> { _viewEngine });
+			_writer = new StringWriter();
 		}
 
 		private IGridColumn<Person> ColumnFor(Expression<Func<Person, object>> expression)
@@ -252,6 +252,37 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
+		public void Should_render_custom_row_start_with_action()
+		{
+			_people.Add(new Person { Name = "Person 2" });
+			_people.Add(new Person { Name = "Person 3" });
+			ColumnFor(x => x.Name);
+			_model.Sections.RowStart(c  =>
+			{
+				_writer.Write("<tr class=\"gridrow\">");
+			});
+
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr><tr class=\"gridrow\"><td>Person 2</td></tr><tr class=\"gridrow\"><td>Person 3</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+
+		[Test]
+		public void Should_render_custom_row_start_with_action_alternate()
+		{
+			_people.Add(new Person { Name = "Person 2" });
+			_people.Add(new Person { Name = "Person 3" });
+			ColumnFor(x => x.Name);
+			_model.Sections.RowStart((c, w) =>
+			{
+				_writer.Write("<tr class=\"row " + (w ? "gridrow_alternate" : "gridrow") + "\">");
+			});
+
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		[Test]
 		public void Should_render_header_attributes()
 		{
 			ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
@@ -277,17 +308,49 @@ namespace MvcContrib.UnitTests.UI.Grid
 			RenderGrid().ShouldEqual(expected);
 		}
 
+
+		[Test]
+		public void Custom_item_section()
+		{
+			ColumnFor(x => x.Name).Action(s => _writer.Write("<td>Test</td>"));
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Test</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+
+		[Test]
+		public void Should_render_with_custom_header_section()
+		{
+			ColumnFor(p => p.Name).HeaderAction(() => _writer.Write("<td>TEST</td>"));
+			ColumnFor(p => p.Id);
+			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		
+
 		private string RenderGrid()
 		{
 			return RenderGrid(_people);
 		}
+		
 
 		private string RenderGrid(IEnumerable<Person> dataSource)
 		{
 			var renderer = new HtmlTableGridRenderer<Person>(_engines);
-			var writer = new StringWriter();
-			renderer.Render(_model, dataSource, writer, new ViewContext() { View = MockRepository.GenerateStub<IView>(), TempData = new TempDataDictionary()});
-			return writer.ToString();
+
+			var viewContext = MockRepository.GenerateStub<ViewContext>();
+			viewContext.View = MockRepository.GenerateStub<IView>();
+			viewContext.TempData = new TempDataDictionary();
+			var response = MockRepository.GenerateStub<HttpResponseBase>();
+			var context = MockRepository.GenerateStub<HttpContextBase>();
+			viewContext.HttpContext = context;
+			context.Stub(p =>p.Response).Return(response);
+			response.Stub(p => p.Output).Return(_writer);
+
+			renderer.Render(_model, dataSource, _writer, viewContext);
+            
+			return _writer.ToString();
 		}
 
 		private void SetupViewEngine(string viewName, string viewContents)

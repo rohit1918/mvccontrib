@@ -64,11 +64,27 @@ namespace MvcContrib.UI.Grid
 		/// <returns></returns>
 		IGridColumn<T> HeaderPartial(string partialName);
 
+
+		/// <summary>
+		/// Specifies that an action should be used to render the column header.
+		/// </summary>
+		/// <param name="action">The action to render</param>
+		/// <returns></returns>
+		IGridColumn<T> HeaderAction(Action action);
+
 		/// <summary>
 		/// Specifies that a partial view should be used to render the contents of this column.
 		/// </summary>
 		/// <param name="partialName">The name of the partial view</param>
 		/// <returns></returns>
 		IGridColumn<T> Partial(string partialName);
+
+
+		/// <summary>
+		/// Specifies that an action should be used to render the contents of this column.
+		/// </summary>
+		/// <param name="action">The action to render</param>
+		/// <returns></returns>
+		IGridColumn<T> Action(Action<T> action);
 	}
 }

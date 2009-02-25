@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MvcContrib.UI.Grid.Syntax
 {
@@ -55,5 +56,29 @@ namespace MvcContrib.UI.Grid.Syntax
 		/// <param name="partialName">The name of the partial view to render</param>
 		/// <returns></returns>
 		IGridWithOptions<T> RowEnd(string partialName);
+
+		/// <summary>
+		/// Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the start of the row.
+		/// </summary>
+		/// <param name="block">Action that renders the HTML.</param>
+		IGridWithOptions<T> RowStart(Action<T> block);
+
+		/// <summary>
+		/// Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the start of the row with alternate row as additional parameter.
+		/// </summary>
+		/// <param name="block">Action that renders the HTML.</param>
+		IGridWithOptions<T> RowStart(Action<T, bool> block);
+
+		/// <summary>
+		/// Executes a delegate that can be used to specify custom HTML to replace the built in rendering of the end of the row.
+		/// </summary>
+		/// <param name="block">Action that renders the HTML.</param>
+		IGridWithOptions<T> RowEnd(Action<T> block);
+
+		/// <summary>
+		/// Renders the grid to the TextWriter specified at creation
+		/// </summary>
+		/// <returns></returns>
+		void Render();
 	}
 }

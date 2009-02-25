@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
@@ -42,8 +41,9 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_specify_custom_model()
 		{
 			var mockModel = MockRepository.GenerateStub<IGridModel<Person>>();
+			mockModel.Stub(x => x.Sections).Return(new GridSections<Person>());
 			var mockRenderer = MockRepository.GenerateMock<IGridRenderer<Person>>();
-			_grid.WithModel(mockModel).RenderUsing(mockRenderer).ToString();
+			_grid.WithModel(mockModel).RenderUsing(mockRenderer).Render();
 			mockRenderer.AssertWasCalled(x => x.Render(mockModel, _people, _writer, _context));
 		}
 
@@ -65,10 +65,37 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void RowEnd_section_should_be_stored_when_rendered() 
+		public void RowEnd_section_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
 			_grid.WithModel(model).RowEnd("foo");
+			_grid.ToString();
+			((IGridModel<Person>)model).Sections[GridSection.RowEnd].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void RowStart_action_should_be_stored_when_rendered()
+		{
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).RowStart((p) => { RowStart_action_should_be_stored_when_rendered(); });
+			_grid.ToString();
+			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void RowStart_action_bool_should_be_stored_when_rendered()
+		{
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).RowStart((p, x) => { RowStart_action_bool_should_be_stored_when_rendered(); });
+			_grid.ToString();
+			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
+		}
+
+		[Test]
+		public void RowEnd_actoion_should_be_stored_when_rendered()
+		{
+			var model = new GridModel<Person>();
+			_grid.WithModel(model).RowEnd((p) => { RowEnd_actoion_should_be_stored_when_rendered(); });
 			_grid.ToString();
 			((IGridModel<Person>)model).Sections[GridSection.RowEnd].ShouldNotBeNull();
 		}
@@ -84,7 +111,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Custom_attributes_should_be_stored()
 		{
-			var attrs = new Dictionary<string, object> { { "foo", "bar"  } };
+			var attrs = new Dictionary<string, object> { { "foo", "bar" } };
 			_grid.Attributes(attrs);
 			_model.Attributes["foo"].ShouldEqual("bar");
 		}
@@ -95,5 +122,16 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_grid.Attributes(foo => "bar");
 			_model.Attributes["foo"].ShouldEqual("bar");
 		}
+
+
+		[Test]
+		public void Renders_to_provided_renderer_by_default()
+		{
+			_grid.Empty("Foo");
+			_grid.Render();
+			_writer.ToString().ShouldEqual("<table class=\"grid\"><tr><td>Foo</td></tr></table>");
+		}
+
+
 	}
 }

@@ -7,8 +7,12 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Grid with Cutom Sections Example</h2>
-
+    <h2>Grid with Custom Sections Example</h2>
+    <p>
+    Note that in this example, the grid is rendered with ToString using the &lt%= tag.   <br />  
+    You can also render the grid using &lt% Html.Grid(...).Render(); %&gt
+    </p>
+    
 	<%= Html.Grid(Model)
 		.Columns(column => {
      		column.For(x => x.Id).Named("Person ID");
