@@ -273,9 +273,9 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
 			ColumnFor(x => x.Name);
-			_model.Sections.RowStart((c, w) =>
+			_model.Sections.RowStart((c, vd) =>
 			{
-				_writer.Write("<tr class=\"row " + (w ? "gridrow_alternate" : "gridrow") + "\">");
+				_writer.Write("<tr class=\"row " + (vd.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
 			});
 
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
