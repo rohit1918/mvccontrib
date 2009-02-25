@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq.Expressions;
+using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
@@ -122,6 +125,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			ColumnFor(x => x.DateOfBirth).Format("{0:ddd}");
 			var dayString = string.Format("{0:ddd}", _people[0].DateOfBirth);
+			dayString = HttpUtility.HtmlEncode(dayString);
 			string expected = "<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>" +
 			                  dayString + "</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
