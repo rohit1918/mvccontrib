@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using MvcContrib.UI.Grid;
+using MvcContrib.UI.Grid.ActionSyntax;
 using NUnit.Framework;
 using Rhino.Mocks;
 
