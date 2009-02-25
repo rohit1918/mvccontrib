@@ -19,6 +19,14 @@ namespace MvcContrib.UI.Grid
 		private IGridModel<T> _gridModel = new GridModel<T>();
 
 		/// <summary>
+		/// Custom grid sections
+		/// </summary>
+		public IGridSections<T> Sections
+		{
+			get { return _sections; }
+		}
+
+		/// <summary>
 		/// Creates a new instance of the Grid class.
 		/// </summary>
 		/// <param name="dataSource">The datasource for the grid</param>
@@ -76,24 +84,6 @@ namespace MvcContrib.UI.Grid
 		public IGridWithOptions<T> RowEnd(string partialName)
 		{
 			_sections.RowEnd(partialName);
-			return this;
-		}
-
-		public IGridWithOptions<T> RowStart(Action<T> block)
-		{
-			_sections.RowStart(block);
-			return this;
-		}
-
-		public IGridWithOptions<T> RowStart(Action<T, bool> block)
-		{
-			_sections.RowStart(block);
-			return this;
-		}
-
-		public IGridWithOptions<T> RowEnd(Action<T> block)
-		{
-			_sections.RowEnd(block);
 			return this;
 		}
 

@@ -24,7 +24,7 @@ namespace MvcContrib.UI.Grid
 			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
 		}
 
-		public void RowStart(Action<T, bool> rowStartBlock)
+		public void RowStart(Action<T, GridRowViewData<T>> rowStartBlock)
 		{
 			this[GridSection.RowStart] = new GridSection<T>(rowStartBlock);
 		}
@@ -60,7 +60,7 @@ namespace MvcContrib.UI.Grid
 	{
 		void RowStart(string partialName);
 		void RowStart(Action<T> rowStartBlock);
-		void RowStart(Action<T, bool> rowStartBlock);
+		void RowStart(Action<T, GridRowViewData<T>> rowStartBlock);
 		void RowEnd(string partialName);
 		void RowEnd(Action<T> rowEndBlock);
 		IGridSection<T> this[GridSection gridSection] { get; set; }
@@ -73,8 +73,7 @@ namespace MvcContrib.UI.Grid
 	public class GridSection<T> : IGridSection<T> where T : class
 	{
 		private string _partialName;
-		private Action<T> actionBlock;
-		private Action<T, bool> actionAlternateBlock;
+		private Action<T, GridRowViewData<T>> actionAlternateBlock;
 
 		/// <summary>
 		/// Creates a new instance of the GridSection class using the specified partial name. 
@@ -89,16 +88,16 @@ namespace MvcContrib.UI.Grid
 		/// Creates a new instance of the GridSection class using the specified action block. 
 		/// </summary>
 		/// <param name="actionBlock">The action block to render.</param>
-		public GridSection(Action<T> actionBlock)
+		public GridSection(Action<T> actionBlock) : this((x, vd) => actionBlock(x))
 		{
-			this.actionBlock = actionBlock;
+			
 		}
 
 		/// <summary>
 		/// Creates a new instance of the GridSection class using the specified action block. 
 		/// </summary>
 		/// <param name="actionAlternateBlock">The action block to render.</param>
-		public GridSection(Action<T, bool> actionAlternateBlock)
+		public GridSection(Action<T, GridRowViewData<T>> actionAlternateBlock)
 		{
 			this.actionAlternateBlock = actionAlternateBlock;
 		}
@@ -111,18 +110,16 @@ namespace MvcContrib.UI.Grid
 		/// <param name="isAlternate"></param>
 		public void Render(RenderingContext context, T item, bool isAlternate)
 		{
-			if (actionBlock != null)
+			var viewData = new GridRowViewData<T>(item, isAlternate);
+
+			if (actionAlternateBlock != null)
 			{
-				actionBlock(item);
-			}
-			else if (actionAlternateBlock != null)
-			{
-				actionAlternateBlock(item, isAlternate);
+				actionAlternateBlock(item, viewData);
 			}
 			else
 			{
 				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, _partialName);
-				var newViewData = new ViewDataDictionary<GridRowViewData<T>>(new GridRowViewData<T>(item, isAlternate));
+				var newViewData = new ViewDataDictionary<GridRowViewData<T>>(viewData);
 				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData,
 												 context.ViewContext.TempData);
 				view.Render(newContext, context.Writer);

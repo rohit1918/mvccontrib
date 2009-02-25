@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
 using Rhino.Mocks;
-
+using MvcContrib.UI.Grid.ActionSyntax;
 namespace MvcContrib.UnitTests.UI.Grid
 {
 	[TestFixture]
@@ -83,10 +83,10 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void RowStart_action_bool_should_be_stored_when_rendered()
+		public void RowStart_action_context_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowStart((p, x) => { RowStart_action_bool_should_be_stored_when_rendered(); });
+			_grid.WithModel(model).RowStart((p, x) => { RowStart_action_context_should_be_stored_when_rendered(); });
 			_grid.ToString();
 			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
 		}
