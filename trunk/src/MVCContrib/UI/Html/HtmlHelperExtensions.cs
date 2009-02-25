@@ -46,7 +46,7 @@ namespace MvcContrib.UI.Html
         }
 
         /// <summary>
-        /// Renders a script tag referencing the javascript file.  Assumes the file is in the /content/js directory
+        /// Renders a script tag referencing the javascript file.  Assumes the file is in the /scripts directory
         /// unless a full relative URL is specified.
         /// </summary>
         /// <param name="html"></param>
