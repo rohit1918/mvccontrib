@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
-
+using MvcContrib.UI.Grid.ActionSyntax;
 namespace MvcContrib.UnitTests.UI.Grid
 {
 	[TestFixture]
