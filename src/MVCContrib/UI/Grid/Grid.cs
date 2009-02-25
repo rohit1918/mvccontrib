@@ -15,15 +15,14 @@ namespace MvcContrib.UI.Grid
 	{
 		private readonly TextWriter _writer;
 		private readonly ViewContext context;
-		private readonly IGridSections<T> _sections = new GridSections<T>();
 		private IGridModel<T> _gridModel = new GridModel<T>();
 
 		/// <summary>
-		/// Custom grid sections
+		/// The GridModel that holds the internal representation of this grid.
 		/// </summary>
-		public IGridSections<T> Sections
+		public IGridModel<T> Model
 		{
-			get { return _sections; }
+			get { return _gridModel; }
 		}
 
 		/// <summary>
@@ -75,18 +74,6 @@ namespace MvcContrib.UI.Grid
 			return this;
 		}
 
-		public IGridWithOptions<T> RowStart(string partialName)
-		{
-			_sections.RowStart(partialName);
-			return this;
-		}
-
-		public IGridWithOptions<T> RowEnd(string partialName)
-		{
-			_sections.RowEnd(partialName);
-			return this;
-		}
-
 		public IGridWithOptions<T> WithModel(IGridModel<T> model)
 		{
 			_gridModel = model;
@@ -106,14 +93,7 @@ namespace MvcContrib.UI.Grid
 
 		public void Render()
 		{
-			MergeGridSections();
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
-		}
-
-		private void MergeGridSections()
-		{
-            _gridModel.Sections[GridSection.RowStart] = _sections[GridSection.RowStart];
-			_gridModel.Sections[GridSection.RowEnd] = _sections[GridSection.RowEnd];
 		}
 	}
 }

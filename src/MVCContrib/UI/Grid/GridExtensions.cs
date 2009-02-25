@@ -82,5 +82,98 @@ namespace MvcContrib.UI.Grid
 
 			return viewResult.View;
 		}
+
+		/// <summary>
+		/// Specifies that a partial view should be rendered as the start of every row. 
+		/// </summary>
+		public static void RowStart<T>(this IGridSections<T> sections, string partialName) where T : class
+		{
+			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => RenderPartialForSection(rowmodel, context, partialName));
+		}
+
+		/// <summary>
+		/// Specifies that a partial view should be rendered as the end of every row. 
+		/// </summary>
+		public static void RowEnd<T>(this IGridSections<T> sections, string partialName) where T : class 
+		{
+			sections[GridSection.RowEnd] = new GridSection<T>((rowmodel, context) => RenderPartialForSection(rowmodel, context, partialName));
+		}
+
+		private static void RenderPartialForSection<T>(GridRowViewData<T> viewData, RenderingContext context, string partialName) 
+		{
+			var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
+			var newViewData = new ViewDataDictionary<GridRowViewData<T>>(viewData);
+			var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData,
+											 context.ViewContext.TempData);
+			view.Render(newContext, context.Writer);
+		}
+
+		/// <summary>
+		/// Specifies that a Partial View should be rendered for the start of each row. 
+		/// </summary>
+		/// <param name="grid">The grid</param>
+		/// <param name="partialName">The name of the partial to render</param>
+		/// <returns></returns>
+		public static IGridWithOptions<T> RowStart<T>(this IGridWithOptions<T> grid, string partialName) where T : class 
+		{
+			grid.Model.Sections.RowStart(partialName);
+			return grid;
+		}
+
+		/// <summary>
+		/// Specifies that a Partial View should be rendered for the end of each row.
+		/// </summary>
+		/// <param name="grid">The grid</param>
+		/// <param name="partialName">The name of the partial view to render</param>
+		/// <returns></returns>
+		public static IGridWithOptions<T> RowEnd<T>(this IGridWithOptions<T> grid, string partialName) where T : class 
+		{
+			grid.Model.Sections.RowEnd(partialName);
+			return grid;
+		}
+
+		/// <summary>
+		/// The HTML that should be used to render the header for the column. This should include TD tags. 
+		/// </summary>
+		/// <param name="column">The current column</param>
+		/// <param name="header">The format to use.</param>
+		/// <returns></returns>
+		public static IGridColumn<T> Header<T>(this IGridColumn<T> column, string header) where T : class 
+		{
+			column.CustomHeaderRenderer = c => c.Writer.Write(header);
+			return column;
+		}
+
+
+		/// <summary>
+		/// Specifies that a partial view should be used to render the column header.
+		/// </summary>
+		/// <param name="column">The current column</param>
+		/// <param name="partialName">Name of the partial to render</param>
+		/// <returns></returns>
+		public static IGridColumn<T> HeaderPartial<T>(this IGridColumn<T> column, string partialName)  where T : class
+		{
+			column.CustomHeaderRenderer = context => {
+				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
+				view.Render(context.ViewContext, context.Writer);
+			};
+			return column;
+		}
+
+		/// <summary>
+		/// Specifies that a partial view should be used to render the contents of this column.
+		/// </summary>
+		/// <param name="column">The current column</param>
+		/// <param name="partialName">The name of the partial view</param>
+		/// <returns></returns>
+		public static IGridColumn<T> Partial<T>(this IGridColumn<T> column, string partialName) where T : class {
+			column.CustomItemRenderer = (context, item) => {
+				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
+				var newViewData = new ViewDataDictionary<T>(item);
+				var newContext = new ViewContext(context.ViewContext, context.ViewContext.View, newViewData, context.ViewContext.TempData);
+				view.Render(newContext, context.Writer);
+			};
+			return column;
+		}
 	}
 }

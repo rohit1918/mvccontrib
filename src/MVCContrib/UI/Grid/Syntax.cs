@@ -18,10 +18,10 @@ namespace MvcContrib.UI.Grid.Syntax
 	public interface IGridWithOptions<T> where T : class 
 	{
 		/// <summary>
-		/// Custom grid sections
+		/// The GridModel that holds the internal representation of this grid.
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)] //hide from fluent interface
-		IGridSections<T> Sections { get; }
+		IGridModel<T> Model { get; }
 
 		/// <summary>
 		/// Specifies that the grid should be rendered using a specified renderer.
@@ -49,21 +49,7 @@ namespace MvcContrib.UI.Grid.Syntax
 		/// </summary>
 		/// <returns></returns>
 		IGridWithOptions<T> Attributes(IDictionary<string, object> attributes);
-
-		/// <summary>
-		/// Specifies that a Partial View should be rendered for the start of each row. 
-		/// </summary>
-		/// <param name="partialName">The name of the partial to render</param>
-		/// <returns></returns>
-		IGridWithOptions<T> RowStart(string partialName);
-
-		/// <summary>
-		/// Specifies that a Partial View should be rendered for the end of each row.
-		/// </summary>
-		/// <param name="partialName">The name of the partial view to render</param>
-		/// <returns></returns>
-		IGridWithOptions<T> RowEnd(string partialName);
-
+	
 		/// <summary>
 		/// Renders the grid to the TextWriter specified at creation
 		/// </summary>
