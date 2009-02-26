@@ -55,7 +55,11 @@ namespace MvcContrib.UI.Grid
 
 		protected override void RenderStartCell(GridColumn<T> column)
 		{
-			RenderText("<td>");
+			string attrs = BuildHtmlAttributes(column.Attributes);
+			if (attrs.Length > 0)
+				attrs = " " + attrs;
+
+			RenderText(string.Format("<td{0}>", attrs));
 		}
 
 		protected override void RenderHeadStart()
