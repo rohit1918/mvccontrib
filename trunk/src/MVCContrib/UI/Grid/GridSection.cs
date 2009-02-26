@@ -23,13 +23,9 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Renders the grid section.
 		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="item"></param>
-		/// <param name="isAlternate"></param>
-		public void Render(RenderingContext context, T item, bool isAlternate)
+		public void Render(RenderingContext context, GridRowViewData<T> row)
 		{
-			var viewData = new GridRowViewData<T>(item, isAlternate);
-			_sectionRenderer(viewData, context);
+			_sectionRenderer(row, context);
 		}
 	}
 
@@ -42,9 +38,6 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Renders the grid section.
 		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="item"></param>
-		/// <param name="isAlternate"></param>
-		void Render(RenderingContext context, T item, bool isAlternate);
+		void Render(RenderingContext context, GridRowViewData<T> row);
 	}
 }

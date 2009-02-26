@@ -53,9 +53,9 @@ namespace MvcContrib.UI.Grid
 			RenderText("</td>");
 		}
 
-		protected override void RenderStartCell(GridColumn<T> column)
+		protected override void RenderStartCell(GridColumn<T> column, GridRowViewData<T> rowData)
 		{
-			string attrs = BuildHtmlAttributes(column.Attributes);
+			string attrs = BuildHtmlAttributes(column.Attributes(rowData));
 			if (attrs.Length > 0)
 				attrs = " " + attrs;
 

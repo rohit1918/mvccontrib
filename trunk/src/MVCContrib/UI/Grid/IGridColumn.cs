@@ -54,9 +54,9 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Defines additional attributes for the cell. 
 		/// </summary>
-		/// <param name="attributes">Attributes</param>
+		/// <param name="attributes">Lambda expression that should return a dictionary containing the attributes for the cell</param>
 		/// <returns></returns>
-		IGridColumn<T> Attributes(IDictionary<string, object> attributes);
+		IGridColumn<T> Attributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes);
 
 		/// <summary>
 		/// Custom header renderer
