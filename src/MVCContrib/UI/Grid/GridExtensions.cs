@@ -190,7 +190,8 @@ namespace MvcContrib.UI.Grid
 		/// <param name="column">The current column</param>
 		/// <param name="partialName">The name of the partial view</param>
 		/// <returns></returns>
-		public static IGridColumn<T> Partial<T>(this IGridColumn<T> column, string partialName) where T : class {
+		public static IGridColumn<T> Partial<T>(this IGridColumn<T> column, string partialName) where T : class 
+		{
 			column.CustomItemRenderer = (context, item) => {
 				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
 				var newViewData = new ViewDataDictionary<T>(item);
@@ -198,6 +199,14 @@ namespace MvcContrib.UI.Grid
 				view.Render(newContext, context.Writer);
 			};
 			return column;
+		}
+
+		/// <summary>
+		/// Specifies custom attributes for the header row.
+		/// </summary>
+		public static void HeaderRowAttributes<T>(this IGridSections<T> sections, IDictionary<string, object> attributes) where T : class
+		{
+			sections.HeaderRow.Attributes = x => attributes;
 		}
 	}
 }

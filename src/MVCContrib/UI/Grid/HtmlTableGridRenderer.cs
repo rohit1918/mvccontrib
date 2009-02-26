@@ -71,7 +71,14 @@ namespace MvcContrib.UI.Grid
 
 		protected override void RenderHeadStart()
 		{
-			RenderText("<thead><tr>");
+			string attributes = BuildHtmlAttributes(GridModel.Sections.HeaderRow.Attributes(new GridRowViewData<T>(null, false)));
+			if(attributes.Length > 0)
+			{
+				attributes = " " + attributes;
+			}
+
+
+			RenderText(string.Format("<thead><tr{0}>", attributes));
 		}
 
 		protected override void RenderHeadEnd()

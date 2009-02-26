@@ -91,6 +91,12 @@ namespace MvcContrib.UI.Grid
 			return null;
 		}
 
+		public IGridWithOptions<T> HeaderRowAttributes(IDictionary<string, object> attributes)
+		{
+			_gridModel.Sections.HeaderRowAttributes(attributes);
+			return this;
+		}
+
 		public void Render()
 		{
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
@@ -98,7 +104,7 @@ namespace MvcContrib.UI.Grid
 
 		public IGridWithOptions<T> RowAttributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
 		{
-			_gridModel.Sections.Row.Attributes = attributes;
+			_gridModel.Sections.RowAttributes(attributes);
 			return this;
 		}
 	}
