@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using MvcContrib.UI.Grid;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -29,7 +31,11 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_define_sections()
 		{
 			_model.Sections.RowStart("foo");
-			AsGridModel.Sections[GridSection.RowStart].ShouldNotBeNull();
+			AsGridModel.Sections.Row
+				.StartSectionRenderer(
+					new GridRowViewData<Person>(new Person(), false), 
+					GridRendererTester.FakeRenderingContext())
+				.ShouldBeTrue();
 		}
 
 		[Test]
@@ -65,5 +71,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			get { return _model; }
 		}
+
+	
 	}
 }

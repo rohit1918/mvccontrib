@@ -64,7 +64,7 @@ namespace MvcContrib.UI.Grid
 
 		protected virtual void RenderItem(GridRowViewData<T> rowData)
 		{
-			RenderRowStart(rowData);
+			BaseRenderRowStart(rowData);
 
 			foreach(var column in VisibleColumns())
 			{
@@ -80,7 +80,7 @@ namespace MvcContrib.UI.Grid
 				RenderEndCell();
 			}
 
-			RenderRowEnd(rowData);
+			BaseRenderRowEnd(rowData);
 		}
 
 		protected virtual void RenderCellValue(GridColumn<T> column, GridRowViewData<T> rowData)
@@ -130,32 +130,21 @@ namespace MvcContrib.UI.Grid
 			return GridModel.Columns.Where(x => x.Visible);
 		}
 
-		protected virtual void RenderRowStart(GridRowViewData<T> rowData)
+		protected void BaseRenderRowStart(GridRowViewData<T> rowData)
 		{
-			//If there's a custom section for rendering the start of the row, invoke it.
-			//Otherwise fall back to the default rendering.
+			bool rendered = GridModel.Sections.Row.StartSectionRenderer(rowData, new RenderingContext(_writer, Context, _engines));
 
-			var section = GridModel.Sections[GridSection.RowStart];
-
-			if(section != null)
+			if(! rendered)
 			{
-				section.Render(new RenderingContext(_writer, Context, _engines), rowData);
-			}
-			else
-			{
-				RenderRowStart(rowData.IsAlternate);				
+				RenderRowStart(rowData);
 			}
 		}
 
-		protected virtual void RenderRowEnd(GridRowViewData<T> rowData)
+		protected void BaseRenderRowEnd(GridRowViewData<T> rowData)
 		{
-			var section = GridModel.Sections[GridSection.RowEnd];
-            
-			if(section != null)
-			{
-				section.Render(new RenderingContext(_writer, Context, _engines), rowData);
-			}
-			else
+			bool rendered = GridModel.Sections.Row.EndSectionRenderer(rowData, new RenderingContext(_writer, Context, _engines));
+
+			if(! rendered)
 			{
 				RenderRowEnd();
 			}
@@ -163,7 +152,7 @@ namespace MvcContrib.UI.Grid
 
 		protected abstract void RenderHeaderCellEnd();
 		protected abstract void RenderHeaderCellStart(GridColumn<T> column);
-		protected abstract void RenderRowStart(bool isAlternate);
+		protected abstract void RenderRowStart(GridRowViewData<T> rowData);
 		protected abstract void RenderRowEnd();
 		protected abstract void RenderEndCell();
 		protected abstract void RenderStartCell(GridColumn<T> column, GridRowViewData<T> rowViewData);

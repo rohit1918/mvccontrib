@@ -152,8 +152,8 @@
     <Compile Include="UI\Grid\Grid.cs" />
     <Compile Include="UI\Grid\GridExtensions.cs" />
     <Compile Include="UI\Grid\GridRenderer.cs" />
+    <Compile Include="UI\Grid\GridRow.cs" />
     <Compile Include="UI\Grid\GridRowViewData.cs" />
-    <Compile Include="UI\Grid\GridSection.cs" />
     <Compile Include="UI\Grid\GridSections.cs" />
     <Compile Include="UI\Grid\HtmlTableGridRenderer.cs" />
     <Compile Include="UI\Grid\IGridColumn.cs" />

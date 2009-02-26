@@ -44,17 +44,29 @@ namespace MvcContrib.UI.Grid.ActionSyntax
 
 		public static void RowStart<T>(this IGridSections<T> sections, Action<T> block) where T : class
 		{
-			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item));
+			sections.Row.StartSectionRenderer = (rowData, context) =>
+			{
+				block(rowData.Item);
+				return true;
+			};
 		}
 
 		public static void RowStart<T>(this IGridSections<T> sections, Action<T, GridRowViewData<T>> block) where T : class
 		{
-			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item, rowmodel));
+			sections.Row.StartSectionRenderer = (rowData, context) => 
+			{
+				block(rowData.Item, rowData);
+				return true;
+			};
 		}
 
 		public static void RowEnd<T>(this IGridSections<T> sections, Action<T> block) where T : class 
 		{
-			sections[GridSection.RowEnd] = new GridSection<T>((rowmodel, context) => block(rowmodel.Item));
+			sections.Row.EndSectionRenderer = (rowData, context) =>
+			{
+				block(rowData.Item);
+				return true;
+			};
 		}
 
 		/// <summary>
