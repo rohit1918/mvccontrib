@@ -14,15 +14,6 @@ namespace MvcContrib.UI.Grid
 		private Func<GridRowViewData<T>, RenderingContext, bool> _endSectionRenderer = (x, y) => false;
 
 		/// <summary>
-		/// Gets the attributes to render for the rowData.
-		/// </summary>
-		/// <param name="rowData">The current row being rendered</param>
-		public IDictionary<string, object> GetAttributes(GridRowViewData<T> rowData)
-		{
-			return _attributes(rowData);
-		}
-
-		/// <summary>
 		/// Invokes the custom renderer defined (if any) for the start of the row. 
 		/// Returns TRUE if custom rendering occurred (indicating that further rendering should stop) otherwise FALSE.
 		/// </summary>

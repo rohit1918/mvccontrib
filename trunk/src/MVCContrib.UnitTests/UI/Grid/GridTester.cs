@@ -153,6 +153,11 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_writer.ToString().ShouldEqual("<table class=\"grid\"><tr><td>Foo</td></tr></table>");
 		}
 
-
+		[Test]
+		public void Should_store_custom_attributes_for_row()
+		{
+			var attrs = new Hash();
+			_grid.RowAttributes(x => attrs);	
+		}
 	}
 }

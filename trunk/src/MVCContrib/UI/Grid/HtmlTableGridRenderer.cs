@@ -33,14 +33,21 @@ namespace MvcContrib.UI.Grid
 
 		protected override void RenderRowStart(GridRowViewData<T> rowData)
 		{
-			if(rowData.IsAlternate)
+			var attributes = GridModel.Sections.Row.Attributes(rowData);
+
+			if(! attributes.ContainsKey("class"))
 			{
-				RenderText("<tr class=\"gridrow_alternate\">");
+				attributes["class"] = rowData.IsAlternate ? "gridrow_alternate" : "gridrow";
 			}
-			else
+
+			string attributeString = BuildHtmlAttributes(attributes);
+
+			if(attributeString.Length > 0)
 			{
-				RenderText("<tr class=\"gridrow\">");
+				attributeString = " " + attributeString;	
 			}
+
+			RenderText(string.Format("<tr{0}>", attributeString));
 		}
 
 		protected override void RenderRowEnd()

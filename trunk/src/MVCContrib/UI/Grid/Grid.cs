@@ -95,5 +95,11 @@ namespace MvcContrib.UI.Grid
 		{
 			_gridModel.Renderer.Render(_gridModel, DataSource, _writer, context);
 		}
+
+		public IGridWithOptions<T> RowAttributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
+		{
+			_gridModel.Sections.Row.Attributes = attributes;
+			return this;
+		}
 	}
 }

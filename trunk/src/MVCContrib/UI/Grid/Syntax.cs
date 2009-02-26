@@ -49,11 +49,19 @@ namespace MvcContrib.UI.Grid.Syntax
 		/// </summary>
 		/// <returns></returns>
 		IGridWithOptions<T> Attributes(IDictionary<string, object> attributes);
-	
+
+		/// <summary>
+		/// Additional custom attributes for each row
+		/// </summary>
+		/// <param name="attributes">Lambda expression that returns custom attributes for each row</param>
+		/// <returns></returns>
+		IGridWithOptions<T> RowAttributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes);
+
 		/// <summary>
 		/// Renders the grid to the TextWriter specified at creation
 		/// </summary>
 		/// <returns></returns>
 		void Render();
+
 	}
 }

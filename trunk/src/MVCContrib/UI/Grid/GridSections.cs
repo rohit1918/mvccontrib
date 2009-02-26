@@ -10,12 +10,12 @@ namespace MvcContrib.UI.Grid
 		private GridRow<T> _row = new GridRow<T>();
 		private GridRow<T> _headerRow = new GridRow<T>();
 
-		public GridRow<T> Row
+		GridRow<T> IGridSections<T>.Row
 		{
 			get { return _row; }
 		}
 
-		public GridRow<T> HeaderRow
+		GridRow<T> IGridSections<T>.HeaderRow
 		{
 			get { return _headerRow; }
 		}
