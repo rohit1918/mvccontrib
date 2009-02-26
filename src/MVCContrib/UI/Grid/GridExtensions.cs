@@ -72,6 +72,14 @@ namespace MvcContrib.UI.Grid
 			return column.Attributes(x => new Hash(hash));
 		}
 
+		/// <summary>
+		/// Associates custom attributes with every grid row.
+		/// </summary>
+		public static void RowAttributes<T>(this IGridSections<T> sections,  Func<GridRowViewData<T>, IDictionary<string, object>> attributes) where T : class 
+		{
+			sections.Row.Attributes = attributes;
+		}
+
 		public static IView TryLocatePartial(this ViewEngineCollection engines, ViewContext context, string viewName)
 		{
 			var viewResult = engines.FindPartialView(context, viewName);

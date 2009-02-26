@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using MvcContrib.UI.Grid.Syntax;
 
 namespace MvcContrib.UI.Grid
 {
@@ -12,7 +9,7 @@ namespace MvcContrib.UI.Grid
 	public class GridModel<T>  : IGridModel<T> where T : class
 	{
 		private readonly ColumnBuilder<T> _columnBuilder = new ColumnBuilder<T>();
-		private readonly IGridSections<T> _sections = new GridSections<T>();
+		private readonly GridSections<T> _sections = new GridSections<T>();
 		private IGridRenderer<T> _renderer = new HtmlTableGridRenderer<T>();
 		private string _emptyText;
 		private IDictionary<string, object> _attributes = new Dictionary<string, object>();
@@ -59,7 +56,15 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Section overrides for this grid model.
 		/// </summary>
-		public IGridSections<T> Sections
+		IGridSections<T> IGridModel<T>.Sections
+		{
+			get { return _sections; }
+		}
+
+		/// <summary>
+		/// Section overrides for this grid model.
+		/// </summary>
+		public GridSections<T> Sections
 		{
 			get { return _sections; }
 		}

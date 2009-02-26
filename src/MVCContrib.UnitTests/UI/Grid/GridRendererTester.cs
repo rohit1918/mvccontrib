@@ -338,12 +338,30 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void Shpuld_render_custom_attributes_in_table_cell_with_logic()
+		public void Should_render_custom_attributes_in_table_cell_with_logic()
 		{
 			_people.Add(new Person() { Name = "foo"});
 			ColumnFor(x => x.Name).Attributes(row => new Hash(foo => row.IsAlternate ? "bar" : "baz" ));
 			string expected =
 				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td foo=\"baz\">Jeremy</td></tr><tr class=\"gridrow_alternate\"><td foo=\"bar\">foo</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		[Test]
+		public void Should_render_custom_attributes_for_row()
+		{
+			ColumnFor(x => x.Name);
+			_model.Sections.RowAttributes(x => new Hash(foo => "bar"));
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr foo=\"bar\" class=\"gridrow\"><td>Jeremy</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		[Test]
+		public void Should_render_custom_css_class_for_row()
+		{
+			ColumnFor(x => x.Name);
+			_model.Sections.RowAttributes(x => new Hash(@class => "foo"));
+			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"foo\"><td>Jeremy</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
 
