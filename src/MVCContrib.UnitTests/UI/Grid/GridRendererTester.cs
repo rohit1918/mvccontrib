@@ -337,6 +337,16 @@ namespace MvcContrib.UnitTests.UI.Grid
 			RenderGrid().ShouldEqual(expected);
 		}
 
+		[Test]
+		public void Shpuld_render_custom_attributes_in_table_cell_with_logic()
+		{
+			_people.Add(new Person() { Name = "foo"});
+			ColumnFor(x => x.Name).Attributes(row => new Hash(foo => row.IsAlternate ? "bar" : "baz" ));
+			string expected =
+				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td foo=\"baz\">Jeremy</td></tr><tr class=\"gridrow_alternate\"><td foo=\"bar\">foo</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
 		private string RenderGrid()
 		{
 			return RenderGrid(_people);

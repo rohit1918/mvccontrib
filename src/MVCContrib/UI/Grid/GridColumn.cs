@@ -21,7 +21,7 @@ namespace MvcContrib.UI.Grid
 		private bool _visible = true;
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
-		private readonly IDictionary<string, object> _attributes = new Dictionary<string, object>();
+		private Func<GridRowViewData<T>, IDictionary<string, object>> _attributes = x => new Dictionary<string, object>();
 		private Action<RenderingContext> _customHeaderRenderer;
 		private Action<RenderingContext, T> _customItemRenderer;
 
@@ -54,12 +54,9 @@ namespace MvcContrib.UI.Grid
 			}
 		}
 
-		IGridColumn<T> IGridColumn<T>.Attributes(IDictionary<string, object> attributes)
+		IGridColumn<T> IGridColumn<T>.Attributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
 		{
-			foreach(var pair in attributes)
-			{
-				_attributes.Add(pair);
-			}
+			_attributes = attributes;
 			return this;
 		}
 
@@ -92,7 +89,7 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Additional attributes for the cell
 		/// </summary>
-		public IDictionary<string, object> Attributes
+		public Func<GridRowViewData<T>, IDictionary<string, object>> Attributes
 		{
 			get { return _attributes; }
 		}

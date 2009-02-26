@@ -57,35 +57,35 @@ namespace MvcContrib.UI.Grid
 			bool isAlternate = false;
 			foreach(var item in DataSource)
 			{
-				RenderItem(item, isAlternate);
+				RenderItem(new GridRowViewData<T>(item, isAlternate));
 				isAlternate = !isAlternate;
 			}
 		}
 
-		protected virtual void RenderItem(T item, bool isAlternate)
+		protected virtual void RenderItem(GridRowViewData<T> rowData)
 		{
-			RenderRowStart(item, isAlternate);
+			RenderRowStart(rowData);
 
 			foreach(var column in VisibleColumns())
 			{
 				//A custom item section has been specified - render it and continue to the next iteration.
 				if (column.CustomItemRenderer != null)
 				{
-					column.CustomItemRenderer(new RenderingContext(_writer, Context, _engines), item);
+					column.CustomItemRenderer(new RenderingContext(_writer, Context, _engines), rowData.Item);
 					continue;
 				}
 
-				RenderStartCell(column);
-				RenderCellValue(column, item);
+				RenderStartCell(column, rowData);
+				RenderCellValue(column, rowData);
 				RenderEndCell();
 			}
 
-			RenderRowEnd(item, isAlternate);
+			RenderRowEnd(rowData);
 		}
 
-		protected virtual void RenderCellValue(GridColumn<T> column, T item)
+		protected virtual void RenderCellValue(GridColumn<T> column, GridRowViewData<T> rowData)
 		{
-			var cellValue = column.GetValue(item);
+			var cellValue = column.GetValue(rowData.Item);
 
 			if(cellValue != null)
 			{
@@ -130,7 +130,7 @@ namespace MvcContrib.UI.Grid
 			return GridModel.Columns.Where(x => x.Visible);
 		}
 
-		protected virtual void RenderRowStart(T item, bool isAlternate)
+		protected virtual void RenderRowStart(GridRowViewData<T> rowData)
 		{
 			//If there's a custom section for rendering the start of the row, invoke it.
 			//Otherwise fall back to the default rendering.
@@ -139,21 +139,21 @@ namespace MvcContrib.UI.Grid
 
 			if(section != null)
 			{
-				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
+				section.Render(new RenderingContext(_writer, Context, _engines), rowData);
 			}
 			else
 			{
-				RenderRowStart(isAlternate);				
+				RenderRowStart(rowData.IsAlternate);				
 			}
 		}
 
-		protected virtual void RenderRowEnd(T item, bool isAlternate)
+		protected virtual void RenderRowEnd(GridRowViewData<T> rowData)
 		{
 			var section = GridModel.Sections[GridSection.RowEnd];
             
 			if(section != null)
 			{
-				section.Render(new RenderingContext(_writer, Context, _engines), item, isAlternate);
+				section.Render(new RenderingContext(_writer, Context, _engines), rowData);
 			}
 			else
 			{
@@ -166,7 +166,7 @@ namespace MvcContrib.UI.Grid
 		protected abstract void RenderRowStart(bool isAlternate);
 		protected abstract void RenderRowEnd();
 		protected abstract void RenderEndCell();
-		protected abstract void RenderStartCell(GridColumn<T> column);
+		protected abstract void RenderStartCell(GridColumn<T> column, GridRowViewData<T> rowViewData);
 		protected abstract void RenderHeadStart();
 		protected abstract void RenderHeadEnd();
 		protected abstract void RenderGridStart();

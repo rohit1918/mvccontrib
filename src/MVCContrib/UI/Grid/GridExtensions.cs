@@ -69,7 +69,7 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		public static IGridColumn<T> Attributes<T>(this IGridColumn<T> column, params Func<object, object>[] hash)
 		{
-			return column.Attributes(new Hash(hash));
+			return column.Attributes(x => new Hash(hash));
 		}
 
 		public static IView TryLocatePartial(this ViewEngineCollection engines, ViewContext context, string viewName)
