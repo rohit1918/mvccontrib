@@ -157,7 +157,16 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_store_custom_attributes_for_row()
 		{
 			var attrs = new Hash();
-			_grid.RowAttributes(x => attrs);	
+			_grid.RowAttributes(x => attrs);
+			_model.Sections.Row.Attributes(null).ShouldBeTheSameAs(attrs);
+		}
+
+		[Test]
+		public void Should_Store_custom_attributes_for_header_row()
+		{
+			var attrs = new Hash();
+			_grid.HeaderRowAttributes(attrs);
+			_model.Sections.HeaderRow.Attributes(null).ShouldBeTheSameAs(attrs);
 		}
 	}
 }

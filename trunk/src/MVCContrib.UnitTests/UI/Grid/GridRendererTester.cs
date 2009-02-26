@@ -365,6 +365,15 @@ namespace MvcContrib.UnitTests.UI.Grid
 			RenderGrid().ShouldEqual(expected);
 		}
 
+		[Test]
+		public void Should_render_custom_attributes_for_header_row()
+		{
+			ColumnFor(x => x.Name);
+			_model.Sections.HeaderRowAttributes(new Hash(foo => "bar"));
+			string expected = "<table class=\"grid\"><thead><tr foo=\"bar\"><th>Name</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
 		private string RenderGrid()
 		{
 			return RenderGrid(_people);

@@ -58,6 +58,13 @@ namespace MvcContrib.UI.Grid.Syntax
 		IGridWithOptions<T> RowAttributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes);
 
 		/// <summary>
+		/// Additional custom attributes for the header row.
+		/// </summary>
+		/// <param name="attributes">Attributes for the header row</param>
+		/// <returns></returns>
+		IGridWithOptions<T> HeaderRowAttributes(IDictionary<string, object> attributes);
+
+		/// <summary>
 		/// Renders the grid to the TextWriter specified at creation
 		/// </summary>
 		/// <returns></returns>
