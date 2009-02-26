@@ -52,6 +52,13 @@ namespace MvcContrib.UI.Grid
 		IGridColumn<T> HeaderAttributes(IDictionary<string, object> attributes);
 
 		/// <summary>
+		/// Defines additional attributes for the cell. 
+		/// </summary>
+		/// <param name="attributes">Attributes</param>
+		/// <returns></returns>
+		IGridColumn<T> Attributes(IDictionary<string, object> attributes);
+
+		/// <summary>
 		/// Custom header renderer
 		/// </summary>
 		[EditorBrowsable(EditorBrowsableState.Never)] //hide from intellisense in fluent interface

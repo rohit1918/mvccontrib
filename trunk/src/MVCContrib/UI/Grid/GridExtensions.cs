@@ -64,6 +64,14 @@ namespace MvcContrib.UI.Grid
 			return grid.Attributes(new Hash(hash));
 		}
 
+		/// <summary>
+		/// Defines additional attributes for the cell. 
+		/// </summary>
+		public static IGridColumn<T> Attributes<T>(this IGridColumn<T> column, params Func<object, object>[] hash)
+		{
+			return column.Attributes(new Hash(hash));
+		}
+
 		public static IView TryLocatePartial(this ViewEngineCollection engines, ViewContext context, string viewName)
 		{
 			var viewResult = engines.FindPartialView(context, viewName);

@@ -328,7 +328,14 @@ namespace MvcContrib.UnitTests.UI.Grid
 			RenderGrid().ShouldEqual(expected);
 		}
 
-		
+		[Test]
+		public void Should_render_custom_attributes_in_table_cell()
+		{
+			ColumnFor(x => x.Name).Attributes(foo => "bar");
+			string expected =
+				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"gridrow\"><td foo=\"bar\">Jeremy</td></tr></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
 
 		private string RenderGrid()
 		{
