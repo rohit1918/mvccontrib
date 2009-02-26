@@ -384,5 +384,18 @@ namespace MvcContrib.UnitTests.UI.Grid
 			view.Expect(x => x.Render(null, null)).IgnoreArguments()
 				.Do(action).Repeat.Any();
 		}
+
+		public static RenderingContext FakeRenderingContext() 
+		{
+			var engine = MockRepository.GenerateStub<IViewEngine>();
+			engine.Stub(x => x.FindPartialView(null, null, true)).IgnoreArguments().Return(new ViewEngineResult(MockRepository.GenerateStub<IView>(), engine)).Repeat.Any();
+
+			var context = new RenderingContext(
+				new StringWriter(),
+				new ViewContext() { View = MockRepository.GenerateStub<IView>(), TempData = new TempDataDictionary() },
+				new ViewEngineCollection(new List<IViewEngine>() { engine }));
+
+			return context;
+		}
 	}
 }

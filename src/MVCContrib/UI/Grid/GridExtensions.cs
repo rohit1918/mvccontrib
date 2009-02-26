@@ -96,7 +96,11 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		public static void RowStart<T>(this IGridSections<T> sections, string partialName) where T : class
 		{
-			sections[GridSection.RowStart] = new GridSection<T>((rowmodel, context) => RenderPartialForSection(rowmodel, context, partialName));
+			sections.Row.StartSectionRenderer = (rowData, context) =>
+			{
+				RenderPartialForSection(rowData, context, partialName);
+				return true;
+			};
 		}
 
 		/// <summary>
@@ -104,7 +108,11 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		public static void RowEnd<T>(this IGridSections<T> sections, string partialName) where T : class 
 		{
-			sections[GridSection.RowEnd] = new GridSection<T>((rowmodel, context) => RenderPartialForSection(rowmodel, context, partialName));
+			sections.Row.EndSectionRenderer = (rowData, context) => 
+			{
+				RenderPartialForSection(rowData, context, partialName);
+				return true;
+			};
 		}
 
 		private static void RenderPartialForSection<T>(GridRowViewData<T> viewData, RenderingContext context, string partialName) 

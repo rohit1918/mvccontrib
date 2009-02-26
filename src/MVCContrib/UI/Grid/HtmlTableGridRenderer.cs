@@ -31,9 +31,9 @@ namespace MvcContrib.UI.Grid
 			RenderText(string.Format("<th{0}>", attrs));
 		}
 
-		protected override void RenderRowStart(bool isAlternate)
+		protected override void RenderRowStart(GridRowViewData<T> rowData)
 		{
-			if(isAlternate)
+			if(rowData.IsAlternate)
 			{
 				RenderText("<tr class=\"gridrow_alternate\">");
 			}

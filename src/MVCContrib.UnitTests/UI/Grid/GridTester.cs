@@ -61,7 +61,11 @@ namespace MvcContrib.UnitTests.UI.Grid
 			var model = new GridModel<Person>();
 			_grid.WithModel(model).RowStart("foo");
 			_grid.ToString();
-			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
+			((IGridModel<Person>)model).Sections.Row
+				.StartSectionRenderer(
+					new GridRowViewData<Person>(new Person(), true),
+					GridRendererTester.FakeRenderingContext()
+				).ShouldBeTrue();
 		}
 
 		[Test]
@@ -70,34 +74,51 @@ namespace MvcContrib.UnitTests.UI.Grid
 			var model = new GridModel<Person>();
 			_grid.WithModel(model).RowEnd("foo");
 			_grid.ToString();
-			((IGridModel<Person>)model).Sections[GridSection.RowEnd].ShouldNotBeNull();
+			((IGridModel<Person>)model).Sections.Row
+				.EndSectionRenderer(
+					new GridRowViewData<Person>(new Person(), true),
+					GridRendererTester.FakeRenderingContext()
+				).ShouldBeTrue();
+
 		}
 
 		[Test]
 		public void RowStart_action_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowStart((p) => { RowStart_action_should_be_stored_when_rendered(); });
+			_grid.WithModel(model).RowStart((p) => {});
 			_grid.ToString();
-			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
+			((IGridModel<Person>)model).Sections.Row
+				.StartSectionRenderer(
+					new GridRowViewData<Person>(new Person(), true),
+					GridRendererTester.FakeRenderingContext()
+				).ShouldBeTrue();
 		}
 
 		[Test]
 		public void RowStart_action_context_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowStart((p, x) => { RowStart_action_context_should_be_stored_when_rendered(); });
+			_grid.WithModel(model).RowStart((p, x) => {});
 			_grid.ToString();
-			((IGridModel<Person>)model).Sections[GridSection.RowStart].ShouldNotBeNull();
+			((IGridModel<Person>)model).Sections.Row
+				.StartSectionRenderer(
+					new GridRowViewData<Person>(new Person(), true),
+					GridRendererTester.FakeRenderingContext()
+				).ShouldBeTrue();
 		}
 
 		[Test]
 		public void RowEnd_actoion_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowEnd((p) => { RowEnd_actoion_should_be_stored_when_rendered(); });
+			_grid.WithModel(model).RowEnd((p) => { });
 			_grid.ToString();
-			((IGridModel<Person>)model).Sections[GridSection.RowEnd].ShouldNotBeNull();
+			((IGridModel<Person>)model).Sections.Row
+			.EndSectionRenderer(
+				new GridRowViewData<Person>(new Person(), true),
+				GridRendererTester.FakeRenderingContext()
+			).ShouldBeTrue();
 		}
 
 
