@@ -93,23 +93,7 @@
 		
 		<!-- copy files required by view engine tests -->
 		
-		<copy todir="${build.dir}/NHamlViewEngine/Views/NHamlApplication" flatten="true">
-			<fileset basedir="${solution.dir}">
-				<include name="**/Views/NHamlApplication/*.haml"/>
-			</fileset>
-		</copy>
-		<copy todir="${build.dir}/NHamlViewEngine/Views/NHamlController" flatten="true">
-			<fileset basedir="${solution.dir}">
-				<include name="**/Views/NHamlController/*.haml"/>
-			</fileset>
-		</copy>
-		<copy todir="${build.dir}/NHamlViewEngine/Views/Shared" flatten="true">
-			<fileset basedir="${solution.dir}">
-				<include name="**/Views/Shared/*.haml"/>
-			</fileset>
-		</copy>
-		
-		<copy todir="${build.dir}/BrailViewEngine">
+				<copy todir="${build.dir}/BrailViewEngine">
 			<fileset basedir="${solution.dir}/MvcContrib.UnitTests/BrailViewEngine">
 				<include name="**/*.brail" />
 			</fileset>
@@ -154,8 +138,6 @@
 				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Clean /p:Configuration=${project.config} /v:q" workingdir="." />
     <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
 				  commandline="${samples.dir}\MvcContrib.TestHelper\MvcContrib.TestHelper.Sample.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
-    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
-              commandline="${samples.dir}\MvcContrib.Samples.NinjectControllerFactory\MvcContrib.Samples.NinjectControllerFactory.sln /t:Rebuild /p:Configuration=${project.config} /v:q" workingdir="." />
     </target>
 
 
@@ -194,7 +176,6 @@
 				<moduleThreshold moduleName="MvcContrib.Spring.DLL" satisfactoryCoverage="95" />
 				<moduleThreshold moduleName="MvcContrib.StructureMap.DLL" satisfactoryCoverage="95" />
 				<moduleThreshold moduleName="MvcContrib.XsltViewEngine.DLL" satisfactoryCoverage="95" />
-				<moduleThreshold moduleName="MvcContrib.NHamlViewEngine.DLL" satisfactoryCoverage="80" />
 				<moduleThreshold moduleName="MvcContrib.BrailViewEngine.DLL" satisfactoryCoverage="75" />
 				<moduleThreshold moduleName="MvcContrib.SparkViewEngine.DLL" satisfactoryCoverage="90" />
 			</moduleThresholds>
@@ -249,7 +230,6 @@
 				<include name="Boo/*.dll" />
 				<include name="Castle/*.dll" />
 				<include name="mvpxml/*.dll" />
-				<include name="ninject/*.dll" />
 				<include name="spark/*.dll" />
 				<include name="spring.net/*.dll" />
 				<include name="structuremap/*.dll" />
