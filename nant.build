@@ -139,6 +139,7 @@
 	</target>
 
   <target name="move-for-samples">    
+	<delete dir="${samples.dir}\bin" />
     <copy todir="${samples.dir}\bin" flatten="true">
       <fileset basedir="${build.dir}">
         <include name="/**/*.dll" />
