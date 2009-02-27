@@ -32,11 +32,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
+      <HintPath>..\bin\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
+      <HintPath>..\bin\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">

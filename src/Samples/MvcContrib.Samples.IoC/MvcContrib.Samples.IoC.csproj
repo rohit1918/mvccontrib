@@ -32,15 +32,15 @@
   <ItemGroup>
     <Reference Include="MvcContrib, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll</HintPath>
+      <HintPath>..\bin\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="MvcContrib.StructureMap, Version=0.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.dll</HintPath>
+      <HintPath>..\bin\MvcContrib.StructureMap.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="StructureMap, Version=2.4.9.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\structuremap\StructureMap.dll</HintPath>
+      <HintPath>..\bin\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
