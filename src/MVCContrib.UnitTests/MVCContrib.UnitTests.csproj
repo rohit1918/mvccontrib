@@ -81,18 +81,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\mvpxml\Mvp.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="NHaml, Version=1.1.0.0, Culture=neutral, PublicKeyToken=d603208bac452365, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\nhaml\NHaml.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Conditions, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\ninject\Ninject.Conditions.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Core, Version=0.4.3005.35587, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\ninject\Ninject.Core.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\nunit\nunit.framework.dll</HintPath>
@@ -174,7 +162,6 @@
     <Compile Include="BrailViewEngine\TestHttpContext.cs" />
     <Compile Include="ControllerExtensionsTester.cs" />
     <Compile Include="ControllerFactories\ControllerFactoryTestExtension.cs" />
-    <Compile Include="ControllerFactories\NinjectControllerFactoryTester.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ConventionController\AnotherTestController.cs" />
     <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
@@ -234,7 +221,6 @@
     <Compile Include="IoC\IDependency.cs" />
     <Compile Include="IoC\INestedDependency.cs" />
     <Compile Include="IoC\NestedDependency.cs" />
-    <Compile Include="IoC\NinjectDependencyResolverTester.cs" />
     <Compile Include="IoC\SimpleDependency.cs" />
     <Compile Include="IoC\SpringDependencyResolverTester.cs" />
     <Compile Include="IoC\StructureMapDependencyResolverTester.cs" />
@@ -346,10 +332,6 @@
     <ProjectReference Include="..\MvcContrib.ModelAttributes\MvcContrib.ModelAttributes.csproj">
       <Project>{FC399CBC-D74A-4A7F-94FF-98695CFDF195}</Project>
       <Name>MvcContrib.ModelAttributes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcContrib.Ninject\MvcContrib.Ninject.csproj">
-      <Project>{83AB32CF-227D-43CD-B6B6-9DA35B17C0E0}</Project>
-      <Name>MvcContrib.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\MvcContrib.SparkViewEngine\MvcContrib.SparkViewEngine.csproj">
       <Project>{56202292-9363-4DED-99DD-824A111EE18D}</Project>
