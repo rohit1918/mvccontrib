@@ -100,7 +100,6 @@
     <Content Include="Scripts\jquery.jdMenu.js" />
     <Content Include="Scripts\jquery.positionBy.js" />
     <Content Include="Views\Grid\WithActionSections.aspx" />
-    <Content Include="Views\Grid\DateOfBirthHeaderPartial.ascx" />
     <Content Include="Views\Grid\Index.aspx" />
     <Content Include="Views\Grid\Paged.aspx" />
     <Content Include="Views\Grid\Show.aspx" />

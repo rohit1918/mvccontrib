@@ -30,7 +30,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_define_sections()
 		{
-			AsGridModel.Sections.RowStart("foo");
+			AsGridModel.Sections.RowStart(x => "foo");
 			AsGridModel.Sections.Row
 				.StartSectionRenderer(
 					new GridRowViewData<Person>(new Person(), false), 

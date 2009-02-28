@@ -100,25 +100,25 @@ namespace MvcContrib.UI.Grid
 		}
 
 		/// <summary>
-		/// Specifies that a partial view should be rendered as the start of every row. 
+		/// Renders the specified text at the start of every row instead of the default output.
 		/// </summary>
-		public static void RowStart<T>(this IGridSections<T> sections, string partialName) where T : class
+		public static void RowStart<T>(this IGridSections<T> sections, Func<GridRowViewData<T>, string> rowStart) where T : class
 		{
 			sections.Row.StartSectionRenderer = (rowData, context) =>
 			{
-				RenderPartialForSection(rowData, context, partialName);
+				context.Writer.Write(rowStart(rowData));
 				return true;
 			};
 		}
 
 		/// <summary>
-		/// Specifies that a partial view should be rendered as the end of every row. 
+		/// Renders the specified text at the end of every row instead of the default output.
 		/// </summary>
-		public static void RowEnd<T>(this IGridSections<T> sections, string partialName) where T : class 
+		public static void RowEnd<T>(this IGridSections<T> sections, Func<GridRowViewData<T>, string> rowEnd) where T : class 
 		{
 			sections.Row.EndSectionRenderer = (rowData, context) => 
 			{
-				RenderPartialForSection(rowData, context, partialName);
+				context.Writer.Write(rowEnd(rowData));
 				return true;
 			};
 		}
@@ -133,26 +133,26 @@ namespace MvcContrib.UI.Grid
 		}
 
 		/// <summary>
-		/// Specifies that a Partial View should be rendered for the start of each row. 
+		/// Renders the specified text at the start of every row instead of the default output.
 		/// </summary>
 		/// <param name="grid">The grid</param>
-		/// <param name="partialName">The name of the partial to render</param>
+		/// <param name="rowStart">Lambda takes an instance of GridRowViewData and returns the string to render</param>
 		/// <returns></returns>
-		public static IGridWithOptions<T> RowStart<T>(this IGridWithOptions<T> grid, string partialName) where T : class 
+		public static IGridWithOptions<T> RowStart<T>(this IGridWithOptions<T> grid, Func<GridRowViewData<T>, string> rowStart) where T : class 
 		{
-			grid.Model.Sections.RowStart(partialName);
+			grid.Model.Sections.RowStart(rowStart);
 			return grid;
 		}
 
 		/// <summary>
-		/// Specifies that a Partial View should be rendered for the end of each row.
+		/// Renders the specified text at the start of every row instead of the default output.
 		/// </summary>
 		/// <param name="grid">The grid</param>
-		/// <param name="partialName">The name of the partial view to render</param>
+		/// <param name="rowEnd">Lambda takes an instance of GridRowViewData and returns the string to render</param>
 		/// <returns></returns>
-		public static IGridWithOptions<T> RowEnd<T>(this IGridWithOptions<T> grid, string partialName) where T : class 
+		public static IGridWithOptions<T> RowEnd<T>(this IGridWithOptions<T> grid, Func<GridRowViewData<T>, string> rowEnd) where T : class 
 		{
-			grid.Model.Sections.RowEnd(partialName);
+			grid.Model.Sections.RowEnd(rowEnd);
 			return grid;
 		}
 
@@ -165,22 +165,6 @@ namespace MvcContrib.UI.Grid
 		public static IGridColumn<T> Header<T>(this IGridColumn<T> column, string header) where T : class 
 		{
 			column.CustomHeaderRenderer = c => c.Writer.Write(header);
-			return column;
-		}
-
-
-		/// <summary>
-		/// Specifies that a partial view should be used to render the column header.
-		/// </summary>
-		/// <param name="column">The current column</param>
-		/// <param name="partialName">Name of the partial to render</param>
-		/// <returns></returns>
-		public static IGridColumn<T> HeaderPartial<T>(this IGridColumn<T> column, string partialName)  where T : class
-		{
-			column.CustomHeaderRenderer = context => {
-				var view = context.ViewEngines.TryLocatePartial(context.ViewContext, partialName);
-				view.Render(context.ViewContext, context.Writer);
-			};
 			return column;
 		}
 

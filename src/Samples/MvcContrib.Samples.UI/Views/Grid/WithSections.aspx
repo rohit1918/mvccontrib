@@ -17,9 +17,10 @@
 		.Columns(column => {
      		column.For(x => x.Id).Named("Person ID");
      		column.For(x => x.Name);
-     		column.For(x => x.Gender);
-     		column.For(x => x.DateOfBirth).Format("{0:d}").HeaderPartial("DateOfBirthHeaderPartial");
-			column.For("View Person").Named("").Partial("ViewPersonPartial");
+     		column.For(x => x.Gender);    
+     		column.For(x => x.DateOfBirth) //Example of custom header attributes
+					.HeaderAttributes(style => "font-weight:bold; background-color: Yellow").Format("{0:d}");
+			column.For("View Person").Named("").Partial("ViewPersonPartial"); //Example of using a Partial view for complex cells
      	}) %>
 
 </asp:Content>
