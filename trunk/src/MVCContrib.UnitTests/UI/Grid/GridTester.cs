@@ -59,7 +59,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void RowStart_section_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowStart("foo");
+			_grid.WithModel(model).RowStart(x=>"foo");
 			_grid.ToString();
 			((IGridModel<Person>)model).Sections.Row
 				.StartSectionRenderer(
@@ -72,7 +72,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void RowEnd_section_should_be_stored_when_rendered()
 		{
 			var model = new GridModel<Person>();
-			_grid.WithModel(model).RowEnd("foo");
+			_grid.WithModel(model).RowEnd(x => "foo");
 			_grid.ToString();
 			((IGridModel<Person>)model).Sections.Row
 				.EndSectionRenderer(

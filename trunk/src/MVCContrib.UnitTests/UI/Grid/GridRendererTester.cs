@@ -79,36 +79,12 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
-		public void Should_render_with_custom_Header_format()
+		public void Should_render_with_custom_Header()
 		{
 			ColumnFor(x => x.Name).Header("<td>TEST</td>");
 			ColumnFor(x => x.Id);
 			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
-		}
-
-		[Test]
-		public void Should_render_with_custom_header_partial()
-		{
-			SetupViewEngine("testPartial", "<td>TEST</td>");
-			ColumnFor(x => x.Name).HeaderPartial("testPartial");
-			ColumnFor(x => x.Id);
-			string expected = "<table class=\"grid\"><thead><tr><td>TEST</td><th>Id</th></tr></thead><tr class=\"gridrow\"><td>Jeremy</td><td>1</td></tr></table>";
-			RenderGrid().ShouldEqual(expected);
-
-		}
-
-
-		[Test, ExpectedException(typeof(InvalidOperationException))]
-		public void Should_throw_when_view_cannot_be_found()
-		{
-			_viewEngine.Expect(x => x.FindPartialView(Arg<ControllerContext>.Is.Anything, Arg<string>.Is.Equal("foo"), Arg<bool>.Is.Anything))
-				.IgnoreArguments()
-				.Return(new ViewEngineResult(new[] { "foo", "bar" }))
-				.Repeat.Any();
-
-			ColumnFor(x => x.Name).HeaderPartial("foo");
-			RenderGrid();
 		}
 
 		[Test]
@@ -119,7 +95,6 @@ namespace MvcContrib.UnitTests.UI.Grid
 				"<table class=\"grid\"><thead><tr><th>Date Of Birth</th></tr></thead><tr class=\"gridrow\"><td>19</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
-
 
 		[Test]
 		public void With_format()
@@ -205,9 +180,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_custom_row_start()
 		{
-			SetupViewEngine("RowStart", "<tr foo=\"bar\">");
 			ColumnFor(x => x.Id);
-			_model.Sections.RowStart("RowStart");
+			_model.Sections.RowStart(x => "<tr foo=\"bar\">");
 			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr foo=\"bar\"><td>1</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -216,9 +190,8 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_custom_row_end()
 		{
-			SetupViewEngine("RowEnd", "</tr>TEST");
 			ColumnFor(x => x.Id);
-			_model.Sections.RowEnd("RowEnd");
+			_model.Sections.RowEnd(x => "</tr>TEST");
 			string expected = "<table class=\"grid\"><thead><tr><th>Id</th></tr></thead><tr class=\"gridrow\"><td>1</td></tr>TEST</table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -240,14 +213,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
 			ColumnFor(x => x.Name);
-			_model.Sections.RowStart("RowStart");
-
-			SetupViewEngine("RowStart", (c, w) =>
-			{
-				var model = (GridRowViewData<Person>)c.ViewData.Model;
-				w.Write("<tr class=\"row " + (model.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
-			});
-
+			_model.Sections.RowStart(row => "<tr class=\"row " + (row.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
 			string expected = "<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -297,14 +263,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 			ColumnFor(x => x.Name).HeaderAttributes(style => "width:100%");
 			_people.Add(new Person { Name = "Person 2" });
 			_people.Add(new Person { Name = "Person 3" });
-
-			_model.Sections.RowStart("RowStart");
-
-			SetupViewEngine("RowStart", (c, w) => {
-				var model = (GridRowViewData<Person>)c.ViewData.Model;
-				w.Write("<tr class=\"row " + (model.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
-			});
-
+			_model.Sections.RowStart(row => "<tr class=\"row " + (row.IsAlternate ? "gridrow_alternate" : "gridrow") + "\">");
 			string expected = "<table class=\"grid\"><thead><tr><th style=\"width:100%\">Name</th></tr></thead><tr class=\"row gridrow\"><td>Jeremy</td></tr><tr class=\"row gridrow_alternate\"><td>Person 2</td></tr><tr class=\"row gridrow\"><td>Person 3</td></tr></table>";
 			RenderGrid().ShouldEqual(expected);
 		}
