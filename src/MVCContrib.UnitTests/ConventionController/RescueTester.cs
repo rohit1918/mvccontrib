@@ -139,21 +139,6 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 
 		[Test]
-		public void ThreadAbortException_should_be_ignored()
-		{
-			var constructors = typeof(ThreadAbortException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic);
-			//Find the constructor with 0 args
-			var exception = (ThreadAbortException)constructors.Where(c => c.GetParameters().Length == 0).First().Invoke(null);
-
-			var rescue = new RescueAttribute("TestRescue");
-			var context = new ExceptionContext(_controllerContext, exception);
-			rescue.OnException(context);
-
-            Assert.IsTrue(context.ExceptionHandled);
-			Assert.That(context.Result, Is.InstanceOfType(typeof(EmptyResult)));
-		}
-
-		[Test]
 		public void When_PerformRescue_is_invoked_with_matching_view_it_should_be_rendered()
 		{
 			var rescue = new RescueAttribute("TestRescue");

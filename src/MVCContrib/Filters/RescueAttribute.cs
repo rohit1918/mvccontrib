@@ -86,12 +86,6 @@ namespace MvcContrib.Filters
 		{
 			Type baseExceptionType = filterContext.Exception.GetBaseException().GetType();
 
-			if(IsThreadAbortException(baseExceptionType))
-			{
-				filterContext.ExceptionHandled = true;
-				return;
-			}
-
 			if(IgnoreAjax && filterContext.HttpContext.Request.IsAjax())
 			{
 				return;
@@ -166,17 +160,6 @@ namespace MvcContrib.Filters
 			string viewName = "Rescues/" + exceptionType.Name;
 			var viewResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
 			return viewResult.View != null;
-		}
-
-		protected virtual bool IsThreadAbortException(Type baseExceptionType)
-		{
-			//ThreadAbortException could have occurred due to a direct call to HttpResponse.Redirect.
-			//This is perfectly valid, so we don't want to invoke the rescue.
-			if(baseExceptionType == typeof(ThreadAbortException))
-			{
-				return true;
-			}
-			return false;
 		}
 
 		/// <summary>
