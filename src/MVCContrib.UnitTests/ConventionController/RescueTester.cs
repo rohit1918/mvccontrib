@@ -10,6 +10,8 @@ using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using MvcContrib.TestHelper;
 using System.Collections.Generic;
+using Assert=NUnit.Framework.Assert;
+
 namespace MvcContrib.UnitTests.ConventionController
 {
     [TestFixture]

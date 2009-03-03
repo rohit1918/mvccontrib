@@ -3,8 +3,6 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 
 namespace MvcContrib.TestHelper
@@ -47,7 +45,7 @@ namespace MvcContrib.TestHelper
         public static RouteData ShouldMapTo<TController>(this RouteData routeData, Expression<Func<TController, ActionResult>> action)
             where TController : Controller
         {            
-            Assert.That(routeData, Is.Not.Null, "The URL did not match any route");
+            routeData.ShouldNotBeNull("The URL did not match any route");
 
             //check controller
             routeData.ShouldMapTo<TController>();
@@ -77,7 +75,7 @@ namespace MvcContrib.TestHelper
                 }
 
 				value = (value == null ? value : value.ToString());
-				Assert.That(routeData.Values.GetValue(name), Is.EqualTo(value));
+                routeData.Values.GetValue(name).ShouldEqual(value,"Value for parameter did not match");
             }
 
             return routeData;
@@ -109,6 +107,7 @@ namespace MvcContrib.TestHelper
             //get the key (case insensitive)
             string actual = routeData.Values.GetValue("controller").ToString();
 
+            
             expected.AssertSameStringAs(actual);
             return routeData;
         }
@@ -121,7 +120,9 @@ namespace MvcContrib.TestHelper
         public static RouteData ShouldBeIgnored(this string relativeUrl)
         {
             RouteData routeData = relativeUrl.Route();
-            Assert.That(routeData.RouteHandler is StopRoutingHandler, "Expected StopRoutingHandler, but wasn't");
+
+            routeData.RouteHandler.ShouldBe<StopRoutingHandler>("Expected StopRoutingHandler, but wasn't");
+//            Assert.That(routeData.RouteHandler is StopRoutingHandler, "Expected StopRoutingHandler, but wasn't");
             return routeData;
         }
 
