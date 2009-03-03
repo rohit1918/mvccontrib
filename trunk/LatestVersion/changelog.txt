@@ -1,4 +1,28 @@
 ------------------------------------------------------------------------
+r846 | eric.hexter | 2009-03-03 14:23:16 -0600 (Tue, 03 Mar 2009) | 4 lines
+
+modified release process.
+The change log is automatically uploaded to a release.
+There is a LatestVersion\ReleaseDescription.txt this file contains wiki markup that will be the description for the codeplex release.
+Modified the CreateRelease.exe to perform the previous two changes.
+------------------------------------------------------------------------
+r844 | mvccontrib | 2009-03-03 12:19:23 -0600 (Tue, 03 Mar 2009) | 1 line
+
+automatic check-in
+------------------------------------------------------------------------
+r843 | eric.hexter | 2009-03-03 12:13:31 -0600 (Tue, 03 Mar 2009) | 1 line
+
+ignore failures to commit the latest version.  This is a problem on the CodeBetter TeamCity server.
+------------------------------------------------------------------------
+r842 | eric.hexter | 2009-03-03 12:03:53 -0600 (Tue, 03 Mar 2009) | 1 line
+
+automatic check-in
+------------------------------------------------------------------------
+r841 | eric.hexter | 2009-03-03 11:50:07 -0600 (Tue, 03 Mar 2009) | 2 lines
+
+Added pulling the change log into the trunk for use in the packaging target. 
+The release files now include ChangeLog.txt which is the Subversion change log for the trunk.
+------------------------------------------------------------------------
 r839 | mvccontrib | 2009-03-03 11:29:08 -0600 (Tue, 03 Mar 2009) | 1 line
 
 automatic check-in
