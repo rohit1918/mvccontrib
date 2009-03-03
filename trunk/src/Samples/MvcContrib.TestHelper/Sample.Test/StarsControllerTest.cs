@@ -48,7 +48,7 @@ namespace MvcContrib.TestHelper.Sample
         {
             _builder.Form["NewStarName"] = "alpha c";
             _controller.AddFormStar();
-            Assert.AreEqual("alpha c", _controller.TempData["NewStarName"]);
+            Assert.ShouldEqual("alpha c", _controller.TempData["NewStarName"],"");
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace MvcContrib.TestHelper.Sample
         {
             _builder.Form["NewStarName"] = "alpha c";
             _controller.AddSessionStar();
-            Assert.AreEqual("alpha c", _controller.HttpContext.Session["NewStarName"]);
+            Assert.ShouldEqual("alpha c", _controller.HttpContext.Session["NewStarName"],"");
         }
 
         [Test]

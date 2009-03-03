@@ -207,13 +207,23 @@
 	
   <target name="package">
 		<!-- 		
-			make a new dir for release.
-			include subfolders
-				bin
-					referenceDLLs
-				samples
+      MvcContrib
+        license
+        MvcContrib dll and pdb
+        MvcContrib.TestHelpers dll and pdb
+        QuickStart.txt
+    
+      MvcContrib.Extras
+			  make a new dir for release.
+			  include subfolders
+				  bin
+					  referenceDLLs
+				  samples
 		-->
-		<mkdir dir="${build.base}/release/" />
+    <property name="ContribRelease" value="${build.base}/release/MvcContrib"/>
+    <property name="ExtrasRelease" value="${build.base}/release/Extras"/>
+		
+    <mkdir dir="${build.base}/release/" />
 
 		<mkdir dir="${build.base}/release/Bin" />
 		<copy todir="${build.base}/release/Bin" flatten="true">

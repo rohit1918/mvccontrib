@@ -2,6 +2,7 @@
 using System.Collections;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
+using Assert=NUnit.Framework.Assert;
 
 namespace MvcContrib.UnitTests.TestHelper
 {

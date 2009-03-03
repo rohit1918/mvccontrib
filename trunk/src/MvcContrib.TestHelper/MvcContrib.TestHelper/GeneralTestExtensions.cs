@@ -1,6 +1,6 @@
 ﻿using System;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+//using NUnit.Framework;
+//using NUnit.Framework.SyntaxHelpers;
 
 namespace MvcContrib.TestHelper
 {
@@ -14,10 +14,15 @@ namespace MvcContrib.TestHelper
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="actual"></param>
+        /// <param name="message">Message to display when assertion fails</param>
         /// <returns></returns>
-        public static T ShouldBe<T>(this object actual)
+        public static T ShouldBe<T>(this object actual,string message) where T : class
         {
-            Assert.That(actual, Is.InstanceOfType(typeof(T)));
+            //Assert.That(actual, Is.InstanceOfType(typeof(T)));
+            if(actual as T ==null)
+            {
+              throw new AssertionException(message);  
+            }
             return (T)actual;
         }
 
@@ -28,8 +33,14 @@ namespace MvcContrib.TestHelper
         /// <param name="expected"></param>
         public static void ShouldBe(this object actual, object expected)
         {
-            Assert.That(actual, Is.EqualTo(expected));
+            
+            if(!actual.Equals(expected))
+            {
+                string message = string.Format("was {0} but expected {1}", actual, expected);
+                throw new AssertionException(message);
+            }
         }
+
 
         /// <summary>
         /// Compares the two strings (case-insensitive).
@@ -38,8 +49,13 @@ namespace MvcContrib.TestHelper
         /// <param name="right"></param>
         public static void AssertSameStringAs(this string left, string right)
         {
-            Assert.That(string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase),
-                string.Format("Expected {0} but was {1}", right, left));
+
+            if(!string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var message = string.Format("Expected {0} but was {1}", right, left);
+                throw  new AssertionException(message);
+            }
+                
         }
     }
 }

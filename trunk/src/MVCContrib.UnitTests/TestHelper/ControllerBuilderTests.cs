@@ -9,6 +9,7 @@ using MvcContrib.TestHelper;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
+using Assert=NUnit.Framework.Assert;
 
 //Note: these tests confirm that the TestControllerBuilder works properly
 //for examples on how to use the TestControllerBuilder and other TestHelper classes,

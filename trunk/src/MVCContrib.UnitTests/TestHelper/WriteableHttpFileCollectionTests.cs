@@ -2,6 +2,7 @@ using System.Web;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Assert=NUnit.Framework.Assert;
 
 namespace MvcContrib.UnitTests.TestHelper
 {

@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="ActionResultAssertionException.cs" />
     <Compile Include="ActionResultHelper.cs" />
+    <Compile Include="Assert.cs" />
+    <Compile Include="AssertionException.cs" />
     <Compile Include="GeneralTestExtensions.cs" />
     <Compile Include="MockSession.cs">
       <SubType>Code</SubType>
