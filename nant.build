@@ -48,6 +48,7 @@
 
 	<target name="version" description="mark AssemblyInfo builds with the build number">
 
+    <exec failonerror="false" program="${svn.executable}" commandline="log" output="changelog.txt" append="false" verbose="false"/>
     <exec failonerror="false" program="${svn.executable}" commandline="info LatestVersion --xml --revision HEAD ${svnargs}" output="svninfo.xml" append="false" verbose="false"/>
     <xmlpeek failonerror="false" file="svninfo.xml" xpath="/info/entry/@revision" property="revisionnumber"/>
 
@@ -255,6 +256,11 @@
         <include name="license.txt" />
       </fileset>
     </copy>
+    <copy todir="${ContribRelease}" >
+      <fileset basedir=".">
+        <include name="changelog.txt" />
+      </fileset>
+    </copy>
     <mkdir dir="${ContribRelease}Dependencies/" />
     <copy todir="${ContribRelease}Dependencies/" flatten="true">
       <fileset basedir="${solution.dir}">
@@ -340,6 +346,11 @@
     <copy todir="${ExtrasRelease}" >
       <fileset basedir=".">        
         <include name="license.txt" />
+      </fileset>
+    </copy>
+    <copy todir="${ExtrasRelease}" >
+      <fileset basedir=".">
+        <include name="changelog.txt" />
       </fileset>
     </copy>
     <copy todir="${ExtrasRelease}" >
