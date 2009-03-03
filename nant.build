@@ -10,6 +10,11 @@
 	<property name="build.base" value="build"/>
 	<property name="results.dir" value="${build.base}\results" />
   <property name="samples.dir" value="src\samples"/>
+  <property name="svn.executable" value="bin/subversion/svn.exe" dynamic="true" if="${not property::exists('svn.executable')}" />
+  <property name="svnargs" value=" --non-interactive " />
+  <property name="revisionnumber" value="9999" dynamic="true"/>
+  <property name="revisionnumber" value="${CCNetLabel}" if="${property::exists('CCNetLabel')}"/>
+  <property name="project.fullversion" value="1.0.${revisionnumber}.0" dynamic="true"/>
   <property name="version.major" value="0"/>
 	<property name="version.minor" value="0"/>
 	<property name="version.build" value="1"/>
@@ -24,7 +29,7 @@
 	<property name="build.dir" value="${build.base}/${nant.settings.currentframework}.${platform::get-name()}-${project::get-name()}-${project.config}/"/>
 
 	<target name="build" depends="clean, version, init, commonassemblyinfo, compile, move-for-test, test, compile-samples"/>
-	<target name="cruise" depends="build, package"/>
+	<target name="cruise" depends="build, package,commitPackage"/>
   <target name="cruise-coverage" depends="analyze"/>
 	<target name="commiter" depends="build, analyze, package"/>
 
@@ -42,9 +47,17 @@
 	</target>
 
 	<target name="version" description="mark AssemblyInfo builds with the build number">
-		<if test="${property::exists('CCNetLabel')}">
+
+    <exec failonerror="false" program="${svn.executable}" commandline="info LatestVersion --xml --revision HEAD ${svnargs}" output="svninfo.xml" append="false" verbose="false"/>
+    <xmlpeek failonerror="false" file="svninfo.xml" xpath="/info/entry/@revision" property="revisionnumber"/>
+
+    <property name="revisionnumber" value="${int::parse(revisionnumber) + 1}"/>
+    <echo message="Current SVN Revision: ${revisionnumber}"/>
+    <property name="version.revision" value="${revisionnumber}"/>
+<!--    <if test="${property::exists('CCNetLabel')}">
 			<property name="version.revision" value="${CCNetLabel}"/>
 		</if>
+    -->
 	</target>
 
 	<target name="commonassemblyinfo" depends="version, init">
@@ -204,7 +217,11 @@
             commandline="&quot;RC - ${project.fullversion}&quot;"
 					workingdir="." />
 	</target>
-	
+
+  <target name="commitPackage" depends="package">
+    <exec program="${svn.executable}" workingdir="." commandline="ci latestVersion ${svnargs} -m&quot;automatic check-in&quot;" verbose="true"  />
+  </target>
+
   <target name="package">
 		<!-- 		
       MvcContrib
@@ -220,21 +237,59 @@
 					  referenceDLLs
 				  samples
 		-->
-    <property name="ContribRelease" value="${build.base}/release/MvcContrib"/>
-    <property name="ExtrasRelease" value="${build.base}/release/Extras"/>
-		
+    <delete dir="${build.base}/release/" failonerror="false"></delete>
+    <mkdir dir="${build.base}/release/" />
+    <property name="ContribRelease" value="${build.base}/release/MvcContrib/"/>
+    <mkdir dir="${ContribRelease}" />
+    
+    <copy todir="${ContribRelease}" flatten="true">
+      <fileset basedir="${solution.dir}">
+        <include name="/**/bin/${project.config}/mvccontrib.dll" />
+        <include name="/**/bin/${project.config}/mvccontrib.xml" />
+        <include name="/**/bin/${project.config}/mvccontrib.testhelper.dll" />
+        <include name="/**/bin/${project.config}/mvccontrib.testhelper.xml" />
+      </fileset>
+    </copy>
+    <copy todir="${ContribRelease}" >
+      <fileset basedir=".">
+        <include name="license.txt" />
+      </fileset>
+    </copy>
+    <mkdir dir="${ContribRelease}Dependencies/" />
+    <copy todir="${ContribRelease}Dependencies/" flatten="true">
+      <fileset basedir="${solution.dir}">
+        <include name="/**/bin/${project.config}/Microsoft.Web.MVC.dll" />
+        <include name="/**/bin/${project.config}/Rhino.Mocks.Dll" />
+      </fileset>
+    </copy>
+    <zip zipfile="LatestVersion/MVCContrib.release.zip" includeemptydirs="false" >
+      <fileset basedir="${ContribRelease}">
+        <include name="license.txt" />
+        <include name="**/*.*"/>
+        <exclude name="**/*.CodeAnalysisLog.xml"/>
+        <exclude name="**/*.lastcodeanalysissucceeded"/>
+      </fileset>
+    </zip>
+
+
+    <property name="ExtrasRelease" value="${build.base}/release/Extras/"/>
+    
+    <mkdir dir="${ExtrasRelease}" />
+    
+    
+    <mkdir dir="${build.base}/release/" />
     <mkdir dir="${build.base}/release/" />
 
-		<mkdir dir="${build.base}/release/Bin" />
-		<copy todir="${build.base}/release/Bin" flatten="true">
+		<mkdir dir="${ExtrasRelease}/Bin" />
+		<copy todir="${ExtrasRelease}/Bin" flatten="true">
 			<fileset basedir="${solution.dir}">
 				<include name="/**/bin/${project.config}/mvccontrib**" />
 			</fileset>
 		</copy>
 		
-		<mkdir dir="${build.base}/release/Bin/referenceDLLs" />
+		<mkdir dir="${ExtrasRelease}/Bin/referenceDLLs" />
 		
-		<copy todir="${build.base}/release/Bin/referenceDLLs" flatten="false">
+		<copy todir="${ExtrasRelease}/Bin/referenceDLLs" flatten="false">
 			<fileset basedir="bin">
 				<include name="AspnetMvc/*.dll" />
 				<include name="Boo/*.dll" />
@@ -249,8 +304,8 @@
 		
 		
 
-		<mkdir dir="${build.base}/release/Samples" />
-		<copy todir="${build.base}/release/Samples" >
+		<mkdir dir="${ExtrasRelease}/Samples" />
+		<copy todir="${ExtrasRelease}/Samples" >
 			<fileset basedir="${solution.dir}/">
         <exclude name="**/bin/**"/>
 				<exclude name="**/obj/**"/>
@@ -259,7 +314,7 @@
       </fileset>
 		</copy>
 
-    <copy todir="${build.base}/release/Samples" >
+    <copy todir="${ExtrasRelease}/Samples" >
       <fileset basedir="${solution.dir}/Samples">
         <exclude name="**/bin/**"/>
         <exclude name="**/obj/**"/>
@@ -268,32 +323,32 @@
       </fileset>
     </copy>
 
-    <copy todir="${build.base}/release/Samples/bin" >
+    <copy todir="${ExtrasRelease}/Samples/bin" >
       <fileset basedir="${solution.dir}/Samples/bin">
         <include name="*.*"/>
       </fileset>
     </copy>
 
 
-    <mkdir dir="${build.base}/release/Helpers/" />
-		<copy todir="${build.base}/release/Helpers" >
+    <mkdir dir="${ExtrasRelease}/Helpers/" />
+		<copy todir="${ExtrasRelease}/Helpers" >
 			<fileset basedir="extras">
 				<include name="/**/**" />
 			</fileset>
 		</copy>
 
-    <copy todir="${build.base}/release" >
+    <copy todir="${ExtrasRelease}" >
       <fileset basedir=".">        
         <include name="license.txt" />
       </fileset>
     </copy>
-    <copy todir="${build.base}/release/" >
+    <copy todir="${ExtrasRelease}" >
       <fileset basedir="./build/help">
         <include name="*.chm" />
       </fileset>
     </copy>
-    <zip zipfile="${build.base}/MVCContrib.release.zip" includeemptydirs="false" >
-			<fileset basedir="${build.base}/release/">
+    <zip zipfile="LatestVersion/MVCContrib.Extras.release.zip" includeemptydirs="false" >
+			<fileset basedir="${ExtrasRelease}">
         <include name="license.txt" />
         <include name="**/*.*"/>
 				<exclude name="**/*.CodeAnalysisLog.xml"/>
@@ -301,7 +356,7 @@
 			</fileset>
 		</zip>
 
-		<zip zipfile="${build.base}/MVCContrib.source.zip" includeemptydirs="false" >
+		<zip zipfile="LatestVersion/MVCContrib.source.zip" includeemptydirs="false" >
 
 			<fileset basedir="${trunk.dir}" >
 				<exclude name="bin/ncover/**"/>
