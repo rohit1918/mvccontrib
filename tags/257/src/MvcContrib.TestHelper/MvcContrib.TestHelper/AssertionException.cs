@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace MvcContrib.TestHelper
+{
+    ///<summary>
+    /// This exception is thrown by the TestHelper extension methods.  This allows this project to be unit test framework agnostic.
+    ///</summary>
+    public class AssertionException:System.Exception
+    {
+        public AssertionException(string message) : base(message) {}
+    }
+}
