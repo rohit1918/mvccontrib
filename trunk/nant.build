@@ -48,7 +48,6 @@
 
 	<target name="version" description="mark AssemblyInfo builds with the build number">
 
-    <exec failonerror="false" program="${svn.executable}" commandline="log" output="changelog.txt" append="false" verbose="false"/>
     <exec failonerror="false" program="${svn.executable}" commandline="info LatestVersion --xml --revision HEAD ${svnargs}" output="svninfo.xml" append="false" verbose="false"/>
     <xmlpeek failonerror="false" file="svninfo.xml" xpath="/info/entry/@revision" property="revisionnumber"/>
 
@@ -213,7 +212,7 @@
       commandline="documentation\docs.shfb" workingdir="." />
   </target>-->
 
-	<target name="release" depends="version">
+	<target name="release" depends="version document">
 		<exec program="bin\codeplex\CreateRelease.exe"
             commandline="&quot;RC - ${project.fullversion}&quot;"
 					workingdir="." />
@@ -224,6 +223,7 @@
   </target>
 
   <target name="package">
+    <exec failonerror="false" program="${svn.executable}" commandline="log" output="changelog.txt" append="false" verbose="false"/>
     <copy todir="LatestVersion/" >
       <fileset basedir=".">
         <include name="ChangeLog.txt" />
@@ -359,7 +359,8 @@
         <exclude name="**/LatestVersion/**"/>
         <exclude name="bin/ncover/**"/>
 				<exclude name="bin/ndepend/**"/>
-				<exclude name="**/build/**"/>
+        <exclude name="bin/sandcastle/**"/>
+        <exclude name="**/build/**"/>
 				<exclude name="src/**/bin/**"/>
 				<exclude name="**/obj/**"/>
 				<exclude name="**/*.resharper*"/>
@@ -373,4 +374,10 @@
 			</fileset>
 		</zip>
 	</target>
+  <target name="document" >
+    <unzip zipfile="bin\sandcastle\data.zip" todir="bin\sandcastle\" failonerror="false"/>
+    <exec program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
+				  commandline="Documentation\DocumentationProject\MvcContrib.shfbproj" workingdir="." />
+    <copy file="build\Help\Output\documentation.chm" tofile="LatestVersion\MvcContribDocumentation.chm"/>
+  </target>
 </project>

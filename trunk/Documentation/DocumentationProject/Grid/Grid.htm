@@ -1,0 +1,2126 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	line-height:115%;
+	font-size:12.0pt;
+	font-family:"Verdana","sans-serif";}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin-right:0in;
+	margin-left:0in;
+	font-size:18.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+pre
+	{mso-style-link:"HTML Preformatted Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoNoSpacing, li.MsoNoSpacing, div.MsoNoSpacing
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Verdana","sans-serif";}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+span.HTMLPreformattedChar
+	{mso-style-name:"HTML Preformatted Char";
+	mso-style-link:"HTML Preformatted";
+	font-family:"Courier New";}
+span.author
+	{mso-style-name:author;}
+span.msoDel
+	{mso-style-name:"";
+	text-decoration:line-through;
+	color:red;}
+.MsoChpDefault
+	{font-size:12.0pt;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=Section1>
+
+<div style='border:solid royalblue 1.0pt;padding:3.0pt 0in 3.0pt 3.0pt;
+background:#95C8FA'>
+
+<p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
+#95C8FA;border:none;padding:0in'><b><span style='font-size:10.5pt;color:white'>Rewriting
+the MvcContrib Grid</span></b></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal'><span style='font-size:9.0pt;color:black'>February 8, 2009 – 2:47 pm</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is part 1 of a series on the new MvcContrib grid component.</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/08/rewriting-the-mvccontrib-grid/"><span
+     style='color:royalblue'>Part 1 - Introduction</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/22/rewriting-the-mvccontrib-grid-part-2-new-syntax/"><span
+     style='color:royalblue'>Part 2 - New Syntax</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/23/rewriting-the-mvccontrib-grid-part-3-gridmodels-and-gridrenderers"><span
+     style='color:royalblue'>Part 3 - GridModels and GridRenderes</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/28/mvccontrib-grid-part-4-limitations-of-the-webformsviewengine"><span
+     style='color:royalblue'>Part 4 - Limitations of the WebFormsViewEngine</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/03/01/mvccontrib-grid-part-5-the-action-syntax"><span
+     style='color:royalblue'>Part 5 - The Action Syntax</span></a></span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Over the next couple of weeks I’m hoping to write a few posts on
+the upgrades I’m doing to the</span><span style='font-size:9.0pt;color:black'>&nbsp;</span><span
+style='font-size:9.0pt;color:black'><a
+href="http://www.codeplex.com/MVCContrib/Wiki/View.aspx?title=Grid&amp;referringTitle=Documentation"><span
+style='color:royalblue'>MvcContrib grid component.</span></a></span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>These are the features that I’m planning on adding:</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>A Fluent Interface</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Like the HTML-helpers built into the ASP.NET MVC framework, the
+mvccontrib grid suffers from ‘overload hell’. Switching to a fluent interface
+should provide a cleaner and more discoverable API.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Discouraging logic in Views</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>One side effect of the fluent interface is that it will no longer
+be possible to use the grid’s section overrides. However, I consider this to be
+a good thing. Embedding custom sections makes it all to easy to get stuck in
+‘tag soup’. To make up for this, the new grid will support rendering partials
+for custom sections.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Reusable Grid Models</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The new grid will support reusable grid definitions. That is, you
+will be able to define a grid in a external class and then reference this from
+your views. One benefit of this approach is that it means the grid will finally
+be accessible to VB users. The current grid is C#-only due to its use of
+lambda-statements for defining columns.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Customisable Grid Rendering</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The existing grid only supports rendering in an HTML table. This
+means that if you wanted to render a grid in a different format (for example,
+as an OpenXML Spreadsheet) it meant you needed to inherit from the Grid class,
+override several methods and then create a new helper. The new grid will allow
+a custom GridRenderer class to be provided in the grid definition. Rendering as
+an HTML table will still be the default behaviour.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Separate Pagination Component</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The current grid has built in support for paging. With the new
+grid, this will be moved into a separate component.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Sorting</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Time permitting, the new grid will have support for sorting.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>In my next post I’ll focus on the grid’s Fluent Interface.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div style='border:solid royalblue 1.0pt;padding:3.0pt 0in 3.0pt 3.0pt;
+background:#95C8FA'>
+
+<p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
+#95C8FA;border:none;padding:0in'><b><span style='font-size:10.5pt;color:white'>Rewriting
+the MvcContrib Grid part 2 - New Syntax</span></b></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal'><span style='font-size:9.0pt;color:black'>February 22, 2009 – 2:40 pm</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is part two of a series on the new MvcContrib grid component.</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/08/rewriting-the-mvccontrib-grid/"><span
+     style='color:royalblue'>Part 1 - Introduction</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/22/rewriting-the-mvccontrib-grid-part-2-new-syntax/"><span
+     style='color:royalblue'>Part 2 - New Syntax</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/23/rewriting-the-mvccontrib-grid-part-3-gridmodels-and-gridrenderers"><span
+     style='color:royalblue'>Part 3 - GridModels and GridRenderes</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/28/mvccontrib-grid-part-4-limitations-of-the-webformsviewengine"><span
+     style='color:royalblue'>Part 4 - Limitations of the WebFormsViewEngine</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/03/01/mvccontrib-grid-part-5-the-action-syntax"><span
+     style='color:royalblue'>Part 5 - The Action Syntax</span></a></span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:9.0pt;
+color:black'>Edit: 28 Feb 09</span></b><span style='font-size:9.0pt;color:black'>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>I have removed the use of Partial views in
+the latest MvcContrib trunk for certain areas where it didn’t really make
+sense. The examples below have been updated to reflect this.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The updated version of the MvcContrib grid has a new syntax that
+uses method chaining and lambda expressions to build a fluent interface. Here
+is a grid defined with the new syntax:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Named</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+ID&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;{0:d}&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        .</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Attributes</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>style </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;width:100%&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         .</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Empty</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;There are
+no people.&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>)</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#110000'>    
+    .</span><span style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>RowStart</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>row </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;&lt;tr
+foo='bar'&gt;&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>)</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> </span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Compare this to the same grid defined using the old syntax:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>  Html.</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>,</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:blue'>new</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Hash</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>empty </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;There are
+no people&quot;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>, style </span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>=&gt;</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;width:100%&quot;</span><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:#006600'>)</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'>,</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>, </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+Id&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;{0:d}&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#006600'>}</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>, sections </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>       sections.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>RowStart</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>item </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>          &lt;tr&gt; &lt;!-- some
+custom html for the row start here --&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>   </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>});</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Note how grid options (eg Empty) are now specified as part of the
+fluent interface rather than part of the HTML Attributes dictionary (which I
+always felt was messy). The use of method chaining also means that it is no
+longer possible to embed html blocks inside the grid definition (eg RowStart).
+However, you can still achieve the same functionality using the</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>RowStart</b>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>method and specifying specifying a lambda
+that will return the HTML string to output.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The column definitions are almost identical identical.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Paging support</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Unlike its predecessor, the new grid does not have any logic for
+dealing with paging. This has all been moved to a separate</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>Pager</b>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>component. The old grid rendered the pager
+in its footer, while with the new grid you’d need to write your page like this:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Named</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+ID&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                  column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;{0:d}&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:#006600'>})</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>&nbsp;</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Pager</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Where’s the code?</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The code for the new grid is not in the mvccontrib release, so if
+you want to play with it you’ll need to download and build</span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'><a href="http://mvccontrib.googlecode.com/svn/trunk"><span
+style='color:royalblue'>the source</span></a>. Alternatively, I’ve put together
+a custom build that can be<a
+href="http://www.jeremyskinner.co.uk/files/mvccontrib-r829.zip"><span
+style='color:royalblue'>downloaded here</span></a></span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>for the subversion-impaired.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>In my next post, I’ll be focussing on extending the grid by using
+GridModels and GridRenderers.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div style='border:solid royalblue 1.0pt;padding:3.0pt 0in 3.0pt 3.0pt;
+background:#95C8FA'>
+
+<p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
+#95C8FA;border:none;padding:0in'><b><span style='font-size:10.5pt;color:white'>Rewriting
+the MvcContrib Grid part 3 - GridModels and GridRenderers</span></b></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal'><span style='font-size:9.0pt;color:black'>February 23, 2009 – 7:47 pm</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is part 3 of a series about the new MvcContrib grid.</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/08/rewriting-the-mvccontrib-grid/"><span
+     style='color:royalblue'>Part 1 - Introduction</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/22/rewriting-the-mvccontrib-grid-part-2-new-syntax/"><span
+     style='color:royalblue'>Part 2 - New Syntax</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/23/rewriting-the-mvccontrib-grid-part-3-gridmodels-and-gridrenderers"><span
+     style='color:royalblue'>Part 3 - GridModels and GridRenderes</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/28/mvccontrib-grid-part-4-limitations-of-the-webformsviewengine"><span
+     style='color:royalblue'>Part 4 - Limitations of the WebFormsViewEngine</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/03/01/mvccontrib-grid-part-5-the-action-syntax"><span
+     style='color:royalblue'>Part 5 - The Action Syntax</span></a></span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Internally, the new MvcContrib grid makes use of the</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>GridModel</b>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>and</span><span style='font-size:9.0pt;
+color:black'>&nbsp;<b>GridRenderer</b>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>classes to create the grid definition and then render it. It is
+possible to make use of these classes yourself to customise the grid.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Grid Models</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The GridModel stores the definition for the grid. That is, it
+contains column definitions, custom attributes and the renderer to use (see
+below). Each time you call a method on the Grid class it is delegated to the
+underlying GridModel. For example, calling the</span><span style='font-size:
+9.0pt;color:black'>&nbsp;<b>Columns</b>&nbsp;</span><span style='font-size:
+9.0pt;color:black'>defines a collection of GridColumn objects which are
+instantiated and stored in the GridModel:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>               column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>               column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Instead of defining columns in your view, you can create your own
+GridModel and then pass this object to a call to Html.Grid:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:red'>class</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> PersonGridModel </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> GridModel</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Person</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>public</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> PersonGridModel</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>()</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        Column.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>For</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>=&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>Name</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        Column.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>For</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>=&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>DateOfBirth</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>}</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>WithModel</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>new</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>
+PersonGridModel</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>())</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> </span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Note that GridModels aren’t limited just to column definitions.
+Everything that you could invoke by calling Html.Grid has an equivalent method
+on the GridModel (eg setting Empty Text, custom section overrides, header
+attributes etc).</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>There are several advantages of this approach:</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>If you have large grid definitions using a
+     GridModel can help to keep the view uncluttered.</span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>It is easy to re-use the same grid in multiple
+     locations.</span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>You can re-use common grid code through
+     inheritance.</span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>There is one other benefit to using a GridModel. Visual Basic 2008
+doesn’t support Lambda Statements meaning that it is not possible to use the
+Columns() method on the Grid directly. By using a grid model then you can still
+make use of the grid from within VB (if you’re that way inclined).</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Grid Renderers</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Internally, it is the job of the GridRenderer to take a GridModel
+and render it to the output stream. The default GridRenderer is the</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>HtmlTableGridRenderer</b></span><span
+style='font-size:9.0pt;color:black'>. Which, surprisingly enough, renders the
+grid as an HTML table. By specifying your own GridRenderer, you can completely
+alter how the grid is rendered without resorting to completely rewriting the
+grid component.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>For example, in one of my larger ASP.NET MVC applications I
+frequently have the need to output data as an Excel spreadsheet and I used the
+grid to do so. In order to make this work I had to inherit from GridBase and
+override the methods related to generating output and then define a new set of
+helper methods to cater for the various Grid overloads. In the end I ended up
+with several overloads like this:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:red'>string</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> viewDataKey, Action</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:green'>&lt;</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:red'>string</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> viewDataKey, Action</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:green'>&lt;</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns,
+Action</span><span style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IGridSections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> sections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:red'>string</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> viewDataKey, IDictionary htmlAttributes, Action</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:red'>string</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> viewDataKey, IDictionary htmlAttributes, Action</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns,
+Action</span><span style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IGridSections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> sections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, IEnumerable</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&lt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>T</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&gt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> dataSource, Action</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:green'>&lt;</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, IEnumerable</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&lt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>T</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&gt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> dataSource, Action</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:green'>&lt;</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns,
+Action</span><span style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IGridSections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> sections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, IEnumerable</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&lt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>T</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&gt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> dataSource, IDictionary htmlAttributes, Action</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>public</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>static</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ExcelGrid</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>this</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> HtmlHelper
+helper, IEnumerable</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&lt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>T</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&gt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> dataSource, IDictionary htmlAttributes, Action</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IRootGridColumnBuilder</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> columns,
+Action</span><span style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>IGridSections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>T</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> sections</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> where T </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>class</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>…which was largely a duplication of the Grid overloads in
+mvccontrib. They could then be used like this:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>ExcelGrid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>, column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>});</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>…which would produce the grid as Excel-XML.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>With the new grid I can create a new GridRenderer implementation
+and then use it like this, with no need to create additional HtmlHelper
+extensions:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Column</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>               column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>               column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>RenderUsing</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>new</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>
+ExcelGridRenderer</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>&lt;</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>Person</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>&gt;());</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The ExcelGridRenderer</span><span style='font-size:9.0pt;
+color:black'>&nbsp;</span><span style='font-size:9.0pt;color:black'>could
+inherit from GridRenderer</span><span style='font-size:9.0pt;color:black'>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>and override the methods needed for
+constructing the grid header, footer, rows etc. You may notice that the methods
+on GridRenderer are very similar to those on the GridBase class. This is not a
+coincidence - most of the code in the GridRenderer is re-used from the old
+GridBase.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Note it is also possible to specify the renderer from within a
+GridModel:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:red'>class</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> PersonGridModel </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>:</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> GridModel</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&lt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Person</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>public</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>
+PersonGridModel</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>()</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        Column.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>For</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>=&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>Name</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        Column.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>For</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>=&gt;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>DateOfBirth</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>)</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        RenderUsing</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>new</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>
+ExcelGridRenderer</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&lt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>Person</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>&gt;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>())</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>}</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Hopefully this brief introduction to GridRenderers and GridModels
+shows how it is possible to make your grids extendable and reusable.</span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'><span class=msoDel><del datetime="2009-02-28T16:00">In my next
+post I’m going to focus on Paging in more detail.</del></span>My next post
+covers working around some of the issues of the WebForms View Engine.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div style='border:solid royalblue 1.0pt;padding:3.0pt 0in 3.0pt 3.0pt;
+background:#95C8FA'>
+
+<p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
+#95C8FA;border:none;padding:0in'><b><span style='font-size:10.5pt;color:white'>MvcContrib
+Grid Part 4 - Limitations of the WebFormsViewEngine</span></b></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal'><span style='font-size:9.0pt;color:black'>February 28, 2009 – 4:58 pm</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is part 4 of a series about the new MvcContrib grid.</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/08/rewriting-the-mvccontrib-grid/"><span
+     style='color:royalblue'>Part 1 - Introduction</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/22/rewriting-the-mvccontrib-grid-part-2-new-syntax/"><span
+     style='color:royalblue'>Part 2 - New Syntax</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/23/rewriting-the-mvccontrib-grid-part-3-gridmodels-and-gridrenderers"><span
+     style='color:royalblue'>Part 3 - GridModels and GridRenderes</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/28/mvccontrib-grid-part-4-limitations-of-the-webformsviewengine"><span
+     style='color:royalblue'>Part 4 - Limitations of the WebFormsViewEngine</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/03/01/mvccontrib-grid-part-5-the-action-syntax"><span
+     style='color:royalblue'>Part 5 - The Action Syntax</span></a></span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>I was recently asked a question by one of the other MvcContrib
+comitters, Will Shaver, about why the</span><span style='font-size:9.0pt;
+color:black'>&nbsp;<b>ToString</b>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>method of the Grid does not return the HTML for the grid, but
+instead writes the html its internal textwriter and then returns null.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is the offending piece of code:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#0600FF'>public</span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><span style='font-size:
+9.0pt;font-family:"Courier New";color:#0600FF'>override</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>string</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> ToString</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>()</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         _gridModel.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>Renderer</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>Render</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>_gridModel,
+DataSource, _writer, context</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:black'>)</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>return</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> null</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:black'>}</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This means that when ToString is called on the grid the
+GridRenderer will render the appropriate HTML to a textwriter (which is
+actually the HTTP Response output stream). From the end user’s perspective,
+this shouldn’t make a difference because it ‘appears’ that the grid is being
+rendered at the correct location:</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>People</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>...</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>ToString is implicitly called at the end of the &lt;%= %&gt; block
+which causes the rendering to occur.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>What a silly way to create some html!</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Yes, it may seem like a strange way of doing things but there is
+actually a good reason for this. In order to support rendering Partials for
+parts of the grid it is necessary that the grid is</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>written directly to the response
+stream</b>&nbsp;</span><span style='font-size:9.0pt;color:black'>due to
+limitations of the WebForms View Engine.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>What about passing a custom TextWriter to IView.Render?</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The ASP.NET MVC IView represents the view that will be rendered.
+Take a look at the signature for its Render method:</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#0600FF'>void</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Render</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>(</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>ViewContext
+viewContext, TextWriter writer</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:black'>)</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:green'>;</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>You might think that it would be possible to pass a StringWriter
+to the Render method, capture the output of the partial view and then store it
+internally in the grid. Unfortunately, this isn’t possible. I’m guessing the
+TextWriter parameter here is a hook for a future extensibility point - the
+current implementation of WebFormView</span><span style='font-size:9.0pt;
+color:black'>&nbsp;<b>completely ignores the parameter.</b>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>In fact, internally WebFormView has to make
+use of HttpContext.Current in order to work around the limitation of .aspx/web
+forms.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>What about the BlockRenderer?</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>MvcContrib contains a class called the</span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/UI/BlockRenderer.cs"><span
+style='color:royalblue'>BlockRenderer</span></a></span><span style='font-size:
+9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;color:black'>that
+can be used to capture the outputs of a view by making use of a Response
+Filter. While I could have used this approach, it suffers from several major
+flaws. In order for this approach to work, it is necessary to Flush the
+response stream before inserting the CapturingResponseFilter. This causes
+problems if you’re trying to do anything funky with HTTP Headers, or even
+something as simple as trying to set the Content Type. Check out</span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'><a href="http://forums.asp.net/p/1376598/2896402.aspx"><span
+style='color:royalblue'>this post on the MVC Forums</span></a></span><span
+style='font-size:9.0pt;color:black'>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>for more details. There are other hacks that can be used, but none
+of them are ideal</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>In the end I decided the least evil approach was to render to
+Response.Output from within ToString as it causes the fewest problems for the
+end user. Hopefully with the release of ASP.NET 4.0 the MVC Team will be
+allowed to make some changes to the underlying WebForms engine in order to make
+it possible to capture view output.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div style='border:solid royalblue 1.0pt;padding:3.0pt 0in 3.0pt 3.0pt;
+background:#95C8FA'>
+
+<p class=MsoNormal style='margin-bottom:7.5pt;line-height:normal;background:
+#95C8FA;border:none;padding:0in'><b><span style='font-size:10.5pt;color:white'>MvcContrib
+Grid Part 5 - The Action Syntax</span></b></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal'><span style='font-size:9.0pt;color:black'>March 1, 2009 – 2:33 pm</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>This is part 5 of a series about the new MvcContrib grid.</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/08/rewriting-the-mvccontrib-grid/"><span
+     style='color:royalblue'>Part 1 - Introduction</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/22/rewriting-the-mvccontrib-grid-part-2-new-syntax/"><span
+     style='color:royalblue'>Part 2 - New Syntax</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/23/rewriting-the-mvccontrib-grid-part-3-gridmodels-and-gridrenderers"><span
+     style='color:royalblue'>Part 3 - GridModels and GridRenderes</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/02/28/mvccontrib-grid-part-4-limitations-of-the-webformsviewengine"><span
+     style='color:royalblue'>Part 4 - Limitations of the WebFormsViewEngine</span></a></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'><a
+     href="http://www.jeremyskinner.co.uk/2009/03/01/mvccontrib-grid-part-5-the-action-syntax"><span
+     style='color:royalblue'>Part 5 - The Action Syntax</span></a></span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>The rewritten MvcContrib grid now has an alternative syntax thanks
+to the work of</span><span style='font-size:9.0pt;color:black'>&nbsp;</span><span
+style='font-size:9.0pt;color:black'><a href="http://www.primedigit.com/"><span
+style='color:royalblue'>Will Shaver</span></a>. This syntax is called the
+‘Action’ syntax as it makes heavy use of the System.Action delegate.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Enabling the ActionSyntax</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>By default, the methods associated with the Action Syntax will not
+show up as they are extension methods that live in a different namespace to the
+rest of the grid. Out of the box only the default syntax will work. To enable
+the Action Syntax you’ll need to either import the</span><span
+style='font-size:9.0pt;color:black'>&nbsp;<b>MvcContrib.UI.Grid.ActionSyntax</b>&nbsp;</span><span
+style='font-size:9.0pt;color:black'>namespace either in your .aspx view…</span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>@</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Import
+Namespace</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>=</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;MvcContrib.UI.Grid.ActionSyntax&quot;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>…or in your web.config’s namespace import section:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;system.web&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>  </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>&lt;pages&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>&lt;namespaces&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>        </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;add</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#009900'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#000066'>namespace</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#009900'>=</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:red'>&quot;MvcContrib.UI.Grid.ActionSyntax&quot;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#009900'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>/&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>    </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>&lt;/namespaces&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>  </span><b><span style='font-size:
+9.0pt;font-family:"Courier New";color:black'>&lt;/pages&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><b><span style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;/system.web&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><b><span style='font-size:18.0pt;
+color:black'>Comparing the two syntaxes</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>There are several differences between the two syntaxes. Here is a
+grid definition using the default syntax:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         .</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Named</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+ID&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Gender</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>    </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;{0:d}&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;View
+Person&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>)</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>.</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#9900CC'>Named</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>(</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;&quot;</span><b><span style='font-size:9.0pt;font-family:
+"Courier New";color:#006600'>)</span></b><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>.</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#9900CC'>Partial</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;ViewPersonPartial&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#FF6600'>//Example of
+using a Partial view for complex cells</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>RowStart</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>row </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>string</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;&lt;tr{0}&gt;&quot;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>, row.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>IsAlternate</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>?</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;style=\&quot;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>background-color</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>:</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>#CCDDCC\</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>:</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>))</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#110000'>  </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Here we’re specifying that the</span><span style='font-size:9.0pt;
+color:black'>&nbsp;<b>View Person</b>&nbsp;</span><span style='font-size:9.0pt;
+color:black'>column is a custom column that should be rendered using a Partial
+View, and the start of every alternate row has a background colour**.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Here is the same grid defined using the ActionSyntax:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Named</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+ID&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Gender</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;View
+Person&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>)</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>.</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#9900CC'>Named</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>(</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;&quot;</span><b><span style='font-size:9.0pt;font-family:
+"Courier New";color:#006600'>)</span></b><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>.</span><span style='font-size:9.0pt;
+font-family:"Courier New";color:#9900CC'>Action</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>p </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>       </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                     &lt;td
+style=&quot;font-weight:bold&quot;&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                         </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>ActionLink</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;View
+Person&quot;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;Show&quot;</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:#110000'>, </span><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:blue'>new</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> id </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> p.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                      &lt;/td&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>});</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>RowStart</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>((</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>p,row</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>  </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>     </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>             </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>if</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>row.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>IsAlternate</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                   &lt;tr
+style=&quot;background-color:#CCDDCC&quot;&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>             </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>  </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>}</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>  </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>else</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>  </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 &lt;tr&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>             </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>&lt;%</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>}</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#110000'>    </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>})</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Render</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>();</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Note the following differences:</span></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>The ActionSyntax requires the use of &lt;% %&gt;
+     tags rather than &lt;%= %&gt; tags.</span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>The ActionSyntax requires that you end your grid
+     definition with a call to the Render method or</span><span
+     style='font-size:9.0pt'>&nbsp;<b>the grid will not show up if you do not
+     call Render.</b></span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>You must terminate the call to Render with a
+     semicolon</span></li>
+ <li class=MsoNormal style='color:black;line-height:normal'><span
+     style='font-size:9.0pt'>You can directly embed HTML in the grid definition
+     rather than using strings or partial views</span></li>
+</ul>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>Both syntaxes have their advantages and disadvantages but the end
+result is the same. You’re free to use whichever one you prefer.</span></p>
+
+<p class=MsoNormal style='line-height:normal'><span style='font-size:9.0pt;
+color:black'>**Both the partial view/actionsyntax approach are designed only
+for complex column definitions. This example was quite contrived and you could
+achieve the same result with a far simpler approach:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>&lt;style
+type=&quot;text/css&quot;&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>.gridrow_alternate {
+background-color:#CCDDCC; }</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>&lt;/style&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:black'>&lt;%</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Grid</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>Model</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>         .</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Columns</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>column </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Named</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;Person
+ID&quot;</span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Name</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Gender</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>    </span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> x.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>DateOfBirth</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>)</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Format</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;{0:d}&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>);</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                 column.</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#990099'>For</span></b><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Html.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>ActionLink</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;View
+Person&quot;</span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'>, </span><span style='font-size:9.0pt;font-family:"Courier New";
+color:#CC0000'>&quot;Show&quot;</span><span style='font-size:9.0pt;font-family:
+"Courier New";color:#110000'>, </span><b><span style='font-size:9.0pt;
+font-family:"Courier New";color:blue'>new</span></b><span style='font-size:
+9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>{</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> id </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> p.</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Id</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>}))</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+normal;background:#F9F9F9;vertical-align:top'><span style='font-size:9.0pt;
+font-family:"Courier New";color:#110000'>                           .</span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#9900CC'>Attributes</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>x </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:blue'>new</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> Hash</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>(</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'>style </span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>=&gt;</span></b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#110000'> </span><span
+style='font-size:9.0pt;font-family:"Courier New";color:#CC0000'>&quot;font-weight:bold&quot;</span><b><span
+style='font-size:9.0pt;font-family:"Courier New";color:#006600'>));</span></b></p>
+
+<p class=MsoNormal style='line-height:normal;background:#F9F9F9;vertical-align:
+top'><span style='font-size:9.0pt;font-family:"Courier New";color:#110000'>    
+    </span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#006600'>})</span></b><span style='font-size:9.0pt;font-family:"Courier New";
+color:#110000'> </span><b><span style='font-size:9.0pt;font-family:"Courier New";
+color:black'>%&gt;</span></b></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<span style='font-size:12.0pt;line-height:115%;font-family:"Verdana","sans-serif"'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><span class=author>Credits:</span></p>
+
+<p class=MsoNormal><span class=author><a
+href="http://www.jeremyskinner.co.uk/author/jskinner/"
+title="View all posts by Jeremy Skinner"><span style='color:windowtext;
+text-decoration:none'>Jeremy Skinner</span></a></span> </span><span
+style='position:relative;top:3.0pt'>http://www.jeremyskinner.co.uk</span></p>
+
+</div>
+
+</body>
+
+</html>

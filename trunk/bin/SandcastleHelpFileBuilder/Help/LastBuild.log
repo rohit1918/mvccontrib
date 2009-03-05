@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shfbBuild product="Sandcastle Help File Builder Utilities" version="1.8.0.1" projectFile="C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\MvcContrib.shfbproj" started="3/4/2009 11:02:08 AM">
+<buildStep step="Initializing">
+</buildStep>
+<buildStep step="ClearWorkFolder">
+Clearing working folder...
+    Last step completed in 00:00:07.4010
+</buildStep>
+<buildStep step="Failed">
+
+SHFB: Error BE0065: BUILD FAILED: Access to the path 'all-wcprops' is denied.
+
+</buildStep>
+</shfbBuild>

@@ -1,0 +1,1206 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:"Trebuchet MS";
+	panose-1:2 11 6 3 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+h1
+	{mso-style-link:"Heading 1 Char";
+	margin-right:0in;
+	margin-left:0in;
+	font-size:24.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+h4
+	{mso-style-link:"Heading 4 Char";
+	margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p
+	{margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+pre
+	{mso-style-link:"HTML Preformatted Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:10.0pt;
+	font-family:"Courier New";}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma","sans-serif";}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+span.Heading4Char
+	{mso-style-name:"Heading 4 Char";
+	mso-style-link:"Heading 4";
+	font-family:"Times New Roman","serif";
+	font-weight:bold;}
+p.postdate, li.postdate, div.postdate
+	{mso-style-name:postdate;
+	margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+p.postinfo, li.postinfo, div.postinfo
+	{mso-style-name:postinfo;
+	margin-right:0in;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+span.apple-converted-space
+	{mso-style-name:apple-converted-space;}
+span.HTMLPreformattedChar
+	{mso-style-name:"HTML Preformatted Char";
+	mso-style-link:"HTML Preformatted";
+	font-family:"Courier New";}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma","sans-serif";}
+.MsoPapDefault
+	{margin-bottom:10.0pt;
+	line-height:115%;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link=blue vlink=purple>
+
+<div class=Section1>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+16.5pt'><span style='font-size:16.5pt;font-family:"Trebuchet MS","sans-serif";
+color:#CC6600;letter-spacing:-.75pt'>SubControllers in ASP.NET MVC</span></p>
+
+<p class=MsoNormal style='margin-bottom:3.75pt;line-height:11.25pt'><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><br>
+I should have known something was up when I caught</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://www.jeffreypalermo.com/"><span style='color:#027EE7;text-decoration:
+none'>Jeffrey Palermo</span></a></span><span style='font-size:8.5pt;font-family:
+"Verdana","sans-serif";color:#202123'>&nbsp;</span><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>(my boss at</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://headspringsystems.com/"><span style='color:#027EE7;text-decoration:
+none'>Headspring</span></a>) browsing the ASP.NET MVC Preview 5 source.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>We're working on a enterprise
+web application using ASP.NET MVC.&nbsp; That week one of our tasks was to
+create a rather complex page full of robust components that did intricate
+little things like field-level security.&nbsp; We wanted the ability to push
+behavior decisions to smaller and smaller pieces, and reuse those pieces on
+other pages.&nbsp; We needed testability, dependency injection and minimal
+friction.&nbsp; We needed composition.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Since I have been (hardly)
+working on components of</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a href="http://codecampserver.org"><span style='color:#027EE7;
+text-decoration:none'>CodeCampServer</span></a></span><span style='font-size:
+8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>and
+hanging out with others interested in MVC I had heard about these SubController
+things.&nbsp; &quot;We need SubControllers!&quot; and &quot;When</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;<b>they</b>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>finally
+put in SubControllers we can do X!&quot; &quot;RenderAction is troublesome
+because of Y and partials are limited for reasons of Z!&quot;</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Admittedly I had no idea what
+they were talking about, but I sort of fell in line and waited for something
+cool to come out of Redmond.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Still, since he's literally
+writing</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a href="http://manning.com/palermo/"><span style='color:#027EE7;
+text-decoration:none'>the book on ASP.NET MVC</span></a>, I shouldn't have been
+surprised when after a few hours of keyboard clicking Jeffrey looked up and
+said, &quot;Hey, I just committed SubControllers.&quot;</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Then a few days later he
+wrote a</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://groups.google.com/group/mvccontrib-discuss/browse_thread/thread/b050e21fe322c08a"><span
+style='color:#027EE7;text-decoration:none'>sample application and sent some
+info to the MvcContrib mailing list</span></a>.&nbsp; He's been heads-down on
+our project and I've seen a few questions online about how to create reusable
+components in ASP.NET MVC, so I asked Jeffrey if I could do a write-up
+here.&nbsp; To be clear, I didn't invent, write, or even imagine
+SubControllers.. it's all Jeffrey… but I have been using them with success for
+a few weeks.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>You may want to</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/Samples/MvcContrib.Samples.SubControllers/"><span
+style='color:#027EE7;text-decoration:none'>check out the sample</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>before
+I dive into the details.&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Here's a few screenshots of
+the sample in action.&nbsp; The rendered page (each component there is rendered
+by an isolated SubController's action) :</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><a
+href="http://mhinze.com/wp-content/uploads/2008/09/image4.png"><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#027EE7;
+text-decoration:none'><img border=0 width=383 height=184 id="Picture 1"
+src="SubControllers%20in%20ASP_files/image001.png" alt=image></span></a></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>A nested SubController:</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><a
+href="http://mhinze.com/wp-content/uploads/2008/09/image5.png"><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#027EE7;
+text-decoration:none'><img border=0 width=504 height=159 id="Picture 2"
+src="SubControllers%20in%20ASP_files/image002.png" alt=image></span></a><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>What is this
+&quot;SubController&quot;?</span></b></p>
+
+<ul type=disc>
+ <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+     style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>Derives from
+     SubController which derives from Controller and implements an
+     ISubController interface.&nbsp; But it is a controller, so it:</span></li>
+ <ul type=circle>
+  <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+      style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>has its own
+      view - works just like regular controller with standard conventions</span></li>
+  <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+      style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>has siloed
+      ViewData - it does not share with other controllers</span></li>
+  <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+      style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>has access to
+      query string and the rest of the controller context</span></li>
+ </ul>
+ <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+     style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>Provides a
+     System.Action (a delegate) that can be placed into ViewData and rendered
+     in the host view with a call to Invoke()</span></li>
+ <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+     style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>Is a parameter
+     on action methods in your hosting controllers</span></li>
+ <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+     style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>Can be
+     infinitely nested</span></li>
+ <li class=MsoNormal style='color:#202123;line-height:12.0pt'><span
+     style='font-size:8.5pt;font-family:"Verdana","sans-serif"'>Is constructed
+     with an IModelBinder that spins up an instance from the container</span></li>
+</ul>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>So let's take each of these
+in turn.</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>How it works</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>First, a look at the</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/ISubController.cs"><span
+style='color:#027EE7;text-decoration:none'>ISubController</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>interface:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+interface </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>ISubController </span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#202123'>: </span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#2B91AF'>IController</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Action
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>GetResult(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ControllerBase
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>parentController);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Pretty straight
+forward.&nbsp; It's a method named GetResult that takes a</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://msmvps.com/blogs/luisabreu/archive/2008/09/08/the-mvc-framework-the-controller-lifecycle-ii.aspx"><span
+style='color:#027EE7;text-decoration:none'>ControllerBase</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>parameter
+and returns an Action.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Here is the</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/SubController.cs"><span
+style='color:#027EE7;text-decoration:none'>SubController class</span></a>'
+implementation of that method:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+virtual </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>Action </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>GetResult(</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>ControllerBase </span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#202123'>parentController)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>RequestContext
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>requestContext
+= GetNewRequestContextFromController(parentController);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>()
+=&gt; Execute(requestContext);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Ok.&nbsp; Now we are getting
+somewhere.&nbsp; This</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://msdn.microsoft.com/en-us/library/system.action.aspx"><span
+style='color:#027EE7;text-decoration:none'>System.Action</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>is a
+delegate with no arguments and a return type of void.&nbsp; What it's actually
+doing is encapsulating a regular Controller's Execute method.&nbsp; Which pops
+off the controller action method: stuffs ViewData and renders the View and all
+that.&nbsp; The parameterless delegate Action is new in .NET 3.5 (though
+Action&lt;T&gt; was introduced in .NET 2.0).</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Anyway, that's the real meaty
+bit of SubControllers:</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;<b>providing a delegate that can be put into ViewData</b></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>So the next thing that has to
+happen is the delegate has to be created to represent the SubController's
+action method (that returns an ActionResult). This is where we start using the
+convention of naming the SubController's action method in an obvious way. We'll
+come back to this convention.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Let's take a look at the rest
+of the SubController class:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>RequestContext
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>GetNewRequestContextFromController(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ControllerBase
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>parentController)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>RouteData
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>parentRouteData
+= parentController.ControllerContext.RouteData;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>var </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>routeData = </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>new </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>RouteData</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(parentRouteData.Route,
+parentRouteData.RouteHandler);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>string
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>controllerName
+= GetControllerName();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+routeData.Values[</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#A31515'>&quot;controller&quot;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>] = controllerName;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+routeData.Values[</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#A31515'>&quot;action&quot;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>] = controllerName;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+new </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>RequestContext</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(parentController.ControllerContext.HttpContext,
+routeData);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+string </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>GetControllerName()</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>GetType().Name.ToLowerInvariant().Replace(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;subcontroller&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>, </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>).Replace(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;controller&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>, </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>The important thing to note
+is that the GetControllerName() method returns the part of the controller name
+minus the word &quot;controller&quot; and &quot;subcontroller&quot;.&nbsp; So
+if your SubController is named ProductDetailSubController that method would
+return &quot;ProductDetail&quot;.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>The other important thing to
+note is that in the GetNewRequestContextFromController(…) method the action key
+of the routeData is set to this same value.&nbsp; In our example,
+&quot;ProductDetail&quot; is the action.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>When the SubController's
+delegate is eventually invoked it will execute a method on the SubController
+with the name &quot;ProductDetail&quot;.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><b><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Therefore the convention is
+to use an action method with the same name as the SubController (minus the text
+&quot;subcontroller&quot; or &quot;controller&quot;).</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>So far we see that
+SubControllers give us a delegate (System.Action) that represents an invocation
+of its method with the conventional name.</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>Hello SubControllers</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Let's take a quick detour to
+see what a SubController might look like:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+class </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>FirstLevelSubController </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>: </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>SubController</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ViewResult
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>FirstLevel()</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+ViewData[</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#A31515'>&quot;text&quot;</span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#202123'>] = </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#A31515'>&quot;I am a first level
+controller&quot;</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>View();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>This is straight out of
+Jeffrey's example.&nbsp; Looks just like a regular controller except it derives
+from SubController and has one action method with the conventional name.
+FirstLevelSubController's GetResult() will return a delegate that represents
+the FirstLevel() method.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>By the way, you test
+SubControllers exactly the same way as you would regular controllers: execute
+the action method and assert that the ActionResult is in the proper state with
+the correct ViewData and ViewName.</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>Using SubControllers from
+host Controllers</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Now that we have the
+System.Action delegate we need to get it into ViewData.&nbsp; This is how I
+started out doing it:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+class </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>HomeController </span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#202123'>: </span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#2B91AF'>Controller</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ActionResult
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>Index(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>FirstLevelSubController
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>firstLevel)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+ViewData[</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#A31515'>&quot;firstLevel&quot;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>] = firstLevel.GetResult(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>this</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>View();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>… and so on, and so on, for
+each SubController in the parameter list.&nbsp; This works fine.&nbsp; The
+System.Action gets put in ViewData and we can invoke it from the view just like
+we expect.&nbsp; Testing it is straightforward as well, just mock the
+SubController and expect that its action gets put in ViewData:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>[</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Test</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>]</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+void </span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>Index_puts_subcontroller_action_into_viewdata()</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>var </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>controller = </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>new </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>HomeController</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>var </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>firstLevelSubController
+= </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>MockRepository</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.GenerateStub&lt;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>FirstLevelSubController</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&gt;();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Action
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>stubAction
+= () =&gt; { };</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+firstLevelSubController.Stub(sub =&gt;
+sub.GetResult(controller)).Return(stubAction);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>var </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>result =
+controller.Index(firstLevelSubController) </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:blue'>as </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>ViewResult</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'> 
+  </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Assert</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.That(result.ViewData.Get&lt;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Action</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&gt;(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;firstLevel&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>), </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Is</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.EqualTo(stubAction));</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Yeah, straight forward as in
+straight forward but not as in easy or concise (especially when it comes to
+actions that depend on</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;<i>many</i>&nbsp;</span><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>SubControllers - imagine 5 or
+7 or 10 stubs in there..)..</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>Going frictionless</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Enter the</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/Filters/SubControllerActionToViewDataAttribute.cs"><span
+style='color:#027EE7;text-decoration:none'>SubControllerActionToViewDataAttribute</span></a>!&nbsp;
+This</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://weblogs.asp.net/scottgu/archive/2008/07/14/asp-net-mvc-preview-4-release-part-1.aspx"><span
+style='color:#027EE7;text-decoration:none'>ActionFilterAttribute</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>cycles
+through the host action's parameters (filterContext.ActionParameters - a neat
+trick) and puts each SubController parameter's System.Action into ViewData:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+class </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>SubControllerActionToViewDataAttribute </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>: </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ActionFilterAttribute</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+override void </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>OnActionExecuting(</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>ActionExecutingContext </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>filterContext)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>foreach
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>var </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>pair </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>in </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>filterContext.ActionParameters)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>object
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>value
+= pair.Value;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>if</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(value == </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>null</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>               
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>continue</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>if </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>typeof</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ISubController</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>).IsAssignableFrom(value.GetType()))</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'> 
+              </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:blue'>var </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>controller = (</span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#2B91AF'>ISubController</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>) value;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>               
+filterContext.Controller.ViewData.Add(pair.Key,
+controller.GetResult(filterContext.Controller));</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>base</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.OnActionExecuting(filterContext);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>We have added a second
+convention:</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;<b>the SubController's parameter variable name (pair.Key
+above) is the key of the respective System.Action in ViewData.</b></span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>The concern now becomes
+testing that the attribute works and that the your controllers have the
+attribute, not testing that individual SubController's System.Actions are put
+in ViewData.</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib.UnitTests/Filters/SubControllerActionToViewDataAttributeTester.cs"><span
+style='color:#027EE7;text-decoration:none'>These tests are in MvcContrib</span></a>.
+This frees developers from the weight of having to write cumbersome tests.</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>In fact, the</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/SubController.cs"><span
+style='color:#027EE7;text-decoration:none'>SubController base class in
+MvcContrib</span></a></span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>has this attribute allowing for infinite nesting.</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>&quot;Calling&quot; the
+SubController from the view</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Once we pop that
+System.Action delegate into ViewData we can invoke it straight from the host
+action's view:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123;
+background:#FFEE62'>&lt;%</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'> ViewData.Get&lt;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>Action</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:#202123'>&gt;(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;firstLevel&quot;</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>).Invoke(); <span
+style='background:#FFEE62'>%&gt;</span></span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>The strong-typed</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://codebetter.com/blogs/jeffrey.palermo/archive/2008/03/26/asp-net-mvc-goodbye-smartbag-hello-viewdataextensions.aspx"><span
+style='color:#027EE7;text-decoration:none'>Get&lt;T&gt;() method is another
+feature</span></a></span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/ViewDataExtensions.cs"><span
+style='color:#027EE7;text-decoration:none'>built into MvcContrib</span></a>.</span></p>
+
+<p class=MsoNormal style='line-height:12.0pt'><b><span style='font-size:12.0pt;
+font-family:"Verdana","sans-serif";color:#202123'>Dependency injection</span></b></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Finally, we definitely need
+rich dependency injection support in these SubControllers.</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'><a
+href="http://www.codeplex.com/aspnet/Release/ProjectReleases.aspx?ReleaseId=16775"><span
+style='color:#027EE7;text-decoration:none'>MVC Preview 5</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>introduced
+the<a
+href="http://weblogs.asp.net/scottgu/archive/2008/09/02/asp-net-mvc-preview-5-and-form-posting-scenarios.aspx"><span
+style='color:#027EE7;text-decoration:none'>IModelBinder</span></a></span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>interface
+that is responsible for constructing action parameters.&nbsp; We can add them
+in Global.asax or wherever the controllers are constructed:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>protected
+void </span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>Application_Start()</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+RegisterRoutes(</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>RouteTable</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>.Routes);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ModelBinders</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.DefaultBinder
+= </span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>new
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>SubControllerBinder</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>();</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>Here is the basic
+implementation of</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/MVCContrib/Binders/SubControllerBinder.cs"><span
+style='color:#027EE7;text-decoration:none'>SubControllerBinder in MvcContrib</span></a>:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+class </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>SubControllerBinder </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>: </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>DefaultModelBinder</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>protected
+override object </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>ConvertType(</span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#2B91AF'>CultureInfo </span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>culture, </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>object </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>value, </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Type </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>destinationType)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>if </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>typeof </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ISubController</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>).IsAssignableFrom(destinationType))</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>object
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>instance
+= CreateSubController(destinationType);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>if </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(instance == </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>null</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>               
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>throw
+new </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>InvalidOperationException</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(destinationType
++ </span><span style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;
+not created properly.&quot;</span><span style='font-size:10.0pt;font-family:
+"Courier New";color:#202123'>);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>instance;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+base</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.ConvertType(culture,
+value, destinationType);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>///&lt;summary&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>   
+/// </span><span style='font-size:10.0pt;font-family:"Courier New";color:green'>Creates
+the subcontroller given its type.  Override this method to wire into an IoC
+container</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:green'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>///&lt;/summary&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>   
+///&lt;param name=&quot;destinationType&quot;&gt;</span><span style='font-size:
+10.0pt;font-family:"Courier New";color:green'>The type of subcontroller</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:gray'>&lt;/param&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>   
+///&lt;returns&gt;</span><span style='font-size:10.0pt;font-family:"Courier New";
+color:green'>an object instance</span><span style='font-size:10.0pt;font-family:
+"Courier New";color:gray'>&lt;/returns&gt;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:gray'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+virtual object </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>CreateSubController(</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>Type </span><span style='font-size:
+10.0pt;font-family:"Courier New";color:#202123'>destinationType)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'> 
+  {</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>Activator</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.CreateInstance(destinationType,
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>true</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>And you can wire this up to a
+container with ease:</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+class </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#2B91AF'>StructureMapSubControllerBinder </span><span style='font-size:
+10.0pt;font-family:"Courier New";color:#202123'>: </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>SubControllerBinder</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>public
+override object </span><span style='font-size:10.0pt;font-family:"Courier New";
+color:#202123'>CreateSubController(</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#2B91AF'>Type </span><span style='font-size:
+10.0pt;font-family:"Courier New";color:#202123'>destinationType)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>object
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>instance
+= </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>ObjectFactory</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>.GetInstance(destinationType);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>if </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(instance == </span><span
+style='font-size:10.0pt;font-family:"Courier New";color:blue'>null</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>)</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+{</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>           
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>throw
+new </span><span style='font-size:10.0pt;font-family:"Courier New";color:#2B91AF'>InvalidOperationException</span><span
+style='font-size:10.0pt;font-family:"Courier New";color:#202123'>(destinationType
++ </span><span style='font-size:10.0pt;font-family:"Courier New";color:#A31515'>&quot;
+not registered with StructureMap&quot;</span><span style='font-size:10.0pt;
+font-family:"Courier New";color:#202123'>);</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>       
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:blue'>return
+</span><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>instance;</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>   
+}</span></p>
+
+<p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+12.0pt'><span style='font-size:10.0pt;font-family:"Courier New";color:#202123'>}</span></p>
+
+<p class=MsoNormal style='margin-top:3.75pt;margin-right:0in;margin-bottom:
+3.75pt;margin-left:0in;line-height:11.25pt'><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>So there you have it.&nbsp;
+You can</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a
+href="http://mvccontrib.googlecode.com/svn/trunk/src/Samples/MvcContrib.Samples.SubControllers/"><span
+style='color:#027EE7;text-decoration:none'>download and explore a complete
+working sample from MvcContrib</span></a>.&nbsp; If you have a suggestion for
+improvement</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'>&nbsp;</span><span style='font-size:8.5pt;font-family:"Verdana","sans-serif";
+color:#202123'><a href="http://mvccontrib.org"><span style='color:#027EE7;
+text-decoration:none'>MvcContrib</span></a></span><span style='font-size:8.5pt;
+font-family:"Verdana","sans-serif";color:#202123'>&nbsp;</span><span
+style='font-size:8.5pt;font-family:"Verdana","sans-serif";color:#202123'>is
+accepting patches.&nbsp; I have a few more posts in the queue about some
+intermediate usages and testing.</span></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
