@@ -1,4 +1,29 @@
 ------------------------------------------------------------------------
+r901 | Jeremy.Skinner | 2009-03-06 08:15:23 -0600 (Fri, 06 Mar 2009) | 1 line
+
+Build was failing to recent changes to TestHelper. 
+------------------------------------------------------------------------
+r900 | Jeremy.Skinner | 2009-03-06 07:59:44 -0600 (Fri, 06 Mar 2009) | 1 line
+
+Adding an additional implementation of IPagination that can work with pre-paged data. 
+------------------------------------------------------------------------
+r899 | eric.hexter | 2009-03-04 23:13:56 -0600 (Wed, 04 Mar 2009) | 2 lines
+
+Added binaries used to create documentation.  
+Automated documentation creation in nant.
+------------------------------------------------------------------------
+r898 | eric.hexter | 2009-03-04 09:10:45 -0600 (Wed, 04 Mar 2009) | 1 line
+
+Generated Documentation on MvcContrib and MvcContrib.TestHelpers
+------------------------------------------------------------------------
+r897 | Jeremy.Skinner | 2009-03-04 02:33:33 -0600 (Wed, 04 Mar 2009) | 1 line
+
+MVC RC2 binaries 
+------------------------------------------------------------------------
+r895 | mvccontrib | 2009-03-03 19:36:15 -0600 (Tue, 03 Mar 2009) | 1 line
+
+automatic check-in
+------------------------------------------------------------------------
 r893 | mvccontrib | 2009-03-03 17:35:31 -0600 (Tue, 03 Mar 2009) | 1 line
 
 automatic check-in
