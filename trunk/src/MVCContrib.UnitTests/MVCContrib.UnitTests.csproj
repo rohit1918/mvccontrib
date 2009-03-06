@@ -155,6 +155,7 @@
     <Compile Include="AcceptGetAttributeTester.cs" />
     <Compile Include="AcceptPostAttributeTester.cs" />
     <Compile Include="AssertionExtensions.cs" />
+    <Compile Include="CustomPaginationTester.cs" />
     <Compile Include="Filters\LayoutAttributeTester.cs" />
     <Compile Include="BaseViewTester.cs" />
     <Compile Include="Binders\SubControllerBinderTester.cs" />
@@ -254,7 +255,7 @@
     <Compile Include="MockValueProvider.cs" />
     <Compile Include="MvcRouteTester.cs" />
     <Compile Include="ConventionController\RescueTester.cs" />
-    <Compile Include="PaginationTester.cs" />
+    <Compile Include="LazyPaginationTester.cs" />
     <Compile Include="RouteDebuggerTester.cs" />
     <Compile Include="Routing\RegexRouteTester.cs" />
     <Compile Include="SimplyRestful\RestfulActionResolverTester.cs" />
