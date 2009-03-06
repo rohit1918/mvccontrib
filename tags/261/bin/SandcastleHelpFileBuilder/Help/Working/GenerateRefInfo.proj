@@ -1,0 +1,59 @@
+﻿<Project DefaultTargets="Generate" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <!-- Sandcastle Help File Builder Tasks.  http://www.codeplex.com/SHFB -->
+  <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.MRefBuilder" AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+  <UsingTask TaskName="SandcastleBuilder.Utils.MSBuild.XslTransform" AssemblyFile="$(SHFBROOT)\SandcastleBuilder.Utils.dll" />
+  <!-- Task properties -->
+  <PropertyGroup>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <DocInternals>false</DocInternals>
+    <SandcastlePath>C:\Program Files (x86)\Sandcastle\</SandcastlePath>
+    <WorkingFolder>C:\Program Files (x86)\EWSoftware\Sandcastle Help File Builder\Help\Working\</WorkingFolder>
+  </PropertyGroup>
+  <!-- The common targets require OutputPath to be valid -->
+  <PropertyGroup>
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <!-- Import the common targets -->
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <!-- This defines the dependencies for the Generate target -->
+  <PropertyGroup>
+    <GenerateDependsOn>
+      ResolveReferences;
+      BeforeGenerateRefInfo;
+      GenerateRefInfo;
+      AfterGenerateRefInfo
+    </GenerateDependsOn>
+  </PropertyGroup>
+  <Target Name="Generate" DependsOnTargets="$(GenerateDependsOn)" />
+  <!-- The Generate Ref Info target -->
+  <Target Name="GenerateRefInfo">
+    <!-- Run MRefBuilder.  Reference build items are added to this template by
+         the build process.  The ResolveReferences dependency target will
+         resolve them to absolute paths that can be passed to MRefBuilder
+         using the /dep command line option.  Assembly build items are added
+         by the build process to define the assemblies to reflect. -->
+    <MRefBuilder DocumentInternals="$(DocInternals)" SandcastlePath="$(SandcastlePath)" WorkingFolder="$(WorkingFolder)" Assemblies="@(Assembly)" References="@(ReferencePath)" />
+    <!-- Merge duplicate topics (if any) -->
+    <Copy SourceFiles="reflection.org" DestinationFiles="reflection.all" />
+    <XslTransform SandcastlePath="$(SandcastlePath)" WorkingFolder="$(WorkingFolder)" Transformations="ProductionTransforms\MergeDuplicates.xsl" InputFile="reflection.all" OutputFile="reflection.org" />
+  </Target>
+  <!-- The following targets may be overridden or replaced to perform
+       additional processing. -->
+  <Target Name="BeforeGenerateRefInfo" />
+  <Target Name="AfterGenerateRefInfo" />
+  <ItemGroup>
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.BrailViewEngine.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.Castle.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.FluentHtml.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.ModelAttributes.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.Ninject.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.SparkViewEngine.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.Spring.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.StructureMap.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.TestHelper.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MVCContrib.UnitTests.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.Unity.dll" />
+    <Assembly Include="C:\Code\OSS\mvccontrib\build\net-3.5.win32-MVCContrib-release\MvcContrib.XsltViewEngine.dll" />
+  </ItemGroup>
+</Project>
