@@ -9,7 +9,7 @@ using NUnit.Framework.SyntaxHelpers;
 namespace MvcContrib.UnitTests
 {
 	[TestFixture]
-	public class PaginationTester
+	public class LazyPaginationTester
 	{
 		[Test]
 		public void Should_create_pagination_with_default_page_size()

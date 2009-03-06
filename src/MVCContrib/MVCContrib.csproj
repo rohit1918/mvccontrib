@@ -109,6 +109,7 @@
     <Compile Include="ControllerFactories\IoCControllerFactory.cs" />
     <Compile Include="Filters\PostOnlyAttribute.cs" />
     <Compile Include="ISubController.cs" />
+    <Compile Include="Pagination\CustomPagination.cs" />
     <Compile Include="Pagination\IPagination.cs" />
     <Compile Include="Pagination\LazyPagination.cs" />
     <Compile Include="Pagination\PaginationHelper.cs" />
