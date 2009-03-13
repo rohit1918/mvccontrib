@@ -165,10 +165,8 @@
     <Compile Include="ControllerFactories\ControllerFactoryTestExtension.cs" />
     <Compile Include="ControllerFactories\UnityControllerFactoryTester.cs" />
     <Compile Include="ConventionController\AnotherTestController.cs" />
-    <Compile Include="ConventionController\ConventionControllerActionInvokerTester.cs" />
     <Compile Include="ConventionController\ConventionControllerTester.cs" />
     <Compile Include="ConventionController\CustomActionResult.cs" />
-    <Compile Include="ConventionController\DefaultActionController.cs" />
     <Compile Include="ConventionController\TestBinder.cs" />
     <Compile Include="ConventionController\TestController.cs" />
     <Compile Include="ConventionController\TestFilter.cs" />

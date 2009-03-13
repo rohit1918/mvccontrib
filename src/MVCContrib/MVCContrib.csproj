@@ -88,7 +88,6 @@
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\AcceptGetAttribute.cs" />
     <Compile Include="Attributes\AcceptPostAttribute.cs" />
-    <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Attributes\DeserializeAttribute.cs" />
     <Compile Include="Binders\SubControllerBinder.cs" />
     <Compile Include="EnumerableExtensions.cs" />
@@ -96,8 +95,6 @@
     <Compile Include="Filters\ModelStateToTempDataAttribute.cs" />
     <Compile Include="Filters\RescueAttribute.cs" />
     <Compile Include="ControllerExtensions.cs" />
-    <Compile Include="ConventionControllerActionInvoker.cs" />
-    <Compile Include="ConventionController.cs" />
     <Compile Include="Filters\PreconditionFilter.cs" />
     <Compile Include="Filters\PredicatePreconditionFilter.cs" />
     <Compile Include="Filters\RegExPreconditionFilter.cs" />

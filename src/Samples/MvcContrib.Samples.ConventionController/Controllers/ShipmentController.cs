@@ -10,7 +10,9 @@ using MvcContrib.Filters;
 
 namespace MvcContrib.Samples.Controllers
 {
-	public class ShipmentController : ConventionController
+	//Note that the actual ConventionController class has now been removed.
+	//The ConventionController's features are available as extensions to the regular Controller class instead.
+	public class ShipmentController : Controller 
 	{
 		public ActionResult Index()
 		{
@@ -58,26 +60,13 @@ namespace MvcContrib.Samples.Controllers
 			return null;
 		}
 
-		[NonAction]
-		public ActionResult Hidden()
-		{
-			return Content("This action cannot be called.");
-		}
-
-		[DefaultAction]
-		public ActionResult DefaultAction()
-		{
-			string originalAction = RouteData.Values["action"].ToString();
-			return Content(string.Format("You tried to access action '{0}' but it does not exit.", originalAction));
-		}
-
 		public XmlResult XmlAction()
 		{
 			Dimension[] dims = new Dimension[] {
 			                   		new Dimension{Height=2,Length=1,Units=UnitOfMeasure.English},
 									new Dimension{Height=6,Length=8,Units=UnitOfMeasure.Metric},
 								};
-			return Xml(dims);
+			return new XmlResult(dims);
 		}
 	}
 }

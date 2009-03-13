@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Web.Mvc;
+using MvcContrib.ActionResults;
 using MvcContrib.Attributes;
 
 namespace MvcContrib.UnitTests.ConventionController
@@ -12,28 +13,21 @@ namespace MvcContrib.UnitTests.ConventionController
 		}
 	}
 
-	class TestController : MvcContrib.ConventionController
+	class TestController : Controller
 	{
 		public bool ActionWasCalled;
 		public bool? OnErrorResult = false;
 		public bool ActionExecutingCalled;
 		public bool CustomActionResultCalled;
 		public string BinderFilterOrdering = string.Empty;
-		public bool CatchAllWasCalled;
 
 		public TestController()
 		{
 		}
 
-		public TestController(IActionInvoker invokerToUse) : base(invokerToUse)
+		public TestController(IActionInvoker invokerToUse)
 		{
-		}
-
-		[DefaultAction]
-		public ActionResult CatchAll()
-		{
-			CatchAllWasCalled = true;
-			return new EmptyResult();
+			this.ActionInvoker = invokerToUse;
 		}
 
 		[TestFilter]
@@ -86,32 +80,17 @@ namespace MvcContrib.UnitTests.ConventionController
 
 		public ActionResult XmlResult()
 		{
-			return Xml("Test 1 2 3");
+			return new XmlResult("Test 1 2 3");
 		}
 
 		public RedirectToRouteResult RedirectActionOnSameController()
 		{
-			return RedirectToAction<TestController>(c => c.BasicAction(1));
+			return this.RedirectToAction<TestController>(c => c.BasicAction(1));
 		}
 
 		public RedirectToRouteResult RedirectActionOnAnotherController()
 		{
-			return RedirectToAction<AnotherTestController>(c => c.SomeAction(2));
-		}
-	}
-
-	internal class TestControllerWithMultipleDefaultActions : TestController
-	{
-		[DefaultAction]
-		public ActionResult Action1()
-		{
-			return new EmptyResult();
-		}
-
-		[DefaultAction]
-		public ActionResult Action2()
-		{
-			return new EmptyResult();
+			return this.RedirectToAction<AnotherTestController>(c => c.SomeAction(2));
 		}
 	}
 }
