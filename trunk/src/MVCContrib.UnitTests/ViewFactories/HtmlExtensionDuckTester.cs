@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
-using MvcContrib.Castle;
+using MvcContrib.ViewEngines;
 using NUnit.Framework;
 using NVelocity.Runtime;
 using NVelocity.Util.Introspection;

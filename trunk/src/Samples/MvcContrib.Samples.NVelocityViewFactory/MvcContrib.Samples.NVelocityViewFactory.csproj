@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\MvcContrib.Castle.dll</HintPath>
     </Reference>
+    <Reference Include="MvcContrib.ViewEngines.NVelocity, Version=0.0.1.907, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\MvcContrib.ViewEngines.NVelocity.dll</HintPath>
+    </Reference>
     <Reference Include="NVelocity, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\NVelocity.dll</HintPath>

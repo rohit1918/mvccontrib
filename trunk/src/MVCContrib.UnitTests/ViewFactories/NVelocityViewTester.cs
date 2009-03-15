@@ -4,7 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.Castle;
+using MvcContrib.ViewEngines;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -13,7 +13,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 	[TestFixture]
 	public class NVelocityViewTester
 	{
-		private NVelocityViewFactory _factory;
+		private NVelocityViewEngine _factory;
 		private ControllerContext _controllerContext;
 		private MockRepository _mocks;
 		private StringWriter _output;
@@ -28,7 +28,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			properties["assembly.resource.loader.class"] = "NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader, NVelocity";
 			properties["assembly.resource.loader.assembly"] = new List<string> {"MVCContrib.UnitTests"};
 			properties["master.folder"] = viewPath;
-			_factory = new NVelocityViewFactory(properties);
+			_factory = new NVelocityViewEngine(properties);
 
 			_output = new StringWriter();
 

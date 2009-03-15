@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using MvcContrib.Castle;
+using MvcContrib.ViewEngines;
 using NUnit.Framework;
 
 namespace MvcContrib.UnitTests.ViewFactories

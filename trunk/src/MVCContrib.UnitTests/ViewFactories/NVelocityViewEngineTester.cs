@@ -5,14 +5,14 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.Castle;
+using MvcContrib.ViewEngines;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace MvcContrib.UnitTests.ViewFactories
 {
 	[TestFixture]
-	public class NVelocityViewFactoryTester
+	public class NVelocityViewEngineTester
 	{
 		private IViewEngine _viewEngine;
 		private ControllerContext _controllerContext;
@@ -32,7 +32,7 @@ namespace MvcContrib.UnitTests.ViewFactories
 			properties["assembly.resource.loader.class"] = "NVelocity.Runtime.Resource.Loader.AssemblyResourceLoader, NVelocity";
 			properties["assembly.resource.loader.assembly"] = new List<string>() {"MVCContrib.UnitTests"};
 			properties["master.folder"] = viewPath;
-			_viewEngine = new NVelocityViewFactory(properties);
+			_viewEngine = new NVelocityViewEngine(properties);
 
 			var httpContext = _mocks.DynamicMock<HttpContextBase>();
 			var response = _mocks.DynamicMock<HttpResponseBase>();
@@ -51,8 +51,8 @@ namespace MvcContrib.UnitTests.ViewFactories
 		[Test]
 		public void WillAcceptNullProperties()
 		{
-			new NVelocityViewFactory();
-			new NVelocityViewFactory(null);
+			new NVelocityViewEngine();
+			new NVelocityViewEngine(null);
 		}
 
 		[Test]

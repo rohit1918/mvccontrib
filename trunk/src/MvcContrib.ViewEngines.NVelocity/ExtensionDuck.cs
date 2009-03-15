@@ -4,14 +4,14 @@ using NVelocity;
 using NVelocity.Runtime;
 using NVelocity.Util.Introspection;
 
-namespace MvcContrib.Castle
+namespace MvcContrib.ViewEngines
 {
 	public class ExtensionDuck : IDuck
 	{
 		private readonly object _instance;
 		private readonly Type _instanceType;
-	    private readonly Type[] _extensionTypes;
-	    private Introspector _introspector;
+		private readonly Type[] _extensionTypes;
+		private Introspector _introspector;
 
 		public ExtensionDuck(object instance)
 			: this(instance, Type.EmptyTypes)
@@ -24,7 +24,7 @@ namespace MvcContrib.Castle
 
 			_instance = instance;
 			_instanceType = _instance.GetType();
-		    _extensionTypes = extensionTypes;
+			_extensionTypes = extensionTypes;
 		}
 
 		public Introspector Introspector
@@ -40,7 +40,7 @@ namespace MvcContrib.Castle
 			set { _introspector = value; }
 		}
 
-	    public object GetInvoke(string propName)
+		public object GetInvoke(string propName)
 		{
 			throw new NotSupportedException();
 		}
@@ -69,28 +69,28 @@ namespace MvcContrib.Castle
 				methodInfo = Introspector.GetMethod(extensionType, method, extensionArgs);
 				if(methodInfo != null)
 				{
-				    return InvokerHelper(methodInfo, null, extensionArgs);
+					return InvokerHelper(methodInfo, null, extensionArgs);
 				}
 			}
 
 			return null;
 		}
 
-	    private object InvokerHelper(MethodInfo method, object instance, object[] args)
-	    {
-	        object returnVal = method.Invoke(instance, args);
+		private object InvokerHelper(MethodInfo method, object instance, object[] args)
+		{
+			object returnVal = method.Invoke(instance, args);
 
-            //some extension methods will have a void return type because they render directly to response.output
-            //in this case we should return an empty string
-            if(IsVoidMethod(method))
-                return returnVal ?? string.Empty;
+			//some extension methods will have a void return type because they render directly to response.output
+			//in this case we should return an empty string
+			if(IsVoidMethod(method))
+				return returnVal ?? string.Empty;
 
-	        return returnVal;      	   
-	    }
+			return returnVal;      	   
+		}
 
-	    private bool IsVoidMethod(MethodInfo method)
-	    {
-	        return method.ReturnType.Name.Equals("Void", StringComparison.Ordinal);
-	    }
+		private bool IsVoidMethod(MethodInfo method)
+		{
+			return method.ReturnType.Name.Equals("Void", StringComparison.Ordinal);
+		}
 	}
 }
