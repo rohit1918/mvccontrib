@@ -3,7 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace MvcContrib.Castle
+namespace MvcContrib.ViewEngines
 {
 	[Serializable]
 	public class DescriptableDictionary : Hashtable, ICustomTypeDescriptor

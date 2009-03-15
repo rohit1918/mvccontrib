@@ -8,29 +8,29 @@ using NVelocity;
 using NVelocity.App;
 using NVelocity.Runtime;
 
-namespace MvcContrib.Castle
+namespace MvcContrib.ViewEngines
 {
-	public class NVelocityViewFactory : IViewEngine
+	public class NVelocityViewEngine : IViewEngine
 	{
 		private static readonly IDictionary DEFAULT_PROPERTIES = new Hashtable();
 		private readonly VelocityEngine _engine;
 		private readonly string _masterFolder;
 
-		static NVelocityViewFactory()
+		static NVelocityViewEngine()
 		{
 			string targetViewFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "views");
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.RESOURCE_LOADER, "file");
 			DEFAULT_PROPERTIES.Add(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, targetViewFolder);
 			DEFAULT_PROPERTIES.Add("master.folder", "masters");
 
-		    AddHtmlExtensionsFromConfig();
+			AddHtmlExtensionsFromConfig();
 		}
 
-	    public NVelocityViewFactory() : this(DEFAULT_PROPERTIES)
+		public NVelocityViewEngine() : this(DEFAULT_PROPERTIES)
 		{
 		}
 
-	    public NVelocityViewFactory(IDictionary properties)
+		public NVelocityViewEngine(IDictionary properties)
 		{
 			if( properties == null ) properties = DEFAULT_PROPERTIES;
 
@@ -46,21 +46,21 @@ namespace MvcContrib.Castle
 			_engine.Init(props);
 		}
 
-	    private static void AddHtmlExtensionsFromConfig()
-	    {
-	        var section = ConfigurationManager.GetSection("nvelocity");
-            if (section == null)
-                return;
+		private static void AddHtmlExtensionsFromConfig()
+		{
+			var section = ConfigurationManager.GetSection("nvelocity");
+			if (section == null)
+				return;
 
-	        var config = (NVelocityConfiguration)section;
+			var config = (NVelocityConfiguration)section;
             
-            foreach(var t in  config.HtmlExtensionTypes)
-            {
-                HtmlExtensionDuck.AddExtension(t);
-            }
-	    }
+			foreach(var t in  config.HtmlExtensionTypes)
+			{
+				HtmlExtensionDuck.AddExtension(t);
+			}
+		}
 
-	    private Template ResolveMasterTemplate(string masterName)
+		private Template ResolveMasterTemplate(string masterName)
 		{
 			Template masterTemplate = null;
 
@@ -102,14 +102,14 @@ namespace MvcContrib.Castle
 			return _engine.GetTemplate(targetView);
 		}
 
-	    public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
-	    {
+		public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+		{
 			//TODO: Preview 5: Does this method need any custom logic?
 			return FindView(controllerContext, partialViewName, null, useCache);
-	    }
+		}
 
-	    public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
-	    {
+		public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+		{
 			var controllerName = (string)controllerContext.RouteData.Values["controller"];
 			string controllerFolder = controllerName;
 
@@ -119,10 +119,10 @@ namespace MvcContrib.Castle
 			var view = new NVelocityView(viewTemplate, masterTemplate);
 
 			return new ViewEngineResult(view, this);
-	    }
+		}
 
-	    public void ReleaseView(ControllerContext controllerContext, IView view)
-	    {
-	    }
+		public void ReleaseView(ControllerContext controllerContext, IView view)
+		{
+		}
 	}
 }

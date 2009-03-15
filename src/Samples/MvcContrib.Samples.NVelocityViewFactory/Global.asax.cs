@@ -27,7 +27,7 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 		{
 			InitializeWindsor();
 			AddRoutes();
-			ViewEngines.Engines.Add(new Castle.NVelocityViewFactory());
+			System.Web.Mvc.ViewEngines.Engines.Add(new MvcContrib.ViewEngines.NVelocityViewEngine());
 		}
 
 		/// <summary>
@@ -44,8 +44,6 @@ namespace MvcContrib.Samples.NVelocityViewFactory
 				_container = new WindsorContainer();
 
 				// Add our singleton NVelocityViewFactory
-				_container.AddComponent("ViewFactory", typeof(IViewEngine), typeof(Castle.NVelocityViewFactory));
-
 				Type[] assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
 
 				_container.RegisterControllers(assemblyTypes);

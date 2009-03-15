@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 
-namespace MvcContrib.Castle
+namespace MvcContrib.ViewEngines
 {
 	/// <summary>
 	/// Extension methods for use with NVelocity 
 	/// </summary>
 	public static class NVelocityHtmlHelper
 	{
-        public static string TextBox(this HtmlHelper helper, string htmlName, IDictionary htmlAttributes)
+		public static string TextBox(this HtmlHelper helper, string htmlName, IDictionary htmlAttributes)
 		{
 			return TextBox(helper, htmlName, string.Empty, htmlAttributes);
 		}

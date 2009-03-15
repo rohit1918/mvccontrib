@@ -30,8 +30,8 @@ namespace MvcContrib.UnitTests.ConventionController
 			_viewEngine = new RescueViewEngine();
 			_exception = new Exception();
 
-			ViewEngines.Engines.Clear();
-			ViewEngines.Engines.Add(_viewEngine);
+			System.Web.Mvc.ViewEngines.Engines.Clear();
+			System.Web.Mvc.ViewEngines.Engines.Add(_viewEngine);
 
 			SetupController(new RescueTestController());
 		}
@@ -39,7 +39,7 @@ namespace MvcContrib.UnitTests.ConventionController
 		[TearDown]
 		public void Teardown()
 		{
-			ViewEngines.Engines.Clear();
+			System.Web.Mvc.ViewEngines.Engines.Clear();
 		}
 
 		private void SetupController(Controller controller)

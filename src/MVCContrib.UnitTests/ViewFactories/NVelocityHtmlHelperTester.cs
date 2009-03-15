@@ -2,7 +2,7 @@ using System.Collections;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using MvcContrib.Castle;
+using MvcContrib.ViewEngines;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Web.Mvc.Html;
