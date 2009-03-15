@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MvcContrib.ModelAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace MvcContrib.UnitTests.FluentHtml.Fakes
 {
@@ -11,7 +11,7 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 		
 		public FakeChildModel Person { get; set; }
 		
-		[MaxLength(200)] 
+		[Range(0, 200)] 
 		public string Title { get; set; }
 		
 		public DateTime Date { get; set; }
