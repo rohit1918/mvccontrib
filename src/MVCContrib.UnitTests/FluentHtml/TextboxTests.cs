@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Web;
 using MvcContrib.UnitTests.FluentHtml.CustomBehaviors;
@@ -10,7 +11,6 @@ using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 using MvcContrib.FluentHtml.Html;
-using MvcContrib.ModelAttributes;
 
 namespace MvcContrib.UnitTests.FluentHtml
 {
@@ -182,9 +182,9 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void text_box_for_member_with_maxlength_attibute_sets_maxlength()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Title;
-			var behaviors = new List<IBehaviorMarker> { new DefaultMaxLengthMemberBehavior() };
-			var expectedLength = new MemberBehaviorHelper<MaxLengthAttribute>()
-				.GetAttribute(expression.GetMemberExpression()).Length;
+			var behaviors = new List<IBehaviorMarker> { new CustomMaxLengthBehavior() };
+			var expectedLength = new MemberBehaviorHelper<RangeAttribute>()
+				.GetAttribute(expression.GetMemberExpression()).Maximum;
 
 			var html = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors).ToString();
 
@@ -196,12 +196,12 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void text_box_for_member_with_required_attibute_adds_set_class_using_default_behavior()
 		{
 			Expression<Func<FakeModel, object>> expression = x => x.Id;
-			var behaviors = new List<IBehaviorMarker> { new DefaultRequiredMemberBehavior() };
+			var behaviors = new List<IBehaviorMarker> { new CustomRequiredHtmlBehavior() };
 
 			var html = new TextBox(expression.GetNameFor(), expression.GetMemberExpression(), behaviors).ToString();
 
 			var element = html.ShouldHaveHtmlNode("Id");
-			element.ShouldHaveAttribute(HtmlAttribute.Class).ValueShouldContain("required");
+			element.ShouldHaveAttribute(HtmlAttribute.Class).ValueShouldContain("req");
 		}
 
 		[Test]

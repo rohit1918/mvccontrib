@@ -1,6 +1,6 @@
+using System.ComponentModel.DataAnnotations;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
-using MvcContrib.ModelAttributes;
 
 namespace MvcContrib.UnitTests.FluentHtml.CustomBehaviors
 {
