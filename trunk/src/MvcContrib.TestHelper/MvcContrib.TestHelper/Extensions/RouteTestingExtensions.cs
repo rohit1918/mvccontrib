@@ -122,7 +122,6 @@ namespace MvcContrib.TestHelper
             RouteData routeData = relativeUrl.Route();
 
             routeData.RouteHandler.ShouldBe<StopRoutingHandler>("Expected StopRoutingHandler, but wasn't");
-//            Assert.That(routeData.RouteHandler is StopRoutingHandler, "Expected StopRoutingHandler, but wasn't");
             return routeData;
         }
 
@@ -138,7 +137,7 @@ namespace MvcContrib.TestHelper
             foreach(var routeValueKey in routeValues.Keys)
             {
                 if(string.Equals(routeValueKey, key, StringComparison.InvariantCultureIgnoreCase))
-                    return routeValues[routeValueKey] as string;
+                    return routeValues[routeValueKey].ToString();
             }
 
             return null;
