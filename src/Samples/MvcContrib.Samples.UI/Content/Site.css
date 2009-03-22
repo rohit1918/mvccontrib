@@ -253,3 +253,37 @@ div#title
     font-weight: bold;
     color: #ff0000;
 }
+
+/* SPECIAL STYLING FOR FLUENT HTML SAMPLES  
+----------------------------------------------------------*/
+
+div.fluentHtmlContainer label, 
+div.fluentHtmlContainer input[type="text"], 
+div.fluentHtmlContainer select,
+div.fluentHtmlContainer div
+{ 
+	display: block; 
+	float: left; 
+}
+div.fluentHtmlContainer label 
+{ 
+	width: 65px; 
+	font-weight: bold; 
+	white-space: nowrap;
+}
+div.fluentHtmlContainer br  
+{
+	clear: left; 
+}
+div.fluentHtmlContainer div.checkboxList label, 
+div.fluentHtmlContainer div.checkboxList input 
+{ 
+	display: inline; 
+	float: none; 
+	font-weight: normal; 
+	vertical-align: middle; 
+}
+div.fluentHtmlContainer span.field-validation-error
+{
+    margin: 0 8px;
+}
