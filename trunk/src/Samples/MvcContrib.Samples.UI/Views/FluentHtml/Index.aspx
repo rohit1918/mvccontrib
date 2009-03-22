@@ -8,42 +8,56 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	
 	<% using(Html.BeginForm()) { %>
-
-    <h2>Fluent Html</h2>
-    
-    <p>
-		The FluentHtml library allows you to define HTML elements using lambda expressions and a fluent interface. 
-		The names and IDs of elements are automatically generated based on the lambda expression.
-		As with the framework's built in HTML Helpers, databinding is automatic:
-	</p>
-    
-    <%= this.TextBox(x => x.Person.Name) %>
-    
-    <p>
-		Note that for the above textbox the 'maxlength' attribute was automatically set to 50 as the 'Person' class 
-		has a <strong>RangeAttribute</strong> applied to the <strong>Name</strong> property.
-	</p>
 	
-	<p>
-		This is achieved by using a custom <strong>MemberBehavior</strong> which inspects the model object prior to rendering the element.
-		See <strong>MaxLengthBehavior.cs</strong> for the code for this example. Note that behaviors have to be added to the underlying <strong>ModelViewPage</strong> instance.
-		For this example the current view inherits from <strong>SampleFluentHtmlViewPage</strong> which defines two behaviors.
-	</p>
-    
-    <p>
-		HTML Select lists (Dropdowns/Listboxes) can be easily populated from Dictionary instances:
-    </p>
-    
-    <%= this.Select(x => x.Person.Gender).Options(Model.Genders).Size(5) %>
-    
-	<p>
-		Checkbox/radio lists work in a similar way to dropdowns. This example binds to enumerable data rather than a dictionary:
-	</p>    
-	
-	<%= this.CheckBoxList(x => x.Person.Roles).Options(Model.Roles, x => x.Id, x => x.Name).ItemFormat("{0}<br />") %>
+	<div class="fluentHtmlContainer">
 
-	<p>
-		<input type="submit" value="Submit" />
-	</p>
+        <h2>Fluent Html</h2>
+        
+        <p>
+		    The FluentHtml library allows you to define HTML elements using lambda expressions and a fluent interface. 
+		    The names and IDs of elements are automatically generated based on the lambda expression.
+		    As with the framework's built in HTML Helpers, databinding is automatic:
+	    </p>
+        
+        <%= this.TextBox(x => x.Person.Name).Title("Enter the person's name").Label("Name:") %><br />
+        
+        <p>
+		    Note that for the above textbox the 'maxlength' attribute was automatically set to 50 as the 'Person' class 
+		    has a <strong>RangeAttribute</strong> applied to the <strong>Name</strong> property.
+	    </p>
+    	
+	    <p>
+		    This is achieved by using a custom <strong>MemberBehavior</strong> which inspects the model object prior to rendering the element.
+		    See <strong>MaxLengthBehavior.cs</strong> for the code for this example. Note that behaviors have to be added to the underlying <strong>ModelViewPage</strong> instance.
+		    For this example the current view inherits from <strong>SampleFluentHtmlViewPage</strong> which defines two behaviors.
+	    </p>
+        
+        <p>
+		    HTML Select lists (Dropdowns/Listboxes) can be easily populated from Dictionary instances:
+        </p>
+        
+        <%= this.Select(x => x.Person.Gender).Options(Model.Genders).Size(5).Label("Gender:") %><br />
+        
+	    <p>
+		    Checkbox/radio lists work in a similar way to dropdowns. This example binds to enumerable data rather than a dictionary:
+	    </p>    
+    	
+        <%= this.CheckBoxList(x => x.Person.Roles).Options(Model.Roles, x => x.Id, x => x.Name).Label("Roles:")
+               .ItemFormat("{0}<br />").Class("checkboxList") %><br />
+               
+        <p>
+		    FluentHtml supports server side validation by adding the <strong>ValidationBehavior</strong> to 
+		    <strong>SampleFluentHtmlViewPage</strong>.  Enter an invalid date and see what happens.
+	    </p>  
+               
+        <%= this.TextBox(x => x.Person.DateOfBirth).Format("M/d/yy").Label("DOB:").Title("Enter the person's date of birth") %>
+        <%= this.ValidationMessage(x => x.Person.DateOfBirth, "Please enter a valid date") %><br />
+
+	    <p>
+		    <%=this.SubmitButton("Submit") %>
+	    </p>
+	
+	</div>
+	
 	<% } %>
 </asp:Content>

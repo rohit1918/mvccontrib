@@ -9,18 +9,26 @@ namespace MvcContrib.Samples.UI.Controllers
 	{
 		public ViewResult Index()
 		{
-			return View(new FluentHtmlViewData 
-			{
-				Person = new Person() { Gender = "M", Name = "Jeremy", Roles = new List<int> { 1, 2 } },
-				Genders = new Dictionary<string, string> { { "M", "Male" }, { "F", "Female" } },
-				Roles = new List<Role> { new Role(0, "Administrator"), new Role(1, "Developer"), new Role(2, "User")  }
-			});
+			var model = GetViewModel(new Person {Gender = "M", Name = "Jeremy", Roles = new List<int> {1, 2}});
+			return View(model);
 		}
 
 		[AcceptVerbs(HttpVerbs.Post)]
 		public ViewResult Index(Person person)
 		{
-			return View("ViewPerson", person);
+			return ModelState.IsValid 
+				? View("ViewPerson", person)
+				: View(GetViewModel(person));
+		}
+
+		private FluentHtmlViewData GetViewModel(Person person)
+		{
+			return new FluentHtmlViewData 
+        	{
+        		Person = person,
+        		Genders = new Dictionary<string, string> { { "M", "Male" }, { "F", "Female" } },
+        		Roles = new List<Role> { new Role(0, "Administrator"), new Role(1, "Developer"), new Role(2, "User")  }
+        	};
 		}
 	}
 
