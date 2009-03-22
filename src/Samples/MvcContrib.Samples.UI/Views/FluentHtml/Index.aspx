@@ -36,18 +36,18 @@
 		    HTML Select lists (Dropdowns/Listboxes) can be easily populated from Dictionary instances:
         </p>
         
-        <%= this.Select(x => x.Person.Gender).Options(Model.Genders).Size(5).Label("Gender:") %><br />
+        <%= this.Select(x => x.Person.Gender).Options(Model.Genders).Size(5).Label("Gender:")
+                .Title("Select the person's gender") %><br />
         
 	    <p>
 		    Checkbox/radio lists work in a similar way to dropdowns. This example binds to enumerable data rather than a dictionary:
 	    </p>    
     	
         <%= this.CheckBoxList(x => x.Person.Roles).Options(Model.Roles, x => x.Id, x => x.Name).Label("Roles:")
-               .ItemFormat("{0}<br />").Class("checkboxList") %><br />
+               .ItemFormat("{0}<br />").Class("checkboxList").Title("Check all roles that apply to this person") %><br />
                
         <p>
-		    FluentHtml supports server side validation by adding the <strong>ValidationBehavior</strong> to 
-		    <strong>SampleFluentHtmlViewPage</strong>.  Enter an invalid date and see what happens.
+		    FluentHtml supports server side validation.  Enter an invalid date and see what happens.
 	    </p>  
                
         <%= this.TextBox(x => x.Person.DateOfBirth).Format("M/d/yy").Label("DOB:").Title("Enter the person's date of birth") %>
