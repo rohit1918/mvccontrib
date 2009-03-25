@@ -1,7 +1,9 @@
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Web.Mvc;
 using Microsoft.Web.Mvc.Internal;
+using MvcContrib.Filters;
 
 namespace MvcContrib
 {
@@ -31,7 +33,9 @@ namespace MvcContrib
 		/// <returns>A <see cref="RedirectToRouteResult"/> pointing to the action specified by the <paramref name="action"/> expression</returns>
 		public static RedirectToRouteResult RedirectToAction<T>(this Controller controller, Expression<Action<T>> action) where T : Controller
 		{
-			return new RedirectToRouteResult(ExpressionHelper.GetRouteValuesFromExpression(action));
+            var body = action.Body as MethodCallExpression;
+            AddParameterValuesFromExpressionToTempData(controller, body);
+            return new RedirectToRouteResult(ExpressionHelper.GetRouteValuesFromExpression(action));
 		}
 
 		/// <summary>
@@ -47,9 +51,33 @@ namespace MvcContrib
 				&& typeof(IController).IsAssignableFrom(type);
 		}
 
- 
 
- 
-
+        // Copied this method from Microsoft.Web.Mvc.dll (MVC Futures)...
+        // Microsoft.Web.Mvc.Internal.ExpresisonHelper.AddParameterValuesFromExpressionToDictionary().
+        // The only change I made is saving the parameter values to TempData instead
+        // of a RouteValueDictionary.
+        private static void AddParameterValuesFromExpressionToTempData(Controller controller, MethodCallExpression call)
+        {
+            ParameterInfo[] parameters = call.Method.GetParameters();
+            if (parameters.Length > 0)
+            {
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    Expression expression = call.Arguments[i];
+                    object obj2 = null;
+                    ConstantExpression expression2 = expression as ConstantExpression;
+                    if (expression2 != null)
+                    {
+                        obj2 = expression2.Value;
+                    }
+                    else
+                    {
+                        Expression<Func<object>> expression3 = Expression.Lambda<Func<object>>(Expression.Convert(expression, typeof(object)), new ParameterExpression[0]);
+                        obj2 = expression3.Compile()();
+                    }
+                    controller.TempData[PassParametersDuringRedirectAttribute.RedirectParameterPrefix + parameters[i].Name] = obj2;
+                }
+            }
+        }
 	}
 }

@@ -93,6 +93,7 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Filters\LayoutAttribute.cs" />
     <Compile Include="Filters\ModelStateToTempDataAttribute.cs" />
+    <Compile Include="Filters\PassParametersDuringRedirectAttribute.cs" />
     <Compile Include="Filters\RescueAttribute.cs" />
     <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Filters\PreconditionFilter.cs" />
