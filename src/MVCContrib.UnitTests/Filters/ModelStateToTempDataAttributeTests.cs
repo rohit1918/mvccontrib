@@ -46,7 +46,7 @@ namespace MvcContrib.UnitTests.Filters
 		}
 
 		[Test]
-		public void When_a_redirect_occurs_modelstate_should_be_copied_to_tempdata()
+		public void When_a_redirect_to_route_occurs_modelstate_should_be_copied_to_tempdata()
 		{
 			SetupModelState(ModelState);
 			context.Result = new RedirectToRouteResult(new RouteValueDictionary());
@@ -54,6 +54,22 @@ namespace MvcContrib.UnitTests.Filters
 			attr.OnActionExecuted(context);
 
 			var fromTempData =(ModelStateDictionary)TempData[ModelStateToTempDataAttribute.TempDataKey];
+
+			Assert.That(fromTempData.Count, Is.EqualTo(2));
+			Assert.That(fromTempData["foo"].Errors.Count(), Is.EqualTo(2));
+			Assert.That(fromTempData["foo"].Errors.First().ErrorMessage, Is.EqualTo("bar"));
+			Assert.That(fromTempData["bar"].Errors.First().Exception.Message, Is.EqualTo("blah"));
+		}
+
+		[Test]
+		public void When_a_redirect_occurs_modelstate_should_be_copied_to_tempdata()
+		{
+			SetupModelState(ModelState);
+			context.Result = new RedirectResult("http://mvccontrib.org");
+			
+			attr.OnActionExecuted(context);
+
+			var fromTempData = (ModelStateDictionary)TempData[ModelStateToTempDataAttribute.TempDataKey];
 
 			Assert.That(fromTempData.Count, Is.EqualTo(2));
 			Assert.That(fromTempData["foo"].Errors.Count(), Is.EqualTo(2));

@@ -29,7 +29,7 @@ namespace MvcContrib.Filters
 			}
 
 			//If we're redirecting and there are errors, put them in tempdata instead (so they can later be copied back to modelstate)
-			if(filterContext.Result is RedirectToRouteResult && !modelState.IsValid)
+			if((filterContext.Result is RedirectToRouteResult || filterContext.Result is RedirectResult) && !modelState.IsValid)
 			{
 				CopyModelStateToTempData(controller.ViewData.ModelState, controller.TempData);
 			}
