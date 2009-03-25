@@ -176,6 +176,7 @@
     <Compile Include="EnumerableExtensionTests.cs" />
     <Compile Include="Filters\ModelStateToTempDataAttributeTests.cs" />
     <Compile Include="Filters\MvcTransactionAttributeTester.cs" />
+    <Compile Include="Filters\PassParametersDuringRedirectAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
     <Compile Include="FluentHtml\CheckBoxListTests.cs" />

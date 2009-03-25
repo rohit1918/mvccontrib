@@ -18,5 +18,16 @@ namespace MvcContrib.UnitTests.ConventionController
 		{
 			return new EmptyResult();
 		}
+
+		public ActionResult AnotherAction(SomeObject obj)
+		{
+			return View(obj);
+		}
+
+		public class SomeObject
+		{
+			public int One { get; set; }
+			public string Two { get; set; }
+		}
 	}
 }
