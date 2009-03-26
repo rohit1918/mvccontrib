@@ -138,6 +138,15 @@ namespace MvcContrib.UnitTests.UI.Pager
 			helper.Pager("data");
 		}
 
+		[Test]
+		public void Should_encode_additional_querystring_input()
+		{
+			_context.Request.QueryString.Add("foo", "<bar>");
+			string expected =
+				"<div class='pagination'><span class='paginationLeft'>Showing 3 - 3 of 3 </span><span class='paginationRight'><a href=\"Test.mvc?page=1&amp;foo=&lt;bar&gt;\">first</a> | <a href=\"Test.mvc?page=1&amp;foo=&lt;bar&gt;\">prev</a> | next | last</span></div>";
+			RenderPager(2, 2).ToString().ShouldEqual(expected);
+		}
+
 		private MvcContrib.UI.Pager.Pager RenderPager(int pageNumber, int pageSize)
 		{
 			return new MvcContrib.UI.Pager.Pager(_datasource.AsPagination(pageNumber, pageSize), _context.Request);

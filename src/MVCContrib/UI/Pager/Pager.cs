@@ -192,7 +192,7 @@ namespace MvcContrib.UI.Pager
 
 				foreach(var value in values.GetValues(key))
 				{
-					builder.AppendFormat("&amp;{0}={1}", key, value);
+					builder.AppendFormat("&amp;{0}={1}", key, HttpUtility.HtmlEncode(value));
 				}
 			}
 
