@@ -1,4 +1,60 @@
 ------------------------------------------------------------------------
+r914 | Jeremy.Skinner | 2009-03-25 03:20:35 -0500 (Wed, 25 Mar 2009) | 2 lines
+
+Patch #2614 -  Jonathan Conway
+Changes ModelStateToTempDataAttribute to work with RedirectResults in addition to RedirectToRouteResults
+------------------------------------------------------------------------
+r913 | Jeremy.Skinner | 2009-03-25 03:14:14 -0500 (Wed, 25 Mar 2009) | 2 lines
+
+Patch #2666 - Jon Kruger
+Modifies the RedirectToAction extension method that takes a lambda to store method arguments in TempData.
+------------------------------------------------------------------------
+r912 | tscott@lunaversesoftware.com | 2009-03-22 09:27:19 -0500 (Sun, 22 Mar 2009) | 1 line
+
+- Tweaked and corrected some misleading language in FluentHtml sample
+------------------------------------------------------------------------
+r911 | tscott@lunaversesoftware.com | 2009-03-21 21:39:54 -0500 (Sat, 21 Mar 2009) | 1 line
+
+- Enhanced FluentHtml sample to show more features, including validation.
+------------------------------------------------------------------------
+r910 | Jeremy.Skinner | 2009-03-18 12:19:49 -0500 (Wed, 18 Mar 2009) | 1 line
+
+MVC Futures for MVC 1.0
+------------------------------------------------------------------------
+r909 | Jeremy.Skinner | 2009-03-18 07:40:55 -0500 (Wed, 18 Mar 2009) | 1 line
+
+System.Web.Mvc 1.0
+------------------------------------------------------------------------
+r908 | subdigital | 2009-03-16 10:41:07 -0500 (Mon, 16 Mar 2009) | 1 line
+
+Changed RouteTestingExtensions to accomodate route values that aren't strings (does a ToString() instead).  Thanks DaveTheNinja!
+------------------------------------------------------------------------
+r907 | Jeremy.Skinner | 2009-03-15 12:50:50 -0500 (Sun, 15 Mar 2009) | 5 lines
+
+*Breaking changes to NVelocity*
+- Moving NVelocity into a separate assembly (MvcContrib.ViewEngines.NVelocity)
+- Renaming NVelocityViewFactory to NVelocityViewEngine 
+- Changed the root namespace for NVelocity to MvcContrib.ViewEngines 
+- Updated NVelocity sample. 
+------------------------------------------------------------------------
+r906 | Jeremy.Skinner | 2009-03-15 12:02:14 -0500 (Sun, 15 Mar 2009) | 1 line
+
+Moving MvcContrib.Spring into the 'Deprecated' solution folder. 
+------------------------------------------------------------------------
+r905 | Jeremy.Skinner | 2009-03-15 10:13:42 -0500 (Sun, 15 Mar 2009) | 3 lines
+
+Adding some initial FluentHtml examples. 
+Removing the ConventionModel* classes from FluentHtml. These are now available in the sample project. 
+Removed the ModelAttributes project. 
+------------------------------------------------------------------------
+r904 | Jeremy.Skinner | 2009-03-13 13:27:00 -0500 (Fri, 13 Mar 2009) | 1 line
+
+*Breaking Change* Removing ConventionController. All of its features (with the exception of the rarely-used DefaultAction) can be used with any regular Controller instead. 
+------------------------------------------------------------------------
+r902 | mvccontrib | 2009-03-06 08:17:28 -0600 (Fri, 06 Mar 2009) | 1 line
+
+automatic check-in
+------------------------------------------------------------------------
 r901 | Jeremy.Skinner | 2009-03-06 08:15:23 -0600 (Fri, 06 Mar 2009) | 1 line
 
 Build was failing to recent changes to TestHelper. 
