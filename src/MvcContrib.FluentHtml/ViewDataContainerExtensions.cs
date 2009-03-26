@@ -108,7 +108,27 @@ namespace MvcContrib.FluentHtml
 			return new SubmitButton(text);
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Generate an HTML input element of type 'button.'
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="text">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</param>
+        public static Button Button(this IViewDataContainer view, string text)
+        {
+            return new Button(text);
+        }
+
+        /// <summary>
+        /// Generate an HTML input element of type 'reset.'
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="text">Value of the 'value' and 'name' attributes.  Also used to derive the 'id' attribute.</param>
+        public static ResetButton ResetButton(this IViewDataContainer view, string text)
+        {
+            return new ResetButton(text);
+        }
+
+        /// <summary>
 		/// Generate an HTML span element.
 		/// </summary>
 		/// <param name="view">The view.</param>
