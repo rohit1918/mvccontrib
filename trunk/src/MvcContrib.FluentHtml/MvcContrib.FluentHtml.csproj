@@ -66,10 +66,14 @@
     <Compile Include="Behaviors\MemberBehaviorHelper.cs" />
     <Compile Include="Behaviors\ValidationBehavior.cs" />
     <Compile Include="Behaviors\IMemberBehavior.cs" />
+    <Compile Include="Elements\Button.cs" />
+    <Compile Include="Elements\ButtonBase.cs" />
     <Compile Include="Elements\Checkbox.cs" />
     <Compile Include="Elements\CheckBoxBase.cs" />
     <Compile Include="Elements\CheckBoxList.cs" />
     <Compile Include="Elements\CheckBoxListBase.cs" />
+    <Compile Include="Elements\ResetButton.cs" />
+    <Compile Include="Elements\ResetButtonBase.cs" />
     <Compile Include="Elements\Index.cs" />
     <Compile Include="Elements\OptionsElementBase.cs" />
     <Compile Include="Elements\DisableableElement.cs" />

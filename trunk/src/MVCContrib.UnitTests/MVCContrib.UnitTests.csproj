@@ -179,6 +179,7 @@
     <Compile Include="Filters\PassParametersDuringRedirectAttributeTester.cs" />
     <Compile Include="Filters\SubControllerActionToViewDataAttributeTester.cs" />
     <Compile Include="Filters\TempDataToViewDataTester.cs" />
+    <Compile Include="FluentHtml\ButtonTests.cs" />
     <Compile Include="FluentHtml\CheckBoxListTests.cs" />
     <Compile Include="FluentHtml\CheckboxTests.cs" />
     <Compile Include="FluentHtml\CustomBehaviors\CustomRequiredHtmlBehavior.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="FluentHtml\ModelMasterViewPageTests.cs" />
     <Compile Include="FluentHtml\RadioButtonTests.cs" />
     <Compile Include="FluentHtml\RadioSetTests.cs" />
+    <Compile Include="FluentHtml\ResetButtonTests.cs" />
     <Compile Include="FluentHtml\ValidationMemberBehaviorTests.cs" />
     <Compile Include="FluentHtml\ModelViewPageTests.cs" />
     <Compile Include="FluentHtml\ModelViewUserControlPageTests.cs" />
