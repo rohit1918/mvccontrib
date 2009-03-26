@@ -43,14 +43,14 @@ namespace MvcContrib.TestHelper
         /// <summary>
         /// Compares the two strings (case-insensitive).
         /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        public static void AssertSameStringAs(this string left, string right)
+        /// <param name="actual"></param>
+        /// <param name="expected"></param>
+        public static void AssertSameStringAs(this string actual, string expected)
         {
 
-            if(!string.Equals(left, right, StringComparison.InvariantCultureIgnoreCase))
+            if(!string.Equals(actual, expected, StringComparison.InvariantCultureIgnoreCase))
             {
-                var message = string.Format("Expected {0} but was {1}", right, left);
+                var message = string.Format("Expected {0} but was {1}", expected, actual);
                 throw  new AssertionException(message);
             }
                 
