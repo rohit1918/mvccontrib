@@ -107,8 +107,7 @@ namespace MvcContrib.TestHelper
             //get the key (case insensitive)
             string actual = routeData.Values.GetValue("controller").ToString();
 
-            
-            expected.AssertSameStringAs(actual);
+            actual.AssertSameStringAs(expected);
             return routeData;
         }
 
