@@ -54,12 +54,16 @@ namespace MvcContrib.UI.Grid
 
 		protected virtual void RenderItems()
 		{
+			RenderBodyStart();
+
 			bool isAlternate = false;
 			foreach(var item in DataSource)
 			{
 				RenderItem(new GridRowViewData<T>(item, isAlternate));
 				isAlternate = !isAlternate;
 			}
+
+			RenderBodyEnd();
 		}
 
 		protected virtual void RenderItem(GridRowViewData<T> rowData)
@@ -161,5 +165,7 @@ namespace MvcContrib.UI.Grid
 		protected abstract void RenderGridStart();
 		protected abstract void RenderGridEnd(bool isEmpty);
 		protected abstract void RenderEmpty();
+		protected abstract void RenderBodyStart();
+		protected abstract void RenderBodyEnd();
 	}
 }
