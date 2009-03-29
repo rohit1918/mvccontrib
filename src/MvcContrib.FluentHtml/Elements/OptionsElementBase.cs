@@ -85,31 +85,21 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public virtual T Options<TEnum>() where TEnum : struct
 		{
-			return Options(EnumToDictionary<TEnum>(null));
-		}
-
-		public virtual T Options<TEnum>(string firstOptionText) where TEnum : struct
-		{
-			return Options(EnumToDictionary<TEnum>(firstOptionText));
-		}
-
-		public static Dictionary<string, string> EnumToDictionary<TEnum>(string firstOptionText)
-		{
-			if (!typeof(TEnum).IsEnum)
+			if(!typeof(TEnum).IsEnum)
 			{
 				throw new ArgumentException("The generic parameter must be an enum", "TEnum");
 			}
+
 			var dict = new Dictionary<string, string>();
-			if (firstOptionText != null)
-			{
-				dict.Add(string.Empty, firstOptionText);
-			}
+
 			var values = Enum.GetValues(typeof(TEnum));
-			foreach (var item in values)
+	
+			foreach(var item in values)
 			{
 				dict.Add(Convert.ToInt32(item).ToString(), item.ToString());
 			}
-			return dict;
+
+			return Options(dict);
 		}
 
 		protected void SetFieldExpressions(string dataValueField, string dataTextField)

@@ -29,6 +29,13 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
+		protected string _firstOptionText;
+		public virtual T FirstOptionText(string firstOptionText)
+		{
+			_firstOptionText = firstOptionText;
+			return (T)this;
+		}
+
 		protected override void PreRender()
 		{
 			builder.InnerHtml = RenderOptions();
@@ -48,11 +55,26 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 
 			var sb = new StringBuilder();
+
+			if (_firstOptionText != null)
+			{
+				sb.Append(GetFirstOption());
+			}
+
 			foreach (var options in _options)
 			{
 				sb.Append(GetOption(options));
 			}
+
 			return sb.ToString();
+		}
+
+		protected virtual Option GetFirstOption()
+		{
+			return new Option()
+				.Value(string.Empty)
+				.Text(_firstOptionText)
+				.Selected(false);
 		}
 
 		protected virtual Option GetOption(object option)
