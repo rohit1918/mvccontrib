@@ -111,6 +111,16 @@ namespace MvcContrib.UI.Grid
 			RenderText("<tr><td>" + GridModel.EmptyText + "</td></tr>");
 		}
 
+		protected override void RenderBodyStart() 
+		{
+			RenderText("<tbody>");
+		}
+
+		protected override void RenderBodyEnd() 
+		{
+			RenderText("</tbody>");
+		} 
+
 		/// <summary>
 		/// Converts the specified attributes dictionary of key-value pairs into a string of HTML attributes. 
 		/// </summary>
