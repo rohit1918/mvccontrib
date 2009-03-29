@@ -100,7 +100,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void select_with_options_for_enum_renders_null_first_option()
 		{
-			var html = new Select("foo.Bar").Options<FakeEnum>("-Choose-").ToString();
+			var html = new Select("foo.Bar").Options<FakeEnum>().FirstOptionText("-Choose-").ToString();
 
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
 			var optionNodes = element.ShouldHaveChildNodesCount(5);
@@ -195,6 +195,18 @@ namespace MvcContrib.UnitTests.FluentHtml
 		public void select_options_with_null_value_field_selector_should_throw()
 		{
 			new Select("x").Options(new List<FakeModel>(), x => x.Price, null);	
+		}
+
+		[Test]
+		public void select_options_with_simple_enumeration_of_objects_can_have_a_first_option_text_specified()
+		{
+			var optionNodes = new Select("foo.Bar").Options(new[] { 1, 2 }).FirstOptionText("-Choose-").ToString()
+				.ShouldHaveHtmlNode("foo_Bar")
+				.ShouldHaveChildNodesCount(3);
+
+			optionNodes[0].ShouldBeUnSelectedOption("", "-Choose-");
+			optionNodes[1].ShouldBeUnSelectedOption("1", "1");
+			optionNodes[2].ShouldBeUnSelectedOption("2", "2");
 		}
 	}
 }
