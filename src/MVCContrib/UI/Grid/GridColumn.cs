@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
 
 namespace MvcContrib.UI.Grid
 {
@@ -13,7 +10,8 @@ namespace MvcContrib.UI.Grid
 	/// </summary>
 	public class GridColumn<T> : IGridColumn<T> where T : class
 	{
-		private string _name;
+		private readonly string _name;
+		private string _displayName;
 		private bool _doNotSplit;
 		private readonly Func<T, object> _columnValueFunc;
 		private Func<T, bool> _cellCondition = x => true;
@@ -22,8 +20,6 @@ namespace MvcContrib.UI.Grid
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
 		private Func<GridRowViewData<T>, IDictionary<string, object>> _attributes = x => new Dictionary<string, object>();
-		private Action<RenderingContext> _customHeaderRenderer;
-		private Action<RenderingContext, T> _customItemRenderer;
 
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
@@ -31,6 +27,7 @@ namespace MvcContrib.UI.Grid
 		public GridColumn(Func<T, object> columnValueFunc, string name)
 		{
 			_name = name;
+			_displayName = name;
 			_columnValueFunc = columnValueFunc;
 		}
 
@@ -44,13 +41,21 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		public string Name
 		{
+			get { return _name; }
+		}
+
+		/// <summary>
+		/// Display name for the column
+		/// </summary>
+		public string DisplayName
+		{
 			get
 			{
 				if(_doNotSplit)
 				{
-					return _name;
+					return _displayName;
 				}
-				return SplitPascalCase(_name);
+				return SplitPascalCase(_displayName);
 			}
 		}
 
@@ -63,20 +68,12 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Custom header renderer
 		/// </summary>
-		public Action<RenderingContext> CustomHeaderRenderer
-		{
-			get { return _customHeaderRenderer; }
-			set { _customHeaderRenderer = value; }
-		}
+		public Action<RenderingContext> CustomHeaderRenderer { get; set; }
 
 		/// <summary>
 		/// Custom item renderer
 		/// </summary>
-		public Action<RenderingContext, T> CustomItemRenderer
-		{
-			get { return _customItemRenderer; }
-			set { _customItemRenderer = value; }
-		}
+		public Action<RenderingContext, T> CustomItemRenderer { get; set; }
 
 		/// <summary>
 		/// Additional attributes for the column header
@@ -96,7 +93,7 @@ namespace MvcContrib.UI.Grid
 
 		public IGridColumn<T> Named(string name)
 		{
-			_name = name;
+			_displayName = name;
 			_doNotSplit = true;
 			return this;
 		}
@@ -143,7 +140,10 @@ namespace MvcContrib.UI.Grid
 
 		private string SplitPascalCase(string input)
 		{
-			if (string.IsNullOrEmpty(input)) return input;
+			if(string.IsNullOrEmpty(input))
+			{
+				return input;
+			}
 			return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
 		}
 
@@ -161,7 +161,7 @@ namespace MvcContrib.UI.Grid
 
 			var value = _columnValueFunc(instance);
 
-			if (!string.IsNullOrEmpty(_format)) 
+			if(!string.IsNullOrEmpty(_format))
 			{
 				value = string.Format(_format, value);
 			}
