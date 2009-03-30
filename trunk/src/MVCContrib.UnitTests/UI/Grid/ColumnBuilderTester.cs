@@ -32,12 +32,26 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_builder.Single().Name.ShouldEqual("Name");
 		}
 
+        [Test]
+        public void Should_infer_column_displayname_from_lambda()
+        {
+            _builder.For(x => x.Name);
+            _builder.Single().DisplayName.ShouldEqual("Name");
+        }
+
+        [Test]
+        public void Shold_build_column_with_name()
+        {
+            _builder.For(x => x.Name).Named("foo");
+            _builder.Single().Name.ShouldEqual("Name");
+        }
+
 		[Test]
-		public void Should_build_column_with_name()
+		public void Should_build_column_with_displayname()
 		{
 			_builder.For(x => x.Name).Named("foo");
-			_builder.Single().Name.ShouldEqual("foo");
-		}
+			_builder.Single().DisplayName.ShouldEqual("foo");
+		}    
 
 		[Test]
 		public void Name_should_be_null_if_no_name_specified_and_not_MemberExpression()
@@ -46,25 +60,40 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_builder.Single().Name.ShouldBeNull();
 		}
 
+        [Test]
+        public void DisplayName_should_be_null_if_no_name_specified_and_not_MemberExpression()
+        {
+            _builder.For(x => 1);
+            _builder.Single().DisplayName.ShouldBeNull();
+        }
+
+
 		[Test]
-		public void Name_should_be_split_pascal_case()
+		public void DisplayName_should_be_split_pascal_case()
 		{
 			_builder.For(x => x.DateOfBirth);
-			_builder.Single().Name.ShouldEqual("Date Of Birth");
+			_builder.Single().DisplayName.ShouldEqual("Date Of Birth");
 		}
 
+        [Test]
+        public void Name_should_not_be_split_pascal_case()
+        {
+            _builder.For(x => x.DateOfBirth);
+            _builder.Single().Name.ShouldEqual("DateOfBirth");
+        }
+
 		[Test]
-		public void Name_should_not_be_split_if_DoNotSplit_specified()
+		public void DisplayName_should_not_be_split_if_DoNotSplit_specified()
 		{
 			_builder.For(x => x.DateOfBirth).DoNotSplit();
-			_builder.Single().Name.ShouldEqual("DateOfBirth");
+			_builder.Single().DisplayName.ShouldEqual("DateOfBirth");
 		}
 
 		[Test]
-		public void Name_should_not_be_split_when_explicit_name_specified()
+		public void DisplayName_should_not_be_split_when_explicit_name_specified()
 		{
 			_builder.For(x => x.Id).Named("FOO");
-			_builder.Single().Name.ShouldEqual("FOO");
+			_builder.Single().DisplayName.ShouldEqual("FOO");
 		}
 
 		[Test]
@@ -130,6 +159,13 @@ namespace MvcContrib.UnitTests.UI.Grid
 			_builder.For("Name");
 			_builder.Single().Name.ShouldEqual("Name");
 		}
+
+        [Test]
+        public void Should_create_custom_column_with_displayname()
+        {
+            _builder.For("Name");
+            _builder.Single().DisplayName.ShouldEqual("Name");
+        }
 
 		[Test]
 		public void Should_add_column()

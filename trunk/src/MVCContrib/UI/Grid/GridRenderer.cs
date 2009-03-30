@@ -114,7 +114,7 @@ namespace MvcContrib.UI.Grid
 				else
 				{
 					RenderHeaderCellStart(column);
-					RenderText(column.Name);
+					RenderText(column.DisplayName);
 					RenderHeaderCellEnd();
 				}
 			}
