@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcContrib.TestHelper;
@@ -149,5 +152,23 @@ namespace MvcContrib.UnitTests.TestHelper
 		{
 			"~/funky/foo/1234".Route().ShouldMapTo<FunkyController>(x => x.Foo(1234));
 		}
+
+        [Test]
+        public void assertion_exception_should_hide_the_test_helper_frames_in_the_call_stack()
+        {
+            IEnumerable<string> callstack=new string[0];
+            try
+            {
+                "~/badroute that is not configures/foo/1234".Route().ShouldMapTo<FunkyController>(x => x.Foo(1234));
+            }
+            catch(Exception ex)
+            {
+
+                callstack = ex.StackTrace.Split(new string[] { Environment.NewLine },StringSplitOptions.None);
+            }
+            callstack.Count().ShouldEqual(1);
+            
+        }
+        
     }
 }
