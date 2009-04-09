@@ -115,6 +115,7 @@
     <Content Include="Scripts\jquery.positionBy.js" />
     <Content Include="Views\FluentHtml\Index.aspx" />
     <Content Include="Views\FluentHtml\ViewPerson.aspx" />
+    <Content Include="Views\Grid\AutoColumns.aspx" />
     <Content Include="Views\Grid\WithActionSections.aspx" />
     <Content Include="Views\Grid\Index.aspx" />
     <Content Include="Views\Grid\Paged.aspx" />

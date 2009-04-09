@@ -192,5 +192,13 @@ namespace MvcContrib.UI.Grid
 		{
 			sections.HeaderRow.Attributes = x => attributes;
 		}
+
+		/// <summary>
+		/// Specifies that the grid's columns should be automatically generated from the public properties on the model object.
+		/// </summary>
+		public static IGridWithOptions<T> AutoGenerateColumns<T>(this IGrid<T> grid) where T : class
+		{
+			return grid.WithModel(new AutoColumnGridModel<T>());
+		}
 	}
 }
