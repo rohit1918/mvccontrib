@@ -5,6 +5,8 @@ using MvcContrib.Pagination;
 
 namespace MvcContrib.Samples.UI.Controllers
 {
+	using System;
+
 	public class GridController : Controller
 	{
 		private readonly PeopleFactory _peopleFactory = new PeopleFactory();
@@ -38,6 +40,10 @@ namespace MvcContrib.Samples.UI.Controllers
 
 		public ActionResult UsingGridModel()
 		{
+			return View(_peopleFactory.CreatePeople());
+		}
+
+		public ActionResult AutoColumns() {
 			return View(_peopleFactory.CreatePeople());
 		}
 	}
