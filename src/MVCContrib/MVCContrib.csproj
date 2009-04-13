@@ -85,6 +85,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ActionResults\XmlResult.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Attributes\AbstractParameterBinderAttribute.cs" />
     <Compile Include="Attributes\AcceptGetAttribute.cs" />
     <Compile Include="Attributes\AcceptPostAttribute.cs" />
