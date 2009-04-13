@@ -36,6 +36,13 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
+		protected bool _hideFirstOption;
+		public virtual T HideFirstOptionWhen(bool hideFirstOption)
+		{
+			_hideFirstOption = hideFirstOption;
+			return (T)this;
+		}
+
 		protected override void PreRender()
 		{
 			builder.InnerHtml = RenderOptions();
@@ -56,7 +63,7 @@ namespace MvcContrib.FluentHtml.Elements
 
 			var sb = new StringBuilder();
 
-			if (_firstOptionText != null)
+			if (_firstOptionText != null && _hideFirstOption == false)
 			{
 				sb.Append(GetFirstOption());
 			}

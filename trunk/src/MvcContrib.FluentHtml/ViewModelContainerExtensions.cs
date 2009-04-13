@@ -178,7 +178,7 @@ namespace MvcContrib.FluentHtml
 
 		/// <summary>
 		/// If ModelState contains an error for the specified view model member, generate an HTML span element with the 
-		/// specified message as inner text, or with the ModelState error message is the specified message is null.  If no
+		/// specified message as inner text, or with the ModelState error message if the specified message is null.  If no
 		/// class is specified the class attribute of the span element will be 'field-validation-error'.
 		/// </summary>
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
