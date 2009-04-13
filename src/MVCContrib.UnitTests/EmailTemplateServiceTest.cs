@@ -4,36 +4,34 @@ using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using MvcContrib.Services;
 using NUnit.Framework;
 using Rhino.Mocks;
+using MvcViewEngines = System.Web.Mvc.ViewEngines;
 
 namespace MvcContrib.UnitTests
 {
 	[TestFixture]
 	public class EmailTemplateServiceTest
 	{
-		private ViewEngineCollection _viewEngines;
-
 		private ControllerContext _controllerContext;
 		private EmailTemplateService _service;
 
-	    private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
+		private delegate void RenderViewDelegate(ViewContext context, TextWriter writer);
 
 		[SetUp]
 		public void Setup()
 		{
-			_viewEngines = new ViewEngineCollection()
-			{
-				 MockRepository.GenerateMock<IViewEngine>()
-			};
-			_controllerContext = new ControllerContext 
+			MvcViewEngines.Engines.Clear();
+			MvcViewEngines.Engines.Add(MockRepository.GenerateMock<IViewEngine>());
+
+			_controllerContext = new ControllerContext
 			{
 				HttpContext = MvcMockHelpers.DynamicHttpContextBase(),
 				Controller = MockRepository.GenerateStub<ControllerBase>()
 			};
-			_service = new EmailTemplateService(_viewEngines);
+
+			_service = new EmailTemplateService();
 
 			Response.Stub(x => x.Filter).PropertyBehavior();
 			Response.Expect(x => x.ContentEncoding).Return(Encoding.UTF8);
@@ -57,13 +55,13 @@ namespace MvcContrib.UnitTests
 		{
 			var view = MockRepository.GenerateMock<IView>();
 
-			_viewEngines[0]
-				.Expect(x => x.FindView(_controllerContext, viewName, null, true))
-				.Return(new ViewEngineResult(view, _viewEngines[0]));
+			var viewEngine = MvcViewEngines.Engines[0];
+			viewEngine
+				.Expect(x => x.FindPartialView(_controllerContext, viewName, true))
+				.Return(new ViewEngineResult(view, viewEngine));
 
 			view.Expect(x => x.Render(Arg<ViewContext>.Is.Anything, Arg<TextWriter>.Is.Equal(Response.Output))).Do(
 					new RenderViewDelegate((context, stream) => WriteToStream(Response.Filter, viewContents)));
-
 		}
 
 		[Test]
@@ -87,8 +85,8 @@ namespace MvcContrib.UnitTests
 		[Test, ExpectedException(typeof(InvalidOperationException))]
 		public void ShouldThrowIfViewCouldNotBeFound()
 		{
-			_viewEngines[0]
-				.Stub(x => x.FindView(_controllerContext, null, null, true))
+			MvcViewEngines.Engines[0]
+				.Stub(x => x.FindPartialView(_controllerContext, null, true))
 				.IgnoreArguments()
 				.Return(new ViewEngineResult(new[] { "foo", "bar" }));
 
@@ -101,6 +99,7 @@ namespace MvcContrib.UnitTests
 			string messageBody = "<html> <body> <p><b>test</b> message body...</p></body></html>" + Environment.NewLine;
 			SetupView("foo", messageBody);
 			var message = _service.RenderMessage(_controllerContext, "foo");
+
 			Assert.AreEqual(messageBody, message.Body);
 			Assert.IsTrue(message.IsBodyHtml);
 		}
@@ -111,7 +110,7 @@ namespace MvcContrib.UnitTests
 			var streamStub = MockRepository.GenerateStub<Stream>();
 			Response.Filter = streamStub;
 			SetupView("foo", "bar");
-			
+
 			_service.RenderMessage(_controllerContext, "foo");
 
 			Assert.AreSame(streamStub, Response.Filter);

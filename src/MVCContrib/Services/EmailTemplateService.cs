@@ -13,16 +13,8 @@ namespace MvcContrib.Services
 	/// </remarks>
 	public class EmailTemplateService : IEmailTemplateService
 	{
-		private readonly ViewEngineCollection _viewEngines;
 		private static readonly String HeaderPattern = @"[ \t]*(?<header>(to|from|cc|bcc|subject|reply-to|X-\w+)):[ \t]*(?<value>(.)+)(\r*\n*)?";
-
 		private static readonly Regex HeaderRegEx = new Regex(HeaderPattern, RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-		public EmailTemplateService(ViewEngineCollection viewEngines)
-		{
-			if (viewEngines == null) throw new ArgumentNullException("viewEngines");
-			_viewEngines = viewEngines;
-		}
 
 		#region Message Processing
 
@@ -149,7 +141,7 @@ namespace MvcContrib.Services
 				filter = new MemoryStream();
 				response.Filter = filter;
 
-				var view = _viewEngines.FindView(controllerContext, viewName, null).View;
+				var view = ViewEngines.Engines.FindPartialView(controllerContext, viewName).View;
 
 				if(view == null)
 				{
