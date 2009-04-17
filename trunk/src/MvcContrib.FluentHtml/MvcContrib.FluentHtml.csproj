@@ -72,6 +72,8 @@
     <Compile Include="Elements\CheckBoxBase.cs" />
     <Compile Include="Elements\CheckBoxList.cs" />
     <Compile Include="Elements\CheckBoxListBase.cs" />
+    <Compile Include="Elements\Label.cs" />
+    <Compile Include="Elements\LabelBase.cs" />
     <Compile Include="Elements\ResetButton.cs" />
     <Compile Include="Elements\ResetButtonBase.cs" />
     <Compile Include="Elements\Index.cs" />

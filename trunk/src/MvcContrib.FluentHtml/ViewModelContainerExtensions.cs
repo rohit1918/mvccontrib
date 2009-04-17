@@ -115,6 +115,18 @@ namespace MvcContrib.FluentHtml
 		}
 
 		/// <summary>
+		/// Generate an HTML label element, point its "for" attribute to the input element from the provided expression, and set its inner text from the ViewModel based on the expression provided.
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="expression">Expression indicating the ViewModel member that has an input element associated with it.</param>
+		public static Label Label<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		{
+			return new Label(expression.GetNameFor(), expression.GetMemberExpression(), view.Behaviors)
+				.Value(expression.GetNameFor());
+		}
+
+		/// <summary>
 		/// Generate an HTML span element and set its inner text from the ViewModel based on the expression provided.
 		/// </summary>
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
