@@ -193,6 +193,7 @@
     <Compile Include="FluentHtml\FormLiteralTests.cs" />
     <Compile Include="FluentHtml\Helpers\TestExtensions.cs" />
     <Compile Include="FluentHtml\HiddenTests.cs" />
+    <Compile Include="FluentHtml\LabelTests.cs" />
     <Compile Include="FluentHtml\LiteralTests.cs" />
     <Compile Include="FluentHtml\ModelExpressionHelperTests.cs" />
     <Compile Include="FluentHtml\ModelMasterViewPageTests.cs" />

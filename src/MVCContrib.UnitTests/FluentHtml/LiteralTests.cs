@@ -28,7 +28,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void literal_renders_with_inner_text_formatted()
 		{
-			var item = 1234.5m;
+			const decimal item = 1234.5m;
 			var expected = string.Format("{0:$#,##0.00}", item);
 			var html = new Literal().Value(item).Format("$#,##0.00").ToString();
 			html.ShouldRenderHtmlDocument().ChildNodes[0]
@@ -36,9 +36,9 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
         [Test]
-        public void textarea_value_html_encodes_value()
+        public void literal_html_encodes_its_value()
         {
-            var value = "<div>Foo</div>";
+            const string value = "<div>Foo</div>";
             var html = new Literal().Value(value).ToString();
             html.ShouldRenderHtmlDocument().ChildNodes[0]
                 .ShouldHaveInnerTextEqual(HttpUtility.HtmlEncode(value));
