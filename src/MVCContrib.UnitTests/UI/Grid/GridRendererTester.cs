@@ -38,15 +38,20 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_render_empty_table()
 		{
-			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
+			string expected = ExpectedEmptyTable("There is no data available.", "grid");
 			RenderGrid(null).ShouldEqual(expected);
 		}
 
-		[Test]
+	    private string ExpectedEmptyTable(string message, string @class)
+	    {
+	        return "<table class=\""+ @class +"\"><thead><tr><th></th></tr></thead><tbody><tr><td>" + message +"</td></tr></tbody></table>";
+	    }
+
+	    [Test]
 		public void Should_render_empty_table_when_collection_is_empty()
 		{
 			_people.Clear();
-			string expected = "<table class=\"grid\"><tr><td>There is no data available.</td></tr></table>";
+	        string expected = ExpectedEmptyTable("There is no data available.", "grid");
 			RenderGrid().ShouldEqual(expected);
 		}
 
@@ -54,7 +59,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Should_render_empty_table_with_custom_message()
 		{
 			_people.Clear();
-			string expected = "<table class=\"grid\"><tr><td>Test</td></tr></table>";
+		    string expected = ExpectedEmptyTable("Test", "grid");// "<table class=\"grid\"><tr><td>Test</td></tr></table>";
 			_model.Empty("Test");
 			RenderGrid().ShouldEqual(expected);
 		}
@@ -63,7 +68,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		public void Custom_html_attrs()
 		{
 			_people.Clear();
-			string expected = "<table class=\"sortable grid\"><tr><td>There is no data available.</td></tr></table>";
+		    string expected = ExpectedEmptyTable("There is no data available.", "sortable grid");// "<table class=\"sortable grid\"><tr><td>There is no data available.</td></tr></table>";
 			_model.Attributes(@class => "sortable grid");
 			RenderGrid().ShouldEqual(expected);
 		}

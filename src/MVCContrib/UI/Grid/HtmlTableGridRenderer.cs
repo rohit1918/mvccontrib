@@ -22,6 +22,10 @@ namespace MvcContrib.UI.Grid
 			RenderText("</th>");
 		}
 
+        protected void RenderHeaderCellStart()
+        {
+            RenderText("<th>");
+        }
 		protected override void RenderHeaderCellStart(GridColumn<T> column)
 		{
 			string attrs = BuildHtmlAttributes(column.HeaderAttributes);
@@ -108,7 +112,13 @@ namespace MvcContrib.UI.Grid
 
 		protected override void RenderEmpty()
 		{
+		    RenderHeadStart();
+		    RenderHeaderCellStart();
+		    RenderHeaderCellEnd();
+            RenderHeadEnd();            
+		    RenderBodyStart();
 			RenderText("<tr><td>" + GridModel.EmptyText + "</td></tr>");
+            RenderBodyEnd();
 		}
 
 		protected override void RenderBodyStart() 

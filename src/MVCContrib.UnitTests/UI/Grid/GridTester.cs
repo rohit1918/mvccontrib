@@ -150,7 +150,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		{
 			_grid.Empty("Foo");
 			_grid.Render();
-			_writer.ToString().ShouldEqual("<table class=\"grid\"><tr><td>Foo</td></tr></table>");
+            _writer.ToString().ShouldEqual("<table class=\"grid\"><thead><tr><th></th></tr></thead><tbody><tr><td>Foo</td></tr></tbody></table>");
 		}
 
 		[Test]
