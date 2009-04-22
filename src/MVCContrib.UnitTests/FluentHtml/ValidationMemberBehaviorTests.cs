@@ -74,5 +74,30 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var element = textbox.ToString().ShouldHaveHtmlNode("Price");
 			element.ShouldHaveAttribute(HtmlAttribute.Value).WithValue("bad value");
 		}
+
+		[Test]
+		public void handles_checkboxes_correctly()
+		{
+			stateDictionary.AddModelError("Done", "Foo");
+			stateDictionary["Done"].Value = new ValueProviderResult(new[] { "true", "false" }, "true", CultureInfo.CurrentCulture);
+			target = new ValidationBehavior(() => stateDictionary);
+			expression = x => x.Done;
+			var checkbox = new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), new List<IBehaviorMarker>() { target });
+			var element = checkbox.ToString().ShouldHaveHtmlNode("Done");
+			element.ShouldHaveAttribute("checked").WithValue("checked");
+			element.ShouldHaveAttribute("value").WithValue("true");
+		}
+
+		[Test]
+		public void when_handling_checkbox_does_not_fall_back_to_default_behavior()
+		{
+			stateDictionary.AddModelError("Done", "Foo");
+			stateDictionary["Done"].Value = new ValueProviderResult(new[] { "false", "false" }, "false", CultureInfo.CurrentCulture);
+			target = new ValidationBehavior(() => stateDictionary);
+			expression = x => x.Done;
+			var checkbox = new CheckBox(expression.GetNameFor(), expression.GetMemberExpression(), new List<IBehaviorMarker>() { target });
+			var element = checkbox.ToString().ShouldHaveHtmlNode("Done");
+			element.ShouldHaveAttribute("value").WithValue("true");
+		}
 	}
 }

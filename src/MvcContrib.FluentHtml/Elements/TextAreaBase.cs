@@ -11,7 +11,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// base class for an HTML textarea element.
 	/// </summary>
-	public abstract class TextAreaBase<T> : FormElement<T> where T : TextAreaBase<T>
+	public abstract class TextAreaBase<T> : FormElement<T>, ISupportsValue where T : TextAreaBase<T>
 	{
 		protected string format;
 		protected object rawValue;
@@ -29,6 +29,11 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			rawValue = value;
 			return (T)this;
+		}
+
+		void ISupportsValue.Value(object value)
+		{
+			Value(value);
 		}
 
 		/// <summary>
