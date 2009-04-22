@@ -106,6 +106,17 @@ namespace MvcContrib.UnitTests.TestHelper
 			Assert.AreEqual("someUrl", testController.Request.RawUrl);
 		}
 
+        [Test]
+        public void CanSpecifyRequestAcceptTypes()
+        {
+            builder.AcceptTypes = new[] {"some/type-extension"};
+            var controller = new TestHelperController();
+            builder.InitializeController(controller);
+            Assert.That(controller.HttpContext.Request.AcceptTypes, Is.Not.Null);
+            Assert.That(controller.HttpContext.Request.AcceptTypes.Length, Is.EqualTo(1));
+            Assert.That(controller.HttpContext.Request.AcceptTypes[0], Is.EqualTo("some/type-extension"));
+        }
+
 		[Test]
 		public void When_response_status_is_set_it_should_persist()
 		{
