@@ -122,7 +122,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member that has an input element associated with it.</param>
 		public static Label Label<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Label(expression.GetNameFor(), expression.GetMemberExpression(), view.Behaviors)
+			return new Label(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetNameFor());
 		}
 

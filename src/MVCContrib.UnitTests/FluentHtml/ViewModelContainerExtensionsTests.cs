@@ -63,6 +63,14 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
+		public void Can_get_label_for_given_input_with_prefix()
+		{
+			target.HtmlNamePrefix = "foo";
+			var element = target.Label(x => x.Title);
+			element.AttributeShouldEqual(HtmlAttribute.For, "foo_Title");
+		}
+
+		[Test]
 		public void can_get_literal_with_value()
 		{
 			var element = target.Literal(x => x.Title);
