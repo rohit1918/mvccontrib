@@ -12,12 +12,6 @@ namespace MvcContrib.FluentHtml.Behaviors
 		private readonly Func<ModelStateDictionary> modelStateDictionaryFunc;
 		private readonly string validationErrorCssClass;
 
-		private readonly List<IModelStateHandler> modelStateHandlers = new List<IModelStateHandler>
-		{
-			new CheckboxModelStateHandler(),
-			new DefaultModelStateHandler()
-		};
-
 		public ValidationBehavior(Func<ModelStateDictionary> modelStateDictionaryFunc)
 			: this(modelStateDictionaryFunc, defaultValidationCssClass) {}
 
@@ -30,7 +24,9 @@ namespace MvcContrib.FluentHtml.Behaviors
 		public void Execute(IElement element)
 		{
 			var name = element.GetAttr(HtmlAttribute.Name);
-			if(name == null)
+			var supportsModelState = element as ISupportsModelState;
+
+			if(name == null || supportsModelState == null)
 			{
 				return;
 			}
@@ -42,13 +38,7 @@ namespace MvcContrib.FluentHtml.Behaviors
 
 				if(state.Value != null)
 				{
-					foreach(var handler in modelStateHandlers)
-					{
-						if(handler.Handle(element, state))
-						{
-							break;
-						}
-					}
+					supportsModelState.ApplyModelState(state);
 				}
 			}
 		}

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Html;
 
@@ -9,7 +11,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class for input elements.
 	/// </summary>
 	/// <typeparam name="T">Derived class type.</typeparam>
-	public abstract class Input<T> : FormElement<T>, ISupportsValue where T : Input<T>, IElement
+	public abstract class Input<T> : FormElement<T>, ISupportsModelState where T : Input<T>, IElement
 	{
 		protected object elementValue;
 
@@ -34,11 +36,6 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
-		void ISupportsValue.Value(object value)
-		{
-			Value(value);
-		}
-
 		/// <summary>
 		/// Set the 'size' attribute.
 		/// </summary>
@@ -53,6 +50,17 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			Attr(HtmlAttribute.Value, elementValue);
 			base.PreRender();
+		}
+
+		void ISupportsModelState.ApplyModelState(ModelState state)
+		{
+			ApplyModelState(state);
+		}
+
+		protected virtual void ApplyModelState(ModelState state)
+		{
+			var value = state.Value.ConvertTo(typeof(string));
+			Value(value);
 		}
 	}
 }
