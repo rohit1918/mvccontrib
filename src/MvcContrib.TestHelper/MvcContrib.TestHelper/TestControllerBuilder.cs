@@ -19,8 +19,9 @@ namespace MvcContrib.TestHelper
 		protected MockRepository _mocks;
 		protected TempDataDictionary _tempData;
         protected System.Web.Caching.Cache _cache;
+	    
 
-		/// <summary>
+	    /// <summary>
 		/// Initializes a new instance of the <see cref="TestControllerBuilder"/> class.
 		/// </summary>
 		public TestControllerBuilder()
@@ -57,6 +58,11 @@ namespace MvcContrib.TestHelper
 		/// </summary>
 		/// <value>The NameValueCollection QueryString</value>
 		public NameValueCollection QueryString { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the AcceptTypes property of Request that built controllers will have set internally when created with InitializeController
+        /// </summary>
+        public string[] AcceptTypes { get; set; }
 
 		/// <summary>
 		/// Gets the Session that built controllers will have set internally when created with InitializeController
@@ -119,6 +125,8 @@ namespace MvcContrib.TestHelper
 
 			Form = new NameValueCollection();
 			SetupResult.For(request.Form).Return(Form);
+
+            SetupResult.For(request.AcceptTypes).Do((Func<string[]>)(() => AcceptTypes));
 
 			var files = new WriteableHttpFileCollection();
 			Files = files;
