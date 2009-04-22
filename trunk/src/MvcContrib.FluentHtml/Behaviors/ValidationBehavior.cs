@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;
@@ -11,8 +12,14 @@ namespace MvcContrib.FluentHtml.Behaviors
 		private readonly Func<ModelStateDictionary> modelStateDictionaryFunc;
 		private readonly string validationErrorCssClass;
 
+		private readonly List<IModelStateHandler> modelStateHandlers = new List<IModelStateHandler>
+		{
+			new CheckboxModelStateHandler(),
+			new DefaultModelStateHandler()
+		};
+
 		public ValidationBehavior(Func<ModelStateDictionary> modelStateDictionaryFunc)
-			: this(modelStateDictionaryFunc, defaultValidationCssClass) { }
+			: this(modelStateDictionaryFunc, defaultValidationCssClass) {}
 
 		public ValidationBehavior(Func<ModelStateDictionary> modelStateDictionaryFunc, string validationErrorCssClass)
 		{
@@ -23,18 +30,25 @@ namespace MvcContrib.FluentHtml.Behaviors
 		public void Execute(IElement element)
 		{
 			var name = element.GetAttr(HtmlAttribute.Name);
-			if (name == null)
+			if(name == null)
 			{
 				return;
 			}
+
 			ModelState state;
-			if (modelStateDictionaryFunc().TryGetValue(name, out state) && state.Errors != null && state.Errors.Count > 0)
+			if(modelStateDictionaryFunc().TryGetValue(name, out state) && state.Errors != null && state.Errors.Count > 0)
 			{
 				element.Builder.AddCssClass(validationErrorCssClass);
-				var valueMethod = element.GetType().GetMethod("Value");
-                if (valueMethod != null && state.Value != null)
+
+				if(state.Value != null)
 				{
-					valueMethod.Invoke(element, new [] { state.Value.AttemptedValue });
+					foreach(var handler in modelStateHandlers)
+					{
+						if(handler.Handle(element, state))
+						{
+							break;
+						}
+					}
 				}
 			}
 		}

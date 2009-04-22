@@ -8,7 +8,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// <summary>
 	/// Base class for HTML input element of type 'checkbox.'
 	/// </summary>
-	public abstract class CheckBoxBase<T> : Input<T> where T : CheckBoxBase<T>
+	public abstract class CheckBoxBase<T> : Input<T>, ICheckbox where T : CheckBoxBase<T>
 	{
 		protected CheckBoxBase(string name) : base(HtmlInputType.Checkbox, name)
 		{
@@ -36,6 +36,11 @@ namespace MvcContrib.FluentHtml.Elements
 				RemoveAttr(HtmlAttribute.Checked);
 			}
 			return (T)this;
+		}
+
+		void ICheckbox.Checked(bool value)
+		{
+			Checked(value);
 		}
 
 		public override string ToString()

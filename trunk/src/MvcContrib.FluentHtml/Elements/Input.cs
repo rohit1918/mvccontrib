@@ -9,7 +9,7 @@ namespace MvcContrib.FluentHtml.Elements
 	/// Base class for input elements.
 	/// </summary>
 	/// <typeparam name="T">Derived class type.</typeparam>
-	public abstract class Input<T> : FormElement<T> where T : Input<T>, IElement
+	public abstract class Input<T> : FormElement<T>, ISupportsValue where T : Input<T>, IElement
 	{
 		protected object elementValue;
 
@@ -32,6 +32,11 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			elementValue = value;
 			return (T)this;
+		}
+
+		void ISupportsValue.Value(object value)
+		{
+			Value(value);
 		}
 
 		/// <summary>
