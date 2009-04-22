@@ -10,14 +10,14 @@
         <title></title>
     </asp:ContentPlaceHolder>
     
-    <script type="text/javascript" src="../../Scripts/jquery-1.2.6.js"></script>
-    <script type="text/javascript" src="../../Scripts/jquery.dimensions.js"></script>
-    <script type="text/javascript" src="../../Scripts/jquery.positionBy.js"></script>
-    <script type="text/javascript" src="../../Scripts/jquery.bgiframe.js"></script>
-    <script type="text/javascript" src="../../Scripts/jquery.jdMenu.js"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery-1.2.6.js") %>"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.dimensions.js") %>"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.positionBy.js") %>""></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.bgiframe.js") %>"></script>
+    <script type="text/javascript" src="<%= Url.Content("~/Scripts/jquery.jdMenu.js") %>"></script>
+    
     <link href="../../Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="../../Content/jquery.jdMenu.css" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body>
@@ -33,7 +33,7 @@
             
             <div id="menucontainer">
                 <%
-                    Html.Menu(GridSampleMenu.MainMenu());
+                    Html.Menu(GridSampleMenu.MainMenu(Url));
                 %>
             </div>
         </div>
