@@ -12,7 +12,7 @@ namespace MvcContrib.Samples.UI.Views
 	{
 		public void Execute(IMemberElement element)
 		{
-			var helper = new MemberBehaviorHelper<RangeAttribute>();
+			var helper = new MemberBehaviorHelper<StringLengthAttribute>();
 			var attribute = helper.GetAttribute(element);
 
 			if (attribute == null) 
@@ -22,7 +22,7 @@ namespace MvcContrib.Samples.UI.Views
 
 			if (element is ISupportsMaxLength) 
 			{
-				element.SetAttr(HtmlAttribute.MaxLength, attribute.Maximum);
+				element.SetAttr(HtmlAttribute.MaxLength, attribute.MaximumLength);
 			}
 		}
 	}
