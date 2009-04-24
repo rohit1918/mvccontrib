@@ -62,6 +62,14 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
+		public void can_get_label_with_value()
+		{
+			var element = target.Label("fake.Title");
+			element.AttributeShouldEqual(HtmlAttribute.For, "fake_Title");
+			element.InnerTextShouldEqual(fake.Title);
+		}
+
+		[Test]
 		public void can_get_literal_with_value()
 		{
 			var element = target.Literal("foo bar");
