@@ -92,6 +92,7 @@
     <Compile Include="Elements\RadioButtonBase.cs" />
     <Compile Include="Elements\RadioSet.cs" />
     <Compile Include="Elements\RadioSetBase.cs" />
+    <Compile Include="ModelStateDictionaryExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Elements\SubmitButtonBase.cs" />
     <Compile Include="Elements\TextAreaBase.cs" />
