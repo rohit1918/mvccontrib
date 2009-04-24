@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using MvcContrib.FluentHtml.Behaviors;
@@ -18,6 +17,14 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="behaviors">Behaviors to apply to the element.</param>
 		public Label(string forElement, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : 
 			base(forElement, forMember, behaviors) {}
+
+		/// <summary>
+		/// Generates a label element.
+		/// </summary>
+		/// <param name="forElement">Value to be used for the 'for' attribute of the element.  Should be the 'id' of the input element this label is for.</param>
+		public Label(string forElement) : base(forElement)
+		{
+		}
 
 		/// <summary>
 		/// Generates a label element.

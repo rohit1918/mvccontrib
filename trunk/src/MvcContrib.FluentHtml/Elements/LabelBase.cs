@@ -21,6 +21,11 @@ namespace MvcContrib.FluentHtml.Elements
 			this.forName = forName;
 		}
 
+		protected LabelBase(string forName) : base(HtmlTag.Label)
+		{
+			this.forName = forName;
+		}
+
 		protected LabelBase() : base(HtmlTag.Label) { }
 
 		/// <summary>

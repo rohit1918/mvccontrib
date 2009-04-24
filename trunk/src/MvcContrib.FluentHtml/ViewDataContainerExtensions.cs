@@ -128,6 +128,16 @@ namespace MvcContrib.FluentHtml
             return new ResetButton(text);
         }
 
+		/// <summary>
+		/// Generate an HTML label element;
+		/// </summary>
+		/// <param name="view">The view.</param>
+		/// <param name="forName">The id of the target element to point to in the 'for' attribute.</param>
+		public static Label Label(this IViewDataContainer view, string forName)
+		{
+			return new Label(forName).Value(view.ViewData.Eval(forName));
+		}
+
         /// <summary>
 		/// Generate an HTML span element.
 		/// </summary>
