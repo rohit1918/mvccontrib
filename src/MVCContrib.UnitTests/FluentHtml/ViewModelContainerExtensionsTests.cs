@@ -193,6 +193,23 @@ namespace MvcContrib.UnitTests.FluentHtml
 		}
 
 		[Test]
+		public void can_get_id_for_expression_with_prefix()
+		{
+			target.HtmlNamePrefix = "foo";
+			var result = target.IdFor(x => x.Person.FirstName);
+			result.ShouldEqual("foo_Person_FirstName");
+		}
+
+		[Test]
+		public void can_get_name_for_expression_with_prefix()
+		{
+			target.HtmlNamePrefix = "foo";
+			var result = target.NameFor(x => x.Person.FirstName);
+			result.ShouldEqual("foo.Person.FirstName");			
+		}
+
+
+		[Test]
 		public void can_get_radio_set_with_selected_value()
 		{
 			var element = target.RadioSet(x => x.Id);
