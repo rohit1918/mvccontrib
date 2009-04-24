@@ -253,7 +253,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member.</param>
 		public static string NameFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return expression.GetNameFor();
+			return expression.GetNameFor(view);
 		}
 
 		/// <summary>
@@ -264,7 +264,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member.</param>
 		public static string IdFor<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return expression.GetNameFor().FormatAsHtmlId();
+			return expression.GetNameFor(view).FormatAsHtmlId();
 		}
 
 		/// <summary>
