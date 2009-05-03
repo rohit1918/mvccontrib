@@ -18,17 +18,21 @@ namespace MvcContrib.FluentHtml.Behaviors
 
 		public void Execute(IElement element)
 		{
+			if (!(element is ISupportsAutoLabeling))
+			{
+				return;
+			}
 			if(isQualifiedFunc != null && !isQualifiedFunc(element))
 			{
 				return;
 			}
 			if(renderLabelAfterFunc == null || !renderLabelAfterFunc(element))
 			{
-				element.SetAutoLabel();
+				((ISupportsAutoLabeling)element).SetAutoLabel();
 			}
 			else
 			{
-				element.SetAutoLabelAfter();
+				((ISupportsAutoLabeling)element).SetAutoLabelAfter();
 			}
 		}
 	}
