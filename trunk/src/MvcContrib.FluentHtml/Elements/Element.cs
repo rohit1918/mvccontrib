@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Web.Mvc;
@@ -207,24 +206,6 @@ namespace MvcContrib.FluentHtml.Elements
 			builder.Attributes.Remove(name);
 		}
 
-		/// <summary>
-		/// If no label has been explicitly set, set the label using the element name.
-		/// </summary>
-		public virtual T AutoLabel()
-		{
-			SetAutoLabel();
-			return (T)this;
-		}
-
-		/// <summary>
-		/// If no label before has been explicitly set, set the label before using the element name.
-		/// </summary>
-		public virtual T AutoLabelAfter()
-		{
-			SetAutoLabelAfter();
-			return (T)this;
-		}
-
 		public override string ToString()
 		{
 			ApplyBehaviors();
@@ -296,79 +277,6 @@ namespace MvcContrib.FluentHtml.Elements
 				}
 			}
 		}
-
-		public virtual void SetAutoLabel()
-		{
-			if (labelBeforeText == null)
-			{
-				var settings = GetAutoLabelSettings();
-				SetLabel(GetAutoLabelText(settings), settings == null ? null : settings.LabelCssClass);
-			}
-		}
-
-		public virtual void SetAutoLabelAfter()
-		{
-			if (labelAfterText == null)
-			{
-				var settings = GetAutoLabelSettings();
-				SetLabelAfter(GetAutoLabelText(settings), settings == null ? null : settings.LabelCssClass);
-			}
-		}
-
-		private AutoLabelSettings GetAutoLabelSettings()
-		{
-			//TODO: should we throw if there is more than one?
-			return behaviors == null 
-				? new AutoLabelSettings(false, null, null) 
-				: behaviors.Where(x => x is AutoLabelSettings).FirstOrDefault() as AutoLabelSettings;
-		}
-
-		private string GetAutoLabelText(AutoLabelSettings settings)
-		{
-			var result = GetAttr(HtmlAttribute.Name);
-			if (result == null)
-			{
-				return result;
-			}
-			if (settings.UseFullNameForNestedProperties)
-			{
-				result = result.Replace('.', ' ');
-			}
-			else
-			{
-				var lastDot = result.LastIndexOf(".");
-				if (lastDot >= 0)
-				{
-					result = result.Substring(lastDot + 1);
-				}
-			}
-			result = result.PascalCaseToPhrase();
-			result = RemoveArrayNotationFromPhrase(result);
-			result = settings.LabelFormat != null
-				? string.Format(settings.LabelFormat, result)
-				: result;
-			return result;
-		}
-
-		private string RemoveArrayNotationFromPhrase(string phrase) 
-		{
-			if (phrase.IndexOf("[") >= 0)
-			{
-				var words = new List<string>(phrase.Split(' '));
-				words = words.ConvertAll<string>(RemoveArrayNotation);
-				phrase = string.Join(" ", words.ToArray());
-			}
-			return phrase;
-		}
-
-		private string RemoveArrayNotation(string s)
-		{
-			var index = s.LastIndexOf('[');
-			return index >= 0 
-				? s.Remove(index) 
-				: s;
-		}
-
 		protected virtual void PreRender() { }
 	}
 }
