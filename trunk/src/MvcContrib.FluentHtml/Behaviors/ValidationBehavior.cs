@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Html;

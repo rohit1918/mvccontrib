@@ -225,13 +225,13 @@ namespace MvcContrib.UnitTests.FluentHtml
 			label.ShouldHaveAttribute(HtmlAttribute.Class).WithValue("bar");
 		}
 
-        [Test]
-        public void text_box_value_html_attribute_encodes_value()
-        {
-            var value = "<div>Foo</div>";
-            new TextBox("x").Value(value).ToString()
-                .ShouldHaveHtmlNode("x")
-                .ShouldHaveAttribute(HtmlAttribute.Value).WithValue(HttpUtility.HtmlAttributeEncode(value));
-        }
+		[Test]
+		public void text_box_value_html_attribute_encodes_value()
+		{
+			var value = "<div>Foo</div>";
+			new TextBox("x").Value(value).ToString()
+				.ShouldHaveHtmlNode("x")
+				.ShouldHaveAttribute(HtmlAttribute.Value).WithValue(HttpUtility.HtmlAttributeEncode(value));
+		}
 	}
 }

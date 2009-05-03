@@ -6,14 +6,14 @@ using System.Web.Mvc;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
-using MvcContrib.FluentHtml.Html;
 using MvcContrib.UnitTests.FluentHtml.Fakes;
 using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
+using HtmlAttribute=MvcContrib.FluentHtml.Html.HtmlAttribute;
 
 namespace MvcContrib.UnitTests.FluentHtml
 {
-	[TestFixture]
+    [TestFixture]
 	public class ValidationMemberBehaviorTests
 	{
 		ModelStateDictionary stateDictionary;
