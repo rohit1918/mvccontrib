@@ -1,4 +1,4 @@
-namespace MvcContrib.FluentHtml.Elements
+namespace MvcContrib.FluentHtml.Behaviors
 {
 	public interface ISupportsAutoLabeling 
 	{
