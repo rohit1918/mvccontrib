@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using MvcContrib.FluentHtml.Behaviors;
 using MvcContrib.FluentHtml.Elements;
