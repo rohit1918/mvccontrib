@@ -90,9 +90,12 @@ namespace MvcContrib.FluentHtml.Elements
 		private AutoLabelSettings GetAutoLabelSettings()
 		{
 			//TODO: should we throw if there is more than one?
-			return behaviors == null
-				? new AutoLabelSettings(false, null, null)
-				: behaviors.Where(x => x is AutoLabelSettings).FirstOrDefault() as AutoLabelSettings;
+		    AutoLabelSettings foundSettings = null;
+			if (behaviors != null)
+			{
+			    foundSettings = behaviors.Where(x => x is AutoLabelSettings).FirstOrDefault() as AutoLabelSettings;
+			}
+			return foundSettings ?? new AutoLabelSettings(false, null, null);
 		}
 
 		private string GetAutoLabelText(AutoLabelSettings settings)
