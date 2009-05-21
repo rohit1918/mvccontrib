@@ -33,7 +33,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <summary>
 		/// Determines how the HTML element is closed.
 		/// </summary>
-		public override TagRenderMode TagRenderMode
+		protected override TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.SelfClosing; }
 		}
@@ -66,41 +66,43 @@ namespace MvcContrib.FluentHtml.Elements
 
 		protected void SetName(string name)
 		{
-			SetAttr(HtmlAttribute.Name, name);
+			((IElement)this).SetAttr(HtmlAttribute.Name, name);
 		}
 
 		public virtual void SetAutoLabel()
 		{
-			if (labelBeforeText == null)
+			if (((IElement)this).LabelBeforeText == null)
 			{
 				var settings = GetAutoLabelSettings();
-				SetLabel(GetAutoLabelText(settings), settings == null ? null : settings.LabelCssClass);
+				((IElement)this).LabelBeforeText = GetAutoLabelText(settings);
+				((IElement)this).LabelClass = settings == null ? null : settings.LabelCssClass;
 			}
 		}
 
 		public virtual void SetAutoLabelAfter()
 		{
-			if (labelAfterText == null)
+			if (((IElement)this).LabelAfterText == null)
 			{
 				var settings = GetAutoLabelSettings();
-				SetLabelAfter(GetAutoLabelText(settings), settings == null ? null : settings.LabelCssClass);
+				((IElement)this).LabelAfterText = GetAutoLabelText(settings);
+				((IElement)this).LabelClass = settings == null ? null : settings.LabelCssClass;
 			}
 		}
 
 		private AutoLabelSettings GetAutoLabelSettings()
 		{
 			//TODO: should we throw if there is more than one?
-		    AutoLabelSettings foundSettings = null;
+			AutoLabelSettings foundSettings = null;
 			if (behaviors != null)
 			{
-			    foundSettings = behaviors.Where(x => x is AutoLabelSettings).FirstOrDefault() as AutoLabelSettings;
+				foundSettings = behaviors.Where(x => x is AutoLabelSettings).FirstOrDefault() as AutoLabelSettings;
 			}
 			return foundSettings ?? new AutoLabelSettings(false, null, null);
 		}
 
 		private string GetAutoLabelText(AutoLabelSettings settings)
 		{
-			var result = GetAttr(HtmlAttribute.Name);
+			var result = ((IElement)this).GetAttr(HtmlAttribute.Name);
 			if (result == null)
 			{
 				return result;

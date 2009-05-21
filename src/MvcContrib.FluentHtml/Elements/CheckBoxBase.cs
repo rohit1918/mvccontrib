@@ -33,7 +33,7 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 			else
 			{
-				RemoveAttr(HtmlAttribute.Checked);
+				((IElement)this).RemoveAttr(HtmlAttribute.Checked);
 			}
 			return (T)this;
 		}
@@ -42,9 +42,9 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			var html = ToCheckBoxOnlyHtml();
 			var hiddenId = "_Hidden";
-			if(Builder.Attributes.ContainsKey("id"))
+			if (((IElement)this).Builder.Attributes.ContainsKey("id"))
 			{
-				hiddenId = Builder.Attributes["id"] + hiddenId;
+				hiddenId = ((IElement)this).Builder.Attributes["id"] + hiddenId;
 			}
 			var hidden = new Hidden(builder.Attributes[HtmlAttribute.Name]).Id(hiddenId).Value("false").ToString();
 			return string.Concat(html, hidden);

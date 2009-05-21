@@ -91,7 +91,7 @@ namespace MvcContrib.FluentHtml.Elements
 							 : string.Format("{0:" + format + "}", value);
 		}
 
-		public override TagRenderMode TagRenderMode
+		protected override TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.Normal; }
 		}

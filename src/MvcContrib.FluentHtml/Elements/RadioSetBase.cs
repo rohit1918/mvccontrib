@@ -57,7 +57,7 @@ namespace MvcContrib.FluentHtml.Elements
 			base.PreRender();
 		}
 
-		public override TagRenderMode TagRenderMode
+		protected override TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.Normal; }
 		}
