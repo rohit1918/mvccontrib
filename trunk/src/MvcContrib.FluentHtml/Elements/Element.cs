@@ -17,10 +17,6 @@ namespace MvcContrib.FluentHtml.Elements
 		protected const string LABEL_FORMAT = "{0}_Label";
 
 		protected readonly TagBuilder builder;
-
-		protected string labelBeforeText;
-		protected string labelAfterText;
-		protected string labelClass;
 		protected MemberExpression forMember;
 		protected IEnumerable<IBehaviorMarker> behaviors;
 
@@ -38,7 +34,7 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <summary>
 		/// TagBuilder object used to generate HTML for elements.
 		/// </summary>
-		public virtual TagBuilder Builder
+		TagBuilder IElement.Builder
 		{
 			get { return builder; }
 		}
@@ -101,35 +97,13 @@ namespace MvcContrib.FluentHtml.Elements
 		}
 
 		/// <summary>
-		/// Set the value of the specified attribute.
-		/// </summary>
-		/// <param name="name">The name of the attribute.</param>
-		/// <param name="value">The value of the attribute.</param>
-		public virtual void SetAttr(string name, object value)
-		{
-			var valueString = value == null ? null : value.ToString();
-			builder.MergeAttribute(name, valueString, true);
-		}
-
-		/// <summary>
-		/// Get the value of the specified attribute.
-		/// </summary>
-		/// <param name="name">The name of the attribute.</param>
-		public virtual string GetAttr(string name)
-		{
-			string result;
-			builder.Attributes.TryGetValue(name, out result);
-			return result;
-		}
-
-		/// <summary>
 		/// Set the value of a specified attribute.
 		/// </summary>
 		/// <param name="name">The name of the attribute.</param>
 		/// <param name="value">The value of the attribute.</param>
 		public virtual T Attr(string name, object value)
 		{
-			SetAttr(name, value);
+			((IElement)this).SetAttr(name, value);
 			return (T)this;
 		}
 
@@ -140,7 +114,8 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="class">The value of the 'class' attribute for the label.</param>
 		public virtual T Label(string value, string @class)
 		{
-			SetLabel(value, @class);
+			((IElement)this).LabelBeforeText = value;
+			((IElement)this).LabelClass = @class;
 			return (T)this;
 		}
 
@@ -150,19 +125,8 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="value">The inner text of the label.</param>
 		public virtual T Label(string value)
 		{
-			SetLabel(value, null);
+			((IElement)this).LabelBeforeText = value;
 			return (T)this;
-		}
-
-		/// <summary>
-		/// Generate a label before the element.
-		/// </summary>
-		/// <param name="value">The inner text of the label.</param>
-		/// <param name="class">The value of the 'class' attribute for the label.</param>
-		public virtual void SetLabel(string value, string @class)
-		{
-			labelBeforeText = value;
-			labelClass = @class;
 		}
 
 		/// <summary>
@@ -172,7 +136,8 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="class">The value of the 'class' attribute for the label.</param>
 		public virtual T LabelAfter(string value, string @class)
 		{
-			SetLabelAfter(value, @class);
+			((IElement)this).LabelAfterText = value;
+			((IElement)this).LabelClass = @class;
 			return (T)this;
 		}
 
@@ -182,55 +147,62 @@ namespace MvcContrib.FluentHtml.Elements
 		/// <param name="value">The inner text of the label.</param>
 		public virtual T LabelAfter(string value)
 		{
-			SetLabelAfter(value, null);
+			((IElement)this).LabelAfterText = value;
 			return (T)this;
-		}
-
-		/// <summary>
-		/// Generate a label after the element.
-		/// </summary>
-		/// <param name="value">The inner text of the label.</param>
-		/// <param name="class">The value of the 'class' attribute for the label.</param>
-		public virtual void SetLabelAfter(string value, string @class)
-		{
-			labelAfterText = value;
-			labelClass = @class;
-		}
-
-		/// <summary>
-		/// Remove an attribute.
-		/// </summary>
-		/// <param name="name">The name of the attribute to remove.</param>
-		public void RemoveAttr(string name)
-		{
-			builder.Attributes.Remove(name);
 		}
 
 		public override string ToString()
 		{
 			ApplyBehaviors();
 			PreRender();
-			var html = RenderLabel(labelBeforeText);
-			html += builder.ToString(TagRenderMode);
-			html += RenderLabel(labelAfterText);
+			var html = RenderLabel(((IElement)this).LabelBeforeText);
+			html += builder.ToString(((IElement)this).TagRenderMode);
+			html += RenderLabel(((IElement)this).LabelAfterText);
 			return html;
 		}
 
-		/// <summary>
-		/// How the tag should be closed.
-		/// </summary>
-		public virtual TagRenderMode TagRenderMode
+		#region Explicit IElement members
+
+		void IElement.RemoveAttr(string name)
 		{
-			get { return TagRenderMode.Normal; }
+			builder.Attributes.Remove(name);
 		}
 
-		/// <summary>
-		/// Expression indicating the view model member assocaited with the element.</param>
-		/// </summary>
-		public virtual MemberExpression ForMember
+		void IElement.SetAttr(string name, object value)
+		{
+			var valueString = value == null ? null : value.ToString();
+			builder.MergeAttribute(name, valueString, true);
+		}
+
+		string IElement.GetAttr(string name)
+		{
+			string result;
+			builder.Attributes.TryGetValue(name, out result);
+			return result;
+		}
+
+		string IElement.LabelBeforeText { get; set; }
+
+		string IElement.LabelAfterText { get; set; }
+
+		string IElement.LabelClass { get; set; }
+
+		TagRenderMode IElement.TagRenderMode
+		{
+			get { return TagRenderMode; }
+		}
+
+		MemberExpression IMemberElement.ForMember
 		{
 			get { return forMember; }
 		}
+
+		protected virtual TagRenderMode TagRenderMode
+		{
+			get { return TagRenderMode.Normal; }
+		} 
+
+		#endregion
 
 		protected virtual string RenderLabel(string labelText)
 		{
@@ -252,9 +224,9 @@ namespace MvcContrib.FluentHtml.Elements
 				labelBuilder.MergeAttribute(HtmlAttribute.For, id);
 				labelBuilder.MergeAttribute(HtmlAttribute.Id, string.Format(LABEL_FORMAT, id));
 			}
-			if (!string.IsNullOrEmpty(labelClass))
+			if (!string.IsNullOrEmpty(((IElement)this).LabelClass))
 			{
-				labelBuilder.MergeAttribute(HtmlAttribute.Class, labelClass);
+				labelBuilder.MergeAttribute(HtmlAttribute.Class, ((IElement)this).LabelClass);
 			}
 			return labelBuilder;
 		}
@@ -277,6 +249,7 @@ namespace MvcContrib.FluentHtml.Elements
 				}
 			}
 		}
+
 		protected virtual void PreRender() { }
 	}
 }

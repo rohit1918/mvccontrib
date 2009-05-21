@@ -28,7 +28,7 @@ namespace MvcContrib.FluentHtml.Elements
 			}
 			else
 			{
-				RemoveAttr(HtmlAttribute.Disabled);
+				((IElement)this).RemoveAttr(HtmlAttribute.Disabled);
 			}
 			return (T)this;
 		}
