@@ -237,6 +237,29 @@
             <param name="synchronously">true if synchronously.</param>
             <param name="exception">The exception.</param>
         </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.SetCallbackInfo(Castle.Facilities.Synchronize.ResultDelegate,System.Object)">
+            <summary>
+            Set the asynchronous callback information.
+            </summary>
+            <param name="callback">The callback.</param>
+            <param name="state">The async state.</param>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.Of(System.Action)">
+            <summary>
+            Gets the result of the last called made.
+            </summary>
+            <param name="action">The action to execute.</param>
+            <returns>The result handle.</returns>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.Of(System.Action,Castle.Facilities.Synchronize.ResultDelegate,System.Object)">
+            <summary>
+            Gets the result of the last called made.
+            </summary>
+            <param name="action">The action to execute.</param>
+            <param name="callback">The callback.</param>
+            <param name="state">The async state.</param>
+            <returns>The result handle.</returns>
+        </member>
         <member name="M:Castle.Facilities.Synchronize.Result.Of``1(``0)">
             <summary>
             Gets the result of the last called made.
@@ -245,16 +268,46 @@
             <param name="ignored"></param>
             <returns>The result handle.</returns>
         </member>
+        <member name="M:Castle.Facilities.Synchronize.Result.Of``1(``0,Castle.Facilities.Synchronize.ResultDelegate{``0},System.Object)">
+            <summary>
+            Gets the result of the last called made.
+            </summary>
+            <typeparam name="T">The result type.</typeparam>
+            <param name="ignored"></param>
+            <param name="callback">The callback.</param>
+            <param name="state">The async state.</param>
+            <returns>The result handle.</returns>
+        </member>
         <member name="P:Castle.Facilities.Synchronize.Result.Value">
             <summary>
             Gets the result value, blocking if not available yet.
             </summary>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.ResultDelegate">
+            <summary>
+            Delegate called when results are available.
+            </summary>
+            <param name="result">The result.</param>
+        </member>
+        <member name="T:Castle.Facilities.Synchronize.ResultDelegate`1">
+            <summary>
+            Delegate called when typed results are available.
+            </summary>
+            <typeparam name="T">The result type.</typeparam>
+            <param name="result">The result.</param>
         </member>
         <member name="T:Castle.Facilities.Synchronize.Result`1">
             <summary>
             Represents the typed result of an asynchronous operation.
             </summary>
             <typeparam name="T">The result type.</typeparam>
+        </member>
+        <member name="M:Castle.Facilities.Synchronize.Result`1.SetCallbackInfo(Castle.Facilities.Synchronize.ResultDelegate{`0},System.Object)">
+            <summary>
+            Set the asynchronous callback information.
+            </summary>
+            <param name="callback">The callback.</param>
+            <param name="state">The async state.</param>
         </member>
         <member name="M:Castle.Facilities.Synchronize.Result`1.op_Implicit(Castle.Facilities.Synchronize.Result{`0})~`0">
             <summary>

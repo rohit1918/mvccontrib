@@ -19,6 +19,11 @@
             Initializes a new instance of the <see cref="T:Castle.Facilities.ActiveRecordIntegration.ActiveRecordFacility"/> class.
             </summary>
         </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.ActiveRecordFacility.#ctor(System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.Facilities.ActiveRecordIntegration.ActiveRecordFacility"/> class.
+            </summary>
+        </member>
         <member name="M:Castle.Facilities.ActiveRecordIntegration.ActiveRecordFacility.Init">
             <summary>
             The custom initialization for the Facility.
@@ -155,6 +160,16 @@
             <param name="lockMode">The lock level</param>
             <returns>the persistent instance</returns>
         </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Load(System.String,System.Object,NHibernate.LockMode)">
+            <summary>
+            Return the persistent instance of the given entity class with the given identifier,
+            obtaining the specified lock mode.
+            </summary>
+            <param name="entityName">Name of the entity</param>
+            <param name="id">A valid identifier of an existing persistent instance of the class</param>
+            <param name="lockMode">The lock level</param>
+            <returns>the persistent instance</returns>
+        </member>
         <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Load(System.Type,System.Object)">
             <summary>
             Return the persistent instance of the given entity class with the given identifier,
@@ -185,6 +200,14 @@
             <typeparam name="T"></typeparam>
             <param name="id">The id.</param>
             <returns></returns>
+        </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Load(System.String,System.Object)">
+            <summary>
+            Read the persistent state associated with the given identifier into the given transient
+            instance.
+            </summary>
+            <param name="entityName">Name of the entity</param>
+            <param name="id">A valid identifier of an existing persistent instance of the class</param>
         </member>
         <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Load(System.Object,System.Object)">
             <summary>
@@ -473,6 +496,17 @@
             transient instance with an identifier associated with existing persistent state.
             </remarks>
         </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Delete(System.String,System.Object)">
+            <summary>
+            Remove a persistent instance from the datastore.
+            </summary>
+            <param name="entityName">Name of the entity</param>
+            <param name="obj">The instance to be removed</param>
+            <remarks>
+            The argument may be an instance associated with the receiving <c>ISession</c> or a
+            transient instance with an identifier associated with existing persistent state.
+            </remarks>
+        </member>
         <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.Find(System.String)">
             <summary>
             Execute a query
@@ -731,6 +765,21 @@
             A transaction instance having the specified isolation level
             </returns>
         </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.CreateCriteria``1">
+            <summary>
+            Creates a new <c>Criteria</c> for the entity class.
+            </summary>
+            <typeparam name="T">The class to Query</typeparam>
+            <returns>An ICriteria object</returns>
+        </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.CreateCriteria``1(System.String)">
+            <summary>
+            Creates a new <c>Criteria</c> for the entity class with a specific alias
+            </summary>
+            <typeparam name="T">The class to Query</typeparam>
+            <param name="alias">The alias of the entity</param>
+            <returns>An ICriteria object</returns>
+        </member>
         <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.CreateCriteria(System.Type)">
             <summary>
             Creates a new <c>Criteria</c> for the entity class.
@@ -743,6 +792,21 @@
             Creates a new <c>Criteria</c> for the entity class with a specific alias
             </summary>
             <param name="persistentClass">The class to Query</param>
+            <param name="alias">The alias of the entity</param>
+            <returns>An ICriteria object</returns>
+        </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.CreateCriteria(System.String)">
+            <summary>
+            Creates a new <c>Criteria</c> for the entity class with a specific alias
+            </summary>
+            <param name="entityName">Name of the entity</param>
+            <returns>An ICriteria object</returns>
+        </member>
+        <member name="M:Castle.Facilities.ActiveRecordIntegration.SafeSessionProxy.CreateCriteria(System.String,System.String)">
+            <summary>
+            Creates a new <c>Criteria</c> for the entity class with a specific alias
+            </summary>
+            <param name="entityName">Name of the entity</param>
             <param name="alias">The alias of the entity</param>
             <returns>An ICriteria object</returns>
         </member>

@@ -20,5 +20,8 @@
         <member name="M:Castle.Components.Scheduler.WindsorExtension.WindsorJobFactory.GetJob(System.String)">
             <inheritdoc />
         </member>
+        <member name="M:Castle.Components.Scheduler.WindsorExtension.WindsorJobFactory.ReleaseJob(Castle.Components.Scheduler.IJob)">
+            <inheritdoc />
+        </member>
     </members>
 </doc>
