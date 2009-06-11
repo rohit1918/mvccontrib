@@ -17,13 +17,13 @@ namespace MvcContrib.UnitTests.IoC
 
             public override void Setup()
             {
-                
-                StructureMapConfiguration.ResetAll();                
-                StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;                
-                StructureMapConfiguration.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<SimpleDependency>();
-                StructureMapConfiguration.BuildInstancesOf<SimpleDependency>().TheDefaultIsConcreteType<SimpleDependency>();
-                StructureMapConfiguration.BuildInstancesOf<NestedDependency>().TheDefaultIsConcreteType<NestedDependency>();
-                ObjectFactory.Reset();
+                ObjectFactory.Initialize(x =>
+                {
+                	x.UseDefaultStructureMapConfigFile = false;
+					x.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<SimpleDependency>();
+					x.BuildInstancesOf<SimpleDependency>().TheDefaultIsConcreteType<SimpleDependency>();
+					x.BuildInstancesOf<NestedDependency>().TheDefaultIsConcreteType<NestedDependency>();
+                });
                 _dependencyResolver = new StructureMapDependencyResolver();
             }
         }

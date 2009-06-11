@@ -17,15 +17,14 @@ namespace MvcContrib.UnitTests.ControllerFactories
 			[SetUp]
 			public void Setup()
 			{
-				StructureMapConfiguration.ResetAll();
-				StructureMapConfiguration.UseDefaultStructureMapConfigFile = false;
-			    StructureMapConfiguration.BuildInstancesOf<IController>();
-				StructureMapConfiguration.BuildInstancesOf<StructureMapSimpleController>().TheDefaultIsConcreteType
-					<StructureMapSimpleController>();
-				StructureMapConfiguration.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<StubDependency>();
-				StructureMapConfiguration.BuildInstancesOf<StructureMapDependencyController>().TheDefaultIsConcreteType
-					<StructureMapDependencyController>();
-                ObjectFactory.Reset();
+				ObjectFactory.Initialize(x =>
+				{
+					x.UseDefaultStructureMapConfigFile = false;
+					x.BuildInstancesOf<IController>();
+					x.BuildInstancesOf<StructureMapSimpleController>().TheDefaultIsConcreteType<StructureMapSimpleController>();
+					x.BuildInstancesOf<IDependency>().TheDefaultIsConcreteType<StubDependency>();
+					x.BuildInstancesOf<StructureMapDependencyController>().TheDefaultIsConcreteType<StructureMapDependencyController>();
+				});
 			}
 
 			[Test]
@@ -68,6 +67,11 @@ namespace MvcContrib.UnitTests.ControllerFactories
 				{
 					throw new NotImplementedException();
 				}
+			}
+
+			public class TestRegistry
+			{
+				
 			}
 
 			public interface IDependency
