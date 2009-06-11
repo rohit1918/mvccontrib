@@ -589,6 +589,12 @@
             </summary>
             <value>The file path.</value>
         </member>
+        <member name="P:Castle.MonoRail.Framework.IRequest.UserAgent">
+            <summary>
+            Gets the user agent string of the client browser.
+            </summary>
+            <value>The agent string of the client browser.</value>
+        </member>
         <member name="P:Castle.MonoRail.Framework.IRequest.UserLanguages">
             <summary>
             Gets the user languages.
@@ -637,6 +643,11 @@
             Gets the size of the input stream (if you plan to read it directly as a byte[]).
             </summary>
             <value>The size of the input stream.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.IRequest.ApplicationPath">
+            <summary>
+            Gets the ASP.Net application's virtual application root path on the server.
+            </summary>
         </member>
         <member name="F:Castle.MonoRail.Framework.Adapters.RequestAdapter.paramsCompositeNode">
             <summary>
@@ -802,6 +813,12 @@
             </summary>
             <value></value>
         </member>
+        <member name="P:Castle.MonoRail.Framework.Adapters.RequestAdapter.UserAgent">
+            <summary>
+            Gets the user agent string of the client browser.
+            </summary>
+            <value>The agent string of the client browser.</value>
+        </member>
         <member name="P:Castle.MonoRail.Framework.Adapters.RequestAdapter.UserLanguages">
             <summary>
             Gets the user languages.
@@ -830,6 +847,11 @@
             <summary>
             Lazy initialized property with a hierarchical 
             representation of the flat data on <see cref="P:Castle.MonoRail.Framework.IRequest.QueryString"/>
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Adapters.RequestAdapter.ApplicationPath">
+            <summary>
+            Gets the ASP.Net application's virtual application root path on the server.
             </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.Adapters.ResponseAdapter">
@@ -2438,6 +2460,11 @@
             Cache Duration (in seconds)
             </summary>
         </member>
+        <member name="P:Castle.MonoRail.Framework.CacheAttribute.VaryByContentEncodings">
+            <summary>
+            Gets or sets the list of all Content-Encoding headers that will be used to vary the output cache.
+            </summary>
+        </member>
         <member name="P:Castle.MonoRail.Framework.CacheAttribute.VaryByCustom">
             <summary>
             Specifies a custom text string to vary cached output responses by.
@@ -2988,6 +3015,14 @@
             <returns>
             	<c>true</c> if this instance can handle the specified type; otherwise, <c>false</c>.
             </returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.IJSONConverter.ReadJson(Castle.MonoRail.Framework.Services.IJSONReader,System.Type)">
+            <summary>
+            Converts the JSON read by the supplied reader into an instance of the requested type.
+            </summary>
+            <param name="reader">The reader.</param>
+            <param name="objectType">The type.</param>
+            <returns></returns>
         </member>
         <member name="T:Castle.MonoRail.Framework.LayoutAttribute">
             <summary>
@@ -4316,7 +4351,7 @@
             </summary>
             <value>The action selector.</value>
         </member>
-        <member name="P:Castle.MonoRail.Framework.IMonoRailServices.ScaffoldSupport">
+        <member name="P:Castle.MonoRail.Framework.IMonoRailServices.ScaffoldingSupport">
             <summary>
             Gets or sets the scaffold support.
             </summary>
@@ -4381,6 +4416,18 @@
             Gets or sets the dynamic action provider factory.
             </summary>
             <value>The dynamic action provider factory.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.IMonoRailServices.AjaxProxyGenerator">
+            <summary>
+            Gets or sets the ajax proxy generator.
+            </summary>
+            <value>The ajax proxy generator.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.IMonoRailServices.DictionaryAdapterFactory">
+            <summary>
+            Gets or sets the dictionary adapter factory.
+            </summary>
+            <value>The dictionary adapter factory.</value>
         </member>
         <member name="M:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.#ctor(System.IServiceProvider)">
             <summary>
@@ -4504,7 +4551,7 @@
             </summary>
             <value>The action selector.</value>
         </member>
-        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ScaffoldSupport">
+        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ScaffoldingSupport">
             <summary>
             Gets or sets the scaffold support.
             </summary>
@@ -4533,12 +4580,6 @@
             Gets or sets the email sender.
             </summary>
             <value>The email sender.</value>
-        </member>
-        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ExtensionManager">
-            <summary>
-            Gets or sets the extension manager.
-            </summary>
-            <value>The extension manager.</value>
         </member>
         <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ResourceFactory">
             <summary>
@@ -4569,6 +4610,24 @@
             Gets or sets the dynamic action provider factory.
             </summary>
             <value>The dynamic action provider factory.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.AjaxProxyGenerator">
+            <summary>
+            Gets or sets the ajax proxy generator.
+            </summary>
+            <value>The ajax proxy generator.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.DictionaryAdapterFactory">
+            <summary>
+            Gets or sets the dictionary adapter factory.
+            </summary>
+            <value>The dictionary adapter factory.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ExtensionManager">
+            <summary>
+            Gets or sets the extension manager.
+            </summary>
+            <value>The extension manager.</value>
         </member>
         <member name="T:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ServiceIdentification">
             <summary>
@@ -4728,6 +4787,11 @@
         <member name="F:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ServiceIdentification.DynamicActionProviderDescriptorProvider">
             <summary>
             The <see cref="T:Castle.MonoRail.Framework.Providers.IDynamicActionProviderDescriptorProvider"/> service.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.Container.DefaultMonoRailContainer.ServiceIdentification.DictionaryAdapterFactory">
+            <summary>
+            The <see cref="T:Castle.Components.DictionaryAdapter.IDictionaryAdapterFactory"/> service.
             </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.Descriptors.ActionMetaDescriptor">
@@ -6249,13 +6313,11 @@
             The <see cref="T:Castle.Components.Validator.IBrowserValidationGenerator"/> implementation for the JQuery validate plugin.
             </summary>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryValidationGenerator.#ctor(Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryConfiguration,Castle.Components.Validator.InputElementType,System.Collections.IDictionary)">
+        <member name="M:Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryValidationGenerator.#ctor(Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryValidationGenerator"/> class.
             </summary>
             <param name="configuration">The configuration.</param>
-            <param name="inputElementType">Type of the input element.</param>
-            <param name="attributes">The attributes.</param>
         </member>
         <member name="M:Castle.MonoRail.Framework.Helpers.ValidationStrategy.JQueryValidator.JQueryValidationGenerator.SetDigitsOnly(System.String,System.String)">
             <summary>
@@ -7180,6 +7242,16 @@
             <param name="content">The text to URL encode and escape JavaScript within.</param>
             <returns>The URL encoded and JavaScript escaped text.</returns>
         </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.AbstractHelper.JavascriptOptions(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Builds a JS associative array based on the specified dictionary instance.
+            <para>
+            For example: <c>{name: value, other: 'another'}</c>
+            </para>
+            </summary>
+            <param name="jsOptions">The js options.</param>
+            <returns>An associative array in javascript</returns>
+        </member>
         <member name="M:Castle.MonoRail.Framework.Helpers.AbstractHelper.JavascriptOptions(System.Collections.IDictionary)">
             <summary>
             Builds a JS associative array based on the specified dictionary instance.
@@ -7194,9 +7266,9 @@
             <summary>
             Generates script block.
             <code>
-            &lt;script type=\"text/javascript\"&gt;
+            &lt;script type=\"text/javascript\"&gt;/*&lt;![CDATA[*/
             scriptContents
-            &lt;/script&gt;
+            /*]]&gt;*/&lt;/script&gt;
             </code>
             </summary>
             <param name="scriptContents">The script contents.</param>
@@ -8196,7 +8268,7 @@
         </member>
         <member name="M:Castle.MonoRail.Framework.Helpers.AjaxHelper.InputTextWithAutoCompletion(System.Collections.IDictionary,System.Collections.IDictionary)">
             <summary>
-            Rendes a input field with Google style autocomplete enabled.
+            Renders an input field with Google style autocomplete enabled.
             The specified <c>url</c> is used to gather the contents 
             for the auto complete panel, so 
             and your action should return filtered and sorted results.
@@ -8311,6 +8383,20 @@
             <param name="jsOptions">Options that will be used on the js side</param>
             <param name="options">Options passed to the helper method</param>
             <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.AjaxHelper.ProcessWith(System.Object)">
+            <summary>
+            Process With
+            </summary>
+            <param name="with"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.AjaxHelper.BuildCallbacks(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Build Call Backs
+            </summary>
+            <param name="jsOptions"></param>
+            <param name="options"></param>
         </member>
         <member name="M:Castle.MonoRail.Framework.Helpers.AjaxHelper.BuildCallbackFunction(Castle.MonoRail.Framework.Helpers.CallbackEnum,System.String,System.String@)">
             <summary>
@@ -9894,6 +9980,17 @@
             <param name="attributes">Attributes for the FormHelper method and for the html element it generates</param>
             <returns>The generated form element</returns>
         </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.FormHelper.HiddenFieldItem(System.Int32,System.String,System.String,Castle.MonoRail.Framework.Helpers.SetItem,System.Collections.IDictionary)">
+            <summary>
+            Outputs a hidden element with an index (for internal use)
+            </summary>
+            <param name="index"></param>
+            <param name="target">The object to get the value from and to be based on to create the element name.</param>
+            <param name="suffix"></param>
+            <param name="item"></param>
+            <param name="attributes">Attributes for the FormHelper method and for the html element it generates</param>
+            <returns>The generated form element</returns>
+        </member>
         <member name="M:Castle.MonoRail.Framework.Helpers.FormHelper.CheckboxLabel(System.Int32,System.String,System.String,System.String,System.Collections.IDictionary)">
             <summary>
             Creates a label for an item of the checkbox list (internal use). The method mirrors
@@ -10210,6 +10307,21 @@
             <summary>
             Outputs the Checkbox in the correct state (checked/unchecked) based
             on the Set. 
+            <seealso cref="M:Castle.MonoRail.Framework.Helpers.FormHelper.CreateCheckboxList(System.String,System.Collections.IEnumerable,System.Collections.IDictionary)"/>
+            </summary>
+            <param name="id">The element id</param>
+            <returns>The generated input element</returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.FormHelper.CheckboxList.ItemAsHiddenField">
+            <summary>
+            Outputs the Hidden field for list databinding based on the Set. 
+            <seealso cref="M:Castle.MonoRail.Framework.Helpers.FormHelper.CreateCheckboxList(System.String,System.Collections.IEnumerable,System.Collections.IDictionary)"/>
+            </summary>
+            <returns>The generated input element</returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.FormHelper.CheckboxList.ItemAsHiddenField(System.String)">
+            <summary>
+            Outputs the Hidden field for list databinding based on the Set. 
             <seealso cref="M:Castle.MonoRail.Framework.Helpers.FormHelper.CreateCheckboxList(System.String,System.Collections.IEnumerable,System.Collections.IDictionary)"/>
             </summary>
             <param name="id">The element id</param>
@@ -11941,6 +12053,75 @@
             </code>
             </example>
         </member>
+        <member name="T:Castle.MonoRail.Framework.Helpers.JQueryHelper">
+             <summary>
+             JQuery Helper, a helper class that builds Html elements (i.e links) that contain Javascript that make Ajax calls using JQuery syntax
+             </summary>
+            <remarks>
+               Examples, you can make use of the DictHelper.CreateDict() to create an IDictionary of arguments that get passed to jQuery.Ajax(). 
+               
+            </remarks>
+            <para/>
+            <para/>
+            $JQuery.LinkToRemote("FAQ",$UrlHelper.For($DictHelper.CreateDict("controller=faq", "action=list")),$DictHelper.CreateDict("type='POST'","update=#bodycontent"))  
+            <para/>
+            <para/>
+            Results in html of : <a onclick="jQuery.ajax({url:'/faq/list.rails', success: function(data){ jQuery('#bodycontent').html(data);}, type:'POST'}); return false;" href="javascript:void(0);">FAQ</a>
+            <para/>
+            $JQuery.LinkToRemote("Mileage ",$UrlHelper.For($DictHelper.CreateDict("controller=Report", "action=DetailMileageByDateRange")),$DictHelper.CreateDict("with='id=$RunWorkOutTypeId'","type='GET'","dataType='script'"))
+            <para/>
+            <para/>
+            Results in html of : <a onclick="jQuery.ajax({url:'/Report/DetailMileageByDateRange.rails', type:'GET', dataType:'script', data:'id=a9d72871-e691-45a1-8955-2a22bdbbb10b'}); return false;" href="javascript:void(0);">Mileage </a>
+            <para/>
+            $JQuery.LinkToRemote("FAQ",$UrlHelper.For($DictHelper.CreateDict("controller=faq", "action=list")),$DictHelper.CreateDict("type='POST'","success='function(d2){ processData(d2); }'"))  
+            <para/>
+            <para/>
+            Results in html of : <a onclick="jQuery.ajax({url:'/faq/list.rails', success: function(d2){ processData(d2);}, type:'POST'}); return false;" href="javascript:void(0);">FAQ</a>
+            <para/>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.#ctor(Castle.MonoRail.Framework.IEngineContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.Helpers.AjaxHelper"/> class.
+            setting the Controller, Context and ControllerContext.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.BuildAjaxOptions(System.Collections.IDictionary,System.Collections.IDictionary)">
+            <summary>
+            Build Ajax Options
+            </summary>
+            <param name="jsOptions"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.RemoteFunction(System.Collections.IDictionary)">
+            <summary>
+            Remote Function
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.InstallScripts">
+            <summary>
+            Renders a Javascript library inside a single script tag.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.GetUrlOptionNoQuotes(System.Collections.IDictionary)">
+            <summary>
+            Get Url Option
+            </summary>
+            <param name="options">Dictionary of options</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Helpers.JQueryHelper.JQueryJavascriptOptions(System.Collections.IDictionary)">
+            <summary>
+            Builds a JS associative array based on the specified dictionary instance.
+            <para>
+            For example: <c>name: value, other: 'another'</c>
+            </para>
+            </summary>
+            <param name="jsOptions">The js options.</param>
+            <returns>An associative array in javascript</returns>
+        </member>
         <member name="T:Castle.MonoRail.Framework.Helpers.JSONHelper">
             <summary>
             Provides utilities methods to work with JSON.
@@ -13219,6 +13400,11 @@
             <param name="attributes">Additional attributes for the <b>a</b> tag.</param>
             <returns></returns>
         </member>
+        <member name="P:Castle.MonoRail.Framework.Helpers.WizardHelper.WizardController">
+            <summary>
+            Gets/Sets the <see cref="T:Castle.MonoRail.Framework.IWizardController"/>.
+            </summary>
+        </member>
         <member name="P:Castle.MonoRail.Framework.Helpers.WizardHelper.CurrentStepIndex">
             <summary>
             Gets the name of the current step.
@@ -13890,28 +14076,9 @@
             </summary>
             <value>The code gen.</value>
         </member>
-        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension">
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator">
             <summary>
-            Pendent
-            </summary>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension.#ctor(Castle.MonoRail.Framework.JSGeneration.IJSCodeGenerator)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.Prototype.ScriptaculousExtension"/> class.
-            </summary>
-            <param name="jsCodeGenerator">The js code generator.</param>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension.ReApply">
-            <summary>
-            Re-apply Behaviour css' rules.
-            </summary>
-            <remarks>
-            Only makes sense if you are using the Behaviour javascript library.
-            </remarks>
-        </member>
-        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator">
-            <summary>
-            Implementation for the <see cref="T:Castle.MonoRail.Framework.JSGeneration.IJSElementGenerator"/>
+            Element generator for JQuery
             </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.JSGeneration.IJSElementGenerator">
@@ -13966,14 +14133,14 @@
             </summary>
             <value>The parent generator.</value>
         </member>
-        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.#ctor(Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeGenerator,System.String)">
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator.#ctor(Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator,System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator"/> class.
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator"/> class.
             </summary>
-            <param name="generator">The generator.</param>
+            <param name="parent">The parent.</param>
             <param name="root">The root.</param>
         </member>
-        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.ReplaceHtml(System.Object)">
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator.ReplaceHtml(System.Object)">
             <summary>
             Replaces the content of the element.
             </summary>
@@ -13985,7 +14152,7 @@
             </code>
             </example>
         </member>
-        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.Replace(System.Object)">
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator.Replace(System.Object)">
             <summary>
             Replaces the entire element's content -- and not only its innerHTML --
             by the content evaluated.
@@ -13998,15 +14165,15 @@
             </code>
             </example>
         </member>
-        <member name="P:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.ParentGenerator">
+        <member name="P:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryElementGenerator.ParentGenerator">
             <summary>
             Gets the parent generator.
             </summary>
             <value>The parent generator.</value>
         </member>
-        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeGenerator">
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator">
             <summary>
-            Pendent
+            JQuery Generator implementation
             </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.JSGeneration.AbstractJSGenerator">
@@ -14334,6 +14501,203 @@
             Gets the code generator instance.
             </summary>
             <value>The code generator.</value>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.#ctor(Castle.MonoRail.Framework.JSGeneration.IJSCodeGenerator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator"/> class.
+            </summary>
+            <param name="codeGenerator">The code generator.</param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.SelectRelevantElements(System.String[])">
+            <summary>
+            Selects the relevant elements.
+            </summary>
+            <param name="ids">The ids.</param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.WriteNewLine">
+            <summary>
+            Write a new line
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.InsertHtml(System.String,System.String,System.Object)">
+            <summary>
+            Pendent
+            </summary>
+            <param name="position"></param>
+            <param name="id"></param>
+            <param name="renderOptions"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.ReplaceHtml(System.String,System.Object)">
+            <summary>
+            Pendent
+            </summary>
+            <param name="id"></param>
+            <param name="renderOptions"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Replace(System.String,System.Object)">
+            <summary>
+            Pendent
+            </summary>
+            <param name="id"></param>
+            <param name="renderOptions"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Show(System.String[])">
+            <summary>
+            Pendent
+            </summary>
+            <param name="ids"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Hide(System.String[])">
+            <summary>
+            Pendent
+            </summary>
+            <param name="ids"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Toggle(System.String[])">
+            <summary>
+            Pendent
+            </summary>
+            <param name="ids"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Remove(System.String[])">
+            <summary>
+            Pendent
+            </summary>
+            <param name="ids"></param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.CreateElementGenerator(System.String)">
+            <summary>
+            Creates a generator for an element.
+            </summary>
+            <param name="root">The root expression.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.append">
+            <summary>
+            Append content to the inside of every matched element.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.appendTo">
+            <summary>
+            Append all of the matched elements to another, specified, set of elements.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.prepend">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.prependTo">
+            <summary>
+            Prepend content to the inside of every matched element.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.after">
+            <summary>
+            Insert content after each of the matched elements.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.before">
+            <summary>
+            Insert content before each of the matched elements.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.insertAfter">
+            <summary>
+            Insert all of the matched elements after another, specified, set of elements.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.insertBefore">
+            <summary>
+            Insert all of the matched elements before another, specified, set of elements.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.wrap">
+            <summary>
+            Wrap each matched element with the specified HTML content.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.wrapInner">
+            <summary>
+            Wrap all the elements in the matched set into a single wrapper element.
+            </summary>
+        </member>
+        <member name="F:Castle.MonoRail.Framework.JSGeneration.jQuery.JQueryGenerator.Position.wrapAll">
+            <summary>
+            Wrap all the elements in the matched set into a single wrapper element.
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension">
+            <summary>
+            Pendent
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension.#ctor(Castle.MonoRail.Framework.JSGeneration.IJSCodeGenerator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.Prototype.ScriptaculousExtension"/> class.
+            </summary>
+            <param name="jsCodeGenerator">The js code generator.</param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.BehaviourExtension.ReApply">
+            <summary>
+            Re-apply Behaviour css' rules.
+            </summary>
+            <remarks>
+            Only makes sense if you are using the Behaviour javascript library.
+            </remarks>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator">
+            <summary>
+            Implementation for the <see cref="T:Castle.MonoRail.Framework.JSGeneration.IJSElementGenerator"/>
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.#ctor(Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeGenerator,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator"/> class.
+            </summary>
+            <param name="generator">The generator.</param>
+            <param name="root">The root.</param>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.ReplaceHtml(System.Object)">
+            <summary>
+            Replaces the content of the element.
+            </summary>
+            <param name="renderOptions">Defines what to render</param>
+            <example>
+            The following example uses nvelocity syntax:
+            <code>
+            $page.el('elementid').ReplaceHtml("%{partial='shared/newmessage.vm'}")
+            </code>
+            </example>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.Replace(System.Object)">
+            <summary>
+            Replaces the entire element's content -- and not only its innerHTML --
+            by the content evaluated.
+            </summary>
+            <param name="renderOptions">Defines what to render</param>
+            <example>
+            The following example uses nvelocity syntax:
+            <code>
+            $page.el('messagediv').Replace("%{partial='shared/newmessage.vm'}")
+            </code>
+            </example>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeElementGenerator.ParentGenerator">
+            <summary>
+            Gets the parent generator.
+            </summary>
+            <value>The parent generator.</value>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeGenerator">
+            <summary>
+            Pendent
+            </summary>
         </member>
         <member name="M:Castle.MonoRail.Framework.JSGeneration.Prototype.PrototypeGenerator.#ctor(Castle.MonoRail.Framework.JSGeneration.IJSCodeGenerator)">
             <summary>
@@ -16406,6 +16770,11 @@
             </summary>
             <value>The engine.</value>
         </member>
+        <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.IAjaxProxyGenerator">
             <summary>
             Provides a service which generates a <em>JavaScript</em> block, that
@@ -16420,27 +16789,9 @@
             <param name="proxyName">Name of the javascript proxy object</param>
             <param name="controller">Controller which will be target of the proxy</param>
             <param name="area">area which the controller belongs to</param>
+            <remarks>This function also includes the script tags</remarks>
         </member>
-        <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator">
-            <summary>
-            Provides a service which generates a <em>JavaScript</em> block, that
-            can be used to call Ajax actions on the controller. This JavaScript will
-            use the <em>Prototype</em> syntax.
-            </summary>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator"/> class.
-            </summary>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.Service(Castle.MonoRail.Framework.IMonoRailServices)">
-            <summary>
-            Invoked by the framework in order to give a chance to
-            obtain other services
-            </summary>
-            <param name="provider">The service proviver</param>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GenerateJSProxy(Castle.MonoRail.Framework.IEngineContext,System.String,System.String,System.String)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GenerateJSProxy(Castle.MonoRail.Framework.IEngineContext,System.String,System.String,System.String)">
             <summary>
             Generates an AJAX JavaScript proxy for a given controller.
             </summary>
@@ -16449,22 +16800,38 @@
             <param name="controller">Controller which will be target of the proxy</param>
             <param name="area">area which the controller belongs to</param>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GetParameterName(System.Reflection.ParameterInfo)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetScriptFunctionParameters(System.Collections.Generic.IEnumerable{System.Reflection.ParameterInfo})">
             <summary>
-            Gets the name of the parameter.
+            Gets the script function parameters.
             </summary>
-            <param name="paramInfo">The parameterInfo.</param>
+            <param name="parameters">The parameters.</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GetPropertyValue(System.Object,System.String)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GenerateJavascriptFunction(System.String,System.String,System.String,Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter[])">
             <summary>
-            Gets the property value.
+            Generates the javascript proxy function.
             </summary>
-            <param name="obj">The obj.</param>
-            <param name="propName">Name of the prop.</param>
+            <param name="url">The URL.</param>
+            <param name="functionName">Name of the function.</param>
+            <param name="httpRequestMethod">The HTTP request method.</param>
+            <param name="scriptFunctionParameters">The script function parameters.</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GetSingleAttribute``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetURLExtension(Castle.MonoRail.Framework.IEngineContext)">
+            <summary>
+            Gets the URL extension.
+            </summary>
+            <param name="context">The context.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetHTTPRequestMethod(System.Reflection.ICustomAttributeProvider)">
+            <summary>
+            Gets the HTTP request method.
+            </summary>
+            <param name="ajaxActionMethod">The ajax action method.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetSingleAttribute``1(System.Reflection.ICustomAttributeProvider,System.Boolean)">
             <summary>
             Gets the single attribute.
             </summary>
@@ -16472,7 +16839,7 @@
             <param name="inherit">if set to <c>true</c> [inherit].</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GetSingleAttribute(System.Reflection.ICustomAttributeProvider,System.Type,System.Boolean)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetSingleAttribute(System.Reflection.ICustomAttributeProvider,System.Type,System.Boolean)">
             <summary>
             Gets the single attribute.
             </summary>
@@ -16481,24 +16848,130 @@
             <param name="inherit">if set to <c>true</c> [inherit].</param>
             <returns></returns>
         </member>
-        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.ToCamelCase(System.String)">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ToCamelCase(System.String)">
             <summary>
             Toes the camel case.
             </summary>
             <param name="value">The value.</param>
             <returns></returns>
         </member>
-        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.ControllerDescriptorBuilder">
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetBaseUrl(System.String,System.String,Castle.MonoRail.Framework.IEngineContext)">
+            <summary>
+            Gets the base URL.
+            </summary>
+            <param name="area">The area.</param>
+            <param name="controller">The controller.</param>
+            <param name="context">The context.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetPropertyValue(System.Object,System.String)">
+            <summary>
+            Gets the property value.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="propName">Name of the prop.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.GetParameterName(System.Reflection.ParameterInfo)">
+            <summary>
+            Gets the name of the parameter.
+            </summary>
+            <param name="paramInfo">The parameterInfo.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.Service(Castle.MonoRail.Framework.IMonoRailServices)">
+            <summary>
+            Invoked by the framework in order to give a chance to
+            obtain other services
+            </summary>
+            <param name="provider">The service proviver</param>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ControllerDescriptorBuilder">
             <summary>
             Gets or sets the controller descriptor builder.
             </summary>
             <value>The controller descriptor builder.</value>
         </member>
-        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.ControllerTree">
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ControllerTree">
             <summary>
             Gets or sets the controller tree.
             </summary>
             <value>The controller tree.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.WrapProxyInScriptBlock">
+            <summary>
+            Deterains if the proxy generated by this instance will
+            be wrapped in a &lt;script&gt; block or not.
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter">
+            <summary>
+            Script parameters
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter"/> class.
+            </summary>
+            <param name="clientSideName">Name of the client side.</param>
+            <param name="serverSideName">Name of the server side.</param>
+            <param name="needsJSONEncoding">if set to <c>true</c> [needs JSON encoding].</param>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter.ServerSideParameterName">
+            <summary>
+            Gets the name of the server side parameter.
+            </summary>
+            <value>The name of the server side parameter.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter.ClientSideParameterName">
+            <summary>
+            Gets the name of the client side parameter.
+            </summary>
+            <value>The name of the client side parameter.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter.NeedsJSONEncoding">
+            <summary>
+            Gets a value indicating whether the parameter needs JSON encoding.
+            </summary>
+            <value><c>true</c> if [needs JSON encoding]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.JQueryAjaxProxyGenerator">
+            <summary>
+            Provides a service which generates a <em>JavaScript</em> block, that
+            can be used to call Ajax actions on the controller. This JavaScript will
+            use the <em>JQuery</em> syntax.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.JQueryAjaxProxyGenerator.GenerateJavascriptFunction(System.String,System.String,System.String,Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter[])">
+            <summary>
+            Generates the javascript proxy function.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="functionName">Name of the function.</param>
+            <param name="httpRequestMethod">The HTTP request method.</param>
+            <param name="scriptFunctionParameters">The script function parameters.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator">
+            <summary>
+            Provides a service which generates a <em>JavaScript</em> block, that
+            can be used to call Ajax actions on the controller. This JavaScript will
+            use the <em>Prototype</em> syntax.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.AjaxProxyGenerator.PrototypeAjaxProxyGenerator.GenerateJavascriptFunction(System.String,System.String,System.String,Castle.MonoRail.Framework.Services.AjaxProxyGenerator.AbstractAjaxProxyGenerator.ScriptFunctionParameter[])">
+            <summary>
+            Generates the javascript proxy function.
+            </summary>
+            <param name="url">The URL.</param>
+            <param name="functionName">Name of the function.</param>
+            <param name="httpRequestMethod">The HTTP request method.</param>
+            <param name="scriptFunctionParameters">The script function parameters.</param>
+            <returns></returns>
+            <remarks>
+            if we have a [JSONBinder] mark on the parameter, we can serialize the parameter using prototype's Object.toJSON().
+            This requires Prototype 1.5.1. Users of [JSONBinder] should be aware of that.
+            </remarks>
         </member>
         <member name="T:Castle.MonoRail.Framework.Services.Utils.ControllerInspectionUtil">
             <summary>
@@ -16664,6 +17137,12 @@
             </summary>
             <param name="name">The name.</param>
             <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.IViewComponentFactory.Release(Castle.MonoRail.Framework.ViewComponent)">
+            <summary>
+            Releasess the view component.
+            </summary>
+            <param name="instance">The view component instance</param>
         </member>
         <member name="P:Castle.MonoRail.Framework.IViewComponentFactory.Registry">
             <summary>
@@ -18030,6 +18509,13 @@
             <param name="name">The name.</param>
             <returns></returns>
         </member>
+        <member name="M:Castle.MonoRail.Framework.IViewComponentRegistry.HasViewComponent(System.String)">
+            <summary>
+            Checks if the view component is registered.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>True if registered or false if GetViewComponent would throw an exception.</returns>
+        </member>
         <member name="M:Castle.MonoRail.Framework.Services.DefaultViewComponentRegistry.AddViewComponent(System.String,System.Type)">
             <summary>
             Adds the view component.
@@ -18043,6 +18529,13 @@
             </summary>
             <param name="name">The name.</param>
             <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.DefaultViewComponentRegistry.HasViewComponent(System.String)">
+            <summary>
+            Checks if the view component is registered.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>True if registered or false if GetViewComponent would throw an exception.</returns>
         </member>
         <member name="M:Castle.MonoRail.Framework.Services.DefaultViewComponentRegistry.GetDetails(System.Type)">
             <summary>
@@ -18509,6 +19002,47 @@
             </summary>
             <param name="jsonString">The json representation of an object string.</param>
             <returns></returns>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.Services.IJSONReader">
+            <summary>
+            Represents a reader that provides fast, non-cached, forward-only access to serialized Json data.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.IJSONReader.Read">
+            <summary>
+            Reads the next Json token from the stream.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.IJSONReader.Skip">
+            <summary>
+            Pending.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.Services.IJSONReader.Close">
+            <summary>
+            Changes the <see cref="T:Newtonsoft.Json.JsonReader.State"/> to Closed. 
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.IJSONReader.QuoteChar">
+            <summary>
+            Gets the quotation mark character used to enclose the value of a string.
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.IJSONReader.Value">
+            <summary>
+            Gets the text value of the current Json token.
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.IJSONReader.ValueType">
+            <summary>
+            Gets The Common Language Runtime (CLR) type for the current Json token.
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Services.IJSONReader.Depth">
+            <summary>
+            Pending.
+            </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.Services.UrlBuilderParameters">
             <summary>
@@ -19028,6 +19562,12 @@
             </summary>
             <value>The file path.</value>
         </member>
+        <member name="P:Castle.MonoRail.Framework.Test.IMockRequest.UserAgent">
+            <summary>
+            Sets the user agent string.
+            </summary>
+            <value>The user agent string.</value>
+        </member>
         <member name="P:Castle.MonoRail.Framework.Test.IMockRequest.UserLanguages">
             <summary>
             Sets the user languages.
@@ -19043,6 +19583,11 @@
         <member name="P:Castle.MonoRail.Framework.Test.IMockRequest.UrlReferrer">
             <summary>
             Sets the referring URL.
+            </summary>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Test.IMockRequest.ApplicationPath">
+            <summary>
+            Sets the ASP.Net application's virtual application root path on the server.
             </summary>
         </member>
         <member name="T:Castle.MonoRail.Framework.Test.IMockViewComponentContext">
@@ -19559,6 +20104,18 @@
             </summary>
             <value>The dynamic action provider factory.</value>
         </member>
+        <member name="P:Castle.MonoRail.Framework.Test.StubMonoRailServices.AjaxProxyGenerator">
+            <summary>
+            Gets or sets the ajax proxy generator.
+            </summary>
+            <value>The ajax proxy generator.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Test.StubMonoRailServices.DictionaryAdapterFactory">
+            <summary>
+            Gets or sets the dictionary adapter factory.
+            </summary>
+            <value>The dictionary adapter factory.</value>
+        </member>
         <member name="P:Castle.MonoRail.Framework.Test.StubMonoRailServices.ControllerDescriptorProvider">
             <summary>
             Gets or sets the controller descriptor provider.
@@ -19583,7 +20140,7 @@
             </summary>
             <value>The action selector.</value>
         </member>
-        <member name="P:Castle.MonoRail.Framework.Test.StubMonoRailServices.ScaffoldSupport">
+        <member name="P:Castle.MonoRail.Framework.Test.StubMonoRailServices.ScaffoldingSupport">
             <summary>
             Gets or sets the scaffold support.
             </summary>
@@ -19714,6 +20271,17 @@
             Gets the referring URL.
             </summary>
             <value></value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Test.StubRequest.UserAgent">
+            <summary>
+            Gets the user agent string of the client browser.
+            </summary>
+            <value>The agent string of the client browser.</value>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.Test.StubRequest.ApplicationPath">
+            <summary>
+            Gets the ASP.Net application's virtual application root path on the server.
+            </summary>
         </member>
         <member name="P:Castle.MonoRail.Framework.Test.StubRequest.Headers">
             <summary>
@@ -24516,6 +25084,57 @@
             </summary>
             <value>The cache policy configurer.</value>
         </member>
+        <member name="T:Castle.MonoRail.Framework.EngineContextLocator">
+            <summary>
+            Abstracts the strategy for getting the current <see cref="T:Castle.MonoRail.Framework.IEngineContext"/>.
+            The default strategy uses <see cref="P:Castle.MonoRail.Framework.MonoRailHttpHandlerFactory.CurrentEngineContext"/>
+            </summary>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.IEngineContextLocator">
+            <summary>
+            Pendent
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.IEngineContextLocator.LocateCurrentContext">
+            <summary>
+            Pendent
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.EngineContextLocator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Castle.MonoRail.Framework.ServiceProviderLocator"/> class.
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.EngineContextLocator.LocateCurrentContext">
+            <summary>
+            Locates the engine context using the registered strategies.
+            </summary>
+            <returns>The current <see cref="T:Castle.MonoRail.Framework.IEngineContext"/>, or <c>null</c> if none could be found.</returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.EngineContextLocator.AddLocatorStrategy(Castle.MonoRail.Framework.IEngineContextLocator)">
+            <summary>
+            Adds a locator strategy.
+            </summary>
+            <param name="strategy">The strategy.</param>
+        </member>
+        <member name="P:Castle.MonoRail.Framework.EngineContextLocator.Instance">
+            <summary>
+            Gets the instance.
+            </summary>
+            <value>The instance.</value>
+        </member>
+        <member name="T:Castle.MonoRail.Framework.EngineContextLocator.DefaultEngineContextLocatorStrategy">
+            <summary>
+            Default strategy to access a service provider
+            </summary>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.EngineContextLocator.DefaultEngineContextLocatorStrategy.LocateCurrentContext">
+            <summary>
+            Locates the provider using <see cref="P:Castle.MonoRail.Framework.MonoRailHttpHandlerFactory.CurrentEngineContext"/>
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Castle.MonoRail.Framework.FailedToExecuteBeginActionAsyncResult">
             <summary>
             This is used to mark that an operation has failed during the begin phase
@@ -24962,43 +25581,48 @@
             <value>The element extensions.</value>
         </member>
         <member name="T:Castle.MonoRail.Framework.IWizardController">
-            <summary>
-            Depicts the contract for wizard controllers. 
-            </summary>
-            
-            <seealso xref="WizardActionProvider"/>
-            <seealso xref="WizardStepPage"/>
-            
-            <example>
-            The following code shows how to create a simple wizard with two pages.
-            <code>
-            [DynamicActionProvider(typeof(WizardActionProvider))]
-            public class MyWizardController : Controller, IWizardController
-            {
-            	public void OnWizardStart()
-            	{ }
-            
-            	public bool OnBeforeStep(String wizardName, String stepName, WizardStepPage step)
-            	{
-            		returtn true; 
-            	}
-            
-            	public void OnAfterStep(String wizardName, String stepName, WizardStepPage step)
-            	{ }
+             <summary>
+             Depicts the contract for wizard controllers. 
+             </summary>
+             
+             <seealso xref="WizardActionProvider"/>
+             <seealso xref="WizardStepPage"/>
+             
+             <example>
+             The following code shows how to create a simple wizard with two pages.
+             <code>
+             [DynamicActionProvider(typeof(WizardActionProvider))]
+             public class MyWizardController : Controller, IWizardController
+             {
+            		public void OnWizardStart()
+            		{ }
+             
+            		public bool OnBeforeStep(String wizardName, String stepName, WizardStepPage step)
+            		{
+            			returtn true; 
+            		}
             	
-            	public WizardStepPage[] GetSteps(IHandlerContext context)
-            	{
-            		return new WizardStepPage[] { new MyPage1(), new MyPage2() }; 
-            	}
-            }
-            </code>
-            </example>
+            		public void OnAfterStep(String wizardName, String stepName, WizardStepPage step)
+            		{ }
+            		
+            		public WizardStepPage[] GetSteps(IHandlerContext context)
+            		{
+            			return new WizardStepPage[] { new MyPage1(), new MyPage2() }; 
+            		}
             
-            <remarks>
-            The interface members allow you to perform some logic on important
-            events from a wizard lifecycle. The <see cref="M:Castle.MonoRail.Framework.IWizardController.GetSteps(Castle.MonoRail.Framework.IEngineContext)"/> must be used
-            to return the steps the wizard has.
-            </remarks>
+            		public bool UseCurrentRouteForRedirects
+            		{
+            			get { return true; }
+            		}
+             }
+             </code>
+             </example>
+             
+             <remarks>
+             The interface members allow you to perform some logic on important
+             events from a wizard lifecycle. The <see cref="M:Castle.MonoRail.Framework.IWizardController.GetSteps(Castle.MonoRail.Framework.IEngineContext)"/> must be used
+             to return the steps the wizard has.
+             </remarks>
         </member>
         <member name="M:Castle.MonoRail.Framework.IWizardController.OnWizardStart">
             <summary>
@@ -25038,6 +25662,11 @@
             <param name="context">The web request context.</param>
             <returns>An array of steps</returns>
         </member>
+        <member name="P:Castle.MonoRail.Framework.IWizardController.UseCurrentRouteForRedirects">
+            <summary>
+            True if the implementer want to use the current routing to navigate between wizard steps.
+            </summary>
+        </member>
         <member name="T:Castle.MonoRail.Framework.IWizardStepPage">
             <summary>
             Pendent
@@ -25055,10 +25684,11 @@
             	<c>true</c> if [is pre condition satisfied] [the specified context]; otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Castle.MonoRail.Framework.IWizardStepPage.Reset">
+        <member name="M:Castle.MonoRail.Framework.IWizardStepPage.Reset(Castle.MonoRail.Framework.IEngineContext)">
             <summary>
             Resets this instance.
             </summary>
+            <param name="context">The context.</param>
         </member>
         <member name="P:Castle.MonoRail.Framework.IWizardStepPage.ActionName">
             <summary>
@@ -25790,6 +26420,12 @@
             </para>
             </remarks>
         </member>
+        <member name="M:Castle.MonoRail.Framework.WizardActionProvider.Execute(Castle.MonoRail.Framework.IEngineContext,Castle.MonoRail.Framework.IController,Castle.MonoRail.Framework.IControllerContext)">
+            <summary>
+            Invoked as "start" action
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Castle.MonoRail.Framework.WizardActionProvider.IncludeActions(Castle.MonoRail.Framework.IEngineContext,Castle.MonoRail.Framework.IController,Castle.MonoRail.Framework.IControllerContext)">
             <summary>
             Implementation of IDynamicActionProvider.
@@ -25801,12 +26437,6 @@
             <param name="engineContext">The engine context.</param>
             <param name="controller">Wizard controller (must implement <see cref="T:Castle.MonoRail.Framework.IWizardController"/></param>
             <param name="controllerContext">The controller context.</param>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.WizardActionProvider.Execute(Castle.MonoRail.Framework.IEngineContext,Castle.MonoRail.Framework.IController,Castle.MonoRail.Framework.IControllerContext)">
-            <summary>
-            Invoked as "start" action
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:Castle.MonoRail.Framework.WizardActionProvider.OnStepActionRequested(Castle.MonoRail.Framework.IEngineContext,Castle.MonoRail.Framework.IController,Castle.MonoRail.Framework.IControllerContext)">
             <summary>
@@ -25849,7 +26479,7 @@
         </member>
         <member name="M:Castle.MonoRail.Framework.WizardActionProvider.ResetSteps(Castle.MonoRail.Framework.IEngineContext,Castle.MonoRail.Framework.IController)">
             <summary>
-            Resets the steps by invoking <see cref="M:Castle.MonoRail.Framework.IWizardStepPage.Reset"/>
+            Resets the steps by invoking <see cref="M:Castle.MonoRail.Framework.IWizardStepPage.Reset(Castle.MonoRail.Framework.IEngineContext)"/>
             on all steps instances.
             </summary>
             <param name="engineContext">The engine context.</param>
@@ -25908,17 +26538,13 @@
             </summary>
             <param name="binder">The binder.</param>
         </member>
-        <member name="M:Castle.MonoRail.Framework.WizardStepPage.Reset">
+        <member name="M:Castle.MonoRail.Framework.WizardStepPage.Reset(Castle.MonoRail.Framework.IEngineContext)">
             <summary>
             Invoked when the wizard is being access from the start 
             action. Implementors should perform session clean up (if 
             they actually use the session) to avoid stale data on forms.
             </summary>
-        </member>
-        <member name="M:Castle.MonoRail.Framework.WizardStepPage.RenderWizardView">
-            <summary>
-            Used to decide on which view to render.
-            </summary>
+            <param name="context">The context.</param>
         </member>
         <member name="M:Castle.MonoRail.Framework.WizardStepPage.IsPreConditionSatisfied(Castle.MonoRail.Framework.IEngineContext)">
             <summary>
@@ -25928,6 +26554,11 @@
             before doing that you must send a redirect.
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Castle.MonoRail.Framework.WizardStepPage.RenderWizardView">
+            <summary>
+            Used to decide on which view to render.
+            </summary>
         </member>
         <member name="M:Castle.MonoRail.Framework.WizardStepPage.SelectMethod(System.String,System.Collections.IDictionary,Castle.MonoRail.Framework.IRequest,System.Collections.Generic.IDictionary{System.String,System.Object},Castle.MonoRail.Framework.ActionType)">
             <summary>

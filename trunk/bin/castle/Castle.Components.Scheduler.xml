@@ -931,6 +931,11 @@
         <member name="M:Castle.Components.Scheduler.DefaultJobRunner.EndExecute(System.IAsyncResult)">
             <inheritdoc />
         </member>
+        <member name="P:Castle.Components.Scheduler.DefaultJobRunner.Logger">
+            <summary>
+            Logger.
+            </summary>
+        </member>
         <member name="T:Castle.Components.Scheduler.DefaultScheduler">
             <summary>
             A simple default job scheduler based on a <see cref="T:Castle.Components.Scheduler.JobStores.IJobStore"/>
@@ -1210,6 +1215,12 @@
             <returns>The new job</returns>
             <exception cref="T:Castle.Components.Scheduler.SchedulerException">Thrown if no such job key is known or if some other error
             occurs while initializing the job</exception>
+        </member>
+        <member name="M:Castle.Components.Scheduler.IJobFactory.ReleaseJob(Castle.Components.Scheduler.IJob)">
+            <summary>
+            Releases the instance of the job.
+            </summary>
+            <param name="job">The <see cref="T:Castle.Components.Scheduler.IJob"/> returned from <see cref="M:Castle.Components.Scheduler.IJobFactory.GetJob(System.String)"/></param>
         </member>
         <member name="T:Castle.Components.Scheduler.JobData">
             <summary>

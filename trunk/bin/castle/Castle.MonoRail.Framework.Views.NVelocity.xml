@@ -318,6 +318,12 @@
             Resolves the layout template name into a velocity template file name.
             </summary>
         </member>
+        <member name="M:Castle.MonoRail.Framework.Views.NVelocity.NVelocityViewEngine.SetViewSourceLoader(Castle.MonoRail.Framework.IViewSourceLoader)">
+            <summary>
+            For internal testing use only!
+            </summary>
+            <param name="loader"></param>
+        </member>
         <member name="P:Castle.MonoRail.Framework.Views.NVelocity.NVelocityViewEngine.SupportsJSGeneration">
             <summary>
             Gets a value indicating whether the view engine
