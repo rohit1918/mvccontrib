@@ -8,7 +8,7 @@ namespace MvcContrib.UnitTests
 	[TestFixture]
 	public class ControllerExtensionsTester
 	{
-	    [Test]
+		[Test]
 		public void RedirectToAction_should_redirect_correctly_on_same_controller()
 		{
 			var redirectToRouteResult = new AnotherTestController().RedirectToAction(c => c.SomeAction(1));
@@ -36,6 +36,33 @@ namespace MvcContrib.UnitTests
 			var redirectToRouteResult = controller.RedirectToAction(c => c.AnotherAction(someObject));
 
 			controller.TempData[PassParametersDuringRedirectAttribute.RedirectParameterPrefix + "obj"].ShouldEqual(someObject);
+		}
+
+		[Test]
+		public void Should_remove_reference_type_parameters_from_the_route_values()
+		{
+			var someObject = new AnotherTestController.SomeObject {One = 1, Two = "two"};
+			var controller = new AnotherTestController();
+			var redirectToRouteResult = controller.RedirectToAction(c => c.AnotherAction(someObject));
+			Assert.That(redirectToRouteResult.RouteValues.ContainsKey("obj"), Is.False);
+		}
+
+		[Test]
+		public void Should_not_remove_string_parameters_from_the_route_values()
+		{
+			var controller = new AnotherTestController();
+			var redirectToRouteResult = controller.RedirectToAction(c => c.YetAnotherAction("asdf"));
+			Assert.That(redirectToRouteResult.RouteValues.ContainsKey("s"), Is.True);
+			Assert.That(redirectToRouteResult.RouteValues["s"], Is.EqualTo("asdf"));
+		}
+
+		[Test]
+		public void Should_not_remove_null_parameters_from_the_route_values()
+		{
+			var someObject = new AnotherTestController.SomeObject {One = 1, Two = "two"};
+			var controller = new AnotherTestController();
+			var redirectToRouteResult = controller.RedirectToAction(c => c.AnotherAction(someObject));
+			Assert.That(redirectToRouteResult.RouteValues["obj"], Is.Null);
 		}
 	}
 }
