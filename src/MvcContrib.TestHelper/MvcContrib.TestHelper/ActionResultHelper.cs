@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using MvcContrib.Filters;
 
 namespace MvcContrib.TestHelper
 {
@@ -120,7 +121,6 @@ namespace MvcContrib.TestHelper
 		/// <returns></returns>
 		public static RedirectToRouteResult WithParameter(this RedirectToRouteResult result, string paramName, object value)
 		{
-            
 			if(!result.RouteValues.ContainsKey(paramName))
 			{
 				throw new ActionResultAssertionException(string.Format("Could not find a parameter named '{0}' in the result's Values collection.", paramName));
@@ -134,6 +134,30 @@ namespace MvcContrib.TestHelper
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Gets a parameter from a RedirectToRouteResult.
+		/// </summary>
+		/// <param name="result">The result to check.</param>
+		/// <param name="controller">The controller that you redirected FROM.</param>
+		/// <param name="paramName">The name of the parameter to check for.</param>
+		/// <returns></returns>
+		public static object GetStronglyTypedParameter(this RedirectToRouteResult result, Controller controller,
+		                                               string paramName)
+		{
+			if(result.RouteValues.ContainsKey(paramName))
+			{
+				return result.RouteValues[paramName];
+			}
+
+			if(controller.TempData.ContainsKey(PassParametersDuringRedirectAttribute.RedirectParameterPrefix + paramName))
+			{
+				return controller.TempData[PassParametersDuringRedirectAttribute.RedirectParameterPrefix + paramName];
+			}
+
+			throw new ActionResultAssertionException(
+				string.Format("Could not find a parameter named '{0}' in the result's Values collection.", paramName));
 		}
 
 		/// <summary>
