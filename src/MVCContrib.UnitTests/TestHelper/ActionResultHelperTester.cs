@@ -187,6 +187,13 @@ namespace MvcContrib.UnitTests.TestHelper
 			Assert.That(result, Is.EqualTo(expectedData));
 		}
 
+		[Test]
+		public void Should_convert_to_PartialViewResult()
+		{
+			ActionResult result = new PartialViewResult();
+			result.AssertPartialViewRendered().ShouldNotBeNull();
+		}
+
 		class DerivedCustomViewData : CustomReferenceTypeViewData
 		{
 		}
