@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -11,6 +12,25 @@ namespace MvcContrib.UnitTests.TestHelper
 	[TestFixture]
 	public class ActionResultHelperTester
 	{
+		public class SampleObject
+		{
+			public string Name { get; set; }
+		}
+
+		public class SampleController : Controller
+		{
+			public RedirectToRouteResult TestMethod()
+			{
+				return
+					this.RedirectToAction(c => c.SomeOtherMethod(1, new SampleObject {Name = "name"}));
+			}
+
+			public ActionResult SomeOtherMethod(int number, SampleObject obj)
+			{
+				return View();
+			}
+		}
+
 		[Test]
 		public void Should_convert()
 		{
@@ -58,7 +78,25 @@ namespace MvcContrib.UnitTests.TestHelper
 			Assert.That(final, Is.EqualTo(result));
 		}
 
-		[Test, ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Could not find a parameter named 'foo' in the result's Values collection.")]
+		[Test]
+		public void GetParameter_should_return_value_type_parameters()
+		{
+			var controller = new SampleController();
+			var result = controller.TestMethod();
+			var parameter = result.GetStronglyTypedParameter(controller, "number");
+			Assert.That(parameter, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void GetParameter_should_return_reference_type_parameters()
+		{
+			var controller = new SampleController();
+			var result = controller.TestMethod();
+			var parameter = (SampleObject)result.GetStronglyTypedParameter(controller, "obj");
+			Assert.That(parameter.Name, Is.EqualTo("name"));
+		}
+
+        [Test, ExpectedException(typeof(ActionResultAssertionException), ExpectedMessage = "Could not find a parameter named 'foo' in the result's Values collection.")]
 		public void WithParameter_should_throw_if_key_not_in_dictionary()
 		{
 			var result = new RedirectToRouteResult(new RouteValueDictionary());
