@@ -83,10 +83,22 @@ namespace MvcContrib.UnitTests.ViewFactories
 
 			Assert.That(result, Is.EqualTo("Bar"));
 
-		}   
-	}
+		}
 
-	
+		[Test]
+		public void CanInvokeMethodWithParamsArray()
+		{
+			var viewContext = _mocks.DynamicViewContext("someView");
+			var viewDataContainer = _mocks.DynamicMock<IViewDataContainer>();
+
+			HtmlExtensionDuck.AddExtension(typeof(HtmlExtensionForTesting));
+			var htmlExtensionDuck = new HtmlExtensionDuck(viewContext, viewDataContainer);
+			Object[] args = {"foo", "bar"};
+			object result = htmlExtensionDuck.Invoke("Bar", args);
+
+			Assert.That(result, Is.EqualTo("Bar3"));
+		}
+	}
 
     public static class HtmlExtensionForTesting
     {
@@ -104,5 +116,10 @@ namespace MvcContrib.UnitTests.ViewFactories
 		{
 			return "Bar2";
 		}
+
+      public static string Bar(this HtmlHelper htmlHelper, params object[] args)
+      {
+         return "Bar3";
+      }
     }
 }
