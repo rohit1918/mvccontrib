@@ -96,9 +96,9 @@ namespace MvcContrib.FluentHtml
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
-		public static Select Select<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		public static Select<T> Select<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Select(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
+			return new Select<T>(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -108,9 +108,9 @@ namespace MvcContrib.FluentHtml
 		/// <typeparam name="T">The type of the ViewModel.</typeparam>
 		/// <param name="view">The view.</param>
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
-		public static MultiSelect MultiSelect<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
+		public static MultiSelect<T> MultiSelect<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new MultiSelect(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
+			return new MultiSelect<T>(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Selected(expression.GetValueFrom(view.ViewModel) as IEnumerable);
 		}
 
