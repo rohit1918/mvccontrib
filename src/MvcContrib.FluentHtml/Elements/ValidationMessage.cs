@@ -10,9 +10,9 @@ namespace MvcContrib.FluentHtml.Elements
 	public class ValidationMessage: LiteralBase<ValidationMessage>
 	{
 		public ValidationMessage(MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
-			: base(forMember, behaviors) {}
+			: base("", forMember, behaviors) {}
 
-		public ValidationMessage() {}
+		public ValidationMessage() : base("") {}
 
 		public override string ToString()
 		{

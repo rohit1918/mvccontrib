@@ -134,7 +134,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Literal Literal<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-			return new Literal(expression.GetMemberExpression(), view.Behaviors)
+            return new Literal(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 

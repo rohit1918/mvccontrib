@@ -145,8 +145,19 @@ namespace MvcContrib.FluentHtml
 		/// <param name="value">The inner text.</param>
 		public static Literal Literal(this IViewDataContainer view, object value)
 		{
-			return new Literal().Value(value);
+            return view.Literal("", value);
 		}
+
+        /// <summary>
+        /// Generate an HTML span element.
+        /// </summary>
+        /// <param name="view">The view.</param>
+        /// <param name="name">The name of the element.</param>
+        /// <param name="value">The inner text.</param>
+        public static Literal Literal(this IViewDataContainer view, string name, object value)
+        {
+            return new Literal(name).Value(value);
+        }
 
 		/// <summary>
 		/// Generate an HTML span element and an HTML input element of type 'hidden' and set the inner text
