@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.UI.Grid;
@@ -170,7 +171,7 @@ namespace MvcContrib.UnitTests.UI.Grid
 		[Test]
 		public void Should_add_column()
 		{
-			((ICollection<GridColumn<Person>>)_builder).Add(new GridColumn<Person>(x => null, null));
+			((ICollection<GridColumn<Person>>)_builder).Add(new GridColumn<Person>(x => null, null, null));
 			_builder.Count().ShouldEqual(1);
 		}
 
@@ -220,5 +221,11 @@ namespace MvcContrib.UnitTests.UI.Grid
 			((ICollection<GridColumn<Person>>)_builder).IsReadOnly.ShouldBeFalse();
 		}
 
+		[Test]
+		public void ColumnType_should_return_the_Type_of_the_property_referenced_by_the_column() 
+		{
+			_builder.For(x => x.DateOfBirth);
+			_builder.Single().ColumnType.ShouldEqual(typeof(DateTime));
+		}
 	}
 }
