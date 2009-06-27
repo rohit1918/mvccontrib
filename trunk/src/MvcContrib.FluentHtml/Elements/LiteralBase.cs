@@ -12,11 +12,23 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		protected string format;
 		protected object rawValue;
+		protected string overridenId;
 
-		protected LiteralBase(MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : 
-			base(HtmlTag.Span, forMember, behaviors) { }
+		protected LiteralBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) :
+			base(HtmlTag.Span, forMember, behaviors)
+		{
+			SetName(name);
+		}
 
-		protected LiteralBase() : base(HtmlTag.Span) { }
+		protected LiteralBase(string name) : base(HtmlTag.Span)
+		{
+			SetName(name);
+		}
+
+		protected void SetName(string name)
+		{
+			((IElement)this).SetAttr(HtmlAttribute.Name, name);
+		}
 
 		/// <summary>
 		/// Set the inner text of the span element.
@@ -39,21 +51,49 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
+		public override T Id(string value)
+		{
+			overridenId = value;
+			return (T)this;
+		}
+
 		public override string ToString()
 		{
+			SetId();
+
 			builder.SetInnerText(FormatValue(rawValue));
 			return base.ToString();
+		}
+
+		protected virtual void InferIdFromName()
+		{
+			if(!builder.Attributes.ContainsKey(HtmlAttribute.Id))
+			{
+				Attr(HtmlAttribute.Id, builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId());
+			}
+		}
+
+		private void SetId()
+		{
+			if(!string.IsNullOrEmpty(overridenId))
+			{
+				base.Id(overridenId);
+			}
+			else
+			{
+				InferIdFromName();
+			}
 		}
 
 		protected virtual string FormatValue(object value)
 		{
 			return string.IsNullOrEmpty(format)
-					   ? value == null
-							 ? null
-							 : value.ToString()
-					   : (format.StartsWith("{0") && format.EndsWith("}"))
-							 ? string.Format(format, value)
-							 : string.Format("{0:" + format + "}", value);
+			       	? value == null
+			       	  	? null
+			       	  	: value.ToString()
+			       	: (format.StartsWith("{0") && format.EndsWith("}"))
+			       	  	? string.Format(format, value)
+			       	  	: string.Format("{0:" + format + "}", value);
 		}
 	}
 }

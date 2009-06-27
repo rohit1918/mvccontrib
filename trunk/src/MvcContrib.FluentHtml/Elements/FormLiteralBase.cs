@@ -11,16 +11,24 @@ namespace MvcContrib.FluentHtml.Elements
 	/// </summary>
 	public abstract class FormLiteralBase<T> : TextInput<T> where T : FormLiteralBase<T>
 	{
-		protected FormLiteralBase(string name) : base(HtmlInputType.Hidden, name) { }
+		private readonly string _name;
 
-		protected FormLiteralBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
-			: base(HtmlInputType.Hidden, name, forMember, behaviors) { }
+		protected FormLiteralBase(string name) : base(HtmlInputType.Hidden, name)
+		{
+			_name = name;
+		}
+
+		protected FormLiteralBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
+			: base(HtmlInputType.Hidden, name, forMember, behaviors)
+		{
+			_name = name;
+		}
 
 		public override string ToString()
 		{
-			return base.ToString() + new Literal()
-				.Id(string.Format("{0}_Literal", builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId()))
-				.Value(builder.Attributes[HtmlAttribute.Value]);
+			return base.ToString() + new Literal(_name)
+			                         	.Id(string.Format("{0}_Literal", builder.Attributes[HtmlAttribute.Name].FormatAsHtmlId()))
+			                         	.Value(builder.Attributes[HtmlAttribute.Value]);
 		}
 	}
 }

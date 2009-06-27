@@ -76,6 +76,14 @@ namespace MvcContrib.UnitTests.FluentHtml
 			element.InnerTextShouldEqual("foo bar");
 		}
 
+        [Test]
+        public void can_get_literal_with_name_and_value()
+        {
+            var element = target.Literal("name", "foo bar");
+            element.InnerTextShouldEqual("foo bar");
+            element.AttributeShouldEqual("name", "name");
+        }
+
 		[Test]
 		public void can_get_form_literal_with_value()
 		{
