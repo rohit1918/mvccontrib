@@ -69,11 +69,68 @@ namespace MvcContrib.ViewEngines
 				methodInfo = Introspector.GetMethod(extensionType, method, extensionArgs);
 				if(methodInfo != null)
 				{
+					// Support params object[] as inputparameter
+					extensionArgs = ObjectArrayFromArgs(methodInfo, extensionArgs);
+
 					return InvokerHelper(methodInfo, null, extensionArgs);
 				}
 			}
 
 			return null;
+		}
+
+		private static object[] ObjectArrayFromArgs(MethodInfo methodInfo, object[] extensionArgs)
+		{
+			ParameterInfo[] methodInfoParameters = methodInfo.GetParameters();
+			if(!IsMethodParametersEqualsToExtenstionArgs(methodInfoParameters, extensionArgs))
+			{
+				for(int i = 0; i < methodInfoParameters.Length; i++)
+				{
+					if(!methodInfoParameters[i].ParameterType.Equals(extensionArgs[i].GetType()))
+					{
+						if(methodInfoParameters[i].ParameterType.Equals(typeof(object[])))
+						{
+							int o = extensionArgs.Length - i;
+							object[] newParamArray = new object[o];
+
+							for(int y = 0; y < o; y++)
+							{
+								newParamArray[y] = extensionArgs[i + y];
+							}
+
+							object[] newExtensionArgs = new object[i + 1];
+
+							for(int b = 0; b <= i; b++)
+							{
+								newExtensionArgs[b] = (b == i)
+								                      	?
+								                      		newParamArray
+								                      	: extensionArgs[b];
+							}
+
+							return newExtensionArgs;
+						}
+					}
+				}
+			}
+			return extensionArgs;
+		}
+
+		private static bool IsMethodParametersEqualsToExtenstionArgs(ParameterInfo[] methodInfoParameters,
+		                                                             object[] extensionArgs)
+		{
+			for(int i = 0; i < methodInfoParameters.Length; i++)
+			{
+				if(extensionArgs[i] == null)
+				{
+					return true;
+				}
+				if(!methodInfoParameters[i].ParameterType.Equals(extensionArgs[i].GetType()))
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 
 		private object InvokerHelper(MethodInfo method, object instance, object[] args)
