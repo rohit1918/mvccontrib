@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -13,7 +15,8 @@ namespace MvcContrib.UI.Grid
 		private readonly string _name;
 		private string _displayName;
 		private bool _doNotSplit;
-		private readonly Func<T, object> _columnValueFunc;
+        private readonly Func<T, object> _columnValueFunc;
+		private readonly Type _dataType;
 		private Func<T, bool> _cellCondition = x => true;
 		private string _format;
 		private bool _visible = true;
@@ -24,10 +27,11 @@ namespace MvcContrib.UI.Grid
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
 		/// </summary>
-		public GridColumn(Func<T, object> columnValueFunc, string name)
+		public GridColumn(Func<T, object> columnValueFunc, string name, Type type)
 		{
 			_name = name;
 			_displayName = name;
+			_dataType = type;
 			_columnValueFunc = columnValueFunc;
 		}
 
@@ -59,7 +63,16 @@ namespace MvcContrib.UI.Grid
 			}
 		}
 
-		IGridColumn<T> IGridColumn<T>.Attributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
+		/// <summary>
+		/// The type of the object being rendered for thsi column. 
+		/// Note: this will return null if the type cannot be inferred.
+		/// </summary>
+        public Type ColumnType
+        {
+            get { return _dataType; }
+        }
+
+        IGridColumn<T> IGridColumn<T>.Attributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
 		{
 			_attributes = attributes;
 			return this;
@@ -158,7 +171,7 @@ namespace MvcContrib.UI.Grid
 			{
 				return null;
 			}
-
+		    
 			var value = _columnValueFunc(instance);
 
 			if(!string.IsNullOrEmpty(_format))

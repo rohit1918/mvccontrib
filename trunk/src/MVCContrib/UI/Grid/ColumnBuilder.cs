@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace MvcContrib.UI.Grid
 {
@@ -18,11 +19,16 @@ namespace MvcContrib.UI.Grid
 		/// <param name="propertySpecifier">Lambda that specifies the property for which a column should be constructed</param>
 		public IGridColumn<T> For(Expression<Func<T, object>> propertySpecifier)
 		{
-			string inferredName = ExpressionToName(propertySpecifier);
-			var column = new GridColumn<T>(propertySpecifier.Compile(), inferredName);
+			var memberExpression = GetMemberExpression(propertySpecifier);
+			var type = GetTypeFromMemberExpression(memberExpression);
+			var inferredName = memberExpression == null ? null : memberExpression.Member.Name;
+
+			var column = new GridColumn<T>(propertySpecifier.Compile(), inferredName, type);
 			_columns.Add(column);
 			return column;
 		}
+
+
 
 		/// <summary>
 		/// Specifies that a custom column should be constructed with the specified name.
@@ -30,7 +36,7 @@ namespace MvcContrib.UI.Grid
 		/// <param name="name"></param>
 		public IGridColumn<T> For(string name) 
 		{
-			var column = new GridColumn<T>(x => string.Empty, name);
+			var column = new GridColumn<T>(x => string.Empty, name, null);
 			_columns.Add(column);
 			return column.Partial(name);
 		}
@@ -45,17 +51,30 @@ namespace MvcContrib.UI.Grid
 			return GetEnumerator();
 		}
 
-		/// <summary>
-		/// Grabs the property name from a member expression.
-		/// </summary>
-		/// <param name="expression">The expression</param>
-		/// <returns>The name of the property</returns>
-		public static string ExpressionToName<TProperty>(Expression<Func<T, TProperty>> expression)
+		public static MemberExpression GetMemberExpression(LambdaExpression expression)
 		{
-			var memberExpression = RemoveUnary(expression.Body) as MemberExpression;
-			return memberExpression == null ? null : memberExpression.Member.Name;
+			return RemoveUnary(expression.Body) as MemberExpression;
 		}
 
+		private static Type GetTypeFromMemberExpression(MemberExpression memberExpression) 
+		{
+			if (memberExpression == null) return null;
+
+			var dataType = GetTypeFromMemberInfo(memberExpression.Member, (PropertyInfo p) => p.PropertyType);
+			if (dataType == null) dataType = GetTypeFromMemberInfo(memberExpression.Member, (MethodInfo m) => m.ReturnType);
+			if (dataType == null) dataType = GetTypeFromMemberInfo(memberExpression.Member, (FieldInfo f) => f.FieldType);
+
+			return dataType;
+		}
+
+		private static Type GetTypeFromMemberInfo<TMember>(MemberInfo member, Func<TMember, Type> func) where TMember : MemberInfo 
+		{
+			if (member is TMember) 
+			{
+				return func((TMember)member);
+			}
+			return null;
+		}
 
 		private static Expression RemoveUnary(Expression body)
 		{
