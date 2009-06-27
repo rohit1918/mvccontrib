@@ -302,6 +302,15 @@ namespace MvcContrib.UnitTests.UI.Grid
 		}
 
 		[Test]
+		public void Should_render_custom_attributes_when_Attributes_called_multiple_times()
+		{
+			ColumnFor(x => x.Name).Attributes(foo => "bar").Attributes(baz => "blah");
+			string expected =
+				"<table class=\"grid\"><thead><tr><th>Name</th></tr></thead><tbody><tr class=\"gridrow\"><td foo=\"bar\" baz=\"blah\">Jeremy</td></tr></tbody></table>";
+			RenderGrid().ShouldEqual(expected);
+		}
+
+		[Test]
 		public void Should_render_custom_attributes_in_table_cell_with_logic()
 		{
 			_people.Add(new Person() { Name = "foo"});

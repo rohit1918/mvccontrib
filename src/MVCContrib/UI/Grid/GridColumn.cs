@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -22,7 +23,7 @@ namespace MvcContrib.UI.Grid
 		private bool _visible = true;
 		private bool _htmlEncode = true;
 		private readonly IDictionary<string, object> _headerAttributes = new Dictionary<string, object>();
-		private Func<GridRowViewData<T>, IDictionary<string, object>> _attributes = x => new Dictionary<string, object>();
+		private List<Func<GridRowViewData<T>, IDictionary<string, object>>> _attributes = new List<Func<GridRowViewData<T>, IDictionary<string, object>>>();
 
 		/// <summary>
 		/// Creates a new instance of the GridColumn class
@@ -74,7 +75,7 @@ namespace MvcContrib.UI.Grid
 
         IGridColumn<T> IGridColumn<T>.Attributes(Func<GridRowViewData<T>, IDictionary<string, object>> attributes)
 		{
-			_attributes = attributes;
+			_attributes.Add(attributes);
 			return this;
 		}
 
@@ -101,7 +102,20 @@ namespace MvcContrib.UI.Grid
 		/// </summary>
 		public Func<GridRowViewData<T>, IDictionary<string, object>> Attributes
 		{
-			get { return _attributes; }
+			get { return GetAttributesFromRow; }
+		}
+
+		private IDictionary<string, object> GetAttributesFromRow(GridRowViewData<T> row)
+		{
+			var dictionary = new Dictionary<string, object>();
+			var pairs = _attributes.SelectMany(attributeFunc => attributeFunc(row));
+
+			foreach(var pair in pairs)
+			{
+				dictionary[pair.Key] = pair.Value;
+			}
+
+			return dictionary;
 		}
 
 		public IGridColumn<T> Named(string name)
