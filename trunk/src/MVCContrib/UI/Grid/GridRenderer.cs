@@ -17,6 +17,11 @@ namespace MvcContrib.UI.Grid
 		private TextWriter _writer;
 		private readonly ViewEngineCollection _engines;
 
+		protected  TextWriter Writer
+		{
+			get { return _writer; }
+		}
+
 		protected GridRenderer() : this(ViewEngines.Engines) {}
 
 		protected GridRenderer(ViewEngineCollection engines)
@@ -32,9 +37,9 @@ namespace MvcContrib.UI.Grid
 			Context = context;
 
 			RenderGridStart();
-			bool headerRendered = RenderHeader();
+			bool hasItems = RenderHeader();
 
-			if(headerRendered)
+			if(hasItems)
 			{
 				RenderItems();
 			}
@@ -43,13 +48,13 @@ namespace MvcContrib.UI.Grid
 				RenderEmpty();
 			}
 
-			RenderGridEnd(!headerRendered);
+			RenderGridEnd(!hasItems);
 		}
 
 
 		protected void RenderText(string text)
 		{
-			_writer.Write(text);
+			Writer.Write(text);
 		}
 
 		protected virtual void RenderItems()
@@ -75,7 +80,7 @@ namespace MvcContrib.UI.Grid
 				//A custom item section has been specified - render it and continue to the next iteration.
 				if (column.CustomItemRenderer != null)
 				{
-					column.CustomItemRenderer(new RenderingContext(_writer, Context, _engines), rowData.Item);
+					column.CustomItemRenderer(new RenderingContext(Writer, Context, _engines), rowData.Item);
 					continue;
 				}
 
@@ -100,7 +105,7 @@ namespace MvcContrib.UI.Grid
 		protected virtual bool RenderHeader()
 		{
 			//No items - do not render a header.
-			if(IsDataSourceEmpty()) return false;
+			if(! ShouldRenderHeader()) return false;
 
 			RenderHeadStart();
 
@@ -109,7 +114,7 @@ namespace MvcContrib.UI.Grid
 				//Allow for custom header overrides.
 				if(column.CustomHeaderRenderer != null)
 				{
-					column.CustomHeaderRenderer(new RenderingContext(_writer, Context, _engines));
+					column.CustomHeaderRenderer(new RenderingContext(Writer, Context, _engines));
 				}
 				else
 				{
@@ -124,6 +129,11 @@ namespace MvcContrib.UI.Grid
 			return true;
 		}
 
+		protected virtual bool ShouldRenderHeader()
+		{
+			return !IsDataSourceEmpty();
+		}
+
 		protected bool IsDataSourceEmpty()
 		{
 			return DataSource == null || !DataSource.Any();
@@ -136,7 +146,7 @@ namespace MvcContrib.UI.Grid
 
 		protected void BaseRenderRowStart(GridRowViewData<T> rowData)
 		{
-			bool rendered = GridModel.Sections.Row.StartSectionRenderer(rowData, new RenderingContext(_writer, Context, _engines));
+			bool rendered = GridModel.Sections.Row.StartSectionRenderer(rowData, new RenderingContext(Writer, Context, _engines));
 
 			if(! rendered)
 			{
@@ -146,7 +156,7 @@ namespace MvcContrib.UI.Grid
 
 		protected void BaseRenderRowEnd(GridRowViewData<T> rowData)
 		{
-			bool rendered = GridModel.Sections.Row.EndSectionRenderer(rowData, new RenderingContext(_writer, Context, _engines));
+			bool rendered = GridModel.Sections.Row.EndSectionRenderer(rowData, new RenderingContext(Writer, Context, _engines));
 
 			if(! rendered)
 			{
