@@ -147,6 +147,14 @@ namespace MvcContrib.UnitTests.UI.Pager
 			RenderPager(2, 2).ToString().ShouldEqual(expected);
 		}
 
+		[Test]
+		public void Should_use_Custom_url()
+		{
+			string expected =
+				"<div class='pagination'><span class='paginationLeft'>Showing 1 - 2 of 3 </span><span class='paginationRight'>first | prev | <a href=\"TEST/2\">next</a> | <a href=\"TEST/2\">last</a></span></div>";
+			RenderPager(1, 2).Link(p => "TEST/" + p).ToString().ShouldEqual(expected);
+		}
+
 		private MvcContrib.UI.Pager.Pager RenderPager(int pageNumber, int pageSize)
 		{
 			return new MvcContrib.UI.Pager.Pager(_datasource.AsPagination(pageNumber, pageSize), _context.Request);
