@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.Text;
 using System.Web;
@@ -20,6 +21,7 @@ namespace MvcContrib.UI.Pager
 		private string _paginationNext = "next";
 		private string _paginationLast = "last";
 		private string _pageQueryName = "page";
+		private Func<int, string> urlBuilder;
 
 		/// <summary>
 		/// Creates a new instance of the Pager class.
@@ -30,6 +32,8 @@ namespace MvcContrib.UI.Pager
 		{
 			_pagination = pagination;
 			_request = request;
+
+			urlBuilder = CreateDefaultUrl;
 		}
 
 		/// <summary>
@@ -96,6 +100,17 @@ namespace MvcContrib.UI.Pager
 			_paginationLast = last;
 			return this;
 		}
+
+		/// <summary>
+		/// Uses a lambda expression to generate the URL for the page links.
+		/// </summary>
+		/// <param name="urlBuilder">Lambda expression for generating the URL used in the page links</param>
+		public Pager Link(Func<int, string> urlBuilder)
+		{
+			this.urlBuilder = urlBuilder;
+			return this;
+		}
+
 
 		public override string ToString()
 		{
@@ -173,9 +188,16 @@ namespace MvcContrib.UI.Pager
 
 		private string CreatePageLink(int pageNumber, string text)
 		{
+			string link = "<a href=\"{0}\">{1}</a>";
+			return string.Format(link, urlBuilder(pageNumber), text);
+		}
+
+		private string CreateDefaultUrl(int pageNumber)
+		{
 			string queryString = CreateQueryString(_request.QueryString);
 			string filePath = _request.FilePath;
-			return string.Format("<a href=\"{0}?{1}={2}{3}\">{4}</a>", filePath, _pageQueryName, pageNumber, queryString, text);
+			string url = string.Format("{0}?{1}={2}{3}", filePath, _pageQueryName, pageNumber, queryString);
+			return url;
 		}
 
 		private string CreateQueryString(NameValueCollection values)
