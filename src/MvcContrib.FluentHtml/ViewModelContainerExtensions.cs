@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 using MvcContrib.FluentHtml.Elements;
 using MvcContrib.FluentHtml.Expressions;
 
@@ -134,7 +135,7 @@ namespace MvcContrib.FluentHtml
 		/// <param name="expression">Expression indicating the ViewModel member associated with the element.</param>
 		public static Literal Literal<T>(this IViewModelContainer<T> view, Expression<Func<T, object>> expression) where T : class
 		{
-            return new Literal(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
+			return new Literal(expression.GetNameFor(view), expression.GetMemberExpression(), view.Behaviors)
 				.Value(expression.GetValueFrom(view.ViewModel));
 		}
 
@@ -275,6 +276,37 @@ namespace MvcContrib.FluentHtml
 		public static SubmitButton SubmitButton<T>(this IViewModelContainer<T> view, string text) where T : class
 		{
 			return new SubmitButton(text, view.Behaviors);
+		}
+
+		/// <summary>
+		/// Renders a partial
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <typeparam name="TPartialViewModel">The type of model of the partial.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="partialViewName">The name of the partial to render.</param>
+		/// <param name="modelExpression">Expression of the model for the partial.</param>
+		/// <param name="viewData">View data for the partial. (If the view data has a Model, it will be replaced by the model as specified in the expression parameter, if it is not null.)</param>
+		public static void RenderPartial<T, TPartialViewModel>(this IViewModelContainer<T> view, string partialViewName, Expression<Func<T, TPartialViewModel>> modelExpression, ViewDataDictionary viewData)
+			where T : class
+			where TPartialViewModel : class
+		{
+			new PartialRenderer<T, TPartialViewModel>(view, partialViewName, modelExpression).ViewData(viewData).Render();
+		}
+
+		/// <summary>
+		/// Renders a partial
+		/// </summary>
+		/// <typeparam name="T">The type of the ViewModel.</typeparam>
+		/// <typeparam name="TPartialViewModel">The type of model of the partial.</typeparam>
+		/// <param name="view">The view.</param>
+		/// <param name="partialViewName">The name of the partial to render.</param>
+		/// <param name="modelExpression">Expression of the model for the partial.</param>
+		public static void RenderPartial<T, TPartialViewModel>(this IViewModelContainer<T> view, string partialViewName, Expression<Func<T, TPartialViewModel>> modelExpression) 
+			where T : class
+			where TPartialViewModel : class
+		{
+			new PartialRenderer<T, TPartialViewModel>(view, partialViewName, modelExpression).Render();
 		}
 	}
 }
