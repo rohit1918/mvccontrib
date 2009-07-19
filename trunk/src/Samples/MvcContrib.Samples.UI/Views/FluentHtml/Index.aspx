@@ -52,6 +52,12 @@
 			   
 		<%= this.TextBox(x => x.Person.DateOfBirth).Format("M/d/yy").Label("DOB:").Title("Enter the person's date of birth") %>
 		<%= this.ValidationMessage(x => x.Person.DateOfBirth, "Please enter a valid date") %><br />
+		<br />
+		
+		<% this.RenderPartial("EditParent", x => x.Person.Mother, new ViewDataDictionary { { "label", "Mother's Name:" } }); %><br />
+		<br />
+		
+		<% this.RenderPartial("EditParent", x => x.Person.Father, new ViewDataDictionary { { "label", "Father's Name:" } }); %><br />
 
 		<p>
 			<%=this.SubmitButton("Submit") %>

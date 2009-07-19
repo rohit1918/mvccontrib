@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcContrib.FluentHtml;
@@ -8,13 +9,12 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 	public class FakeViewModelContainer<T> : IViewModelContainer<T> where T : class
 	{
 		private ViewDataDictionary viewData = new ViewDataDictionary();
-		private string htmlNamePrefix;
 
-		public FakeViewModelContainer() { }
+	    public FakeViewModelContainer() { }
 
 		public FakeViewModelContainer(string htmlNamePrefix)
 		{
-			this.htmlNamePrefix = htmlNamePrefix;
+			HtmlNamePrefix = htmlNamePrefix;
 		}
 
 		public T ViewModel
@@ -28,13 +28,14 @@ namespace MvcContrib.UnitTests.FluentHtml.Fakes
 			get { return new List<IBehaviorMarker>(); }
 		}
 
-		public string HtmlNamePrefix
-		{
-			get { return htmlNamePrefix; }
-			set { htmlNamePrefix = value; }
-		}
+	    public string HtmlNamePrefix { get; set; }
 
-		public ViewDataDictionary ViewData
+	    public HtmlHelper Html
+	    {
+	        get { throw new NotImplementedException(); }
+	    }
+
+	    public ViewDataDictionary ViewData
 		{
 			get { return viewData; }
 			set { viewData = value; }

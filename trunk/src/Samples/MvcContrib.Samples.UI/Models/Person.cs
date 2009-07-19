@@ -11,5 +11,12 @@ namespace MvcContrib.Samples.UI.Models
 		public string Gender { get; set; }
 		public DateTime DateOfBirth { get; set; }
 		public IList<int> Roles { get; set; }
+		public Parent Mother { get; set; }
+		public Parent Father { get; set; }
+	}
+
+	public class Parent
+	{
+		public string Name { get; set; }
 	}
 }

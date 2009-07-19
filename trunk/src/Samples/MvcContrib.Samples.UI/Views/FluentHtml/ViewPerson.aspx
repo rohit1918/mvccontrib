@@ -20,7 +20,9 @@
 				<%= role %><br />
 			<% } %>
 		</div><br /><br/>
-		<%=this.Literal(x => x.DateOfBirth).Label("Date Of Birth:").Format("MMMM d, yyyy") %><br/>
+		<%=this.Literal(x => x.DateOfBirth).Label("Date Of Birth:").Format("MMMM d, yyyy") %><br/><br/>
+		<% this.RenderPartial("ViewParent", x => x.Mother, new ViewDataDictionary { { "label", "Mother's Name:" } }); %><br /><br />
+		<% this.RenderPartial("ViewParent", x => x.Father, new ViewDataDictionary { { "label", "Father's Name:" } }); %><br/>
 	
 	</div>
 	
