@@ -100,7 +100,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void select_with_options_for_enum_renders_null_first_option()
 		{
-			var html = new Select("foo.Bar").Options<FakeEnum>().FirstOptionText("-Choose-").ToString();
+			var html = new Select("foo.Bar").Options<FakeEnum>().FirstOption("-Choose-").ToString();
 
 			var element = html.ShouldHaveHtmlNode("foo_Bar");
 			var optionNodes = element.ShouldHaveChildNodesCount(5);
@@ -200,7 +200,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void select_options_with_simple_enumeration_of_objects_can_have_a_first_option_text_specified()
 		{
-			var optionNodes = new Select("foo").Options(new[] { 1, 2 }).FirstOptionText("-Choose-").ToString()
+			var optionNodes = new Select("foo").Options(new[] { 1, 2 }).FirstOption("-Choose-").ToString()
 				.ShouldHaveHtmlNode("foo")
 				.ShouldHaveChildNodesCount(3);
 
@@ -209,10 +209,21 @@ namespace MvcContrib.UnitTests.FluentHtml
 			optionNodes[2].ShouldBeUnSelectedOption("2", "2");
 		}
 
+        [Test]
+        public void select_options_with_simple_enumeration_of_objects_can_have_a_first_option_specified()
+        {
+            var optionNodes = new Select("foo").Options(new[] { 1, 2 }).FirstOption(new Option().Text("No Relation").Value("-1")).ToString()
+                .ShouldHaveHtmlNode("foo")
+                .ShouldHaveChildNodesCount(3);
+            optionNodes[0].ShouldBeUnSelectedOption("-1", "No Relation");
+            optionNodes[1].ShouldBeUnSelectedOption("1", "1");
+            optionNodes[2].ShouldBeUnSelectedOption("2", "2");
+        }
+
 		[Test]
 		public void select_options_not_told_to_hide_the_first_option_should_emit_the_first_option_text()
 		{
-			var optionNodes = new Select("foo").Options(new[] {1, 2}).FirstOptionText("-Choose-").HideFirstOptionWhen(false).ToString()
+			var optionNodes = new Select("foo").Options(new[] {1, 2}).FirstOption("-Choose-").HideFirstOptionWhen(false).ToString()
 				.ShouldHaveHtmlNode("foo")
 				.ShouldHaveChildNodesCount(3);
 
@@ -224,7 +235,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 		[Test]
 		public void select_options_told_to_hide_the_first_option_should_not_emit_the_first_option_text()
 		{
-			var optionNodes = new Select("foo").Options(new[] { 1, 2 }).FirstOptionText("-Choose-").HideFirstOptionWhen(true).ToString()
+			var optionNodes = new Select("foo").Options(new[] { 1, 2 }).FirstOption("-Choose-").HideFirstOptionWhen(true).ToString()
 				.ShouldHaveHtmlNode("foo")
 				.ShouldHaveChildNodesCount(2);
 
