@@ -34,6 +34,12 @@ namespace MvcContrib.ViewEngines
 			set { throw new NotSupportedException(); }
 		}
 
+		public TempDataDictionary TempData
+		{
+			get { return _viewContext.TempData; }
+			set { throw new NotSupportedException(); }
+		}
+
 		public void Render(ViewContext viewContext, TextWriter writer)
 		{
 			_viewContext = viewContext;
@@ -55,13 +61,13 @@ namespace MvcContrib.ViewEngines
 			else
 			{
 				_viewTemplate.Merge(context, writer);
-			}            
+			}
 		}
 
 		private VelocityContext CreateContext()
 		{
 			var entries = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
-			if (_viewContext.ViewData != null)
+			if(_viewContext.ViewData != null)
 			{
 				foreach(var pair in _viewContext.ViewData)
 				{
@@ -69,6 +75,14 @@ namespace MvcContrib.ViewEngines
 				}
 			}
 			entries["viewdata"] = _viewContext.ViewData;
+			if(_viewContext.TempData != null)
+			{
+				foreach(var pair in _viewContext.TempData)
+				{
+					entries[pair.Key] = pair.Value;
+				}
+			}
+			entries["tempdata"] = _viewContext.TempData;
 
 			entries["routedata"] = _viewContext.RouteData;
 			entries["controller"] = _viewContext.Controller;

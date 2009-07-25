@@ -91,5 +91,21 @@ namespace MvcContrib.UnitTests.ViewFactories
 
 			Assert.AreEqual("View Template test", _output.ToString());
 		}
+
+      [Test]
+      public void CanRenderViewWithTempData()
+      {
+         var tempData = new TempDataDictionary();
+         tempData["test"] = "test";
+
+         var view = _factory.FindView(_controllerContext, "view", null, false).View;
+         var viewContext = new ViewContext(_controllerContext, view, new ViewDataDictionary(), tempData);
+
+         _mocks.ReplayAll();
+
+         view.Render(viewContext, _output);
+
+         Assert.AreEqual("View Template test", _output.ToString());
+      }
 	}
 }
