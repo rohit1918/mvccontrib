@@ -12,7 +12,9 @@ namespace MvcContrib.FluentHtml.Elements
 	{
 		protected string format;
 		protected object rawValue;
+		protected string html;
 		protected string overridenId;
+		protected bool htmlWasSpecified;
 
 		protected LiteralBase(string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) :
 			base(HtmlTag.Span, forMember, behaviors)
@@ -41,6 +43,17 @@ namespace MvcContrib.FluentHtml.Elements
 		}
 
 		/// <summary>
+		/// Set the inner HTML of the span element.
+		/// </summary>
+		/// <param name="html">The HTML.</param>
+		public virtual T Html(string html)
+		{
+			this.html = html;
+			htmlWasSpecified = true;
+			return (T)this;
+		}
+
+		/// <summary>
 		/// Specify a format string to be applied to the value.  The format string can be either a
 		/// specification (e.g., '$#,##0.00') or a placeholder (e.g., '{0:$#,##0.00}').
 		/// </summary>
@@ -61,7 +74,15 @@ namespace MvcContrib.FluentHtml.Elements
 		{
 			SetId();
 
-			builder.SetInnerText(FormatValue(rawValue));
+			if(htmlWasSpecified)
+			{
+				builder.InnerHtml = html;
+			}
+			else
+			{
+				builder.SetInnerText(FormatValue(rawValue));
+			}
+
 			return base.ToString();
 		}
 

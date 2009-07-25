@@ -72,6 +72,12 @@ namespace MvcContrib.UnitTests.FluentHtml.Helpers
 			return n;
 		}
 
+        public static HtmlNode ShouldHaveInnerHtmlEqual(this HtmlNode n, string innerHtml)
+        {
+            Assert.AreEqual(innerHtml, n.InnerHtml);
+            return n;
+        }
+
 		public static HtmlNode ShouldHaveHtmlNode(this string s, string elementId)
 		{
 			var doc = s.ShouldRenderValidHtml();

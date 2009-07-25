@@ -25,6 +25,22 @@ namespace MvcContrib.UnitTests.FluentHtml
 				.ShouldHaveInnerTextEqual("foo bar");
 		}
 
+        [Test]
+        public void literal_renders_with_correct_inner_html()
+        {
+            var html = new Literal("test").Html("html<br>").ToString();
+            html.ShouldRenderHtmlDocument().ChildNodes[0]
+                .ShouldHaveInnerHtmlEqual("html<br>");
+        }
+
+        [Test]
+        public void literal_renders_with_correct_inner_html_when_both_html_and_value_are_specified()
+        {
+            var html = new Literal("test").Html("html<br>").Value("foo bar").ToString();
+            html.ShouldRenderHtmlDocument().ChildNodes[0]
+                .ShouldHaveInnerHtmlEqual("html<br>");
+        }
+
 		[Test]
 		public void literal_renders_with_inner_text_formatted()
 		{
@@ -51,5 +67,13 @@ namespace MvcContrib.UnitTests.FluentHtml
             html.ShouldRenderHtmlDocument().ChildNodes[0]
                 .ShouldHaveAttribute("Id").WithValue("test");
         }
-	}
+
+        [Test]
+        public void literal_with_no_html_or_value_should_render_with_no_inner_html()
+        {
+            var html = new Literal("test").ToString();
+            html.ShouldRenderHtmlDocument().ChildNodes[0]
+                .ShouldHaveInnerHtmlEqual("");
+        }
+    }
 }
