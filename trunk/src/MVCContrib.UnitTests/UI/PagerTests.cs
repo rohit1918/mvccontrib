@@ -59,6 +59,15 @@ namespace MvcContrib.UnitTests.UI.Pager
 		}
 
 		[Test]
+		public void Should_not_render_pager_links_if_there_is_only_1_page()
+		{
+			string expected =
+				"<div class='pagination'><span class='paginationLeft'>Showing 1 - 3 of 3 </span></div>";
+
+			RenderPager(1, 3).ToString().ShouldEqual(expected);
+		}
+
+		[Test]
 		public void Should_not_render_pagination_when_datasource_is_empty()
 		{
 			_datasource.Clear();

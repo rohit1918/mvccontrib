@@ -131,57 +131,61 @@ namespace MvcContrib.UI.Pager
 				builder.AppendFormat(_paginationFormat, _pagination.FirstItem, _pagination.LastItem, _pagination.TotalItems);
 			}
 			builder.Append("</span>");
-			builder.Append("<span class='paginationRight'>");
 
-			if(_pagination.PageNumber == 1)
+			if(_pagination.TotalPages > 1)
 			{
-				builder.Append(_paginationFirst);
+				builder.Append("<span class='paginationRight'>");
+
+				if(_pagination.PageNumber == 1)
+				{
+					builder.Append(_paginationFirst);
+				}
+				else
+				{
+					builder.Append(CreatePageLink(1, _paginationFirst));
+				}
+
+				builder.Append(" | ");
+
+				if(_pagination.HasPreviousPage)
+				{
+					builder.Append(CreatePageLink(_pagination.PageNumber - 1, _paginationPrev));
+				}
+				else
+				{
+					builder.Append(_paginationPrev);
+				}
+
+
+				builder.Append(" | ");
+
+				if(_pagination.HasNextPage)
+				{
+					builder.Append(CreatePageLink(_pagination.PageNumber + 1, _paginationNext));
+				}
+				else
+				{
+					builder.Append(_paginationNext);
+				}
+
+
+				builder.Append(" | ");
+
+				int lastPage = _pagination.TotalPages;
+
+				if(_pagination.PageNumber < lastPage)
+				{
+					builder.Append(CreatePageLink(lastPage, _paginationLast));
+				}
+				else
+				{
+					builder.Append(_paginationLast);
+				}
+
+				builder.Append("</span>");
 			}
-			else
-			{
-				builder.Append(CreatePageLink(1, _paginationFirst));
-			}
 
-			builder.Append(" | ");
-
-			if(_pagination.HasPreviousPage)
-			{
-				builder.Append(CreatePageLink(_pagination.PageNumber - 1, _paginationPrev));
-			}
-			else
-			{
-				builder.Append(_paginationPrev);
-			}
-
-
-			builder.Append(" | ");
-
-			if(_pagination.HasNextPage)
-			{
-				builder.Append(CreatePageLink(_pagination.PageNumber + 1, _paginationNext));
-			}
-			else
-			{
-				builder.Append(_paginationNext);
-			}
-
-
-			builder.Append(" | ");
-
-			int lastPage = _pagination.TotalPages;
-
-			if(_pagination.PageNumber < lastPage)
-			{
-				builder.Append(CreatePageLink(lastPage, _paginationLast));
-			}
-			else
-			{
-				builder.Append(_paginationLast);
-			}
-
-
-			builder.Append(@"</span></div>");
-
+			builder.Append(@"</div>");
 
 			return builder.ToString();
 		}
