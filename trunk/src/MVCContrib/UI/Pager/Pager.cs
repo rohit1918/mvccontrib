@@ -21,7 +21,7 @@ namespace MvcContrib.UI.Pager
 		private string _paginationNext = "next";
 		private string _paginationLast = "last";
 		private string _pageQueryName = "page";
-		private Func<int, string> urlBuilder;
+		private Func<int, string> _urlBuilder;
 
 		/// <summary>
 		/// Creates a new instance of the Pager class.
@@ -33,7 +33,7 @@ namespace MvcContrib.UI.Pager
 			_pagination = pagination;
 			_request = request;
 
-			urlBuilder = CreateDefaultUrl;
+			_urlBuilder = CreateDefaultUrl;
 		}
 
 		/// <summary>
@@ -107,10 +107,9 @@ namespace MvcContrib.UI.Pager
 		/// <param name="urlBuilder">Lambda expression for generating the URL used in the page links</param>
 		public Pager Link(Func<int, string> urlBuilder)
 		{
-			this.urlBuilder = urlBuilder;
+			_urlBuilder = urlBuilder;
 			return this;
 		}
-
 
 		public override string ToString()
 		{
@@ -120,69 +119,13 @@ namespace MvcContrib.UI.Pager
 			}
 
 			var builder = new StringBuilder();
+
 			builder.Append("<div class='pagination'>");
-			builder.Append("<span class='paginationLeft'>");
-			if(_pagination.PageSize == 1)
-			{
-				builder.AppendFormat(_paginationSingleFormat, _pagination.FirstItem, _pagination.TotalItems);
-			}
-			else
-			{
-				builder.AppendFormat(_paginationFormat, _pagination.FirstItem, _pagination.LastItem, _pagination.TotalItems);
-			}
-			builder.Append("</span>");
+			RenderLeftSideOfPager(builder);
 
 			if(_pagination.TotalPages > 1)
 			{
-				builder.Append("<span class='paginationRight'>");
-
-				if(_pagination.PageNumber == 1)
-				{
-					builder.Append(_paginationFirst);
-				}
-				else
-				{
-					builder.Append(CreatePageLink(1, _paginationFirst));
-				}
-
-				builder.Append(" | ");
-
-				if(_pagination.HasPreviousPage)
-				{
-					builder.Append(CreatePageLink(_pagination.PageNumber - 1, _paginationPrev));
-				}
-				else
-				{
-					builder.Append(_paginationPrev);
-				}
-
-
-				builder.Append(" | ");
-
-				if(_pagination.HasNextPage)
-				{
-					builder.Append(CreatePageLink(_pagination.PageNumber + 1, _paginationNext));
-				}
-				else
-				{
-					builder.Append(_paginationNext);
-				}
-
-
-				builder.Append(" | ");
-
-				int lastPage = _pagination.TotalPages;
-
-				if(_pagination.PageNumber < lastPage)
-				{
-					builder.Append(CreatePageLink(lastPage, _paginationLast));
-				}
-				else
-				{
-					builder.Append(_paginationLast);
-				}
-
-				builder.Append("</span>");
+				RenderRightSideOfPager(builder);
 			}
 
 			builder.Append(@"</div>");
@@ -190,10 +133,93 @@ namespace MvcContrib.UI.Pager
 			return builder.ToString();
 		}
 
+		protected virtual void RenderLeftSideOfPager(StringBuilder builder)
+		{
+			builder.Append("<span class='paginationLeft'>");
+
+			//Special case handling where the page only contains 1 item (ie it's a details-view rather than a grid)
+			if(_pagination.PageSize == 1)
+			{
+				RenderNumberOfItemsWhenThereIsOnlyOneItemPerPage(builder);
+			}
+			else
+			{
+				RenderNumberOfItemsWhenThereAreMultipleItemsPerPage(builder);
+			}
+			builder.Append("</span>");
+		}
+
+		protected virtual void RenderRightSideOfPager(StringBuilder builder)
+		{
+			builder.Append("<span class='paginationRight'>");
+
+			//If we're on page 1 then there's no need to render a link to the first page. 
+			if(_pagination.PageNumber == 1)
+			{
+				builder.Append(_paginationFirst);
+			}
+			else
+			{
+				builder.Append(CreatePageLink(1, _paginationFirst));
+			}
+
+			builder.Append(" | ");
+
+			//If we're on page 2 or later, then render a link to the previous page. 
+			//If we're on the first page, then there is no need to render a link to the previous page. 
+			if(_pagination.HasPreviousPage)
+			{
+				builder.Append(CreatePageLink(_pagination.PageNumber - 1, _paginationPrev));
+			}
+			else
+			{
+				builder.Append(_paginationPrev);
+			}
+
+			builder.Append(" | ");
+
+			//Only render a link to the next page if there is another page after the current page.
+			if(_pagination.HasNextPage)
+			{
+				builder.Append(CreatePageLink(_pagination.PageNumber + 1, _paginationNext));
+			}
+			else
+			{
+				builder.Append(_paginationNext);
+			}
+
+			builder.Append(" | ");
+
+			int lastPage = _pagination.TotalPages;
+
+			//Only render a link to the last page if we're not on the last page already.
+			if(_pagination.PageNumber < lastPage)
+			{
+				builder.Append(CreatePageLink(lastPage, _paginationLast));
+			}
+			else
+			{
+				builder.Append(_paginationLast);
+			}
+
+			builder.Append("</span>");
+		}
+
+
+		protected virtual void RenderNumberOfItemsWhenThereIsOnlyOneItemPerPage(StringBuilder builder) 
+		{
+			builder.AppendFormat(_paginationSingleFormat, _pagination.FirstItem, _pagination.TotalItems);
+		}
+
+		protected virtual void RenderNumberOfItemsWhenThereAreMultipleItemsPerPage(StringBuilder builder) 
+		{
+			builder.AppendFormat(_paginationFormat, _pagination.FirstItem, _pagination.LastItem, _pagination.TotalItems);
+		}
+
 		private string CreatePageLink(int pageNumber, string text)
 		{
-			string link = "<a href=\"{0}\">{1}</a>";
-			return string.Format(link, urlBuilder(pageNumber), text);
+			const string link = "<a href=\"{0}\">{1}</a>";
+			return string.Format(link, _urlBuilder(pageNumber), text);
 		}
 
 		private string CreateDefaultUrl(int pageNumber)
