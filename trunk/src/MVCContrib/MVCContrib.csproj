@@ -170,6 +170,7 @@
     <Compile Include="UI\DomQueryBuilder.cs" />
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
+    <Compile Include="UI\Html\ModelVisualizerExtension.cs" />
     <Compile Include="UI\LegacyGrid\GridColumn.cs" />
     <Compile Include="UI\LegacyGrid\GridColumnBuilder.cs" />
     <Compile Include="UI\LegacyGrid\GridHelper.cs" />
