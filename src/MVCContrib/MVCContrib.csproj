@@ -226,6 +226,7 @@
     <Compile Include="UI\Tags\Validators\RangeValidator.cs" />
     <Compile Include="UI\Tags\Validators\RegularExpressionValidator.cs" />
     <Compile Include="UI\Tags\Validators\RequiredValidator.cs" />
+    <Compile Include="UrlHelperExtensions.cs" />
     <Compile Include="ViewDataExtensions.cs" />
     <Compile Include="ViewFactories\FileSystemViewSourceLoader.cs" />
     <Compile Include="ViewFactories\FileViewSource.cs" />
