@@ -302,6 +302,7 @@
     <Compile Include="UI\MenuBuilder\MenuBuilderTests.cs" />
     <Compile Include="UI\PagerTests.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
+    <Compile Include="UrlHelperExtensionsTester.cs" />
     <Compile Include="ViewDataExtensionsForIDictionaryTester.cs" />
     <Compile Include="ViewDataExtensionsForViewDataTester.cs" />
     <Compile Include="ViewFactories\DescriptableDictionaryTester.cs" />
