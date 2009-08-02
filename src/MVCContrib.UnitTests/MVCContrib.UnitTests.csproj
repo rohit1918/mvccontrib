@@ -299,6 +299,18 @@
     <Compile Include="UI\Html\TagTester.cs" />
     <Compile Include="UI\Html\ValidationHelperTester.cs" />
     <Compile Include="UI\Html\ValidatorTester.cs" />
+    <Compile Include="UI\InputBuilder\AssemblyResourceProvider.cs" />
+    <Compile Include="UI\InputBuilder\AttributeTester.cs" />
+    <Compile Include="UI\InputBuilder\DefaultConventionsTester.cs" />
+    <Compile Include="UI\InputBuilder\HtmlExtensionsTester.cs" />
+    <Compile Include="UI\InputBuilder\IInputSpecificationExtensionsTester.cs" />
+    <Compile Include="UI\InputBuilder\InputBuilderTester.cs" />
+    <Compile Include="UI\InputBuilder\InputModelPropertyFactoryTester.cs" />
+    <Compile Include="UI\InputBuilder\InputPropertySpecificationTester.cs" />
+    <Compile Include="UI\InputBuilder\InputTester.cs" />
+    <Compile Include="UI\InputBuilder\InputTypeSpecificationHelper.cs" />
+    <Compile Include="UI\InputBuilder\ReflectionHelperTester.cs" />
+    <Compile Include="UI\InputBuilder\VirtualFileTester.cs" />
     <Compile Include="UI\MenuBuilder\MenuBuilderTests.cs" />
     <Compile Include="UI\PagerTests.cs" />
     <Compile Include="UI\ScriptableElementTester.cs" />
@@ -423,6 +435,9 @@
     <None Include="SparkViewEngine\Views\Shared\SparkPartial.spark">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UI\InputBuilder\UnitTests.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
