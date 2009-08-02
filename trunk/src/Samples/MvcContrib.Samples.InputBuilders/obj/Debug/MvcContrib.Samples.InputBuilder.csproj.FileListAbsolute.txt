@@ -1,7 +1,0 @@
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\bin\Web.dll
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\bin\Web.pdb
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\bin\MvcContrib.dll
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\bin\Microsoft.Web.Mvc.dll
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\obj\Debug\ResolveAssemblyReference.cache
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\obj\Debug\Web.dll
-C:\Code\OSS\mvccontrib\src\Samples\MvcContrib.Samples.InputBuilders\obj\Debug\Web.pdb
