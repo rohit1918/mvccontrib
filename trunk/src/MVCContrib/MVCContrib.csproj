@@ -45,6 +45,9 @@
       <HintPath>..\..\bin\AspNetMvc\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -171,6 +174,25 @@
     <Compile Include="UI\Element.cs" />
     <Compile Include="UI\ElementRenderTool.cs" />
     <Compile Include="UI\Html\ModelVisualizerExtension.cs" />
+    <Compile Include="UI\InputBuilder\Attributes\ExampleAttribute.cs" />
+    <Compile Include="UI\InputBuilder\Attributes\LabelAttribute.cs" />
+    <Compile Include="UI\InputBuilder\Attributes\PartialViewAttribute.cs" />
+    <Compile Include="UI\InputBuilder\DefaultConventions.cs" />
+    <Compile Include="UI\InputBuilder\Helpers\ExpressionHelper.cs" />
+    <Compile Include="UI\InputBuilder\Helpers\ReflectionHelper.cs" />
+    <Compile Include="UI\InputBuilder\HtmlExtensions.cs" />
+    <Compile Include="UI\InputBuilder\IInputSpecification.cs" />
+    <Compile Include="UI\InputBuilder\IInputSpecificationExtensions.cs" />
+    <Compile Include="UI\InputBuilder\Input.cs" />
+    <Compile Include="UI\InputBuilder\InputBuilder.cs" />
+    <Compile Include="UI\InputBuilder\InputModelProperty.cs" />
+    <Compile Include="UI\InputBuilder\InputModelPropertyFactory.cs" />
+    <Compile Include="UI\InputBuilder\InputSpecification\InputPropertySpecification.cs" />
+    <Compile Include="UI\InputBuilder\InputSpecification\InputTypeSpecification.cs" />
+    <Compile Include="UI\InputBuilder\ModelProperty.cs" />
+    <Compile Include="UI\InputBuilder\ViewEngine\AssemblyResourceProvider.cs" />
+    <Compile Include="UI\InputBuilder\ViewEngine\AssemblyResourceVirtualFile.cs" />
+    <Compile Include="UI\InputBuilder\ViewEngine\EmbeddedResourceViewEngine.cs" />
     <Compile Include="UI\LegacyGrid\GridColumn.cs" />
     <Compile Include="UI\LegacyGrid\GridColumnBuilder.cs" />
     <Compile Include="UI\LegacyGrid\GridHelper.cs" />
@@ -237,6 +259,22 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Field.Master" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\HiddenField.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Boolean.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\DateTime.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Enum.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Guid.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Int32.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\MultilineText.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\RadioButtons.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\ReadOnly.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\String.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Submit.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
