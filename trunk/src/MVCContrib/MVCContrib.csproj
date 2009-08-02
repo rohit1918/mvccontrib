@@ -183,6 +183,7 @@
     <Compile Include="UI\InputBuilder\HtmlExtensions.cs" />
     <Compile Include="UI\InputBuilder\IInputSpecification.cs" />
     <Compile Include="UI\InputBuilder\IInputSpecificationExtensions.cs" />
+    <Compile Include="UI\InputBuilder\IModelPropertyConventions.cs" />
     <Compile Include="UI\InputBuilder\Input.cs" />
     <Compile Include="UI\InputBuilder\InputBuilder.cs" />
     <Compile Include="UI\InputBuilder\InputModelProperty.cs" />
