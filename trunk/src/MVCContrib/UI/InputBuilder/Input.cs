@@ -20,7 +20,7 @@ namespace MvcContrib.UI.InputBuilder
 
 			return new InputPropertySpecification
 			       	{
-			       		Model = new InputModelPropertyFactory<T>(_htmlHelper).Create(propertyInfo),
+			       		Model = new InputModelPropertyFactory<T>(_htmlHelper, InputBuilder.Conventions).Create(propertyInfo),
 			       		HtmlHelper = _htmlHelper,
 			       	};
 		}

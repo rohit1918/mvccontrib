@@ -8,9 +8,9 @@ using MvcContrib.UI.InputBuilder.Attributes;
 
 namespace MvcContrib.UI.InputBuilder
 {
-    public static class DefaultConventions
+    public class DefaultConventions : IModelPropertyConventions
     {
-        public static InputModelProperty ModelPropertyBuilder(PropertyInfo propertyInfo, object value)
+        public virtual InputModelProperty ModelPropertyBuilder(PropertyInfo propertyInfo, object value)
         {
             if (propertyInfo.PropertyType.IsEnum)
             {
@@ -29,7 +29,7 @@ namespace MvcContrib.UI.InputBuilder
             return new ModelProperty<object> { Value = value };
         }
 
-        public static string PartialName(PropertyInfo propertyInfo)
+        public virtual string PartialNameConvention(PropertyInfo propertyInfo)
         {
             if (propertyInfo.AttributeExists<UIHintAttribute>())
                 return propertyInfo.GetAttribute<UIHintAttribute>().UIHint;
@@ -43,9 +43,8 @@ namespace MvcContrib.UI.InputBuilder
             return propertyInfo.PropertyType.Name ;
 
         }
-        
-        
-        public static string ExampleForProperty(PropertyInfo propertyInfo)
+
+    	public virtual string ExampleForPropertyConvention(PropertyInfo propertyInfo)
         {
             
             if (propertyInfo.AttributeExists<ExampleAttribute>())
@@ -56,7 +55,7 @@ namespace MvcContrib.UI.InputBuilder
             
         }
 
-        public static string LabelForProperty(PropertyInfo propertyInfo)
+		public virtual string LabelForPropertyConvention(PropertyInfo propertyInfo)
         {
             if (propertyInfo.AttributeExists<LabelAttribute>())
             {
@@ -65,44 +64,28 @@ namespace MvcContrib.UI.InputBuilder
             return propertyInfo.Name.ToSeparatedWords();            
         }
 
-        public static string PropertyName(PropertyInfo propertyInfo)
+        public virtual string PropertyNameConvention(PropertyInfo propertyInfo)
         {
             return propertyInfo.Name;
         }
 
-        public static bool PropertyIsRequired(PropertyInfo propertyInfo)
+		public virtual bool PropertyIsRequiredConvention(PropertyInfo propertyInfo)
         {
             return propertyInfo.AttributeExists<RequiredAttribute>();
         }
 
- 
-        public static bool AttributeExists<T>(this PropertyInfo propertyInfo) where T : class
-        {
-            var attribute = propertyInfo.GetCustomAttributes(typeof(T), false)
-                                .FirstOrDefault() as T;
-            if (attribute == null)
-            {
-                return false;
-            }
-            return true;            
-        }
-        
-        public static T GetAttribute<T>(this PropertyInfo propertyInfo) where T : class
-        {
-            return propertyInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault() as T;
-        }
-        public static Type PropertyType(PropertyInfo propertyInfo)
+		public virtual Type PropertyTypeConvention(PropertyInfo propertyInfo)
         {
             return propertyInfo.PropertyType;
         }
 
-        public static bool ModelIsInvalid<T>(PropertyInfo propertyInfo,HtmlHelper<T> htmlHelper) where T : class
+		public virtual bool ModelIsInvalidConvention<T>(PropertyInfo propertyInfo, HtmlHelper<T> htmlHelper) where T : class
         {
             return htmlHelper.ViewData.ModelState.ContainsKey(propertyInfo.Name) &&
                    htmlHelper.ViewData.ModelState[propertyInfo.Name].Errors.Count > 0;
         }
 
-        public static object ValueFromModelProperty(PropertyInfo propertyInfo,object model)
+		public virtual object ValueFromModelPropertyConvention(PropertyInfo propertyInfo, object model)
         {
             var value = propertyInfo.GetValue(model, new object[0]);
             if (value == null)

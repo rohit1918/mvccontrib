@@ -10,6 +10,15 @@ namespace UnitTests
     [TestFixture]
     public class DefaultConventionsTester
     {
+    	private IModelPropertyConventions _conventions;
+
+    	[SetUp]
+    	public void Setup()
+    	{
+			this._conventions = new DefaultConventions();
+    	}
+
+
         [Test]
         public void Model_is_invalid_should_return_true()
         {
@@ -19,7 +28,7 @@ namespace UnitTests
             var helper = InputModelPropertyFactoryTester.CreateHelper(m);
             helper.ViewData.ModelState.AddModelError("String","foo bar");
             //act
-            var result = DefaultConventions.ModelIsInvalid(pi, helper);
+            var result = _conventions.ModelIsInvalidConvention(pi, helper);
 
             //assert
             Assert.IsTrue(result);
@@ -35,7 +44,7 @@ namespace UnitTests
             //arrange
             
             //act
-            var result = DefaultConventions.ModelPropertyBuilder(pi, m.timestamp);
+            var result = _conventions.ModelPropertyBuilder(pi, m.timestamp);
 
             //assert
             Assert.IsInstanceOfType(typeof(ModelProperty<DateTime>),result);
@@ -51,7 +60,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.ModelPropertyBuilder(pi, m.String);
+            var result = _conventions.ModelPropertyBuilder(pi, m.String);
 
             //assert
             Assert.IsInstanceOfType(typeof(ModelProperty<object>), result);
@@ -68,7 +77,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.ModelPropertyBuilder(pi, m.Enum);
+            var result = _conventions.ModelPropertyBuilder(pi, m.Enum);
 
             //assert
             Assert.IsInstanceOfType(typeof(ModelProperty<IEnumerable<SelectListItem>>), result);
@@ -84,7 +93,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.PartialName(pi);
+            var result = _conventions.PartialNameConvention(pi);
 
             //assert
             Assert.AreEqual("String", result);
@@ -98,7 +107,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.PartialName(pi);
+            var result = _conventions.PartialNameConvention(pi);
 
             //assert
             Assert.AreEqual("theview", result);
@@ -112,7 +121,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.PartialName(pi);
+            var result = _conventions.PartialNameConvention(pi);
 
             //assert
             Assert.AreEqual("EmailAddress", result);
@@ -126,7 +135,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.PartialName(pi);
+            var result = _conventions.PartialNameConvention(pi);
 
             //assert
             Assert.AreEqual("Enum", result);
@@ -139,7 +148,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.ValueFromModelProperty(pi,m);
+            var result = _conventions.ValueFromModelPropertyConvention(pi,m);
 
             //assert
             Assert.AreEqual(Foo.Bar, result);
@@ -153,7 +162,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.ExampleForProperty(pi);
+            var result = _conventions.ExampleForPropertyConvention(pi);
 
             //assert
             Assert.AreEqual("example", result);
@@ -167,7 +176,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.ExampleForProperty(pi);
+            var result = _conventions.ExampleForPropertyConvention(pi);
 
             //assert
             Assert.AreEqual("", result);
@@ -181,7 +190,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.LabelForProperty(pi);
+            var result = _conventions.LabelForPropertyConvention(pi);
 
             //assert
             Assert.AreEqual("label", result);
@@ -195,7 +204,7 @@ namespace UnitTests
             //arrange
 
             //act
-            var result = DefaultConventions.LabelForProperty(pi);
+            var result = _conventions.LabelForPropertyConvention(pi);
 
             //assert
             Assert.AreEqual("String", result);

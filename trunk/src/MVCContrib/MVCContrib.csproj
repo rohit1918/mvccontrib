@@ -191,6 +191,7 @@
     <Compile Include="UI\InputBuilder\InputSpecification\InputPropertySpecification.cs" />
     <Compile Include="UI\InputBuilder\InputSpecification\InputTypeSpecification.cs" />
     <Compile Include="UI\InputBuilder\ModelProperty.cs" />
+    <Compile Include="UI\InputBuilder\PropertyExtensions.cs" />
     <Compile Include="UI\InputBuilder\ViewEngine\AssemblyResourceProvider.cs" />
     <Compile Include="UI\InputBuilder\ViewEngine\AssemblyResourceVirtualFile.cs" />
     <Compile Include="UI\InputBuilder\ViewEngine\EmbeddedResourceViewEngine.cs" />
@@ -265,10 +266,14 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Boolean.aspx" />
-    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\DateTime.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\DateTime.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Enum.aspx" />
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Guid.aspx" />
-    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Int32.aspx" />
+    <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\Int32.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\MultilineText.aspx" />
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\RadioButtons.aspx" />
     <EmbeddedResource Include="UI\InputBuilder\Views\InputBuilders\ReadOnly.aspx" />

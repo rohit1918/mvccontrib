@@ -13,7 +13,7 @@ namespace MvcContrib.UI.InputBuilder
         string PropertyNameConvention(PropertyInfo propertyInfo);
         Type PropertyTypeConvention(PropertyInfo propertyInfo);
         string PartialNameConvention(PropertyInfo propertyInfo);
-        InputModelProperty ModelPropertyBuilder<T>(PropertyInfo propertyInfo,T model);
+        InputModelProperty ModelPropertyBuilder(PropertyInfo propertyInfo,object model);
         bool PropertyIsRequiredConvention(PropertyInfo propertyInfo);
     }
 }

@@ -22,7 +22,7 @@ namespace MvcContrib.UI.InputBuilder
             {
                 foreach (PropertyInfo propertyInfo in ModelType.GetProperties())
                 {
-                    InputModelProperty model = new InputModelPropertyFactory<T>(HtmlHelper).Create(propertyInfo);
+                    InputModelProperty model = new InputModelPropertyFactory<T>(HtmlHelper, InputBuilder.Conventions).Create(propertyInfo);
 
                     RenderPartial(model);
                 }
