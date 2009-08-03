@@ -15,10 +15,8 @@ namespace UnitTests
         public void The_factory_should_call_the_conventions()
         {
             //arrange+            
-            ConfigureFactoryConventions();
-
             var model = new Model() { String = "foo" };            
-            var factory = new InputModelPropertyFactory<Model>(CreateHelper(model));
+            var factory = new InputModelPropertyFactory<Model>(CreateHelper(model), new FactoryConventions());
 
             PropertyInfo property = model.GetType().GetProperty("String");
 
@@ -32,21 +30,6 @@ namespace UnitTests
             Assert.AreEqual(inputModelProperty.HasExample(), true);
             Assert.AreEqual(inputModelProperty.Example, "example");
             Assert.AreEqual(inputModelProperty.PropertyIsRequired, true);
-            
-            
-
-        }
-
-        private void ConfigureFactoryConventions()
-        {
-            InputModelPropertyFactory<Model>.ExampleForPropertyConvention = (prop) => "example";
-            InputModelPropertyFactory<Model>.LabelForPropertyConvention = (prop) => "label";
-            InputModelPropertyFactory<Model>.ModelIsInvalidConvention = (prop, helper) => false;
-            InputModelPropertyFactory<Model>.PartialNameConvention = (prop) => "String";
-            InputModelPropertyFactory<Model>.ModelPropertyBuilder = (prop, value) => new ModelProperty<String>();
-            InputModelPropertyFactory<Model>.PropertyIsRequiredConvention = (prop) => true;
-            InputModelPropertyFactory<Model>.PropertyNameConvention = (prop) => "name";
-            InputModelPropertyFactory<Model>.ValueFromModelPropertyConvention = (prop, obj) => "value";
         }
 
         public static HtmlHelper<T> CreateHelper<T>(T model) where T : class
@@ -56,6 +39,49 @@ namespace UnitTests
             context.ViewData.Model = model;
             return new HtmlHelper<T>(context, new ViewDataContainer(context.ViewData));
         }
+
+		private class FactoryConventions : DefaultConventions
+		{
+			public override string ExampleForPropertyConvention(PropertyInfo propertyInfo)
+			{
+				return "example";
+			}
+
+			public override string LabelForPropertyConvention(PropertyInfo propertyInfo)
+			{
+				return "label";
+			}
+
+			public override bool ModelIsInvalidConvention<T>(PropertyInfo propertyInfo, HtmlHelper<T> htmlHelper)
+			{
+				return false;
+			}
+
+			public override string PartialNameConvention(PropertyInfo propertyInfo)
+			{
+				return "String";
+			}
+
+			public override InputModelProperty ModelPropertyBuilder(PropertyInfo propertyInfo, object value)
+			{
+				return new ModelProperty<string>();
+			}
+
+			public override bool PropertyIsRequiredConvention(PropertyInfo propertyInfo)
+			{
+				return true;
+			}
+
+			public override string PropertyNameConvention(PropertyInfo propertyInfo)
+			{
+				return "name";
+			}
+
+			public override object ValueFromModelPropertyConvention(PropertyInfo propertyInfo, object model)
+			{
+				return "value";
+			}
+		}
     }
 
     public class Model
