@@ -80,7 +80,12 @@ namespace MvcContrib.FluentHtml.Elements
 					.Id(string.Format("{0}_{1}", name.FormatAsHtmlId(), i))
 					.Value(value))
 					.LabelAfter(_textFieldSelector(option).ToString(), _itemClass)
-					.Checked(IsSelectedValue(value));
+					.Checked(_selectedValues.Contains(value))
+					.Disabled(_disabledValues.Contains(value));
+				if (doNotEncodeLabels)
+				{
+					checkbox.DoNotHtmlEncodeLabels();
+				}
 				if (_itemClass != null)
 				{
 					checkbox.Class(_itemClass);

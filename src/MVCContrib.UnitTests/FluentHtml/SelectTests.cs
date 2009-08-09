@@ -242,5 +242,44 @@ namespace MvcContrib.UnitTests.FluentHtml
 			optionNodes[0].ShouldBeUnSelectedOption("1", "1");
 			optionNodes[1].ShouldBeUnSelectedOption("2", "2");
 		}
+
+		[Test]
+		public void can_render_some_items_disabled()
+		{
+			var items = new List<FakeModel> 
+			{ 
+				new FakeModel { Id = 1, Title = "One" },
+				new FakeModel { Id = 2, Title = "Two" },
+			};
+
+			var itemsDisabled = new List<int> { 1 };
+
+			var html = new Select("foo.Bar").Options(items, x => x.Id, x => x.Title)
+				.Disabled(itemsDisabled).ToString();
+
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(2);
+
+			nodes[0].ShouldHaveAttribute(HtmlAttribute.Disabled).WithValue(HtmlAttribute.Disabled);
+			nodes[1].ShouldNotHaveAttribute(HtmlAttribute.Disabled);
+		}
+
+		[Test]
+		public void can_render_not_html_encoded_label()
+		{
+			var items = new List<FakeModel> 
+			{ 
+				new FakeModel { Id = 1, Title = "One" },
+				new FakeModel { Id = 2, Title = "Two" },
+			};
+
+			string html = new Select("foo.Bar")
+				.Label("<br />")
+				.DoNotHtmlEncodeLabels()
+				.Options(items, x => x.Id, x => x.Title)
+				.ToString();
+
+			html.ShouldContain("<br />");
+		}
 	}
 }

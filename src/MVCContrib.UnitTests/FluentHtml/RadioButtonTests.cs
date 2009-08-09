@@ -41,5 +41,18 @@ namespace MvcContrib.UnitTests.FluentHtml
 			var br = doc.ShouldHaveChildNodesCount(2)[1];
 			br.ShouldBeNamed("br");
 		}
+
+		[Test]
+		public void can_use_unencoded_radio_button_content()
+		{
+			string unencodedValue = "<h1>content</h1>";
+			string encodedValue = "&lt;h1&gt;content&lt;/h1&gt;";
+
+			var htmlUnencoded = new RadioButton("foo.Bar").Label(unencodedValue).DoNotHtmlEncodeLabels().ToString();
+			var htmlEncoded = new RadioButton("foo.Bar").Label(unencodedValue).ToString();
+
+			htmlUnencoded.ShouldContain(unencodedValue);
+			htmlEncoded.ShouldContain(encodedValue);
+		}
 	}
 }

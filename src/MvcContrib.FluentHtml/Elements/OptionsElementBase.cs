@@ -10,7 +10,7 @@ namespace MvcContrib.FluentHtml.Elements
 {
 	public abstract class OptionsElementBase<T> : FormElement<T> where T : OptionsElementBase<T>
 	{
-		protected OptionsElementBase(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) 
+		protected OptionsElementBase(string tag, string name, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors)
 			: base(tag, name, forMember, behaviors) { }
 
 		protected OptionsElementBase(string tag, string name) : base(tag, name) { }
@@ -19,6 +19,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected Func<object, object> _textFieldSelector;
 		protected Func<object, object> _valueFieldSelector;
 		protected IEnumerable _selectedValues;
+		protected IEnumerable _disabledValues;
 
 		/// <summary>
 		/// The selected values.
@@ -34,7 +35,7 @@ namespace MvcContrib.FluentHtml.Elements
 			{
 				_options = value.Items;
 				SetFieldExpressions(value.DataValueField, value.DataTextField);
-				if(value.SelectedValues != null)
+				if (value.SelectedValues != null)
 				{
 					_selectedValues = value.SelectedValues;
 				}
@@ -85,7 +86,7 @@ namespace MvcContrib.FluentHtml.Elements
 
 		public virtual T Options<TEnum>() where TEnum : struct
 		{
-			if(!typeof(TEnum).IsEnum)
+			if (!typeof(TEnum).IsEnum)
 			{
 				throw new ArgumentException("The generic parameter must be an enum", "TEnum");
 			}
@@ -93,13 +94,19 @@ namespace MvcContrib.FluentHtml.Elements
 			var dict = new Dictionary<string, string>();
 
 			var values = Enum.GetValues(typeof(TEnum));
-	
-			foreach(var item in values)
+
+			foreach (var item in values)
 			{
 				dict.Add(Convert.ToInt32(item).ToString(), item.ToString());
 			}
 
 			return Options(dict);
+		}
+
+		public virtual T Disabled(IEnumerable values)
+		{
+			_disabledValues = values;
+			return (T)this;
 		}
 
 		protected void SetFieldExpressions(string dataValueField, string dataTextField)
@@ -126,28 +133,6 @@ namespace MvcContrib.FluentHtml.Elements
 
 			_textFieldSelector = x => textProp.GetValue(x, null);
 			_valueFieldSelector = x => valueProp.GetValue(x, null);
-		}
-
-		protected bool IsSelectedValue(object value)
-		{
-			var valueString = value == null ? string.Empty : value.ToString();
-			if (_selectedValues != null)
-			{
-				var enumerator = _selectedValues.GetEnumerator();
-				while (enumerator.MoveNext())
-				{
-					var selectedValueString = enumerator.Current == null
-						? string.Empty
-						: enumerator.Current.GetType().IsEnum
-							? ((int)enumerator.Current).ToString()
-							: enumerator.Current.ToString();
-					if (valueString == selectedValueString)
-					{
-						return true;
-					}
-				}
-			}
-			return false;
 		}
 	}
 }

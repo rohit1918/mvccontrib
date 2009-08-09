@@ -5,7 +5,7 @@ using MvcContrib.FluentHtml.Html;
 using MvcContrib.UnitTests.FluentHtml.Fakes;
 using MvcContrib.UnitTests.FluentHtml.Helpers;
 using NUnit.Framework;
-using HtmlAttribute=MvcContrib.FluentHtml.Html.HtmlAttribute;
+using HtmlAttribute = MvcContrib.FluentHtml.Html.HtmlAttribute;
 
 namespace MvcContrib.UnitTests.FluentHtml
 {
@@ -82,6 +82,60 @@ namespace MvcContrib.UnitTests.FluentHtml
 			{
 				node.ShouldHaveAttribute(HtmlAttribute.Class).WithValue(cssClass);
 			}
+		}
+
+		[Test]
+		public void can_use_html_for_radio_set_labels()
+		{
+			var items = new List<FakeModel> 
+			{ 
+				new FakeModel { Id = 1, Title = "<h1>One</h1>" },
+				new FakeModel { Id = 2, Title = "Two" },
+			};
+
+			string html = new RadioSet("foo.Bar").Options(items, x => x.Id, x => x.Title)
+				.Label("Header<br />")
+				.DoNotHtmlEncodeLabels()
+				.Selected(2)
+				.ToString();
+
+			html.ShouldContain("Header<br />");
+			html.ShouldContain("<h1>One</h1>");
+		}
+
+		[Test]
+		public void can_render_some_items_disabled_when_bound_to_enum()
+		{
+			var html = new RadioSet("foo.Bar").Options<FakeEnum>()
+				.Disabled(new List<FakeEnum> { FakeEnum.One })
+				.ToString();
+
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var options = element.ShouldHaveChildNodesCount(8);
+
+			options[0].ShouldNotHaveAttribute(HtmlAttribute.Disabled);
+			options[2].ShouldHaveAttribute(HtmlAttribute.Disabled).WithValue(HtmlAttribute.Disabled);
+		}
+
+		[Test]
+		public void can_render_some_items_disabled()
+		{
+			var items = new List<FakeModel> 
+			{ 
+				new FakeModel { Id = 1, Title = "One" },
+				new FakeModel { Id = 2, Title = "Two" },
+			};
+
+			var itemsDisabled = new List<int> { 1 };
+
+			var html = new RadioSet("foo.Bar").Options(items, x => x.Id, x => x.Title).Selected(2)
+				.Disabled(itemsDisabled).ToString();
+
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(4);
+
+			nodes[0].ShouldHaveAttribute(HtmlAttribute.Disabled).WithValue(HtmlAttribute.Disabled);
+			nodes[2].ShouldNotHaveAttribute(HtmlAttribute.Disabled);
 		}
 
 		private void VerifyOption(string name, object value, object text, HtmlNode input, HtmlNode label)

@@ -83,6 +83,7 @@
     <Compile Include="Elements\CheckBoxList.cs" />
     <Compile Include="Elements\CheckBoxListBase.cs" />
     <Compile Include="Behaviors\ISupportsAutoLabeling.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Elements\Label.cs" />
     <Compile Include="Elements\LabelBase.cs" />
     <Compile Include="Elements\ResetButton.cs" />

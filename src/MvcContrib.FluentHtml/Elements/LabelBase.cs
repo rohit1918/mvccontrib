@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using MvcContrib.FluentHtml.Behaviors;
@@ -80,12 +79,12 @@ namespace MvcContrib.FluentHtml.Elements
 		protected virtual string FormatValue(object value)
 		{
 			return string.IsNullOrEmpty(format)
-					   ? value == null
-							 ? null
-							 : value.ToString()
-					   : (format.StartsWith("{0") && format.EndsWith("}"))
-							 ? string.Format(format, value)
-							 : string.Format("{0:" + format + "}", value);
+				? value == null
+					? null
+					: value.ToString()
+				: (format.StartsWith("{0") && format.EndsWith("}"))
+					? string.Format(format, value)
+					: string.Format("{0:" + format + "}", value);
 		}
 	}
 }
