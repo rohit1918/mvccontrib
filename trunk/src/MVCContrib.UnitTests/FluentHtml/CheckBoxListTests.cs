@@ -63,6 +63,29 @@ namespace MvcContrib.UnitTests.FluentHtml
 			element.ShouldHaveChildNodesCount(1)[0].ShouldBeNamed(HtmlTag.Div);
 		}
 
+
+		[Test]
+		public void can_render_some_checkboxlist_items_disabled()
+		{
+			var items = new List<FakeModel> 
+			{ 
+				new FakeModel { Id = 1, Title = "One" },
+				new FakeModel { Id = 2, Title = "Two" },
+			};
+
+			var itemsDisabled = new List<int> { 1 };
+
+			var html = new CheckBoxList("foo.Bar").Options(items, x => x.Id, x => x.Title)
+				.Selected(new List<int>{2})
+				.Disabled(itemsDisabled).ToString();
+
+			var element = html.ShouldHaveHtmlNode("foo_Bar");
+			var nodes = element.ShouldHaveChildNodesCount(4);
+
+			nodes[0].ShouldHaveAttribute(HtmlAttribute.Disabled).WithValue(HtmlAttribute.Disabled);
+			nodes[2].ShouldNotHaveAttribute(HtmlAttribute.Disabled);
+		}
+
 		private void VerifyItem(string name, object value, object text, HtmlNode element, int index, bool @checked)
 		{
 			var input = element.ShouldHaveChildNode(string.Format("{0}_{1}", name.FormatAsHtmlId(), index));

@@ -12,6 +12,7 @@ namespace MvcContrib.UnitTests.FluentHtml
 	[TestFixture]
 	public class CheckboxTests
 	{
+
 		[Test]
 		public void basic_checkbox_renders_with_corect_tag_and_type()
 		{

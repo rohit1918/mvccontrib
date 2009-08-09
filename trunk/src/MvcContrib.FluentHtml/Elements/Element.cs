@@ -19,6 +19,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected readonly TagBuilder builder;
 		protected MemberExpression forMember;
 		protected IEnumerable<IBehaviorMarker> behaviors;
+		protected bool doNotEncodeLabels;
 
 		protected Element(string tag, MemberExpression forMember, IEnumerable<IBehaviorMarker> behaviors) : this(tag)
 		{
@@ -151,6 +152,12 @@ namespace MvcContrib.FluentHtml.Elements
 			return (T)this;
 		}
 
+		public virtual T DoNotHtmlEncodeLabels()
+		{
+			doNotEncodeLabels = true;
+			return (T)this;
+		}
+
 		public override string ToString()
 		{
 			ApplyBehaviors();
@@ -200,7 +207,7 @@ namespace MvcContrib.FluentHtml.Elements
 		protected virtual TagRenderMode TagRenderMode
 		{
 			get { return TagRenderMode.Normal; }
-		} 
+		}
 
 		#endregion
 
@@ -211,7 +218,14 @@ namespace MvcContrib.FluentHtml.Elements
 				return null;
 			}
 			var labelBuilder = GetLabelBuilder();
-			labelBuilder.SetInnerText(labelText);
+			if (doNotEncodeLabels)
+			{
+				labelBuilder.InnerHtml = labelText;
+			}
+			else
+			{
+				labelBuilder.SetInnerText(labelText);
+			}
 			return labelBuilder.ToString();
 		}
 
@@ -233,11 +247,11 @@ namespace MvcContrib.FluentHtml.Elements
 
 		protected void ApplyBehaviors()
 		{
-			if(behaviors == null)
+			if (behaviors == null)
 			{
 				return;
 			}
-			foreach(var behavior in behaviors)
+			foreach (var behavior in behaviors)
 			{
 				if (behavior is IBehavior)
 				{

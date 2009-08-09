@@ -79,7 +79,13 @@ namespace MvcContrib.FluentHtml.Elements
 					.Value(value)
 					.Format(_format))
 					.LabelAfter(_textFieldSelector(option).ToString(), _itemClass)
-					.Checked(IsSelectedValue(value));
+					.Checked(_selectedValues.Contains(value))
+					.Disabled(_disabledValues.Contains(value));
+
+				if (doNotEncodeLabels)
+				{
+					radioButton.DoNotHtmlEncodeLabels();
+				}
 				if (_itemClass != null)
 				{
 					radioButton.Class(_itemClass);

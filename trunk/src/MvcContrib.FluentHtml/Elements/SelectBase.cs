@@ -131,7 +131,8 @@ namespace MvcContrib.FluentHtml.Elements
 			return new Option()
 				.Value(value == null ? string.Empty : value.ToString())
 				.Text(text == null ? string.Empty : text.ToString())
-				.Selected(IsSelectedValue(value));
+				.Selected(_selectedValues.Contains(value))
+				.Disabled(_disabledValues.Contains(value));
 		}
 	}
 }
