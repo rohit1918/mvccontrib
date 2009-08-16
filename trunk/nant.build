@@ -22,7 +22,9 @@
 	<property name="project.fullversion" value="${version.major}.${version.minor}.${version.build}.${version.revision}" dynamic="true" />
 	<property name="nant.settings.currentframework" value="net-3.5" />
 	<property name="ncover.path" value="bin\ncover" />
+	<property name="runtests" value="true" unless="${property::exists('runtests')}" />
 
+	
 	<!-- default configuration -->
 	<property name="project.config" value="release" />
 	<!-- debug|release -->
@@ -120,7 +122,7 @@
 		
 	</target>
 
-	<target name="test" depends="init">
+	<target name="test" depends="init" if="${runtests}">
 		<delete dir="${results.dir}" if="${directory::exists('${results.dir}')}" verbose="true" />
 		<mkdir dir="${results.dir}"/>
 
